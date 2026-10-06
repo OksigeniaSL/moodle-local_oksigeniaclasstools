@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="local/oksigeniaclasstools/db" VERSION="20261007" COMMENT="XMLDB file for local_oksigeniaclasstools"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="local_oksigeniaclasstools_picks" COMMENT="Each time a student is picked on the board (fair picking and participation)">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="The student who was picked"/>
+        <FIELD NAME="teacherid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="The teacher who picked (0 if deleted)"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="courseid" TYPE="foreign" FIELDS="courseid" REFTABLE="course" REFFIELDS="id"/>
+        <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="courseid-timecreated" UNIQUE="false" FIELDS="courseid, timecreated"/>
+      </INDEXES>
+    </TABLE>
+  </TABLES>
+</XMLDB>
