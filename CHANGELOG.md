@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.1 (2026-10-07)
+
+- Scripts and styles are requested with the plugin version in their address, so after an upgrade the browser does
+  not mix old cached files with new ones (a stale `icons.js` broke the tabs).
+- A missing icon is left blank instead of stopping the whole screen.
+
 ## 0.4.0 (2026-10-07)
 
 - **Games** tab for the whole class: **Rosco** (letter ring with a clue per letter; the whole class or two teams

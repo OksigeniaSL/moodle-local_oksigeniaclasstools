@@ -145,10 +145,14 @@ function local_oksigeniaclasstools_output(?array $data): void {
     $html = file_get_contents(__DIR__ . '/app/index.html');
     $base = (new moodle_url('/local/oksigeniaclasstools/app/'))->out(false);
     $html = str_replace('<head>', "<head>\n<base href=\"" . s($base) . '">', $html);
+    // The plugin version in the address of scripts and styles: after each upgrade the browser fetches them again
+    // instead of mixing old and new files from its cache.
+    $version = (int) get_config('local_oksigeniaclasstools', 'version');
+    $html = preg_replace('/(<script src="[a-z0-9\/_-]+\.js|<link rel="stylesheet" href="[a-z0-9\/_-]+\.css)"/i', '$1?v=' . $version . '"', $html);
     if ($data) {
         $json = json_encode($data, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE);
-        $html = str_replace('<script src="icons.js"></script>',
-            "<script>window.CLASSTOOLS = $json;</script>\n<script src=\"icons.js\"></script>", $html);
+        // A callback, so that nothing in the data can be read as a backreference.
+        $html = preg_replace_callback('/<script src="icons\.js/', fn($m) => "<script>window.CLASSTOOLS = $json;</script>\n" . $m[0], $html, 1);
     }
     header('Content-Type: text/html; charset=utf-8');
     header('Cache-Control: no-store');
