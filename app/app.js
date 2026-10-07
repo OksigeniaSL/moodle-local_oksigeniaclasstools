@@ -118,9 +118,6 @@
         $$('.pestana').forEach((b) => { if (!PERMITIDAS.includes(b.dataset.h)) { b.remove(); } });
     }
 
-    // Las sesiones en vivo viven en Moodle: sin curso (o si el sitio las apaga), su pestaña no aparece.
-    if (!(window.CLASSTOOLS && window.CLASSTOOLS.liveurl) && $('#t-envivo')) { $('#t-envivo').remove(); }
-
     // --- Pestañas ---
     const HERR = {};   // cada herramienta puede tener entra() y sale()
     const pestanas = $$('.pestana'), barra = $('#barra'), tira = $('#pestanas');
@@ -921,6 +918,56 @@
     // grupo y el nombre vuela a su sitio, aquí y allá, hasta el último (los primeros y los últimos, más despacio).
     let gEmocion = lee('grupos-emocion', false) === true;
     let gReparto = null;   // el reparto en marcha: { acaba } los coloca a todos ya
+    // Un rol para cada uno dentro de su grupo (portavoz, secretario…), que el profesor puede cambiar. El reparto es
+    // justo: a cada uno le toca antes el rol que menos ha tenido con esa lista (y, a igualdad, quien menos roles ha
+    // tenido); el recuento se guarda en el navegador.
+    let gRoles = lee('grupos-roles', false) === true;
+    const ROLES_BASE = () => [t('rl_spokesperson'), t('rl_secretary'), t('rl_materials'), t('rl_time')];
+    const ROL_COLORES = ['#164281', '#ce1423', '#067e36', '#5b2fb8', '#c2410c', '#0e7c86'];
+    const gListaRoles = () => { const r = lee('roles-nombres', null); return Array.isArray(r) && r.length ? r : ROLES_BASE(); };
+    const gNombreLi = (li) => { const x = li.querySelector(':scope > span:not(.rol):not(.iniciales)'); return x ? x.textContent : ''; };
+    const gPonRoles = () => {
+        $$('.grupo li .rol', gRejilla).forEach((x) => x.remove());
+        $('#g-rotar').hidden = !(gRoles && gHechos);
+        if (!gRoles || !gHechos) { gEncaja(); return; }
+        const roles = gListaRoles(), clave = gHechos.lista ? gHechos.lista.id : '__pegar';
+        const hist = lee('roles-historial', {}), h = hist[clave] || {};
+        const veces = (n, r) => ((h[n] || {})[r] || 0);
+        const total = (n) => Object.values(h[n] || {}).reduce((a, b) => a + b, 0);
+        // Lo que cuesta dar el rol r a n: las veces que ya lo tuvo (al cuadrado, para repartirlos) y un poco por los
+        // roles que ya tuvo en total. Se empieza al azar y se mejora cambiando parejas hasta que no se puede más.
+        const coste = (n, r) => 10 * veces(n, r) * veces(n, r) + total(n);
+        $$('.grupo', gRejilla).forEach((art, gi) => {
+            const lis = $$('li', art), gente = baraja((gHechos.grupos[gi] || []).slice());
+            const rs = baraja(roles.slice()).slice(0, gente.length);
+            const quien = rs.map((_, i) => gente[i]), fuera = gente.slice(rs.length);
+            for (let mejora = true, vueltas = 0; mejora && vueltas < 50; vueltas++) {
+                mejora = false;
+                for (let i = 0; i < rs.length; i++) {
+                    for (let j = i + 1; j < rs.length; j++) {
+                        if (coste(quien[j], rs[i]) + coste(quien[i], rs[j]) < coste(quien[i], rs[i]) + coste(quien[j], rs[j])) {
+                            [quien[i], quien[j]] = [quien[j], quien[i]]; mejora = true;
+                        }
+                    }
+                    for (let k = 0; k < fuera.length; k++) {
+                        if (coste(fuera[k], rs[i]) < coste(quien[i], rs[i])) { [quien[i], fuera[k]] = [fuera[k], quien[i]]; mejora = true; }
+                    }
+                }
+            }
+            rs.forEach((r, i) => {
+                const n = quien[i];
+                h[n] = h[n] || {}; h[n][r] = veces(n, r) + 1;
+                const li = lis.find((x) => gNombreLi(x) === n);
+                if (li) {
+                    const b = document.createElement('span');
+                    b.className = 'rol'; b.textContent = r; b.style.setProperty('--rc', ROL_COLORES[roles.indexOf(r) % ROL_COLORES.length]);
+                    li.append(b);
+                }
+            });
+        });
+        hist[clave] = h; guarda('roles-historial', hist);
+        gEncaja();
+    };
     function gCambiaLista() {
         const pegar = $('#g-lista').value === '__pegar', l = gLista();
         $('#g-moodle').hidden = true; gUltimos = null;
@@ -954,7 +1001,7 @@
                 <ul>${g.map((n, ni) => `<li${emocion ? ` class="por-salir" data-n="${ni}"` : ''}>${cara(lg, n, 'cara-mini')}<span>${escapa(n)}</span></li>`).join('')}</ul></article>`;
         }).join('');
         $('#g-resumen').textContent = '';
-        $('#g-moodle').hidden = true;
+        $('#g-moodle').hidden = true; $('#g-rotar').hidden = true;
         gEncaja();
         const listo = () => {
             const tams = grupos.map((g) => g.length), mn = Math.min(...tams), mx = Math.max(...tams);
@@ -965,6 +1012,7 @@
             gUltimos = lg && lg.aula && AULA.groupsurl ? { lista: lg, grupos } : null;
             $('#g-moodle').hidden = !gUltimos; $('#g-moodle').disabled = false;
             rotula($('#g-moodle'), t('g_save_course'), 'guardar');
+            gPonRoles();
             suena(emocion ? 'elegido' : 'dado');
             anuncia(t('g_made', k));
         };
@@ -1070,6 +1118,17 @@
     if (window.ResizeObserver) { new ResizeObserver(() => { cancelAnimationFrame(gMarco); gMarco = requestAnimationFrame(gEncaja); }).observe(gRejilla); }
     HERR.grupos = { entra: () => requestAnimationFrame(gEncaja) };
     $('#g-hacer').addEventListener('click', gHacer);
+    $('#g-roles').checked = gRoles;
+    $('#g-roles-caja').hidden = !gRoles;
+    $('#g-roles-texto').placeholder = ROLES_BASE().join('\n');
+    $('#g-roles-texto').value = (lee('roles-nombres', null) || []).join('\n');
+    $('#g-roles').addEventListener('change', (e) => { gRoles = e.target.checked; guarda('grupos-roles', gRoles); $('#g-roles-caja').hidden = !gRoles; gPonRoles(); });
+    $('#g-roles-texto').addEventListener('input', () => {
+        const r = [...new Set($('#g-roles-texto').value.split(/\r?\n/).map((x) => x.trim().slice(0, 30)).filter(Boolean))].slice(0, 6);
+        guarda('roles-nombres', r.length ? r : null);
+    });
+    $('#g-roles-texto').addEventListener('change', gPonRoles);
+    $('#g-rotar').addEventListener('click', () => { gPonRoles(); suena('dado'); anuncia(t('g_roles_done')); });
     $('#g-emocion').checked = gEmocion;
     $('#g-emocion').addEventListener('change', (e) => { gEmocion = e.target.checked; guarda('grupos-emocion', gEmocion); });
     $('#g-lista').addEventListener('change', gCambiaLista);

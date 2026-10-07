@@ -475,17 +475,45 @@
     $('#tg-reset').addEventListener('click', () => { scatter(); tgPaint(); play('card'); });
 
     // =========================================================================================================
-    let mode = ['rods', 'tangram'].includes(load('material-modo', 'rods')) ? load('material-modo', 'rods') : 'rods';
+    // The other materials (number line, fraction wall…) come in files of their own and add themselves with
+    // core.material.add(): a button in the bar, a panel, and what to do when it is shown or resized.
+    const LAYOUT = { rods: () => rdLayout(), tangram: () => tgLayout() };
+    const wanted = load('material-modo', 'rods');
+    let mode = LAYOUT[wanted] ? wanted : 'rods';
     const showMode = (m) => {
+        if (!LAYOUT[m]) { return; }
         mode = m; save('material-modo', m);
         $$('#mt-mode button').forEach((b) => b.setAttribute('aria-checked', String(b.dataset.mode === m)));
         $$('.ct-panel', root).forEach((p) => { p.hidden = p.dataset.panel !== m; });
-        requestAnimationFrame(m === 'rods' ? rdLayout : tgLayout);
+        requestAnimationFrame(LAYOUT[m]);
     };
-    $$('#mt-mode button').forEach((b) => b.addEventListener('click', () => showMode(b.dataset.mode)));
+    $('#mt-mode').addEventListener('click', (e) => { const b = e.target.closest('[data-mode]'); if (b) { showMode(b.dataset.mode); } });
     if (window.ResizeObserver) {
-        new ResizeObserver(() => requestAnimationFrame(mode === 'rods' ? rdLayout : tgLayout)).observe(root);
+        new ResizeObserver(() => requestAnimationFrame(LAYOUT[mode])).observe(root);
     }
+    core.material = {
+        /**
+         * Adds a material.
+         *
+         * @param {string} key
+         * @param {string} label The name on its button.
+         * @param {string} html Its panel (usually an aside with the settings and a stage).
+         * @param {Function} layout What to do when it is shown or the screen changes size.
+         * @return {HTMLElement} The panel.
+         */
+        add: (key, label, html, layout) => {
+            const b = document.createElement('button');
+            b.type = 'button'; b.setAttribute('role', 'radio'); b.setAttribute('aria-checked', 'false'); b.dataset.mode = key; b.textContent = label;
+            $('#mt-mode').append(b);
+            const panel = document.createElement('div');
+            panel.className = 'ct-panel'; panel.dataset.panel = key; panel.hidden = true; panel.innerHTML = html;
+            $$('[data-icono]', panel).forEach((e) => setIcon(e, e.dataset.icono));
+            root.querySelector('.ct-body').append(panel);
+            LAYOUT[key] = layout || (() => {});
+            if (key === wanted) { showMode(key); }
+            return panel;
+        },
+    };
     core.register('material', { entra: () => showMode(mode) });
     showMode(mode);
 

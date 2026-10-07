@@ -159,7 +159,12 @@
         <button type="button" class="redondo suave" id="g-mas" aria-label="Uno más" data-t-aria="g_more"><span data-icono="mas"></span></button>
       </div>
       <label class="interruptor"><input type="checkbox" id="g-emocion"><span data-t="g_suspense">Repartir con emoción</span></label>
+      <label class="interruptor"><input type="checkbox" id="g-roles"><span data-t="g_roles">Un rol para cada uno</span></label>
+      <details class="g-roles-caja" id="g-roles-caja" hidden><summary data-t="g_roles_edit">Cambiar los roles</summary>
+        <textarea id="g-roles-texto" rows="4" spellcheck="false" aria-label="Roles, uno por línea" data-t-aria="g_roles_list"></textarea>
+        <p class="nota" data-t="g_roles_hint">Uno por línea (hasta 6). Vacío: los de siempre.</p></details>
       <button type="button" class="boton grande ancho" id="g-hacer"><span data-icono="mezclar"></span><span data-t="g_make">Hacer grupos</span></button>
+      <button type="button" class="boton suave ancho" id="g-rotar" hidden><span data-icono="girar"></span><span data-t="g_roles_rotate">Otros roles</span></button>
       <button type="button" class="boton suave ancho" id="g-moodle" hidden><span data-icono="guardar"></span><span data-t="g_save_course">Guardar como grupos del curso</span></button>
       <p class="nota" id="g-resumen" aria-live="polite"></p>
     </aside>
@@ -317,6 +322,10 @@
 <script src="memory.js"></script>
 <script src="secretcode.js"></script>
 <script src="manipulatives.js"></script>
+<script src="numberline.js"></script>
+<script src="fractionwall.js"></script>
+<script src="geoboard.js"></script>
+<script src="base10.js"></script>
 <script src="whiteboard.js"></script>
 <script src="clocklearn.js"></script>
 <script src="live.js"></script>

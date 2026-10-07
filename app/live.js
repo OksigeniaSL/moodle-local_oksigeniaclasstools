@@ -1,6 +1,7 @@
 // Live sessions on the board: a vote or team buzzers answered from the students' devices, or the teacher's phone as a
 // remote. The board opens the session in Moodle, shows the code and its QR, and asks every second and a half how it
-// goes. Only inside a Moodle course, where the session lives.
+// goes (only inside a Moodle course, where the session lives). And, anywhere, a vote by a show of hands, counted on the
+// board with + and −.
 //
 // @copyright 2026 Oksigenia <dev@oksigenia.cc>
 // @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -9,7 +10,8 @@
     const core = window.ClasstoolsCore;
     const root = document.getElementById('h-envivo');
     const AULA = core && core.moodle;
-    if (!core || !root || !AULA || !AULA.liveurl) { return; }
+    if (!core || !root) { return; }
+    const LIVE = !!(AULA && AULA.liveurl);   // sessions with devices; without them, only the show of hands
     const { $, $$, t, escape, save, load, play, announce, setIcon, relabel, repeatWhileHeld } = core;
 
     const COLOURS = {
@@ -19,14 +21,15 @@
     };
     const TEAMS = [['#164281'], ['#ce1423'], ['#067e36'], ['#5b2fb8'], ['#fbbe17', true], ['#0e7c86']];
     const label = (v) => (['yes', 'no', 'green', 'yellow', 'red'].includes(v) ? t('lv_' + v) : v);
-    const KEY = 'envivo-' + AULA.courseid;   // the open session, to find it again after reloading the page
+    const KEY = 'envivo-' + (LIVE ? AULA.courseid : 0);   // the open session, to find it again after reloading the page
+    const KINDS = LIVE ? ['vote', 'buzz', 'remote', 'hands'] : ['hands'];
 
     root.innerHTML = `
         <aside class="tarjeta lv-side">
             <div class="lv-setup" id="lv-setup">
                 <p class="ante" id="lv-l-kind">${escape(t('lv_what'))}</p>
                 <div class="segmentos" role="radiogroup" aria-labelledby="lv-l-kind" id="lv-kind">
-                    ${['vote', 'buzz', 'remote'].map((k) => `<button type="button" role="radio" aria-checked="false" data-v="${k}">${escape(t('lv_kind_' + k))}</button>`).join('')}
+                    ${KINDS.map((k) => `<button type="button" role="radio" aria-checked="false" data-v="${k}">${escape(t('lv_kind_' + k))}</button>`).join('')}
                 </div>
                 <div class="lv-box" id="lv-identity-box">
                     <p class="ante" id="lv-l-identity">${escape(t('lv_how'))}</p>
@@ -37,7 +40,10 @@
                 </div>
                 <label class="campo apilado" id="lv-vote-box"><span>${escape(t('lv_answers'))}</span><select id="lv-vote">
                     ${['abcd', 'yesno', 'light', 'five'].map((k) => `<option value="${k}">${escape(t('lv_v_' + k))}</option>`).join('')}
+                    <option value="custom" id="lv-vote-custom">${escape(t('lv_v_custom'))}</option>
                 </select></label>
+                <label class="campo apilado" id="lv-custom-box"><span>${escape(t('lv_custom'))}</span>
+                    <textarea id="lv-custom" rows="5" spellcheck="false" placeholder="${escape(t('lv_custom_ph'))}"></textarea></label>
                 <div class="lv-box" id="lv-teams-box">
                     <p class="ante">${escape(t('lv_teams'))}</p>
                     <div class="giro grande-giro">
@@ -67,24 +73,75 @@
     // ---------------------------------------------------------------------------------------------------
     // Setting it up
     // ---------------------------------------------------------------------------------------------------
-    let kind = ['vote', 'buzz', 'remote'].includes(load('envivo-tipo', 'vote')) ? load('envivo-tipo', 'vote') : 'vote';
+    let kind = KINDS.includes(load('envivo-tipo', KINDS[0])) ? load('envivo-tipo', KINDS[0]) : KINDS[0];
     let identity = load('envivo-entrada', 'anon') === 'moodle' ? 'moodle' : 'anon';
     let teams = Math.max(2, Math.min(6, Number(load('envivo-equipos', 2)) || 2));
-    $('#lv-vote').value = ['abcd', 'yesno', 'light', 'five'].includes(load('envivo-voto', 'abcd')) ? load('envivo-voto', 'abcd') : 'abcd';
+    $('#lv-vote').value = ['abcd', 'yesno', 'light', 'five', 'custom'].includes(load('envivo-voto', 'abcd')) ? load('envivo-voto', 'abcd') : 'abcd';
     const paintSetup = () => {
         $$('#lv-kind button').forEach((b) => b.setAttribute('aria-checked', String(b.dataset.v === kind)));
         $$('#lv-identity button').forEach((b) => b.setAttribute('aria-checked', String(b.dataset.v === identity)));
-        $('#lv-identity-box').hidden = kind === 'remote';
+        const hands = kind === 'hands';
+        $('#lv-identity-box').hidden = kind === 'remote' || hands;
         $('#lv-identity-hint').textContent = t('lv_' + identity + '_hint');
-        $('#lv-vote-box').hidden = kind !== 'vote';
+        $('#lv-vote-box').hidden = kind !== 'vote' && !hands;
+        // Answers of your own only by a show of hands (the devices have their buttons).
+        $('#lv-vote-custom').hidden = !hands;
+        if (!hands && $('#lv-vote').value === 'custom') { $('#lv-vote').value = 'abcd'; }
+        $('#lv-custom-box').hidden = !hands || $('#lv-vote').value !== 'custom';
         $('#lv-teams-box').hidden = kind !== 'buzz';
         $('#lv-remote-hint').hidden = kind !== 'remote';
+        $('#lv-start').hidden = hands;
         $('#lv-n').textContent = teams;
-        if (!S) { stage.innerHTML = `<div class="vacio">${core.icon(kind === 'remote' ? 'mando' : 'mano')}<p>${escape(t('lv_intro_' + kind))}</p></div>`; }
+        if (S) { return; }
+        if (hands) { paintHands(); } else { stage.innerHTML = `<div class="vacio">${core.icon(kind === 'remote' ? 'mando' : 'mano')}<p>${escape(t('lv_intro_' + kind))}</p></div>`; }
     };
+
+    // ---------------------------------------------------------------------------------------------------
+    // A show of hands: the answers with how many hands, counted with + and − (no devices, no names)
+    // ---------------------------------------------------------------------------------------------------
+    const OPTIONS = { abcd: ['A', 'B', 'C', 'D'], yesno: ['yes', 'no'], light: ['green', 'yellow', 'red'], five: ['1', '2', '3', '4', '5'] };
+    const hd = Object.assign({ counts: {}, question: '' }, load('manos', {}));
+    $('#lv-custom').value = load('envivo-propias', '');
+    const handOptions = () => {
+        if ($('#lv-vote').value !== 'custom') { return OPTIONS[$('#lv-vote').value] || OPTIONS.abcd; }
+        const own = [...new Set($('#lv-custom').value.split(/\r?\n/).map((x) => x.trim().slice(0, 40)).filter(Boolean))].slice(0, 5);
+        return own.length >= 2 ? own : ['A', 'B'];
+    };
+    const colourOf = (o, i) => (OPTIONS.abcd.concat(OPTIONS.yesno, OPTIONS.light, OPTIONS.five).includes(o) && $('#lv-vote').value !== 'custom'
+        ? COLOURS[o] : TEAMS[i % TEAMS.length]);
+    const keepHands = () => save('manos', hd);
+    const paintHands = () => {
+        stage.innerHTML = `<div class="lv-pregunta"><input type="text" id="lv-hq" maxlength="140" placeholder="${escape(t('lv_question_ph'))}" aria-label="${escape(t('lv_question_ph'))}"></div>
+            <div class="lv-centro"><p class="lv-grande" id="lv-htotal"></p><div class="lv-barras" id="lv-hbars"></div></div>
+            <div class="botonera centro lv-mandos"><button type="button" class="boton suave" id="lv-hreset"><span data-icono="reiniciar"></span><span>${escape(t('lv_hands_reset'))}</span></button></div>`;
+        $$('[data-icono]', stage).forEach((e) => setIcon(e, e.dataset.icono));
+        $('#lv-hq').value = hd.question;
+        $('#lv-hq').addEventListener('input', () => { hd.question = $('#lv-hq').value; keepHands(); });
+        $('#lv-hreset').addEventListener('click', () => { hd.counts = {}; keepHands(); paintHandBars(); play('tic'); });
+        paintHandBars();
+    };
+    const paintHandBars = () => {
+        const opts = handOptions(), counts = opts.map((o) => Math.max(0, Number(hd.counts[o]) || 0));
+        const most = Math.max(1, ...counts), all = counts.reduce((a, b) => a + b, 0);
+        $('#lv-htotal').textContent = t(all === 1 ? 'lv_hands_one' : 'lv_hands_many', all);
+        $('#lv-hbars').innerHTML = opts.map((o, i) => {
+            const [c, light] = colourOf(o, i);
+            return `<div class="lv-barra lv-mano"><span class="lv-op${light ? ' claro' : ''}" style="--c:${c}">${escape(label(o))}</span>`
+                + `<span class="lv-pista"><i style="--c:${c}; width:${(100 * counts[i] / most).toFixed(1)}%"></i></span>`
+                + `<span class="lv-tally"><button type="button" class="redondo suave" data-o="${escape(o)}" data-d="-1" aria-label="${escape(t('lv_hand_less', label(o)))}"${counts[i] ? '' : ' disabled'}>${core.icon('menos')}</button>`
+                + `<strong>${counts[i]}</strong>`
+                + `<button type="button" class="redondo lv-mas${light ? ' claro' : ''}" style="--c:${c}" data-o="${escape(o)}" data-d="1" aria-label="${escape(t('lv_hand_more', label(o)))}">${core.icon('mas')}</button></span></div>`;
+        }).join('');
+    };
+    stage.addEventListener('click', (e) => {
+        const b = e.target.closest('[data-d]'); if (!b || kind !== 'hands' || S) { return; }
+        hd.counts[b.dataset.o] = Math.max(0, (Number(hd.counts[b.dataset.o]) || 0) + Number(b.dataset.d));
+        keepHands(); paintHandBars(); play('tic');
+    });
+    $('#lv-custom').addEventListener('input', () => { save('envivo-propias', $('#lv-custom').value); hd.counts = {}; keepHands(); if (kind === 'hands' && !S) { paintHandBars(); } });
     $('#lv-kind').addEventListener('click', (e) => { const b = e.target.closest('[data-v]'); if (b) { kind = b.dataset.v; save('envivo-tipo', kind); paintSetup(); } });
     $('#lv-identity').addEventListener('click', (e) => { const b = e.target.closest('[data-v]'); if (b) { identity = b.dataset.v; save('envivo-entrada', identity); paintSetup(); } });
-    $('#lv-vote').addEventListener('change', () => save('envivo-voto', $('#lv-vote').value));
+    $('#lv-vote').addEventListener('change', () => { save('envivo-voto', $('#lv-vote').value); hd.counts = {}; keepHands(); paintSetup(); });
     const changeTeams = (d) => { teams = Math.max(2, Math.min(6, teams + d)); save('envivo-equipos', teams); paintSetup(); };
     repeatWhileHeld($('#lv-menos'), () => changeTeams(-1));
     repeatWhileHeld($('#lv-mas'), () => changeTeams(1));
@@ -289,7 +346,7 @@
     core.register('envivo', { entra: () => { if (S) { poll(); } } });
     paintSetup();
     // A session left open (the page was reloaded): pick it up again.
-    const kept = Number(load(KEY, 0)) || 0;
+    const kept = LIVE ? Number(load(KEY, 0)) || 0 : 0;
     if (kept) {
         S = { id: kept };
         call('state').then((v) => { S = null; seq = v.seq || 0; apply(v); schedule(); }).catch(() => { S = null; save(KEY, null); paintSetup(); });

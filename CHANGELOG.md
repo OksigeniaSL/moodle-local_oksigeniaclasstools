@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.11.0 (2026-10-12)
+
+- Materials, four new ones (each in a file of its own, added to the Materials bar):
+  - **Number line**: 0–10, 0–20, 0–100, 0–1000 in tens, −10 to 10, tenths, halves, thirds, quarters or your own;
+    taps draw the jumps as arcs («2 + 3 + 4 − 2 = 7»), and the numbers can be hidden and uncovered one by one.
+  - **Fraction wall**: from the whole to twelfths, pieces coloured with a tap, equal amounts named
+    («1/2 = 2/4 = 4/8»), fractions, decimals or percentages on the pieces, and a ruler that slides across.
+  - **Geoboard**: 5×5, 7×7 or 10×10 pegs, bands stretched with taps and corners dragged to other pegs, area in
+    little squares and perimeter.
+  - **Base 10 blocks**: ones, tens, hundreds (and thousands), + and − or a tap on a block, ten swapped for one and
+    one broken into ten, the number as the sum of its places («100 + 40 + 12 = 152»), which can be hidden.
+- Live: **Hands up**, a vote counted on the board with + and − (also outside Moodle, where it is the only kind),
+  with the usual answers or your own (2 to 5).
+- Groups: **a role for each one** (spokesperson, secretary, materials manager, timekeeper, or your own, up to six),
+  handed out fairly: each student gets first the role they have had least; «Other roles» hands them out again.
+
 ## 0.10.0 (2026-10-11)
 
 - **Live sessions** (new tab «Live», inside a Moodle course):

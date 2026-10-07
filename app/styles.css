@@ -192,6 +192,10 @@ input[type="range"]:focus-visible { outline: 3px solid var(--azul-osc); outline-
 .grupo ul { margin: 0; padding: .3em .85em .5em; list-style: none; }
 .grupo li { padding: .25em 0; border-bottom: 1px dashed var(--borde); font-size: 1.15em; font-weight: 800; line-height: 1.25; }
 .grupo li:last-child { border-bottom: 0; }
+.grupo li:has(.rol) { display: flex; flex-wrap: wrap; align-items: center; column-gap: .5em; row-gap: .2em; }
+.grupo li .rol { flex: none; max-width: 100%; margin-left: auto; padding: .12em .6em; overflow: hidden; border-radius: 50rem; background: var(--rc); color: #fff; font-size: .62em; font-weight: 900; text-overflow: ellipsis; white-space: nowrap; animation: salta .35s ease-out; }
+.g-roles-caja summary { color: var(--azul); font-weight: 800; cursor: pointer; }
+.g-roles-caja textarea { width: 100%; margin-top: .4rem; }
 .rejilla-grupos.vacia { display: flex; }
 /* Repartir con emoción: la tarjeta que baraja ocupa el panel de la izquierda; cada nombre vuela a su hueco, ya guardado. */
 .grupo li.por-salir { visibility: hidden; }
@@ -739,6 +743,93 @@ a.redondo { text-decoration: none; }
 /* Material: Cuisenaire rods and tangram */
 .ct-material { display: flex; flex-direction: column; gap: .75rem; }
 .ct-mt-stage { position: relative; display: block; padding: .6rem; }
+/* Number line: the line across the stage, the jumps as arcs in the colour of their chain, the addition below. */
+.ct-nl-stage { justify-content: center; }
+.ct-nl-svg { display: block; width: 100%; height: auto; max-height: calc(100% - 5rem); touch-action: manipulation; cursor: pointer; user-select: none; -webkit-user-select: none; }
+.ct-nl-line { stroke: var(--tinta); stroke-width: 4; stroke-linecap: round; }
+.ct-nl-tip { fill: var(--tinta); }
+.ct-nl-tick { stroke: var(--tinta-2); stroke-width: 2; }
+.ct-nl-tick.big { stroke: var(--tinta); stroke-width: 3; }
+.ct-nl-num { fill: var(--tinta); font-size: 25px; font-weight: 900; text-anchor: middle; }
+.ct-nl-num.zero { fill: var(--azul); }
+.ct-nl-num.ct-nl-frac { font-size: 20px; }
+.ct-nl-bar { stroke: var(--tinta); stroke-width: 2.4; stroke-linecap: round; }
+.ct-nl-hidden { fill: var(--azul-suave); stroke: var(--azul); stroke-width: 1.6; stroke-dasharray: 4 3; }
+.ct-nl-arc { fill: none; stroke: var(--c); stroke-width: 4.5; stroke-linecap: round; }
+.ct-nl-head, .ct-nl-pill { fill: var(--c); }
+.ct-nl-step { fill: #fff; font-size: 23px; font-weight: 900; text-anchor: middle; }
+.ct-nl-here { fill: var(--c); stroke: #fff; stroke-width: 4; }
+.ct-nl-jump.nuevo .ct-nl-arc { stroke-dasharray: 600; animation: ct-nl-arco .5s ease-out; }
+@keyframes ct-nl-arco { from { stroke-dashoffset: 600; } to { stroke-dashoffset: 0; } }
+@media (prefers-reduced-motion: reduce) { .ct-nl-jump.nuevo .ct-nl-arc { animation: none; } }
+.ct-nl-sum { font-variant-numeric: tabular-nums; }
+/* Fraction wall: each row in its colour, lightly tinted; a tap fills a piece. The ruler is a dashed red line. */
+.ct-fw-stage { justify-content: center; }
+.ct-fw-svg { display: block; width: 100%; height: auto; max-height: calc(100% - 5rem); touch-action: manipulation; user-select: none; -webkit-user-select: none; }
+.ct-fw-piece { cursor: pointer; outline: none; }
+.ct-fw-piece rect { fill: var(--c); fill-opacity: .13; stroke: var(--c); stroke-width: 3; transition: fill-opacity .15s; }
+.ct-fw-piece.on rect { fill-opacity: 1; }
+.ct-fw-piece:focus-visible rect { stroke: var(--tinta); stroke-width: 5; }
+.ct-fw-txt { fill: var(--tinta-2); font-size: 25px; font-weight: 900; text-anchor: middle; pointer-events: none; }
+.ct-fw-txt.small { font-size: 19px; }
+.ct-fw-bar { stroke: var(--tinta-2); stroke-width: 2.4; stroke-linecap: round; pointer-events: none; }
+.ct-fw-piece.on .ct-fw-txt { fill: #fff; }
+.ct-fw-piece.on .ct-fw-bar { stroke: #fff; }
+.ct-fw-piece.on.claro .ct-fw-txt { fill: var(--tinta); }
+.ct-fw-piece.on.claro .ct-fw-bar { stroke: var(--tinta); }
+.ct-fw-count { fill: var(--azul-osc); font-size: 32px; font-weight: 1000; text-anchor: middle; }
+.ct-fw-count.small { font-size: 25px; }
+.ct-fw-bar.dark { stroke: var(--azul-osc); stroke-width: 3; }
+.ct-fw-ruler { cursor: ew-resize; outline: none; }
+.ct-fw-ruler line { stroke: var(--rojo); stroke-width: 3.5; stroke-dasharray: 9 6; }
+.ct-fw-ruler path { fill: var(--rojo); }
+.ct-fw-ruler:focus-visible path { stroke: var(--tinta); stroke-width: 3; }
+.ct-fw-rows { display: flex; flex-wrap: wrap; gap: .35rem; }
+.ct-fw-chip { position: relative; }
+.ct-fw-chip input { position: absolute; opacity: 0; pointer-events: none; }
+.ct-fw-chip span { display: inline-grid; place-items: center; min-width: 3rem; min-height: 40px; padding: 0 .6rem; border: 1px solid var(--borde); border-radius: 50rem; background: var(--superficie); font-weight: 900; cursor: pointer; }
+.ct-fw-chip input:checked + span { border-color: var(--azul); background: var(--azul); color: #fff; }
+.ct-fw-chip input:focus-visible + span { outline: 3px solid var(--amarillo); outline-offset: 2px; }
+.ct-fw-sum { font-variant-numeric: tabular-nums; }
+/* Geoboard: a light wooden board with white pegs; the bands, thick and rounded, a little filled when closed. */
+.ct-gb-stage { justify-content: center; }
+.ct-gb-svg { display: block; width: auto; max-width: 100%; height: calc(100% - 4.5rem); aspect-ratio: 1; touch-action: none; user-select: none; -webkit-user-select: none; }
+.ct-gb-board { fill: #f1e4c8; stroke: #d4b483; stroke-width: 4; }
+.ct-gb-grid { stroke: #cfae78; stroke-width: 2; stroke-dasharray: 6 6; }
+.ct-gb-peg { fill: #fff; stroke: #9a7a4a; stroke-width: 3; }
+.ct-gb-band { fill: none; stroke: var(--c); stroke-width: 10; stroke-linejoin: round; stroke-linecap: round; opacity: .92; }
+.ct-gb-band.closed { fill: var(--c); fill-opacity: .2; }
+.ct-gb-band.drawing { stroke-dasharray: 20 12; }
+.ct-gb-first { fill: none; stroke: var(--c); stroke-width: 4; animation: ct-gb-latido 1.2s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+@keyframes ct-gb-latido { 50% { transform: scale(1.25); opacity: .5; } }
+@media (prefers-reduced-motion: reduce) { .ct-gb-first { animation: none; } }
+.ct-gb-sum { font-variant-numeric: tabular-nums; }
+/* Base-ten blocks: a column per place, the same unit everywhere (a ten is as long as ten ones), a tap takes a
+   block away. */
+.ct-b10-stage { justify-content: space-between; }
+.ct-b10 { --u: 14px; display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); gap: .6rem; flex: 1; width: 100%; min-height: 0; }
+.ct-b10-col { display: flex; flex-direction: column; gap: .4rem; min-height: 0; padding: .5rem; border-top: 6px solid var(--c); border-radius: 16px; background: var(--fondo); }
+.ct-b10-col h3 { color: var(--c); font-size: 1.15rem; font-weight: 900; text-align: center; }
+.ct-b10-area { display: flex; flex: 1; flex-wrap: wrap; align-content: flex-start; justify-content: center; gap: calc(var(--u) * .35); min-height: 0; padding: 4px; overflow: hidden; }
+.ct-b10-b { flex: none; padding: 0; border: 0; border-radius: calc(var(--u) * .18); background-color: var(--c); cursor: pointer; transition: transform .3s, opacity .3s; }
+.ct-b10-b.b0 { width: var(--u); height: var(--u); box-shadow: inset 0 -2px 0 rgba(0, 0, 0, .25), inset 0 2px 0 rgba(255, 255, 255, .3); }
+.ct-b10-b.b1 { width: var(--u); height: calc(var(--u) * 10); background-image: repeating-linear-gradient(to bottom, transparent 0 calc(var(--u) - 1.5px), rgba(255, 255, 255, .55) calc(var(--u) - 1.5px) var(--u)); }
+.ct-b10-b.b2 { width: calc(var(--u) * 10); height: calc(var(--u) * 10); background-image: repeating-linear-gradient(to bottom, transparent 0 calc(var(--u) - 1.5px), rgba(255, 255, 255, .5) calc(var(--u) - 1.5px) var(--u)), repeating-linear-gradient(to right, transparent 0 calc(var(--u) - 1.5px), rgba(255, 255, 255, .5) calc(var(--u) - 1.5px) var(--u)); }
+.ct-b10-b.b3 { width: calc(var(--u) * 10); height: calc(var(--u) * 10); background: none; border-radius: 0; }
+.ct-b10-cube { display: block; width: 100%; height: 100%; }
+.ct-b10-cube .front { fill: var(--c); }
+.ct-b10-cube .top { fill: #9b7ce6; }
+.ct-b10-cube .side { fill: #3d1d8a; }
+.ct-b10-b:focus-visible { outline: 3px solid var(--amarillo); outline-offset: 2px; }
+.ct-b10-b.nuevo { animation: salta .4s ease-out; }
+.ct-b10-b.se-va { opacity: 0; transform: scale(.2); }
+.ct-b10-pie { display: flex; align-items: center; justify-content: center; gap: .6rem; }
+.ct-b10-pie output { min-width: 2ch; color: var(--c); font-size: 1.7rem; font-weight: 1000; text-align: center; font-variant-numeric: tabular-nums; }
+.ct-b10-cambios { display: flex; flex-direction: column; justify-content: flex-end; gap: .3rem; min-height: 5.6rem; }
+.ct-b10-cambios .boton { min-height: 40px; padding: .3rem .6rem; font-size: .85rem; }
+.ct-b10-sum { border: 0; background: none; font-variant-numeric: tabular-nums; cursor: default; }
+.ct-b10-sum.oculto { padding: .2rem 1.2rem; border: 2px dashed var(--borde); border-radius: 16px; color: var(--tinta-3); cursor: pointer; }
+@media (prefers-reduced-motion: reduce) { .ct-b10-b { transition: none; } .ct-b10-b.nuevo { animation: none; } }
 .ct-mt-svg { display: block; width: 100%; height: 100%; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
 .ct-rd, .ct-tg-piece { touch-action: none; }
 .ct-rd-body.ct-rd-white { stroke: rgba(0, 0, 0, .45); stroke-width: .06; }
@@ -1000,6 +1091,12 @@ a.redondo { text-decoration: none; }
 .lv-pista { height: 2.2rem; border-radius: 50rem; background: var(--azul-suave); overflow: hidden; }
 .lv-pista i { display: block; height: 100%; border-radius: 50rem; background: var(--c); transition: width .5s ease-out; }
 .lv-barra strong { font-variant-numeric: tabular-nums; text-align: right; }
+.lv-barra.lv-mano { grid-template-columns: minmax(4rem, auto) minmax(0, 1fr) auto; }
+.lv-tally { display: flex; align-items: center; gap: .5rem; }
+.lv-tally strong { min-width: 2ch; color: var(--azul-osc); font-size: 1.5em; text-align: center; }
+.lv-mas { border-color: transparent; background: var(--c); color: #fff; }
+.lv-mas.claro { color: var(--tinta); }
+.lv-mas:hover { background: var(--c); filter: brightness(1.1); color: #fff; }
 .lv-mandos { align-items: center; }
 .lv-mandos select { min-height: 48px; padding: 0 .8rem; border: 1px solid var(--borde); border-radius: 12px; background: var(--superficie); font-weight: 800; }
 .lv-equipos { display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem; }
