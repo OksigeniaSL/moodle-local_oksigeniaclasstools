@@ -27,6 +27,9 @@ class kept {
     /** Longest tool name. */
     const TOOL_MAX_LENGTH = 32;
 
+    /** The tools that keep something in Moodle. */
+    const TOOLS = ['scoreboard', 'roscos', 'candados'];
+
     /** Largest JSON kept for a tool, in bytes. */
     const DATA_MAX_LENGTH = 200000;
 
@@ -41,19 +44,25 @@ class kept {
      */
     public static function save(int $courseid, int $userid, string $tool, string $data): void {
         global $DB;
-        if (
-            $tool === '' || strlen($tool) > self::TOOL_MAX_LENGTH || clean_param($tool, PARAM_ALPHANUMEXT) !== $tool
-                || strlen($data) > self::DATA_MAX_LENGTH || json_decode($data) === null
-        ) {
+        if (!in_array($tool, self::TOOLS, true) || strlen($data) > self::DATA_MAX_LENGTH || json_decode($data) === null) {
             throw new \moodle_exception('invalidparameter', 'debug');
         }
         $where = ['courseid' => $courseid, 'userid' => $userid, 'tool' => $tool];
-        if ($id = $DB->get_field('local_oksigeniaclasstools_state', 'id', $where)) {
-            $record = (object) ['id' => $id, 'data' => $data, 'timemodified' => time()];
-            $DB->update_record('local_oksigeniaclasstools_state', $record);
-        } else {
-            $DB->insert_record('local_oksigeniaclasstools_state', (object) ($where + ['data' => $data, 'timemodified' => time()]));
+        $id = $DB->get_field('local_oksigeniaclasstools_state', 'id', $where);
+        if (!$id) {
+            try {
+                $record = (object) ($where + ['data' => $data, 'timemodified' => time()]);
+                $DB->insert_record('local_oksigeniaclasstools_state', $record);
+                return;
+            } catch (\dml_write_exception $e) {
+                // Another save got there first (two tabs, or the save on leaving the page): update that one.
+                $id = $DB->get_field('local_oksigeniaclasstools_state', 'id', $where);
+                if (!$id) {
+                    throw $e;
+                }
+            }
         }
+        $DB->update_record('local_oksigeniaclasstools_state', (object) ['id' => $id, 'data' => $data, 'timemodified' => time()]);
     }
 
     /**

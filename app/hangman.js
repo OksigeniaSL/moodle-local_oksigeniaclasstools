@@ -24,8 +24,10 @@
         panel.innerHTML = `
             <div class="ct-word-game">
                 <aside class="tarjeta ct-side">
-                    ${source.html}
-                    <button type="button" class="boton grande" id="ah-start"><span data-icono="otra"></span>${STR.start}</button>
+                    <div class="ct-setup ct-setup-group">
+                        ${source.html}
+                        <button type="button" class="boton grande" id="ah-start"><span data-icono="otra"></span>${STR.start}</button>
+                    </div>
                     <button type="button" class="boton suave" id="ah-reveal" hidden><span data-icono="ocultar"></span>${STR.reveal}</button>
                     <p class="nota" id="ah-note"></p>
                 </aside>
@@ -65,6 +67,7 @@
         source.clearTyped();
         s.word = w.trim(); s.target = norm(s.word); s.guessed = new Set(); s.misses = 0; s.over = false;
         kb.reset();
+        games.playing('ahorcado', true);
         const clue = source.clue();
         $('#ah-clue').textContent = clue ? STR.clue(clue) : '';
         paintBalloons(); paintSlots(false);
@@ -91,7 +94,7 @@
     }
     const end = (won) => {
         if (s.over) { return; }
-        s.over = true;
+        s.over = true; games.playing('ahorcado', false);
         paintSlots(true);
         const m = $('#ah-msg'); m.className = 'total ' + (won ? 'ct-win' : 'ct-lose');
         m.textContent = won ? STR.won : STR.lost(s.word.toUpperCase());

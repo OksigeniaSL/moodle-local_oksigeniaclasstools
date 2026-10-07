@@ -14,25 +14,31 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
+namespace local_oksigeniaclasstools\task;
+
 /**
- * Capabilities: whoever teaches a course can open the tools with its students (names and photos).
+ * Deletes the picks that no longer count: older than the days counted for fair picking.
  *
  * @package    local_oksigeniaclasstools
  * @copyright  2026 Oksigenia <dev@oksigenia.cc>
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+class purge_picks extends \core\task\scheduled_task {
+    /**
+     * Name of the task.
+     *
+     * @return string
+     */
+    public function get_name(): string {
+        return get_string('taskpurgepicks', 'local_oksigeniaclasstools');
+    }
 
-defined('MOODLE_INTERNAL') || die();
-
-$capabilities = [
-    'local/oksigeniaclasstools:use' => [
-        'riskbitmask' => RISK_PERSONAL,
-        'captype' => 'write',
-        'contextlevel' => CONTEXT_COURSE,
-        'archetypes' => [
-            'editingteacher' => CAP_ALLOW,
-            'teacher' => CAP_ALLOW,
-            'manager' => CAP_ALLOW,
-        ],
-    ],
-];
+    /**
+     * Deletes them.
+     */
+    public function execute(): void {
+        global $DB;
+        $days = max(1, (int) (get_config('local_oksigeniaclasstools', 'days') ?: 90));
+        $DB->delete_records_select('local_oksigeniaclasstools_picks', 'timecreated < ?', [time() - $days * DAYSECS]);
+    }
+}

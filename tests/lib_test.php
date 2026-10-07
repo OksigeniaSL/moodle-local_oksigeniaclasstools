@@ -136,6 +136,50 @@ final class lib_test extends \advanced_testcase {
         $this->assertSame(['Mine'], $this->list_names($data));
     }
 
+    public function test_visible_groups_show_every_group(): void {
+        $this->resetAfterTest();
+        $gen = $this->getDataGenerator();
+        [$course, , $students] = $this->make_class(2, ['groupmode' => VISIBLEGROUPS, 'groupmodeforce' => 1]);
+        $teacher = $gen->create_and_enrol($course, 'teacher');
+        $mine = $gen->create_group(['courseid' => $course->id, 'name' => 'Mine']);
+        $other = $gen->create_group(['courseid' => $course->id, 'name' => 'Other']);
+        $gen->create_group_member(['groupid' => $mine->id, 'userid' => $teacher->id]);
+        $gen->create_group_member(['groupid' => $mine->id, 'userid' => $students[0]->id]);
+        $gen->create_group_member(['groupid' => $other->id, 'userid' => $students[1]->id]);
+
+        $this->setUser($teacher);
+        $this->set_page($course);
+        $data = local_oksigeniaclasstools_data($course, \context_course::instance($course->id));
+        $this->assertSame(['Mine', 'Other', get_string('wholecourse', 'local_oksigeniaclasstools')], $this->list_names($data));
+    }
+
+    public function test_separate_groups_without_own_groups_give_no_list(): void {
+        $this->resetAfterTest();
+        $gen = $this->getDataGenerator();
+        [$course, , $students] = $this->make_class(2, ['groupmode' => SEPARATEGROUPS, 'groupmodeforce' => 1]);
+        $teacher = $gen->create_and_enrol($course, 'teacher');
+        $other = $gen->create_group(['courseid' => $course->id, 'name' => 'Other']);
+        $gen->create_group_member(['groupid' => $other->id, 'userid' => $students[0]->id]);
+
+        $this->setUser($teacher);
+        $this->set_page($course);
+        $data = local_oksigeniaclasstools_data($course, \context_course::instance($course->id));
+        $this->assertSame([], $data['lists']);
+    }
+
+    public function test_names_are_plain_text(): void {
+        $this->resetAfterTest();
+        $gen = $this->getDataGenerator();
+        [$course, $teacher, $students] = $this->make_class(1);
+        $group = $gen->create_group(['courseid' => $course->id, 'name' => 'Maths & Science']);
+        $gen->create_group_member(['groupid' => $group->id, 'userid' => $students[0]->id]);
+        $this->setUser($teacher);
+        $this->set_page($course);
+        $data = local_oksigeniaclasstools_data($course, \context_course::instance($course->id));
+        // The board escapes them itself: escaping here too would show «&amp;».
+        $this->assertContains('Maths & Science', $this->list_names($data));
+    }
+
     public function test_name_styles(): void {
         $this->resetAfterTest();
         [$course, $teacher] = $this->make_class(1);

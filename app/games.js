@@ -11,7 +11,8 @@
     const { $, $$, save, load } = core;
 
     root.innerHTML = `
-        <div class="barra-herr ct-top"><div class="segmentos" role="radiogroup" aria-label="Juego" id="ga-mode"></div></div>
+        <div class="barra-herr ct-top"><div class="segmentos" role="radiogroup" aria-label="Juego" id="ga-mode"></div>
+            <button type="button" class="boton suave ct-push" id="ga-setup" hidden><span data-icono="editar"></span>Ajustes</button></div>
         <div class="ct-body" id="ga-body"></div>`;
     const games = [];
     let current = null, visible = false;
@@ -27,10 +28,17 @@
         current = game.id;
         if (remember) { save('juego', current); }
         $$('.ct-game', root).forEach((p) => { p.hidden = p.dataset.game !== current; });
-        paintModes();
+        paintModes(); paintSetup();
         if (visible && game.enter) { game.enter(); }
     };
     $('#ga-mode').addEventListener('click', (e) => { const b = e.target.closest('button[data-game]'); if (b) { show(b.dataset.game); } });
+    // While a game is being played its settings step aside, so the class sees the game; «Ajustes» brings them back,
+    // and they come back by themselves when the game ends.
+    const panelOf = (id) => $(`.ct-game[data-game="${id}"]`, root);
+    const paintSetup = () => { const p = current && panelOf(current); $('#ga-setup').hidden = !(p && p.classList.contains('ct-playing')); };
+    const playing = (id, on) => { const p = panelOf(id); if (p) { p.classList.toggle('ct-playing', !!on); } paintSetup(); };
+    $('#ga-setup').addEventListener('click', () => playing(current, false));
+    core.setIcon($('#ga-setup [data-icono]'), 'editar');
 
     // ---------------------------------------------------------------------------------------------------
     // Shared helpers for the word games: letters without accents (but Ñ is its own letter), a Spanish
@@ -142,7 +150,7 @@
             const wanted = load('juego', null);   // the game used last time, as soon as it is registered
             show(games.some((g) => g.id === wanted) ? wanted : (current || game.id), false);
         },
-        show,
+        show, playing,
     };
     core.register('juegos', {
         entra: () => { visible = true; show(current); },

@@ -14,7 +14,7 @@
     const STR = {
         name: 'Código secreto', lock: 'Candado', newLock: 'Nuevo candado', edit: 'Editar', time: 'Tiempo', noTime: 'Sin tiempo',
         minutes: (m) => `${m} min`, start: 'Empezar', clues: 'Pistas', nextClue: 'Ver la siguiente pista', noMoreClues: 'No hay más pistas',
-        open: 'Abrir', erase: 'Borrar', tries: (n) => `${n} ${n === 1 ? 'intento' : 'intentos'}`, wrong: '¡No es ese código!',
+        erase: 'Borrar', again: 'Otra vez', tries: (n) => `${n} ${n === 1 ? 'intento' : 'intentos'}`, wrong: '¡No es ese código!',
         opened: '¡Abierto!', timeUp: '¡Se acabó el tiempo!', pressStart: 'Elige el candado y pulsa «Empezar»',
         editorNew: 'Nuevo candado', editorEdit: 'Editar el candado', editorCopy: 'Copia del candado de ejemplo', lockName: 'Nombre del candado',
         code: 'Código (de 2 a 8 números o letras)', cluesLabel: 'Pistas, una por línea (se enseñan en este orden)',
@@ -27,11 +27,13 @@
         clues: ['El primer número son las patas que tiene un gato.', 'El segundo, los dedos de una mano menos cuatro.',
             'El tercero, los ojos que tiene una persona.', 'El cuarto, los días que tiene una semana.'],
     };
-    let store = load('candados', null);
+    // Per course, like Moodle keeps them (the old global key only seeds a course that has nothing yet).
+    const storeKey = 'candados' + (core.moodle ? ':' + core.moodle.courseid : '');
+    let store = load(storeKey, null) || (core.moodle && !core.kept('candados') ? load('candados', null) : null);
     const kept = core.kept('candados');
     if (kept && Array.isArray(kept.locks) && (!store || (kept.updated || 0) > (store.updated || 0))) { store = kept; }
     if (!store || !Array.isArray(store.locks)) { store = { locks: [] }; }
-    const persist = () => { store.updated = Date.now(); save('candados', store); core.keep('candados', store); };
+    const persist = () => { store.updated = Date.now(); save(storeKey, store); core.keep('candados', store); };
     const locks = () => [EXAMPLE].concat(store.locks);
     const lockById = (id) => locks().find((l) => l.id === id) || EXAMPLE;
     const cleanCode = (c) => norm(c).replace(/[^0-9A-ZÑ]/g, '');
@@ -43,6 +45,7 @@
         panel.innerHTML = `
             <div class="ct-secret">
                 <aside class="tarjeta ct-side">
+                    <div class="ct-setup ct-setup-group">
                     <label class="campo apilado"><span>${STR.lock}</span><select id="sc2-lock"></select></label>
                     <div class="ct-row">
                         <button type="button" class="boton suave" id="sc2-new"><span data-icono="nueva"></span>${STR.newLock}</button>
@@ -50,6 +53,7 @@
                     </div>
                     <label class="campo apilado"><span>${STR.time}</span><select id="sc2-time">${[0, 5, 10, 15, 20, 30].map((m) => `<option value="${m}">${m ? STR.minutes(m) : STR.noTime}</option>`).join('')}</select></label>
                     <button type="button" class="boton grande" id="sc2-start"><span data-icono="seguir"></span>${STR.start}</button>
+                    </div>
                     <div class="ct-clues" id="sc2-clues-box" hidden>
                         <p class="ante">${STR.clues}</p>
                         <ol class="ct-clue-list" id="sc2-clues"></ol>
@@ -70,7 +74,7 @@
             <form method="dialog" id="sc2-ed-form">
                 <h2 id="sc2-ed-title"></h2>
                 <label class="campo apilado"><span>${STR.lockName}</span><input type="text" id="sc2-ed-name" maxlength="50" autocomplete="off"></label>
-                <label class="campo apilado"><span>${STR.code}</span><input type="text" id="sc2-ed-code" maxlength="8" autocomplete="off" spellcheck="false"></label>
+                <label class="campo apilado"><span>${STR.code}</span><input type="password" id="sc2-ed-code" maxlength="8" autocomplete="off" spellcheck="false"></label>
                 <label class="campo apilado"><span>${STR.cluesLabel}</span><textarea id="sc2-ed-clues" rows="6"></textarea></label>
                 <label class="campo apilado"><span>${STR.finalMsg}</span><input type="text" id="sc2-ed-final" maxlength="140" autocomplete="off"></label>
                 <p class="nota" id="sc2-ed-note"></p>
@@ -96,11 +100,17 @@
         const letters = s.code.split('').some((c) => isLetter(c));
         const pad = $('#sc2-pad');
         pad.innerHTML = letters ? '<div id="sc2-kb"></div>'
-            : `<div class="ct-numpad">${['1', '2', '3', '4', '5', '6', '7', '8', '9', 'BACK', '0', 'ENTER'].map((k) => `<button type="button" class="ct-key${k.length > 1 ? ' ct-wide' : ''}" data-k="${k}">${k === 'BACK' ? STR.erase : k === 'ENTER' ? STR.open : k}</button>`).join('')}</div>`;
+            : `<div class="ct-numpad">${['1', '2', '3', '4', '5', '6', '7', '8', '9', 'BACK', '0'].map((k) => `<button type="button" class="ct-key${k.length > 1 ? ' ct-wide' : ''}" data-k="${k}">${k === 'BACK' ? STR.erase : k}</button>`).join('')}</div>`;
         if (letters) {
-            kb = keyboard($('#sc2-kb'), press, { enter: true });
-            $('#sc2-kb').insertAdjacentHTML('beforeend', `<div class="ct-krow">${'1234567890'.split('').map((d) => `<button type="button" class="ct-key" data-k="${d}">${d}</button>`).join('')}</div>`);
+            kb = keyboard($('#sc2-kb'), press);   // the lock opens by itself when the code is complete
+            $('#sc2-kb').insertAdjacentHTML('beforeend', `<div class="ct-krow">${'1234567890'.split('').map((d) => `<button type="button" class="ct-key" data-k="${d}">${d}</button>`).join('')}`
+                + `<button type="button" class="ct-key ct-wide" data-k="BACK">${STR.erase}</button></div>`);
         }
+    };
+    // When the round is over (opened or out of time) the pad goes quiet and «Borrar» becomes «Otra vez».
+    const paintOver = () => {
+        $('#sc2-pad').classList.toggle('ct-done', s.over);
+        $$('#sc2-pad [data-k="BACK"]').forEach((b) => { b.textContent = s.over ? STR.again : STR.erase; b.classList.toggle('ct-again', s.over); });
     };
     const paintCode = () => {
         $('#sc2-code').innerHTML = s.code.split('').map((_, i) => `<span class="ct-code-slot${s.typed[i] ? ' ct-typed' : ''}">${escape(s.typed[i] || '')}</span>`).join('');
@@ -118,7 +128,7 @@
         s.time = Math.max(0, s.time - dt);
         $('#sc2-clock').textContent = fmt(s.time);
         $('#sc2-clock').classList.toggle('ct-low', s.time <= 30);
-        if (s.time <= 0) { s.over = true; clearInterval(s.timer); play('wrong'); const m = $('#sc2-msg'); m.className = 'total ct-lose'; m.textContent = STR.timeUp; announce(STR.timeUp); }
+        if (s.time <= 0) { s.over = true; clearInterval(s.timer); paintOver(); games.playing('codigo', false); play('wrong'); const m = $('#sc2-msg'); m.className = 'total ct-lose'; m.textContent = STR.timeUp; announce(STR.timeUp); }
     };
     const start = () => {
         s.lock = lockById($('#sc2-lock').value); save('candado', s.lock.id);
@@ -130,11 +140,13 @@
         if (minutes) { s.last = performance.now(); s.timer = setInterval(tick, 250); }
         $('#sc2-lockart').classList.remove('ct-open', 'ct-shake');
         $('#sc2-tries').textContent = '';
-        paintPad(); paintCode(); paintClues();
+        paintPad(); paintCode(); paintClues(); paintOver();
+        games.playing('codigo', true);
         const m = $('#sc2-msg'); m.className = 'total'; m.textContent = '';
     };
     function press(k) {
-        if (s.over || !s.code) { return; }
+        if (!s.code) { return; }
+        if (s.over) { if (k === 'BACK') { start(); } return; }
         if (k === 'BACK') { s.typed = s.typed.slice(0, -1); paintCode(); return; }
         if (k === 'ENTER') { tryOpen(); return; }
         if (s.typed.length < s.code.length && /^[0-9A-ZÑ]$/.test(k)) {
@@ -148,10 +160,10 @@
         $('#sc2-tries').textContent = STR.tries(s.tries);
         const art = $('#sc2-lockart');
         if (s.typed === s.code) {
-            s.over = true; clearInterval(s.timer);
+            s.over = true; clearInterval(s.timer); games.playing('codigo', false);
             art.classList.add('ct-open');
             const m = $('#sc2-msg'); m.className = 'total ct-win'; m.textContent = s.lock.final || STR.opened;
-            paintClues(); play('fin'); announce(STR.opened + ' ' + (s.lock.final || ''));
+            paintClues(); paintOver(); play('fin'); announce(STR.opened + ' ' + (s.lock.final || ''));
             return;
         }
         art.classList.remove('ct-shake'); void art.offsetWidth; art.classList.add('ct-shake');

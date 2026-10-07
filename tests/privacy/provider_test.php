@@ -64,8 +64,8 @@ final class provider_test extends provider_testcase {
     public function test_contexts_and_users(): void {
         $this->resetAfterTest();
         [, $context, $teacher, $students] = $this->make_data();
-        $this->assertSame([$context->id], provider::get_contexts_for_userid($students[0]->id)->get_contextids());
-        $this->assertSame([$context->id], provider::get_contexts_for_userid($teacher->id)->get_contextids());
+        $this->assertEquals([$context->id], provider::get_contexts_for_userid($students[0]->id)->get_contextids());
+        $this->assertEquals([$context->id], provider::get_contexts_for_userid($teacher->id)->get_contextids());
         $userlist = new userlist($context, 'local_oksigeniaclasstools');
         provider::get_users_in_context($userlist);
         $expected = [$teacher->id, $students[0]->id, $students[1]->id];

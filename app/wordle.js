@@ -24,8 +24,8 @@
 
     const mount = (panel) => {
         panel.innerHTML = `
-            <div class="ct-word-game">
-                <aside class="tarjeta ct-side">
+            <div class="ct-word-game ct-collapsible">
+                <aside class="tarjeta ct-side ct-setup">
                     ${source.html}
                     <label class="campo apilado"><span>${STR.tries}</span><select id="wo-rows">${[5, 6, 7, 8].map((n) => `<option value="${n}"${n === 6 ? ' selected' : ''}>${n}</option>`).join('')}</select></label>
                     <button type="button" class="boton grande" id="wo-start"><span data-icono="otra"></span>${STR.start}</button>
@@ -69,6 +69,7 @@
         source.clearTyped();
         s.word = w.trim().toUpperCase(); s.target = norm(s.word); s.rows = []; s.current = ''; s.over = false;
         kb.reset();
+        games.playing('palabra', true);
         const clue = source.clue();
         $('#wo-clue').textContent = clue ? STR.clue(clue) : '';
         paint();
@@ -86,7 +87,7 @@
             const won = res.every((x) => x === 'correct');
             s.current = '';
             if (won || s.rows.length >= s.maxRows) {
-                s.over = true; paint();
+                s.over = true; paint(); games.playing('palabra', false);
                 const m = $('#wo-msg'); m.className = 'total ' + (won ? 'ct-win' : 'ct-lose');
                 m.textContent = won ? STR.won(s.rows.length) : STR.lost(s.word);
                 play(won ? 'fin' : 'wrong'); announce(m.textContent);

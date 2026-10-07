@@ -69,8 +69,17 @@
         elegido: (a) => { campana(a, 880, 0, 0.35, 1.2); campana(a, 1318.51, 0.12, 0.35, 1.6); },
         dado: (a) => [0, 0.07, 0.15, 0.24, 0.36].forEach((d, i) => clic(a, 500 + i * 90, d, 0.18)),
         moneda: (a) => { campana(a, 2093, 0, 0.12, 0.5); campana(a, 2349.3, 1.25, 0.18, 0.9); },
+        agotada: (a) => { campana(a, 523.25, 0, 0.4, 1.4); campana(a, 392, 0.28, 0.4, 1.6); campana(a, 261.63, 0.56, 0.45, 2.4); },
     };
     const suena = (n) => { if (!sonido) { return; } const a = audio(); if (!a) { return; } try { SONIDOS[n](a); } catch (e) { /* sin audio */ } };
+
+    // --- Pantalla de alumnos (si el sitio la abre): solo las herramientas sin datos de la clase; las demás pestañas
+    // ni siquiera aparecen. ---
+    const PERMITIDAS = window.CLASSTOOLS && window.CLASSTOOLS.mode === 'student' && Array.isArray(window.CLASSTOOLS.tools) ? window.CLASSTOOLS.tools : null;
+    if (PERMITIDAS) {
+        document.documentElement.classList.add('modo-alumno');
+        $$('.pestana').forEach((b) => { if (!PERMITIDAS.includes(b.dataset.h)) { b.remove(); } });
+    }
 
     // --- Pestañas ---
     const HERR = {};   // cada herramienta puede tener entra() y sale()
@@ -92,6 +101,7 @@
         $$('.herramienta').forEach((s) => { s.hidden = s.id !== 'h-' + h; });
         if (HERR[h] && HERR[h].entra) { HERR[h].entra(); }
         insignias();
+        if (barra.classList.contains('compacta')) { ajustaBarra(); }
     };
     pestanas.forEach((b) => b.addEventListener('click', () => muestra(b.dataset.h)));
     $('#pestanas').addEventListener('keydown', (e) => {
@@ -100,9 +110,18 @@
         if (j !== undefined) { e.preventDefault(); muestra(pestanas[j].dataset.h, true); }
     });
     // Si las pestañas no caben junto al nombre, la barra pasa a dos filas.
+    // Y si tampoco caben en dos filas, las pestañas que no están elegidas se quedan solo con su icono (con el nombre
+    // al pasar por encima), primero en una fila y, si hace falta, en dos.
+    pestanas.forEach((b) => { b.title = b.textContent.trim(); });
     const ajustaBarra = () => {
-        barra.classList.remove('dos-filas');
-        if (tira.scrollWidth > tira.clientWidth + 1) { barra.classList.add('dos-filas'); }
+        const sobra = () => tira.scrollWidth > tira.clientWidth + 1;
+        barra.classList.remove('dos-filas', 'compacta');
+        if (!sobra()) { return; }
+        barra.classList.add('dos-filas');
+        if (!sobra()) { return; }
+        barra.classList.replace('dos-filas', 'compacta');
+        if (!sobra()) { return; }
+        barra.classList.add('dos-filas');
     };
     addEventListener('resize', ajustaBarra);
     if (document.fonts && document.fonts.ready) { document.fonts.ready.then(ajustaBarra); }
@@ -313,11 +332,28 @@
         });
         return { id: 'aula-' + l.id, nombre: l.name, alumnos, fotos, ids, veces, aula: true };
     }) : [];
+    // Si la sesión del aula virtual caduca (una pantalla encendida toda la mañana), lo que se envía no llega: se avisa
+    // en vez de perderlo en silencio, y lo pendiente sigue en este ordenador.
+    const SIN_SESION = ['requireloginerror', 'invalidsesskey', 'servicerequireslogin', 'sitemaintenance'];
+    const sinSesion = (j) => !!(j && j.errorcode && SIN_SESION.includes(j.errorcode));
+    const avisaSesion = () => {
+        if (document.getElementById('aviso-sesion')) { return; }
+        const a = document.createElement('div');
+        a.className = 'aviso-sesion'; a.id = 'aviso-sesion'; a.setAttribute('role', 'alert');
+        a.innerHTML = `<span>${icono('info')}</span><p><strong>No se está guardando en el curso:</strong> la sesión del aula virtual ha caducado. `
+            + 'Lo de ahora sigue en este ordenador.</p><button type="button" class="boton">Volver a entrar</button>';
+        a.querySelector('button').addEventListener('click', () => location.reload());
+        document.body.append(a);
+    };
     // Envíos al aula: el turno de cada sorteo y los equipos que se quieran guardar como grupos del curso.
     const alAula = (url, datos) => fetch(url, {
         method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: new URLSearchParams(Object.assign({ sesskey: AULA.sesskey, courseid: AULA.courseid }, datos)),
-    }).then((r) => r.json()).then((j) => { if (!j || !j.ok) { throw new Error((j && (j.error || j.message)) || 'error'); } return j; });
+    }).then((r) => r.json()).then((j) => {
+        if (sinSesion(j)) { avisaSesion(); }
+        if (!j || !j.ok) { throw new Error((j && (j.error || j.message)) || 'error'); }
+        return j;
+    });
     // Un turno más para ese alumno en todas las listas en las que está (el curso entero y su clase).
     const sumaTurno = (id) => listasAula.forEach((x) => { Object.keys(x.ids).forEach((n) => { if (x.ids[n] === id) { x.veces[n] = (x.veces[n] || 0) + 1; } }); });
     const todas = () => listasAula.concat(listas);
@@ -506,14 +542,17 @@
         const s = (salidos[l.id] || []).filter((n) => pres.includes(n));
         $('#q-cuenta').textContent = `${s.length} de ${pres.length}`;
         $('#q-salidos').innerHTML = s.slice().reverse().map((n) => `<li>${cara(l, n, 'cara-mini')}<span>${escapa(n)}</span></li>`).join('');
-        $('#q-reset').disabled = !s.length;
+        $('#q-reset').disabled = !s.length || qBarajando;
+        $('#q-lista').disabled = qBarajando;
         const quedan = qSinRepetir ? pres.length - s.length : pres.length;
         if (!qBarajando) {
             if (qUltimo) { qNombre.className = 'nombre-grande'; qNombre.textContent = qUltimo; }
             else { qNombre.className = 'nombre-grande espera'; qNombre.textContent = '?'; }
             pintaCara(l, qUltimo);
             const hay = `${pres.length} alumnos${nf ? ` (faltan ${nf})` : ''}`;
-            $('#q-pie').textContent = !quedan ? 'Ya han salido todos. Pulsa «Empezar de nuevo».'
+            $('#q-pie').textContent = !l.alumnos.length ? 'Esta lista no tiene alumnos.'
+                : !pres.length ? 'Hoy faltan todos los de esta lista.'
+                : !quedan ? 'Ya han salido todos. Pulsa «Empezar de nuevo».'
                 : qUltimo ? (qSinRepetir ? `Quedan ${quedan}` : hay)
                 : `${hay} en «${l.nombre}». Pulsa «Elegir».`;
         }
@@ -533,7 +572,7 @@
         const elegido = candidatos[azar(candidatos.length)];
         const acaba = () => {
             qBarajando = false; qUltimo = elegido;
-            if (qSinRepetir) { salidos[l.id] = s.concat(elegido); guarda('salidos', salidos); }
+            if (qSinRepetir) { const ya = salidos[l.id] || []; salidos[l.id] = ya.includes(elegido) ? ya : ya.concat(elegido); guarda('salidos', salidos); }
             if (conTurnos(l) && l.ids[elegido]) {
                 sumaTurno(l.ids[elegido]);
                 alAula(AULA.pickurl, { userid: l.ids[elegido] }).catch(() => { /* sin conexión: ese turno no cuenta, el sorteo sigue */ });
@@ -727,7 +766,8 @@
     // ===================================================================================================
     // 5. Semáforo de ruido: solo mide el volumen del micrófono; no graba ni envía nada
     // ===================================================================================================
-    const sm = { flujo: null, fuente: null, analizador: null, buf: null, rf: 0, suave: 0, zona: null, bajaDesde: 0, ultimoAria: -1 };
+    const sm = { flujo: null, fuente: null, analizador: null, buf: null, rf: 0, suave: 0, zona: null, bajaDesde: 0, ultimoAria: -1,
+        ultimo: 0, racha: 0, mejor: 0, paciencia: 100, agotada: false, pintado: '' };
     const MENSAJES = { verde: 'Muy bien', amarillo: 'Un poco más bajo', rojo: '¡Demasiado ruido!' };
     const ORDEN = { verde: 0, amarillo: 1, rojo: 2 };
     const microPermitido = () => {
@@ -777,16 +817,50 @@
             if (!sm.bajaDesde) { sm.bajaDesde = ahora; } else if (ahora - sm.bajaDesde > 1500) { smZona(z); sm.bajaDesde = 0; }
         } else { sm.bajaDesde = 0; }
         $('#s-relleno').style.setProperty('--nivel', sm.suave.toFixed(1) + '%');
+        // La luz encendida respira con el ruido: crece y brilla más cuanto más alto hablan.
+        $('#s-caja').style.setProperty('--vol', (sm.suave / 100).toFixed(3));
+        const dt = sm.ultimo ? Math.min(0.25, (ahora - sm.ultimo) / 1000) : 0;
+        sm.ultimo = ahora;
+        // Racha en calma: solo cuenta en verde; el amarillo la para y el rojo la pone a cero.
+        if (sm.zona === 'verde') { sm.racha += dt; } else if (sm.zona === 'rojo') { sm.racha = 0; }
+        sm.mejor = Math.max(sm.mejor, sm.racha);
+        // Paciencia: el rojo la gasta en 12 s y el amarillo en un minuto; en verde vuelve entera en 45 s. Un grito
+        // suelto apenas la toca; el jaleo seguido, sí.
+        const gasto = sm.zona === 'rojo' ? 100 / 12 : sm.zona === 'amarillo' ? 100 / 60 : -100 / 45;
+        sm.paciencia = Math.max(0, Math.min(100, sm.paciencia - gasto * dt));
+        if (sm.paciencia <= 0 && !sm.agotada) {
+            sm.agotada = true;
+            suena('agotada');
+            const caja = $('#s-caja');
+            caja.classList.remove('tiembla'); void caja.offsetWidth; caja.classList.add('tiembla');
+            anuncia('Se acabó la paciencia');
+        } else if (sm.agotada && sm.paciencia >= 50) { sm.agotada = false; }
+        smPintaExtra();
         const redondo = Math.round(sm.suave / 5) * 5;
         if (redondo !== sm.ultimoAria) { sm.ultimoAria = redondo; $('#s-medidor').setAttribute('aria-valuenow', String(redondo)); }
         sm.rf = requestAnimationFrame(smBucle);
+    };
+    const reloj = (t) => `${Math.floor(t / 60)}:${String(Math.floor(t % 60)).padStart(2, '0')}`;
+    const smPintaExtra = () => {
+        const p = Math.round(sm.paciencia), clave = `${Math.floor(sm.racha)}|${Math.floor(sm.mejor)}|${p}|${sm.agotada}`;
+        if (clave === sm.pintado) { return; }
+        sm.pintado = clave;
+        $('#s-racha').textContent = reloj(sm.racha);
+        $('#s-mejor').textContent = sm.mejor >= 60 && sm.mejor > sm.racha + 1 ? `Mejor: ${reloj(sm.mejor)}` : '';
+        $('#s-paciencia-relleno').style.setProperty('--p', p + '%');
+        $('#s-paciencia').classList.toggle('baja', p < 30);
+        $('#s-paciencia').setAttribute('aria-valuenow', String(p));
+        $('#s-paciencia-titulo').textContent = sm.agotada ? '¡Se acabó la paciencia!' : 'Paciencia';
+        $('#s-extra').classList.toggle('agotada', sm.agotada);
     };
     const smApaga = () => {
         cancelAnimationFrame(sm.rf);
         if (sm.fuente) { try { sm.fuente.disconnect(); } catch (e) { /* ya estaba */ } }
         if (sm.flujo) { sm.flujo.getTracks().forEach((t) => t.stop()); }
-        Object.assign(sm, { flujo: null, fuente: null, analizador: null, suave: 0, zona: null, bajaDesde: 0 });
+        Object.assign(sm, { flujo: null, fuente: null, analizador: null, suave: 0, zona: null, bajaDesde: 0, ultimo: 0, racha: 0, paciencia: 100, agotada: false });
         smZona(null);
+        $('#s-caja').style.setProperty('--vol', '0');
+        smPintaExtra();
         $('#s-relleno').style.setProperty('--nivel', '0%');
         $('#s-medidor').setAttribute('aria-valuenow', '0');
         rotula($('#s-marcha'), 'Escuchar la clase', 'micro');
@@ -880,7 +954,7 @@
     }));
 
     // ===================================================================================================
-    // 8. Reloj (hora de Canarias con el reloj del propio ordenador)
+    // 8. Reloj (la zona horaria y el idioma del sitio, dentro de Moodle; los del ordenador, fuera)
     // ===================================================================================================
     (() => {
         let marcas = '';
@@ -895,9 +969,11 @@
         $('#r-marcas').innerHTML = marcas;
     })();
     const opciones = { hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23', weekday: 'long', day: 'numeric', month: 'long' };
+    const SITIO = window.CLASSTOOLS_SITE || {};
+    const idioma = (SITIO.lang || document.documentElement.lang || 'es').replace('_', '-');
     let fmtReloj;
-    try { fmtReloj = new Intl.DateTimeFormat('es-ES', Object.assign({ timeZone: 'Atlantic/Canary' }, opciones)); }
-    catch (e) { fmtReloj = new Intl.DateTimeFormat('es-ES', opciones); }
+    try { fmtReloj = new Intl.DateTimeFormat(idioma, Object.assign(SITIO.tz ? { timeZone: SITIO.tz } : {}, opciones)); }
+    catch (e) { fmtReloj = new Intl.DateTimeFormat(undefined, opciones); }
     let rTimer = 0;
     const rPinta = () => {
         const p = {};
@@ -905,7 +981,7 @@
         const h = Number(p.hour) % 24, m = Number(p.minute), s = Number(p.second);
         $('#r-hm').textContent = `${pad(h)}:${pad(m)}`;
         $('#r-s').textContent = `:${pad(s)}`;
-        const fecha = `${p.weekday}, ${p.day} de ${p.month}`;
+        const fecha = /^es\b/.test(idioma) ? `${p.weekday}, ${p.day} de ${p.month}` : `${p.weekday}, ${p.day} ${p.month}`;
         $('#r-fecha').textContent = fecha.charAt(0).toUpperCase() + fecha.slice(1);
         $('#r-ah').setAttribute('transform', `rotate(${((h % 12) + m / 60) * 30} 100 100)`);
         $('#r-am').setAttribute('transform', `rotate(${(m + s / 60) * 6} 100 100)`);
@@ -915,53 +991,8 @@
     HERR.reloj = { entra: rTic, sale: () => clearTimeout(rTimer) };
 
     // ===================================================================================================
-    // 9. Código QR (qrcode-generator de Kazuhiko Arase, MIT, en lib/)
+    // 9. Código QR: en qr.js
     // ===================================================================================================
-    const hayQR = typeof qrcode === 'function';
-    if (hayQR && qrcode.stringToBytesFuncs && qrcode.stringToBytesFuncs['UTF-8']) { qrcode.stringToBytes = qrcode.stringToBytesFuncs['UTF-8']; }
-    const qrSvg = (texto, clase = '') => {
-        const q = qrcode(0, 'M');
-        q.addData(texto); q.make();
-        const n = q.getModuleCount(), m = 4;
-        let d = '';
-        // Una tira por cada racha de módulos oscuros de la misma fila: pocos trazos y bordes nítidos.
-        for (let r = 0; r < n; r++) {
-            for (let c = 0; c < n; c++) {
-                if (!q.isDark(r, c)) { continue; }
-                let l = 1;
-                while (c + l < n && q.isDark(r, c + l)) { l++; }
-                d += `M${c + m} ${r + m}h${l}v1h-${l}z`;
-                c += l - 1;
-            }
-        }
-        return `<svg class="${clase}" viewBox="0 0 ${n + 2 * m} ${n + 2 * m}" shape-rendering="crispEdges" role="img" aria-label="Código QR de: ${escapa(texto)}"><rect width="100%" height="100%" fill="#fff"/><path fill="#1c1a19" d="${d}"/></svg>`;
-    };
-    const qrVisible = (t) => t.replace(/^https?:\/\//i, '').replace(/\/$/, '');
-    let qrTexto = '', qrTimer = 0;
-    const qrPinta = () => {
-        const t = $('#qr-texto').value.trim(), dibujo = $('#qr-dibujo');
-        qrTexto = '';
-        $('#qr-ver').textContent = '';
-        $('#qr-ampliar').disabled = true;
-        if (!t) { dibujo.innerHTML = `<div class="vacio">${icono('qr')}<p>Escribe o pega un enlace y aquí saldrá su código.</p></div>`; return; }
-        if (!hayQR) { dibujo.innerHTML = '<div class="vacio"><p>No se ha podido cargar el generador de QR.</p></div>'; return; }
-        try {
-            dibujo.innerHTML = qrSvg(t);
-            qrTexto = t;
-            $('#qr-ver').textContent = qrVisible(t);
-            $('#qr-ampliar').disabled = false;
-        } catch (e) {
-            dibujo.innerHTML = `<div class="vacio">${icono('qr')}<p>Es demasiado largo para un código QR. Acórtalo un poco.</p></div>`;
-        }
-    };
-    $('#qr-texto').value = lee('qr', 'https://aula.nuryana.com');
-    $('#qr-texto').addEventListener('input', () => { clearTimeout(qrTimer); qrTimer = setTimeout(() => { qrPinta(); guarda('qr', $('#qr-texto').value); }, 200); });
-    $('#qr-borrar').addEventListener('click', () => { $('#qr-texto').value = ''; guarda('qr', ''); qrPinta(); $('#qr-texto').focus(); });
-    $('#qr-ampliar').addEventListener('click', () => {
-        if (!qrTexto) { return; }
-        abreGigante({ clase: 'blanco', etiqueta: 'Código QR en grande', html: `${qrSvg(qrTexto, 'qr-grande')}<p class="qr-pie">${escapa(qrVisible(qrTexto))}</p>` });
-    });
-    qrPinta();
 
     // ===================================================================================================
     // Teclado: Escape cierra lo que esté encima; la barra espaciadora arranca o para (si no estás escribiendo)
@@ -973,7 +1004,7 @@
             return;
         }
         if (e.key !== ' ' || e.repeat || e.ctrlKey || e.altKey || e.metaKey) { return; }
-        if (!$('#fin-tiempo').hidden || !gigante.hidden || (editor.open)) { return; }
+        if (!$('#fin-tiempo').hidden || !gigante.hidden || document.querySelector('dialog[open]')) { return; }
         if (e.target.closest && e.target.closest('button, input, textarea, select, a, [role="tab"]')) { return; }
         const accion = { temporizador: tmAlterna, cronometro: crAlterna, quien: elegir }[actual] || (HERR[actual] && HERR[actual].espacio);
         if (accion) { e.preventDefault(); accion(); }
@@ -993,6 +1024,9 @@
         return fetch(AULA.stateurl, {
             method: 'POST', credentials: 'same-origin', keepalive: !!keepalive, headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: new URLSearchParams({ sesskey: AULA.sesskey, courseid: AULA.courseid, tool, data: JSON.stringify(datos) }),
+        }).then((r) => r.json()).then((j) => {
+            // Sin sesión: se queda pendiente (sale en cuanto vuelvan a entrar) y se avisa.
+            if (sinSesion(j)) { if (!(tool in pendientes)) { pendientes[tool] = datos; } avisaSesion(); }
         }).catch(() => { /* sin conexión: queda en el navegador */ });
     };
     const guardaEnAula = (tool, datos) => {
@@ -1024,7 +1058,7 @@
     pintaSelects();
     quienPinta();
     tmPon(5 * 60000);
-    muestra(listasAula.length ? 'quien' : 'temporizador');
+    muestra(listasAula.length ? 'quien' : (PERMITIDAS ? PERMITIDAS[0] : 'temporizador'));
     ajustaBarra();
     try { SCORM.iniciar(); SCORM.guardar({}, 100, true); } catch (e) { /* sin Moodle */ }
 

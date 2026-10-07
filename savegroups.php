@@ -34,6 +34,15 @@ require_login($course, false, null, false, true);
 $context = context_course::instance($course->id);
 require_capability('local/oksigeniaclasstools:use', $context);
 require_capability('moodle/course:managegroups', $context);
-$grouping = \local_oksigeniaclasstools\local\teams::save_as_groups($course, $listname, is_array($teams) ? $teams : []);
+require_once(__DIR__ . '/lib.php');
+$teams = is_array($teams) ? $teams : [];
+$visible = local_oksigeniaclasstools_visible_userids($course, $context);
+if ($visible !== null) {
+    $teams = array_map(
+        fn($team) => is_array($team) ? array_values(array_intersect(array_map('intval', $team), $visible)) : [],
+        $teams
+    );
+}
+$grouping = \local_oksigeniaclasstools\local\teams::save_as_groups($course, $listname, $teams);
 echo json_encode(['ok' => true, 'grouping' => $grouping->name,
     'url' => (new moodle_url('/group/groupings.php', ['id' => $course->id]))->out(false)]);

@@ -50,6 +50,7 @@ final class kept_test extends \advanced_testcase {
             'empty tool' => ['', '{}'],
             'tool with spaces' => ['my tool', '{}'],
             'tool too long' => [str_repeat('a', 33), '{}'],
+            'a tool that keeps nothing' => ['mytool', '{}'],
             'not JSON' => ['scoreboard', 'not json'],
             'too big' => ['scoreboard', '"' . str_repeat('a', 200001) . '"'],
         ];

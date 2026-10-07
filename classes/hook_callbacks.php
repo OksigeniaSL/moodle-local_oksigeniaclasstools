@@ -35,17 +35,19 @@ use pix_icon;
  */
 class hook_callbacks {
     /**
-     * In the course bar, right after «Course» (otherwise it would end up in the «More» menu).
+     * In the course bar, right after «Course» (otherwise it would end up in the «More» menu). For teachers, and for
+     * students when the site opens the board to them.
      *
      * @param secondary_extend $hook
      */
     public static function secondary_extend(secondary_extend $hook): void {
-        global $PAGE;
+        global $CFG, $PAGE;
         $course = $PAGE->course;
-        if (
-            !$course || $course->id == SITEID
-                || !has_capability('local/oksigeniaclasstools:use', \context_course::instance($course->id))
-        ) {
+        if (!$course || $course->id == SITEID) {
+            return;
+        }
+        require_once($CFG->dirroot . '/local/oksigeniaclasstools/lib.php');
+        if (!local_oksigeniaclasstools_mode(\context_course::instance($course->id))) {
             return;
         }
         $view = $hook->get_secondaryview();

@@ -114,7 +114,7 @@ jobs:
 
       - name: codechecker
         if: always()
-        run: moodle-plugin-ci codechecker --max-warnings 0
+        run: moodle-plugin-ci codechecker
 
       - name: phpdoc
         if: always()

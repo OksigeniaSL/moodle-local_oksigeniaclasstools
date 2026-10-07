@@ -32,5 +32,10 @@ $course = get_course($courseid);
 require_login($course, false, null, false, true);
 $context = context_course::instance($course->id);
 require_capability('local/oksigeniaclasstools:use', $context);
+require_once(__DIR__ . '/lib.php');
+$visible = local_oksigeniaclasstools_visible_userids($course, $context);
+if ($visible !== null && !in_array($userid, $visible, true)) {
+    throw new moodle_exception('invaliduser');
+}
 \local_oksigeniaclasstools\local\picks::record($course->id, $userid, $USER->id);
 echo json_encode(['ok' => true]);

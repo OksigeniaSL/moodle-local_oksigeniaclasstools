@@ -20,7 +20,8 @@
         newList: 'Nueva lista', editList: 'Editar',
         removePicked: 'Quitar la que sale', putBack: 'Volver a ponerlas todas', noRepeat: 'Sin repetir',
         spin: 'Girar', roll: 'Tirar', toss: 'Lanzar', draw: 'Sacar carta', reshuffle: 'Barajar de nuevo',
-        empty: 'No quedan casillas. Pulsa «Volver a ponerlas todas».', emptyDeck: 'No quedan cartas. Pulsa «Barajar de nuevo».',
+        empty: 'No quedan casillas. Pulsa «Volver a ponerlas todas».', lastOne: (x) => `Solo queda «${x}»: es el último`,
+        onlyOne: (x) => `Solo hay una casilla: «${x}»`, emptyDeck: 'No quedan cartas. Pulsa «Barajar de nuevo».',
         noList: 'Esa lista está vacía.', left: (n) => `Quedan ${n}`, result: (r) => `Ha salido: ${r}`,
         howMany: '¿Cuántos dados?', die: (i) => `Dado ${i}`, total: (t) => `Total: ${t}`,
         customFaces: 'Caras del dado personalizado, una por línea', customHint: 'Por ejemplo: «verbo en pasado»',
@@ -168,9 +169,10 @@
     const shortNames = (items) => {
         const first = (it) => it.label.split(/\s+/)[0];
         const count = {};
-        items.forEach((it) => { if (it.list) { count[first(it)] = (count[first(it)] || 0) + 1; } });
+        const student = (it) => it.list && it.list.aula;
+        items.forEach((it) => { if (student(it)) { count[first(it)] = (count[first(it)] || 0) + 1; } });
         return items.map((it) => {
-            if (!it.list) { return it; }
+            if (!student(it)) { return it; }
             const parts = it.label.split(/\s+/);
             return { ...it, short: count[parts[0]] > 1 && parts[1] ? `${parts[0]} ${parts[1][0]}.` : parts[0] };
         });
@@ -215,7 +217,7 @@
             const a0 = wh.angle + i * step, a1 = a0 + step, [color, light] = segmentColor(i, n);
             ctx.beginPath(); ctx.moveTo(cx, cy); ctx.arc(cx, cy, r, a0, a1); ctx.closePath();
             ctx.fillStyle = color; ctx.fill();
-            ctx.lineWidth = 2; ctx.strokeStyle = '#fff'; ctx.stroke();
+            if (n > 1) { ctx.lineWidth = 2; ctx.strokeStyle = '#fff'; ctx.stroke(); }
             ctx.save();
             ctx.translate(cx, cy); ctx.rotate(a0 + step / 2);
             const img = n <= 16 ? imageFor(it) : null;
@@ -256,16 +258,17 @@
         wh.items = whItems();
         const removed = (wh.removed[whKey()] || []).length;
         $('#wh-reset').hidden = !removed;
-        $('#wh-spin').disabled = !wh.items.length || wh.spinning;
+        $('#wh-spin').disabled = wh.items.length < 2 || wh.spinning;
         if (!wh.spinning) {
-            const r = $('#wh-result');
-            r.className = 'total espera';
-            r.textContent = wh.items.length ? STR.pressTo(STR.spin) : (removed ? STR.empty : STR.noList);
+            const r = $('#wh-result'), only = wh.items.length === 1 ? wh.items[0].label : null;
+            r.className = only ? 'total' : 'total espera';
+            r.textContent = only ? (removed ? STR.lastOne(only) : STR.onlyOne(only))
+                : (wh.items.length ? STR.pressTo(STR.spin) : (removed ? STR.empty : STR.noList));
         }
         whDraw();
     };
     const spin = () => {
-        if (wh.spinning || !wh.items.length) { return; }
+        if (wh.spinning || wh.items.length < 2) { return; }
         const items = wh.items, n = items.length, step = (Math.PI * 2) / n;
         const winner = random(n), jitter = (random(1000) / 1000 - 0.5) * 0.7;
         // Final angle: the winner's segment (a bit off its middle) right under the pointer, after 5–7 full turns.
@@ -284,8 +287,13 @@
                 wh.items = whItems();
                 $('#wh-reset').hidden = false;
                 setTimeout(whDraw, 900);   // leave the winner visible a moment before it goes
+                // When only one is left, there is nothing to spin: it is the last one.
+                if (wh.items.length === 1) {
+                    const last = wh.items[0].label;
+                    setTimeout(() => { $('#wh-result').textContent = `${it.label} · ${STR.lastOne(last)}`; announce(STR.lastOne(last)); }, 1400);
+                }
             }
-            $('#wh-spin').disabled = !wh.items.length;
+            $('#wh-spin').disabled = wh.items.length < 2;
         };
         if (reducedMotion()) { wh.angle = target; whDraw(); finish(); return; }
         wh.spinning = true; $('#wh-spin').disabled = true;

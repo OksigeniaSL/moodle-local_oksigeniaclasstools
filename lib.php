@@ -22,12 +22,79 @@
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+/** School levels with built-in sets in the games, from the youngest. */
+const LOCAL_OKSIGENIACLASSTOOLS_LEVELS = ['early', 'primary', 'secondary', 'upper', 'higher'];
+
+/** Tools a student sees when the site opens the board to students (none uses data of the class). */
+const LOCAL_OKSIGENIACLASSTOOLS_STUDENT_TOOLS = [
+    'temporizador', 'cronometro', 'azar', 'juegos', 'material', 'pizarra', 'reloj', 'qr',
+];
+
+/**
+ * How the board opens in a course for the current user: for teaching (with the lists of the class), for students
+ * (limited, only if the site allows it: no names, photos, picks or groups, and nothing saved), or not at all.
+ *
+ * @param context_course $context
+ * @return string|null 'teacher', 'student' or null.
+ */
+function local_oksigeniaclasstools_mode(context_course $context): ?string {
+    if (has_capability('local/oksigeniaclasstools:use', $context)) {
+        return 'teacher';
+    }
+    if (
+        get_config('local_oksigeniaclasstools', 'students') && isloggedin() && !isguestuser()
+            && (is_enrolled($context, null, '', true) || is_viewing($context))
+    ) {
+        return 'student';
+    }
+    return null;
+}
+
+/**
+ * Screen data for a student: the course and the way back, and no data of the class.
+ *
+ * @param stdClass $course
+ * @param context_course $context
+ * @return array
+ */
+function local_oksigeniaclasstools_student_data(stdClass $course, context_course $context): array {
+    return [
+        'course' => format_string($course->fullname, true, ['context' => $context, 'escape' => false]),
+        'back' => (new moodle_url('/course/view.php', ['id' => $course->id]))->out(false),
+        'lists' => [],
+        'courseid' => (int) $course->id,
+        'mode' => 'student',
+        'tools' => LOCAL_OKSIGENIACLASSTOOLS_STUDENT_TOOLS,
+    ];
+}
+
+/**
+ * The students the current user may pick or put in teams: everyone, or with separate groups (and without «access all
+ * groups»), only the members of their own groups.
+ *
+ * @param stdClass $course
+ * @param context_course $context
+ * @return int[]|null User ids, or null for everyone.
+ */
+function local_oksigeniaclasstools_visible_userids(stdClass $course, context_course $context): ?array {
+    global $USER;
+    if (has_capability('moodle/site:accessallgroups', $context) || groups_get_course_groupmode($course) != SEPARATEGROUPS) {
+        return null;
+    }
+    $ids = [];
+    foreach (groups_get_all_groups($course->id, $USER->id) as $group) {
+        $ids = array_merge($ids, array_keys(groups_get_members($group->id, 'u.id')));
+    }
+    return array_values(array_unique(array_map('intval', $ids)));
+}
+
 /**
  * Screen data for a course: its name, the way back and the lists with each student's name and photo.
  *
  * One list per group and per cohort enrolled with cohort sync (a course with cohorts 5A to 5F gives six lists),
  * sorted by name, and the whole course last. A group and a cohort with the same members or the same name appear
- * once. Separate groups mode is respected for whoever opens the screen.
+ * once. Separate groups mode is respected for whoever opens the screen: only their own groups, and no list at all
+ * if they are in none.
  *
  * @param stdClass $course
  * @param context_course $context
@@ -84,7 +151,7 @@ function local_oksigeniaclasstools_data(stdClass $course, context_course $contex
 
     $accessall = has_capability('moodle/site:accessallgroups', $context);
     $separate = !$accessall && groups_get_course_groupmode($course) == SEPARATEGROUPS;
-    $groups = groups_get_all_groups($course->id, $accessall ? 0 : $USER->id);
+    $groups = groups_get_all_groups($course->id, $separate ? $USER->id : 0);
     // Teams saved from the board are not classes: they are not offered as lists.
     $saved = $DB->get_fieldset_sql(
         'SELECT gg.groupid
@@ -96,7 +163,7 @@ function local_oksigeniaclasstools_data(stdClass $course, context_course $contex
     foreach (array_diff_key($groups, array_flip($saved)) as $group) {
         $add(
             'g' . $group->id,
-            format_string($group->name, true, ['context' => $context]),
+            format_string($group->name, true, ['context' => $context, 'escape' => false]),
             array_keys(groups_get_members($group->id, 'u.id'))
         );
     }
@@ -112,14 +179,15 @@ function local_oksigeniaclasstools_data(stdClass $course, context_course $contex
         foreach ($cohorts as $cohort) {
             $add(
                 'h' . $cohort->id,
-                format_string($cohort->name, true, ['context' => context::instance_by_id($cohort->contextid)]),
+                format_string($cohort->name, true, ['context' => context::instance_by_id($cohort->contextid), 'escape' => false]),
                 $DB->get_fieldset_select('cohort_members', 'userid', 'cohortid = ?', [$cohort->id])
             );
         }
     }
     usort($classes, fn($a, $b) => strnatcasecmp($a['name'], $b['name']));
     $lists = array_map(fn($class) => array_diff_key($class, ['key' => 0]), $classes);
-    if (!$separate || !$groups) {
+    // With separate groups, only the teacher's own groups (like the participants page); never the whole course.
+    if (!$separate) {
         $lists[] = ['id' => 'c' . $course->id,
             'name' => get_string($classes ? 'wholecourse' : 'wholeclass', 'local_oksigeniaclasstools'),
             'students' => array_values($students)];
@@ -129,10 +197,11 @@ function local_oksigeniaclasstools_data(stdClass $course, context_course $contex
     $state = \local_oksigeniaclasstools\local\kept::all($course->id, $USER->id);
 
     return [
-        'course' => format_string($course->fullname, true, ['context' => $context]),
+        'course' => format_string($course->fullname, true, ['context' => $context, 'escape' => false]),
         'back' => (new moodle_url('/course/view.php', ['id' => $course->id]))->out(false),
         'lists' => $lists,
         'courseid' => (int) $course->id,
+        'mode' => 'teacher',
         'sesskey' => sesskey(),
         'days' => $days,
         'pickurl' => (new moodle_url('/local/oksigeniaclasstools/pick.php'))->out(false),
@@ -141,6 +210,25 @@ function local_oksigeniaclasstools_data(stdClass $course, context_course $contex
         'groupsurl' => has_capability('moodle/course:managegroups', $context)
             ? (new moodle_url('/local/oksigeniaclasstools/savegroups.php'))->out(false) : null,
     ];
+}
+
+/**
+ * What the screen shows of the site itself, also outside a course: its icon for the middle of the QR codes (the
+ * favicon, or the compact logo if the favicon is an .ico, which looks blurred when enlarged), the school levels
+ * whose built-in sets are offered, and the time zone and language for the clock.
+ *
+ * @return array
+ */
+function local_oksigeniaclasstools_site(): array {
+    global $OUTPUT;
+    $logo = $OUTPUT->favicon()->out(false);
+    if (preg_match('/\.ico(\?|$)/i', $logo) && ($compact = $OUTPUT->get_compact_logo_url(300, 300))) {
+        $logo = $compact->out(false);
+    }
+    // Not saved yet (before the settings page is first stored): all levels.
+    $levels = get_config('local_oksigeniaclasstools', 'levels');
+    $levels = $levels === false ? LOCAL_OKSIGENIACLASSTOOLS_LEVELS : array_values(array_filter(explode(',', $levels)));
+    return ['logo' => $logo, 'levels' => $levels, 'tz' => core_date::get_user_timezone(), 'lang' => current_language()];
 }
 
 /**
@@ -157,12 +245,13 @@ function local_oksigeniaclasstools_output(?array $data): void {
     $version = (int) get_config('local_oksigeniaclasstools', 'version');
     $assets = '/(<script src="[a-z0-9\/_-]+\.js|<link rel="stylesheet" href="[a-z0-9\/_-]+\.css)"/i';
     $html = preg_replace($assets, '$1?v=' . $version . '"', $html);
+    $flags = JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES;
+    $script = '<script>window.CLASSTOOLS_SITE = ' . json_encode(local_oksigeniaclasstools_site(), $flags) . ";</script>\n";
     if ($data) {
-        $json = json_encode($data, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE);
-        // A callback, so that nothing in the data can be read as a backreference.
-        $inject = fn($m) => "<script>window.CLASSTOOLS = $json;</script>\n" . $m[0];
-        $html = preg_replace_callback('/<script src="icons\.js/', $inject, $html, 1);
+        $script .= '<script>window.CLASSTOOLS = ' . json_encode($data, $flags) . ";</script>\n";
     }
+    // A callback, so that nothing in the data can be read as a backreference.
+    $html = preg_replace_callback('/<script src="icons\.js/', fn($m) => $script . $m[0], $html, 1);
     header('Content-Type: text/html; charset=utf-8');
     header('Cache-Control: no-store');
     header('X-Frame-Options: SAMEORIGIN');

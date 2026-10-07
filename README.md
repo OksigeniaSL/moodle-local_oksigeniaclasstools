@@ -22,8 +22,12 @@ tracking, no build step.
 | Groups | Random groups with faces. Optionally **saved as course groups** (only when the teacher asks). |
 | Scoreboard | 2 to 8 teams, big buttons, the leader crowned. Takes the groups just made, and goes on from any computer. |
 | Chance | Configurable wheel (students, own lists, numbers), dice (4 to 20 faces, operations, directions, colours, letters, custom), coins with motifs, and cards. |
-| Games | Rosco (letter ring with clues; whole class or two teams), Simon (turns with the class list), Hangman (with balloons), Word (like Wordle), Pairs (shapes, colours, numbers, faces and names, own lists) and Secret code (escape-room lock with clues). |
-| Also | Noise meter (microphone level only; nothing is recorded or sent), work symbols, clock and QR code. |
+| Games | Rosco (letter ring with clues; whole class or two teams), Simon (turns with the class list), Hangman (with balloons), Word (like Wordle), Pairs (built-in sets by school level — from animal shadows and clocks to chemical elements and graphs of functions —, faces and names, own lists) and Secret code (escape-room lock with clues). |
+| Materials | Cuisenaire rods and a tangram with silhouettes, made for touch boards. |
+| Drawing board | Pens, eraser, undo and backgrounds (squared paper, handwriting lines, music staves); several fingers at once; PNG download. |
+| Clock | The time now, or **learning to tell the time**: hands dragged with a finger, digits and words, five levels and two class games. |
+| Noise meter | Microphone level only (nothing is recorded or sent). A light that breathes with the noise, a calm streak and a patience reserve that only sustained noise uses up. |
+| Also | Work symbols, clock, and a QR code with styles, the site logo in the middle and PNG/SVG download. |
 
 Lists come from the course: one per group and one per cohort enrolled with cohort sync, and the whole course. A
 group and a cohort with the same students appear once. Separate groups mode is respected.
@@ -59,6 +63,8 @@ Then visit *Site administration → Notifications* to finish the install.
 |---|---|---|
 | Name on the board | First name and first surname | Or first name only, or full name. |
 | Days counted for fair picking | 90 | Also the period shown in «Participation». |
+| School levels | All | Early years, primary, secondary, upper secondary, higher education: the built-in sets offered by the games. |
+| Open the board to students | Off | Students get only the tools without data of the class (games, materials, drawing board, timer, clock, QR): never names, photos, picks or groups, and nothing of theirs is saved. |
 | Link in the main menu | On | Inside each course the link is always in the course bar. |
 
 **Roles** — capability `local/oksigeniaclasstools:use` (teacher, non-editing teacher and manager by default)
@@ -69,11 +75,18 @@ opens the tools with the students of a course. Saving teams as course groups als
 hand and «who is missing today» stay in their browser; the scoreboard, roscos and locks are also kept in Moodle for
 the teacher in the course, so they go on from any computer.
 
+## User tour
+
+On install (or upgrade to 0.7.0) the plugin adds a user tour for teachers. It shows once per teacher, points at the
+link in the course bar and in the main menu, and says what is inside. Its texts are language strings. It can be
+edited or switched off in *Site administration → Appearance → User tours*.
+
 ## Privacy
 
 Two tables, both covered by the privacy provider (export and deletion) and removed with their course or user:
 
-- `local_oksigeniaclasstools_picks`: each time a student is picked (course, student, teacher, time).
+- `local_oksigeniaclasstools_picks`: each time a student is picked (course, student, teacher, time). Deleted every
+  night once older than the days counted for fair picking.
 - `local_oksigeniaclasstools_state`: what each teacher keeps of each tool in each course.
 
 ## Status and roadmap

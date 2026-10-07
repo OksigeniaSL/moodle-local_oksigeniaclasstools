@@ -53,7 +53,11 @@ class teams {
                 fn($u) => is_enrolled($context, $u, 'moodle/course:isincompletionreports', true)
             ));
         }
+        // Names must fit in a group name (254 characters), whatever the list is called.
+        $listname = \core_text::substr(trim($listname), 0, 120);
         $when = userdate(time(), get_string('strftimedatetimeshort', 'core_langconfig'));
+        // All or nothing: a failure halfway does not leave a grouping with half its groups.
+        $transaction = $DB->start_delegated_transaction();
         $groupingname = self::free_name('groupings', $course->id, get_string(
             'groupingname',
             'local_oksigeniaclasstools',
@@ -76,6 +80,7 @@ class teams {
                 groups_add_member($groupid, $userid);
             }
         }
+        $transaction->allow_commit();
         return (object) ['id' => $groupingid, 'name' => $groupingname];
     }
 

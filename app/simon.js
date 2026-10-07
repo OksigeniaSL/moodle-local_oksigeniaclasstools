@@ -37,6 +37,7 @@
         panel.innerHTML = `
             <div class="ct-simon">
                 <aside class="tarjeta ct-side">
+                    <div class="ct-setup ct-setup-group">
                     <p class="ante">${STR.pads}</p>
                     <div class="segmentos" role="radiogroup" aria-label="${STR.pads}" id="si-pads">
                         <button type="button" role="radio" aria-checked="true" data-n="4">4</button>
@@ -48,6 +49,7 @@
                         <button type="button" role="radio" aria-checked="false" data-v="fast">${STR.fast}</button>
                     </div>
                     <label class="campo apilado"><span>${STR.turns}</span><select id="si-turns"></select></label>
+                    </div>
                     <button type="button" class="boton grande" id="si-start"><span data-icono="seguir"></span><span>${STR.start}</span></button>
                     <p class="ct-simon-record" id="si-record"></p>
                 </aside>
@@ -117,6 +119,7 @@
         s.turn = -1; s.seq = [];
         if (l && !s.order.length) { return; }
         paintBoard(); paintWho();
+        games.playing('simon', true);
         core.relabel($('#si-start'), STR.again, 'otra');
         nextRound();
     };
@@ -130,8 +133,8 @@
         paintWho();
         setMsg(w ? STR.failWho(w) : STR.fail);
         announce(w ? STR.failWho(w) : STR.fail);
-        // With turns, the next student starts again; without, press «Otra vez».
-        if (list()) { s.seq = []; later(nextRound, 1800); }
+        // With turns, the next student starts again; without, press «Otra vez» (the settings come back).
+        if (list()) { s.seq = []; later(nextRound, 1800); } else { games.playing('simon', false); }
     };
     const press = (i) => {
         if (s.state !== 'input') { return; }

@@ -47,6 +47,24 @@ if ($hassiteconfig) {
             PARAM_INT,
             4
         ));
+        $levels = [];
+        require_once(__DIR__ . '/lib.php');
+        foreach (LOCAL_OKSIGENIACLASSTOOLS_LEVELS as $level) {
+            $levels[$level] = get_string('level_' . $level, 'local_oksigeniaclasstools');
+        }
+        $settings->add(new admin_setting_configmulticheckbox(
+            'local_oksigeniaclasstools/levels',
+            get_string('levels', 'local_oksigeniaclasstools'),
+            get_string('levels_desc', 'local_oksigeniaclasstools'),
+            array_fill_keys(array_keys($levels), 1),
+            $levels
+        ));
+        $settings->add(new admin_setting_configcheckbox(
+            'local_oksigeniaclasstools/students',
+            get_string('students', 'local_oksigeniaclasstools'),
+            get_string('students_desc', 'local_oksigeniaclasstools'),
+            0
+        ));
         $settings->add(new admin_setting_configcheckbox(
             'local_oksigeniaclasstools/menu',
             get_string('menu', 'local_oksigeniaclasstools'),

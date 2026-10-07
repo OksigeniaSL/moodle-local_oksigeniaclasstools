@@ -70,6 +70,16 @@ final class hook_callbacks_test extends \advanced_testcase {
         $this->assertEmpty($primary->find('local_oksigeniaclasstools', null));
     }
 
+    public function test_students_get_the_course_link_when_the_site_opens_the_board(): void {
+        $this->resetAfterTest();
+        [$course, , $students] = $this->make_class(1);
+        set_config('students', 1, 'local_oksigeniaclasstools');
+        $this->setUser($students[0]);
+        [$secondary, $primary] = $this->navigation($course);
+        $this->assertNotEmpty($secondary->find('local_oksigeniaclasstools', null));
+        $this->assertEmpty($primary->find('local_oksigeniaclasstools', null));
+    }
+
     public function test_the_main_menu_link_can_be_turned_off(): void {
         $this->resetAfterTest();
         [$course, $teacher] = $this->make_class(1);

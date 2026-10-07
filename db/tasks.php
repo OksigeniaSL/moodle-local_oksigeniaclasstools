@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * Capabilities: whoever teaches a course can open the tools with its students (names and photos).
+ * Scheduled tasks: picks older than the days counted for fair picking are deleted every night.
  *
  * @package    local_oksigeniaclasstools
  * @copyright  2026 Oksigenia <dev@oksigenia.cc>
@@ -24,15 +24,14 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$capabilities = [
-    'local/oksigeniaclasstools:use' => [
-        'riskbitmask' => RISK_PERSONAL,
-        'captype' => 'write',
-        'contextlevel' => CONTEXT_COURSE,
-        'archetypes' => [
-            'editingteacher' => CAP_ALLOW,
-            'teacher' => CAP_ALLOW,
-            'manager' => CAP_ALLOW,
-        ],
+$tasks = [
+    [
+        'classname' => '\local_oksigeniaclasstools\task\purge_picks',
+        'blocking' => 0,
+        'minute' => 'R',
+        'hour' => '3',
+        'day' => '*',
+        'month' => '*',
+        'dayofweek' => '*',
     ],
 ];

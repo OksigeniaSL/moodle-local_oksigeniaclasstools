@@ -15,24 +15,19 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * Capabilities: whoever teaches a course can open the tools with its students (names and photos).
+ * After installing: the user tour that shows teachers where the classroom tools are.
  *
  * @package    local_oksigeniaclasstools
  * @copyright  2026 Oksigenia <dev@oksigenia.cc>
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
-
-$capabilities = [
-    'local/oksigeniaclasstools:use' => [
-        'riskbitmask' => RISK_PERSONAL,
-        'captype' => 'write',
-        'contextlevel' => CONTEXT_COURSE,
-        'archetypes' => [
-            'editingteacher' => CAP_ALLOW,
-            'teacher' => CAP_ALLOW,
-            'manager' => CAP_ALLOW,
-        ],
-    ],
-];
+/**
+ * Adds the tour.
+ *
+ * @return bool
+ */
+function xmldb_local_oksigeniaclasstools_install() {
+    \local_oksigeniaclasstools\local\tour::install();
+    return true;
+}

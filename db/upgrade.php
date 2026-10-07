@@ -50,5 +50,11 @@ function xmldb_local_oksigeniaclasstools_upgrade($oldversion) {
         }
         upgrade_plugin_savepoint(true, 2026100703, 'local', 'oksigeniaclasstools');
     }
+
+    if ($oldversion < 2026100800) {
+        // The user tour that shows teachers where the classroom tools are (new installs get it in install.php).
+        \local_oksigeniaclasstools\local\tour::install();
+        upgrade_plugin_savepoint(true, 2026100800, 'local', 'oksigeniaclasstools');
+    }
     return true;
 }

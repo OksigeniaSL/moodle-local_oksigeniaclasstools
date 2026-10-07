@@ -17,6 +17,8 @@
     <button type="button" role="tab" class="pestana" id="t-semaforo" data-h="semaforo" aria-controls="h-semaforo" aria-selected="false" tabindex="-1"><span data-icono="semaforo"></span>Semáforo</button>
     <button type="button" role="tab" class="pestana" id="t-azar" data-h="azar" aria-controls="h-azar" aria-selected="false" tabindex="-1"><span data-icono="azar"></span>Azar</button>
     <button type="button" role="tab" class="pestana" id="t-juegos" data-h="juegos" aria-controls="h-juegos" aria-selected="false" tabindex="-1"><span data-icono="juegos"></span>Juegos</button>
+    <button type="button" role="tab" class="pestana" id="t-material" data-h="material" aria-controls="h-material" aria-selected="false" tabindex="-1"><span data-icono="material"></span>Material</button>
+    <button type="button" role="tab" class="pestana" id="t-pizarra" data-h="pizarra" aria-controls="h-pizarra" aria-selected="false" tabindex="-1"><span data-icono="pincel"></span>Pizarra</button>
     <button type="button" role="tab" class="pestana" id="t-marcador" data-h="marcador" aria-controls="h-marcador" aria-selected="false" tabindex="-1"><span data-icono="trofeo"></span>Marcador</button>
     <button type="button" role="tab" class="pestana" id="t-asi" data-h="asi" aria-controls="h-asi" aria-selected="false" tabindex="-1"><span data-icono="asi"></span>Así trabajamos</button>
     <button type="button" role="tab" class="pestana" id="t-reloj" data-h="reloj" aria-controls="h-reloj" aria-selected="false" tabindex="-1"><span data-icono="reloj"></span>Reloj</button>
@@ -159,6 +161,12 @@
         <span class="relleno" id="s-relleno"></span>
       </div>
       <div class="escala" aria-hidden="true"><span>Bien</span><span>Más bajo</span><span>Demasiado</span></div>
+      <div class="ruido-extra" id="s-extra">
+        <div class="ruido-dato"><span class="ante">Racha en calma</span><strong class="ruido-cifra" id="s-racha">0:00</strong><span class="nota" id="s-mejor"></span></div>
+        <div class="ruido-dato"><span class="ante" id="s-paciencia-titulo">Paciencia</span>
+          <div class="paciencia" id="s-paciencia" role="meter" aria-label="Paciencia de la clase" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100"><span id="s-paciencia-relleno"></span></div>
+          <span class="nota">Se gasta con el ruido que dura y vuelve con la calma.</span></div>
+      </div>
       <label class="campo apilado deslizador"><span>Sensibilidad <em id="s-sens-valor">media</em></span><input type="range" id="s-sensibilidad" min="1" max="10" step="1" value="5"></label>
       <button type="button" class="boton grande ancho" id="s-marcha"><span data-icono="micro"></span><span>Escuchar la clase</span></button>
       <div class="sin-micro" id="s-sinmicro" role="alert" hidden>
@@ -178,6 +186,12 @@
 
   <!-- Juegos (games.js con rosco, simon, hangman, wordle, memory y secretcode) -->
   <section class="herramienta ct-games" id="h-juegos" role="tabpanel" aria-labelledby="t-juegos" hidden></section>
+
+  <!-- Material (manipulatives.js): regletas y tangram -->
+  <section class="herramienta ct-material" id="h-material" role="tabpanel" aria-labelledby="t-material" hidden></section>
+
+  <!-- Pizarra rápida (whiteboard.js) -->
+  <section class="herramienta ct-whiteboard" id="h-pizarra" role="tabpanel" aria-labelledby="t-pizarra" hidden></section>
 
   <!-- Marcador (scoreboard.js) -->
   <section class="herramienta ct-scoreboard" id="h-marcador" role="tabpanel" aria-labelledby="t-marcador" hidden></section>
@@ -207,21 +221,7 @@
   </section>
 
   <!-- Código QR -->
-  <section class="herramienta qr" id="h-qr" role="tabpanel" aria-labelledby="t-qr" hidden>
-    <div class="tarjeta qr-ajustes">
-      <label class="campo apilado" for="qr-texto"><span>Texto o enlace</span></label>
-      <textarea id="qr-texto" rows="4" maxlength="1200" spellcheck="false" placeholder="Pega aquí un enlace o escribe un texto"></textarea>
-      <div class="botonera">
-        <button type="button" class="boton" id="qr-ampliar"><span data-icono="ampliar"></span>Ampliar</button>
-        <button type="button" class="boton suave" id="qr-borrar"><span data-icono="borrar"></span>Borrar</button>
-      </div>
-      <p class="nota" id="qr-nota">El código se crea aquí mismo, sin conexión. Los alumnos lo leen con la cámara de la tableta.</p>
-    </div>
-    <div class="tarjeta qr-lienzo">
-      <div class="qr-dibujo" id="qr-dibujo"></div>
-      <p class="qr-ver" id="qr-ver"></p>
-    </div>
-  </section>
+  <section class="herramienta qr" id="h-qr" role="tabpanel" aria-labelledby="t-qr" hidden></section>
 </main>
 
 <!-- Pantalla del final del temporizador -->
@@ -283,6 +283,7 @@
 <script src="lib/qrcode.js"></script>
 <script src="scorm.js"></script>
 <script src="app.js"></script>
+<script src="qr.js"></script>
 <script src="chance.js"></script>
 <script src="scoreboard.js"></script>
 <script src="games.js"></script>
@@ -292,5 +293,8 @@
 <script src="wordle.js"></script>
 <script src="memory.js"></script>
 <script src="secretcode.js"></script>
+<script src="manipulatives.js"></script>
+<script src="whiteboard.js"></script>
+<script src="clocklearn.js"></script>
 </body>
 </html>

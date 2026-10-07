@@ -26,6 +26,11 @@
     const kept = core.kept('scoreboard');   // what Moodle has: wins if it is newer (saved from another computer)
     if (kept && Array.isArray(kept.teams) && kept.teams.length && (!state || (kept.updated || 0) > (state.updated || 0))) { state = kept; }
     if (!state || !Array.isArray(state.teams) || state.teams.length < 1) { state = fresh(); }
+    state.teams = state.teams.slice(0, 8).map((t, i) => ({
+        name: String((t && t.name) || STR.team(i + 1)).slice(0, 24), color: COLORS.includes(t && t.color) ? t.color : COLORS[i % COLORS.length],
+        score: Math.max(0, Math.round(Number(t && t.score) || 0)), members: Array.isArray(t && t.members) ? t.members.filter((m) => typeof m === 'string') : [],
+        listId: (t && typeof t.listId === 'string') ? t.listId : null,
+    }));
     let leader = null, resetTimer = 0;
 
     core.sounds.point = (a) => core.bell(a, 1046.5, 0, 0.22, 0.6);
@@ -73,13 +78,27 @@
         }).join('');
         $('#sc-add').disabled = state.teams.length >= 8;
     };
+    // Only the scores, the leader and the crown: repainting the cards would wipe a team name being typed.
+    const paintScores = () => {
+        const lead = best();
+        $$('#sc-teams .ct-team').forEach((card) => {
+            const i = Number(card.dataset.i), t = state.teams[i];
+            if (!t) { return; }
+            const out = card.querySelector('.ct-score');
+            out.textContent = String(t.score); out.setAttribute('aria-label', `${t.name}: ${STR.points(t.score)}`);
+            card.classList.toggle('ct-lead', i === lead);
+            const crown = card.querySelector('.ct-crown');
+            if (i === lead && !crown) { card.querySelector('.ct-team-name').insertAdjacentHTML('afterend', `<span class="ct-crown" aria-hidden="true">${icon('corona')}</span>`); }
+            if (i !== lead && crown) { crown.remove(); }
+        });
+    };
     const bump = (i, step) => {
         const t = state.teams[i];
         t.score = Math.max(0, t.score + step);
         persist();
         const before = leader;
         leader = best();
-        paint();
+        paintScores();
         const card = $(`#sc-teams .ct-team[data-i="${i}"]`);
         if (card && !reducedMotion()) { card.classList.remove('ct-bump'); void card.offsetWidth; card.classList.add(step > 0 ? 'ct-bump' : 'ct-drop'); }
         if (leader !== null && leader !== before) { play('lead'); announce(STR.leads(state.teams[leader].name)); }

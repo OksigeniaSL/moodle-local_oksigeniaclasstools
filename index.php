@@ -73,8 +73,13 @@ if (!$id) {
 $course = get_course($id);
 require_login($course);
 $context = context_course::instance($course->id);
-require_capability('local/oksigeniaclasstools:use', $context);
+$mode = local_oksigeniaclasstools_mode($context);
+if (!$mode) {
+    require_capability('local/oksigeniaclasstools:use', $context);
+}
 $PAGE->set_context($context);
 $PAGE->set_url(new moodle_url('/local/oksigeniaclasstools/index.php', ['id' => $course->id]));
 
-local_oksigeniaclasstools_output(local_oksigeniaclasstools_data($course, $context));
+local_oksigeniaclasstools_output($mode === 'student'
+    ? local_oksigeniaclasstools_student_data($course, $context)
+    : local_oksigeniaclasstools_data($course, $context));

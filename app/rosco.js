@@ -53,11 +53,13 @@
     const TIMES = [0, 120, 150, 180, 240, 300];
 
     // Own roscos: in the browser and, inside Moodle, for the teacher in the course (the newest one wins).
-    let store = load('roscos', null);
+    // Per course, like Moodle keeps them (the old global key only seeds a course that has nothing yet).
+    const storeKey = 'roscos' + (core.moodle ? ':' + core.moodle.courseid : '');
+    let store = load(storeKey, null) || (core.moodle && !core.kept('roscos') ? load('roscos', null) : null);
     const kept = core.kept('roscos');
     if (kept && Array.isArray(kept.sets) && (!store || (kept.updated || 0) > (store.updated || 0))) { store = kept; }
     if (!store || !Array.isArray(store.sets)) { store = { sets: [] }; }
-    const persist = () => { store.updated = Date.now(); save('roscos', store); core.keep('roscos', store); };
+    const persist = () => { store.updated = Date.now(); save(storeKey, store); core.keep('roscos', store); };
     const sets = () => [EXAMPLE].concat(store.sets);
     const setById = (id) => sets().find((s) => s.id === id) || EXAMPLE;
     const playable = (set) => set.items.filter((it) => it.c && it.a && LETTERS.includes(it.l)).sort((a, b) => LETTERS.indexOf(a.l) - LETTERS.indexOf(b.l));
@@ -144,7 +146,7 @@
     };
 
     // --- Setup -----------------------------------------------------------------------------------------
-    const who = () => ($('#ro-who [aria-checked="true"]') || {}).dataset?.who || 'class';
+    const who = () => { const b = $('#ro-who [aria-checked="true"]'); return (b && b.dataset.who) || 'class'; };
     const fillSets = () => {
         const opts = sets().map((s) => `<option value="${escape(s.id)}">${escape(s.name)} (${playable(s).length})</option>`).join('');
         ['#ro-set', '#ro-set2'].forEach((sel, i) => {
