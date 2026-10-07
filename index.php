@@ -34,8 +34,10 @@ if (!$id) {
         local_oksigeniaclasstools_output(null);
         exit;
     }
-    $courses = array_filter(enrol_get_my_courses(['id', 'fullname', 'shortname'], 'fullname ASC'),
-        fn($c) => has_capability('local/oksigeniaclasstools:use', context_course::instance($c->id)));
+    $courses = array_filter(
+        enrol_get_my_courses(['id', 'fullname', 'shortname'], 'fullname ASC'),
+        fn($c) => has_capability('local/oksigeniaclasstools:use', context_course::instance($c->id))
+    );
     if (count($courses) === 1) {
         redirect(new moodle_url('/local/oksigeniaclasstools/index.php', ['id' => reset($courses)->id]));
     }
@@ -49,16 +51,21 @@ if (!$id) {
         echo html_writer::tag('p', get_string('choose_desc', 'local_oksigeniaclasstools'));
         $buttons = '';
         foreach ($courses as $c) {
-            $buttons .= html_writer::link(new moodle_url('/local/oksigeniaclasstools/index.php', ['id' => $c->id]),
+            $buttons .= html_writer::link(
+                new moodle_url('/local/oksigeniaclasstools/index.php', ['id' => $c->id]),
                 format_string($c->fullname, true, ['context' => context_course::instance($c->id)]),
-                ['class' => 'btn btn-outline-primary btn-lg text-start']);
+                ['class' => 'btn btn-outline-primary btn-lg text-start']
+            );
         }
         echo html_writer::div($buttons, 'd-grid gap-2 mb-4', ['style' => 'max-width: 40rem']);
     } else {
         echo $OUTPUT->notification(get_string('nocourses', 'local_oksigeniaclasstools'), 'info');
     }
-    echo html_writer::link(new moodle_url('/local/oksigeniaclasstools/index.php', ['standalone' => 1]),
-        get_string('standalone', 'local_oksigeniaclasstools'), ['class' => 'btn btn-secondary']);
+    echo html_writer::link(
+        new moodle_url('/local/oksigeniaclasstools/index.php', ['standalone' => 1]),
+        get_string('standalone', 'local_oksigeniaclasstools'),
+        ['class' => 'btn btn-secondary']
+    );
     echo $OUTPUT->footer();
     exit;
 }

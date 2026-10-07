@@ -42,14 +42,21 @@ class hook_callbacks {
     public static function secondary_extend(secondary_extend $hook): void {
         global $PAGE;
         $course = $PAGE->course;
-        if (!$course || $course->id == SITEID
-                || !has_capability('local/oksigeniaclasstools:use', \context_course::instance($course->id))) {
+        if (
+            !$course || $course->id == SITEID
+                || !has_capability('local/oksigeniaclasstools:use', \context_course::instance($course->id))
+        ) {
             return;
         }
         $view = $hook->get_secondaryview();
-        $node = navigation_node::create(get_string('navlabel', 'local_oksigeniaclasstools'),
-            new moodle_url('/local/oksigeniaclasstools/index.php', ['id' => $course->id]), navigation_node::TYPE_CUSTOM, null,
-            'local_oksigeniaclasstools', new pix_icon('i/group', ''));
+        $node = navigation_node::create(
+            get_string('navlabel', 'local_oksigeniaclasstools'),
+            new moodle_url('/local/oksigeniaclasstools/index.php', ['id' => $course->id]),
+            navigation_node::TYPE_CUSTOM,
+            null,
+            'local_oksigeniaclasstools',
+            new pix_icon('i/group', '')
+        );
         $view->add_node($node, $view->get('editsettings') ? 'editsettings' : null);
     }
 
@@ -64,8 +71,10 @@ class hook_callbacks {
             return;
         }
         $course = $PAGE->course;
-        if ($course && $course->id != SITEID
-                && has_capability('local/oksigeniaclasstools:use', \context_course::instance($course->id))) {
+        if (
+            $course && $course->id != SITEID
+                && has_capability('local/oksigeniaclasstools:use', \context_course::instance($course->id))
+        ) {
             $url = new moodle_url('/local/oksigeniaclasstools/index.php', ['id' => $course->id]);
         } else {
             // Checked once per session.
@@ -78,7 +87,13 @@ class hook_callbacks {
             }
             $url = new moodle_url('/local/oksigeniaclasstools/index.php');
         }
-        $hook->get_primaryview()->add(get_string('navlabel', 'local_oksigeniaclasstools'), $url,
-            navigation_node::TYPE_ROOTNODE, null, 'local_oksigeniaclasstools', new pix_icon('i/group', ''));
+        $hook->get_primaryview()->add(
+            get_string('navlabel', 'local_oksigeniaclasstools'),
+            $url,
+            navigation_node::TYPE_ROOTNODE,
+            null,
+            'local_oksigeniaclasstools',
+            new pix_icon('i/group', '')
+        );
     }
 }

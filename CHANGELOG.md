@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.5.1 (2026-10-07)
+
+- **Automated tests**: PHPUnit covers the lists of a course (groups, cohorts, saved teams, separate groups, name
+  styles), picks, kept tools, saving teams as groups, the clean-up when a course or user is deleted, the links in
+  the course bar and the main menu, and the privacy provider. Behat checks that teachers find the tools in the
+  course bar and students do not. GitHub Actions runs `moodle-plugin-ci` on Moodle 4.5 to 5.3 and main.
+- The logic behind picks, kept tools and saved teams moved to classes (`classes/local/`); the AJAX scripts only
+  check access and call them.
+- Code follows the Moodle coding style (codechecker with no warnings).
+
 ## 0.5.0 (2026-10-07)
 
 - Four more whole-class games:

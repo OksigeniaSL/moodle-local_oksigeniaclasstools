@@ -33,13 +33,5 @@ $course = get_course($courseid);
 require_login($course, false, null, false, true);
 $context = context_course::instance($course->id);
 require_capability('local/oksigeniaclasstools:use', $context);
-if (strlen($tool) > 32 || strlen($data) > 200000 || json_decode($data) === null) {
-    throw new moodle_exception('invalidparameter', 'debug');
-}
-$where = ['courseid' => $course->id, 'userid' => $USER->id, 'tool' => $tool];
-if ($id = $DB->get_field('local_oksigeniaclasstools_state', 'id', $where)) {
-    $DB->update_record('local_oksigeniaclasstools_state', (object) ['id' => $id, 'data' => $data, 'timemodified' => time()]);
-} else {
-    $DB->insert_record('local_oksigeniaclasstools_state', (object) ($where + ['data' => $data, 'timemodified' => time()]));
-}
+\local_oksigeniaclasstools\local\kept::save($course->id, $USER->id, $tool, $data);
 echo json_encode(['ok' => true]);

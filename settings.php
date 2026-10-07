@@ -28,17 +28,30 @@ if ($hassiteconfig) {
     $settings = new admin_settingpage('local_oksigeniaclasstools', get_string('pluginname', 'local_oksigeniaclasstools'));
     $ADMIN->add('localplugins', $settings);
     if ($ADMIN->fulltree) {
-        $settings->add(new admin_setting_configselect('local_oksigeniaclasstools/namestyle',
-            get_string('namestyle', 'local_oksigeniaclasstools'), get_string('namestyle_desc', 'local_oksigeniaclasstools'),
-            'firstsurname', [
+        $settings->add(new admin_setting_configselect(
+            'local_oksigeniaclasstools/namestyle',
+            get_string('namestyle', 'local_oksigeniaclasstools'),
+            get_string('namestyle_desc', 'local_oksigeniaclasstools'),
+            'firstsurname',
+            [
                 'firstsurname' => get_string('namestyle_firstsurname', 'local_oksigeniaclasstools'),
                 'first' => get_string('namestyle_first', 'local_oksigeniaclasstools'),
                 'full' => get_string('namestyle_full', 'local_oksigeniaclasstools'),
-            ]));
-        $settings->add(new admin_setting_configtext('local_oksigeniaclasstools/days',
-            get_string('days', 'local_oksigeniaclasstools'), get_string('days_desc', 'local_oksigeniaclasstools'),
-            90, PARAM_INT, 4));
-        $settings->add(new admin_setting_configcheckbox('local_oksigeniaclasstools/menu',
-            get_string('menu', 'local_oksigeniaclasstools'), get_string('menu_desc', 'local_oksigeniaclasstools'), 1));
+            ]
+        ));
+        $settings->add(new admin_setting_configtext(
+            'local_oksigeniaclasstools/days',
+            get_string('days', 'local_oksigeniaclasstools'),
+            get_string('days_desc', 'local_oksigeniaclasstools'),
+            90,
+            PARAM_INT,
+            4
+        ));
+        $settings->add(new admin_setting_configcheckbox(
+            'local_oksigeniaclasstools/menu',
+            get_string('menu', 'local_oksigeniaclasstools'),
+            get_string('menu_desc', 'local_oksigeniaclasstools'),
+            1
+        ));
     }
 }

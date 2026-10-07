@@ -22,11 +22,6 @@
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
-
-/** Prefix of the idnumber of groupings saved from the board (their groups are not offered as lists). */
-const LOCAL_OKSIGENIACLASSTOOLS_GROUPING_PREFIX = 'oksigeniaclasstools-';
-
 /**
  * Screen data for a course: its name, the way back and the lists with each student's name and photo.
  *
@@ -52,15 +47,20 @@ function local_oksigeniaclasstools_data(stdClass $course, context_course $contex
 
     // Picks in this course during the last days (fair picking and participation).
     $days = max(1, (int) (get_config('local_oksigeniaclasstools', 'days') ?: 90));
-    $picks = $DB->get_records_sql_menu('SELECT userid, COUNT(1)
-                                          FROM {local_oksigeniaclasstools_picks}
-                                         WHERE courseid = ? AND timecreated > ?
-                                      GROUP BY userid', [$course->id, time() - $days * DAYSECS]);
+    $picks = \local_oksigeniaclasstools\local\picks::counts($course->id, $days);
 
     // Students: users shown in completion reports (the student role), active enrolments only.
     $students = [];
-    $enrolled = get_enrolled_users($context, 'moodle/course:isincompletionreports', 0, 'u.*', 'u.firstname, u.lastname',
-        0, 0, true);
+    $enrolled = get_enrolled_users(
+        $context,
+        'moodle/course:isincompletionreports',
+        0,
+        'u.*',
+        'u.firstname, u.lastname',
+        0,
+        0,
+        true
+    );
     foreach ($enrolled as $user) {
         $student = ['n' => $displayname($user), 'i' => (int) $user->id, 'v' => (int) ($picks[$user->id] ?? 0)];
         if ($user->picture) {
@@ -86,25 +86,35 @@ function local_oksigeniaclasstools_data(stdClass $course, context_course $contex
     $separate = !$accessall && groups_get_course_groupmode($course) == SEPARATEGROUPS;
     $groups = groups_get_all_groups($course->id, $accessall ? 0 : $USER->id);
     // Teams saved from the board are not classes: they are not offered as lists.
-    $saved = $DB->get_fieldset_sql('SELECT gg.groupid
+    $saved = $DB->get_fieldset_sql(
+        'SELECT gg.groupid
                                       FROM {groupings_groups} gg
                                       JOIN {groupings} g ON g.id = gg.groupingid
                                      WHERE g.courseid = ? AND ' . $DB->sql_like('g.idnumber', '?'),
-        [$course->id, LOCAL_OKSIGENIACLASSTOOLS_GROUPING_PREFIX . '%']);
+        [$course->id, \local_oksigeniaclasstools\local\teams::GROUPING_PREFIX . '%']
+    );
     foreach (array_diff_key($groups, array_flip($saved)) as $group) {
-        $add('g' . $group->id, format_string($group->name, true, ['context' => $context]),
-            array_keys(groups_get_members($group->id, 'u.id')));
+        $add(
+            'g' . $group->id,
+            format_string($group->name, true, ['context' => $context]),
+            array_keys(groups_get_members($group->id, 'u.id'))
+        );
     }
     if (!$separate) {
         // Cohorts enrolled in the course with cohort sync.
-        $cohorts = $DB->get_records_sql("SELECT DISTINCT c.id, c.name, c.contextid
+        $cohorts = $DB->get_records_sql(
+            "SELECT DISTINCT c.id, c.name, c.contextid
                                            FROM {enrol} e
                                            JOIN {cohort} c ON c.id = e.customint1
                                           WHERE e.courseid = :courseid AND e.enrol = 'cohort' AND e.status = :enabled",
-            ['courseid' => $course->id, 'enabled' => ENROL_INSTANCE_ENABLED]);
+            ['courseid' => $course->id, 'enabled' => ENROL_INSTANCE_ENABLED]
+        );
         foreach ($cohorts as $cohort) {
-            $add('h' . $cohort->id, format_string($cohort->name, true, ['context' => context::instance_by_id($cohort->contextid)]),
-                $DB->get_fieldset_select('cohort_members', 'userid', 'cohortid = ?', [$cohort->id]));
+            $add(
+                'h' . $cohort->id,
+                format_string($cohort->name, true, ['context' => context::instance_by_id($cohort->contextid)]),
+                $DB->get_fieldset_select('cohort_members', 'userid', 'cohortid = ?', [$cohort->id])
+            );
         }
     }
     usort($classes, fn($a, $b) => strnatcasecmp($a['name'], $b['name']));
@@ -116,10 +126,7 @@ function local_oksigeniaclasstools_data(stdClass $course, context_course $contex
     }
 
     // What this teacher keeps of each tool in this course.
-    $state = [];
-    foreach ($DB->get_records('local_oksigeniaclasstools_state', ['courseid' => $course->id, 'userid' => $USER->id]) as $row) {
-        $state[$row->tool] = json_decode($row->data, true);
-    }
+    $state = \local_oksigeniaclasstools\local\kept::all($course->id, $USER->id);
 
     return [
         'course' => format_string($course->fullname, true, ['context' => $context]),
@@ -148,11 +155,13 @@ function local_oksigeniaclasstools_output(?array $data): void {
     // The plugin version in the address of scripts and styles: after each upgrade the browser fetches them again
     // instead of mixing old and new files from its cache.
     $version = (int) get_config('local_oksigeniaclasstools', 'version');
-    $html = preg_replace('/(<script src="[a-z0-9\/_-]+\.js|<link rel="stylesheet" href="[a-z0-9\/_-]+\.css)"/i', '$1?v=' . $version . '"', $html);
+    $assets = '/(<script src="[a-z0-9\/_-]+\.js|<link rel="stylesheet" href="[a-z0-9\/_-]+\.css)"/i';
+    $html = preg_replace($assets, '$1?v=' . $version . '"', $html);
     if ($data) {
         $json = json_encode($data, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE);
         // A callback, so that nothing in the data can be read as a backreference.
-        $html = preg_replace_callback('/<script src="icons\.js/', fn($m) => "<script>window.CLASSTOOLS = $json;</script>\n" . $m[0], $html, 1);
+        $inject = fn($m) => "<script>window.CLASSTOOLS = $json;</script>\n" . $m[0];
+        $html = preg_replace_callback('/<script src="icons\.js/', $inject, $html, 1);
     }
     header('Content-Type: text/html; charset=utf-8');
     header('Cache-Control: no-store');

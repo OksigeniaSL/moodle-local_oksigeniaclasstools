@@ -32,13 +32,5 @@ $course = get_course($courseid);
 require_login($course, false, null, false, true);
 $context = context_course::instance($course->id);
 require_capability('local/oksigeniaclasstools:use', $context);
-if (!is_enrolled($context, $userid, 'moodle/course:isincompletionreports', true)) {
-    throw new moodle_exception('invaliduser');
-}
-$DB->insert_record('local_oksigeniaclasstools_picks', (object) [
-    'courseid' => $course->id,
-    'userid' => $userid,
-    'teacherid' => $USER->id,
-    'timecreated' => time(),
-]);
+\local_oksigeniaclasstools\local\picks::record($course->id, $userid, $USER->id);
 echo json_encode(['ok' => true]);
