@@ -17,7 +17,8 @@
 namespace local_oksigeniaclasstools\task;
 
 /**
- * Deletes the picks that no longer count: older than the days counted for fair picking.
+ * Deletes the picks that no longer count (older than the days counted for fair picking) and the live sessions of the
+ * day before.
  *
  * @package    local_oksigeniaclasstools
  * @copyright  2026 Oksigenia <dev@oksigenia.cc>
@@ -40,5 +41,7 @@ class purge_picks extends \core\task\scheduled_task {
         global $DB;
         $days = max(1, (int) (get_config('local_oksigeniaclasstools', 'days') ?: 90));
         $DB->delete_records_select('local_oksigeniaclasstools_picks', 'timecreated < ?', [time() - $days * DAYSECS]);
+        // Live sessions are for the lesson: a day later they go, with their answers.
+        \local_oksigeniaclasstools\local\live::cleanup();
     }
 }

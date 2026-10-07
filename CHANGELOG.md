@@ -1,5 +1,30 @@
 # Changelog
 
+## 0.10.0 (2026-10-11)
+
+- **Live sessions** (new tab «Live», inside a Moodle course):
+  - A vote (A–D, yes or no, a traffic light of «I get it», 1 to 5) answered from tablets, Chromebooks or phones;
+    while it is open the board only shows how many have answered, and the bars when it closes (also on the devices,
+    if the teacher wants).
+  - Team buzzers: each device presses for its team and the board shows who was first, with how much later the
+    others pressed.
+  - The teacher's phone as a remote: timer, «Whose turn?», previous and next tool and Present, on any tool.
+  - Two ways in, chosen for each session: with the code or QR of the board (nobody logs in, no names) or with the
+    students' Moodle accounts (only the course's students, with their names).
+  - Devices join from a page of buttons only, ask every second and a half, and can be taken out by the teacher.
+    The board warns when another live session is open on the site. Sessions end 15 minutes after the board is gone
+    and are deleted the next day. A site setting turns them off.
+- Groups: «Deal them out with suspense» — a card shuffles the names, stops on one, says its group and the name flies
+  there, here and there until the last one (slower at the start and the end); «Place everyone now» skips it.
+- Dice: a die can be a class list (with photos, leaving out who is missing) or one of the teacher's lists, alone or
+  with other dice («Virginia – 6»), with a record of the turns and «No repeats» until everyone has come out.
+- Timer: the bar is a rocket that flies to the finish flag, with a moving trail from green to yellow and red (just
+  the bar in Secondary and Advanced).
+- Screen modes: each one with its colour in the top bar (Early years yellow, Primary green, Secondary blue,
+  Advanced red).
+- Present also goes full screen, and leaving it leaves full screen; the pill to bring the tools back has a strip of
+  its own and no longer covers the tool's switches.
+
 ## 0.9.2 (2026-10-10)
 
 - Timer: the «Pulsar» look is now a neutron star like MiNuryana's (two turning beams, expanding rings, stars, the time

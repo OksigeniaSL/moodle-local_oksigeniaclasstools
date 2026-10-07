@@ -250,6 +250,9 @@ function local_oksigeniaclasstools_data(stdClass $course, context_course $contex
         // Sharing a board saves it in the course: only for who can add content to it.
         'boardurl' => has_capability('moodle/course:manageactivities', $context)
             ? (new moodle_url('/local/oksigeniaclasstools/board.php'))->out(false) : null,
+        // Live sessions (votes, buzzers, the phone as a remote), unless the site turns them off.
+        'liveurl' => get_config('local_oksigeniaclasstools', 'live') !== '0'
+            ? (new moodle_url('/local/oksigeniaclasstools/livehost.php'))->out(false) : null,
     ];
 }
 
@@ -316,6 +319,52 @@ function local_oksigeniaclasstools_output(?array $data): void {
     }
     // A callback, so that nothing in the data can be read as a backreference.
     $html = preg_replace_callback('/<script src="icons\.js/', fn($m) => $script . $m[0], $html, 1);
+    header('Content-Type: text/html; charset=utf-8');
+    header('Cache-Control: no-store');
+    header('X-Frame-Options: SAMEORIGIN');
+    echo $html;
+}
+
+/**
+ * Outputs the page where a device joins a live session, in the language of the site (or of the student, with their
+ * account), with the session it found for the code, if any.
+ *
+ * @param stdClass|null $live
+ * @param string $code What came in the address.
+ */
+function local_oksigeniaclasstools_join_output(?stdClass $live, string $code): void {
+    global $OUTPUT, $SITE;
+    $html = file_get_contents(__DIR__ . '/app/join.html');
+    $base = (new moodle_url('/local/oksigeniaclasstools/app/'))->out(false);
+    $icon = $OUTPUT->favicon()->out(false);
+    $html = str_replace('<head>', "<head>\n<base href=\"" . s($base) . "\">\n<link rel=\"icon\" href=\"" . s($icon) . '">', $html);
+    $html = str_replace('<html lang="en">', '<html lang="' . s(str_replace('_', '-', current_language())) . '">', $html);
+    $title = s(get_string('jointitle', 'local_oksigeniaclasstools'));
+    $html = str_replace('<title>Class tools</title>', '<title>' . $title . '</title>', $html);
+    $version = (int) get_config('local_oksigeniaclasstools', 'version');
+    $assets = '/(<script src="[a-z0-9\/_-]+\.js|<link rel="stylesheet" href="[a-z0-9\/_-]+\.css)"/i';
+    $html = preg_replace($assets, '$1?v=' . $version . '"', $html);
+    $str = [];
+    foreach (get_string_manager()->load_component_strings('local_oksigeniaclasstools', current_language()) as $key => $text) {
+        if (strpos($key, 'app_lv_') === 0) {
+            $str[substr($key, 4)] = $text;
+        }
+    }
+    $moodle = $live && $live->identity === 'moodle';
+    $config = [
+        'code' => $live ? $live->code : strtoupper($code),
+        'found' => (bool) $live,
+        'kind' => $live ? $live->kind : '',
+        'identity' => $live ? $live->identity : '',
+        'api' => (new moodle_url('/local/oksigeniaclasstools/' . ($moodle ? 'joinapi.php' : 'joinanon.php')))->out(false),
+        'sesskey' => $moodle ? sesskey() : '',
+        'page' => (new moodle_url('/local/oksigeniaclasstools/join.php'))->out(false),
+        'site' => format_string($SITE->shortname, true, ['context' => context_system::instance(), 'escape' => false]),
+        'str' => (object) $str,
+    ];
+    $flags = JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES;
+    $script = '<script>window.CLASSTOOLS_JOIN = ' . json_encode($config, $flags) . ";</script>\n";
+    $html = str_replace('<script src="join.js', $script . '<script src="join.js', $html);
     header('Content-Type: text/html; charset=utf-8');
     header('Cache-Control: no-store');
     header('X-Frame-Options: SAMEORIGIN');

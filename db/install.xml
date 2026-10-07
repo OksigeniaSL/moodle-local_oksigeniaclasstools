@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="local/oksigeniaclasstools/db" VERSION="20261007" COMMENT="XMLDB file for local_oksigeniaclasstools"
+<XMLDB PATH="local/oksigeniaclasstools/db" VERSION="20261011" COMMENT="XMLDB file for local_oksigeniaclasstools"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
@@ -37,6 +37,50 @@
       </KEYS>
       <INDEXES>
         <INDEX NAME="courseid-userid-tool" UNIQUE="true" FIELDS="courseid, userid, tool"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="local_oksigeniaclasstools_live" COMMENT="Live sessions: students answer from their devices (votes, team buzzers) or the teacher's phone works as a remote">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="The teacher who opened it"/>
+        <FIELD NAME="code" TYPE="char" LENGTH="8" NOTNULL="true" SEQUENCE="false" COMMENT="What the devices type or scan to join"/>
+        <FIELD NAME="kind" TYPE="char" LENGTH="16" NOTNULL="true" SEQUENCE="false" COMMENT="vote, buzz or remote"/>
+        <FIELD NAME="identity" TYPE="char" LENGTH="8" NOTNULL="true" SEQUENCE="false" COMMENT="anon (with the code) or moodle (with their account)"/>
+        <FIELD NAME="state" TYPE="text" NOTNULL="true" SEQUENCE="false" COMMENT="JSON: open, options, teams, kicked devices, remote commands"/>
+        <FIELD NAME="round" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Last sign of the teacher's board"/>
+        <FIELD NAME="timeend" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="courseid" TYPE="foreign" FIELDS="courseid" REFTABLE="course" REFFIELDS="id"/>
+        <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="code" UNIQUE="false" FIELDS="code"/>
+        <INDEX NAME="timeend-timemodified" UNIQUE="false" FIELDS="timeend, timemodified"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="local_oksigeniaclasstools_livein" COMMENT="Who is in a live session (round 0) and what each device answered in each round">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="liveid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="round" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="0: joined; then one row per answer"/>
+        <FIELD NAME="device" TYPE="char" LENGTH="40" NOTNULL="true" SEQUENCE="false" COMMENT="Random token of the device (or u + user id)"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Only when they join with their account"/>
+        <FIELD NAME="team" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="answer" TYPE="char" LENGTH="32" NOTNULL="true" DEFAULT="" SEQUENCE="false"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="15" NOTNULL="true" SEQUENCE="false" COMMENT="Milliseconds, for who pressed first"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="liveid" TYPE="foreign" FIELDS="liveid" REFTABLE="local_oksigeniaclasstools_live" REFFIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="liveid-round-device" UNIQUE="true" FIELDS="liveid, round, device"/>
+        <INDEX NAME="userid" UNIQUE="false" FIELDS="userid"/>
       </INDEXES>
     </TABLE>
   </TABLES>

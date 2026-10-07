@@ -82,5 +82,11 @@ if ($hassiteconfig) {
             get_string('menu_desc', 'local_oksigeniaclasstools'),
             1
         ));
+        $settings->add(new admin_setting_configcheckbox(
+            'local_oksigeniaclasstools/live',
+            get_string('live', 'local_oksigeniaclasstools'),
+            get_string('live_desc', 'local_oksigeniaclasstools'),
+            1
+        ));
     }
 }

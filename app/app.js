@@ -118,6 +118,9 @@
         $$('.pestana').forEach((b) => { if (!PERMITIDAS.includes(b.dataset.h)) { b.remove(); } });
     }
 
+    // Las sesiones en vivo viven en Moodle: sin curso (o si el sitio las apaga), su pestaña no aparece.
+    if (!(window.CLASSTOOLS && window.CLASSTOOLS.liveurl) && $('#t-envivo')) { $('#t-envivo').remove(); }
+
     // --- Pestañas ---
     const HERR = {};   // cada herramienta puede tener entra() y sale()
     const pestanas = $$('.pestana'), barra = $('#barra'), tira = $('#pestanas');
@@ -219,6 +222,7 @@
         const tocado = tm.marcha || tm.acabado || tm.resta < tm.total;
         tmAnillo.classList.toggle('ultimo', tocado && tm.resta <= 10000);
         tmAnillo.classList.toggle('aviso', tocado && tm.resta > 10000 && frac <= 0.25);
+        tmAnillo.classList.toggle('en-marcha', tm.marcha);
         pintaAspecto(frac);
         $('#tm-estado').textContent = tm.acabado ? t('fin_time') : tm.marcha ? t('tm_running') : tm.resta < tm.total ? t('tm_paused') : t('tm_ready');
         insignias();
@@ -236,13 +240,21 @@
     const ASPECTOS = ['anillo', 'disco', 'barra', 'arena', 'pulsar'];
     let aspecto = ASPECTOS.includes(lee('tm-aspecto', 'anillo')) ? lee('tm-aspecto', 'anillo') : 'anillo';
     const POSICION = { anillo: [100, 104, 100, 148], disco: [100, 104, 100, 152], barra: [100, 78, 100, 178], arena: [145, 98, 145, 132], pulsar: [100, 164, 100, 30] };
+    // El color de la barra según lo que queda: verde, amarillo y, al final, rojo.
+    // (En HSL, para que entre medias salgan lima y naranja vivos y no colores sucios.)
+    const mezcla = (a, b, k) => a.map((v, i) => v + (b[i] - v) * k);
+    const VERDE = [142, 91, 26], AMARILLO = [44, 96, 54], ROJO = [-5, 82, 44];
+    const colorBarra = (f) => {
+        const [h, s, l] = f > 0.5 ? mezcla(AMARILLO, VERDE, (f - 0.5) * 2) : mezcla(ROJO, AMARILLO, f * 2);
+        return `hsl(${Math.round((h + 360) % 360)}, ${Math.round(s)}%, ${Math.round(l)}%)`;
+    };
     const pintaAspecto = (frac) => {
         tmAnillo.dataset.aspecto = aspecto;
         const [cx, cy, ex, ey] = POSICION[aspecto];
         tmCifras.setAttribute('x', cx); tmCifras.setAttribute('y', cy);
         $('#tm-estado').setAttribute('x', ex); $('#tm-estado').setAttribute('y', ey);
         const g = $('#tm-aspecto'), f = Math.max(0, Math.min(1, frac));
-        if (aspecto !== 'pulsar') { g.dataset.hecho = ''; }
+        if (aspecto !== 'pulsar' && aspecto !== 'barra') { g.dataset.hecho = ''; }
         if (aspecto === 'disco') {
             // Como los temporizadores visuales: el disco rojo es el tiempo que queda y mengua hacia las doce.
             const a = f * 2 * Math.PI, x = (100 - 82 * Math.sin(a)).toFixed(2), y = (100 - 82 * Math.cos(a)).toFixed(2);
@@ -252,8 +264,28 @@
             for (let i = 0; i < 60; i += 5) { const r = i * 6 * Math.PI / 180; marcas += `<line x1="${(100 + 86 * Math.sin(r)).toFixed(1)}" y1="${(100 - 86 * Math.cos(r)).toFixed(1)}" x2="${(100 + (i % 15 ? 91 : 94) * Math.sin(r)).toFixed(1)}" y2="${(100 - (i % 15 ? 91 : 94) * Math.cos(r)).toFixed(1)}"/>`; }
             g.innerHTML = `<circle class="tm-cara" cx="100" cy="100" r="95"/>${sector}<g class="tm-marcas">${marcas}</g>`;
         } else if (aspecto === 'barra') {
-            g.innerHTML = `<rect class="tm-pista-barra" x="12" y="120" width="176" height="30" rx="15"/>`
-                + (f > 0.0005 ? `<rect class="tm-barra" x="12" y="120" width="${(176 * f).toFixed(2)}" height="30" rx="15"/>` : '');
+            // Un cohete que va de la salida a la meta mientras pasa el tiempo: cuando llega a la bandera, se acabó. La
+            // estela lleva rayas que se mueven y pasa del verde al amarillo y al rojo. Se dibuja una vez y luego solo
+            // avanza (así las rayas no saltan). En Secundaria y Superior, sin cohete ni bandera: solo la barra.
+            if (g.dataset.hecho !== 'barra') {
+                let rayas = '';
+                for (let i = -3; i < 14; i++) { rayas += `<path d="M${12 + i * 14} 150L${24 + i * 14} 118h7L${19 + i * 14} 150Z"/>`; }
+                let cuadros = '';
+                for (let i = 0; i < 9; i++) { cuadros += `<rect x="${186 + (i % 3) * 4}" y="${100 + Math.floor(i / 3) * 4}" width="4" height="4" fill="${((i % 3) + Math.floor(i / 3)) % 2 ? '#fff' : '#1c1a19'}"/>`; }
+                g.innerHTML = '<defs><clipPath id="tmEstela"><rect class="tm-estela" x="12" y="118" width="0" height="32" rx="16"/></clipPath></defs>'
+                    + '<rect class="tm-pista-barra" x="12" y="118" width="170" height="32" rx="16"/>'
+                    + `<g clip-path="url(#tmEstela)"><rect class="tm-barra" x="12" y="118" width="170" height="32"/><g class="tm-rayas">${rayas}</g></g>`
+                    + `<g class="tm-meta"><line x1="186" y1="99" x2="186" y2="152"/>${cuadros}<rect class="tm-meta-borde" x="186" y="100" width="12" height="12"/></g>`
+                    + '<g class="tm-cohete"><path class="tm-llama" d="M-17 -5Q-31 0 -17 5Z"/>'
+                    + '<path class="tm-aleta" d="M-14 -6L-20 -14H-11L-5 -6ZM-14 6L-20 14H-11L-5 6Z"/>'
+                    + '<path class="tm-casco" d="M-17 -7H5Q17 -7 22 0Q17 7 5 7H-17Z"/><circle class="tm-ventana" cx="4" cy="0" r="3.6"/></g>';
+                g.dataset.hecho = 'barra';
+            }
+            // El cohete, de la salida (su cola en el borde) a la meta (la punta en el mástil); la estela llega hasta él.
+            const x = 29 + 135 * (1 - f);
+            g.querySelector('.tm-estela').setAttribute('width', (x - 8).toFixed(2));
+            g.querySelector('.tm-barra').style.fill = colorBarra(f);
+            g.querySelector('.tm-cohete').setAttribute('transform', `translate(${x.toFixed(2)} 134)`);
         } else if (aspecto === 'arena') {
             // Un reloj de arena de verdad: marco de madera, ampollas de cristal y arena que baja y se amontona. La
             // cantidad es la del tiempo (no la altura): el cristal se estrecha hacia el cuello.
@@ -885,6 +917,10 @@
     };
     const gListo = () => rotula($('#g-hacer'), t('g_make'), 'mezclar');
     let gUltimos = null, gHechos = null;   // gHechos: los últimos grupos hechos, con su lista (los usa el Marcador)
+    // Repartir con emoción: en vez de salir todos de golpe, una tarjeta baraja los nombres, se para en uno, dice su
+    // grupo y el nombre vuela a su sitio, aquí y allá, hasta el último (los primeros y los últimos, más despacio).
+    let gEmocion = lee('grupos-emocion', false) === true;
+    let gReparto = null;   // el reparto en marcha: { acaba } los coloca a todos ya
     function gCambiaLista() {
         const pegar = $('#g-lista').value === '__pegar', l = gLista();
         $('#g-moodle').hidden = true; gUltimos = null;
@@ -896,6 +932,7 @@
         gListo();
     }
     const gHacer = () => {
+        if (gReparto) { gReparto.acaba(); return; }
         const nombres = gNombres();
         if (nombres.length < 2) {
             $('#g-resumen').textContent = t('g_need_two');
@@ -906,25 +943,117 @@
         const k = gModo === 'num' ? Math.min(gN, b.length) : Math.max(1, Math.round(b.length / gN));
         const grupos = Array.from({ length: k }, () => []);
         b.forEach((n, i) => grupos[i % k].push(n));
+        const emocion = gEmocion && b.length > 1;
         gRejilla.classList.remove('vacia');
+        // Con emoción, cada nombre ocupa ya su sitio pero sin verse: así la letra no cambia mientras van saliendo.
         gRejilla.innerHTML = grupos.map((g, i) => {
             const [c, claro] = COLORES[i % COLORES.length];
             const retraso = reducido() ? 0 : i * 60;
             return `<article class="grupo${claro ? ' claro' : ''}" style="--c:${c}; animation-delay:${retraso}ms">
-                <h3>${t('g_group_n', i + 1)} <small>${g.length}</small></h3>
-                <ul>${g.map((n) => `<li>${cara(lg, n, 'cara-mini')}<span>${escapa(n)}</span></li>`).join('')}</ul></article>`;
+                <h3>${t('g_group_n', i + 1)} <small>${emocion ? 0 : g.length}</small></h3>
+                <ul>${g.map((n, ni) => `<li${emocion ? ` class="por-salir" data-n="${ni}"` : ''}>${cara(lg, n, 'cara-mini')}<span>${escapa(n)}</span></li>`).join('')}</ul></article>`;
         }).join('');
-        const tams = grupos.map((g) => g.length), mn = Math.min(...tams), mx = Math.max(...tams);
-        $('#g-resumen').textContent = t(k === 1 ? 'g_summary_one' : 'g_summary_many', { n: b.length, k, size: mn === mx ? mn : t('g_sizes', { a: mn, b: mx }) });
+        $('#g-resumen').textContent = '';
+        $('#g-moodle').hidden = true;
         gEncaja();
-        rotula($('#g-hacer'), t('gen_again'), 'otra');
-        gHechos = { lista: lg, grupos };
-        // Guardarlos como grupos del curso: solo si se pulsa (por defecto no se crea nada).
-        gUltimos = lg && lg.aula && AULA.groupsurl ? { lista: lg, grupos } : null;
-        $('#g-moodle').hidden = !gUltimos; $('#g-moodle').disabled = false;
-        rotula($('#g-moodle'), t('g_save_course'), 'guardar');
-        suena('dado');
-        anuncia(t('g_made', k));
+        const listo = () => {
+            const tams = grupos.map((g) => g.length), mn = Math.min(...tams), mx = Math.max(...tams);
+            $('#g-resumen').textContent = t(k === 1 ? 'g_summary_one' : 'g_summary_many', { n: b.length, k, size: mn === mx ? mn : t('g_sizes', { a: mn, b: mx }) });
+            rotula($('#g-hacer'), t('gen_again'), 'otra');
+            gHechos = { lista: lg, grupos };
+            // Guardarlos como grupos del curso: solo si se pulsa (por defecto no se crea nada).
+            gUltimos = lg && lg.aula && AULA.groupsurl ? { lista: lg, grupos } : null;
+            $('#g-moodle').hidden = !gUltimos; $('#g-moodle').disabled = false;
+            rotula($('#g-moodle'), t('g_save_course'), 'guardar');
+            suena(emocion ? 'elegido' : 'dado');
+            anuncia(t('g_made', k));
+        };
+        if (emocion) { gReparte(grupos, lg, listo); } else { listo(); }
+    };
+    const gReparte = (grupos, lg, listo) => {
+        // Otra vez barajados, para que salgan aquí y allá y no grupo por grupo.
+        const turnos = baraja(grupos.flatMap((g, gi) => g.map((n, ni) => ({ n, gi, ni }))));
+        const arts = $$('.grupo', gRejilla), cuenta = grupos.map(() => 0);
+        // Cada grupo se llena de arriba abajo: el que sale ocupa el primer hueco libre (su nombre ya estaba en el grupo,
+        // escondido en otro hueco, y se cambian).
+        const suyo = (x) => arts[x.gi].querySelector(`li[data-n="${x.ni}"]`);
+        const hueco = (x) => $$('li', arts[x.gi])[cuenta[x.gi]];
+        // La tarjeta ocupa el panel de la izquierda mientras tanto (los grupos quedan a la vista), con el botón debajo.
+        const carta = document.createElement('div');
+        carta.className = 'g-bombo-carta'; carta.setAttribute('aria-hidden', 'true');
+        carta.innerHTML = `<p class="g-bombo-ante">${escapa(t('g_and_now'))}</p>
+            <div class="g-bombo-cara"></div><p class="g-bombo-nombre"></p><p class="g-bombo-grupo"></p>`;
+        $('#g-hacer').before(carta);
+        $('#h-grupos').classList.add('repartiendo');
+        const nombre = carta.querySelector('.g-bombo-nombre'), grupo = carta.querySelector('.g-bombo-grupo'), foto = carta.querySelector('.g-bombo-cara');
+        const muestra = (n) => { foto.innerHTML = n ? cara(lg, n, 'cara-bombo') : ''; nombre.textContent = n || '…'; };
+        let vivo = true;
+        const coloca = (x) => {
+            const li = hueco(x), suyoLi = suyo(x);
+            if (!li || !suyoLi || !suyoLi.classList.contains('por-salir')) { return; }
+            if (li !== suyoLi) { [li.innerHTML, suyoLi.innerHTML] = [suyoLi.innerHTML, li.innerHTML]; [li.dataset.n, suyoLi.dataset.n] = [suyoLi.dataset.n, li.dataset.n]; }
+            li.classList.remove('por-salir');
+            if (vivo && !reducido()) { li.classList.add('sale'); arts[x.gi].classList.remove('recibe'); void arts[x.gi].offsetWidth; arts[x.gi].classList.add('recibe'); }
+            arts[x.gi].querySelector('h3 small').textContent = ++cuenta[x.gi];
+        };
+        const acaba = () => {
+            if (!vivo) { return; }
+            vivo = false; gReparto = null;
+            turnos.forEach(coloca);
+            carta.remove();
+            $('#h-grupos').classList.remove('repartiendo');
+            listo();
+        };
+        gReparto = { acaba };
+        rotula($('#g-hacer'), t('g_place_all'), 'pasar');
+        const pausa = (ms) => new Promise((r) => { setTimeout(r, ms); });
+        // El nombre sale de la tarjeta y aterriza en su hueco.
+        const vuela = (x, ms) => new Promise((r) => {
+            const li = hueco(x), suyoLi = suyo(x);
+            if (reducido() || !li || !suyoLi || !li.animate) { r(); return; }
+            const de = nombre.getBoundingClientRect(), a = li.getBoundingClientRect();
+            const fantasma = document.createElement('div');
+            fantasma.className = 'g-vuela'; fantasma.setAttribute('aria-hidden', 'true'); fantasma.innerHTML = suyoLi.innerHTML;
+            Object.assign(fantasma.style, { left: a.left + 'px', top: a.top + 'px', width: a.width + 'px', height: a.height + 'px', fontSize: getComputedStyle(li).fontSize });
+            document.body.append(fantasma);
+            const dx = de.left + de.width / 2 - (a.left + a.width / 2), dy = de.top + de.height / 2 - (a.top + a.height / 2);
+            fantasma.animate([{ transform: `translate(${dx}px, ${dy}px) scale(1.4)`, opacity: 0.3 }, { transform: 'none', opacity: 1 }],
+                { duration: ms, easing: 'cubic-bezier(.3, .7, .3, 1)' }).onfinish = () => { fantasma.remove(); r(); };
+        });
+        const base = Math.max(750, Math.min(1700, 22000 / turnos.length));
+        (async () => {
+            for (let i = 0; i < turnos.length; i++) {
+                const x = turnos[i], quedan = turnos.slice(i);
+                const ritmo = base * (i < 2 ? 1.3 : (turnos.length - i <= 3 ? 1.7 : 1));
+                carta.classList.remove('elegida', 'con-grupo', 'claro');
+                grupo.textContent = '';
+                if (reducido()) {
+                    muestra('');
+                    await pausa(ritmo * 0.4);
+                } else {
+                    // Barajar: los nombres que quedan, cada vez más despacio.
+                    const fin = performance.now() + ritmo * 0.4;
+                    for (let espera = 45; vivo && performance.now() < fin; espera *= 1.18) {
+                        muestra(quedan[azar(quedan.length)].n); suena('tic');
+                        await pausa(espera);
+                    }
+                }
+                if (!vivo) { return; }
+                muestra(x.n); carta.classList.add('elegida'); suena('cuenta');
+                await pausa(ritmo * 0.2);
+                if (!vivo) { return; }
+                const [c, claro] = COLORES[x.gi % COLORES.length];
+                carta.style.setProperty('--c', c); carta.classList.toggle('claro', !!claro); carta.classList.add('con-grupo');
+                grupo.textContent = t('g_group_n', x.gi + 1);
+                anuncia(t('g_goes_to', { name: x.n, n: x.gi + 1 }));
+                await pausa(ritmo * 0.2);
+                if (!vivo) { return; }
+                await vuela(x, Math.max(280, ritmo * 0.2));
+                if (!vivo) { return; }
+                coloca(x);
+            }
+            acaba();
+        })();
     };
     // Letra de los grupos tan grande como quepa sin desplazar (en la pizarra se lee desde el fondo).
     const gEncaja = () => {
@@ -941,6 +1070,8 @@
     if (window.ResizeObserver) { new ResizeObserver(() => { cancelAnimationFrame(gMarco); gMarco = requestAnimationFrame(gEncaja); }).observe(gRejilla); }
     HERR.grupos = { entra: () => requestAnimationFrame(gEncaja) };
     $('#g-hacer').addEventListener('click', gHacer);
+    $('#g-emocion').checked = gEmocion;
+    $('#g-emocion').addEventListener('change', (e) => { gEmocion = e.target.checked; guarda('grupos-emocion', gEmocion); });
     $('#g-lista').addEventListener('change', gCambiaLista);
     $('#g-pegados').addEventListener('input', () => { gListo(); $('#g-guardar').disabled = !limpiaNombres($('#g-pegados').value).length; });
     $('#g-guardar').addEventListener('click', () => abreEditor(null, $('#g-pegados').value));
@@ -1227,12 +1358,24 @@
         sale.type = 'button'; sale.className = 'salir-presentar'; sale.id = 'b-salir-presentar'; sale.hidden = true;
         sale.innerHTML = `${icono('salir')}<span>${escapa(t('bar_present_exit'))}</span>`;
         document.body.append(sale);
+        // También pone la pantalla completa (si no lo estaba ya), y al salir la quita solo si la puso él. Si se sale de
+        // la pantalla completa con la tecla Escape del navegador, se sale también de presentar.
+        let puse = false;
         const pon = (si) => {
             document.documentElement.classList.toggle('presentando', si);
             sale.hidden = !si;
             if (si) { sale.focus({ preventScroll: true }); } else { b.focus({ preventScroll: true }); }
+            if (si && document.fullscreenEnabled && !document.fullscreenElement) {
+                document.documentElement.requestFullscreen().then(() => { puse = true; }).catch(() => {});
+            } else if (!si && puse) {
+                puse = false;
+                if (document.fullscreenElement) { document.exitFullscreen().catch(() => {}); }
+            }
             dispatchEvent(new Event('resize'));
         };
+        document.addEventListener('fullscreenchange', () => {
+            if (!document.fullscreenElement && puse) { puse = false; if (document.documentElement.classList.contains('presentando')) { pon(false); } }
+        });
         b.addEventListener('click', () => pon(true));
         sale.addEventListener('click', () => pon(false));
         document.addEventListener('keydown', (e) => {
@@ -1246,12 +1389,12 @@
         $('.acciones').prepend(b);
         const pinta = () => {
             b.title = `${t('bar_mode')}: ${t('mode_' + modo)}`;
-            b.innerHTML = `<span>${icono('modo-' + modo)}</span><span class="redondo-texto">${escapa(t('mode_' + modo))}</span>`;
+            b.innerHTML = `<span class="modo-disco" data-m="${modo}">${icono('modo-' + modo)}</span><span class="redondo-texto">${escapa(t('mode_' + modo))}</span>`;
         };
         const menu = document.createElement('div');
         menu.className = 'menu-modo'; menu.id = 'menu-modo'; menu.hidden = true; menu.setAttribute('role', 'menu');
         menu.innerHTML = `<p class="ante">${escapa(t('bar_mode_title'))}</p>` + PANTALLAS.map((m) => `<button type="button" role="menuitemradio" data-modo="${m}">`
-            + `<span class="menu-modo-ico">${icono('modo-' + m)}</span><span><strong>${escapa(t('mode_' + m))}</strong><small>${escapa(t('mode_' + m + '_hint'))}</small></span></button>`).join('');
+            + `<span class="modo-disco" data-m="${m}">${icono('modo-' + m)}</span><span><strong>${escapa(t('mode_' + m))}</strong><small>${escapa(t('mode_' + m + '_hint'))}</small></span></button>`).join('');
         document.body.append(menu);
         const cierra = () => { menu.hidden = true; b.setAttribute('aria-expanded', 'false'); };
         b.addEventListener('click', () => {
@@ -1309,6 +1452,7 @@
         kept: (tool) => (AULA && AULA.state && AULA.state[tool]) || null, keep: guardaEnAula,
         audioContext: () => audio(), soundOn: () => sonido, output: () => maestro,
         mode: () => modo,   // early, primary, secondary or advanced; «classtools:mode» when it changes
+        tabs: () => pestanas.map((b) => b.dataset.h), current: () => actual,
     };
     // Abierta desde un curso del aula: título con el curso y botón para volver a él.
     // La vuelta: al curso si se abrió desde uno; si no (dentro de Moodle, sin curso), al inicio de cada usuario.

@@ -1,0 +1,182 @@
+<?php
+// This file is part of Moodle - https://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
+namespace local_oksigeniaclasstools\local;
+
+/**
+ * Tests for live sessions: votes, team buzzers and the teacher's phone as a remote.
+ *
+ * @package    local_oksigeniaclasstools
+ * @category   test
+ * @copyright  2026 Oksigenia <dev@oksigenia.cc>
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @covers     \local_oksigeniaclasstools\local\live
+ */
+#[\PHPUnit\Framework\Attributes\CoversClass(live::class)]
+final class live_test extends \advanced_testcase {
+    public function test_start_gives_a_readable_code_and_ends_the_previous_one(): void {
+        $this->resetAfterTest();
+        $course = $this->getDataGenerator()->create_course();
+        $teacher = $this->getDataGenerator()->create_user();
+        $first = live::start($course, $teacher->id, 'vote', 'anon');
+        $this->assertMatchesRegularExpression('/^[A-HJ-NP-Z2-9]{6}$/', $first->code);
+        $this->assertEquals($first->id, live::by_code(strtolower($first->code))->id);
+        $second = live::start($course, $teacher->id, 'vote', 'anon');
+        $this->assertNull(live::by_code($first->code));
+        $this->assertEquals($second->id, live::by_code($second->code)->id);
+        // A remote is always with the account.
+        $this->assertSame('moodle', live::start($course, $teacher->id, 'remote', 'anon')->identity);
+    }
+
+    public function test_buzzers_need_two_teams(): void {
+        $this->resetAfterTest();
+        $course = $this->getDataGenerator()->create_course();
+        $this->expectException(\moodle_exception::class);
+        live::start($course, 2, 'buzz', 'anon', ['teams' => ['Only one']]);
+    }
+
+    public function test_a_vote_counts_one_answer_per_device_and_it_can_change(): void {
+        global $DB;
+        $this->resetAfterTest();
+        $course = $this->getDataGenerator()->create_course();
+        $live = live::start($course, 2, 'vote', 'anon', ['vote' => 'yesno']);
+        $a = str_repeat('a', 32);
+        $b = str_repeat('b', 32);
+        live::join($live, $a);
+        live::join($live, $b);
+        live::join($live, $b);
+        // Closed: no answers yet.
+        try {
+            live::answer($live, $a, 'yes');
+            $this->fail('Answered a closed question');
+        } catch (\moodle_exception $e) {
+            $this->assertSame('liveclosed', $e->errorcode);
+        }
+        $live = live::control($live, 'open');
+        live::answer($live, $a, 'yes');
+        live::answer($live, $b, 'yes');
+        // Changing it at once is a burst of taps: it stays; later it changes.
+        live::answer($live, $b, 'no');
+        $this->assertSame(['yes' => 2, 'no' => 0], live::board_view($live)['results']);
+        $DB->set_field('local_oksigeniaclasstools_livein', 'timecreated', 0, ['liveid' => $live->id, 'device' => $b, 'round' => 1]);
+        live::answer($live, $b, 'no');
+        $view = live::board_view($live);
+        $this->assertSame(['yes' => 1, 'no' => 1], $view['results']);
+        $this->assertCount(2, $view['devices']);
+        $this->assertSame('', $view['devices'][0]['name']);
+        // Results reach the devices only when the teacher shows them, once it is closed.
+        $this->assertArrayNotHasKey('results', live::device_view($live, $a));
+        $live = live::control($live, 'show', ['show' => 1]);
+        $live = live::control($live, 'close');
+        $this->assertSame(['yes' => 1, 'no' => 1], live::device_view($live, $a)['results']);
+        $this->assertSame('yes', live::device_view($live, $a)['mine']);
+        // Something that is not an answer of the vote.
+        $live = live::control($live, 'open');
+        $this->expectException(\moodle_exception::class);
+        live::answer($live, $a, 'maybe');
+    }
+
+    public function test_buzzers_keep_the_order_and_only_the_first_press(): void {
+        $this->resetAfterTest();
+        $course = $this->getDataGenerator()->create_course();
+        $live = live::start($course, 2, 'buzz', 'anon', ['teams' => ['Red', 'Blue']]);
+        [$a, $b, $c] = [str_repeat('a', 32), str_repeat('b', 32), str_repeat('c', 32)];
+        live::join($live, $a, 0, 1);
+        live::join($live, $b, 0, 2);
+        live::join($live, $c, 0, 9);
+        $live = live::control($live, 'open');
+        $this->assertSame(1, live::answer($live, $b, 'press'));
+        $this->assertSame(2, live::answer($live, $a, 'press'));
+        $this->assertSame(1, live::answer($live, $b, 'press'));
+        $this->assertSame(3, live::answer($live, $c, 'press'));
+        $view = live::board_view($live);
+        $this->assertSame([2, 1, 2], array_column($view['presses'], 'team'));
+        $this->assertSame(1, live::device_view($live, $b)['place']);
+        // Another round starts empty.
+        $live = live::control($live, 'open');
+        $this->assertSame([], live::board_view($live)['presses']);
+    }
+
+    public function test_a_device_sent_out_cannot_come_back(): void {
+        $this->resetAfterTest();
+        $course = $this->getDataGenerator()->create_course();
+        $live = live::start($course, 2, 'vote', 'anon');
+        $a = str_repeat('a', 32);
+        live::join($live, $a);
+        $live = live::control($live, 'kick', ['device' => $a]);
+        $this->assertTrue(live::device_view($live, $a)['kicked']);
+        $this->assertSame([], live::board_view($live)['devices']);
+        $this->expectException(\moodle_exception::class);
+        live::join($live, $a);
+    }
+
+    public function test_with_accounts_the_board_shows_names(): void {
+        $this->resetAfterTest();
+        $course = $this->getDataGenerator()->create_course();
+        $student = $this->getDataGenerator()->create_user(['firstname' => 'Virginia', 'lastname' => 'Pérez']);
+        $live = live::start($course, 2, 'vote', 'moodle');
+        live::join($live, 'u' . $student->id, $student->id);
+        $this->assertSame(fullname($student), live::board_view($live)['devices'][0]['name']);
+    }
+
+    public function test_the_remote_queues_commands_for_the_board(): void {
+        $this->resetAfterTest();
+        $course = $this->getDataGenerator()->create_course();
+        $live = live::start($course, 2, 'remote', 'moodle');
+        $live = live::control($live, 'command', ['command' => 'tm_toggle']);
+        $live = live::control($live, 'command', ['command' => 'pick']);
+        $this->assertSame(['tm_toggle', 'pick'], array_column(live::board_view($live)['cmds'], 'cmd'));
+        $this->assertSame(['pick'], array_column(live::board_view($live, 1)['cmds'], 'cmd'));
+        $this->expectException(\moodle_exception::class);
+        live::control($live, 'command', ['command' => 'rm -rf']);
+    }
+
+    public function test_other_sessions_and_cleanup(): void {
+        global $DB;
+        $this->resetAfterTest();
+        $course = $this->getDataGenerator()->create_course();
+        $mine = live::start($course, 2, 'vote', 'anon');
+        live::start($course, 3, 'buzz', 'anon', ['teams' => ['A', 'B']]);
+        live::start($course, 4, 'remote', 'moodle');
+        // Remotes do not count: they are one phone.
+        $this->assertSame(1, live::others($mine->id));
+        live::join($mine, str_repeat('a', 32));
+        $DB->set_field('local_oksigeniaclasstools_live', 'timecreated', time() - 2 * DAYSECS, ['id' => $mine->id]);
+        live::cleanup();
+        $this->assertFalse($DB->record_exists('local_oksigeniaclasstools_live', ['id' => $mine->id]));
+        $this->assertFalse($DB->record_exists('local_oksigeniaclasstools_livein', ['liveid' => $mine->id]));
+        $this->assertSame(2, $DB->count_records('local_oksigeniaclasstools_live'));
+    }
+
+    public function test_a_session_without_the_board_expires(): void {
+        global $DB;
+        $this->resetAfterTest();
+        $course = $this->getDataGenerator()->create_course();
+        $live = live::start($course, 2, 'vote', 'anon');
+        $DB->set_field('local_oksigeniaclasstools_live', 'timemodified', time() - live::IDLE - 1, ['id' => $live->id]);
+        $this->assertNull(live::by_code($live->code));
+        // The board coming back keeps it alive.
+        live::mine($live->id, 2);
+        $this->assertNotNull(live::by_code($live->code));
+    }
+
+    public function test_device_tokens(): void {
+        $this->assertSame(str_repeat('a', 32), live::device_param(str_repeat('a', 32)));
+        $this->assertSame('u42', live::device_param('u42'));
+        $this->assertSame('', live::device_param('../../etc'));
+        $this->assertSame('', live::device_param('short'));
+    }
+}

@@ -27,6 +27,7 @@
         customFaces: t('ch_custom_faces'), customHint: t('ch_custom_hint'),
         motif: t('ch_motif'), other: t('ch_other'), side1: t('ch_side1'), side2: t('ch_side2'), resetTally: t('ch_reset_tally'),
         pressTo: (b) => t('ch_press_to', b), exclaim: (w) => t('ch_exclaim', w),
+        dieKinds: t('ch_die_kinds'), allOut: t('ch_all_out'),
     };
     const PALETTE = [['#164281'], ['#ce1423'], ['#067e36'], ['#fbbe17', true], ['#5b2fb8'], ['#0e7c86'], ['#c2410c'], ['#0f2f5e']];
     // Content in Spanish: per-language content comes in a later step.
@@ -77,11 +78,13 @@
                     <div class="ct-dice-types" id="di-types"></div>
                     <label class="campo apilado" id="di-custom-box" hidden><span>${STR.customFaces}</span>
                         <textarea id="di-custom" rows="4" spellcheck="false" placeholder="${escape(STR.customHint)}"></textarea></label>
+                    <label class="interruptor" id="di-norepeat-box" hidden><input type="checkbox" id="di-norepeat"><span>${STR.noRepeat}</span></label>
                 </aside>
                 <div class="tarjeta ct-stage">
                     <div class="ct-dice" id="di-dice"></div>
                     <p class="total espera" id="di-total" aria-live="polite"></p>
                     <button type="button" class="boton grande" id="di-roll"><span data-icono="dado"></span>${STR.roll}</button>
+                    <ol class="historial" id="di-history" hidden></ol>
                 </div>
             </div>
             <div class="ct-panel" data-panel="coin" hidden>
@@ -348,18 +351,56 @@
     let diN = Math.max(1, Math.min(4, Number(load('dados-n', 2)) || 2));
     let diTypes = load('dados-tipos', ['d6', 'd6', 'd6', 'd6']);
     if (!Array.isArray(diTypes)) { diTypes = ['d6', 'd6', 'd6', 'd6']; }
-    diTypes = [0, 1, 2, 3].map((i) => (DICE[diTypes[i]] ? diTypes[i] : 'd6'));
+    diTypes = [0, 1, 2, 3].map((i) => (DICE[diTypes[i]] || String(diTypes[i]).startsWith('list:') ? diTypes[i] : 'd6'));
     $('#di-custom').value = load('dados-personalizado', '');
-    let diValues = [], diRolling = false;
+    let diValues = [], diRolling = false, diHistory = [];
     const customFaces = () => $('#di-custom').value.split(/\r?\n/).map((x) => x.trim()).filter(Boolean).slice(0, 20);
-    const facesOf = (type) => (type === 'custom' ? (customFaces().length ? customFaces() : ['?']) : DICE[type].faces);
+    // A die can also be a list: the class (with photos, leaving out who is missing today) or one of the teacher's lists.
+    // With «No repeats», everyone comes out once before anyone comes out again.
+    const listOf = (type) => (String(type).startsWith('list:') ? core.lists().find((l) => 'list:' + l.id === type) || null : null);
+    const isList = (type) => !!listOf(type);
+    const typeLabel = (type) => (listOf(type) ? listOf(type).nombre : DICE[type].label);
+    const facesOf = (type) => {
+        if (isList(type)) { const names = core.present(listOf(type)); return names.length ? names : ['?']; }
+        return type === 'custom' ? (customFaces().length ? customFaces() : ['?']) : DICE[type].faces;
+    };
+    const diOut = {};   // list type => names already out (with «No repeats»)
+    const pickFrom = (type, taken) => {
+        const faces = facesOf(type);
+        if (!isList(type) || !$('#di-norepeat').checked || faces[0] === '?') { return faces[random(faces.length)]; }
+        let left = faces.filter((n) => !(diOut[type] || []).includes(n) && !taken.includes(n));
+        if (!left.length) { diOut[type] = []; left = faces.filter((n) => !taken.includes(n)); announce(STR.allOut); }
+        const n = left.length ? left[random(left.length)] : faces[random(faces.length)];
+        diOut[type] = (diOut[type] || []).concat(n);
+        return n;
+    };
     const diPaintCount = () => $$('#di-count button').forEach((b) => b.setAttribute('aria-checked', String(Number(b.dataset.n) === diN)));
     const diPaintTypes = () => {
+        // A list that is gone (deleted, or this course has no longer that group) goes back to an ordinary die.
+        diTypes = diTypes.map((ty) => (DICE[ty] || isList(ty) ? ty : 'd6'));
+        const lists = core.lists().filter((l) => core.present(l).length);
+        const moodle = lists.filter((l) => l.aula), own = lists.filter((l) => !l.aula);
+        const options = (i) => {
+            const opt = (value, label) => `<option value="${escape(value)}"${value === diTypes[i] ? ' selected' : ''}>${escape(label)}</option>`;
+            const group = (label, ls) => (ls.length ? `<optgroup label="${escape(label)}">${ls.map((l) => opt('list:' + l.id, l.nombre)).join('')}</optgroup>` : '');
+            return (lists.length ? `<optgroup label="${escape(STR.dieKinds)}">` : '') + Object.entries(DICE).map(([k, d]) => opt(k, d.label)).join('')
+                + (lists.length ? '</optgroup>' : '') + group(STR.students, moodle) + group(STR.ownlists, own);
+        };
         $('#di-types').innerHTML = Array.from({ length: diN }, (_, i) => `<label class="campo apilado"><span>${STR.die(i + 1)}</span>`
-            + `<select data-i="${i}">${Object.entries(DICE).map(([k, d]) => `<option value="${k}"${k === diTypes[i] ? ' selected' : ''}>${d.label}</option>`).join('')}</select></label>`).join('');
-        $('#di-custom-box').hidden = !diTypes.slice(0, diN).includes('custom');
+            + `<select data-i="${i}">${options(i)}</select></label>`).join('');
+        const used = diTypes.slice(0, diN);
+        $('#di-custom-box').hidden = !used.includes('custom');
+        $('#di-norepeat-box').hidden = !used.some(isList);
+        used.filter(isList).forEach((ty) => core.preload(listOf(ty)));
     };
+    // On the die, the photo and the first name; the result below says the full name.
+    const firstName = (n) => String(n).split(/\s+/)[0];
     const faceHTML = (type, v, i) => {
+        if (isList(type)) {
+            const l = listOf(type), photo = l.fotos && l.fotos[v], [color, light] = PALETTE[i];
+            return `<div class="ct-die ct-die-name${photo ? ' con-foto' : ''}" style="--c:${color};--t:${light ? '#1c1a19' : '#fff'}">`
+                + `${photo ? `<img src="${escape(photo)}" alt="">` : ''}<span>${escape(firstName(v))}</span></div>`;
+        }
         if (DICE[type] && DICE[type].pips) {
             return `<div class="dado ct-die" style="--c:${PALETTE[i][0]}">${range(0, 8).map((j) => `<span class="punto${PIPS[v].includes(j) ? ' on' : ''}"></span>`).join('')}</div>`;
         }
@@ -373,12 +414,19 @@
         const box = $('#di-dice');
         box.dataset.n = values.length;
         box.innerHTML = values.map((v, i) => `<figure class="ct-die-wrap" aria-label="${escape(String(v))}">${faceHTML(diTypes[i], v, i)}`
-            + `<figcaption>${escape(DICE[diTypes[i]].label)}</figcaption></figure>`).join('');
+            + `<figcaption>${escape(typeLabel(diTypes[i]))}</figcaption></figure>`).join('');
     };
     // Total for numeric dice; with «number, operation, number» (or more), the operation result.
     const diSummary = (values) => {
         const types = diTypes.slice(0, values.length);
-        const numeric = (t) => DICE[t].faces.every((f) => typeof f === 'number');
+        const numeric = (t) => !isList(t) && t !== 'custom' && DICE[t].faces.every((f) => typeof f === 'number');
+        // Who and what they got: «Virginia – 6», «Virginia – 4 + 3 = 7».
+        if (types.some(isList)) {
+            const who = values.filter((_, i) => isList(types[i])), what = values.filter((_, i) => !isList(types[i]));
+            const whatTypes = types.filter((ty) => !isList(ty));
+            const rest = what.length > 1 && whatTypes.every(numeric) ? `${what.join(' + ')} = ${what.reduce((a, b) => a + b, 0)}` : what.join(' · ');
+            return who.join(' · ') + (rest ? ` – ${rest}` : '');
+        }
         if (types.every(numeric) && values.length > 1) { return STR.total(values.reduce((a, b) => a + b, 0)); }
         if (values.length >= 3 && values.length % 2 === 1 && types.every((t, i) => (i % 2 ? t === 'ops' || t === 'ops2' : numeric(t)))) {
             // Left to right, × and ÷ first, as in maths.
@@ -399,12 +447,21 @@
         t.className = 'total'; t.textContent = diSummary(diValues);
     };
     const diResting = () => diTypes.slice(0, diN).map((t, i) => { const f = facesOf(t); return f[Math.min(f.length - 1, [5, 4, 3, 2][i] % f.length)]; });
+    const diPaintHistory = () => {
+        const h = $('#di-history');
+        h.hidden = !diHistory.length;
+        h.innerHTML = diHistory.map((x) => `<li>${escape(x)}</li>`).join('');
+    };
+    const diReset = () => { diValues = []; diHistory = []; diPaint(diResting()); diSetTotal(); diPaintHistory(); };
     const roll = () => {
         if (diRolling) { return; }
-        const finals = diTypes.slice(0, diN).map((t) => { const f = facesOf(t); return f[random(f.length)]; });
+        const taken = [];
+        const finals = diTypes.slice(0, diN).map((ty) => { const v = pickFrom(ty, taken); taken.push(v); return v; });
         const done = () => {
             diRolling = false; diValues = finals; diPaint(finals); diSetTotal();
             $('#di-roll').disabled = false;
+            // With a list, a record of the turns: «Virginia – 6», «Pablo – 3»…
+            if (diTypes.slice(0, diN).some(isList)) { diHistory = [diSummary(finals)].concat(diHistory).slice(0, 12); diPaintHistory(); }
             announce(diSummary(finals));
         };
         play('dado');
@@ -420,14 +477,15 @@
     };
     $('#di-roll').addEventListener('click', roll);
     $$('#di-count button').forEach((b) => b.addEventListener('click', () => {
-        diN = Number(b.dataset.n); save('dados-n', diN); diPaintCount(); diPaintTypes(); diValues = []; diPaint(diResting()); diSetTotal();
+        diN = Number(b.dataset.n); save('dados-n', diN); diPaintCount(); diPaintTypes(); diReset();
     }));
     $('#di-types').addEventListener('change', (e) => {
         const s = e.target.closest('select'); if (!s) { return; }
         diTypes[Number(s.dataset.i)] = s.value; save('dados-tipos', diTypes);
-        $('#di-custom-box').hidden = !diTypes.slice(0, diN).includes('custom');
-        diValues = []; diPaint(diResting()); diSetTotal();
+        diPaintTypes(); diReset();
     });
+    $('#di-norepeat').checked = load('dados-sinrepetir', true) !== false;
+    $('#di-norepeat').addEventListener('change', () => { save('dados-sinrepetir', $('#di-norepeat').checked); Object.keys(diOut).forEach((k) => delete diOut[k]); });
     $('#di-custom').addEventListener('input', () => { save('dados-personalizado', $('#di-custom').value); diValues = []; diPaint(diResting()); diSetTotal(); });
 
     // ---------------------------------------------------------------------------------------------------
@@ -552,6 +610,8 @@
     const refreshSources = () => {
         fillSelect($('#wh-source'), false, load('ruleta-fuente', null)); fillSelect($('#ca-source'), true, load('cartas-fuente', 'letters'));
         whRefresh(); caRefresh();
+        // The dice that are lists: the lists may have changed (a new one, or who is missing today).
+        if (!diRolling) { diPaintTypes(); if (!diValues.length) { diPaint(diResting()); } }
     };
     document.addEventListener('classtools:lists', refreshSources);
     // «Who is missing today» changes the class lists too: refresh when coming back to this tool.

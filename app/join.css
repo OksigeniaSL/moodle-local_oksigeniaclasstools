@@ -1,0 +1,63 @@
+/* The page where students join a live session from a tablet, a Chromebook or a phone: only buttons, large enough for
+   small fingers, in the colours of the board. */
+@font-face {
+    font-family: "Nunito";
+    font-weight: 200 1000;
+    font-display: swap;
+    src: url("fonts/nunito-latin-wght-normal.woff2") format("woff2-variations");
+}
+:root {
+    --azul: #164281; --azul-osc: #0f2f5e; --azul-suave: #e4ecf8;
+    --rojo: #ce1423; --amarillo: #fbbe17; --verde: #067e36; --morado: #5b2fb8;
+    --fondo: #f4f7fb; --superficie: #fff; --borde: #d9e2ee; --tinta: #1c1a19; --tinta-3: #55514d;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { min-height: 100%; margin: 0; }
+body { background: var(--fondo); color: var(--tinta); font: 700 18px/1.35 "Nunito", system-ui, sans-serif; -webkit-tap-highlight-color: transparent; }
+button, input { font: inherit; color: inherit; }
+button { touch-action: manipulation; -webkit-user-select: none; user-select: none; cursor: pointer; }
+.jn { display: flex; flex-direction: column; gap: 1rem; min-height: 100vh; min-height: 100dvh; max-width: 40rem; margin: 0 auto; padding: max(1rem, env(safe-area-inset-top)) 1rem max(1rem, env(safe-area-inset-bottom)); }
+.jn-cabeza { display: flex; align-items: center; justify-content: space-between; gap: .6rem; color: var(--tinta-3); font-size: .85rem; }
+.jn-cabeza strong { color: var(--azul); font-weight: 900; }
+.jn-centro { display: flex; flex: 1; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; text-align: center; }
+.jn-titulo { margin: 0; font-size: clamp(1.5rem, 6vw, 2.2rem); font-weight: 900; line-height: 1.15; text-wrap: balance; }
+.jn-texto { margin: 0; color: var(--tinta-3); font-size: 1.05rem; text-wrap: balance; }
+.jn-codigo { width: min(100%, 16rem); padding: .6rem .8rem; border: 3px solid var(--borde); border-radius: 18px; background: var(--superficie); font-size: 2.2rem; font-weight: 900; letter-spacing: .25em; text-align: center; text-transform: uppercase; }
+.jn-codigo:focus { border-color: var(--azul); outline: none; }
+.jn-boton { min-height: 56px; padding: .6rem 1.6rem; border: 0; border-radius: 50rem; background: var(--azul); color: #fff; font-size: 1.15rem; font-weight: 900; }
+.jn-boton.suave { background: var(--azul-suave); color: var(--azul); }
+.jn-boton:focus-visible, .jn-op:focus-visible, .jn-ya:focus-visible { outline: 4px solid var(--amarillo); outline-offset: 3px; }
+/* The answers: two columns (one for the traffic light), each in its colour; the chosen one with a thick ring. */
+.jn-ops { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .8rem; width: 100%; }
+.jn-ops.una { grid-template-columns: minmax(0, 1fr); }
+.jn-ops.cinco { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.jn-op { display: grid; place-items: center; min-height: 6.5rem; padding: .6rem; border: 0; border-radius: 22px; background: var(--c); color: #fff; font-size: clamp(1.6rem, 7vw, 2.6rem); font-weight: 1000; box-shadow: inset 0 -6px 0 rgba(0, 0, 0, .18); transition: transform .1s, opacity .15s; }
+.jn-ops.cinco .jn-op { min-height: 5rem; }
+.jn-ops.una .jn-op { min-height: 5rem; font-size: 1.5rem; }
+.jn-op.claro { color: var(--tinta); }
+.jn-op:active { transform: scale(.97); }
+.jn-ops.elegido .jn-op:not(.mia) { opacity: .45; }
+.jn-op.mia { box-shadow: inset 0 -6px 0 rgba(0, 0, 0, .18), 0 0 0 5px var(--superficie), 0 0 0 9px var(--tinta); }
+/* The buzzer: one huge round button. */
+.jn-ya { width: min(78vw, 60vh, 20rem); aspect-ratio: 1; border: 0; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #ff5a66, var(--rojo) 60%, #8f0d18); color: #fff; font-size: clamp(2.6rem, 14vw, 4.4rem); font-weight: 1000; box-shadow: 0 14px 0 #7a0b14, 0 24px 40px rgba(122, 11, 20, .35); transition: transform .06s, box-shadow .06s; }
+.jn-ya:active { transform: translateY(10px); box-shadow: 0 4px 0 #7a0b14, 0 10px 20px rgba(122, 11, 20, .3); }
+.jn-puesto { margin: 0; font-size: clamp(3rem, 16vw, 5rem); font-weight: 1000; line-height: 1; }
+.jn-puesto.primero { color: var(--verde); }
+.jn-equipo { display: inline-flex; align-items: center; gap: .5rem; padding: .35rem 1rem; border-radius: 50rem; background: var(--c); color: #fff; font-weight: 900; }
+.jn-equipo.claro { color: var(--tinta); }
+.jn-equipos { display: grid; gap: .8rem; width: 100%; }
+.jn-equipos .jn-op { min-height: 4.5rem; font-size: 1.5rem; }
+.jn-enlace { border: 0; background: none; color: var(--azul); font-size: .95rem; font-weight: 800; text-decoration: underline; }
+/* Results, when the teacher shows them. */
+.jn-barras { display: grid; gap: .5rem; width: 100%; }
+.jn-barra { display: grid; grid-template-columns: 4.5rem minmax(0, 1fr) 2.5rem; align-items: center; gap: .6rem; font-variant-numeric: tabular-nums; }
+.jn-barra span:first-child { text-align: right; }
+.jn-barra i { display: block; height: 1.4rem; border-radius: 50rem; background: var(--c); }
+/* The remote: big buttons in two columns. */
+.jn-mando { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .8rem; width: 100%; }
+.jn-mando button { min-height: 5.5rem; padding: .6rem; border: 0; border-radius: 20px; background: var(--superficie); color: var(--azul-osc); font-size: 1.1rem; font-weight: 900; box-shadow: 0 2px 0 var(--borde), 0 6px 18px rgba(15, 47, 94, .08); }
+.jn-mando button.grande { grid-column: 1 / -1; min-height: 6.5rem; background: var(--verde); color: #fff; font-size: 1.4rem; }
+.jn-mando button:active { transform: scale(.98); }
+.jn-aviso { margin: 0; padding: .4rem .8rem; border-radius: 12px; background: #fff4d6; color: #6b4a00; font-size: .9rem; text-align: center; }
+@media (prefers-reduced-motion: reduce) { .jn-op, .jn-ya { transition: none; } }

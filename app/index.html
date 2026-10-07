@@ -23,6 +23,7 @@
     <button type="button" role="tab" class="pestana" id="t-asi" data-h="asi" aria-controls="h-asi" aria-selected="false" tabindex="-1"><span data-icono="asi"></span><span data-t="tab_rules">Así trabajamos</span></button>
     <button type="button" role="tab" class="pestana" id="t-reloj" data-h="reloj" aria-controls="h-reloj" aria-selected="false" tabindex="-1"><span data-icono="reloj"></span><span data-t="tab_clock">Reloj</span></button>
     <button type="button" role="tab" class="pestana" id="t-qr" data-h="qr" aria-controls="h-qr" aria-selected="false" tabindex="-1"><span data-icono="qr"></span><span data-t="tab_qr">QR</span></button>
+    <button type="button" role="tab" class="pestana" id="t-envivo" data-h="envivo" aria-controls="h-envivo" aria-selected="false" tabindex="-1"><span data-icono="mano"></span><span data-t="tab_live">En vivo</span></button>
   </nav>
   <div class="acciones">
     <button type="button" class="redondo" id="b-sonido" aria-pressed="true" title="Sonido" data-t-title="bar_sound"><span data-icono="sonido"></span><span class="redondo-texto" data-t="bar_sound">Sonido</span></button>
@@ -157,6 +158,7 @@
         <output id="g-n" aria-live="polite">4</output>
         <button type="button" class="redondo suave" id="g-mas" aria-label="Uno más" data-t-aria="g_more"><span data-icono="mas"></span></button>
       </div>
+      <label class="interruptor"><input type="checkbox" id="g-emocion"><span data-t="g_suspense">Repartir con emoción</span></label>
       <button type="button" class="boton grande ancho" id="g-hacer"><span data-icono="mezclar"></span><span data-t="g_make">Hacer grupos</span></button>
       <button type="button" class="boton suave ancho" id="g-moodle" hidden><span data-icono="guardar"></span><span data-t="g_save_course">Guardar como grupos del curso</span></button>
       <p class="nota" id="g-resumen" aria-live="polite"></p>
@@ -240,6 +242,7 @@
 
   <!-- Código QR -->
   <section class="herramienta qr" id="h-qr" role="tabpanel" aria-labelledby="t-qr" hidden></section>
+  <section class="herramienta lv" id="h-envivo" role="tabpanel" aria-labelledby="t-envivo" hidden></section>
 </main>
 
 <!-- Pantalla del final del temporizador -->
@@ -316,5 +319,6 @@
 <script src="manipulatives.js"></script>
 <script src="whiteboard.js"></script>
 <script src="clocklearn.js"></script>
+<script src="live.js"></script>
 </body>
 </html>
