@@ -233,9 +233,9 @@
 
     // Aspecto: el anillo de siempre, el disco rojo que se va comiendo, una barra o un reloj de arena (para cada
     // ordenador). El texto se coloca según el dibujo.
-    const ASPECTOS = ['anillo', 'disco', 'barra', 'arena'];
+    const ASPECTOS = ['anillo', 'disco', 'barra', 'arena', 'pulsar'];
     let aspecto = ASPECTOS.includes(lee('tm-aspecto', 'anillo')) ? lee('tm-aspecto', 'anillo') : 'anillo';
-    const POSICION = { anillo: [100, 104, 100, 148], disco: [100, 104, 100, 152], barra: [100, 78, 100, 178], arena: [140, 98, 140, 132] };
+    const POSICION = { anillo: [100, 104, 100, 148], disco: [100, 104, 100, 152], barra: [100, 78, 100, 178], arena: [145, 98, 145, 132], pulsar: [100, 104, 100, 150] };
     const pintaAspecto = (frac) => {
         tmAnillo.dataset.aspecto = aspecto;
         const [cx, cy, ex, ey] = POSICION[aspecto];
@@ -254,12 +254,24 @@
             g.innerHTML = `<rect class="tm-pista-barra" x="12" y="120" width="176" height="30" rx="15"/>`
                 + (f > 0.0005 ? `<rect class="tm-barra" x="12" y="120" width="${(176 * f).toFixed(2)}" height="30" rx="15"/>` : '');
         } else if (aspecto === 'arena') {
-            // La arena de arriba baja y se amontona abajo (la cantidad es la del tiempo, no la altura).
-            const k = 70 * (1 - Math.sqrt(f)), h = 70 * Math.sqrt(f), wTop = (64 * h) / 70, yb = 176 - k, wBot = (64 * (yb - 106)) / 70;
-            const arriba = f > 0.0005 ? `<polygon class="tm-arena" points="${62 - wTop / 2},${94 - h} ${62 + wTop / 2},${94 - h} 62,94"/>` : '';
-            const abajo = f < 0.9995 ? `<polygon class="tm-arena" points="30,176 94,176 ${62 + wBot / 2},${yb} ${62 - wBot / 2},${yb}"/>` : '';
-            const chorro = tm.marcha && f > 0.0005 ? `<line class="tm-chorro" x1="62" y1="94" x2="62" y2="${yb}"/>` : '';
-            g.innerHTML = `<path class="tm-vidrio" d="M26 20H98M26 180H98M30 24L62 98L30 176M94 24L62 98L94 176"/>${arriba}${abajo}${chorro}`;
+            // Un reloj de arena de verdad: marco de madera, ampollas de cristal y arena que baja y se amontona. La
+            // cantidad es la del tiempo (no la altura): el cristal se estrecha hacia el cuello.
+            const hTop = 72 * Math.sqrt(f), yTop = 99 - hTop, k = 66 * (1 - Math.sqrt(f)), yb = 175 - k;
+            const arriba = f > 0.0005 ? `<rect x="30" y="${yTop.toFixed(2)}" width="64" height="${(100 - yTop).toFixed(2)}" fill="url(#tmArena)" clip-path="url(#tmArriba)"/>` : '';
+            const abajo = f < 0.9995 ? `<path d="M28 176V${(yb + k * 0.45).toFixed(2)}Q62 ${(yb - 6).toFixed(2)} 96 ${(yb + k * 0.45).toFixed(2)}V176Z" fill="url(#tmArena)" clip-path="url(#tmAbajo)"/>` : '';
+            const chorro = tm.marcha && f > 0.0005 ? `<line class="tm-chorro" x1="62" y1="99" x2="62" y2="${(yb + 2).toFixed(2)}"/>` : '';
+            const vidrioArriba = 'M36 24C36 60 58 86 59.5 99.5H64.5C66 86 88 60 88 24Z', vidrioAbajo = 'M59.5 100.5C58 114 36 140 36 176H88C88 140 66 114 64.5 100.5Z';
+            g.innerHTML = '<defs><linearGradient id="tmArena" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f2cd78"/><stop offset="1" stop-color="#d79a31"/></linearGradient>'
+                + `<clipPath id="tmArriba"><path d="${vidrioArriba}"/></clipPath><clipPath id="tmAbajo"><path d="${vidrioAbajo}"/></clipPath></defs>`
+                + `<path class="tm-cristal" d="${vidrioArriba}"/><path class="tm-cristal" d="${vidrioAbajo}"/>${arriba}${abajo}${chorro}`
+                + '<path class="tm-brillo" d="M42 30C42 54 52 76 57 92M42 170C42 150 50 126 56 112"/>'
+                + '<rect class="tm-madera" x="26" y="174" width="72" height="11" rx="4"/><rect class="tm-madera" x="26" y="15" width="72" height="11" rx="4"/>'
+                + '<rect class="tm-madera" x="29" y="24" width="5" height="152" rx="2"/><rect class="tm-madera" x="90" y="24" width="5" height="152" rx="2"/>';
+        } else if (aspecto === 'pulsar') {
+            // Un púlsar: el núcleo mengua con el tiempo y, mientras corre, lanza una onda cada segundo.
+            const r = 14 + 64 * Math.sqrt(f);
+            const ondas = tm.marcha ? [0, 1, 2].map((i) => `<circle class="tm-onda" cx="100" cy="100" r="${r.toFixed(2)}" style="--r:${r.toFixed(2)};animation-delay:${i * 0.33}s"/>`).join('') : '';
+            g.innerHTML = `${ondas}<circle class="tm-nucleo-halo" cx="100" cy="100" r="${(r + 8).toFixed(2)}"/><circle class="tm-nucleo" cx="100" cy="100" r="${r.toFixed(2)}"/>`;
         } else {
             g.innerHTML = '';
         }
@@ -315,6 +327,7 @@
         add.hidden = tm.total <= 0 || yaEsta;
         add.innerHTML = `${icono('mas')}<span>${escapa(t('tm_fav_add', etiquetaTiempo(tm.total)))}</span>`;
         add.title = t('tm_fav_add_title');
+        $('#tm-avisar-caja').hidden = tm.total <= 120000;   // en tiempos cortos el aviso no tiene sentido
         tmChips();
     };
     const guardaFavoritos = () => { guarda('tiempos-favoritos', favoritos); guardaAjustes({ favs: favoritos }); pintaFavoritos(); };

@@ -547,6 +547,7 @@ window.CLASSTOOLS_STR = {
 "tm_look": "Look",
 "tm_look_bar": "Bar",
 "tm_look_disc": "Disc",
+"tm_look_pulsar": "Pulsar",
 "tm_look_ring": "Ring",
 "tm_look_sand": "Sand",
 "tm_min_less": "One minute less",

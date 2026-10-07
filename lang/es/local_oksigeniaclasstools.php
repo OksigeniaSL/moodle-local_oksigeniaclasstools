@@ -569,6 +569,7 @@ $string['app_tm_final'] = 'Animar los últimos 10 segundos';
 $string['app_tm_look'] = 'Aspecto';
 $string['app_tm_look_bar'] = 'Barra';
 $string['app_tm_look_disc'] = 'Disco';
+$string['app_tm_look_pulsar'] = 'Púlsar';
 $string['app_tm_look_ring'] = 'Anillo';
 $string['app_tm_look_sand'] = 'Arena';
 $string['app_tm_min_less'] = 'Un minuto menos';

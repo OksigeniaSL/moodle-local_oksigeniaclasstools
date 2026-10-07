@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.9.1 (2026-10-10)
+
+- Timer: a believable hourglass (wooden frame, glass bulbs, sand that falls and piles up) and a new «Pulsar» look (a
+  core that shrinks with the time and sends out a wave every second). The «1 minute left» switch only shows for
+  timers longer than two minutes, where it applies.
+
 ## 0.9.0 (2026-10-10)
 
 - **Screen modes**: Early years, Primary, Secondary and Advanced (upper secondary and university).

@@ -569,6 +569,7 @@ $string['app_tm_final'] = 'Liven up the last 10 seconds';
 $string['app_tm_look'] = 'Look';
 $string['app_tm_look_bar'] = 'Bar';
 $string['app_tm_look_disc'] = 'Disc';
+$string['app_tm_look_pulsar'] = 'Pulsar';
 $string['app_tm_look_ring'] = 'Ring';
 $string['app_tm_look_sand'] = 'Sand';
 $string['app_tm_min_less'] = 'One minute less';
