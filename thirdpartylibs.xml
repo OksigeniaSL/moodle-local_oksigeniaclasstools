@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<libraries>
+    <library>
+        <location>app/lib/qrcode.js</location>
+        <name>qrcode-generator</name>
+        <description>QR code generator for JavaScript by Kazuhiko Arase, with a local fix in the canvas renderer (rows and columns).</description>
+        <version>1.4.4</version>
+        <license>MIT</license>
+        <licenseversion></licenseversion>
+    </library>
+    <library>
+        <location>app/fonts/nunito-latin-wght-normal.woff2</location>
+        <name>Nunito</name>
+        <description>Nunito variable font (Latin subset) by The Nunito Project Authors. License text in app/fonts/OFL.txt.</description>
+        <version>3.602</version>
+        <license>OFL</license>
+        <licenseversion>1.1</licenseversion>
+    </library>
+    <library>
+        <location>app/icons.js</location>
+        <name>Font Awesome Free (icons)</name>
+        <description>SVG path data of a selection of Font Awesome Free solid icons, by Fonticons, Inc.</description>
+        <version>6.7.2</version>
+        <license>CC BY</license>
+        <licenseversion>4.0</licenseversion>
+    </library>
+</libraries>

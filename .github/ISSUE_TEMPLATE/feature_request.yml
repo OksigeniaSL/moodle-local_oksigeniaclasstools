@@ -1,0 +1,30 @@
+name: Feature request
+description: Suggest a new tool, game, setting or behaviour.
+labels: ["enhancement", "needs triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The plugin is made for the classroom screen: things the whole class sees and plays together, with the course students. Requests that fit that move faster.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem you are trying to solve
+      description: What happens in your classroom? Which age group?
+      placeholder: e.g. In secondary school, we would like a quiz buzzer for two teams.
+    validations:
+      required: true
+  - type: textarea
+    id: proposed-solution
+    attributes:
+      label: Proposed solution
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives you've considered
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
