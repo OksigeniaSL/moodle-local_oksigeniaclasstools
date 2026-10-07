@@ -24,7 +24,10 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['app_ah_builtin'] = 'At random: primary school words';
+$string['app_ah_builtin_advanced'] = 'At random: upper secondary and university words';
+$string['app_ah_builtin_early'] = 'At random: early years words';
+$string['app_ah_builtin_primary'] = 'At random: primary school words';
+$string['app_ah_builtin_secondary'] = 'At random: secondary school words';
 $string['app_ah_left_many'] = '{$a} balloons';
 $string['app_ah_left_one'] = '{$a} balloon';
 $string['app_ah_name'] = 'Hangman';
@@ -524,6 +527,7 @@ $string['app_nl_numbers'] = 'Numbers';
 $string['app_nl_p_custom'] = 'My own';
 $string['app_nl_p_halves'] = 'Halves, from 0 to 3';
 $string['app_nl_p_negative'] = 'From −10 to 10';
+$string['app_nl_p_negquarters'] = 'Quarters, from −2 to 2';
 $string['app_nl_p_quarters'] = 'Quarters, from 0 to 2';
 $string['app_nl_p_tenths'] = 'Tenths, from 0 to 1';
 $string['app_nl_p_thirds'] = 'Thirds, from 0 to 2';
@@ -818,7 +822,7 @@ $string['app_wb_size_l'] = 'Thick';
 $string['app_wb_size_m'] = 'Medium';
 $string['app_wb_size_s'] = 'Thin';
 $string['app_wb_undo'] = 'Undo';
-$string['app_wo_builtin'] = 'At random: 5-letter words';
+$string['app_wo_builtin'] = 'At random: {$a}-letter words';
 $string['app_wo_hint'] = '3 to 8 letters';
 $string['app_wo_letters'] = '{$a}-letter word';
 $string['app_wo_name'] = 'Word';

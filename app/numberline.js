@@ -18,6 +18,7 @@
     const PRESETS = {
         to10: [0, 10, [1, 1]], to20: [0, 20, [1, 1]], to100: [0, 100, [1, 1]], to1000: [0, 1000, [10, 1]],
         negative: [-10, 10, [1, 1]], tenths: [0, 1, [1, 10]], halves: [0, 3, [1, 2]], thirds: [0, 2, [1, 3]], quarters: [0, 2, [1, 4]],
+        negquarters: [-2, 2, [1, 4]],
     };
     const STEPS = [[1, 1], [2, 1], [5, 1], [10, 1], [100, 1], [1, 2], [1, 3], [1, 4], [1, 5], [1, 8], [1, 10], [1, 100]];
     const stepLabel = ([n, d]) => (d === 1 ? String(n) : (d % 10 === 0 ? decimal.format(n / d) : `${n}/${d}`));
@@ -47,7 +48,12 @@
     const $ = (s) => panel.querySelector(s);
 
     // What is kept: the line, the jumps (tick to tick, in chains) and which hidden numbers are uncovered.
-    const st = Object.assign({ preset: 'to10', from: 0, to: 10, step: 0, hide: false, jumps: [], cur: null, chain: 0, shown: [] }, load('recta', {}));
+    // Each screen mode starts with its own line (to 10, to 20, with negatives, quarters around zero) and remembers what
+    // the teacher changes in it.
+    const byMode = core.byMode ? core.byMode('recta-modo', {
+        early: { preset: 'to10' }, primary: { preset: 'to20' }, secondary: { preset: 'negative' }, advanced: { preset: 'negquarters' },
+    }) : { get: () => ({}), set: () => {} };
+    const st = Object.assign({ preset: 'to10', from: 0, to: 10, step: 0, hide: false, jumps: [], cur: null, chain: 0, shown: [] }, load('recta', {}), byMode.get());
     if (!PRESETS[st.preset] && st.preset !== 'custom') { st.preset = 'to10'; }
     const keep = () => save('recta', st);
     let fresh = false;   // the last jump was just made: its arc is drawn as it flies
@@ -185,15 +191,26 @@
     $('#nl-clear').addEventListener('click', () => { st.jumps = []; st.cur = null; st.chain = 0; keep(); paint(); });
     const changed = () => { st.jumps = []; st.cur = null; st.chain = 0; st.shown = []; keep(); paint(); };
     $('#nl-preset').addEventListener('change', () => {
-        st.preset = $('#nl-preset').value; $('#nl-custom').hidden = st.preset !== 'custom'; changed();
+        st.preset = $('#nl-preset').value; $('#nl-custom').hidden = st.preset !== 'custom'; byMode.set({ preset: st.preset }); changed();
     });
     ['#nl-from', '#nl-to', '#nl-step'].forEach((s) => $(s).addEventListener('change', () => {
-        st.from = Number($('#nl-from').value); st.to = Number($('#nl-to').value); st.step = Number($('#nl-step').value); changed();
+        st.from = Number($('#nl-from').value); st.to = Number($('#nl-to').value); st.step = Number($('#nl-step').value);
+        byMode.set({ from: st.from, to: st.to, step: st.step }); changed();
     }));
-    $('#nl-hide').addEventListener('change', () => { st.hide = $('#nl-hide').checked; st.shown = []; keep(); paint(); });
-    $('#nl-preset').value = st.preset; $('#nl-custom').hidden = st.preset !== 'custom';
-    $('#nl-from').value = st.from; $('#nl-to').value = st.to; $('#nl-step').value = st.step;
-    $('#nl-hide').checked = st.hide;
+    $('#nl-hide').addEventListener('change', () => { st.hide = $('#nl-hide').checked; st.shown = []; byMode.set({ hide: st.hide }); keep(); paint(); });
+    const controls = () => {
+        $('#nl-preset').value = st.preset; $('#nl-custom').hidden = st.preset !== 'custom';
+        $('#nl-from').value = st.from; $('#nl-to').value = st.to; $('#nl-step').value = st.step;
+        $('#nl-hide').checked = st.hide;
+    };
+    document.addEventListener('classtools:mode', () => {
+        const before = JSON.stringify(line());
+        Object.assign(st, { from: 0, to: 10, step: 0, hide: false }, byMode.get());
+        if (!PRESETS[st.preset] && st.preset !== 'custom') { st.preset = 'to10'; }
+        controls();
+        if (JSON.stringify(line()) !== before) { changed(); } else { keep(); paint(); }
+    });
+    controls();
     paint();
 
     window.ClasstoolsNumberLine = { state: () => st, line, paint };   // for automated tests

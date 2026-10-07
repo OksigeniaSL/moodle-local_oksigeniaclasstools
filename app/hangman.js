@@ -8,15 +8,15 @@
     const core = window.ClasstoolsCore, games = window.ClasstoolsGames;
     if (!core || !games || !games.util) { return; }
     const { $, $$, escape, play, setIcon, announce, t } = core;
-    const { norm, isLetter, keyboard, keys, wordSource, WORDS } = games.util;
+    const { norm, isLetter, keyboard, keys, wordSource, listOf, mode } = games.util;
 
     const STR = {
-        name: t('ah_name'), start: t('ga_new_word'), builtin: t('ah_builtin'), needWord: t('ah_need_word'),
+        name: t('ah_name'), start: t('ga_new_word'), needWord: t('ah_need_word'),
         won: t('ah_won'), lost: (w) => t('ga_lost', w), left: (n) => t(n === 1 ? 'ah_left_one' : 'ah_left_many', n),
         reveal: t('ah_reveal'), pressStart: t('ga_press_new_word'), clue: (c) => t('ga_clue', c),
     };
     const BALLOONS = ['#ce1423', '#fbbe17', '#067e36', '#164281', '#5b2fb8', '#0e7c86', '#c2410c'];
-    const source = wordSource('ah', { label: STR.builtin, words: WORDS.primaria });
+    const source = wordSource('ah', { label: () => t('ah_builtin_' + mode()), words: () => listOf('hangman').words });
     const s = { word: '', target: '', guessed: new Set(), misses: 0, over: true };
     let visible = false, kb = null;
 

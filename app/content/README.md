@@ -15,8 +15,14 @@ Check a file with `node tools/content_check.js app/content/xx.js` (all of them w
 | `keyboard` | On-screen keyboard rows, with every letter of the alphabet once (QWERTY, QWERTZ, AZERTY…). |
 | `vowels` | Faces of the vowels die. |
 | `stopOut` | Letters left out of «Stop» (hardly any word starts with them). |
-| `words.long` | 40–60 words for Hangman, in capitals, known by children of 8–12 (animals, nature, school, things). |
-| `words.five` | 40–60 words of exactly five letters once folded, in capitals, for Word. |
+| `words.early` | Hangman in the Early years mode: 40–60 very short, concrete words (3–6 letters) that children of 3–6 know and can picture: animals, food, toys, the body, home. |
+| `words.long` | Hangman in the Primary mode: 40–60 words known by children of 8–12 (animals, nature, school, things). |
+| `words.secondary` | Hangman in the Secondary mode: 40–60 words of 6 or more letters from the subjects of ages 12–16 (science, maths, language, history, geography, technology, art, music). |
+| `words.advanced` | Hangman in the Advanced mode: 40–60 demanding words of 8 or more letters from upper secondary and university (sciences, humanities, philosophy, economics). |
+| `words.four` | Word in the Early years mode: 40–60 easy words of exactly four letters once folded. |
+| `words.five` | Word in the Primary mode: 40–60 words of exactly five letters once folded. |
+| `words.six` | Word in the Secondary mode: 40–60 words of exactly six letters once folded. |
+| `words.seven` | Word in the Advanced mode: 40–60 words of exactly seven letters once folded, of an educated adult vocabulary. |
 | `colours` | 12 colour names, in this order: red, blue, green, yellow, purple, orange, pink, brown, black, white, grey, light blue. |
 | `numbers` | 1 to 20 in words. |
 | `opposites` | 16 pairs of opposites. |
@@ -34,6 +40,9 @@ Check a file with `node tools/content_check.js app/content/xx.js` (all of them w
 | `clock(t)` | The time in words, as said in the classroom, for `t` minutes after midnight (0–1439), 12-hour, first letter in capital: «Las tres y cuarto», «Quarter past three», «Viertel nach drei». |
 | `rosco` | One item per letter of the alphabet: [letter, `s` (starts with) or `c` (contains), clue, answer]. Clues for children of 8–12, neutral (no places or people of one country). |
 | `lock` | The example lock, code 4127: `{ name, final, clues: [4 clues, one per digit, 4 then 1 then 2 then 7] }`. |
+
+Word lists: capitals, only letters of the alphabet (no spaces, hyphens or apostrophes), no proper names, no repeated
+words, and each Hangman word in one list only.
 
 Content rules: neutral examples (nothing local, no politics, no current-affairs days); generic masculine where the
 language has gender («alumno», not «alumno/a»); no emoji.

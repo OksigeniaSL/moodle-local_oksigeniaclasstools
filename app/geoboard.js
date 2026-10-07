@@ -34,8 +34,14 @@
         </div>`, () => paint());
     const $ = (s) => panel.querySelector(s);
 
+    // Each screen mode starts with its own board (5 × 5 with the little squares for the youngest, 7 × 7 measuring in
+    // Secondary, 10 × 10 measuring in Advanced) and remembers what the teacher changes in it.
+    const byMode = core.byMode ? core.byMode('geoplano-modo', {
+        early: { n: 5, measure: false, squares: true }, primary: { n: 5, measure: false, squares: false },
+        secondary: { n: 7, measure: true, squares: false }, advanced: { n: 10, measure: true, squares: false },
+    }) : { get: () => ({}), set: () => {} };
     // Bands: their pegs ([column, row]), whether they are closed, and their colour.
-    const st = Object.assign({ n: 5, measure: false, squares: false, bands: [], drawing: null }, load('geoplano', {}));
+    const st = Object.assign({ n: 5, measure: false, squares: false, bands: [], drawing: null }, load('geoplano', {}), byMode.get());
     if (!SIZES.includes(Number(st.n))) { st.n = 5; }
     st.bands = (Array.isArray(st.bands) ? st.bands : []).filter((b) => b && Array.isArray(b.p));
     const keep = () => save('geoplano', st);
@@ -151,10 +157,17 @@
         keep(); paint();
     });
     $('#gb-clear').addEventListener('click', () => { st.bands = []; st.drawing = null; keep(); paint(); });
-    $('#gb-size').addEventListener('change', () => { st.n = Number($('#gb-size').value); st.bands = []; st.drawing = null; keep(); paint(); });
-    $('#gb-measure').addEventListener('change', () => { st.measure = $('#gb-measure').checked; keep(); paint(); });
-    $('#gb-squares').addEventListener('change', () => { st.squares = $('#gb-squares').checked; keep(); paint(); });
-    $('#gb-size').value = st.n; $('#gb-measure').checked = st.measure; $('#gb-squares').checked = st.squares;
+    $('#gb-size').addEventListener('change', () => { st.n = Number($('#gb-size').value); st.bands = []; st.drawing = null; byMode.set({ n: st.n }); keep(); paint(); });
+    $('#gb-measure').addEventListener('change', () => { st.measure = $('#gb-measure').checked; byMode.set({ measure: st.measure }); keep(); paint(); });
+    $('#gb-squares').addEventListener('change', () => { st.squares = $('#gb-squares').checked; byMode.set({ squares: st.squares }); keep(); paint(); });
+    const controls = () => { $('#gb-size').value = st.n; $('#gb-measure').checked = st.measure; $('#gb-squares').checked = st.squares; };
+    document.addEventListener('classtools:mode', () => {
+        const v = byMode.get();
+        if (SIZES.includes(Number(v.n)) && Number(v.n) !== st.n) { st.n = Number(v.n); st.bands = []; st.drawing = null; }
+        st.measure = !!v.measure; st.squares = !!v.squares;
+        keep(); controls(); paint();
+    });
+    controls();
     paint();
 
     window.ClasstoolsGeoboard = { state: () => st, tap, area, perimeter, paint };   // for automated tests

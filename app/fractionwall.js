@@ -34,7 +34,13 @@
         </div>`, () => paint());
     const $ = (s) => panel.querySelector(s);
 
-    const st = Object.assign({ rows: [1, 2, 3, 4, 6, 8, 12], labels: 'fraction', ruler: false, at: 0.5, on: {} }, load('muro', {}));
+    // Each screen mode starts with its own wall (halves and quarters without numbers for the youngest, every row with
+    // the ruler from Secondary, decimals in Advanced) and remembers what the teacher changes in it.
+    const byMode = core.byMode ? core.byMode('muro-modo', {
+        early: { rows: [1, 2, 4], labels: 'none', ruler: false }, primary: { rows: [1, 2, 3, 4, 6, 8, 12], labels: 'fraction', ruler: false },
+        secondary: { rows: ROWS, labels: 'fraction', ruler: true }, advanced: { rows: ROWS, labels: 'decimal', ruler: true },
+    }) : { get: () => ({}), set: () => {} };
+    const st = Object.assign({ rows: [1, 2, 3, 4, 6, 8, 12], labels: 'fraction', ruler: false, at: 0.5, on: {} }, load('muro', {}), byMode.get());
     st.rows = (Array.isArray(st.rows) ? st.rows : []).map(Number).filter((d) => ROWS.includes(d));
     if (!st.rows.length) { st.rows = [1, 2, 4]; }
     const keep = () => save('muro', st);
@@ -147,14 +153,24 @@
     };
     $('#fw-rows').addEventListener('change', () => {
         st.rows = [...panel.querySelectorAll('#fw-rows input:checked')].map((x) => Number(x.value));
-        keep(); paint();
+        byMode.set({ rows: st.rows }); keep(); paint();
     });
-    $('#fw-labels').addEventListener('change', () => { st.labels = $('#fw-labels').value; keep(); paint(); });
-    $('#fw-ruler').addEventListener('change', () => { st.ruler = $('#fw-ruler').checked; keep(); paint(); });
+    $('#fw-labels').addEventListener('change', () => { st.labels = $('#fw-labels').value; byMode.set({ labels: st.labels }); keep(); paint(); });
+    $('#fw-ruler').addEventListener('change', () => { st.ruler = $('#fw-ruler').checked; byMode.set({ ruler: st.ruler }); keep(); paint(); });
     $('#fw-clear').addEventListener('click', () => { st.on = {}; keep(); paint(); });
-    panel.querySelectorAll('#fw-rows input').forEach((x) => { x.checked = st.rows.includes(Number(x.value)); });
-    $('#fw-labels').value = LABELS.includes(st.labels) ? st.labels : 'fraction';
-    $('#fw-ruler').checked = st.ruler;
+    const controls = () => {
+        panel.querySelectorAll('#fw-rows input').forEach((x) => { x.checked = st.rows.includes(Number(x.value)); });
+        $('#fw-labels').value = LABELS.includes(st.labels) ? st.labels : 'fraction';
+        $('#fw-ruler').checked = st.ruler;
+    };
+    document.addEventListener('classtools:mode', () => {
+        const v = byMode.get();
+        st.rows = (Array.isArray(v.rows) ? v.rows : st.rows).map(Number).filter((d) => ROWS.includes(d));
+        if (!st.rows.length) { st.rows = [1, 2, 4]; }
+        st.labels = v.labels; st.ruler = !!v.ruler;
+        keep(); controls(); paint();
+    });
+    controls();
     paint();
 
     window.ClasstoolsFractions = { state: () => st, toggle, paint };   // for automated tests

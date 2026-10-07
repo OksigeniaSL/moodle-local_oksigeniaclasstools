@@ -24,7 +24,10 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['app_ah_builtin'] = 'Al azar: palabras de Primaria';
+$string['app_ah_builtin_advanced'] = 'Al azar: palabras de Bachillerato y universidad';
+$string['app_ah_builtin_early'] = 'Al azar: palabras de Infantil';
+$string['app_ah_builtin_primary'] = 'Al azar: palabras de Primaria';
+$string['app_ah_builtin_secondary'] = 'Al azar: palabras de Secundaria';
 $string['app_ah_left_many'] = '{$a} globos';
 $string['app_ah_left_one'] = '{$a} globo';
 $string['app_ah_name'] = 'Ahorcado';
@@ -524,6 +527,7 @@ $string['app_nl_numbers'] = 'Números';
 $string['app_nl_p_custom'] = 'A mi manera';
 $string['app_nl_p_halves'] = 'Medios, del 0 al 3';
 $string['app_nl_p_negative'] = 'Del −10 al 10';
+$string['app_nl_p_negquarters'] = 'Cuartos, del −2 al 2';
 $string['app_nl_p_quarters'] = 'Cuartos, del 0 al 2';
 $string['app_nl_p_tenths'] = 'Décimas, del 0 al 1';
 $string['app_nl_p_thirds'] = 'Tercios, del 0 al 2';
@@ -818,7 +822,7 @@ $string['app_wb_size_l'] = 'Grueso';
 $string['app_wb_size_m'] = 'Medio';
 $string['app_wb_size_s'] = 'Fino';
 $string['app_wb_undo'] = 'Deshacer';
-$string['app_wo_builtin'] = 'Al azar: palabras de 5 letras';
+$string['app_wo_builtin'] = 'Al azar: palabras de {$a} letras';
 $string['app_wo_hint'] = 'de 3 a 8 letras';
 $string['app_wo_letters'] = 'Palabra de {$a} letras';
 $string['app_wo_name'] = 'Palabra';

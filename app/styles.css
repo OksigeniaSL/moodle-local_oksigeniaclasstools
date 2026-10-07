@@ -993,23 +993,132 @@ a.redondo { text-decoration: none; }
 /* The celebration goes over the stage of each tool. */
 .ct-stage { position: relative; }
 
-/* Screen modes (one at a time, set on <html data-modo>): Early years bigger and rounder, with more room to touch;
-   Secondary and Advanced more sober (squarer corners, calmer motion). Primary is the base look. */
-:root[data-modo="early"] { --radio: 28px; }
-:root[data-modo="early"] { font-size: clamp(15px, calc(.5vw + 10px), 21px); }
+/* ---------- Screen modes (one at a time, on <html data-modo>) ----------
+   Each one with a look of its own, so the class sees at once which one is on. Primary is the base look.
+   Early years: a toy — bigger, rounder, sunny ground, chunky buttons that press in, every tab with its colour.
+   Secondary: a notebook — flat cards, square corners, tabs underlined instead of filled, calmer weights.
+   Advanced: an instrument — dark top bar, faint graph-paper ground, the system typeface, light digits, no fuss. */
+
+/* Early years */
+:root[data-modo="early"] { --radio: 28px; --fondo: #fff6dc; --borde: #f0d792; --azul-suave: #e6eefa;
+    --sombra: 0 5px 0 rgba(107, 74, 0, .13); font-size: clamp(15px, calc(.5vw + 10px), 21px); }
+:root[data-modo="early"] body { font-weight: 700; }
+:root[data-modo="early"] .barra::after { bottom: -8px; height: 8px; }
+:root[data-modo="early"] .tarjeta, :root[data-modo="early"] .grupo { border-width: 3px; }
 :root[data-modo="early"] .boton, :root[data-modo="early"] .pestana, :root[data-modo="early"] .segmentos button { min-height: 54px; }
-:root[data-modo="early"] .pestana .ico { font-size: 1.35rem; }
-:root[data-modo="secondary"], :root[data-modo="advanced"] { --radio: 12px; }
-:root[data-modo="secondary"] .boton, :root[data-modo="advanced"] .boton,
-:root[data-modo="secondary"] .chip, :root[data-modo="advanced"] .chip,
-:root[data-modo="secondary"] .interruptor, :root[data-modo="advanced"] .interruptor { border-radius: 10px; }
-:root[data-modo="secondary"] .segmentos, :root[data-modo="advanced"] .segmentos,
-:root[data-modo="secondary"] .segmentos button, :root[data-modo="advanced"] .segmentos button,
-:root[data-modo="secondary"] .pestanas, :root[data-modo="advanced"] .pestanas,
-:root[data-modo="secondary"] .pestana, :root[data-modo="advanced"] .pestana { border-radius: 10px; }
+:root[data-modo="early"] .boton { font-weight: 900; box-shadow: 0 5px 0 rgba(15, 47, 94, .35); }
+:root[data-modo="early"] .boton:active { transform: translateY(4px); box-shadow: 0 1px 0 rgba(15, 47, 94, .35); }
+:root[data-modo="early"] .boton.suave, :root[data-modo="early"] .boton.rojo-suave { box-shadow: 0 4px 0 rgba(15, 47, 94, .14); }
+:root[data-modo="early"] .pestanas { background: var(--superficie); box-shadow: inset 0 0 0 3px var(--borde); }
+:root[data-modo="early"] .pestana .ico { font-size: 1.45rem; }
+:root[data-modo="early"] .pestana:nth-child(5n+1) .ico { color: var(--rojo); }
+:root[data-modo="early"] .pestana:nth-child(5n+2) .ico { color: #c98a00; }
+:root[data-modo="early"] .pestana:nth-child(5n+3) .ico { color: var(--verde); }
+:root[data-modo="early"] .pestana:nth-child(5n+4) .ico { color: var(--azul); }
+:root[data-modo="early"] .pestana:nth-child(5n+5) .ico { color: var(--morado); }
+:root[data-modo="early"] .pestana[aria-selected="true"] { background: var(--amarillo); color: var(--amarillo-tinta); box-shadow: 0 4px 0 #c98a00; }
+:root[data-modo="early"] .pestana[aria-selected="true"] .ico { color: var(--amarillo-tinta); }
+:root[data-modo="early"] .segmentos { border-width: 3px; border-color: var(--borde); }
+:root[data-modo="early"] .segmentos button[aria-checked="true"] { background: var(--amarillo); color: var(--amarillo-tinta); }
+:root[data-modo="early"] .chip { border-width: 3px; border-radius: 50rem; border-color: var(--borde); }
+:root[data-modo="early"] .chip.activo { border-color: #c98a00; background: var(--amarillo); color: var(--amarillo-tinta); }
+:root[data-modo="early"] .interruptor { border-width: 3px; border-color: var(--borde); }
+:root[data-modo="early"] select, :root[data-modo="early"] input[type="text"], :root[data-modo="early"] input[type="number"],
+:root[data-modo="early"] textarea { border-width: 3px; border-radius: 18px; border-color: var(--borde); }
+:root[data-modo="early"] .anillo .pista, :root[data-modo="early"] .anillo .progreso { stroke-width: 18; }
+:root[data-modo="early"] .anillo .cifras, :root[data-modo="early"] .cifras-crono, :root[data-modo="early"] .nombre-grande { font-weight: 1000; }
+:root[data-modo="early"] .ct-key { border-radius: 18px; box-shadow: 0 4px 0 rgba(15, 47, 94, .16); }
+:root[data-modo="early"] .ct-krow:nth-child(1) .ct-key:not([data-state]) { background: var(--rojo-suave); color: #8f0e18; }
+:root[data-modo="early"] .ct-krow:nth-child(2) .ct-key:not([data-state]) { background: var(--amarillo-suave); color: var(--amarillo-tinta); }
+:root[data-modo="early"] .ct-krow:nth-child(3) .ct-key:not([data-state]) { background: var(--verde-suave); color: #05552a; }
+:root[data-modo="early"] .ct-slot { border-bottom-width: 8px; border-radius: 0 0 6px 6px; }
+:root[data-modo="early"] .ct-wcell { border-radius: 16px; border-width: 4px; }
+
+/* Secondary */
+:root[data-modo="secondary"], :root[data-modo="advanced"] { --radio: 10px; }
+:root[data-modo="secondary"] { --fondo: #eef1f5; --borde: #d3dae4; --sombra: 0 1px 2px rgba(15, 47, 94, .08); }
+:root[data-modo="secondary"] .barra::after { bottom: -3px; height: 3px; }
+:root[data-modo="secondary"] .boton, :root[data-modo="secondary"] .chip, :root[data-modo="secondary"] .interruptor,
+:root[data-modo="secondary"] .segmentos, :root[data-modo="secondary"] .segmentos button { border-radius: 8px; }
+:root[data-modo="secondary"] .boton { font-weight: 700; box-shadow: none; }
+:root[data-modo="secondary"] .chip { border-width: 1px; font-weight: 800; }
+:root[data-modo="secondary"] .interruptor input, :root[data-modo="secondary"] .interruptor input::before { border-radius: 6px; }
+:root[data-modo="secondary"] select, :root[data-modo="secondary"] input[type="text"], :root[data-modo="secondary"] input[type="number"],
+:root[data-modo="secondary"] textarea { border-width: 1px; border-radius: 8px; }
+/* Tabs underlined, like the tabs of a notebook, instead of filled pills. */
+:root[data-modo="secondary"] .pestanas { gap: .3rem; padding: 0; border-radius: 0; background: none; }
+:root[data-modo="secondary"] .pestana { border-radius: 0; font-weight: 700; }
+:root[data-modo="secondary"] .pestana:hover { background: none; color: var(--azul); box-shadow: inset 0 -3px 0 var(--azul-hover); }
+:root[data-modo="secondary"] .pestana[aria-selected="true"] { background: none; color: var(--azul); box-shadow: inset 0 -3px 0 var(--azul); }
+:root[data-modo="secondary"] .anillo .pista, :root[data-modo="secondary"] .anillo .progreso { stroke-width: 7; }
+:root[data-modo="secondary"] .anillo .progreso { stroke-linecap: butt; }
+:root[data-modo="secondary"] .anillo .cifras { font-weight: 800; }
+:root[data-modo="secondary"] .ct-key { border-radius: 8px; background: var(--superficie); box-shadow: inset 0 0 0 1px var(--borde); font-weight: 800; }
+:root[data-modo="secondary"] .ct-slot { border-bottom-width: 4px; }
+:root[data-modo="secondary"] .ct-wcell { border-radius: 6px; border-width: 2px; }
+
+/* Advanced */
+:root[data-modo="advanced"] { --radio: 4px; --fondo: #f2f4f7; --borde: #d4d9e0; --sombra: none; --barra-osc: #0d1726;
+    --letra: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+:root[data-modo="advanced"] body { font-family: var(--letra); font-weight: 500; }
+:root[data-modo="advanced"] .mesa { background-image: linear-gradient(rgba(13, 23, 38, .045) 1px, transparent 1px), linear-gradient(90deg, rgba(13, 23, 38, .045) 1px, transparent 1px);
+    background-size: 24px 24px; }
+:root[data-modo="advanced"] .barra { background: var(--barra-osc); box-shadow: none; color: #fff; }
+:root[data-modo="advanced"] .barra::after { bottom: -2px; height: 2px; }
+:root[data-modo="advanced"] .marca { font-weight: 500; }
+:root[data-modo="advanced"] .marca strong { color: #fff; font-weight: 700; }
+:root[data-modo="advanced"] .sello { border-radius: 4px; background: #fff; color: var(--barra-osc); }
+:root[data-modo="advanced"] .pestanas { gap: .1rem; padding: 0; border-radius: 0; background: var(--barra-osc); }
+:root[data-modo="advanced"] .pestana { border-radius: 0; color: rgba(255, 255, 255, .66); font-weight: 600; }
+:root[data-modo="advanced"] .pestana:hover { background: rgba(255, 255, 255, .08); color: #fff; }
+:root[data-modo="advanced"] .pestana[aria-selected="true"] { background: rgba(255, 255, 255, .1); color: #fff; box-shadow: inset 0 -3px 0 var(--rojo); }
+:root[data-modo="advanced"] .barra .redondo { border-color: rgba(255, 255, 255, .22); border-radius: 4px; background: none; color: #fff; }
+:root[data-modo="advanced"] .barra .redondo:hover { background: rgba(255, 255, 255, .1); color: #fff; }
+:root[data-modo="advanced"] .barra .redondo[aria-pressed="false"] { color: rgba(255, 255, 255, .5); background: none; }
+:root[data-modo="advanced"] .barra .modo-disco { border-radius: 3px; }
+:root[data-modo="advanced"] .tarjeta, :root[data-modo="advanced"] .grupo { border-radius: 4px; }
+:root[data-modo="advanced"] .boton, :root[data-modo="advanced"] .chip, :root[data-modo="advanced"] .interruptor,
+:root[data-modo="advanced"] .segmentos, :root[data-modo="advanced"] .segmentos button { border-radius: 4px; }
+:root[data-modo="advanced"] .boton { font-weight: 600; letter-spacing: .01em; box-shadow: none; }
+:root[data-modo="advanced"] .boton:not(.suave):not(.rojo-suave):not(.verde):not(.amarillo) { background: var(--barra-osc); }
+:root[data-modo="advanced"] .boton:not(.suave):not(.rojo-suave):not(.verde):not(.amarillo):hover { background: var(--azul); }
+:root[data-modo="advanced"] .boton.suave { background: var(--superficie); box-shadow: inset 0 0 0 1px var(--borde); color: var(--barra-osc); }
+:root[data-modo="advanced"] .boton.suave:hover { background: var(--azul-suave); }
+:root[data-modo="advanced"] .segmentos button { font-weight: 600; }
+:root[data-modo="advanced"] .segmentos button[aria-checked="true"] { background: var(--barra-osc); }
+:root[data-modo="advanced"] .chip { border-width: 1px; color: var(--barra-osc); font-weight: 600; }
+:root[data-modo="advanced"] .chip.activo { border-color: var(--barra-osc); background: var(--barra-osc); color: #fff; }
+:root[data-modo="advanced"] .interruptor { font-weight: 600; }
+:root[data-modo="advanced"] .interruptor input, :root[data-modo="advanced"] .interruptor input::before { border-radius: 3px; }
+:root[data-modo="advanced"] .interruptor input:checked { background: var(--barra-osc); }
+:root[data-modo="advanced"] select, :root[data-modo="advanced"] input[type="text"], :root[data-modo="advanced"] input[type="number"],
+:root[data-modo="advanced"] textarea { border-width: 1px; border-radius: 4px; font-weight: 500; }
+:root[data-modo="advanced"] .campo, :root[data-modo="advanced"] .giro label { font-weight: 600; }
+:root[data-modo="advanced"] .ante { font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace; font-weight: 500; letter-spacing: .06em; }
+:root[data-modo="advanced"] .anillo .pista, :root[data-modo="advanced"] .anillo .progreso { stroke-width: 3; }
+:root[data-modo="advanced"] .anillo .progreso { stroke: var(--barra-osc); stroke-linecap: butt; }
+:root[data-modo="advanced"] .anillo .cifras { fill: var(--barra-osc); font-weight: 300; letter-spacing: 0; }
+:root[data-modo="advanced"] .anillo .estado { font-family: ui-monospace, Menlo, Consolas, monospace; font-weight: 500; }
+:root[data-modo="advanced"] .tm-rayas { display: none; }
+:root[data-modo="advanced"] .cifras-crono { color: var(--barra-osc); font-weight: 300; }
+:root[data-modo="advanced"] .giro input, :root[data-modo="advanced"] .grande-giro output, :root[data-modo="advanced"] .total { font-weight: 600; }
+:root[data-modo="advanced"] .total.espera { font-weight: 500; }
+:root[data-modo="advanced"] .nombre-grande { font-weight: 700; letter-spacing: -.01em; }
+:root[data-modo="advanced"] .grupo h3 { font-weight: 700; }
+:root[data-modo="advanced"] .grupo li, :root[data-modo="advanced"] .lista-salidos li { font-weight: 500; }
+:root[data-modo="advanced"] .ct-key { border-radius: 4px; background: var(--superficie); box-shadow: inset 0 0 0 1px var(--borde); color: var(--barra-osc); font-weight: 600; }
+:root[data-modo="advanced"] .ct-slot { border-bottom-width: 2px; border-bottom-color: var(--barra-osc); font-weight: 600; }
+:root[data-modo="advanced"] .ct-wcell { border-radius: 2px; border-width: 1px; border-color: #aab3bf; font-weight: 700; }
+:root[data-modo="advanced"] .ct-word-clue { font-weight: 500; }
 :root[data-modo="advanced"] .ct-balloon { animation: none; }
 :root[data-modo="advanced"] .ct-celebra-card { animation: none; }
 :root[data-modo="advanced"] .ct-celebra-title { color: var(--azul-osc); }
+/* Phones: the tabs at the bottom keep the dark bar of the mode. */
+@media (max-width: 760px) {
+    :root[data-modo="advanced"] .pestanas { background: var(--barra-osc); }
+    :root[data-modo="secondary"] .pestanas { background: var(--superficie); }
+    :root[data-modo="secondary"] .pestana[aria-selected="true"] { box-shadow: inset 0 3px 0 var(--azul); }
+}
 
 /* The mode menu under its button in the top bar. */
 .menu-modo { position: fixed; z-index: 70; display: flex; flex-direction: column; gap: .3rem; width: min(22rem, calc(100vw - 1rem)); padding: .7rem; border: 1px solid var(--borde); border-radius: var(--radio); background: var(--superficie); box-shadow: 0 18px 40px rgba(15, 47, 94, .25); }

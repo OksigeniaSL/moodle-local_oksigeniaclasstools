@@ -55,7 +55,19 @@
     }).join('');
     const isLetter = (c) => ALPHABET.has(c);
     const KEY_ROWS = CONTENT.keyboard;
-    const WORDS = { primaria: CONTENT.words.long, cinco: CONTENT.words.five.filter((w) => [...norm(w)].length === 5) };
+    // The built-in words follow the screen mode: Hangman from very short words (Early years) to demanding ones
+    // (Advanced); Word from four letters to seven. A pack without the list of a mode falls back to the Primary one.
+    const LISTS = {
+        hangman: { early: 'early', primary: 'long', secondary: 'secondary', advanced: 'advanced' },
+        word: { early: 'four', primary: 'five', secondary: 'six', advanced: 'seven' },
+    };
+    const LETTERS = { four: 4, five: 5, six: 6, seven: 7 };
+    const mode = () => (core.mode ? core.mode() : 'primary');
+    const listOf = (game) => {
+        const key = Array.isArray(CONTENT.words[LISTS[game][mode()]]) ? LISTS[game][mode()] : LISTS[game].primary;
+        const all = CONTENT.words[key] || [];
+        return { key, words: LETTERS[key] ? all.filter((w) => [...norm(w)].length === LETTERS[key]) : all, letters: LETTERS[key] || 0 };
+    };
     const keyboard = (box, onKey, { enter = false } = {}) => {
         box.classList.add('ct-keyboard');
         box.innerHTML = KEY_ROWS.map((row, r) => `<div class="ct-krow">${r === 2 && enter ? `<button type="button" class="ct-key ct-wide" data-k="ENTER">${t('ga_try')}</button>` : ''}`
@@ -93,14 +105,14 @@
         const fill = () => {
             const sel = $(`#${prefix}-src`), before = sel.value || load(prefix + '-fuente', 'builtin');
             const own = core.lists().filter((l) => !l.aula);
-            sel.innerHTML = `<option value="type">${t('ga_type_it')}</option><option value="builtin">${builtin.label}</option>`
+            sel.innerHTML = `<option value="type">${t('ga_type_it')}</option><option value="builtin">${escape(builtin.label())}</option>`
                 + (own.length ? `<optgroup label="${escape(t('ga_from_lists'))}">${own.map((l) => `<option value="list:${core.escape(l.id)}">${core.escape(l.nombre)}</option>`).join('')}</optgroup>` : '');
             sel.value = [...sel.options].some((o) => o.value === before) ? before : 'builtin';
             $(`#${prefix}-type-box`).hidden = sel.value !== 'type';
         };
         const pool = () => {
             const v = $(`#${prefix}-src`).value;
-            if (v === 'builtin') { return builtin.words; }
+            if (v === 'builtin') { return builtin.words(); }
             if (v.startsWith('list:')) { const l = core.lists().find((x) => x.id === v.slice(5)); return l ? l.alumnos : []; }
             return [];
         };
@@ -126,6 +138,7 @@
             wire: () => {
                 $(`#${prefix}-src`).addEventListener('change', () => { save(prefix + '-fuente', $(`#${prefix}-src`).value); $(`#${prefix}-type-box`).hidden = $(`#${prefix}-src`).value !== 'type'; });
                 document.addEventListener('classtools:lists', fill);
+                document.addEventListener('classtools:mode', fill);
                 fill();
             },
             clue: () => $(`#${prefix}-clue`).value.trim(),
@@ -134,7 +147,7 @@
     };
 
     window.ClasstoolsGames = {
-        util: { norm, isLetter, keyboard, keys, wordSource, WORDS },
+        util: { norm, isLetter, keyboard, keys, wordSource, listOf, mode },
         add(game) {
             const panel = document.createElement('div');
             panel.className = 'ct-game';

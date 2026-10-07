@@ -23,7 +23,7 @@
     const panel = core.material.add('base10', t('mt_base10'), `
         <aside class="tarjeta ct-side">
             <label class="campo apilado"><span>${escape(t('b10_upto'))}</span><select id="b10-cols">
-                <option value="3">${escape(t('b10_h'))}</option><option value="4">${escape(t('b10_th'))}</option>
+                <option value="2">${escape(t('b10_t'))}</option><option value="3">${escape(t('b10_h'))}</option><option value="4">${escape(t('b10_th'))}</option>
             </select></label>
             <label class="campo apilado"><span>${escape(t('b10_build'))}</span>
                 <span class="ct-row"><input type="number" id="b10-number" min="0" max="9999" inputmode="numeric">
@@ -38,8 +38,14 @@
         </div>`, () => paint());
     const $ = (s) => panel.querySelector(s);
 
-    const st = Object.assign({ cols: 3, n: [3, 2, 1, 0], hide: false }, load('base10', {}));
-    st.cols = Number(st.cols) === 4 ? 4 : 3;
+    // Each screen mode starts with its own mat (up to the tens for the youngest, the hundreds in Primary, the thousands
+    // from Secondary) and remembers what the teacher changes in it.
+    const byMode = core.byMode ? core.byMode('base10-modo', {
+        early: { cols: 2 }, primary: { cols: 3 }, secondary: { cols: 4 }, advanced: { cols: 4 },
+    }) : { get: () => ({}), set: () => {} };
+    const st = Object.assign({ cols: 3, n: [3, 2, 1, 0], hide: false }, load('base10', {}), byMode.get());
+    const columns = (c) => ([2, 3, 4].includes(Number(c)) ? Number(c) : 3);
+    st.cols = columns(st.cols);
     st.n = PLACES.map((_, i) => Math.max(0, Math.min(MAX, Number((st.n || [])[i]) || 0)));
     let revealed = false, fresh = {};   // the total uncovered (when hidden); blocks just added, to pop in
     const keep = () => save('base10', st);
@@ -125,14 +131,22 @@
     });
     $('#b10-sum').addEventListener('click', () => { if (st.hide) { revealed = !revealed; sum(); play(revealed ? 'elegido' : 'tic'); } });
     $('#b10-put').addEventListener('click', () => {
-        const v = Math.max(0, Math.min(st.cols === 4 ? 9999 : 999, Math.floor(Number($('#b10-number').value) || 0)));
+        const v = Math.max(0, Math.min(10 ** st.cols - 1, Math.floor(Number($('#b10-number').value) || 0)));
         st.n = PLACES.map((p, i) => (i < st.cols ? Math.floor(v / p.value) % 10 : 0));
         fresh = { 0: st.n[0], 1: st.n[1], 2: st.n[2], 3: st.n[3] };
         revealed = false; keep(); paint(); play('card');
     });
     $('#b10-number').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); $('#b10-put').click(); } });
-    $('#b10-cols').addEventListener('change', () => { st.cols = Number($('#b10-cols').value); if (st.cols === 3) { st.n[3] = 0; } keep(); paint(); });
-    $('#b10-hide').addEventListener('change', () => { st.hide = $('#b10-hide').checked; revealed = false; keep(); sum(); });
+    // Fewer columns: the blocks of the columns that go away are emptied.
+    const setColumns = (c) => { st.cols = columns(c); st.n = st.n.map((x, i) => (i < st.cols ? x : 0)); };
+    $('#b10-cols').addEventListener('change', () => { setColumns($('#b10-cols').value); byMode.set({ cols: st.cols }); keep(); paint(); });
+    $('#b10-hide').addEventListener('change', () => { st.hide = $('#b10-hide').checked; revealed = false; byMode.set({ hide: st.hide }); keep(); sum(); });
+    document.addEventListener('classtools:mode', () => {
+        const v = byMode.get();
+        setColumns(v.cols); st.hide = !!v.hide; revealed = false;
+        $('#b10-cols').value = String(st.cols); $('#b10-hide').checked = st.hide;
+        keep(); paint();
+    });
     $('#b10-empty').addEventListener('click', () => { st.n = [0, 0, 0, 0]; revealed = false; keep(); paint(); });
     $('#b10-cols').value = String(st.cols); $('#b10-hide').checked = st.hide;
     if (window.ResizeObserver) { new ResizeObserver(() => requestAnimationFrame(fit)).observe($('#b10-mat')); }

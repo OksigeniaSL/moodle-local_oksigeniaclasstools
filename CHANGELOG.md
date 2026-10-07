@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.13.0 (2026-10-14)
+
+- **Screen modes that show**: each mode has a look of its own, so the class sees at once which one is on.
+  - Early years: a toy — bigger and rounder, sunny ground, chunky buttons that press in, each tab with its colour,
+    keyboard rows in colours.
+  - Primary: the look as it was.
+  - Secondary: a notebook — flat cards, square corners, tabs underlined instead of filled, calmer weights.
+  - Advanced: an instrument — dark top bar, faint graph-paper ground, the system typeface, light digits, thin lines.
+- **Each mode starts with its own values**, and remembers what the teacher changes in it:
+  - Hangman: very short words (Early years), primary school words, secondary school subject words, or demanding
+    upper secondary and university words; the list says which. Word: four, five, six or seven letters. New lists in
+    the nine content packs (`words.early`, `secondary`, `advanced`, `four`, `six`, `seven`).
+  - Timer: the red disc for the youngest, the ring, or the bar (which in Secondary and Advanced shows the time left,
+    thinner); quick times from 1–10 to 5–30 minutes; the last-10-seconds count on only for the younger ones.
+  - Geoboard 5 × 5 with the little squares, 5 × 5, 7 × 7 measuring, 10 × 10 measuring. Number line to 10, to 20,
+    −10 to 10, or quarters from −2 to 2 (new). Fraction wall: halves and quarters without numbers, the usual rows,
+    every row with the ruler, decimals. Base 10 blocks up to the tens (new), the hundreds or the thousands.
+- Settings that were saved before the modes (timer look and the last-10-seconds count) go to the mode in use.
+
 ## 0.12.0 (2026-10-13)
 
 - **Content in the user's language**: the games and materials take their content from a pack per language

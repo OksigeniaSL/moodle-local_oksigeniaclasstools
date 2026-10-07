@@ -23,16 +23,31 @@ for (const file of files) {
     need('vowels', (v) => typeof v === 'string' && [...v].every((c) => A.has(c)), 'letters of the alphabet');
     need('stopOut', (v) => typeof v === 'string' && [...v].every((c) => A.has(c)), 'letters of the alphabet');
     const norm = (w) => [...w].map((c) => { if (A.has(c)) { return c; } const u = c.toUpperCase(); return A.has(u) ? u : ((C.fold || {})[u] || u); }).join('');
-    need('words', (v) => v && Array.isArray(v.long) && Array.isArray(v.five), 'long and five');
+    // Word lists by screen mode: Hangman (early, long = primary, secondary, advanced) and Word (four, five, six, seven
+    // letters once folded, for early, primary, secondary and advanced).
+    const LISTS = {
+        early: [(n) => n >= 3 && n <= 6, '3–6 letters'], long: [(n) => n >= 4, '4 or more letters'],
+        secondary: [(n) => n >= 6, '6 or more letters'], advanced: [(n) => n >= 8, '8 or more letters'],
+        four: [(n) => n === 4, 'exactly 4 letters'], five: [(n) => n === 5, 'exactly 5 letters'],
+        six: [(n) => n === 6, 'exactly 6 letters'], seven: [(n) => n === 7, 'exactly 7 letters'],
+    };
+    need('words', (v) => v && Object.keys(LISTS).every((k) => Array.isArray(v[k])), Object.keys(LISTS).join(', '));
     if (C.words) {
-        const longBad = C.words.long.filter((w) => w !== w.toUpperCase() || ![...norm(w)].every((c) => A.has(c)));
-        if (longBad.length) { errors.push(`words.long not capitals/letters: ${longBad.join(', ')}`); }
-        if (C.words.long.length < 40) { errors.push(`words.long: ${C.words.long.length} (40–60)`); }
-        const fiveBad = C.words.five.filter((w) => [...norm(w)].length !== 5 || ![...norm(w)].every((c) => A.has(c)));
-        if (fiveBad.length) { errors.push(`words.five not five letters: ${fiveBad.join(', ')}`); }
-        if (C.words.five.length - fiveBad.length < 40) { errors.push(`words.five: ${C.words.five.length - fiveBad.length} valid (40–60)`); }
-        const dup = (l) => l.filter((w, i) => l.indexOf(w) !== i);
-        if (dup(C.words.long).length || dup(C.words.five).length) { warn.push(`repeated words: ${dup(C.words.long).concat(dup(C.words.five)).join(', ')}`); }
+        const seen = {};
+        Object.entries(LISTS).forEach(([k, [ok, what]]) => {
+            const l = C.words[k];
+            if (!Array.isArray(l)) { return; }
+            const badOnes = l.filter((w) => typeof w !== 'string' || w !== w.toUpperCase() || ![...norm(w)].every((c) => A.has(c)) || !ok([...norm(w)].length));
+            if (badOnes.length) { errors.push(`words.${k} (capitals, letters only, ${what}): ${badOnes.join(', ')}`); }
+            const good = l.length - badOnes.length;
+            if (good < 40 || l.length > 60) { errors.push(`words.${k}: ${good} valid of ${l.length} (40–60)`); }
+            const dup = l.filter((w, i) => l.indexOf(w) !== i);
+            if (dup.length) { warn.push(`words.${k} repeated: ${dup.join(', ')}`); }
+            l.forEach((w) => { (seen[w] = seen[w] || []).push(k); });
+        });
+        const hang = ['early', 'long', 'secondary', 'advanced'];
+        const twice = Object.entries(seen).filter(([, ks]) => ks.filter((k) => hang.includes(k)).length > 1).map(([w]) => w);
+        if (twice.length) { warn.push(`in two Hangman lists: ${twice.join(', ')}`); }
     }
     need('colours', list(12), '12 names'); need('numbers', list(20), '20 words'); need('opposites', pairs(16), '16 pairs');
     need('elements', list(28), '28 names'); need('units', pairs(15), '15 pairs'); need('prefixes', pairs(12), '12 pairs');

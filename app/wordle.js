@@ -9,15 +9,15 @@
     const core = window.ClasstoolsCore, games = window.ClasstoolsGames;
     if (!core || !games || !games.util) { return; }
     const { $, $$, escape, play, setIcon, announce, t } = core;
-    const { norm, isLetter, keyboard, keys, wordSource, WORDS } = games.util;
+    const { norm, isLetter, keyboard, keys, wordSource, listOf } = games.util;
 
     const STR = {
-        name: t('wo_name'), start: t('ga_new_word'), builtin: t('wo_builtin'), tries: t('wo_tries'),
+        name: t('wo_name'), start: t('ga_new_word'), tries: t('wo_tries'),
         needWord: t('wo_need_word'), pressStart: t('ga_press_new_word'),
         letters: (n) => t('wo_letters', n), short: (n) => t('wo_short', n), won: (n) => t('wo_won', n),
         lost: (w) => t('ga_lost', w), clue: (c) => t('ga_clue', c), hint: t('wo_hint'),
     };
-    const source = wordSource('wo', { label: STR.builtin, words: WORDS.cinco }, { lengthHint: STR.hint });
+    const source = wordSource('wo', { label: () => t('wo_builtin', listOf('word').letters || 5), words: () => listOf('word').words }, { lengthHint: STR.hint });
     const s = { word: '', target: '', rows: [], current: '', over: true, maxRows: 6 };
     let visible = false, kb = null;
     const valid = (w) => { const n = norm(w.trim()); return n.length >= 3 && n.length <= 8 && n.split('').every(isLetter); };

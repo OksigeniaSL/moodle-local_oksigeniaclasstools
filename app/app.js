@@ -51,6 +51,18 @@
         return [local, enCurso, sitio, 'primary'].find((m) => PANTALLAS.includes(m));
     })();
     document.documentElement.dataset.modo = modo;
+    // Valores que empiezan distinto en cada modo: cada modo parte de los suyos y recuerda lo que el profesor cambie
+    // estando en él. Lo guardado antes de haber modos (las claves antiguas) pasa una sola vez al modo de entonces.
+    const porModo = (clave, valores, antiguas = {}) => {
+        const k = () => `${clave}-${modo}`;
+        const hay = Object.entries(antiguas).filter(([, a]) => lee(a, null) !== null);
+        if (hay.length && lee(k(), null) === null) { guarda(k(), Object.fromEntries(hay.map(([c, a]) => [c, lee(a, null)]))); }
+        hay.forEach(([, a]) => { try { localStorage.removeItem('pizarra:' + a); } catch (e) { /* sin almacén */ } });
+        return {
+            get: () => Object.assign({}, valores.primary, valores[modo], lee(k(), {})),
+            set: (cambios) => guarda(k(), Object.assign(lee(k(), {}), cambios)),
+        };
+    };
 
     // --- Iconos y avisos para lectores de pantalla ---
     const ponIcono = (el, n) => { el.dataset.icono = n; el.innerHTML = icono(n); };
@@ -235,7 +247,15 @@
     // Aspecto: el anillo de siempre, el disco rojo que se va comiendo, una barra o un reloj de arena (para cada
     // ordenador). El texto se coloca según el dibujo.
     const ASPECTOS = ['anillo', 'disco', 'barra', 'arena', 'pulsar'];
-    let aspecto = ASPECTOS.includes(lee('tm-aspecto', 'anillo')) ? lee('tm-aspecto', 'anillo') : 'anillo';
+    // Cada modo empieza con lo suyo: Infantil con el disco rojo que se va comiendo, Superior con la barra sobria; los
+    // tiempos rápidos, de más cortos a más largos; la cuenta de los últimos 10 segundos, solo con los pequeños.
+    const tmModo = porModo('tm', {
+        early: { aspecto: 'disco', rapidos: [1, 2, 3, 5, 10], final: true },
+        primary: { aspecto: 'anillo', rapidos: [1, 3, 5, 10, 15], final: true },
+        secondary: { aspecto: 'anillo', rapidos: [2, 5, 10, 15, 20], final: false },
+        advanced: { aspecto: 'barra', rapidos: [5, 10, 15, 20, 30], final: false },
+    }, { aspecto: 'tm-aspecto', final: 'tm-final' });
+    let aspecto = ASPECTOS.includes(tmModo.get().aspecto) ? tmModo.get().aspecto : 'anillo';
     const POSICION = { anillo: [100, 104, 100, 148], disco: [100, 104, 100, 152], barra: [100, 78, 100, 178], arena: [145, 98, 145, 132], pulsar: [100, 164, 100, 30] };
     // El color de la barra según lo que queda: verde, amarillo y, al final, rojo.
     // (En HSL, para que entre medias salgan lima y naranja vivos y no colores sucios.)
@@ -264,23 +284,27 @@
             // Un cohete que va de la salida a la meta mientras pasa el tiempo: cuando llega a la bandera, se acabó. La
             // estela lleva rayas que se mueven y pasa del verde al amarillo y al rojo. Se dibuja una vez y luego solo
             // avanza (así las rayas no saltan). En Secundaria y Superior, sin cohete ni bandera: solo la barra.
-            if (g.dataset.hecho !== 'barra') {
+            // El grosor, según el modo: la barra gorda de los pequeños, media en Secundaria y fina en Superior.
+            const [by, bh, br] = modo === 'advanced' ? [128, 12, 2] : (modo === 'secondary' ? [124, 20, 10] : [118, 32, 16]);
+            if (g.dataset.hecho !== 'barra' + bh) {
                 let rayas = '';
                 for (let i = -3; i < 14; i++) { rayas += `<path d="M${12 + i * 14} 150L${24 + i * 14} 118h7L${19 + i * 14} 150Z"/>`; }
                 let cuadros = '';
                 for (let i = 0; i < 9; i++) { cuadros += `<rect x="${186 + (i % 3) * 4}" y="${100 + Math.floor(i / 3) * 4}" width="4" height="4" fill="${((i % 3) + Math.floor(i / 3)) % 2 ? '#fff' : '#1c1a19'}"/>`; }
-                g.innerHTML = '<defs><clipPath id="tmEstela"><rect class="tm-estela" x="12" y="118" width="0" height="32" rx="16"/></clipPath></defs>'
-                    + '<rect class="tm-pista-barra" x="12" y="118" width="170" height="32" rx="16"/>'
-                    + `<g clip-path="url(#tmEstela)"><rect class="tm-barra" x="12" y="118" width="170" height="32"/><g class="tm-rayas">${rayas}</g></g>`
+                g.innerHTML = `<defs><clipPath id="tmEstela"><rect class="tm-estela" x="12" y="${by}" width="0" height="${bh}" rx="${br}"/></clipPath></defs>`
+                    + `<rect class="tm-pista-barra" x="12" y="${by}" width="170" height="${bh}" rx="${br}"/>`
+                    + `<g clip-path="url(#tmEstela)"><rect class="tm-barra" x="12" y="${by}" width="170" height="${bh}"/><g class="tm-rayas">${rayas}</g></g>`
                     + `<g class="tm-meta"><line x1="186" y1="99" x2="186" y2="152"/>${cuadros}<rect class="tm-meta-borde" x="186" y="100" width="12" height="12"/></g>`
                     + '<g class="tm-cohete"><path class="tm-llama" d="M-17 -5Q-31 0 -17 5Z"/>'
                     + '<path class="tm-aleta" d="M-14 -6L-20 -14H-11L-5 -6ZM-14 6L-20 14H-11L-5 6Z"/>'
                     + '<path class="tm-casco" d="M-17 -7H5Q17 -7 22 0Q17 7 5 7H-17Z"/><circle class="tm-ventana" cx="4" cy="0" r="3.6"/></g>';
-                g.dataset.hecho = 'barra';
+                g.dataset.hecho = 'barra' + bh;
             }
             // El cohete, de la salida (su cola en el borde) a la meta (la punta en el mástil); la estela llega hasta él.
+            // Sin cohete (Secundaria y Superior), la barra es lo que queda: llena al empezar y se vacía.
             const x = 29 + 135 * (1 - f);
-            g.querySelector('.tm-estela').setAttribute('width', (x - 8).toFixed(2));
+            const sinCohete = modo === 'secondary' || modo === 'advanced';
+            g.querySelector('.tm-estela').setAttribute('width', (sinCohete ? 170 * f : x - 8).toFixed(2));
             g.querySelector('.tm-barra').style.fill = colorBarra(f);
             g.querySelector('.tm-cohete').setAttribute('transform', `translate(${x.toFixed(2)} 134)`);
         } else if (aspecto === 'arena') {
@@ -330,7 +354,7 @@
     $$('#tm-aspectos button').forEach((b) => {
         b.setAttribute('aria-checked', String(b.dataset.v === aspecto));
         b.addEventListener('click', () => {
-            aspecto = b.dataset.v; guarda('tm-aspecto', aspecto);
+            aspecto = b.dataset.v; tmModo.set({ aspecto });
             $$('#tm-aspectos button').forEach((x) => x.setAttribute('aria-checked', String(x === b)));
             tmPinta();
         });
@@ -343,9 +367,9 @@
     let pocoTimer = 0;
     // Los últimos 10 segundos, para cantarlos: cada segundo, un latido de las cifras, un destello y un «tic» (más agudo
     // en los tres últimos). Se puede apagar; viene encendido.
-    let finalAnimado = lee('tm-final', true) !== false;
+    let finalAnimado = tmModo.get().final !== false;
     $('#tm-final').checked = finalAnimado;
-    $('#tm-final').addEventListener('change', (e) => { finalAnimado = e.target.checked; guarda('tm-final', finalAnimado); });
+    $('#tm-final').addEventListener('change', (e) => { finalAnimado = e.target.checked; tmModo.set({ final: finalAnimado }); });
     const tmCuentaFinal = () => {
         const s = Math.ceil(tm.resta / 1000);
         if (!finalAnimado || s > 10 || s < 1 || s === tm.ultimoSegundo) { tm.ultimoSegundo = s; return; }
@@ -444,7 +468,20 @@
         if (tm.resta === tm.total) { tmPon(tm.total + 60000); return; }
         tm.resta = Math.min(MAX_TM, tm.resta + 60000); tm.total = Math.max(tm.total, tm.resta); tmBotones(); tmPinta();
     });
-    $$('.chip[data-min]').forEach((c) => { c.textContent = t('tm_min_short', c.dataset.min); });
+    // Los tiempos rápidos del modo (cinco, de los más cortos a los más largos).
+    const tmRapidos = () => {
+        const r = tmModo.get().rapidos;
+        $$('.chip[data-min]').forEach((c, i) => { c.dataset.min = r[i] || c.dataset.min; c.textContent = t('tm_min_short', c.dataset.min); });
+    };
+    tmRapidos();
+    // Al cambiar de modo, el temporizador toma lo de ese modo (si no está en marcha, el aspecto se ve ya).
+    document.addEventListener('classtools:mode', () => {
+        const v = tmModo.get();
+        aspecto = ASPECTOS.includes(v.aspecto) ? v.aspecto : 'anillo';
+        $$('#tm-aspectos button').forEach((x) => x.setAttribute('aria-checked', String(x.dataset.v === aspecto)));
+        finalAnimado = v.final !== false; $('#tm-final').checked = finalAnimado;
+        tmRapidos(); tmChips(); pintaFavoritos(); tmPinta();
+    });
     $$('.chip[data-min]').forEach((c) => c.addEventListener('click', () => tmPon(Number(c.dataset.min) * 60000)));
     $$('[data-ajusta]').forEach((b) => repite(b, () => {
         const paso = Number(b.dataset.paso) * (b.dataset.ajusta === 'min' ? 60000 : 1000);
@@ -1561,6 +1598,7 @@
         kept: (tool) => (AULA && AULA.state && AULA.state[tool]) || null, keep: guardaEnAula,
         audioContext: () => audio(), soundOn: () => sonido, output: () => maestro,
         mode: () => modo,   // early, primary, secondary or advanced; «classtools:mode» when it changes
+        byMode: porModo,    // byMode(key, { early: {…}, primary: {…}, … }) → { get(), set(changes) }: values that start differently in each mode
         tabs: () => pestanas.map((b) => b.dataset.h), current: () => actual,
     };
     // Abierta desde un curso del aula: título con el curso y botón para volver a él.

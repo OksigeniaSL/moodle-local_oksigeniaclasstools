@@ -3,7 +3,10 @@
 'use strict';
 window.CLASSTOOLS_LANG = 'en';
 window.CLASSTOOLS_STR = {
-"ah_builtin": "At random: primary school words",
+"ah_builtin_advanced": "At random: upper secondary and university words",
+"ah_builtin_early": "At random: early years words",
+"ah_builtin_primary": "At random: primary school words",
+"ah_builtin_secondary": "At random: secondary school words",
 "ah_left_many": "{$a} balloons",
 "ah_left_one": "{$a} balloon",
 "ah_name": "Hangman",
@@ -500,6 +503,7 @@ window.CLASSTOOLS_STR = {
 "nl_p_custom": "My own",
 "nl_p_halves": "Halves, from 0 to 3",
 "nl_p_negative": "From −10 to 10",
+"nl_p_negquarters": "Quarters, from −2 to 2",
 "nl_p_quarters": "Quarters, from 0 to 2",
 "nl_p_tenths": "Tenths, from 0 to 1",
 "nl_p_thirds": "Thirds, from 0 to 2",
@@ -794,7 +798,7 @@ window.CLASSTOOLS_STR = {
 "wb_size_m": "Medium",
 "wb_size_s": "Thin",
 "wb_undo": "Undo",
-"wo_builtin": "At random: 5-letter words",
+"wo_builtin": "At random: {$a}-letter words",
 "wo_hint": "3 to 8 letters",
 "wo_letters": "{$a}-letter word",
 "wo_name": "Word",
