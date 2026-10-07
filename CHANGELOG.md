@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.9.2 (2026-10-10)
+
+- Timer: the «Pulsar» look is now a neutron star like MiNuryana's (two turning beams, expanding rings, stars, the time
+  in a capsule and a thin arc for the time left); it no longer shakes. The five looks wrap onto a second row instead
+  of overflowing the card.
+- The board shows the site's icon in the browser tab (the theme's, or the one set in Appearance), like the rest of
+  Moodle.
+
 ## 0.9.1 (2026-10-10)
 
 - Timer: a believable hourglass (wooden frame, glass bulbs, sand that falls and piles up) and a new «Pulsar» look (a

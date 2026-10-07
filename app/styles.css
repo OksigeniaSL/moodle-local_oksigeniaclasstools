@@ -949,13 +949,19 @@ a.redondo { text-decoration: none; }
 .tm-brillo { fill: none; stroke: #fff; stroke-width: 2.5; stroke-linecap: round; opacity: .7; }
 .tm-madera { fill: #8b5a2b; stroke: #6b4320; stroke-width: 1; }
 .anillo[data-aspecto="arena"] .tm-chorro { stroke: #d79a31; stroke-width: 2; }
-/* Pulsar: a core that shrinks with the time and sends out a wave every second. */
-.tm-nucleo { fill: var(--azul); transition: fill .3s; }
-.tm-nucleo-halo { fill: var(--azul); opacity: .15; }
-.anillo.aviso .tm-nucleo, .anillo.aviso .tm-nucleo-halo, .anillo.aviso .tm-onda { fill: var(--amarillo); stroke: var(--amarillo); }
-.anillo.ultimo .tm-nucleo, .anillo.ultimo .tm-nucleo-halo, .anillo.ultimo .tm-onda { fill: var(--rojo); stroke: var(--rojo); }
-.tm-onda { fill: none; stroke: var(--azul); stroke-width: 3; transform-box: view-box; transform-origin: 100px 100px; animation: tm-onda 1s ease-out infinite; }
-@keyframes tm-onda { from { opacity: .7; transform: scale(1); } to { opacity: 0; transform: scale(calc(96 / var(--r))); } }
-.anillo[data-aspecto="pulsar"] .cifras, .anillo[data-aspecto="pulsar"] .estado { fill: #fff; stroke: rgba(15, 47, 94, .55); stroke-width: 5px; stroke-linejoin: round; paint-order: stroke; }
-.anillo[data-aspecto="pulsar"] .estado { stroke-width: 3px; }
-@media (prefers-reduced-motion: reduce) { .tm-onda { display: none; } }
+/* Pulsar, like MiNuryana's: a neutron star with two turning beams, expanding rings and stars; the thin arc is the time left. */
+.tm-pulsar-onda { fill: none; stroke: rgba(34, 211, 238, .45); stroke-width: 1.2; transform-box: view-box; transform-origin: 100px 100px; animation: tm-pulsar 3.5s ease-out infinite; }
+@keyframes tm-pulsar { from { opacity: .9; transform: scale(.13); } to { opacity: 0; transform: scale(1); } }
+.tm-pulsar-arco { fill: none; stroke: #22d3ee; stroke-width: 2.5; stroke-linecap: round; stroke-dasharray: 1000; opacity: .8; }
+.anillo.aviso .tm-pulsar-arco { stroke: var(--amarillo); }
+.anillo.ultimo .tm-pulsar-arco { stroke: var(--rojo); }
+.tm-pulsar-capsula { fill: rgba(0, 0, 0, .7); stroke: rgba(34, 211, 238, .25); stroke-width: 1; }
+.anillo[data-aspecto="pulsar"] .cifras { fill: #cffafe; font-size: 22px; letter-spacing: 0; }
+.anillo[data-aspecto="pulsar"] .cifras.larga { font-size: 17px; }
+.anillo[data-aspecto="pulsar"] .estado { fill: rgba(34, 211, 238, .6); font-size: 6.5px; letter-spacing: 2px; }
+.anillo[data-aspecto="pulsar"].ultimo .cifras { fill: #fecaca; }
+@media (prefers-reduced-motion: reduce) { .tm-pulsar-onda { animation: none; opacity: 0; } }
+
+/* The timer's five looks wrap onto a second row instead of overflowing the card. */
+#tm-aspectos { display: grid; grid-template-columns: repeat(auto-fit, minmax(5rem, 1fr)); border-radius: 22px; }
+#tm-aspectos button { padding-inline: .5rem; }

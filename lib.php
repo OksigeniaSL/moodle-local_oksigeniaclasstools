@@ -298,9 +298,12 @@ function local_oksigeniaclasstools_site(): array {
  * @param array|null $data
  */
 function local_oksigeniaclasstools_output(?array $data): void {
+    global $OUTPUT;
     $html = file_get_contents(__DIR__ . '/app/index.html');
     $base = (new moodle_url('/local/oksigeniaclasstools/app/'))->out(false);
-    $html = str_replace('<head>', "<head>\n<base href=\"" . s($base) . '">', $html);
+    // The site's icon in the browser tab, as on any other page of the site (the one of the theme or of Appearance).
+    $icon = $OUTPUT->favicon()->out(false);
+    $html = str_replace('<head>', "<head>\n<base href=\"" . s($base) . "\">\n<link rel=\"icon\" href=\"" . s($icon) . '">', $html);
     // The plugin version in the address of scripts and styles: after each upgrade the browser fetches them again
     // instead of mixing old and new files from its cache.
     $version = (int) get_config('local_oksigeniaclasstools', 'version');

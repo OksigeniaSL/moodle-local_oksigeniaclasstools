@@ -31,6 +31,8 @@ $standalone = optional_param('standalone', 0, PARAM_BOOL);
 if (!$id) {
     require_login();
     if ($standalone) {
+        $PAGE->set_context(context_system::instance());
+        $PAGE->set_url(new moodle_url('/local/oksigeniaclasstools/index.php', ['standalone' => 1]));
         local_oksigeniaclasstools_output(null);
         exit;
     }

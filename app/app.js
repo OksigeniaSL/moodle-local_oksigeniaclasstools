@@ -235,13 +235,14 @@
     // ordenador). El texto se coloca según el dibujo.
     const ASPECTOS = ['anillo', 'disco', 'barra', 'arena', 'pulsar'];
     let aspecto = ASPECTOS.includes(lee('tm-aspecto', 'anillo')) ? lee('tm-aspecto', 'anillo') : 'anillo';
-    const POSICION = { anillo: [100, 104, 100, 148], disco: [100, 104, 100, 152], barra: [100, 78, 100, 178], arena: [145, 98, 145, 132], pulsar: [100, 104, 100, 150] };
+    const POSICION = { anillo: [100, 104, 100, 148], disco: [100, 104, 100, 152], barra: [100, 78, 100, 178], arena: [145, 98, 145, 132], pulsar: [100, 164, 100, 30] };
     const pintaAspecto = (frac) => {
         tmAnillo.dataset.aspecto = aspecto;
         const [cx, cy, ex, ey] = POSICION[aspecto];
         tmCifras.setAttribute('x', cx); tmCifras.setAttribute('y', cy);
         $('#tm-estado').setAttribute('x', ex); $('#tm-estado').setAttribute('y', ey);
         const g = $('#tm-aspecto'), f = Math.max(0, Math.min(1, frac));
+        if (aspecto !== 'pulsar') { g.dataset.hecho = ''; }
         if (aspecto === 'disco') {
             // Como los temporizadores visuales: el disco rojo es el tiempo que queda y mengua hacia las doce.
             const a = f * 2 * Math.PI, x = (100 - 82 * Math.sin(a)).toFixed(2), y = (100 - 82 * Math.cos(a)).toFixed(2);
@@ -268,10 +269,31 @@
                 + '<rect class="tm-madera" x="26" y="174" width="72" height="11" rx="4"/><rect class="tm-madera" x="26" y="15" width="72" height="11" rx="4"/>'
                 + '<rect class="tm-madera" x="29" y="24" width="5" height="152" rx="2"/><rect class="tm-madera" x="90" y="24" width="5" height="152" rx="2"/>';
         } else if (aspecto === 'pulsar') {
-            // Un púlsar: el núcleo mengua con el tiempo y, mientras corre, lanza una onda cada segundo.
-            const r = 14 + 64 * Math.sqrt(f);
-            const ondas = tm.marcha ? [0, 1, 2].map((i) => `<circle class="tm-onda" cx="100" cy="100" r="${r.toFixed(2)}" style="--r:${r.toFixed(2)};animation-delay:${i * 0.33}s"/>`).join('') : '';
-            g.innerHTML = `${ondas}<circle class="tm-nucleo-halo" cx="100" cy="100" r="${(r + 8).toFixed(2)}"/><circle class="tm-nucleo" cx="100" cy="100" r="${r.toFixed(2)}"/>`;
+            // Un púlsar, como el de MiNuryana: estrella de neutrones con dos haces que giran (una vuelta cada 5 s),
+            // anillos que se expanden y un campo de estrellas; el arco fino del borde es el tiempo que queda. Se dibuja
+            // una vez y luego solo giran los haces y avanza el arco (así las ondas no vuelven a empezar).
+            if (g.dataset.hecho !== 'pulsar') {
+                let estrellas = '';
+                for (let i = 0; i < 60; i++) {
+                    const x = 4 + (Math.sin(i * 137.508) * 0.5 + 0.5) * 192, y = 4 + (Math.cos(i * 137.508) * 0.5 + 0.5) * 192;
+                    if (Math.hypot(x - 100, y - 100) < 92) { estrellas += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(0.5 + (i % 3) * 0.5).toFixed(1)}" fill="#fff" opacity="${(0.15 + (i % 7) * 0.1).toFixed(2)}"/>`; }
+                }
+                g.innerHTML = '<defs><radialGradient id="tmEspacio"><stop offset="0" stop-color="#0a1a33"/><stop offset="1" stop-color="#000510"/></radialGradient>'
+                    + '<radialGradient id="tmNeutron"><stop offset="0" stop-color="#fff"/><stop offset=".35" stop-color="#a5f3fc"/><stop offset=".75" stop-color="#0891b2"/><stop offset="1" stop-color="#0891b2" stop-opacity="0"/></radialGradient>'
+                    + '<linearGradient id="tmHaz"><stop offset="0" stop-color="#22d3ee" stop-opacity="0"/><stop offset=".3" stop-color="#22d3ee" stop-opacity=".5"/><stop offset=".5" stop-color="#c8ffff"/><stop offset=".7" stop-color="#22d3ee" stop-opacity=".5"/><stop offset="1" stop-color="#22d3ee" stop-opacity="0"/></linearGradient>'
+                    + '<filter id="tmBrilla" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>'
+                    + `<circle cx="100" cy="100" r="96" fill="url(#tmEspacio)"/>${estrellas}`
+                    + [0, 1, 2].map((i) => `<circle class="tm-pulsar-onda" cx="100" cy="100" r="90" style="animation-delay:${(i * 1.17).toFixed(2)}s"/>`).join('')
+                    + '<g class="tm-haces"><rect x="6" y="98.5" width="188" height="3" fill="url(#tmHaz)" filter="url(#tmBrilla)"/>'
+                    + '</g>'
+                    + '<circle cx="100" cy="100" r="13" fill="url(#tmNeutron)" filter="url(#tmBrilla)"/>'
+                    + '<circle class="tm-pulsar-arco" cx="100" cy="100" r="94" pathLength="1000" transform="rotate(-90 100 100)"/>'
+                    + '<rect class="tm-pulsar-capsula" x="52" y="148" width="96" height="30" rx="15"/>';
+                g.dataset.hecho = 'pulsar';
+            }
+            const pasado = Math.max(0, (tm.total - tm.resta) / 1000);
+            g.querySelector('.tm-haces').setAttribute('transform', `rotate(${((pasado * 72) % 360).toFixed(1)} 100 100)`);
+            g.querySelector('.tm-pulsar-arco').style.strokeDashoffset = String(1000 * (1 - f));
         } else {
             g.innerHTML = '';
         }
