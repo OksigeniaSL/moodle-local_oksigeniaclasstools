@@ -1,8 +1,8 @@
 # Class tools (Oksigenia Classtools)
 
 Classroom board tools for Moodle with **the course students already loaded, with their photos**: timer,
-stopwatch, name picker, random groups, scoreboard, chance (wheel, dice, coins and cards), noise meter, work
-symbols, clock and QR code. Made to be
+stopwatch, name picker, random groups, scoreboard, chance (wheel, dice, coins and cards), games (rosco and
+Simon), noise meter, work symbols, clock and QR code. Made to be
 shown big on the classroom board.
 
 - **Where:** in each course bar, right after «Course», and in the main menu, only for teachers
@@ -18,7 +18,9 @@ shown big on the classroom board.
 - **Save teams:** after making groups, «Save as course groups» (only when pressed; nothing is created by default,
   and only with `moodle/course:managegroups`) creates a dated grouping with one group per team. Those groups are not
   offered as lists afterwards.
-- **Privacy:** full provider (exports and deletes picks). Picks are removed with their course or user.
+- **Kept in Moodle:** what each teacher keeps of each tool in each course (scoreboard, roscos) goes on from any
+  computer.
+- **Privacy:** full provider (exports and deletes picks and kept tools), removed with their course or user.
 
 ## Development
 

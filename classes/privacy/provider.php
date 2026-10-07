@@ -33,7 +33,7 @@ use core_privacy\local\request\userlist;
 use core_privacy\local\request\writer;
 
 /**
- * Stores the picks (who was picked and when). Everything else stays in the browser of whoever uses the screen.
+ * Stores the picks (who was picked and when) and what each teacher keeps of each tool in each course.
  */
 class provider implements
         \core_privacy\local\metadata\provider,
@@ -53,6 +53,13 @@ class provider implements
             'teacherid' => 'privacy:metadata:picks:teacherid',
             'timecreated' => 'privacy:metadata:picks:timecreated',
         ], 'privacy:metadata:picks');
+        $collection->add_database_table('local_oksigeniaclasstools_state', [
+            'courseid' => 'privacy:metadata:state:courseid',
+            'userid' => 'privacy:metadata:state:userid',
+            'tool' => 'privacy:metadata:state:tool',
+            'data' => 'privacy:metadata:state:data',
+            'timemodified' => 'privacy:metadata:state:timemodified',
+        ], 'privacy:metadata:state');
         return $collection;
     }
 
@@ -70,6 +77,12 @@ class provider implements
                                            ON p.courseid = ctx.instanceid AND ctx.contextlevel = :level
                                      WHERE p.userid = :student OR p.teacherid = :teacher',
             ['level' => CONTEXT_COURSE, 'student' => $userid, 'teacher' => $userid]);
+        $contextlist->add_from_sql('SELECT ctx.id
+                                      FROM {context} ctx
+                                      JOIN {local_oksigeniaclasstools_state} s
+                                           ON s.courseid = ctx.instanceid AND ctx.contextlevel = :level
+                                     WHERE s.userid = :userid',
+            ['level' => CONTEXT_COURSE, 'userid' => $userid]);
         return $contextlist;
     }
 
@@ -88,6 +101,8 @@ class provider implements
             $params);
         $userlist->add_from_sql('teacherid',
             'SELECT teacherid FROM {local_oksigeniaclasstools_picks} WHERE courseid = :courseid AND teacherid > 0', $params);
+        $userlist->add_from_sql('userid', 'SELECT userid FROM {local_oksigeniaclasstools_state} WHERE courseid = :courseid',
+            $params);
     }
 
     /**
@@ -108,6 +123,11 @@ class provider implements
                 writer::with_context($context)->export_data([get_string('pluginname', 'local_oksigeniaclasstools')],
                     (object) ['picks' => array_map(fn($t) => transform::datetime($t), $picks)]);
             }
+            $kept = $DB->get_records('local_oksigeniaclasstools_state', ['courseid' => $context->instanceid, 'userid' => $userid]);
+            foreach ($kept as $row) {
+                writer::with_context($context)->export_data([get_string('pluginname', 'local_oksigeniaclasstools'), $row->tool],
+                    (object) ['data' => json_decode($row->data), 'timemodified' => transform::datetime($row->timemodified)]);
+            }
         }
     }
 
@@ -120,6 +140,7 @@ class provider implements
         global $DB;
         if ($context->contextlevel == CONTEXT_COURSE) {
             $DB->delete_records('local_oksigeniaclasstools_picks', ['courseid' => $context->instanceid]);
+            $DB->delete_records('local_oksigeniaclasstools_state', ['courseid' => $context->instanceid]);
         }
     }
 
@@ -138,6 +159,7 @@ class provider implements
             $DB->delete_records('local_oksigeniaclasstools_picks', ['courseid' => $context->instanceid, 'userid' => $userid]);
             $DB->set_field('local_oksigeniaclasstools_picks', 'teacherid', 0,
                 ['courseid' => $context->instanceid, 'teacherid' => $userid]);
+            $DB->delete_records('local_oksigeniaclasstools_state', ['courseid' => $context->instanceid, 'userid' => $userid]);
         }
     }
 
@@ -157,5 +179,6 @@ class provider implements
         $DB->delete_records_select('local_oksigeniaclasstools_picks', "courseid = :courseid AND userid $insql", $params);
         $DB->execute("UPDATE {local_oksigeniaclasstools_picks} SET teacherid = 0 WHERE courseid = :courseid AND teacherid $insql",
             $params);
+        $DB->delete_records_select('local_oksigeniaclasstools_state', "courseid = :courseid AND userid $insql", $params);
     }
 }

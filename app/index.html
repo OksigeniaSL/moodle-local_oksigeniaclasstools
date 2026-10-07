@@ -13,13 +13,14 @@
     <button type="button" role="tab" class="pestana" id="t-temporizador" data-h="temporizador" aria-controls="h-temporizador" aria-selected="true"><span data-icono="temporizador"></span>Temporizador<span class="insignia" id="ins-temporizador" hidden></span></button>
     <button type="button" role="tab" class="pestana" id="t-cronometro" data-h="cronometro" aria-controls="h-cronometro" aria-selected="false" tabindex="-1"><span data-icono="cronometro"></span>Cronómetro<span class="insignia" id="ins-cronometro" hidden></span></button>
     <button type="button" role="tab" class="pestana" id="t-quien" data-h="quien" aria-controls="h-quien" aria-selected="false" tabindex="-1"><span data-icono="quien"></span>¿A quién le toca?</button>
-    <button type="button" role="tab" class="pestana" id="t-grupos" data-h="grupos" aria-controls="h-grupos" aria-selected="false" tabindex="-1"><span data-icono="grupos"></span>Hacer grupos</button>
-    <button type="button" role="tab" class="pestana" id="t-semaforo" data-h="semaforo" aria-controls="h-semaforo" aria-selected="false" tabindex="-1"><span data-icono="semaforo"></span>Semáforo de ruido</button>
+    <button type="button" role="tab" class="pestana" id="t-grupos" data-h="grupos" aria-controls="h-grupos" aria-selected="false" tabindex="-1"><span data-icono="grupos"></span>Grupos</button>
+    <button type="button" role="tab" class="pestana" id="t-semaforo" data-h="semaforo" aria-controls="h-semaforo" aria-selected="false" tabindex="-1"><span data-icono="semaforo"></span>Semáforo</button>
     <button type="button" role="tab" class="pestana" id="t-azar" data-h="azar" aria-controls="h-azar" aria-selected="false" tabindex="-1"><span data-icono="azar"></span>Azar</button>
+    <button type="button" role="tab" class="pestana" id="t-juegos" data-h="juegos" aria-controls="h-juegos" aria-selected="false" tabindex="-1"><span data-icono="juegos"></span>Juegos</button>
     <button type="button" role="tab" class="pestana" id="t-marcador" data-h="marcador" aria-controls="h-marcador" aria-selected="false" tabindex="-1"><span data-icono="trofeo"></span>Marcador</button>
     <button type="button" role="tab" class="pestana" id="t-asi" data-h="asi" aria-controls="h-asi" aria-selected="false" tabindex="-1"><span data-icono="asi"></span>Así trabajamos</button>
     <button type="button" role="tab" class="pestana" id="t-reloj" data-h="reloj" aria-controls="h-reloj" aria-selected="false" tabindex="-1"><span data-icono="reloj"></span>Reloj</button>
-    <button type="button" role="tab" class="pestana" id="t-qr" data-h="qr" aria-controls="h-qr" aria-selected="false" tabindex="-1"><span data-icono="qr"></span>Código QR</button>
+    <button type="button" role="tab" class="pestana" id="t-qr" data-h="qr" aria-controls="h-qr" aria-selected="false" tabindex="-1"><span data-icono="qr"></span>QR</button>
   </nav>
   <div class="acciones">
     <button type="button" class="redondo" id="b-sonido" aria-pressed="true" title="Sonido"><span data-icono="sonido"></span><span class="redondo-texto">Sonido</span></button>
@@ -175,6 +176,9 @@
   <!-- Azar (chance.js): ruleta, dados, monedas y cartas -->
   <section class="herramienta ct-chance" id="h-azar" role="tabpanel" aria-labelledby="t-azar" hidden></section>
 
+  <!-- Juegos (games.js con rosco.js y simon.js) -->
+  <section class="herramienta ct-games" id="h-juegos" role="tabpanel" aria-labelledby="t-juegos" hidden></section>
+
   <!-- Marcador (scoreboard.js) -->
   <section class="herramienta ct-scoreboard" id="h-marcador" role="tabpanel" aria-labelledby="t-marcador" hidden></section>
 
@@ -281,5 +285,8 @@
 <script src="app.js"></script>
 <script src="chance.js"></script>
 <script src="scoreboard.js"></script>
+<script src="games.js"></script>
+<script src="rosco.js"></script>
+<script src="simon.js"></script>
 </body>
 </html>

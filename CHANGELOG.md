@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.4.0 (2026-10-07)
+
+- **Games** tab for the whole class: **Rosco** (letter ring with a clue per letter; the whole class or two teams
+  with their own rosco and clock; right, wrong and «pasapalabra» with Enter, Backspace and the space bar; an
+  example rosco and an editor for the teacher's own) and **Simon** (4 or 6 pads with notes, normal or fast; with a
+  class list, a different student repeats the sequence each round, shown with their face, and the record is kept).
+- **Kept in Moodle**: what each teacher keeps of each tool in each course (scoreboard, roscos) is saved in the new
+  table `local_oksigeniaclasstools_state`, so it goes on from any computer. Covered by the privacy provider and
+  removed with its course or user.
+- Shorter tab labels so that all tabs fit at 1280 px.
+
 ## 0.3.0 (2026-10-07)
 
 - **Chance** replaces «dice and coin»: a configurable wheel (class lists with faces, own lists, numbers; optionally

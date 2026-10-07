@@ -115,6 +115,12 @@ function local_oksigeniaclasstools_data(stdClass $course, context_course $contex
             'students' => array_values($students)];
     }
 
+    // What this teacher keeps of each tool in this course.
+    $state = [];
+    foreach ($DB->get_records('local_oksigeniaclasstools_state', ['courseid' => $course->id, 'userid' => $USER->id]) as $row) {
+        $state[$row->tool] = json_decode($row->data, true);
+    }
+
     return [
         'course' => format_string($course->fullname, true, ['context' => $context]),
         'back' => (new moodle_url('/course/view.php', ['id' => $course->id]))->out(false),
@@ -123,6 +129,8 @@ function local_oksigeniaclasstools_data(stdClass $course, context_course $contex
         'sesskey' => sesskey(),
         'days' => $days,
         'pickurl' => (new moodle_url('/local/oksigeniaclasstools/pick.php'))->out(false),
+        'state' => (object) $state,
+        'stateurl' => (new moodle_url('/local/oksigeniaclasstools/state.php'))->out(false),
         'groupsurl' => has_capability('moodle/course:managegroups', $context)
             ? (new moodle_url('/local/oksigeniaclasstools/savegroups.php'))->out(false) : null,
     ];

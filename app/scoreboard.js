@@ -1,6 +1,6 @@
 // Scoreboard for the classroom board: 2 to 8 teams with big buttons, the leader crowned, and the teams made in
-// «Hacer grupos» (with their faces) in one tap. It is kept in the browser for each course, so the contest can
-// go on another day. UI strings live in STR (Spanish for now; i18n later).
+// «Hacer grupos» (with their faces) in one tap. It is kept for each course in the browser and, inside Moodle, for
+// the teacher in the course, so the contest can go on another day from any computer. UI strings live in STR.
 //
 // @copyright 2026 Oksigenia <dev@oksigenia.cc>
 // @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -12,17 +12,19 @@
     const { $, $$, escape, reducedMotion, save, load, play, setIcon, announce, icon } = core;
 
     const STR = {
-        addTeam: 'Añadir equipo', fromGroups: 'Usar los grupos de «Hacer grupos»', reset: 'Poner a cero',
+        addTeam: 'Añadir equipo', fromGroups: 'Usar los equipos de «Grupos»', reset: 'Poner a cero',
         resetSure: '¿Seguro? Pulsa otra vez', team: (n) => `Equipo ${n}`, group: (n) => `Grupo ${n}`,
         remove: 'Quitar este equipo', name: 'Nombre del equipo', color: 'Cambiar el color',
         points: (n) => `${n} ${n === 1 ? 'punto' : 'puntos'}`, leads: (t) => `Va primero: ${t}`, tie: 'Empate',
-        noGroups: 'Haz antes los grupos en «Hacer grupos».',
+        noGroups: 'Haz antes los equipos en la pestaña «Grupos».',
     };
     const COLORS = ['#164281', '#ce1423', '#067e36', '#fbbe17', '#5b2fb8', '#0e7c86', '#c2410c', '#0f2f5e'];
     const STEPS = [-1, 1, 5, 10];
     const key = 'marcador' + (core.moodle ? ':' + core.moodle.courseid : '');
     const fresh = () => ({ teams: [0, 1].map((i) => ({ name: STR.team(i + 1), color: COLORS[i], score: 0, members: [] })) });
     let state = load(key, null);
+    const kept = core.kept('scoreboard');   // what Moodle has: wins if it is newer (saved from another computer)
+    if (kept && Array.isArray(kept.teams) && kept.teams.length && (!state || (kept.updated || 0) > (state.updated || 0))) { state = kept; }
     if (!state || !Array.isArray(state.teams) || state.teams.length < 1) { state = fresh(); }
     let leader = null, resetTimer = 0;
 
@@ -40,7 +42,7 @@
         <div class="ct-teams" id="sc-teams"></div>`;
     $$('[data-icono]', root).forEach((el) => setIcon(el, el.dataset.icono));
 
-    const persist = () => save(key, state);
+    const persist = () => { state.updated = Date.now(); save(key, state); core.keep('scoreboard', state); };
     const best = () => {
         const max = Math.max(...state.teams.map((t) => t.score));
         const top = state.teams.map((t, i) => (t.score === max ? i : -1)).filter((i) => i >= 0);

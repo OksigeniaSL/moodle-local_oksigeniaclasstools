@@ -499,3 +499,72 @@ a.redondo { text-decoration: none; }
     .ct-stage { min-height: 70vh; }
     .ct-teams { grid-template-columns: repeat(auto-fill, minmax(min(15rem, 100%), 1fr)) !important; grid-auto-rows: 22rem; }
 }
+
+/* ---------- Juegos (games.js) ---------- */
+.ct-games { display: flex; flex-direction: column; gap: .75rem; }
+.ct-game { height: 100%; min-height: 0; }
+.ct-red { background: var(--rojo); }
+.ct-red:hover { background: #a80f1c; }
+
+/* Rosco (rosco.js) */
+.ct-rosco { display: grid; height: 100%; min-height: 0; }
+.ct-rosco-setup { display: flex; flex-direction: column; gap: .7rem; place-self: center; width: min(30rem, 100%); }
+.ct-rosco-game { display: grid; grid-template-columns: minmax(0, 1fr) minmax(15rem, 20rem); gap: 1rem; height: 100%; min-height: 0; }
+.ct-rosco-ring-box { display: grid; place-items: center; min-height: 0; container-type: size; }
+.ct-rosco-ring { position: relative; width: min(100cqw, 100cqh); aspect-ratio: 1; container-type: size; }
+.ct-rosco-dot { position: absolute; display: grid; place-items: center; width: 8.4cqw; aspect-ratio: 1; border: .4cqw solid #fff; border-radius: 50%; background: var(--azul); color: #fff; font-size: 4.4cqw; font-weight: 1000; transform: translate(-50%, -50%); box-shadow: 0 3px 8px rgba(15, 47, 94, .25); transition: background-color .3s, transform .3s; }
+.ct-rosco-dot.ct-ok { background: var(--verde); }
+.ct-rosco-dot.ct-bad { background: var(--rojo); }
+.ct-rosco-dot.ct-current { z-index: 1; transform: translate(-50%, -50%) scale(1.28); box-shadow: 0 0 0 .6cqw var(--amarillo), 0 6px 14px rgba(15, 47, 94, .35); }
+.ct-rosco-center { position: absolute; inset: 17%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.4cqw; text-align: center; }
+.ct-rosco-letter { margin: 0; color: var(--azul); font-size: 13cqw; font-weight: 1000; line-height: 1; }
+.ct-rosco-kind { margin: 0; color: var(--tinta-3); font-size: 2.8cqw; font-weight: 900; letter-spacing: .06em; text-transform: uppercase; }
+.ct-rosco-clue { margin: 0; color: var(--tinta); font-size: 4.4cqw; font-weight: 800; line-height: 1.2; text-wrap: balance; }
+.ct-rosco-clue.ct-long { font-size: 3.4cqw; }
+.ct-rosco-answer { min-height: 1.2em; margin: 0; font-size: 4.8cqw; font-weight: 1000; }
+.ct-rosco-answer.ct-ok { color: var(--verde); }
+.ct-rosco-answer.ct-bad { color: var(--rojo); }
+.ct-rosco-side { display: flex; flex-direction: column; gap: .6rem; min-height: 0; overflow-y: auto; }
+.ct-rosco-teams { display: flex; flex-direction: column; gap: .4rem; }
+.ct-rosco-team { display: grid; grid-template-columns: minmax(0, 1fr) auto auto auto; align-items: center; gap: .6rem; padding: .55rem .75rem; border-radius: 14px; background: var(--fondo); font-weight: 800; }
+.ct-rosco-team.ct-active { background: var(--azul-suave); box-shadow: inset 0 0 0 2px var(--azul); }
+.ct-rosco-team.ct-done { opacity: .6; }
+.ct-rosco-time { color: var(--azul-osc); font-size: 1.4rem; font-variant-numeric: tabular-nums; font-weight: 1000; }
+.ct-rosco-time.ct-low { color: var(--rojo); }
+.ct-rosco-ok, .ct-rosco-bad { display: inline-flex; align-items: center; gap: .25rem; }
+.ct-rosco-ok { color: var(--verde); }
+.ct-rosco-bad { color: var(--rojo); }
+.ct-rosco-result { display: flex; flex-direction: column; align-items: center; gap: 1rem; place-self: center; width: min(44rem, 100%); padding: 2rem; text-align: center; }
+.ct-rosco-result h2 { color: var(--azul-osc); font-size: 2.4rem; font-weight: 1000; }
+.ct-rosco-final { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; }
+.ct-rosco-final-team { display: flex; flex-direction: column; gap: .3rem; min-width: 12rem; padding: 1rem 1.4rem; border-radius: 18px; background: var(--fondo); font-weight: 800; }
+.ct-big-ok { color: var(--verde); font-size: 1.8rem; font-weight: 1000; }
+.ct-rosco-editor { width: min(64rem, calc(100vw - 2rem)); }
+.ct-rosco-table { display: flex; flex-direction: column; gap: .3rem; max-height: 52vh; padding-right: .3rem; overflow-y: auto; }
+.ct-rosco-row { display: grid; grid-template-columns: 2.2rem 8.5rem minmax(0, 1fr) minmax(8rem, 12rem); align-items: center; gap: .4rem; }
+.ct-rosco-row.ct-head { position: sticky; top: 0; z-index: 1; background: var(--superficie); color: var(--tinta-3); font-size: .8rem; font-weight: 900; text-transform: uppercase; }
+.ct-rosco-row strong { color: var(--azul); font-size: 1.2rem; text-align: center; }
+.ct-rosco-row select, .ct-rosco-row input { min-height: 40px; padding: .3rem .5rem; }
+
+/* Simón (simon.js) */
+.ct-simon { display: grid; grid-template-columns: minmax(15rem, 19rem) minmax(0, 1fr); gap: 1rem; height: 100%; min-height: 0; }
+.ct-simon-record { margin: 0; color: var(--azul-osc); font-size: 1.1rem; font-weight: 900; }
+.ct-simon-who { display: flex; align-items: center; justify-content: center; gap: .8rem; min-height: 3.6rem; color: var(--azul-osc); font-size: clamp(1.4rem, 3vw, 2.4rem); font-weight: 1000; }
+.ct-simon-who .cara-media { width: 3.4rem; height: 3.4rem; }
+.ct-simon-board { display: grid; grid-template-columns: repeat(2, auto); place-content: center; gap: 3cqmin; flex: 1; width: 100%; min-height: 0; container-type: size; }
+.ct-simon-board[data-n="6"] { grid-template-columns: repeat(3, auto); }
+.ct-pad { width: min(44cqh, 44cqw); aspect-ratio: 1; border: 0; border-radius: 18%; background: var(--c); opacity: .5; cursor: pointer; box-shadow: inset 0 -8px 0 rgba(0, 0, 0, .18), 0 8px 20px rgba(15, 47, 94, .18); transition: opacity .08s, transform .08s, filter .08s; }
+.ct-simon-board[data-n="6"] .ct-pad { width: min(44cqh, 30cqw); }
+.ct-pad:hover { opacity: .68; }
+.ct-pad:focus-visible { outline: 4px solid var(--tinta); outline-offset: 3px; }
+.ct-pad.ct-lit { opacity: 1; filter: brightness(1.25) saturate(1.2); transform: scale(1.04); box-shadow: 0 0 0 6px #fff, 0 0 40px var(--c); }
+.ct-pad.ct-wrong { animation: rueda .35s ease-in-out; }
+.ct-simon-board.ct-locked .ct-pad { cursor: default; }
+
+@media (max-width: 760px) {
+    .ct-rosco-game, .ct-simon { grid-template-columns: minmax(0, 1fr); height: auto; }
+    .ct-rosco-ring-box { height: 92vw; }
+    .ct-simon-board { height: 70vh; }
+    .ct-rosco-row { grid-template-columns: 2rem 6.5rem minmax(0, 1fr); }
+    .ct-rosco-row .ct-answer { grid-column: 2 / -1; }
+}

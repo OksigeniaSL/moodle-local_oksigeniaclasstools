@@ -984,6 +984,24 @@
     // ===================================================================================================
     pintaSonido();
     gPintaModo();
+    // Lo que el profesor guarda en el aula de cada herramienta (marcador, roscos…), para seguir desde otro ordenador.
+    // Se envía con un poco de espera para no mandar cada toque, y lo pendiente sale al cerrar la página.
+    const pendientes = {}, esperas = {};
+    const envia = (tool, keepalive) => {
+        if (!AULA || !AULA.stateurl || !(tool in pendientes)) { return Promise.resolve(); }
+        const datos = pendientes[tool]; delete pendientes[tool];
+        return fetch(AULA.stateurl, {
+            method: 'POST', credentials: 'same-origin', keepalive: !!keepalive, headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({ sesskey: AULA.sesskey, courseid: AULA.courseid, tool, data: JSON.stringify(datos) }),
+        }).catch(() => { /* sin conexión: queda en el navegador */ });
+    };
+    const guardaEnAula = (tool, datos) => {
+        if (!AULA || !AULA.stateurl) { return; }
+        pendientes[tool] = datos;
+        clearTimeout(esperas[tool]);
+        esperas[tool] = setTimeout(() => envia(tool), 1200);
+    };
+    addEventListener('pagehide', () => Object.keys(pendientes).forEach((t) => envia(t, true)));
     // API para las herramientas que van en ficheros aparte (chance.js, scoreboard.js…): lo común de la pantalla.
     window.ClasstoolsCore = {
         $, $$, random: azar, shuffle: baraja, escape: escapa, reducedMotion: reducido, save: guarda, load: lee,
@@ -992,6 +1010,8 @@
         lists: todas, present: presentes, face: cara, initials: iniciales, preload: precarga, activeList: listaQ,
         moodle: AULA, toMoodle: alAula, lastGroups: () => gHechos, openBig: abreGigante, closeBig: cierraGigante,
         newList: () => abreEditor(null), editList: (id) => abreEditor(id),
+        kept: (tool) => (AULA && AULA.state && AULA.state[tool]) || null, keep: guardaEnAula,
+        audioContext: () => audio(), soundOn: () => sonido, output: () => maestro,
     };
     // Abierta desde un curso del aula: título con el curso y botón para volver a él.
     if (AULA && AULA.back) {

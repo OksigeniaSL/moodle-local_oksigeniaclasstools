@@ -25,7 +25,7 @@
 namespace local_oksigeniaclasstools;
 
 /**
- * Removes picks when a course or a user is deleted.
+ * Removes picks and kept tools when a course or a user is deleted.
  */
 class observer {
     /**
@@ -36,10 +36,11 @@ class observer {
     public static function course_deleted(\core\event\course_deleted $event): void {
         global $DB;
         $DB->delete_records('local_oksigeniaclasstools_picks', ['courseid' => $event->objectid]);
+        $DB->delete_records('local_oksigeniaclasstools_state', ['courseid' => $event->objectid]);
     }
 
     /**
-     * User deleted: their picks go, and where they picked, no teacher is left.
+     * User deleted: their picks and kept tools go, and where they picked, no teacher is left.
      *
      * @param \core\event\user_deleted $event
      */
@@ -47,5 +48,6 @@ class observer {
         global $DB;
         $DB->delete_records('local_oksigeniaclasstools_picks', ['userid' => $event->objectid]);
         $DB->set_field('local_oksigeniaclasstools_picks', 'teacherid', 0, ['teacherid' => $event->objectid]);
+        $DB->delete_records('local_oksigeniaclasstools_state', ['userid' => $event->objectid]);
     }
 }
