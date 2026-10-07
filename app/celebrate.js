@@ -12,7 +12,9 @@
     const COLOURS = ['#ce1423', '#fbbe17', '#067e36', '#164281', '#5b2fb8', '#ea7317', '#0e7c86', '#e85d9e'];
     let current = null;
 
-    const confetti = (box) => {
+    // How much confetti each screen mode gets: plenty for the youngest, none in «Advanced» (just the glow and message).
+    const CONFETTI = { early: 220, primary: 160, secondary: 70, advanced: 0 };
+    const confetti = (box, count) => {
         const canvas = document.createElement('canvas');
         canvas.className = 'ct-confetti';
         canvas.setAttribute('aria-hidden', 'true');
@@ -23,7 +25,7 @@
         ctx.scale(dpr, dpr);
         const W = r.width, H = r.height, size = Math.max(6, Math.min(W, H) / 60);
         // Two bursts from the lower corners, and a few pieces falling from the top.
-        const parts = Array.from({ length: 160 }, (_, i) => {
+        const parts = Array.from({ length: count }, (_, i) => {
             const fromLeft = i % 2 === 0, fall = i % 5 === 0;
             return {
                 x: fall ? Math.random() * W : (fromLeft ? 0 : W), y: fall ? -20 : H * 0.85,
@@ -71,7 +73,8 @@
             </div>`;
         stage.append(layer);
         glow.forEach((el) => { if (el && el.classList) { el.classList.remove('ct-glow'); void el.getBoundingClientRect(); el.classList.add('ct-glow'); } });
-        if (!reducedMotion()) { confetti(layer); }
+        const count = CONFETTI[core.mode ? core.mode() : 'primary'] || 0;
+        if (!reducedMotion() && count) { confetti(layer, count); }
         const close = () => {
             if (!layer.isConnected) { return; }
             layer.remove(); current = null;

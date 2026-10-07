@@ -47,8 +47,19 @@ if ($hassiteconfig) {
             PARAM_INT,
             4
         ));
-        $levels = [];
         require_once(__DIR__ . '/lib.php');
+        $modes = [];
+        foreach (LOCAL_OKSIGENIACLASSTOOLS_MODES as $mode) {
+            $modes[$mode] = get_string('mode_' . $mode, 'local_oksigeniaclasstools');
+        }
+        $settings->add(new admin_setting_configselect(
+            'local_oksigeniaclasstools/defaultmode',
+            get_string('defaultmode', 'local_oksigeniaclasstools'),
+            get_string('defaultmode_desc', 'local_oksigeniaclasstools'),
+            'primary',
+            $modes
+        ));
+        $levels = [];
         foreach (LOCAL_OKSIGENIACLASSTOOLS_LEVELS as $level) {
             $levels[$level] = get_string('level_' . $level, 'local_oksigeniaclasstools');
         }

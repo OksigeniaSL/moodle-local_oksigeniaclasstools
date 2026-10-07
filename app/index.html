@@ -38,9 +38,11 @@
       <svg viewBox="0 0 200 200" role="img" aria-labelledby="tm-cifras">
         <circle class="pista" cx="100" cy="100" r="88"/>
         <circle class="progreso" id="tm-progreso" cx="100" cy="100" r="88" pathLength="1000" transform="rotate(-90 100 100)"/>
+        <g class="tm-aspecto" id="tm-aspecto"></g>
         <text class="cifras" id="tm-cifras" x="100" y="104" text-anchor="middle" dominant-baseline="middle">5:00</text>
         <text class="estado" id="tm-estado" x="100" y="148" text-anchor="middle" data-t="tm_ready">Listo</text>
       </svg>
+      <p class="tm-poco" id="tm-poco" role="status" hidden></p>
     </div>
     <div class="mandos">
       <div class="tarjeta">
@@ -51,6 +53,8 @@
           <button type="button" class="chip" data-min="5">5 min</button>
           <button type="button" class="chip" data-min="10">10 min</button>
           <button type="button" class="chip" data-min="15">15 min</button>
+          <span class="tm-favoritos" id="tm-favoritos"></span>
+          <button type="button" class="chip chip-guardar" id="tm-fav-add" hidden></button>
         </div>
       </div>
       <div class="tarjeta">
@@ -74,6 +78,17 @@
         <button type="button" class="boton grande verde ancho" id="tm-marcha"><span data-icono="empezar"></span><span data-t="gen_start">Empezar</span></button>
         <button type="button" class="boton suave" id="tm-reiniciar"><span data-icono="reiniciar"></span><span data-t="gen_reset">Reiniciar</span></button>
         <button type="button" class="boton suave" id="tm-mas1"><span data-icono="mas"></span><span data-t="tm_plus_one">1 minuto</span></button>
+      </div>
+      <div class="tarjeta">
+        <p class="ante" id="l-aspecto" data-t="tm_look">Aspecto</p>
+        <div class="segmentos" role="radiogroup" aria-labelledby="l-aspecto" id="tm-aspectos">
+          <button type="button" role="radio" aria-checked="true" data-v="anillo" data-t="tm_look_ring">Anillo</button>
+          <button type="button" role="radio" aria-checked="false" data-v="disco" data-t="tm_look_disc">Disco</button>
+          <button type="button" role="radio" aria-checked="false" data-v="barra" data-t="tm_look_bar">Barra</button>
+          <button type="button" role="radio" aria-checked="false" data-v="arena" data-t="tm_look_sand">Arena</button>
+        </div>
+        <label class="interruptor tm-avisar"><input type="checkbox" id="tm-avisar" checked><span data-t="tm_warn">Avisar cuando quede 1 minuto</span></label>
+        <label class="interruptor tm-avisar"><input type="checkbox" id="tm-final" checked><span data-t="tm_final">Animar los últimos 10 segundos</span></label>
       </div>
     </div>
   </section>

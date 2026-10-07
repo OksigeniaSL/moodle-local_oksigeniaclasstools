@@ -19,7 +19,7 @@
         noGroups: t('sc_no_groups'), teams: (n) => t(n === 1 ? 'sc_teams_one' : 'sc_teams_many', n),
     };
     const COLORS = ['#164281', '#ce1423', '#067e36', '#fbbe17', '#5b2fb8', '#0e7c86', '#c2410c', '#0f2f5e'];
-    const STEPS = [-1, 1, 5, 10];
+    const steps = () => ((core.mode ? core.mode() : 'primary') === 'early' ? [-1, 1] : [-1, 1, 5, 10]);   // the youngest: only one point at a time
     const key = 'marcador' + (core.moodle ? ':' + core.moodle.courseid : '');
     const fresh = () => ({ teams: [0, 1].map((i) => ({ name: STR.team(i + 1), color: COLORS[i], score: 0, members: [] })) });
     let state = load(key, null);
@@ -73,7 +73,7 @@
                 </header>
                 <output class="ct-score" aria-live="polite" aria-label="${escape(t.name)}: ${escape(STR.points(t.score))}">${t.score}</output>
                 ${membersHTML(t)}
-                <div class="ct-steps">${STEPS.map((s) => `<button type="button" class="ct-step${s < 0 ? ' ct-minus' : ''}" data-step="${s}">${s > 0 ? '+' + s : '−' + Math.abs(s)}</button>`).join('')}</div>
+                <div class="ct-steps">${steps().map((s) => `<button type="button" class="ct-step${s < 0 ? ' ct-minus' : ''}" data-step="${s}">${s > 0 ? '+' + s : '−' + Math.abs(s)}</button>`).join('')}</div>
             </article>`;
         }).join('');
         $('#sc-add').disabled = state.teams.length >= 8;
@@ -156,6 +156,7 @@
         persist(); leader = null; paint();
     });
 
+    document.addEventListener('classtools:mode', () => paint());
     core.register('marcador', {
         entra: () => {
             $('#sc-groups').disabled = !core.lastGroups();

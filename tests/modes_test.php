@@ -103,5 +103,11 @@ final class modes_test extends \advanced_testcase {
         $this->assertSame(get_string('app_tab_timer', 'local_oksigeniaclasstools'), $site['str']->tab_timer);
         set_config('levels', 'primary,secondary', 'local_oksigeniaclasstools');
         $this->assertSame(['primary', 'secondary'], local_oksigeniaclasstools_site()['levels']);
+        // The screen mode courses start in: Primary unless the admin chooses another.
+        $this->assertSame('primary', $site['mode']);
+        set_config('defaultmode', 'advanced', 'local_oksigeniaclasstools');
+        $this->assertSame('advanced', local_oksigeniaclasstools_site()['mode']);
+        set_config('defaultmode', 'nonsense', 'local_oksigeniaclasstools');
+        $this->assertSame('primary', local_oksigeniaclasstools_site()['mode']);
     }
 }

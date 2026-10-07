@@ -37,7 +37,8 @@
         return text.charAt(0).toUpperCase() + text.slice(1);
     };
 
-    const opt = Object.assign({ mode: 'now', level: 'quarter', digital: true, words: true, h24: false, minutes: true }, load('reloj-aprender', {}));
+    const MODE_LEVEL = { early: 'h', primary: 'quarter', secondary: 'five', advanced: 'minute' };
+    const opt = Object.assign({ mode: 'now', level: MODE_LEVEL[(core.mode ? core.mode() : 'primary')] || 'quarter', digital: true, words: true, h24: false, minutes: true }, load('reloj-aprender', {}));
     if (!STR.levels[opt.level]) { opt.level = 'quarter'; }
     const st = { t: 3 * 60 + 15, hidden: false, target: null, drag: null };
 
@@ -200,6 +201,12 @@
     });
     [['digital', '#cl-o-digital'], ['words', '#cl-o-words'], ['minutes', '#cl-o-minutes'], ['h24', '#cl-o-h24']].forEach(([k, sel]) => {
         $(sel).addEventListener('change', () => { opt[k] = $(sel).checked; persist(); paint(); });
+    });
+    // A new screen mode: the clock starts at that mode's level.
+    document.addEventListener('classtools:mode', () => {
+        opt.level = MODE_LEVEL[(core.mode ? core.mode() : 'primary')] || opt.level; persist();
+        const step = STEP[opt.level]; st.t = Math.round(st.t / step) * step % 1440;
+        paintControls(); paint();
     });
     paintControls(); paint();
 

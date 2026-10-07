@@ -282,7 +282,10 @@
     ].map(([kind, poly, color], i) => ({ i, kind, local: centred(poly), color }));
     const TW = 22;
     let TH = 13;
-    const tg = { fig: load('tangram-figura', 'cuadrado'), state: [], sel: null, hint: load('tangram-guias', false) === true, done: false };
+    // Guide lines: on by default in «Early years», off in the other modes; the teacher's choice is kept for each mode.
+    const guidesKey = () => 'tangram-guias-' + (core.mode ? core.mode() : 'primary');
+    const guidesDefault = () => { const v = load(guidesKey(), null); return v === null ? (core.mode ? core.mode() : 'primary') === 'early' : v === true; };
+    const tg = { fig: load('tangram-figura', 'cuadrado'), state: [], sel: null, hint: guidesDefault(), done: false };
     if (tg.fig !== 'free' && !FIGURES[tg.fig]) { tg.fig = 'cuadrado'; }
     let tgDrag = null;
     const tgTap = tapper();
@@ -467,7 +470,8 @@
     $('#tg-fig').addEventListener('change', () => { tg.fig = $('#tg-fig').value; save('tangram-figura', tg.fig); scatter(); tgPaint(); });
     $('#tg-turn').addEventListener('click', () => tgTurn(tg.sel));
     $('#tg-flip').addEventListener('click', () => tgFlip(tg.sel));
-    $('#tg-guides').addEventListener('change', () => { tg.hint = $('#tg-guides').checked; save('tangram-guias', tg.hint); tgPaint(); });
+    $('#tg-guides').addEventListener('change', () => { tg.hint = $('#tg-guides').checked; save(guidesKey(), tg.hint); tgPaint(); });
+    document.addEventListener('classtools:mode', () => { tg.hint = guidesDefault(); if (tg.state.length) { tgPaint(); } });
     $('#tg-reset').addEventListener('click', () => { scatter(); tgPaint(); play('card'); });
 
     // =========================================================================================================

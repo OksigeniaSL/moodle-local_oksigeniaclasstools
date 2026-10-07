@@ -28,6 +28,7 @@ tracking, no build step.
 | Clock | The time now, or **learning to tell the time**: hands dragged with a finger, digits and words, five levels and two class games. |
 | Noise meter | Microphone level only (nothing is recorded or sent). A light that breathes with the noise, a calm streak and a patience reserve that only sustained noise uses up. |
 | Also | Work symbols, clock, and a QR code with styles, the site logo in the middle and PNG/SVG download. |
+| Screen modes | Early years, Primary, Secondary or Advanced: one at a time, per course. They change the look and the games' defaults, never which tools there are. |
 
 Lists come from the course: one per group and one per cohort enrolled with cohort sync, and the whole course. A
 group and a cohort with the same students appear once. Separate groups mode is respected.
@@ -66,6 +67,7 @@ Then visit *Site administration → Notifications* to finish the install.
 |---|---|---|
 | Name on the board | First name and first surname | Or first name only, or full name. |
 | Days counted for fair picking | 90 | Also the period shown in «Participation». |
+| Screen mode by default | Primary | Early years, Primary, Secondary or Advanced (upper secondary and university). One at a time; teachers change it per course. |
 | School levels | All | Early years, primary, secondary, upper secondary, higher education: the built-in sets offered by the games. |
 | Open the board to students | Off | Students get only the tools without data of the class (games, materials, drawing board, timer, clock, QR): never names, photos, picks or groups, and nothing of theirs is saved. |
 | Link in the main menu | On | Inside each course the link is always in the course bar. |

@@ -1,5 +1,28 @@
 # Changelog
 
+## 0.9.0 (2026-10-10)
+
+- **Screen modes**: Early years, Primary, Secondary and Advanced (upper secondary and university).
+  - One at a time, remembered for each course (also in Moodle, so it follows the teacher), changed from a button in
+    the top bar.
+  - The site setting «Screen mode by default», explained in the admin page, sets where courses start. The games'
+    content («School levels») stays separate and can combine levels.
+  - No mode removes a tool; the mode changes the look and how things start:
+    - Early years: bigger, rounder, with the tangram guide lines on, 6 pairs, a clock at o'clock and lots of
+      confetti, and only −1 and +1 on the scoreboard.
+    - Secondary and Advanced: squarer and more sober.
+    - Advanced: everything at full — 12 pairs of every level, a fast Simon, the clock minute by minute, and no
+      confetti.
+- **Timer**:
+  - Four looks: ring, the red disc that shrinks towards twelve, a bar and an hourglass.
+  - A warning when one minute is left, only in timers longer than two minutes (it can be switched off).
+  - The last 10 seconds, for the class to count them aloud: every second the digits beat, the timer flashes and a tick
+    sounds, higher in the last three (on by default; it can be switched off).
+  - Up to two of the teacher's own times next to the usual ones, kept in Moodle.
+- **Present**: the top bar steps aside so the tool fills the screen; a small button (or Escape) brings it back.
+- **Phones**: the tabs go to the bottom, within reach of the thumb.
+
+
 ## 0.8.1 (2026-10-09)
 
 - **Share the drawing board with a class**, for teachers who can add content to the course:

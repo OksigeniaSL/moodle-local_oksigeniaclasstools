@@ -168,7 +168,7 @@
         });
         const n = Number(load('simon-colores', 4)) === 6 ? '6' : '4';
         $$('#si-pads button').forEach((x) => x.setAttribute('aria-checked', String(x.dataset.n === n)));
-        const f = load('simon-rapido', false) === true;
+        const saved = load('simon-rapido', null), f = saved === null ? (core.mode ? core.mode() : 'primary') === 'advanced' : saved === true;
         $$('#si-speed button').forEach((x) => x.setAttribute('aria-checked', String((x.dataset.v === 'fast') === f)));
         paintBoard(); setMsg(STR.pressStart, true);
     };

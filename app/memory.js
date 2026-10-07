@@ -38,6 +38,9 @@
     const levels = LEVELS.filter(([k]) => !Array.isArray(site.levels) || site.levels.includes(k));
     const courseKey = 'parejas-nivel-' + ((window.CLASSTOOLS && window.CLASSTOOLS.courseid) || 0);
     const pick = (list, n) => shuffle(list.slice()).slice(0, n);
+    // What each screen mode starts with: pairs and level of the built-in sets («Advanced»: every level).
+    const modePairs = () => ({ early: 6, primary: 8, secondary: 10, advanced: 12 })[(core.mode ? core.mode() : 'primary')] || 8;
+    const modeLevel = () => ({ early: 'early', primary: 'primary', secondary: 'secondary', advanced: 'all' })[(core.mode ? core.mode() : 'primary')] || 'all';
     // Up to n pairs from a generator, without repeating the key (so that no two cards of different pairs match).
     const unique = (n, make) => {
         const seen = new Set(), out = [];
@@ -168,7 +171,7 @@
                     <label class="campo apilado"><span>${STR.what}</span><select id="me-src"></select></label>
                     <p class="ante">${STR.pairs}</p>
                     <div class="segmentos" role="radiogroup" aria-label="${escape(STR.pairs)}" id="me-n">
-                        ${[6, 8, 10, 12].map((n) => `<button type="button" role="radio" aria-checked="${n === 8}" data-n="${n}">${n}</button>`).join('')}
+                        ${[6, 8, 10, 12].map((n) => `<button type="button" role="radio" aria-checked="${n === modePairs()}" data-n="${n}">${n}</button>`).join('')}
                     </div>
                     <p class="ante">${STR.who}</p>
                     <div class="segmentos" role="radiogroup" aria-label="${escape(STR.who)}" id="me-who">
@@ -190,6 +193,11 @@
             $$(`${id} button`).forEach((x) => x.setAttribute('aria-checked', String(x === b)));
         });
         seg('#me-n'); seg('#me-who');
+        // A new screen mode: its number of pairs and, if the teacher has not chosen one for this course, its level.
+        document.addEventListener('classtools:mode', () => {
+            $$('#me-n button').forEach((x) => x.setAttribute('aria-checked', String(Number(x.dataset.n) === modePairs())));
+            if (!load(courseKey, null)) { $('#me-level').value = ''; fill(); }
+        });
         $('#me-src').addEventListener('change', () => save('parejas-fuente', $('#me-src').value));
         $('#me-level').addEventListener('change', () => { save(courseKey, $('#me-level').value); fill(); });
         $('#me-start').addEventListener('click', start);
@@ -199,7 +207,7 @@
         fill();
     };
     const fill = () => {
-        const lv = $('#me-level'), chosen = lv.value || load(courseKey, 'all');
+        const lv = $('#me-level'), chosen = lv.value || load(courseKey, null) || modeLevel();
         lv.innerHTML = `<option value="all">${STR.allLevels}</option>` + levels.map(([k, name]) => `<option value="${k}">${name}</option>`).join('');
         lv.value = levels.some(([k]) => k === chosen) ? chosen : 'all';
         $('#me-level-box').hidden = levels.length < 2;

@@ -22,6 +22,9 @@
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+/** Screen modes, from the youngest: one at a time, chosen per course (they change the look and the games' defaults). */
+const LOCAL_OKSIGENIACLASSTOOLS_MODES = ['early', 'primary', 'secondary', 'advanced'];
+
 /** School levels with built-in sets in the games, from the youngest. */
 const LOCAL_OKSIGENIACLASSTOOLS_LEVELS = ['early', 'primary', 'secondary', 'upper', 'higher'];
 
@@ -266,6 +269,9 @@ function local_oksigeniaclasstools_site(): array {
     // Not saved yet (before the settings page is first stored): all levels.
     $levels = get_config('local_oksigeniaclasstools', 'levels');
     $levels = $levels === false ? LOCAL_OKSIGENIACLASSTOOLS_LEVELS : array_values(array_filter(explode(',', $levels)));
+    // The screen mode a course starts in, until the teacher chooses another.
+    $mode = get_config('local_oksigeniaclasstools', 'defaultmode');
+    $mode = in_array($mode, LOCAL_OKSIGENIACLASSTOOLS_MODES, true) ? $mode : 'primary';
     // The board's texts («app_» strings), in the user's language with English for anything missing.
     $str = [];
     foreach (get_string_manager()->load_component_strings('local_oksigeniaclasstools', current_language()) as $key => $text) {
@@ -279,6 +285,7 @@ function local_oksigeniaclasstools_site(): array {
         'home' => (new moodle_url('/'))->out(false),
         'logo' => $logo,
         'levels' => $levels,
+        'mode' => $mode,
         'tz' => core_date::get_user_timezone(),
         'lang' => current_language(),
         'str' => (object) $str,

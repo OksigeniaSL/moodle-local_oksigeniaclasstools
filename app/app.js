@@ -39,6 +39,19 @@
     const guarda = (k, v) => { try { localStorage.setItem('pizarra:' + k, JSON.stringify(v)); } catch (e) { almacen = false; } };
     const lee = (k, d) => { try { const v = localStorage.getItem('pizarra:' + k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } };
 
+    // --- Modo de la pantalla: uno cada vez (Infantil, Primaria, Secundaria o Superior) y recordado por curso. Cambia
+    // el aspecto y los valores con los que empiezan los juegos; no quita ninguna herramienta. ---
+    const PANTALLAS = ['early', 'primary', 'secondary', 'advanced'];
+    const CLASE = window.CLASSTOOLS || null;
+    const claveModo = 'modo-' + ((CLASE && CLASE.courseid) || 0);
+    let modo = (() => {
+        const enCurso = CLASE && CLASE.state && CLASE.state.settings && CLASE.state.settings.mode;
+        const local = lee(claveModo, null);
+        const sitio = window.CLASSTOOLS_SITE && window.CLASSTOOLS_SITE.mode;
+        return [local, enCurso, sitio, 'primary'].find((m) => PANTALLAS.includes(m));
+    })();
+    document.documentElement.dataset.modo = modo;
+
     // --- Iconos y avisos para lectores de pantalla ---
     const ponIcono = (el, n) => { el.dataset.icono = n; el.innerHTML = icono(n); };
     $$('[data-icono]').forEach((el) => ponIcono(el, el.dataset.icono));
@@ -90,6 +103,9 @@
         elegido: (a) => { campana(a, 880, 0, 0.35, 1.2); campana(a, 1318.51, 0.12, 0.35, 1.6); },
         dado: (a) => [0, 0.07, 0.15, 0.24, 0.36].forEach((d, i) => clic(a, 500 + i * 90, d, 0.18)),
         moneda: (a) => { campana(a, 2093, 0, 0.12, 0.5); campana(a, 2349.3, 1.25, 0.18, 0.9); },
+        aviso: (a) => { campana(a, 659.25, 0, 0.3, 1.2); campana(a, 659.25, 0.4, 0.3, 1.5); },
+        cuenta: (a) => clic(a, 1250, 0, 0.16),
+        cuentaFinal: (a) => campana(a, 987.77, 0, 0.3, 0.35),
         agotada: (a) => { campana(a, 523.25, 0, 0.4, 1.4); campana(a, 392, 0.28, 0.4, 1.6); campana(a, 261.63, 0.56, 0.45, 2.4); },
     };
     const suena = (n) => { if (!sonido) { return; } const a = audio(); if (!a) { return; } try { SONIDOS[n](a); } catch (e) { /* sin audio */ } };
@@ -203,6 +219,7 @@
         const tocado = tm.marcha || tm.acabado || tm.resta < tm.total;
         tmAnillo.classList.toggle('ultimo', tocado && tm.resta <= 10000);
         tmAnillo.classList.toggle('aviso', tocado && tm.resta > 10000 && frac <= 0.25);
+        pintaAspecto(frac);
         $('#tm-estado').textContent = tm.acabado ? t('fin_time') : tm.marcha ? t('tm_running') : tm.resta < tm.total ? t('tm_paused') : t('tm_ready');
         insignias();
     };
@@ -212,7 +229,106 @@
         else { rotula(b, tm.resta < tm.total && tm.resta > 0 ? t('gen_resume') : t('gen_start'), 'empezar'); b.className = 'boton grande verde ancho'; }
         b.disabled = !tm.marcha && tm.total <= 0;
     };
-    const tmChips = () => $$('.chip').forEach((c) => c.classList.toggle('activo', Number(c.dataset.min) * 60000 === tm.total));
+    const tmChips = () => $$('.chip[data-min], .chip[data-ms]').forEach((c) => c.classList.toggle('activo', (c.dataset.min ? Number(c.dataset.min) * 60000 : Number(c.dataset.ms)) === tm.total));
+
+    // Aspecto: el anillo de siempre, el disco rojo que se va comiendo, una barra o un reloj de arena (para cada
+    // ordenador). El texto se coloca según el dibujo.
+    const ASPECTOS = ['anillo', 'disco', 'barra', 'arena'];
+    let aspecto = ASPECTOS.includes(lee('tm-aspecto', 'anillo')) ? lee('tm-aspecto', 'anillo') : 'anillo';
+    const POSICION = { anillo: [100, 104, 100, 148], disco: [100, 104, 100, 152], barra: [100, 78, 100, 178], arena: [140, 98, 140, 132] };
+    const pintaAspecto = (frac) => {
+        tmAnillo.dataset.aspecto = aspecto;
+        const [cx, cy, ex, ey] = POSICION[aspecto];
+        tmCifras.setAttribute('x', cx); tmCifras.setAttribute('y', cy);
+        $('#tm-estado').setAttribute('x', ex); $('#tm-estado').setAttribute('y', ey);
+        const g = $('#tm-aspecto'), f = Math.max(0, Math.min(1, frac));
+        if (aspecto === 'disco') {
+            // Como los temporizadores visuales: el disco rojo es el tiempo que queda y mengua hacia las doce.
+            const a = f * 2 * Math.PI, x = (100 - 82 * Math.sin(a)).toFixed(2), y = (100 - 82 * Math.cos(a)).toFixed(2);
+            const sector = f >= 0.9999 ? '<circle class="tm-disco" cx="100" cy="100" r="82"/>'
+                : (f > 0.0005 ? `<path class="tm-disco" d="M100 100L100 18A82 82 0 ${f > 0.5 ? 1 : 0} 0 ${x} ${y}Z"/>` : '');
+            let marcas = '';
+            for (let i = 0; i < 60; i += 5) { const r = i * 6 * Math.PI / 180; marcas += `<line x1="${(100 + 86 * Math.sin(r)).toFixed(1)}" y1="${(100 - 86 * Math.cos(r)).toFixed(1)}" x2="${(100 + (i % 15 ? 91 : 94) * Math.sin(r)).toFixed(1)}" y2="${(100 - (i % 15 ? 91 : 94) * Math.cos(r)).toFixed(1)}"/>`; }
+            g.innerHTML = `<circle class="tm-cara" cx="100" cy="100" r="95"/>${sector}<g class="tm-marcas">${marcas}</g>`;
+        } else if (aspecto === 'barra') {
+            g.innerHTML = `<rect class="tm-pista-barra" x="12" y="120" width="176" height="30" rx="15"/>`
+                + (f > 0.0005 ? `<rect class="tm-barra" x="12" y="120" width="${(176 * f).toFixed(2)}" height="30" rx="15"/>` : '');
+        } else if (aspecto === 'arena') {
+            // La arena de arriba baja y se amontona abajo (la cantidad es la del tiempo, no la altura).
+            const k = 70 * (1 - Math.sqrt(f)), h = 70 * Math.sqrt(f), wTop = (64 * h) / 70, yb = 176 - k, wBot = (64 * (yb - 106)) / 70;
+            const arriba = f > 0.0005 ? `<polygon class="tm-arena" points="${62 - wTop / 2},${94 - h} ${62 + wTop / 2},${94 - h} 62,94"/>` : '';
+            const abajo = f < 0.9995 ? `<polygon class="tm-arena" points="30,176 94,176 ${62 + wBot / 2},${yb} ${62 - wBot / 2},${yb}"/>` : '';
+            const chorro = tm.marcha && f > 0.0005 ? `<line class="tm-chorro" x1="62" y1="94" x2="62" y2="${yb}"/>` : '';
+            g.innerHTML = `<path class="tm-vidrio" d="M26 20H98M26 180H98M30 24L62 98L30 176M94 24L62 98L94 176"/>${arriba}${abajo}${chorro}`;
+        } else {
+            g.innerHTML = '';
+        }
+    };
+    $$('#tm-aspectos button').forEach((b) => {
+        b.setAttribute('aria-checked', String(b.dataset.v === aspecto));
+        b.addEventListener('click', () => {
+            aspecto = b.dataset.v; guarda('tm-aspecto', aspecto);
+            $$('#tm-aspectos button').forEach((x) => x.setAttribute('aria-checked', String(x === b)));
+            tmPinta();
+        });
+    });
+
+    // Aviso cuando queda 1 minuto (solo en tiempos de más de 2 minutos: en los cortos no tiene sentido).
+    let avisar = lee('tm-avisar', true) !== false;
+    $('#tm-avisar').checked = avisar;
+    $('#tm-avisar').addEventListener('change', (e) => { avisar = e.target.checked; guarda('tm-avisar', avisar); });
+    let pocoTimer = 0;
+    // Los últimos 10 segundos, para cantarlos: cada segundo, un latido de las cifras, un destello y un «tic» (más agudo
+    // en los tres últimos). Se puede apagar; viene encendido.
+    let finalAnimado = lee('tm-final', true) !== false;
+    $('#tm-final').checked = finalAnimado;
+    $('#tm-final').addEventListener('change', (e) => { finalAnimado = e.target.checked; guarda('tm-final', finalAnimado); });
+    const tmCuentaFinal = () => {
+        const s = Math.ceil(tm.resta / 1000);
+        if (!finalAnimado || s > 10 || s < 1 || s === tm.ultimoSegundo) { tm.ultimoSegundo = s; return; }
+        tm.ultimoSegundo = s;
+        tmAnillo.classList.remove('latido'); void tmAnillo.getBoundingClientRect(); tmAnillo.classList.add('latido');
+        suena(s <= 3 ? 'cuentaFinal' : 'cuenta');
+    };
+    const tmAvisaPoco = () => {
+        if (!avisar || tm.avisado || tm.total <= 120000 || tm.resta > 60000 || tm.resta <= 1500) { return; }
+        tm.avisado = true;
+        suena('aviso');
+        const p = $('#tm-poco');
+        p.textContent = t('tm_one_left'); p.hidden = false;
+        clearTimeout(pocoTimer); pocoTimer = setTimeout(() => { p.hidden = true; }, 5000);
+        anuncia(t('tm_one_left'));
+    };
+
+    // Los tiempos del profesor: uno o dos que use mucho, además de los de siempre. Se guardan en este ordenador y,
+    // dentro de un curso, en Moodle (le siguen a cualquier ordenador).
+    const ajustesCurso = Object.assign({}, (CLASE && CLASE.state && CLASE.state.settings) || {});
+    const guardaAjustes = (cambios) => { Object.assign(ajustesCurso, cambios, { updated: Date.now() }); guardaEnAula('settings', ajustesCurso); };
+    const valido = (ms) => Number.isFinite(ms) && ms > 0 && ms <= MAX_TM;
+    let favoritos = (Array.isArray(ajustesCurso.favs) ? ajustesCurso.favs : lee('tiempos-favoritos', [])).map(Number).filter(valido).slice(0, 2);
+    const etiquetaTiempo = (ms) => (ms % 60000 === 0 ? t('tm_min_short', ms / 60000) : fmtSeg(Math.round(ms / 1000)));
+    const pintaFavoritos = () => {
+        $('#tm-favoritos').innerHTML = favoritos.map((ms) => `<span class="chip-fav"><button type="button" class="chip" data-ms="${ms}" title="${escapa(t('tm_fav', etiquetaTiempo(ms)))}">${escapa(etiquetaTiempo(ms))}</button>`
+            + `<button type="button" class="chip-quita" data-quita="${ms}" aria-label="${escapa(t('tm_fav_remove', etiquetaTiempo(ms)))}">${icono('cerrar')}</button></span>`).join('');
+        const add = $('#tm-fav-add');
+        const yaEsta = favoritos.includes(tm.total) || $$('.chip[data-min]').some((c) => Number(c.dataset.min) * 60000 === tm.total);
+        add.hidden = tm.total <= 0 || yaEsta;
+        add.innerHTML = `${icono('mas')}<span>${escapa(t('tm_fav_add', etiquetaTiempo(tm.total)))}</span>`;
+        add.title = t('tm_fav_add_title');
+        tmChips();
+    };
+    const guardaFavoritos = () => { guarda('tiempos-favoritos', favoritos); guardaAjustes({ favs: favoritos }); pintaFavoritos(); };
+    $('#tm-fav-add').addEventListener('click', () => {
+        if (!valido(tm.total) || favoritos.includes(tm.total)) { return; }
+        favoritos = favoritos.concat(tm.total).slice(-2);
+        guardaFavoritos(); suena('tic');
+    });
+    $('#tm-favoritos').addEventListener('click', (e) => {
+        const quita = e.target.closest('[data-quita]');
+        if (quita) { favoritos = favoritos.filter((ms) => ms !== Number(quita.dataset.quita)); guardaFavoritos(); return; }
+        const c = e.target.closest('[data-ms]');
+        if (c) { tmPon(Number(c.dataset.ms)); }
+    });
     // Pone un tiempo nuevo (para el temporizador y lo deja listo).
     const tmPon = (ms) => {
         ms = Math.max(0, Math.min(MAX_TM, Math.round(ms / 1000) * 1000));
@@ -220,11 +336,12 @@
         Object.assign(tm, { total: ms, resta: ms, marcha: false, acabado: false });
         $('#tm-min').value = Math.floor(ms / 60000);
         $('#tm-seg').value = Math.floor(ms / 1000) % 60;
-        tmChips(); tmBotones(); tmPinta();
+        tm.avisado = false;
+        pintaFavoritos(); tmBotones(); tmPinta();
     };
     const tmTic = () => {
         tm.resta = Math.max(0, tm.fin - Date.now());
-        if (tm.resta <= 0) { tmTermina(); } else { tmPinta(); }
+        if (tm.resta <= 0) { tmTermina(); } else { tmAvisaPoco(); tmPinta(); tmCuentaFinal(); }
     };
     const tmEmpieza = () => {
         if (tm.total <= 0) { return; }
@@ -240,7 +357,7 @@
         tmBotones(); tmPinta();
         anuncia(t('tm_paused_sr'));
     };
-    const tmReinicia = () => { clearInterval(tm.reloj); Object.assign(tm, { marcha: false, acabado: false, resta: tm.total }); tmBotones(); tmPinta(); };
+    const tmReinicia = () => { clearInterval(tm.reloj); Object.assign(tm, { marcha: false, acabado: false, avisado: false, resta: tm.total }); tmBotones(); tmPinta(); };
     const tmAlterna = () => { if (tm.marcha) { tmPausa(); } else { tmEmpieza(); } };
     const tmTermina = () => {
         clearInterval(tm.reloj);
@@ -259,12 +376,12 @@
     $('#tm-marcha').addEventListener('click', tmAlterna);
     $('#tm-reiniciar').addEventListener('click', tmReinicia);
     $('#tm-mas1').addEventListener('click', () => {
-        if (tm.marcha) { tm.fin = Math.min(tm.fin + 60000, Date.now() + MAX_TM); tm.total = Math.min(MAX_TM, tm.total + 60000); tmTic(); return; }
+        if (tm.marcha) { tm.fin = Math.min(tm.fin + 60000, Date.now() + MAX_TM); tm.total = Math.min(MAX_TM, tm.total + 60000); tm.avisado = false; tmTic(); return; }
         if (tm.resta === tm.total) { tmPon(tm.total + 60000); return; }
         tm.resta = Math.min(MAX_TM, tm.resta + 60000); tm.total = Math.max(tm.total, tm.resta); tmBotones(); tmPinta();
     });
-    $$('.chip').forEach((c) => { c.textContent = t('tm_min_short', c.dataset.min); });
-    $$('.chip').forEach((c) => c.addEventListener('click', () => tmPon(Number(c.dataset.min) * 60000)));
+    $$('.chip[data-min]').forEach((c) => { c.textContent = t('tm_min_short', c.dataset.min); });
+    $$('.chip[data-min]').forEach((c) => c.addEventListener('click', () => tmPon(Number(c.dataset.min) * 60000)));
     $$('[data-ajusta]').forEach((b) => repite(b, () => {
         const paso = Number(b.dataset.paso) * (b.dataset.ajusta === 'min' ? 60000 : 1000);
         tmPon(Math.max(0, tm.total + paso));
@@ -1064,6 +1181,67 @@
     // ===================================================================================================
     pintaSonido();
     gPintaModo();
+    // Presentar: la barra de arriba se aparta para que la herramienta ocupe la pantalla; un botón pequeño la devuelve
+    // (también Escape).
+    (() => {
+        const b = document.createElement('button');
+        b.type = 'button'; b.className = 'redondo'; b.id = 'b-presentar'; b.title = t('bar_present');
+        b.innerHTML = `<span>${icono('ampliar')}</span><span class="redondo-texto">${escapa(t('bar_present'))}</span>`;
+        $('.acciones').prepend(b);
+        const sale = document.createElement('button');
+        sale.type = 'button'; sale.className = 'salir-presentar'; sale.id = 'b-salir-presentar'; sale.hidden = true;
+        sale.innerHTML = `${icono('salir')}<span>${escapa(t('bar_present_exit'))}</span>`;
+        document.body.append(sale);
+        const pon = (si) => {
+            document.documentElement.classList.toggle('presentando', si);
+            sale.hidden = !si;
+            if (si) { sale.focus({ preventScroll: true }); } else { b.focus({ preventScroll: true }); }
+            dispatchEvent(new Event('resize'));
+        };
+        b.addEventListener('click', () => pon(true));
+        sale.addEventListener('click', () => pon(false));
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && document.documentElement.classList.contains('presentando') && !document.querySelector('dialog[open]')) { pon(false); }
+        });
+    })();
+    // El botón del modo, en la barra de arriba, con su menú de cuatro.
+    (() => {
+        const b = document.createElement('button');
+        b.type = 'button'; b.className = 'redondo'; b.id = 'b-modo'; b.setAttribute('aria-haspopup', 'true'); b.setAttribute('aria-expanded', 'false');
+        $('.acciones').prepend(b);
+        const pinta = () => {
+            b.title = `${t('bar_mode')}: ${t('mode_' + modo)}`;
+            b.innerHTML = `<span>${icono('modo-' + modo)}</span><span class="redondo-texto">${escapa(t('mode_' + modo))}</span>`;
+        };
+        const menu = document.createElement('div');
+        menu.className = 'menu-modo'; menu.id = 'menu-modo'; menu.hidden = true; menu.setAttribute('role', 'menu');
+        menu.innerHTML = `<p class="ante">${escapa(t('bar_mode_title'))}</p>` + PANTALLAS.map((m) => `<button type="button" role="menuitemradio" data-modo="${m}">`
+            + `<span class="menu-modo-ico">${icono('modo-' + m)}</span><span><strong>${escapa(t('mode_' + m))}</strong><small>${escapa(t('mode_' + m + '_hint'))}</small></span></button>`).join('');
+        document.body.append(menu);
+        const cierra = () => { menu.hidden = true; b.setAttribute('aria-expanded', 'false'); };
+        b.addEventListener('click', () => {
+            if (!menu.hidden) { cierra(); return; }
+            $$('button', menu).forEach((x) => x.setAttribute('aria-checked', String(x.dataset.modo === modo)));
+            const r = b.getBoundingClientRect();
+            menu.style.top = `${r.bottom + 8}px`;
+            menu.style.right = `${Math.max(8, innerWidth - r.right)}px`;
+            menu.hidden = false; b.setAttribute('aria-expanded', 'true');
+            (menu.querySelector('[aria-checked="true"]') || menu.querySelector('button')).focus();
+        });
+        menu.addEventListener('click', (e) => {
+            const x = e.target.closest('[data-modo]'); if (!x) { return; }
+            modo = x.dataset.modo;
+            document.documentElement.dataset.modo = modo;
+            guarda(claveModo, modo);
+            guardaAjustes({ mode: modo });
+            pinta(); cierra(); ajustaBarra();
+            anuncia(`${t('bar_mode')}: ${t('mode_' + modo)}`);
+            document.dispatchEvent(new CustomEvent('classtools:mode', { detail: modo }));
+        });
+        document.addEventListener('pointerdown', (e) => { if (!menu.hidden && !menu.contains(e.target) && !b.contains(e.target)) { cierra(); } });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !menu.hidden) { e.stopPropagation(); cierra(); b.focus(); } }, true);
+        pinta();
+    })();
     // Lo que el profesor guarda en el aula de cada herramienta (marcador, roscos…), para seguir desde otro ordenador.
     // Se envía con un poco de espera para no mandar cada toque, y lo pendiente sale al cerrar la página.
     const pendientes = {}, esperas = {};
@@ -1095,6 +1273,7 @@
         newList: () => abreEditor(null), editList: (id) => abreEditor(id),
         kept: (tool) => (AULA && AULA.state && AULA.state[tool]) || null, keep: guardaEnAula,
         audioContext: () => audio(), soundOn: () => sonido, output: () => maestro,
+        mode: () => modo,   // early, primary, secondary or advanced; «classtools:mode» when it changes
     };
     // Abierta desde un curso del aula: título con el curso y botón para volver a él.
     // La vuelta: al curso si se abrió desde uno; si no (dentro de Moodle, sin curso), al inicio de cada usuario.
