@@ -1091,6 +1091,12 @@ a.redondo { text-decoration: none; }
 .lv-pista { height: 2.2rem; border-radius: 50rem; background: var(--azul-suave); overflow: hidden; }
 .lv-pista i { display: block; height: 100%; border-radius: 50rem; background: var(--c); transition: width .5s ease-out; }
 .lv-barra strong { font-variant-numeric: tabular-nums; text-align: right; }
+.lv-reloj { display: flex; align-items: center; gap: .8rem; width: min(100%, 36rem); }
+.lv-reloj-pista { flex: 1; height: 1rem; border-radius: 50rem; background: var(--azul-suave); overflow: hidden; }
+.lv-reloj-pista i { display: block; height: 100%; border-radius: 50rem; background: var(--verde); transition: width .2s linear; }
+.lv-reloj strong { min-width: 9ch; color: var(--azul-osc); font-size: 1.3rem; font-variant-numeric: tabular-nums; }
+.lv-reloj.ultimo .lv-reloj-pista i { background: var(--rojo); }
+.lv-reloj.ultimo strong { color: var(--rojo); }
 .lv-barra.lv-mano { grid-template-columns: minmax(4rem, auto) minmax(0, 1fr) auto; }
 .lv-tally { display: flex; align-items: center; gap: .5rem; }
 .lv-tally strong { min-width: 2ch; color: var(--azul-osc); font-size: 1.5em; text-align: center; }

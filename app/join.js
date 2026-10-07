@@ -66,9 +66,21 @@
     }).then((r) => r.json());
 
     let view = null, shown = '', failures = 0, timer = 0, team = 0;
+    // A vote with a time limit: the seconds left, counted here between the questions to the site.
+    let deadline = 0, total = 0;
+    const ticker = () => {
+        const box = document.getElementById('jn-left');
+        if (!box) { return; }
+        const left = deadline ? Math.max(0, (deadline - performance.now()) / 1000) : 0, whole = Math.ceil(left);
+        box.hidden = !deadline;
+        box.querySelector('i').style.width = `${(100 * left / (total || 1)).toFixed(1)}%`;
+        box.querySelector('span').textContent = t('lv_left', `${Math.floor(whole / 60)}:${String(whole % 60).padStart(2, '0')}`);
+        box.classList.toggle('ultimo', whole <= 5);
+    };
+    setInterval(ticker, 250);
     const render = () => {
         const v = view;
-        const key = JSON.stringify(v);
+        const key = JSON.stringify({ ...v, left: 0 });   // the time left alone does not draw the screen again
         if (key === shown) { return; }
         shown = key;
         if (v.ended) { screen(t('lv_bye')); stop(); return; }
@@ -85,6 +97,7 @@
         const shape = v.vote === 'light' ? ' una' : (v.vote === 'five' ? ' cinco' : '');
         if (v.open) {
             root.innerHTML = `${head()}<div class="jn-centro"><p class="jn-texto">${escape(t('lv_question_n', v.round))}</p>
+                <div class="jn-reloj" id="jn-left" hidden><b><i></i></b><span></span></div>
                 <div class="jn-ops${shape}${v.mine ? ' elegido' : ''}">${opts.map((o) => {
                     const [c, light] = COLOURS[o] || ['#164281'];
                     return `<button type="button" class="jn-op${light ? ' claro' : ''}${v.mine === o ? ' mia' : ''}" style="--c:${c}" data-o="${escape(o)}" aria-pressed="${v.mine === o}">${escape(label(o))}</button>`;
@@ -163,8 +176,15 @@
         if (!v || typeof v !== 'object') { return; }
         if (v.errorcode === 'kicked') { v = { kicked: true }; } else if (v.errorcode === 'livefull') { v = { full: true }; } else if (v.error) { return; }
         failures = 0;
+        if (v.open && v.left) {
+            const end = performance.now() + v.left * 1000;
+            if (!deadline || Math.abs(end - deadline) > 1500) { deadline = end; }
+            if (total < v.left) { total = v.left; }
+        } else {
+            deadline = 0; total = 0;
+        }
         if (v.kind === 'buzz' && v.joined && v.team && team !== -1) { team = v.team; }   // -1: choosing another
-        view = v; render();
+        view = v; render(); ticker();
         // Not in yet: a vote or a remote joins at once; a buzzer, when its team is chosen.
         if (!v.joined && !v.ended && !v.kicked && !v.full && v.kind !== 'buzz') { post('join').then(apply).catch(() => {}); }
     }

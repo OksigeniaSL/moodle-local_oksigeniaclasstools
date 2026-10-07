@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.11.1 (2026-10-12)
+
+- Live vote: it can close by itself after 10, 20 or 30 seconds, 1 or 2 minutes (or not at all, as before). The
+  board and the devices show the time left, the last five seconds tick, and Moodle closes it at the second even if
+  the board is late: no answer gets in after the time.
+
 ## 0.11.0 (2026-10-12)
 
 - Materials, four new ones (each in a file of its own, added to the Materials bar):

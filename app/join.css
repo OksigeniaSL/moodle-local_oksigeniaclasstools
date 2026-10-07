@@ -61,3 +61,10 @@ button { touch-action: manipulation; -webkit-user-select: none; user-select: non
 .jn-mando button:active { transform: scale(.98); }
 .jn-aviso { margin: 0; padding: .4rem .8rem; border-radius: 12px; background: #fff4d6; color: #6b4a00; font-size: .9rem; text-align: center; }
 @media (prefers-reduced-motion: reduce) { .jn-op, .jn-ya { transition: none; } }
+/* The time left of a vote that closes by itself. */
+.jn-reloj { display: flex; align-items: center; gap: .6rem; width: 100%; }
+.jn-reloj b { flex: 1; height: .9rem; border-radius: 50rem; background: var(--azul-suave); overflow: hidden; }
+.jn-reloj i { display: block; height: 100%; border-radius: 50rem; background: var(--verde); transition: width .25s linear; }
+.jn-reloj span { min-width: 7ch; color: var(--azul-osc); font-weight: 900; font-variant-numeric: tabular-nums; }
+.jn-reloj.ultimo i { background: var(--rojo); }
+.jn-reloj.ultimo span { color: var(--rojo); }

@@ -203,9 +203,13 @@ class live {
                 if ($live->kind === 'vote' && isset(self::VOTES[$data['vote'] ?? ''])) {
                     $state['vote'] = $data['vote'];
                 }
+                // A vote can close by itself: from then on no answer gets in, whatever the board is doing.
+                $secs = (int) ($data['secs'] ?? 0);
+                $state['closesat'] = $live->kind === 'vote' && $secs > 0 ? time() + min(600, $secs) : 0;
                 break;
             case 'close':
                 $state['open'] = false;
+                $state['closesat'] = 0;
                 break;
             case 'show':
                 $state['show'] = !empty($data['show']);
@@ -234,6 +238,26 @@ class live {
         $live->state = json_encode($state);
         $DB->update_record('local_oksigeniaclasstools_live', $live);
         return $live;
+    }
+
+    /**
+     * Whether answers get in: open, and its time (if it has one) not over.
+     *
+     * @param array $state
+     * @return bool
+     */
+    private static function is_open(array $state): bool {
+        return !empty($state['open']) && (empty($state['closesat']) || time() < $state['closesat']);
+    }
+
+    /**
+     * Seconds until it closes by itself (0 without a time limit, or closed).
+     *
+     * @param array $state
+     * @return int
+     */
+    private static function left(array $state): int {
+        return self::is_open($state) && !empty($state['closesat']) ? max(0, $state['closesat'] - time()) : 0;
     }
 
     /**
@@ -294,7 +318,7 @@ class live {
         global $DB;
         $state = json_decode($live->state, true);
         $joined = $DB->get_record('local_oksigeniaclasstools_livein', ['liveid' => $live->id, 'round' => 0, 'device' => $device]);
-        if (!$joined || in_array($device, $state['kicked'], true) || empty($state['open']) || $live->round < 1) {
+        if (!$joined || in_array($device, $state['kicked'], true) || !self::is_open($state) || $live->round < 1) {
             throw new \moodle_exception('liveclosed', 'local_oksigeniaclasstools');
         }
         $where = ['liveid' => $live->id, 'round' => $live->round, 'device' => $device];
@@ -355,7 +379,7 @@ class live {
         global $DB;
         $state = json_decode($live->state, true);
         $view = [
-            'kind' => $live->kind, 'round' => (int) $live->round, 'open' => !empty($state['open']),
+            'kind' => $live->kind, 'round' => (int) $live->round, 'open' => self::is_open($state), 'left' => self::left($state),
             'ended' => (bool) $live->timeend, 'kicked' => in_array($device, $state['kicked'], true),
         ];
         $joined = $DB->get_record('local_oksigeniaclasstools_livein', ['liveid' => $live->id, 'round' => 0, 'device' => $device]);
@@ -376,7 +400,7 @@ class live {
         if ($mine && $live->kind === 'buzz') {
             $view['place'] = self::place($mine);
         }
-        if (!empty($state['show']) && empty($state['open']) && $live->kind === 'vote' && $live->round) {
+        if (!empty($state['show']) && !self::is_open($state) && $live->kind === 'vote' && $live->round) {
             $view['results'] = self::counts($live);
         }
         return $view;
@@ -394,7 +418,8 @@ class live {
         $state = json_decode($live->state, true);
         $view = [
             'id' => (int) $live->id, 'code' => $live->code, 'kind' => $live->kind, 'identity' => $live->identity,
-            'round' => (int) $live->round, 'open' => !empty($state['open']), 'show' => !empty($state['show']),
+            'round' => (int) $live->round, 'open' => self::is_open($state), 'left' => self::left($state),
+            'show' => !empty($state['show']),
             'ended' => (bool) $live->timeend, 'others' => self::others((int) $live->id),
             'url' => (new \moodle_url('/local/oksigeniaclasstools/join.php', ['c' => $live->code]))->out(false),
         ];

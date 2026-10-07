@@ -89,6 +89,31 @@ final class live_test extends \advanced_testcase {
         live::answer($live, $a, 'maybe');
     }
 
+    public function test_a_vote_can_close_by_itself(): void {
+        global $DB;
+        $this->resetAfterTest();
+        $course = $this->getDataGenerator()->create_course();
+        $live = live::start($course, 2, 'vote', 'anon', ['vote' => 'yesno', 'show' => 1]);
+        [$a, $b] = [str_repeat('a', 32), str_repeat('b', 32)];
+        live::join($live, $a);
+        live::join($live, $b);
+        $live = live::control($live, 'open', ['secs' => 30]);
+        $view = live::board_view($live);
+        $this->assertTrue($view['open']);
+        $this->assertGreaterThan(25, $view['left']);
+        live::answer($live, $a, 'yes');
+        // Time is up: closed for everyone, even before the board says so.
+        $state = json_decode($live->state, true);
+        $state['closesat'] = time() - 1;
+        $live->state = json_encode($state);
+        $DB->set_field('local_oksigeniaclasstools_live', 'state', $live->state, ['id' => $live->id]);
+        $this->assertFalse(live::board_view($live)['open']);
+        $this->assertSame(0, live::board_view($live)['left']);
+        $this->assertSame(['yes' => 1, 'no' => 0], live::device_view($live, $b)['results']);
+        $this->expectException(\moodle_exception::class);
+        live::answer($live, $b, 'no');
+    }
+
     public function test_buzzers_keep_the_order_and_only_the_first_press(): void {
         $this->resetAfterTest();
         $course = $this->getDataGenerator()->create_course();

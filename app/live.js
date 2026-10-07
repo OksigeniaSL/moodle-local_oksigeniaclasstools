@@ -242,20 +242,28 @@
     const paintVote = (v, first) => {
         if (first || !$('#lv-bars')) {
             stage.innerHTML = `<div class="lv-pregunta"><input type="text" id="lv-question" maxlength="140" placeholder="${escape(t('lv_question_ph'))}" aria-label="${escape(t('lv_question_ph'))}"></div>
-                <div class="lv-centro"><p class="lv-ronda" id="lv-round"></p><p class="lv-grande" id="lv-progress"></p><div class="lv-barras" id="lv-bars"></div></div>
+                <div class="lv-centro"><p class="lv-ronda" id="lv-round"></p><p class="lv-grande" id="lv-progress"></p>
+                    <div class="lv-reloj" id="lv-clock" hidden><span class="lv-reloj-pista"><i id="lv-clock-bar"></i></span><strong id="lv-clock-text"></strong></div>
+                    <div class="lv-barras" id="lv-bars"></div></div>
                 <div class="botonera centro lv-mandos">
                     <select id="lv-kind-vote" aria-label="${escape(t('lv_answers'))}">${['abcd', 'yesno', 'light', 'five'].map((k) => `<option value="${k}">${escape(t('lv_v_' + k))}</option>`).join('')}</select>
+                    <select id="lv-limit" aria-label="${escape(t('lv_limit'))}" title="${escape(t('lv_limit'))}">${LIMITS.map((x) => `<option value="${x}">${escape(limitLabel(x))}</option>`).join('')}</select>
                     <button type="button" class="boton grande" id="lv-open"><span data-icono="empezar"></span><span></span></button>
                     <label class="interruptor"><input type="checkbox" id="lv-show"><span>${escape(t('lv_show'))}</span></label>
                 </div>`;
             $('#lv-question').value = question;
             $('#lv-question').addEventListener('input', () => { question = $('#lv-question').value; });
             $('#lv-open').addEventListener('click', () => {
-                if (S.open) { act('close'); play('cuenta'); } else { act('open', { vote: $('#lv-kind-vote').value }); play('tic'); }
+                if (S.open) { act('close'); play('cuenta'); return; }
+                limitTotal = Number($('#lv-limit').value) || 0;
+                act('open', { vote: $('#lv-kind-vote').value, secs: limitTotal }); play('tic');
             });
+            $('#lv-limit').value = String(LIMITS.includes(Number(load('envivo-cierre', 0))) ? Number(load('envivo-cierre', 0)) : 0);
+            $('#lv-limit').addEventListener('change', () => save('envivo-cierre', Number($('#lv-limit').value)));
             $('#lv-show').addEventListener('change', () => act('show', { show: $('#lv-show').checked ? 1 : 0 }));
         }
-        $('#lv-kind-vote').value = v.vote; $('#lv-kind-vote').disabled = v.open;
+        $('#lv-kind-vote').value = v.vote; $('#lv-kind-vote').disabled = v.open; $('#lv-limit').disabled = v.open;
+        clock(v);
         $('#lv-show').checked = v.show;
         relabel($('#lv-open'), v.open ? t('lv_close_vote') : (v.round ? t('lv_again') : t('lv_open_vote')), v.open ? 'pausa' : 'empezar');
         $('#lv-open').classList.toggle('amarillo', v.open);
@@ -278,6 +286,34 @@
                     + `<span class="lv-pista"><i style="--c:${c}; width:${(100 * n / most).toFixed(1)}%"></i></span><strong>${n}</strong></div>`;
             }).join('');
             if (bars.dataset.html !== html) { bars.innerHTML = html; bars.dataset.html = html; }
+        }
+    };
+
+    // Closing by itself: the time left, counted on the board between the questions to Moodle (which closes it anyway),
+    // a tick in the last five seconds, and the close when it reaches zero.
+    const LIMITS = [0, 10, 20, 30, 60, 120];
+    const limitLabel = (x) => (!x ? t('lv_limit_none') : (x < 60 ? t('lv_limit_s', x) : (x === 60 ? t('lv_limit_m1') : t('lv_limit_m', x / 60))));
+    let limitTotal = 0, deadline = 0, ticker = 0, lastTick = -1;
+    const clock = (v) => {
+        const box = $('#lv-clock');
+        if (!box) { return; }
+        if (!v.open || !v.left) { box.hidden = true; deadline = 0; clearInterval(ticker); ticker = 0; return; }
+        const end = performance.now() + v.left * 1000;
+        // Moodle counts in whole seconds: only a real difference moves the local clock.
+        if (!deadline || Math.abs(end - deadline) > 1500) { deadline = end; }
+        if (!limitTotal || limitTotal < v.left) { limitTotal = v.left; }
+        box.hidden = false;
+        if (!ticker) { ticker = setInterval(tick, 200); tick(); }
+    };
+    const tick = () => {
+        const left = Math.max(0, (deadline - performance.now()) / 1000), whole = Math.ceil(left);
+        $('#lv-clock-text').textContent = t('lv_closes_in', `${Math.floor(whole / 60)}:${String(whole % 60).padStart(2, '0')}`);
+        $('#lv-clock-bar').style.width = `${(100 * left / (limitTotal || 1)).toFixed(1)}%`;
+        $('#lv-clock').classList.toggle('ultimo', whole <= 5);
+        if (whole <= 5 && whole > 0 && whole !== lastTick) { lastTick = whole; play('cuenta'); }
+        if (left <= 0) {
+            clearInterval(ticker); ticker = 0; deadline = 0; lastTick = -1;
+            if (S && S.open) { act('close'); play('cuentaFinal'); }
         }
     };
 

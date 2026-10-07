@@ -58,6 +58,7 @@ if ($action === 'start') {
             'device' => optional_param('device', '', PARAM_ALPHANUM),
             'vote' => optional_param('vote', '', PARAM_ALPHA),
             'show' => optional_param('show', 0, PARAM_BOOL),
+            'secs' => optional_param('secs', 0, PARAM_INT),
         ]);
     }
 }
