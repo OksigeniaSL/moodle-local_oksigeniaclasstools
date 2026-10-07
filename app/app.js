@@ -327,7 +327,10 @@
     if (listasAula.length && !listasAula.some((l) => l.id === listaActiva)) { listaActiva = listasAula[0].id; }
     let salidos = lee('salidos', {});
     if (!salidos || typeof salidos !== 'object') { salidos = {}; }
-    const guardaListas = () => { guarda('listas', listas); guarda('lista-activa', listaActiva); guarda('salidos', salidos); };
+    const guardaListas = () => {
+        guarda('listas', listas); guarda('lista-activa', listaActiva); guarda('salidos', salidos);
+        document.dispatchEvent(new CustomEvent('classtools:lists'));   // las demás herramientas (Azar…) refrescan sus listas
+    };
     // Quién falta hoy: se apunta por lista y solo vale para hoy (mañana vuelven todos).
     const hoy = () => { const d = new Date(); return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`; };
     let faltan = lee('faltan', null);
@@ -642,7 +645,7 @@
         $('#g-n').setAttribute('aria-label', gModo === 'num' ? `${gN} grupos` : `${gN} alumnos por grupo`);
     };
     const gListo = () => rotula($('#g-hacer'), 'Hacer grupos', 'mezclar');
-    let gUltimos = null;
+    let gUltimos = null, gHechos = null;   // gHechos: los últimos grupos hechos, con su lista (los usa el Marcador)
     function gCambiaLista() {
         const pegar = $('#g-lista').value === '__pegar', l = gLista();
         $('#g-moodle').hidden = true; gUltimos = null;
@@ -676,6 +679,7 @@
         $('#g-resumen').textContent = `${b.length} alumnos en ${k} ${k === 1 ? 'grupo' : 'grupos'} de ${mn === mx ? mn : `${mn} y ${mx}`}.`;
         gEncaja();
         rotula($('#g-hacer'), 'Otra vez', 'otra');
+        gHechos = { lista: lg, grupos };
         // Guardarlos como grupos del curso: solo si se pulsa (por defecto no se crea nada).
         gUltimos = lg && lg.aula && AULA.groupsurl ? { lista: lg, grupos } : null;
         $('#g-moodle').hidden = !gUltimos; $('#g-moodle').disabled = false;
@@ -836,86 +840,6 @@
         sale: smApaga,
     };
 
-    // ===================================================================================================
-    // 6. Dado y moneda
-    // ===================================================================================================
-    const CARAS = { 1: [4], 2: [0, 8], 3: [0, 4, 8], 4: [0, 2, 6, 8], 5: [0, 2, 4, 6, 8], 6: [0, 2, 3, 5, 6, 8] };
-    const DCOLOR = ['var(--rojo)', 'var(--verde)', 'var(--azul)'];
-    let dN = [1, 2, 3].includes(lee('dados', 2)) ? lee('dados', 2) : 2, dValores = [], dRodando = false;
-    const dPinta = (vals) => {
-        const caja = $('#d-dados');
-        caja.dataset.n = vals.length;
-        if (caja.children.length !== vals.length) {
-            caja.innerHTML = vals.map((_, i) => `<div class="dado" role="img" style="--c:${DCOLOR[i]}">${'<span class="punto"></span>'.repeat(9)}</div>`).join('');
-        }
-        vals.forEach((v, i) => {
-            const d = caja.children[i];
-            d.setAttribute('aria-label', `Dado: ${v}`);
-            [...d.children].forEach((p, j) => p.classList.toggle('on', CARAS[v].includes(j)));
-        });
-    };
-    const dTotal = () => {
-        const t = $('#d-total');
-        if (!dValores.length) { t.className = 'total espera'; t.textContent = 'Pulsa «Tirar»'; return; }
-        t.className = 'total';
-        t.textContent = dValores.length === 1 ? `Ha salido un ${dValores[0]}` : `Total: ${dValores.reduce((a, b) => a + b, 0)}`;
-    };
-    const dCuantos = () => $$('#d-cuantos button').forEach((b) => b.setAttribute('aria-checked', String(Number(b.dataset.n) === dN)));
-    const tirar = () => {
-        if (dRodando) { return; }
-        const finales = Array.from({ length: dN }, () => 1 + azar(6));
-        const acaba = () => {
-            dRodando = false; dValores = finales; dPinta(finales); dTotal();
-            $('#d-tirar').disabled = false;
-            anuncia(finales.length === 1 ? `Ha salido un ${finales[0]}` : `Han salido ${finales.join(', ')}. Total ${finales.reduce((a, b) => a + b, 0)}`);
-        };
-        suena('dado');
-        if (reducido()) { acaba(); return; }
-        dRodando = true; $('#d-tirar').disabled = true;
-        $$('#d-dados .dado').forEach((d) => { d.classList.remove('rueda'); void d.offsetWidth; d.classList.add('rueda'); });
-        let vueltas = 0;
-        const gira = () => {
-            dPinta(Array.from({ length: dN }, () => 1 + azar(6)));
-            if (++vueltas < 7) { setTimeout(gira, 70); } else { setTimeout(acaba, 70); }
-        };
-        gira();
-    };
-    $('#d-tirar').addEventListener('click', tirar);
-    $$('#d-cuantos button').forEach((b) => b.addEventListener('click', () => {
-        dN = Number(b.dataset.n); guarda('dados', dN); dCuantos();
-        dValores = []; dPinta(Array.from({ length: dN }, (_, i) => [6, 5, 4][i])); dTotal();
-    }));
-    dCuantos(); dPinta(Array.from({ length: dN }, (_, i) => [6, 5, 4][i])); dTotal();
-
-    let mGiro = 0, mLanzando = false;
-    const mHist = [];
-    const mPinta = (res) => {
-        const r = $('#m-resultado');
-        if (!res) { r.className = 'total espera'; r.textContent = 'Pulsa «Lanzar»'; return; }
-        r.className = 'total'; r.textContent = res === 'cara' ? '¡Cara!' : '¡Cruz!';
-        $('#m-historial').innerHTML = mHist.map((x) => `<li class="${x}">${x === 'cara' ? 'Cara' : 'Cruz'}</li>`).join('');
-    };
-    const lanzar = () => {
-        if (mLanzando) { return; }
-        const res = azar(2) ? 'cara' : 'cruz';
-        const m = $('#m-moneda');
-        const vueltas = reducido() ? 0 : 5;
-        mGiro = Math.ceil((mGiro + 1) / 360) * 360 + 360 * vueltas + (res === 'cruz' ? 180 : 0);
-        const acaba = () => {
-            mLanzando = false; $('#m-lanzar').disabled = false;
-            mHist.unshift(res); if (mHist.length > 10) { mHist.pop(); }
-            mPinta(res); anuncia(res === 'cara' ? 'Ha salido cara' : 'Ha salido cruz');
-        };
-        m.style.transform = `rotateY(${mGiro}deg)`;
-        suena('moneda');
-        if (reducido()) { acaba(); return; }
-        mLanzando = true; $('#m-lanzar').disabled = true;
-        $('#m-resultado').className = 'total espera'; $('#m-resultado').textContent = '…';
-        m.classList.remove('salta'); void m.offsetWidth; m.classList.add('salta');
-        setTimeout(acaba, 1300);
-    };
-    $('#m-lanzar').addEventListener('click', lanzar);
-    mPinta(null);
 
     // ===================================================================================================
     // Cartel a toda pantalla (Así trabajamos y el QR ampliado)
@@ -1051,7 +975,7 @@
         if (e.key !== ' ' || e.repeat || e.ctrlKey || e.altKey || e.metaKey) { return; }
         if (!$('#fin-tiempo').hidden || !gigante.hidden || (editor.open)) { return; }
         if (e.target.closest && e.target.closest('button, input, textarea, select, a, [role="tab"]')) { return; }
-        const accion = { temporizador: tmAlterna, cronometro: crAlterna, quien: elegir, dado: tirar }[actual];
+        const accion = { temporizador: tmAlterna, cronometro: crAlterna, quien: elegir }[actual] || (HERR[actual] && HERR[actual].espacio);
         if (accion) { e.preventDefault(); accion(); }
     });
 
@@ -1060,6 +984,15 @@
     // ===================================================================================================
     pintaSonido();
     gPintaModo();
+    // API para las herramientas que van en ficheros aparte (chance.js, scoreboard.js…): lo común de la pantalla.
+    window.ClasstoolsCore = {
+        $, $$, random: azar, shuffle: baraja, escape: escapa, reducedMotion: reducido, save: guarda, load: lee,
+        play: suena, sounds: SONIDOS, bell: campana, click: clic, announce: anuncia, icon: icono, setIcon: ponIcono,
+        relabel: rotula, repeatWhileHeld: repite, register: (tool, def) => { HERR[tool] = def; }, show: muestra,
+        lists: todas, present: presentes, face: cara, initials: iniciales, preload: precarga, activeList: listaQ,
+        moodle: AULA, toMoodle: alAula, lastGroups: () => gHechos, openBig: abreGigante, closeBig: cierraGigante,
+        newList: () => abreEditor(null), editList: (id) => abreEditor(id),
+    };
     // Abierta desde un curso del aula: título con el curso y botón para volver a él.
     if (AULA && AULA.back) {
         const v = document.createElement('a');
@@ -1075,5 +1008,5 @@
     ajustaBarra();
     try { SCORM.iniciar(); SCORM.guardar({}, 100, true); } catch (e) { /* sin Moodle */ }
 
-    window.Pizarra = { tm, cr, sm, muestra, tmPon, listas: () => listas, todas, limpiaNombres, elegir, tirar, lanzar, abreFaltan };   // para las pruebas automáticas
+    window.Pizarra = { tm, cr, sm, muestra, tmPon, listas: () => listas, todas, limpiaNombres, elegir, abreFaltan };   // para las pruebas automáticas
 })();

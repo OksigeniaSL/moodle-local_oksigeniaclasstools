@@ -15,7 +15,8 @@
     <button type="button" role="tab" class="pestana" id="t-quien" data-h="quien" aria-controls="h-quien" aria-selected="false" tabindex="-1"><span data-icono="quien"></span>¿A quién le toca?</button>
     <button type="button" role="tab" class="pestana" id="t-grupos" data-h="grupos" aria-controls="h-grupos" aria-selected="false" tabindex="-1"><span data-icono="grupos"></span>Hacer grupos</button>
     <button type="button" role="tab" class="pestana" id="t-semaforo" data-h="semaforo" aria-controls="h-semaforo" aria-selected="false" tabindex="-1"><span data-icono="semaforo"></span>Semáforo de ruido</button>
-    <button type="button" role="tab" class="pestana" id="t-dado" data-h="dado" aria-controls="h-dado" aria-selected="false" tabindex="-1"><span data-icono="dado"></span>Dado y moneda</button>
+    <button type="button" role="tab" class="pestana" id="t-azar" data-h="azar" aria-controls="h-azar" aria-selected="false" tabindex="-1"><span data-icono="azar"></span>Azar</button>
+    <button type="button" role="tab" class="pestana" id="t-marcador" data-h="marcador" aria-controls="h-marcador" aria-selected="false" tabindex="-1"><span data-icono="trofeo"></span>Marcador</button>
     <button type="button" role="tab" class="pestana" id="t-asi" data-h="asi" aria-controls="h-asi" aria-selected="false" tabindex="-1"><span data-icono="asi"></span>Así trabajamos</button>
     <button type="button" role="tab" class="pestana" id="t-reloj" data-h="reloj" aria-controls="h-reloj" aria-selected="false" tabindex="-1"><span data-icono="reloj"></span>Reloj</button>
     <button type="button" role="tab" class="pestana" id="t-qr" data-h="qr" aria-controls="h-qr" aria-selected="false" tabindex="-1"><span data-icono="qr"></span>Código QR</button>
@@ -171,33 +172,11 @@
   </section>
 
   <!-- Dado y moneda -->
-  <section class="herramienta azar" id="h-dado" role="tabpanel" aria-labelledby="t-dado" hidden>
-    <div class="tarjeta zona-dados">
-      <div class="cabeza-tarjeta">
-        <h2>Dados</h2>
-        <div class="segmentos" role="radiogroup" aria-label="Número de dados" id="d-cuantos">
-          <button type="button" role="radio" aria-checked="false" data-n="1">1</button>
-          <button type="button" role="radio" aria-checked="true" data-n="2">2</button>
-          <button type="button" role="radio" aria-checked="false" data-n="3">3</button>
-        </div>
-      </div>
-      <div class="dados" id="d-dados"></div>
-      <p class="total" id="d-total" aria-live="polite"></p>
-      <button type="button" class="boton grande" id="d-tirar"><span data-icono="dado"></span>Tirar</button>
-    </div>
-    <div class="tarjeta zona-moneda">
-      <div class="cabeza-tarjeta"><h2>Moneda</h2></div>
-      <div class="moneda-caja">
-        <div class="moneda" id="m-moneda">
-          <span class="cara-moneda anverso">Cara</span>
-          <span class="cara-moneda reverso">Cruz</span>
-        </div>
-      </div>
-      <p class="total" id="m-resultado" aria-live="polite"></p>
-      <button type="button" class="boton grande" id="m-lanzar"><span data-icono="moneda"></span>Lanzar</button>
-      <ol class="historial" id="m-historial" aria-label="Últimos lanzamientos"></ol>
-    </div>
-  </section>
+  <!-- Azar (chance.js): ruleta, dados, monedas y cartas -->
+  <section class="herramienta ct-chance" id="h-azar" role="tabpanel" aria-labelledby="t-azar" hidden></section>
+
+  <!-- Marcador (scoreboard.js) -->
+  <section class="herramienta ct-scoreboard" id="h-marcador" role="tabpanel" aria-labelledby="t-marcador" hidden></section>
 
   <!-- Así trabajamos -->
   <section class="herramienta asi" id="h-asi" role="tabpanel" aria-labelledby="t-asi" hidden>
@@ -264,7 +243,7 @@
   <form method="dialog" id="ed-form">
     <h2 id="ed-titulo">Nueva lista</h2>
     <label class="campo apilado"><span>Nombre de la lista</span><input type="text" id="ed-nombre" maxlength="40" spellcheck="false" placeholder="Por ejemplo: 5º A" autocomplete="off"></label>
-    <label class="campo apilado"><span>Alumnos, uno por línea <em id="ed-cuenta"></em></span><textarea id="ed-alumnos" rows="9" spellcheck="false" placeholder="Pega aquí la lista de tu clase&#10;(se puede copiar de una hoja de cálculo)"></textarea></label>
+    <label class="campo apilado"><span>Alumnos (o palabras, preguntas…), uno por línea <em id="ed-cuenta"></em></span><textarea id="ed-alumnos" rows="9" spellcheck="false" placeholder="Pega aquí la lista de tu clase&#10;(se puede copiar de una hoja de cálculo)"></textarea></label>
     <p class="nota" id="ed-nota">Se guarda solo en este ordenador, en este navegador. No sale de aquí.</p>
     <div class="botonera">
       <button type="submit" class="boton" id="ed-guardar" value="guardar"><span data-icono="guardar"></span>Guardar</button>
@@ -300,5 +279,7 @@
 <script src="lib/qrcode.js"></script>
 <script src="scorm.js"></script>
 <script src="app.js"></script>
+<script src="chance.js"></script>
+<script src="scoreboard.js"></script>
 </body>
 </html>

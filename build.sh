@@ -5,7 +5,7 @@ HERE=$(cd "$(dirname "$0")" && pwd)
 RELEASE=$(sed -n "s/^\$plugin->release *= *'\([^']*\)'.*/\1/p" "$HERE/version.php")
 TMP=$(mktemp -d); trap 'rm -rf "$TMP"' EXIT
 mkdir "$TMP/oksigeniaclasstools"
-(cd "$HERE" && git ls-files 2>/dev/null || find . -type f -not -path './.git/*' -not -path './dist/*' | sed 's|^\./||') \
+(cd "$HERE" && git ls-files --cached --others --exclude-standard 2>/dev/null || find . -type f -not -path './.git/*' -not -path './dist/*' | sed 's|^\./||') \
     | grep -v -E '^(build\.sh|\.gitignore|dist/)' | while read -r f; do
         mkdir -p "$TMP/oksigeniaclasstools/$(dirname "$f")"; cp "$HERE/$f" "$TMP/oksigeniaclasstools/$f"; done
 mkdir -p "$HERE/dist"
