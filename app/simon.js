@@ -12,7 +12,7 @@
 
     const STR = {
         name: 'Simón', pads: 'Colores', speed: 'Velocidad', normal: 'Normal', fast: 'Rápida', turns: 'Turnos',
-        everyone: 'Toda la clase', start: 'Empezar', again: 'Otra vez', watch: '¡Mirad!', yourTurn: '¡Ahora tú!',
+        everyone: 'Toda la clase', start: 'Empezar', again: 'Otra vez', watch: '¡Miren!', yourTurn: '¡Ahora tú!',
         round: (n) => `Ronda ${n}`, record: (n, who) => `Récord: ${n}${who ? ` (${who})` : ''}`, fail: '¡Uy! Fallo',
         failWho: (w) => `¡Uy! ${w} ha fallado`, next: (w) => `Le toca a ${w}`, pressStart: 'Pulsa «Empezar»',
         colors: ['Verde', 'Rojo', 'Amarillo', 'Azul', 'Morado', 'Naranja'],

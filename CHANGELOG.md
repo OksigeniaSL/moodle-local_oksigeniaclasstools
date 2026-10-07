@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.5.0 (2026-10-07)
+
+- Four more whole-class games:
+  - **Hangman**, made friendly for primary school: seven balloons, and each wrong letter pops one.
+  - **Word** (like Wordle): 5 to 8 tries, green, yellow and grey, coloured keyboard; any try of the right length
+    counts.
+  - **Pairs**: shapes and colours, a colour and its name, a number and its name, a student's face and their name, or
+    the teacher's lists («dog = perro» per line); the whole class or two teams.
+  - **Secret code**: an escape-room lock with clues revealed one by one, optional countdown and a final message;
+    an example lock and an editor, kept in Moodle like the roscos.
+- Word games share a Spanish on-screen keyboard (with Ñ), accent-insensitive letters and a hidden or random word.
+
 ## 0.4.1 (2026-10-07)
 
 - Scripts and styles are requested with the plugin version in their address, so after an upgrade the browser does
