@@ -1,33 +1,33 @@
 <!doctype html>
-<html lang="es">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Herramientas de clase</title>
+<title data-t="bar_title">Herramientas de clase</title>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <header class="barra" id="barra">
-  <div class="marca"><span class="sello" data-icono="marca"></span><span>Herramientas <strong>de clase</strong></span></div>
-  <nav class="pestanas" id="pestanas" role="tablist" aria-label="Herramientas">
-    <button type="button" role="tab" class="pestana" id="t-temporizador" data-h="temporizador" aria-controls="h-temporizador" aria-selected="true"><span data-icono="temporizador"></span>Temporizador<span class="insignia" id="ins-temporizador" hidden></span></button>
-    <button type="button" role="tab" class="pestana" id="t-cronometro" data-h="cronometro" aria-controls="h-cronometro" aria-selected="false" tabindex="-1"><span data-icono="cronometro"></span>Cronómetro<span class="insignia" id="ins-cronometro" hidden></span></button>
-    <button type="button" role="tab" class="pestana" id="t-quien" data-h="quien" aria-controls="h-quien" aria-selected="false" tabindex="-1"><span data-icono="quien"></span>¿A quién le toca?</button>
-    <button type="button" role="tab" class="pestana" id="t-grupos" data-h="grupos" aria-controls="h-grupos" aria-selected="false" tabindex="-1"><span data-icono="grupos"></span>Grupos</button>
-    <button type="button" role="tab" class="pestana" id="t-semaforo" data-h="semaforo" aria-controls="h-semaforo" aria-selected="false" tabindex="-1"><span data-icono="semaforo"></span>Semáforo</button>
-    <button type="button" role="tab" class="pestana" id="t-azar" data-h="azar" aria-controls="h-azar" aria-selected="false" tabindex="-1"><span data-icono="azar"></span>Azar</button>
-    <button type="button" role="tab" class="pestana" id="t-juegos" data-h="juegos" aria-controls="h-juegos" aria-selected="false" tabindex="-1"><span data-icono="juegos"></span>Juegos</button>
-    <button type="button" role="tab" class="pestana" id="t-material" data-h="material" aria-controls="h-material" aria-selected="false" tabindex="-1"><span data-icono="material"></span>Material</button>
-    <button type="button" role="tab" class="pestana" id="t-pizarra" data-h="pizarra" aria-controls="h-pizarra" aria-selected="false" tabindex="-1"><span data-icono="pincel"></span>Pizarra</button>
-    <button type="button" role="tab" class="pestana" id="t-marcador" data-h="marcador" aria-controls="h-marcador" aria-selected="false" tabindex="-1"><span data-icono="trofeo"></span>Marcador</button>
-    <button type="button" role="tab" class="pestana" id="t-asi" data-h="asi" aria-controls="h-asi" aria-selected="false" tabindex="-1"><span data-icono="asi"></span>Así trabajamos</button>
-    <button type="button" role="tab" class="pestana" id="t-reloj" data-h="reloj" aria-controls="h-reloj" aria-selected="false" tabindex="-1"><span data-icono="reloj"></span>Reloj</button>
-    <button type="button" role="tab" class="pestana" id="t-qr" data-h="qr" aria-controls="h-qr" aria-selected="false" tabindex="-1"><span data-icono="qr"></span>QR</button>
+  <div class="marca"><span class="sello" data-icono="marca"></span><span><span data-t="bar_brand_lead">Herramientas</span> <strong data-t="bar_brand_strong">de clase</strong></span></div>
+  <nav class="pestanas" id="pestanas" role="tablist" aria-label="Herramientas" data-t-aria="bar_tools">
+    <button type="button" role="tab" class="pestana" id="t-temporizador" data-h="temporizador" aria-controls="h-temporizador" aria-selected="true"><span data-icono="temporizador"></span><span data-t="tab_timer">Temporizador</span><span class="insignia" id="ins-temporizador" hidden></span></button>
+    <button type="button" role="tab" class="pestana" id="t-cronometro" data-h="cronometro" aria-controls="h-cronometro" aria-selected="false" tabindex="-1"><span data-icono="cronometro"></span><span data-t="tab_stopwatch">Cronómetro</span><span class="insignia" id="ins-cronometro" hidden></span></button>
+    <button type="button" role="tab" class="pestana" id="t-quien" data-h="quien" aria-controls="h-quien" aria-selected="false" tabindex="-1"><span data-icono="quien"></span><span data-t="tab_picker">¿A quién le toca?</span></button>
+    <button type="button" role="tab" class="pestana" id="t-grupos" data-h="grupos" aria-controls="h-grupos" aria-selected="false" tabindex="-1"><span data-icono="grupos"></span><span data-t="tab_groups">Grupos</span></button>
+    <button type="button" role="tab" class="pestana" id="t-semaforo" data-h="semaforo" aria-controls="h-semaforo" aria-selected="false" tabindex="-1"><span data-icono="semaforo"></span><span data-t="tab_noise">Semáforo</span></button>
+    <button type="button" role="tab" class="pestana" id="t-azar" data-h="azar" aria-controls="h-azar" aria-selected="false" tabindex="-1"><span data-icono="azar"></span><span data-t="tab_chance">Azar</span></button>
+    <button type="button" role="tab" class="pestana" id="t-juegos" data-h="juegos" aria-controls="h-juegos" aria-selected="false" tabindex="-1"><span data-icono="juegos"></span><span data-t="tab_games">Juegos</span></button>
+    <button type="button" role="tab" class="pestana" id="t-material" data-h="material" aria-controls="h-material" aria-selected="false" tabindex="-1"><span data-icono="material"></span><span data-t="tab_materials">Material</span></button>
+    <button type="button" role="tab" class="pestana" id="t-pizarra" data-h="pizarra" aria-controls="h-pizarra" aria-selected="false" tabindex="-1"><span data-icono="pincel"></span><span data-t="tab_board">Pizarra</span></button>
+    <button type="button" role="tab" class="pestana" id="t-marcador" data-h="marcador" aria-controls="h-marcador" aria-selected="false" tabindex="-1"><span data-icono="trofeo"></span><span data-t="tab_scoreboard">Marcador</span></button>
+    <button type="button" role="tab" class="pestana" id="t-asi" data-h="asi" aria-controls="h-asi" aria-selected="false" tabindex="-1"><span data-icono="asi"></span><span data-t="tab_rules">Así trabajamos</span></button>
+    <button type="button" role="tab" class="pestana" id="t-reloj" data-h="reloj" aria-controls="h-reloj" aria-selected="false" tabindex="-1"><span data-icono="reloj"></span><span data-t="tab_clock">Reloj</span></button>
+    <button type="button" role="tab" class="pestana" id="t-qr" data-h="qr" aria-controls="h-qr" aria-selected="false" tabindex="-1"><span data-icono="qr"></span><span data-t="tab_qr">QR</span></button>
   </nav>
   <div class="acciones">
-    <button type="button" class="redondo" id="b-sonido" aria-pressed="true" title="Sonido"><span data-icono="sonido"></span><span class="redondo-texto">Sonido</span></button>
-    <button type="button" class="redondo" id="b-ventana" title="Abrir en otra ventana" hidden><span data-icono="ventana"></span><span class="redondo-texto">Abrir en otra ventana</span></button>
-    <button type="button" class="redondo" id="b-pantalla" title="Pantalla completa" hidden><span data-icono="pantalla"></span><span class="redondo-texto">Pantalla completa</span></button>
+    <button type="button" class="redondo" id="b-sonido" aria-pressed="true" title="Sonido" data-t-title="bar_sound"><span data-icono="sonido"></span><span class="redondo-texto" data-t="bar_sound">Sonido</span></button>
+    <button type="button" class="redondo" id="b-ventana" title="Abrir en otra ventana" data-t-title="bar_window" hidden><span data-icono="ventana"></span><span class="redondo-texto" data-t="bar_window">Abrir en otra ventana</span></button>
+    <button type="button" class="redondo" id="b-pantalla" title="Pantalla completa" data-t-title="bar_fullscreen" hidden><span data-icono="pantalla"></span><span class="redondo-texto" data-t="bar_fullscreen">Pantalla completa</span></button>
   </div>
 </header>
 
@@ -39,12 +39,12 @@
         <circle class="pista" cx="100" cy="100" r="88"/>
         <circle class="progreso" id="tm-progreso" cx="100" cy="100" r="88" pathLength="1000" transform="rotate(-90 100 100)"/>
         <text class="cifras" id="tm-cifras" x="100" y="104" text-anchor="middle" dominant-baseline="middle">5:00</text>
-        <text class="estado" id="tm-estado" x="100" y="148" text-anchor="middle">Listo</text>
+        <text class="estado" id="tm-estado" x="100" y="148" text-anchor="middle" data-t="tm_ready">Listo</text>
       </svg>
     </div>
     <div class="mandos">
       <div class="tarjeta">
-        <p class="ante" id="l-rapidos">Tiempos rápidos</p>
+        <p class="ante" id="l-rapidos" data-t="tm_quick">Tiempos rápidos</p>
         <div class="rapidos" role="group" aria-labelledby="l-rapidos">
           <button type="button" class="chip" data-min="1">1 min</button>
           <button type="button" class="chip" data-min="3">3 min</button>
@@ -54,26 +54,26 @@
         </div>
       </div>
       <div class="tarjeta">
-        <p class="ante">A tu medida</p>
+        <p class="ante" data-t="tm_custom">A tu medida</p>
         <div class="medida">
           <div class="giro">
-            <label for="tm-min">Minutos</label>
-            <button type="button" class="redondo suave" data-ajusta="min" data-paso="-1" aria-label="Un minuto menos"><span data-icono="menos"></span></button>
+            <label for="tm-min" data-t="tm_minutes">Minutos</label>
+            <button type="button" class="redondo suave" data-ajusta="min" data-paso="-1" aria-label="Un minuto menos" data-t-aria="tm_min_less"><span data-icono="menos"></span></button>
             <input id="tm-min" type="number" inputmode="numeric" min="0" max="99" value="5">
-            <button type="button" class="redondo suave" data-ajusta="min" data-paso="1" aria-label="Un minuto más"><span data-icono="mas"></span></button>
+            <button type="button" class="redondo suave" data-ajusta="min" data-paso="1" aria-label="Un minuto más" data-t-aria="tm_min_more"><span data-icono="mas"></span></button>
           </div>
           <div class="giro">
-            <label for="tm-seg">Segundos</label>
-            <button type="button" class="redondo suave" data-ajusta="seg" data-paso="-5" aria-label="Cinco segundos menos"><span data-icono="menos"></span></button>
+            <label for="tm-seg" data-t="tm_seconds">Segundos</label>
+            <button type="button" class="redondo suave" data-ajusta="seg" data-paso="-5" aria-label="Cinco segundos menos" data-t-aria="tm_sec_less"><span data-icono="menos"></span></button>
             <input id="tm-seg" type="number" inputmode="numeric" min="0" max="59" value="0">
-            <button type="button" class="redondo suave" data-ajusta="seg" data-paso="5" aria-label="Cinco segundos más"><span data-icono="mas"></span></button>
+            <button type="button" class="redondo suave" data-ajusta="seg" data-paso="5" aria-label="Cinco segundos más" data-t-aria="tm_sec_more"><span data-icono="mas"></span></button>
           </div>
         </div>
       </div>
       <div class="botonera">
-        <button type="button" class="boton grande verde ancho" id="tm-marcha"><span data-icono="empezar"></span><span>Empezar</span></button>
-        <button type="button" class="boton suave" id="tm-reiniciar"><span data-icono="reiniciar"></span>Reiniciar</button>
-        <button type="button" class="boton suave" id="tm-mas1"><span data-icono="mas"></span>1 minuto</button>
+        <button type="button" class="boton grande verde ancho" id="tm-marcha"><span data-icono="empezar"></span><span data-t="gen_start">Empezar</span></button>
+        <button type="button" class="boton suave" id="tm-reiniciar"><span data-icono="reiniciar"></span><span data-t="gen_reset">Reiniciar</span></button>
+        <button type="button" class="boton suave" id="tm-mas1"><span data-icono="mas"></span><span data-t="tm_plus_one">1 minuto</span></button>
       </div>
     </div>
   </section>
@@ -83,13 +83,13 @@
     <div class="tarjeta pantalla-crono">
       <p class="cifras-crono" id="cr-cifras" aria-live="off"><span id="cr-principal">0:00</span><span class="decima" id="cr-decima">,0</span></p>
       <div class="botonera centro">
-        <button type="button" class="boton grande verde" id="cr-marcha"><span data-icono="empezar"></span><span>Empezar</span></button>
-        <button type="button" class="boton grande suave" id="cr-vuelta" disabled><span data-icono="vuelta"></span>Vuelta</button>
-        <button type="button" class="boton grande suave" id="cr-reiniciar"><span data-icono="reiniciar"></span>Reiniciar</button>
+        <button type="button" class="boton grande verde" id="cr-marcha"><span data-icono="empezar"></span><span data-t="gen_start">Empezar</span></button>
+        <button type="button" class="boton grande suave" id="cr-vuelta" disabled><span data-icono="vuelta"></span><span data-t="cr_lap">Vuelta</span></button>
+        <button type="button" class="boton grande suave" id="cr-reiniciar"><span data-icono="reiniciar"></span><span data-t="gen_reset">Reiniciar</span></button>
       </div>
     </div>
     <aside class="tarjeta vueltas" id="cr-vueltas-caja" hidden>
-      <p class="ante">Vueltas</p>
+      <p class="ante" data-t="cr_laps">Vueltas</p>
       <ol class="lista-vueltas" id="cr-vueltas"></ol>
     </aside>
   </section>
@@ -97,27 +97,27 @@
   <!-- ¿A quién le toca? -->
   <section class="herramienta quien" id="h-quien" role="tabpanel" aria-labelledby="t-quien" hidden>
     <div class="barra-herr">
-      <label class="campo"><span>Lista</span><select id="q-lista"></select></label>
-      <button type="button" class="boton suave" id="q-editar"><span data-icono="editar"></span>Editar</button>
-      <button type="button" class="boton suave" id="q-nueva"><span data-icono="nueva"></span>Nueva lista</button>
-      <button type="button" class="boton suave" id="q-faltan" hidden><span data-icono="lista"></span><span>¿Quién falta hoy?</span></button>
-      <button type="button" class="boton suave" id="q-participa" hidden><span data-icono="lista"></span>Participación</button>
-      <label class="interruptor"><input type="checkbox" id="q-sinrepetir" checked><span>Sin repetir</span></label>
-      <label class="interruptor" id="q-justo-caja" hidden title="Sale alguien de entre los que menos veces han salido estas semanas"><input type="checkbox" id="q-justo" checked><span>Primero los que menos</span></label>
+      <label class="campo"><span data-t="q_list">Lista</span><select id="q-lista"></select></label>
+      <button type="button" class="boton suave" id="q-editar"><span data-icono="editar"></span><span data-t="q_edit">Editar</span></button>
+      <button type="button" class="boton suave" id="q-nueva"><span data-icono="nueva"></span><span data-t="ed_new_list">Nueva lista</span></button>
+      <button type="button" class="boton suave" id="q-faltan" hidden><span data-icono="lista"></span><span data-t="q_absent">¿Quién falta hoy?</span></button>
+      <button type="button" class="boton suave" id="q-participa" hidden><span data-icono="lista"></span><span data-t="q_participation">Participación</span></button>
+      <label class="interruptor"><input type="checkbox" id="q-sinrepetir" checked><span data-t="q_no_repeat">Sin repetir</span></label>
+      <label class="interruptor" id="q-justo-caja" hidden title="Sale alguien de entre los que menos veces han salido estas semanas" data-t-title="q_fair_hint"><input type="checkbox" id="q-justo" checked><span data-t="q_fair">Primero los que menos</span></label>
     </div>
     <div class="quien-cuerpo">
       <div class="tarjeta escenario-nombre" id="q-escenario">
         <div class="caja-nombre" id="q-caja"><div class="foto-grande" id="q-foto" hidden></div><p class="nombre-grande" id="q-nombre"></p></div>
         <p class="pie-nombre" id="q-pie" aria-live="polite"></p>
         <div class="botonera centro">
-          <button type="button" class="boton enorme" id="q-elegir"><span data-icono="mezclar"></span>Elegir</button>
-          <button type="button" class="boton grande" id="q-crear" hidden><span data-icono="nueva"></span>Crear una lista</button>
+          <button type="button" class="boton enorme" id="q-elegir"><span data-icono="mezclar"></span><span data-t="q_pick">Elegir</span></button>
+          <button type="button" class="boton grande" id="q-crear" hidden><span data-icono="nueva"></span><span data-t="q_create_list">Crear una lista</span></button>
         </div>
       </div>
       <aside class="tarjeta salidos" id="q-salidos-caja">
-        <p class="ante">Ya han salido <span class="cuenta" id="q-cuenta"></span></p>
+        <p class="ante"><span data-t="q_already">Ya han salido</span> <span class="cuenta" id="q-cuenta"></span></p>
         <ol class="lista-salidos" id="q-salidos"></ol>
-        <button type="button" class="boton suave" id="q-reset"><span data-icono="reiniciar"></span>Empezar de nuevo</button>
+        <button type="button" class="boton suave" id="q-reset"><span data-icono="reiniciar"></span><span data-t="q_restart">Empezar de nuevo</span></button>
       </aside>
     </div>
   </section>
@@ -125,22 +125,22 @@
   <!-- Hacer grupos -->
   <section class="herramienta grupos" id="h-grupos" role="tabpanel" aria-labelledby="t-grupos" hidden>
     <aside class="tarjeta ajustes-grupos">
-      <label class="campo apilado"><span>Alumnos</span><select id="g-lista"></select></label>
-      <textarea id="g-pegados" rows="5" spellcheck="false" aria-label="Nombres pegados, uno por línea" placeholder="Pega aquí los nombres, uno por línea" hidden></textarea>
-      <button type="button" class="boton suave" id="g-guardar" hidden><span data-icono="guardar"></span>Guardar como lista</button>
-      <button type="button" class="boton suave" id="g-faltan" hidden><span data-icono="lista"></span><span>¿Quién falta hoy?</span></button>
-      <p class="ante" id="l-reparto">¿Cómo los repartimos?</p>
+      <label class="campo apilado"><span data-t="g_students">Alumnos</span><select id="g-lista"></select></label>
+      <textarea id="g-pegados" rows="5" spellcheck="false" aria-label="Nombres pegados, uno por línea" data-t-aria="g_pasted_aria" placeholder="Pega aquí los nombres, uno por línea" data-t-placeholder="g_paste_placeholder" hidden></textarea>
+      <button type="button" class="boton suave" id="g-guardar" hidden><span data-icono="guardar"></span><span data-t="g_save_list">Guardar como lista</span></button>
+      <button type="button" class="boton suave" id="g-faltan" hidden><span data-icono="lista"></span><span data-t="q_absent">¿Quién falta hoy?</span></button>
+      <p class="ante" id="l-reparto" data-t="g_how">¿Cómo los repartimos?</p>
       <div class="segmentos" role="radiogroup" aria-labelledby="l-reparto" id="g-modo">
-        <button type="button" role="radio" aria-checked="true" data-modo="num">Nº de grupos</button>
-        <button type="button" role="radio" aria-checked="false" data-modo="tam">Alumnos por grupo</button>
+        <button type="button" role="radio" aria-checked="true" data-modo="num" data-t="g_mode_num">Nº de grupos</button>
+        <button type="button" role="radio" aria-checked="false" data-modo="tam" data-t="g_mode_size">Alumnos por grupo</button>
       </div>
       <div class="giro grande-giro">
-        <button type="button" class="redondo suave" id="g-menos" aria-label="Uno menos"><span data-icono="menos"></span></button>
+        <button type="button" class="redondo suave" id="g-menos" aria-label="Uno menos" data-t-aria="g_less"><span data-icono="menos"></span></button>
         <output id="g-n" aria-live="polite">4</output>
-        <button type="button" class="redondo suave" id="g-mas" aria-label="Uno más"><span data-icono="mas"></span></button>
+        <button type="button" class="redondo suave" id="g-mas" aria-label="Uno más" data-t-aria="g_more"><span data-icono="mas"></span></button>
       </div>
-      <button type="button" class="boton grande ancho" id="g-hacer"><span data-icono="mezclar"></span><span>Hacer grupos</span></button>
-      <button type="button" class="boton suave ancho" id="g-moodle" hidden><span data-icono="guardar"></span><span>Guardar como grupos del curso</span></button>
+      <button type="button" class="boton grande ancho" id="g-hacer"><span data-icono="mezclar"></span><span data-t="g_make">Hacer grupos</span></button>
+      <button type="button" class="boton suave ancho" id="g-moodle" hidden><span data-icono="guardar"></span><span data-t="g_save_course">Guardar como grupos del curso</span></button>
       <p class="nota" id="g-resumen" aria-live="polite"></p>
     </aside>
     <div class="rejilla-grupos" id="g-rejilla"></div>
@@ -149,34 +149,34 @@
   <!-- Semáforo de ruido -->
   <section class="herramienta semaforo" id="h-semaforo" role="tabpanel" aria-labelledby="t-semaforo" hidden>
     <div class="farola">
-      <div class="caja-semaforo apagado" id="s-caja" role="img" aria-label="Semáforo apagado">
+      <div class="caja-semaforo apagado" id="s-caja" role="img" aria-label="Semáforo apagado" data-t-aria="sm_off">
         <span class="luz" data-zona="rojo"></span>
         <span class="luz" data-zona="amarillo"></span>
         <span class="luz" data-zona="verde"></span>
       </div>
     </div>
     <div class="tarjeta mandos-ruido">
-      <p class="mensaje-ruido" id="s-mensaje" aria-live="polite">Semáforo apagado</p>
-      <div class="medidor" id="s-medidor" role="meter" aria-label="Nivel de ruido" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+      <p class="mensaje-ruido" id="s-mensaje" aria-live="polite" data-t="sm_off">Semáforo apagado</p>
+      <div class="medidor" id="s-medidor" role="meter" aria-label="Nivel de ruido" data-t-aria="sm_level" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
         <span class="relleno" id="s-relleno"></span>
       </div>
-      <div class="escala" aria-hidden="true"><span>Bien</span><span>Más bajo</span><span>Demasiado</span></div>
+      <div class="escala" aria-hidden="true"><span data-t="sm_scale_ok">Bien</span><span data-t="sm_scale_lower">Más bajo</span><span data-t="sm_scale_too">Demasiado</span></div>
       <div class="ruido-extra" id="s-extra">
-        <div class="ruido-dato"><span class="ante">Racha en calma</span><strong class="ruido-cifra" id="s-racha">0:00</strong><span class="nota" id="s-mejor"></span></div>
-        <div class="ruido-dato"><span class="ante" id="s-paciencia-titulo">Paciencia</span>
-          <div class="paciencia" id="s-paciencia" role="meter" aria-label="Paciencia de la clase" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100"><span id="s-paciencia-relleno"></span></div>
-          <span class="nota">Se gasta con el ruido que dura y vuelve con la calma.</span></div>
+        <div class="ruido-dato"><span class="ante" data-t="sm_streak">Racha en calma</span><strong class="ruido-cifra" id="s-racha">0:00</strong><span class="nota" id="s-mejor"></span></div>
+        <div class="ruido-dato"><span class="ante" id="s-paciencia-titulo" data-t="sm_patience">Paciencia</span>
+          <div class="paciencia" id="s-paciencia" role="meter" aria-label="Paciencia de la clase" data-t-aria="sm_patience_aria" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100"><span id="s-paciencia-relleno"></span></div>
+          <span class="nota" data-t="sm_patience_note">Se gasta con el ruido que dura y vuelve con la calma.</span></div>
       </div>
-      <label class="campo apilado deslizador"><span>Sensibilidad <em id="s-sens-valor">media</em></span><input type="range" id="s-sensibilidad" min="1" max="10" step="1" value="5"></label>
-      <button type="button" class="boton grande ancho" id="s-marcha"><span data-icono="micro"></span><span>Escuchar la clase</span></button>
+      <label class="campo apilado deslizador"><span><span data-t="sm_sensitivity">Sensibilidad</span> <em id="s-sens-valor" data-t="sm_sens_medium">media</em></span><input type="range" id="s-sensibilidad" min="1" max="10" step="1" value="5"></label>
+      <button type="button" class="boton grande ancho" id="s-marcha"><span data-icono="micro"></span><span data-t="sm_listen">Escuchar la clase</span></button>
       <div class="sin-micro" id="s-sinmicro" role="alert" hidden>
         <span data-icono="micro-no"></span>
         <div>
           <p id="s-sinmicro-texto"></p>
-          <button type="button" class="boton" id="s-ventana" hidden><span data-icono="ventana"></span>Abrir en otra ventana</button>
+          <button type="button" class="boton" id="s-ventana" hidden><span data-icono="ventana"></span><span data-t="bar_window">Abrir en otra ventana</span></button>
         </div>
       </div>
-      <p class="nota"><span data-icono="info"></span> El sonido no se graba ni se envía a ningún sitio: solo se mide el volumen, aquí, en este ordenador.</p>
+      <p class="nota"><span data-icono="info"></span> <span data-t="sm_privacy">El sonido no se graba ni se envía a ningún sitio: solo se mide el volumen, aquí, en este ordenador.</span></p>
     </div>
   </section>
 
@@ -199,7 +199,7 @@
   <!-- Así trabajamos -->
   <section class="herramienta asi" id="h-asi" role="tabpanel" aria-labelledby="t-asi" hidden>
     <div class="rejilla-asi" id="a-rejilla"></div>
-    <p class="nota centro">Toca uno para mostrarlo en grande. Para volver, toca la pantalla otra vez.</p>
+    <p class="nota centro" data-t="asi_hint">Toca uno para mostrarlo en grande. Para volver, toca la pantalla otra vez.</p>
   </section>
 
   <!-- Reloj -->
@@ -228,61 +228,63 @@
 <div class="fin-tiempo" id="fin-tiempo" role="alertdialog" aria-labelledby="fin-titulo" hidden>
   <div class="fin-tarjeta">
     <span class="fin-campana" data-icono="campana"></span>
-    <h2 id="fin-titulo">¡Tiempo!</h2>
+    <h2 id="fin-titulo" data-t="fin_time">¡Tiempo!</h2>
     <div class="botonera centro">
-      <button type="button" class="boton grande" id="fin-vale"><span data-icono="hecho"></span>Vale</button>
-      <button type="button" class="boton grande suave" id="fin-otra"><span data-icono="otra"></span>Otra vez</button>
+      <button type="button" class="boton grande" id="fin-vale"><span data-icono="hecho"></span><span data-t="fin_ok">Vale</span></button>
+      <button type="button" class="boton grande suave" id="fin-otra"><span data-icono="otra"></span><span data-t="gen_again">Otra vez</span></button>
     </div>
   </div>
 </div>
 
 <!-- Cartel a toda pantalla (Así trabajamos y el QR ampliado) -->
-<div class="gigante" id="gigante" role="dialog" aria-modal="true" aria-label="Vista en grande" hidden>
-  <button type="button" class="cerrar-gigante" id="gigante-cerrar" aria-label="Cerrar"><span data-icono="cerrar"></span></button>
+<div class="gigante" id="gigante" role="dialog" aria-modal="true" aria-label="Vista en grande" data-t-aria="gen_big_view" hidden>
+  <button type="button" class="cerrar-gigante" id="gigante-cerrar" aria-label="Cerrar" data-t-aria="gen_close"><span data-icono="cerrar"></span></button>
   <div class="gigante-contenido" id="gigante-contenido"></div>
 </div>
 
 <!-- Editor de listas de clase -->
 <dialog class="editor" id="editor" aria-labelledby="ed-titulo">
   <form method="dialog" id="ed-form">
-    <h2 id="ed-titulo">Nueva lista</h2>
-    <label class="campo apilado"><span>Nombre de la lista</span><input type="text" id="ed-nombre" maxlength="40" spellcheck="false" placeholder="Por ejemplo: 5º A" autocomplete="off"></label>
-    <label class="campo apilado"><span>Alumnos (o palabras, preguntas…), uno por línea <em id="ed-cuenta"></em></span><textarea id="ed-alumnos" rows="9" spellcheck="false" placeholder="Pega aquí la lista de tu clase&#10;(se puede copiar de una hoja de cálculo)"></textarea></label>
-    <p class="nota" id="ed-nota">Se guarda solo en este ordenador, en este navegador. No sale de aquí.</p>
+    <h2 id="ed-titulo" data-t="ed_new_list">Nueva lista</h2>
+    <label class="campo apilado"><span data-t="ed_name">Nombre de la lista</span><input type="text" id="ed-nombre" maxlength="40" spellcheck="false" placeholder="Por ejemplo: 5º A" data-t-placeholder="ed_name_placeholder" autocomplete="off"></label>
+    <label class="campo apilado"><span><span data-t="ed_students">Alumnos (o palabras, preguntas…), uno por línea</span> <em id="ed-cuenta"></em></span><textarea id="ed-alumnos" rows="9" spellcheck="false" placeholder="Pega aquí la lista de tu clase&#10;(se puede copiar de una hoja de cálculo)" data-t-placeholder="ed_paste_placeholder"></textarea></label>
+    <p class="nota" id="ed-nota" data-t="ed_note_local">Se guarda solo en este ordenador, en este navegador. No sale de aquí.</p>
     <div class="botonera">
-      <button type="submit" class="boton" id="ed-guardar" value="guardar"><span data-icono="guardar"></span>Guardar</button>
-      <button type="button" class="boton suave" id="ed-cancelar">Cancelar</button>
-      <button type="button" class="boton rojo-suave" id="ed-borrar"><span data-icono="borrar"></span><span>Borrar la lista</span></button>
+      <button type="submit" class="boton" id="ed-guardar" value="guardar"><span data-icono="guardar"></span><span data-t="gen_save">Guardar</span></button>
+      <button type="button" class="boton suave" id="ed-cancelar" data-t="gen_cancel">Cancelar</button>
+      <button type="button" class="boton rojo-suave" id="ed-borrar"><span data-icono="borrar"></span><span data-t="ed_delete">Borrar la lista</span></button>
     </div>
   </form>
 </dialog>
 
 <dialog class="editor faltan" id="faltan" aria-labelledby="f-titulo">
   <form method="dialog">
-    <h2 id="f-titulo">¿Quién falta hoy?</h2>
-    <p class="nota">Toca a quien no ha venido: ese día no le toca ni entra en los grupos. Mañana vuelven todos.</p>
+    <h2 id="f-titulo" data-t="q_absent">¿Quién falta hoy?</h2>
+    <p class="nota" data-t="q_absent_note">Toca a quien no ha venido: ese día no le toca ni entra en los grupos. Mañana vuelven todos.</p>
     <div class="rejilla-faltan" id="f-rejilla"></div>
     <div class="botonera">
-      <button type="submit" class="boton" value="listo"><span data-icono="hecho"></span>Listo</button>
-      <button type="button" class="boton suave" id="f-todos"><span data-icono="reiniciar"></span>Han venido todos</button>
+      <button type="submit" class="boton" value="listo"><span data-icono="hecho"></span><span data-t="gen_done">Listo</span></button>
+      <button type="button" class="boton suave" id="f-todos"><span data-icono="reiniciar"></span><span data-t="q_all_here">Han venido todos</span></button>
     </div>
   </form>
 </dialog>
 
 <dialog class="editor participa" id="participa" aria-labelledby="p-titulo">
   <form method="dialog">
-    <h2 id="p-titulo">Participación</h2>
+    <h2 id="p-titulo" data-t="q_participation">Participación</h2>
     <p class="nota" id="p-nota"></p>
     <ol class="lista-participa" id="p-lista"></ol>
-    <div class="botonera"><button type="submit" class="boton" value="cerrar"><span data-icono="hecho"></span>Cerrar</button></div>
+    <div class="botonera"><button type="submit" class="boton" value="cerrar"><span data-icono="hecho"></span><span data-t="gen_close">Cerrar</span></button></div>
   </form>
 </dialog>
 
 <p class="solo-lector" id="anuncio" aria-live="assertive"></p>
+<script src="strings.js"></script>
 <script src="icons.js"></script>
 <script src="lib/qrcode.js"></script>
 <script src="scorm.js"></script>
 <script src="app.js"></script>
+<script src="celebrate.js"></script>
 <script src="qr.js"></script>
 <script src="chance.js"></script>
 <script src="scoreboard.js"></script>

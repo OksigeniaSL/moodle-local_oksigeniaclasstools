@@ -12,6 +12,27 @@
     const escapa = (t) => String(t).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
     const enMarco = (() => { try { return window.self !== window.top; } catch (e) { return true; } })();
 
+    // --- Textos: los de los paquetes de idioma (dentro de Moodle, en el idioma de cada usuario; fuera, strings.js).
+    // Marcadores al estilo de Moodle: {$a} y {$a->nombre}. Una clave que falte se ve tal cual, para encontrarla.
+    const TEXTOS = Object.assign({}, window.CLASSTOOLS_STR || {}, (window.CLASSTOOLS_SITE && window.CLASSTOOLS_SITE.str) || {});
+    const t = (clave, a) => {
+        const s = TEXTOS[clave];
+        if (s === undefined) { return clave; }
+        if (a === undefined) { return s; }
+        return s.replace(/\{\$a(?:->(\w+))?\}/g, (m, k) => (k ? (a && a[k] !== undefined ? String(a[k]) : m) : String(a)));
+    };
+    // Lo fijo de la página: data-t (texto), data-t-title, data-t-aria (aria-label) y data-t-placeholder.
+    const traduce = (raiz = document) => {
+        $$('[data-t]', raiz).forEach((el) => { el.textContent = t(el.dataset.t); });
+        [['tTitle', 'title'], ['tAria', 'aria-label'], ['tPlaceholder', 'placeholder']].forEach(([d, attr]) => {
+            $$(`[data-${d.replace(/[A-Z]/g, (c) => '-' + c.toLowerCase())}]`, raiz).forEach((el) => el.setAttribute(attr, t(el.dataset[d])));
+        });
+    };
+    // El idioma: el del usuario dentro de Moodle; fuera, el del fichero de textos.
+    const IDIOMA = ((window.CLASSTOOLS_SITE && window.CLASSTOOLS_SITE.lang) || window.CLASSTOOLS_LANG || document.documentElement.lang || 'en').replace('_', '-');
+    document.documentElement.lang = IDIOMA;
+    traduce();
+
     // --- Almacén del navegador: solo comodidades; si no deja guardar, todo sigue funcionando en memoria ---
     let almacen = true;
     try { localStorage.setItem('pizarra:prueba', '1'); localStorage.removeItem('pizarra:prueba'); } catch (e) { almacen = false; }
@@ -131,7 +152,7 @@
     const pintaSonido = () => {
         bSonido.setAttribute('aria-pressed', String(sonido));
         ponIcono(bSonido.querySelector('[data-icono]'), sonido ? 'sonido' : 'mudo');
-        bSonido.title = sonido ? 'Sonido activado (pulsa para quitarlo)' : 'Sonido quitado (pulsa para activarlo)';
+        bSonido.title = sonido ? t('bar_sound_on') : t('bar_sound_off');
     };
     bSonido.addEventListener('click', () => { sonido = !sonido; guarda('sonido', sonido); pintaSonido(); suena('tic'); });
     // Dentro del aula virtual el SCORM va en un marco que puede bloquear el micrófono y la pantalla completa.
@@ -147,7 +168,7 @@
     document.addEventListener('fullscreenchange', () => {
         const dentro = !!document.fullscreenElement;
         ponIcono(bPantalla.querySelector('[data-icono]'), dentro ? 'salir' : 'pantalla');
-        bPantalla.title = dentro ? 'Salir de la pantalla completa' : 'Pantalla completa';
+        bPantalla.title = dentro ? t('bar_fullscreen_exit') : t('bar_fullscreen');
         bPantalla.querySelector('.redondo-texto').textContent = bPantalla.title;
         setTimeout(ajustaBarra, 50);
     });
@@ -182,13 +203,13 @@
         const tocado = tm.marcha || tm.acabado || tm.resta < tm.total;
         tmAnillo.classList.toggle('ultimo', tocado && tm.resta <= 10000);
         tmAnillo.classList.toggle('aviso', tocado && tm.resta > 10000 && frac <= 0.25);
-        $('#tm-estado').textContent = tm.acabado ? '¡Tiempo!' : tm.marcha ? 'En marcha' : tm.resta < tm.total ? 'En pausa' : 'Listo';
+        $('#tm-estado').textContent = tm.acabado ? t('fin_time') : tm.marcha ? t('tm_running') : tm.resta < tm.total ? t('tm_paused') : t('tm_ready');
         insignias();
     };
     const tmBotones = () => {
         const b = $('#tm-marcha');
-        if (tm.marcha) { rotula(b, 'Pausa', 'pausa'); b.className = 'boton grande amarillo ancho'; }
-        else { rotula(b, tm.resta < tm.total && tm.resta > 0 ? 'Seguir' : 'Empezar', 'empezar'); b.className = 'boton grande verde ancho'; }
+        if (tm.marcha) { rotula(b, t('gen_pause'), 'pausa'); b.className = 'boton grande amarillo ancho'; }
+        else { rotula(b, tm.resta < tm.total && tm.resta > 0 ? t('gen_resume') : t('gen_start'), 'empezar'); b.className = 'boton grande verde ancho'; }
         b.disabled = !tm.marcha && tm.total <= 0;
     };
     const tmChips = () => $$('.chip').forEach((c) => c.classList.toggle('activo', Number(c.dataset.min) * 60000 === tm.total));
@@ -212,12 +233,12 @@
         Object.assign(tm, { acabado: false, marcha: true, fin: Date.now() + tm.resta });
         clearInterval(tm.reloj); tm.reloj = setInterval(tmTic, 100);
         tmBotones(); tmPinta();
-        anuncia('Temporizador en marcha');
+        anuncia(t('tm_running_sr'));
     };
     const tmPausa = () => {
         tm.resta = Math.max(0, tm.fin - Date.now()); tm.marcha = false; clearInterval(tm.reloj);
         tmBotones(); tmPinta();
-        anuncia('Temporizador en pausa');
+        anuncia(t('tm_paused_sr'));
     };
     const tmReinicia = () => { clearInterval(tm.reloj); Object.assign(tm, { marcha: false, acabado: false, resta: tm.total }); tmBotones(); tmPinta(); };
     const tmAlterna = () => { if (tm.marcha) { tmPausa(); } else { tmEmpieza(); } };
@@ -230,7 +251,7 @@
         f.hidden = false;
         f.classList.remove('destella'); void f.offsetWidth; f.classList.add('destella');
         $('#fin-vale').focus();
-        anuncia('¡Tiempo!');
+        anuncia(t('fin_time'));
     };
     const finCierra = (otra) => { $('#fin-tiempo').hidden = true; tmReinicia(); if (otra) { tmEmpieza(); } };
     $('#fin-vale').addEventListener('click', () => finCierra(false));
@@ -242,6 +263,7 @@
         if (tm.resta === tm.total) { tmPon(tm.total + 60000); return; }
         tm.resta = Math.min(MAX_TM, tm.resta + 60000); tm.total = Math.max(tm.total, tm.resta); tmBotones(); tmPinta();
     });
+    $$('.chip').forEach((c) => { c.textContent = t('tm_min_short', c.dataset.min); });
     $$('.chip').forEach((c) => c.addEventListener('click', () => tmPon(Number(c.dataset.min) * 60000)));
     $$('[data-ajusta]').forEach((b) => repite(b, () => {
         const paso = Number(b.dataset.paso) * (b.dataset.ajusta === 'min' ? 60000 : 1000);
@@ -273,8 +295,8 @@
     };
     const crBotones = () => {
         const b = $('#cr-marcha');
-        if (cr.marcha) { rotula(b, 'Pausa', 'pausa'); b.className = 'boton grande amarillo'; }
-        else { rotula(b, cr.acum ? 'Seguir' : 'Empezar', 'empezar'); b.className = 'boton grande verde'; }
+        if (cr.marcha) { rotula(b, t('gen_pause'), 'pausa'); b.className = 'boton grande amarillo'; }
+        else { rotula(b, cr.acum ? t('gen_resume') : t('gen_start'), 'empezar'); b.className = 'boton grande verde'; }
         $('#cr-vuelta').disabled = !cr.marcha;
     };
     const crPintaVueltas = () => {
@@ -283,7 +305,7 @@
         $('#h-cronometro').classList.toggle('con-vueltas', hay);
         $('#cr-vueltas').innerHTML = cr.vueltas.map((v, i) => ({ v, i })).reverse().map(({ v, i }) => {
             const p = fmtCr(v.parcial), a = fmtCr(v.total);
-            return `<li><span class="n">Vuelta ${i + 1}</span><span class="parcial">${p.p}${p.d}</span><span class="acum">total ${a.p}${a.d}</span></li>`;
+            return `<li><span class="n">${t('cr_lap_n', i + 1)}</span><span class="parcial">${p.p}${p.d}</span><span class="acum">${t('cr_lap_total', a.p + a.d)}</span></li>`;
         }).join('');
     };
     const crAlterna = () => {
@@ -340,8 +362,8 @@
         if (document.getElementById('aviso-sesion')) { return; }
         const a = document.createElement('div');
         a.className = 'aviso-sesion'; a.id = 'aviso-sesion'; a.setAttribute('role', 'alert');
-        a.innerHTML = `<span>${icono('info')}</span><p><strong>No se está guardando en el curso:</strong> la sesión del aula virtual ha caducado. `
-            + 'Lo de ahora sigue en este ordenador.</p><button type="button" class="boton">Volver a entrar</button>';
+        a.innerHTML = `<span>${icono('info')}</span><p><strong>${t('bar_session_title')}</strong> ${t('bar_session_text')}</p>`
+            + `<button type="button" class="boton">${t('bar_session_login')}</button>`;
         a.querySelector('button').addEventListener('click', () => location.reload());
         document.body.append(a);
     };
@@ -400,14 +422,14 @@
     const pintaSelects = () => {
         const op = (l) => `<option value="${escapa(l.id)}">${escapa(l.nombre)} (${l.alumnos.length})</option>`;
         const opciones = !listasAula.length ? listas.map(op).join('')
-            : `<optgroup label="${escapa(AULA.course || 'Este curso')}">${listasAula.map(op).join('')}</optgroup>`
-              + (listas.length ? `<optgroup label="Tus listas">${listas.map(op).join('')}</optgroup>` : '');
+            : `<optgroup label="${escapa(AULA.course || t('q_this_course'))}">${listasAula.map(op).join('')}</optgroup>`
+              + (listas.length ? `<optgroup label="${escapa(t('q_your_lists'))}">${listas.map(op).join('')}</optgroup>` : '');
         const q = $('#q-lista');
-        q.innerHTML = opciones || '<option value="">(todavía no hay listas)</option>';
+        q.innerHTML = opciones || `<option value="">${t('q_no_lists')}</option>`;
         q.disabled = !todas().length;
         q.value = listaActiva || '';
         const g = $('#g-lista'), antes = g.value;
-        g.innerHTML = opciones + '<option value="__pegar">Pegar nombres ahora…</option>';
+        g.innerHTML = opciones + `<option value="__pegar">${t('g_paste_now')}</option>`;
         g.value = todas().some((l) => l.id === antes) || antes === '__pegar' ? antes : (listaActiva || '__pegar');
         gCambiaLista();
     };
@@ -422,15 +444,14 @@
     const abreEditor = (id, texto) => {
         const l = listas.find((x) => x.id === id);
         editando = l ? l.id : null;
-        $('#ed-titulo').textContent = l ? 'Editar la lista' : 'Nueva lista';
+        $('#ed-titulo').textContent = l ? t('ed_edit_list') : t('ed_new_list');
         $('#ed-nombre').value = l ? l.nombre : '';
         $('#ed-alumnos').value = l ? l.alumnos.join('\n') : (texto || '');
         $('#ed-borrar').hidden = !l;
-        $('#ed-borrar').classList.remove('confirma'); rotula($('#ed-borrar'), 'Borrar la lista');
+        $('#ed-borrar').classList.remove('confirma'); rotula($('#ed-borrar'), t('ed_delete'));
         const nota = $('#ed-nota');
         nota.classList.remove('error');
-        nota.textContent = almacen ? 'Se guarda solo en este ordenador, en este navegador. No sale de aquí.'
-            : 'Este navegador no deja guardar: la lista durará hasta que cierres la página.';
+        nota.textContent = almacen ? t('ed_note_local') : t('ed_note_nostore');
         edCuenta();
         if (editor.showModal) { editor.showModal(); } else { editor.setAttribute('open', ''); }
         $('#ed-nombre').focus();
@@ -442,10 +463,10 @@
         e.preventDefault();
         const alumnos = limpiaNombres($('#ed-alumnos').value);
         if (!alumnos.length) {
-            const nota = $('#ed-nota'); nota.textContent = 'Pega al menos un nombre (uno por línea).'; nota.classList.add('error');
+            const nota = $('#ed-nota'); nota.textContent = t('ed_need_one'); nota.classList.add('error');
             $('#ed-alumnos').focus(); return;
         }
-        const nombre = $('#ed-nombre').value.trim() || `Lista ${listas.length + 1}`;
+        const nombre = $('#ed-nombre').value.trim() || t('ed_default_name', listas.length + 1);
         let l = listas.find((x) => x.id === editando);
         if (l) {
             Object.assign(l, { nombre, alumnos });
@@ -460,14 +481,14 @@
         pintaSelects(); quienPinta();
         if (actual === 'grupos') { $('#g-lista').value = l.id; gCambiaLista(); }
         cierraEditor();
-        anuncia(`Lista «${nombre}» guardada con ${alumnos.length} alumnos`);
+        anuncia(t('ed_saved', { name: nombre, n: alumnos.length }));
     });
     $('#ed-borrar').addEventListener('click', () => {
         const b = $('#ed-borrar');
         if (!b.classList.contains('confirma')) {
-            b.classList.add('confirma'); rotula(b, '¿Seguro? Pulsa otra vez');
+            b.classList.add('confirma'); rotula(b, t('ed_confirm_delete'));
             clearTimeout(borrarTimer);
-            borrarTimer = setTimeout(() => { b.classList.remove('confirma'); rotula(b, 'Borrar la lista'); }, 4000);
+            borrarTimer = setTimeout(() => { b.classList.remove('confirma'); rotula(b, t('ed_delete')); }, 4000);
             return;
         }
         listas = listas.filter((x) => x.id !== editando);
@@ -475,7 +496,7 @@
         listaActiva = todas().length ? todas()[0].id : null;
         qUltimo = null;
         guardaListas(); pintaSelects(); quienPinta(); cierraEditor();
-        anuncia('Lista borrada');
+        anuncia(t('ed_deleted'));
     });
 
     // ===================================================================================================
@@ -532,15 +553,15 @@
         if (!l) {
             pintaCara(null);
             qNombre.className = 'nombre-grande aviso-vacio';
-            qNombre.textContent = 'Pega la lista de tu clase para empezar';
-            $('#q-pie').textContent = 'Cada lista se guarda solo en este ordenador.';
+            qNombre.textContent = t('q_empty');
+            $('#q-pie').textContent = t('q_empty_note');
             qEncaja(); return;
         }
         precarga(l);
         const pres = presentes(l), nf = l.alumnos.length - pres.length;
-        rotula($('#q-faltan'), nf ? `Faltan hoy: ${nf}` : '¿Quién falta hoy?');
+        rotula($('#q-faltan'), nf ? t('q_absent_n', nf) : t('q_absent'));
         const s = (salidos[l.id] || []).filter((n) => pres.includes(n));
-        $('#q-cuenta').textContent = `${s.length} de ${pres.length}`;
+        $('#q-cuenta').textContent = t('q_count', { a: s.length, b: pres.length });
         $('#q-salidos').innerHTML = s.slice().reverse().map((n) => `<li>${cara(l, n, 'cara-mini')}<span>${escapa(n)}</span></li>`).join('');
         $('#q-reset').disabled = !s.length || qBarajando;
         $('#q-lista').disabled = qBarajando;
@@ -549,12 +570,12 @@
             if (qUltimo) { qNombre.className = 'nombre-grande'; qNombre.textContent = qUltimo; }
             else { qNombre.className = 'nombre-grande espera'; qNombre.textContent = '?'; }
             pintaCara(l, qUltimo);
-            const hay = `${pres.length} alumnos${nf ? ` (faltan ${nf})` : ''}`;
-            $('#q-pie').textContent = !l.alumnos.length ? 'Esta lista no tiene alumnos.'
-                : !pres.length ? 'Hoy faltan todos los de esta lista.'
-                : !quedan ? 'Ya han salido todos. Pulsa «Empezar de nuevo».'
-                : qUltimo ? (qSinRepetir ? `Quedan ${quedan}` : hay)
-                : `${hay} en «${l.nombre}». Pulsa «Elegir».`;
+            const hay = nf ? t('q_students_absent', { n: pres.length, m: nf }) : t('q_students', pres.length);
+            $('#q-pie').textContent = !l.alumnos.length ? t('q_no_students')
+                : !pres.length ? t('q_all_absent')
+                : !quedan ? t('q_all_out')
+                : qUltimo ? (qSinRepetir ? t('q_left', quedan) : hay)
+                : t('q_ready', { count: hay, list: l.nombre });
         }
         $('#q-elegir').disabled = qBarajando || !quedan;
         qEncaja();
@@ -580,7 +601,7 @@
             quienPinta();
             qNombre.className = 'nombre-grande elegido';
             suena('elegido');
-            anuncia(`Le toca a ${elegido}`);
+            anuncia(t('q_turn', elegido));
         };
         if (reducido() || bolsa.length < 2) { acaba(); return; }
         // Barajado: los nombres pasan cada vez más despacio (unos dos segundos) hasta pararse en el elegido.
@@ -589,7 +610,7 @@
         pintaCara(l, bolsa[0]);
         const largo = bolsa.reduce((a, b) => (b.length > a.length ? b : a), '');
         encaja(qNombre, qCaja, largo, altoNombre());
-        $('#q-pie').textContent = 'Barajando…';
+        $('#q-pie').textContent = t('q_shuffling');
         let paso = 45, previo = null;
         const gira = () => {
             let n;
@@ -614,8 +635,8 @@
         if (!conTurnos(l)) { return; }
         const filas = l.alumnos.slice().sort((a, b) => (l.veces[a] || 0) - (l.veces[b] || 0) || a.localeCompare(b, 'es'));
         const max = Math.max(1, ...filas.map((n) => l.veces[n] || 0));
-        $('#p-titulo').textContent = `Participación · ${l.nombre}`;
-        $('#p-nota').textContent = `Veces que le ha tocado a cada uno en los últimos ${AULA.days} días, con cualquier profesor de este curso. Arriba, quien menos.`;
+        $('#p-titulo').textContent = `${t('q_participation')} · ${l.nombre}`;
+        $('#p-nota').textContent = t('q_participation_note', AULA.days);
         $('#p-lista').innerHTML = filas.map((n) => {
             const v = l.veces[n] || 0;
             return `<li>${cara(l, n, 'cara-mini')}<span class="p-nombre">${escapa(n)}</span>`
@@ -631,7 +652,7 @@
     // ¿Quién falta hoy? (ventana): se toca a quien no ha venido y ya no sale ni entra en los grupos.
     const dFaltan = $('#faltan');
     let fLista = null;
-    const fTitulo = () => { const n = faltanDe(fLista).length; $('#f-titulo').textContent = n ? `Faltan hoy: ${n}` : '¿Quién falta hoy?'; };
+    const fTitulo = () => { const n = faltanDe(fLista).length; $('#f-titulo').textContent = n ? t('q_absent_n', n) : t('q_absent'); };
     const abreFaltan = (l) => {
         if (!l) { return; }
         fLista = l;
@@ -660,7 +681,7 @@
     dFaltan.addEventListener('close', () => {
         const n = faltanDe(fLista).length;
         quienPinta(); gCambiaLista();
-        anuncia(n ? `Faltan hoy ${n}` : 'Han venido todos');
+        anuncia(n ? t('q_absent_n_sr', n) : t('q_all_here'));
     });
     $('#q-faltan').addEventListener('click', () => abreFaltan(listaQ()));
 
@@ -681,9 +702,9 @@
     const gPintaModo = () => {
         $$('#g-modo button').forEach((b) => b.setAttribute('aria-checked', String(b.dataset.modo === gModo)));
         $('#g-n').textContent = gN;
-        $('#g-n').setAttribute('aria-label', gModo === 'num' ? `${gN} grupos` : `${gN} alumnos por grupo`);
+        $('#g-n').setAttribute('aria-label', gModo === 'num' ? t('g_n_groups', gN) : t('g_n_size', gN));
     };
-    const gListo = () => rotula($('#g-hacer'), 'Hacer grupos', 'mezclar');
+    const gListo = () => rotula($('#g-hacer'), t('g_make'), 'mezclar');
     let gUltimos = null, gHechos = null;   // gHechos: los últimos grupos hechos, con su lista (los usa el Marcador)
     function gCambiaLista() {
         const pegar = $('#g-lista').value === '__pegar', l = gLista();
@@ -691,15 +712,15 @@
         $('#g-pegados').hidden = !pegar;
         $('#g-guardar').hidden = !pegar;
         $('#g-faltan').hidden = !l;
-        if (l) { precarga(l); const nf = l.alumnos.length - presentes(l).length; rotula($('#g-faltan'), nf ? `Faltan hoy: ${nf}` : '¿Quién falta hoy?'); }
+        if (l) { precarga(l); const nf = l.alumnos.length - presentes(l).length; rotula($('#g-faltan'), nf ? t('q_absent_n', nf) : t('q_absent')); }
         $('#g-guardar').disabled = !limpiaNombres($('#g-pegados').value).length;
         gListo();
     }
     const gHacer = () => {
         const nombres = gNombres();
         if (nombres.length < 2) {
-            $('#g-resumen').textContent = 'Hacen falta al menos dos nombres.';
-            gVacio($('#g-lista').value === '__pegar' ? 'Pega los nombres de tu clase, uno por línea.' : 'Esa lista está vacía.');
+            $('#g-resumen').textContent = t('g_need_two');
+            gVacio($('#g-lista').value === '__pegar' ? t('g_paste_hint') : t('g_list_empty'));
             return;
         }
         const b = baraja(nombres.slice()), lg = $('#g-lista').value === '__pegar' ? null : gLista();
@@ -711,20 +732,20 @@
             const [c, claro] = COLORES[i % COLORES.length];
             const retraso = reducido() ? 0 : i * 60;
             return `<article class="grupo${claro ? ' claro' : ''}" style="--c:${c}; animation-delay:${retraso}ms">
-                <h3>Grupo ${i + 1} <small>${g.length}</small></h3>
+                <h3>${t('g_group_n', i + 1)} <small>${g.length}</small></h3>
                 <ul>${g.map((n) => `<li>${cara(lg, n, 'cara-mini')}<span>${escapa(n)}</span></li>`).join('')}</ul></article>`;
         }).join('');
         const tams = grupos.map((g) => g.length), mn = Math.min(...tams), mx = Math.max(...tams);
-        $('#g-resumen').textContent = `${b.length} alumnos en ${k} ${k === 1 ? 'grupo' : 'grupos'} de ${mn === mx ? mn : `${mn} y ${mx}`}.`;
+        $('#g-resumen').textContent = t(k === 1 ? 'g_summary_one' : 'g_summary_many', { n: b.length, k, size: mn === mx ? mn : t('g_sizes', { a: mn, b: mx }) });
         gEncaja();
-        rotula($('#g-hacer'), 'Otra vez', 'otra');
+        rotula($('#g-hacer'), t('gen_again'), 'otra');
         gHechos = { lista: lg, grupos };
         // Guardarlos como grupos del curso: solo si se pulsa (por defecto no se crea nada).
         gUltimos = lg && lg.aula && AULA.groupsurl ? { lista: lg, grupos } : null;
         $('#g-moodle').hidden = !gUltimos; $('#g-moodle').disabled = false;
-        rotula($('#g-moodle'), 'Guardar como grupos del curso', 'guardar');
+        rotula($('#g-moodle'), t('g_save_course'), 'guardar');
         suena('dado');
-        anuncia(`Hechos ${k} grupos`);
+        anuncia(t('g_made', k));
     };
     // Letra de los grupos tan grande como quepa sin desplazar (en la pizarra se lee desde el fondo).
     const gEncaja = () => {
@@ -748,27 +769,28 @@
     $('#g-moodle').addEventListener('click', () => {
         if (!gUltimos) { return; }
         const { lista, grupos } = gUltimos, b = $('#g-moodle');
-        b.disabled = true; rotula(b, 'Guardando…');
+        b.disabled = true; rotula(b, t('g_saving'));
         alAula(AULA.groupsurl, { listname: lista.nombre, teams: JSON.stringify(grupos.map((g) => g.map((n) => lista.ids[n]).filter(Boolean))) })
             .then((j) => {
-                rotula(b, 'Guardados en el curso', 'hecho');
-                $('#g-resumen').textContent += ` Guardados en el curso como «${j.grouping}».`;
-                anuncia(`Guardados en el curso como ${j.grouping}`);
+                rotula(b, t('g_saved'), 'hecho');
+                $('#g-resumen').textContent += ' ' + t('g_saved_as', j.grouping);
+                anuncia(t('g_saved_announce', j.grouping));
             })
-            .catch(() => { b.disabled = false; rotula(b, 'No se han podido guardar. Otra vez', 'guardar'); });
+            .catch(() => { b.disabled = false; rotula(b, t('g_save_failed'), 'guardar'); });
     });
     $$('#g-modo button').forEach((b) => b.addEventListener('click', () => { gModo = b.dataset.modo; guarda('grupos-modo', gModo); gPintaModo(); gListo(); }));
     const gCambiaN = (d) => { gN = Math.max(2, Math.min(15, gN + d)); guarda('grupos-n', gN); gPintaModo(); gListo(); };
     repite($('#g-menos'), () => gCambiaN(-1));
     repite($('#g-mas'), () => gCambiaN(1));
-    gVacio('Elige una lista (o pega los nombres) y pulsa «Hacer grupos».');
+    gVacio(t('g_empty_start'));
 
     // ===================================================================================================
     // 5. Semáforo de ruido: solo mide el volumen del micrófono; no graba ni envía nada
     // ===================================================================================================
     const sm = { flujo: null, fuente: null, analizador: null, buf: null, rf: 0, suave: 0, zona: null, bajaDesde: 0, ultimoAria: -1,
         ultimo: 0, racha: 0, mejor: 0, paciencia: 100, agotada: false, pintado: '' };
-    const MENSAJES = { verde: 'Muy bien', amarillo: 'Un poco más bajo', rojo: '¡Demasiado ruido!' };
+    const MENSAJES = { verde: t('sm_green'), amarillo: t('sm_amber'), rojo: t('sm_red') };
+    const EN_ZONA = { verde: t('sm_light_green'), amarillo: t('sm_light_amber'), rojo: t('sm_light_red') };   // «Semáforo en …»
     const ORDEN = { verde: 0, amarillo: 1, rojo: 2 };
     const microPermitido = () => {
         if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !window.isSecureContext) { return false; }
@@ -777,15 +799,15 @@
         return true;
     };
     const smSinMicro = (causa) => {
-        const ventana = 'Ábrelo en otra ventana para usar el micrófono.';
+        const ventana = t('sm_mic_window');
         const textos = {
-            marco: `<strong>Aquí dentro del aula virtual no se puede usar el micrófono.</strong> ${ventana}`,
-            permiso: enMarco ? `<strong>No me dejan usar el micrófono aquí.</strong> ${ventana}`
-                : '<strong>El navegador no me deja usar el micrófono.</strong> Pulsa el candado junto a la dirección, permite el micrófono y vuelve a intentarlo.',
-            ninguno: '<strong>No encuentro ningún micrófono en este ordenador.</strong> Conecta uno o prueba en otro equipo.',
-            otro: `<strong>El micrófono no está disponible.</strong> ${enMarco ? ventana : 'Comprueba que el ordenador tiene micrófono y que ningún otro programa lo está usando.'}`,
-            pendiente: enMarco ? `<strong>¿No ves la pregunta para usar el micrófono?</strong> ${ventana}`
-                : '<strong>El navegador te pregunta si me deja usar el micrófono.</strong> Pulsa «Permitir». Si no ves la pregunta, busca el icono del micrófono o del candado junto a la dirección.',
+            marco: `<strong>${t('sm_mic_frame')}</strong> ${ventana}`,
+            permiso: enMarco ? `<strong>${t('sm_mic_denied_frame')}</strong> ${ventana}`
+                : `<strong>${t('sm_mic_denied')}</strong> ${t('sm_mic_denied_help')}`,
+            ninguno: `<strong>${t('sm_mic_none')}</strong> ${t('sm_mic_none_help')}`,
+            otro: `<strong>${t('sm_mic_unavailable')}</strong> ${enMarco ? ventana : t('sm_mic_unavailable_help')}`,
+            pendiente: enMarco ? `<strong>${t('sm_mic_pending_frame')}</strong> ${ventana}`
+                : `<strong>${t('sm_mic_pending')}</strong> ${t('sm_mic_pending_help')}`,
         };
         $('#s-sinmicro-texto').innerHTML = textos[causa] || textos.otro;
         $('#s-ventana').hidden = !enMarco;
@@ -795,10 +817,10 @@
         sm.zona = z;
         $$('#s-caja .luz').forEach((l) => l.classList.toggle('encendida', l.dataset.zona === z));
         $('#s-caja').classList.toggle('apagado', !z);
-        $('#s-caja').setAttribute('aria-label', z ? `Semáforo en ${z}` : 'Semáforo apagado');
+        $('#s-caja').setAttribute('aria-label', z ? EN_ZONA[z] : t('sm_off'));
         const m = $('#s-mensaje');
         m.className = 'mensaje-ruido' + (z ? ' ' + z : '');
-        m.textContent = z ? MENSAJES[z] : 'Semáforo apagado';
+        m.textContent = z ? MENSAJES[z] : t('sm_off');
     };
     const smBucle = () => {
         sm.analizador.getFloatTimeDomainData(sm.buf);
@@ -833,7 +855,7 @@
             suena('agotada');
             const caja = $('#s-caja');
             caja.classList.remove('tiembla'); void caja.offsetWidth; caja.classList.add('tiembla');
-            anuncia('Se acabó la paciencia');
+            anuncia(t('sm_patience_gone'));
         } else if (sm.agotada && sm.paciencia >= 50) { sm.agotada = false; }
         smPintaExtra();
         const redondo = Math.round(sm.suave / 5) * 5;
@@ -846,11 +868,11 @@
         if (clave === sm.pintado) { return; }
         sm.pintado = clave;
         $('#s-racha').textContent = reloj(sm.racha);
-        $('#s-mejor').textContent = sm.mejor >= 60 && sm.mejor > sm.racha + 1 ? `Mejor: ${reloj(sm.mejor)}` : '';
+        $('#s-mejor').textContent = sm.mejor >= 60 && sm.mejor > sm.racha + 1 ? t('sm_best', reloj(sm.mejor)) : '';
         $('#s-paciencia-relleno').style.setProperty('--p', p + '%');
         $('#s-paciencia').classList.toggle('baja', p < 30);
         $('#s-paciencia').setAttribute('aria-valuenow', String(p));
-        $('#s-paciencia-titulo').textContent = sm.agotada ? '¡Se acabó la paciencia!' : 'Paciencia';
+        $('#s-paciencia-titulo').textContent = sm.agotada ? t('sm_patience_out') : t('sm_patience');
         $('#s-extra').classList.toggle('agotada', sm.agotada);
     };
     const smApaga = () => {
@@ -863,7 +885,7 @@
         smPintaExtra();
         $('#s-relleno').style.setProperty('--nivel', '0%');
         $('#s-medidor').setAttribute('aria-valuenow', '0');
-        rotula($('#s-marcha'), 'Escuchar la clase', 'micro');
+        rotula($('#s-marcha'), t('sm_listen'), 'micro');
         $('#s-marcha').className = 'boton grande ancho';
     };
     const smEmpieza = async () => {
@@ -871,7 +893,7 @@
         if (!microPermitido()) { smSinMicro(enMarco ? 'marco' : 'otro'); return; }
         const b = $('#s-marcha');
         b.disabled = true;
-        $('#s-mensaje').textContent = 'Pidiendo permiso…';
+        $('#s-mensaje').textContent = t('sm_asking');
         // Si la pregunta del navegador no aparece o nadie la contesta, a los 5 s explicamos qué hacer.
         const espera = setTimeout(() => smSinMicro('pendiente'), 5000);
         try {
@@ -887,7 +909,7 @@
             sm.analizador.fftSize = 2048;
             sm.buf = new Float32Array(sm.analizador.fftSize);
             sm.fuente.connect(sm.analizador);   // al analizador y a ningún sitio más: no se oye ni se guarda
-            rotula(b, 'Apagar el semáforo', 'micro-no');
+            rotula(b, t('sm_stop'), 'micro-no');
             b.className = 'boton grande suave ancho';
             smBucle();
         } catch (e) {
@@ -903,7 +925,7 @@
     $('#s-ventana').addEventListener('click', abreVentana);
     const pintaSens = () => {
         const v = Number($('#s-sensibilidad').value);
-        $('#s-sens-valor').textContent = v <= 3 ? 'baja' : v <= 7 ? 'media' : 'alta';
+        $('#s-sens-valor').textContent = v <= 3 ? t('sm_sens_low') : v <= 7 ? t('sm_sens_medium') : t('sm_sens_high');
     };
     $('#s-sensibilidad').value = Math.max(1, Math.min(10, Number(lee('sensibilidad', 5)) || 5));
     $('#s-sensibilidad').addEventListener('input', () => { pintaSens(); guarda('sensibilidad', Number($('#s-sensibilidad').value)); });
@@ -923,7 +945,7 @@
     const abreGigante = ({ color, clase, html, etiqueta }) => {
         gigante.style.setProperty('--c', color || 'var(--azul)');
         gigante.className = 'gigante' + (clase ? ' ' + clase : '');
-        gigante.setAttribute('aria-label', etiqueta || 'Vista en grande');
+        gigante.setAttribute('aria-label', etiqueta || t('gen_big_view'));
         $('#gigante-contenido').innerHTML = html;
         giganteVuelta = document.activeElement;
         gigante.hidden = false;
@@ -939,12 +961,12 @@
     // 7. Así trabajamos
     // ===================================================================================================
     const MODOS = [
-        { nombre: 'Silencio', icono: 'silencio', color: '#ce1423' },
-        { nombre: 'En voz baja', icono: 'bajo', color: '#fbbe17', claro: true },
-        { nombre: 'Por parejas', icono: 'parejas', color: '#067e36' },
-        { nombre: 'En grupo', icono: 'grupos', color: '#5b2fb8' },
-        { nombre: 'Levanta la mano', icono: 'mano', color: '#164281' },
-        { nombre: 'Escucha', icono: 'escucha', color: '#0e7c86' },
+        { nombre: t('asi_silence'), icono: 'silencio', color: '#ce1423' },
+        { nombre: t('asi_quiet'), icono: 'bajo', color: '#fbbe17', claro: true },
+        { nombre: t('asi_pairs'), icono: 'parejas', color: '#067e36' },
+        { nombre: t('asi_group'), icono: 'grupos', color: '#5b2fb8' },
+        { nombre: t('asi_hand'), icono: 'mano', color: '#164281' },
+        { nombre: t('asi_listen'), icono: 'escucha', color: '#0e7c86' },
     ];
     $('#a-rejilla').innerHTML = MODOS.map((m, i) =>
         `<button type="button" class="modo-trabajo${m.claro ? ' claro' : ''}" style="--c:${m.color}" data-i="${i}">${icono(m.icono)}<span class="palabra">${m.nombre}</span></button>`).join('');
@@ -970,7 +992,7 @@
     })();
     const opciones = { hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23', weekday: 'long', day: 'numeric', month: 'long' };
     const SITIO = window.CLASSTOOLS_SITE || {};
-    const idioma = (SITIO.lang || document.documentElement.lang || 'es').replace('_', '-');
+    const idioma = IDIOMA;
     let fmtReloj;
     try { fmtReloj = new Intl.DateTimeFormat(idioma, Object.assign(SITIO.tz ? { timeZone: SITIO.tz } : {}, opciones)); }
     catch (e) { fmtReloj = new Intl.DateTimeFormat(undefined, opciones); }
@@ -1038,7 +1060,7 @@
     addEventListener('pagehide', () => Object.keys(pendientes).forEach((t) => envia(t, true)));
     // API para las herramientas que van en ficheros aparte (chance.js, scoreboard.js…): lo común de la pantalla.
     window.ClasstoolsCore = {
-        $, $$, random: azar, shuffle: baraja, escape: escapa, reducedMotion: reducido, save: guarda, load: lee,
+        $, $$, t, translate: traduce, random: azar, shuffle: baraja, escape: escapa, reducedMotion: reducido, save: guarda, load: lee,
         play: suena, sounds: SONIDOS, bell: campana, click: clic, announce: anuncia, icon: icono, setIcon: ponIcono,
         relabel: rotula, repeatWhileHeld: repite, register: (tool, def) => { HERR[tool] = def; }, show: muestra,
         lists: todas, present: presentes, face: cara, initials: iniciales, preload: precarga, activeList: listaQ,
@@ -1050,11 +1072,11 @@
     // Abierta desde un curso del aula: título con el curso y botón para volver a él.
     if (AULA && AULA.back) {
         const v = document.createElement('a');
-        v.className = 'redondo'; v.href = AULA.back; v.title = 'Volver al curso';
-        v.innerHTML = `<span>${icono('salir')}</span><span class="redondo-texto">Volver al curso</span>`;
+        v.className = 'redondo'; v.href = AULA.back; v.title = t('bar_back');
+        v.innerHTML = `<span>${icono('salir')}</span><span class="redondo-texto">${t('bar_back')}</span>`;
         $('.acciones').prepend(v);
     }
-    if (AULA && AULA.course) { document.title = `Herramientas de clase · ${AULA.course}`; }
+    if (AULA && AULA.course) { document.title = `${t('bar_title')} · ${AULA.course}`; }
     pintaSelects();
     quienPinta();
     tmPon(5 * 60000);

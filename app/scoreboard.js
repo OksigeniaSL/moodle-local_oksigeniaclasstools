@@ -9,14 +9,14 @@
     const core = window.ClasstoolsCore;
     const root = document.getElementById('h-marcador');
     if (!core || !root) { return; }
-    const { $, $$, escape, reducedMotion, save, load, play, setIcon, announce, icon } = core;
+    const { $, $$, t, escape, reducedMotion, save, load, play, setIcon, announce, icon } = core;
 
     const STR = {
-        addTeam: 'Añadir equipo', fromGroups: 'Usar los equipos de «Grupos»', reset: 'Poner a cero',
-        resetSure: '¿Seguro? Pulsa otra vez', team: (n) => `Equipo ${n}`, group: (n) => `Grupo ${n}`,
-        remove: 'Quitar este equipo', name: 'Nombre del equipo', color: 'Cambiar el color',
-        points: (n) => `${n} ${n === 1 ? 'punto' : 'puntos'}`, leads: (t) => `Va primero: ${t}`, tie: 'Empate',
-        noGroups: 'Haz antes los equipos en la pestaña «Grupos».',
+        addTeam: t('sc_add_team'), fromGroups: t('sc_from_groups'), reset: t('sc_reset'),
+        resetSure: t('sc_reset_sure'), team: (n) => t('sc_team', n), group: (n) => t('sc_group', n),
+        remove: t('sc_remove'), name: t('sc_name'), color: t('sc_colour'),
+        points: (n) => t(n === 1 ? 'sc_points_one' : 'sc_points_many', n), leads: (x) => t('sc_leads', x), tie: t('sc_tie'),
+        noGroups: t('sc_no_groups'), teams: (n) => t(n === 1 ? 'sc_teams_one' : 'sc_teams_many', n),
     };
     const COLORS = ['#164281', '#ce1423', '#067e36', '#fbbe17', '#5b2fb8', '#0e7c86', '#c2410c', '#0f2f5e'];
     const STEPS = [-1, 1, 5, 10];
@@ -66,12 +66,12 @@
             const light = t.color === '#fbbe17';
             return `<article class="ct-team${light ? ' claro' : ''}${i === lead ? ' ct-lead' : ''}" style="--c:${t.color}" data-i="${i}">
                 <header>
-                    <button type="button" class="ct-color" title="${STR.color}" aria-label="${STR.color}"></button>
-                    <input class="ct-team-name" value="${escape(t.name)}" maxlength="24" aria-label="${STR.name}">
+                    <button type="button" class="ct-color" title="${escape(STR.color)}" aria-label="${escape(STR.color)}"></button>
+                    <input class="ct-team-name" value="${escape(t.name)}" maxlength="24" aria-label="${escape(STR.name)}">
                     ${i === lead ? `<span class="ct-crown" aria-hidden="true">${icon('corona')}</span>` : ''}
-                    <button type="button" class="ct-x" title="${STR.remove}" aria-label="${STR.remove}"${state.teams.length < 3 ? ' hidden' : ''}>${icon('cerrar')}</button>
+                    <button type="button" class="ct-x" title="${escape(STR.remove)}" aria-label="${escape(STR.remove)}"${state.teams.length < 3 ? ' hidden' : ''}>${icon('cerrar')}</button>
                 </header>
-                <output class="ct-score" aria-live="polite" aria-label="${escape(t.name)}: ${STR.points(t.score)}">${t.score}</output>
+                <output class="ct-score" aria-live="polite" aria-label="${escape(t.name)}: ${escape(STR.points(t.score))}">${t.score}</output>
                 ${membersHTML(t)}
                 <div class="ct-steps">${STEPS.map((s) => `<button type="button" class="ct-step${s < 0 ? ' ct-minus' : ''}" data-step="${s}">${s > 0 ? '+' + s : '−' + Math.abs(s)}</button>`).join('')}</div>
             </article>`;
@@ -141,7 +141,7 @@
             name: STR.group(i + 1), color: COLORS[i % COLORS.length], score: 0, members: members.slice(), listId: g.lista ? g.lista.id : null,
         }));
         persist(); leader = null; paint();
-        announce(`${state.teams.length} equipos`);
+        announce(STR.teams(state.teams.length));
     });
     $('#sc-reset').addEventListener('click', () => {
         const b = $('#sc-reset');

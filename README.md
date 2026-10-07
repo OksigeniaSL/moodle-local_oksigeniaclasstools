@@ -1,7 +1,7 @@
 # Class tools for Moodle (Oksigenia Classtools)
 
 [![License: GPLv3](https://img.shields.io/badge/license-GPLv3+-blue.svg)](LICENSE)
-![Moodle](https://img.shields.io/badge/Moodle-4.5%2B-orange)
+![Moodle](https://img.shields.io/badge/Moodle-4.3%2B-orange)
 ![Status](https://img.shields.io/badge/status-beta-yellow)
 [![Sponsor](https://img.shields.io/badge/sponsor-Oksigenia-00d4ff)](https://oksigenia.com/en/open-source#sponsor)
 
@@ -34,7 +34,10 @@ group and a cohort with the same students appear once. Separate groups mode is r
 
 ## Requirements
 
-- Moodle 4.5 LTS or later (navigation hooks `primary_extend` and `secondary_extend`). Developed and tested on 5.3.
+- Moodle 4.3 or later, tested on 4.3, 5.2, 5.3 and 6.0dev. From 4.4 the links go in the course bar and the main menu
+  (navigation hooks). In 4.3 the link shows in the course's «More» menu, and the main-menu link is not available:
+  admins can add it as a custom menu item (`/local/oksigeniaclasstools/index.php`). Moodle 4.1 and 4.2 cannot hold
+  the plugin's table names, which are longer than 28 characters.
 - PHP as required by your Moodle.
 - Any theme. A modern browser.
 
@@ -93,8 +96,9 @@ Two tables, both covered by the privacy provider (export and deletion) and remov
 
 Beta, developed with a school in Tenerife as its test classroom. Before the first stable release:
 
-- **Translations**: the board screen is in Spanish for now; its texts move to the language packs (English first,
-  others through AMOS), and the alphabet and on-screen keyboard follow the user's language.
+- **Content per language**: the board's texts already come from the language packs (English and Spanish, others
+  through AMOS). Next, the built-in content (word lists, examples, pair sets, the time in words) and the alphabet and
+  on-screen keyboard follow the user's language.
 - **Site configuration**: which tools and games are shown, the default Hangman drawing, and site-wide lists, roscos
   and locks shared by all teachers. Built-in examples become neutral and per language.
 - **Code**: the board scripts move to AMD modules, with `moodle-plugin-ci` (PHPUnit and Behat) in GitHub Actions.

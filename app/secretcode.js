@@ -8,22 +8,22 @@
 (() => {
     const core = window.ClasstoolsCore, games = window.ClasstoolsGames;
     if (!core || !games || !games.util) { return; }
-    const { $, $$, escape, play, setIcon, announce, save, load } = core;
+    const { $, $$, t, escape, play, setIcon, announce, save, load } = core;
     const { norm, isLetter, keyboard } = games.util;
 
     const STR = {
-        name: 'Código secreto', lock: 'Candado', newLock: 'Nuevo candado', edit: 'Editar', time: 'Tiempo', noTime: 'Sin tiempo',
-        minutes: (m) => `${m} min`, start: 'Empezar', clues: 'Pistas', nextClue: 'Ver la siguiente pista', noMoreClues: 'No hay más pistas',
-        erase: 'Borrar', again: 'Otra vez', tries: (n) => `${n} ${n === 1 ? 'intento' : 'intentos'}`, wrong: '¡No es ese código!',
-        opened: '¡Abierto!', timeUp: '¡Se acabó el tiempo!', pressStart: 'Elige el candado y pulsa «Empezar»',
-        editorNew: 'Nuevo candado', editorEdit: 'Editar el candado', editorCopy: 'Copia del candado de ejemplo', lockName: 'Nombre del candado',
-        code: 'Código (de 2 a 8 números o letras)', cluesLabel: 'Pistas, una por línea (se enseñan en este orden)',
-        finalMsg: 'Mensaje al abrirlo (si quieres)', save: 'Guardar', cancel: 'Cancelar', remove: 'Borrar el candado',
-        removeSure: '¿Seguro? Pulsa otra vez', badCode: 'El código tiene que tener de 2 a 8 números o letras.', copyOf: (n) => `${n} (copia)`,
-        example: 'Candado de ejemplo',
+        name: t('lock_name'), lock: t('lock_lock'), newLock: t('lock_new'), edit: t('lock_edit'), time: t('lock_time'), noTime: t('lock_no_time'),
+        minutes: (m) => t('lock_minutes', m), start: t('lock_start'), clues: t('lock_clues'), nextClue: t('lock_next_clue'), noMoreClues: t('lock_no_more_clues'),
+        erase: t('lock_erase'), again: t('lock_again'), tries: (n) => t(n === 1 ? 'lock_tries_one' : 'lock_tries_many', n), wrong: t('lock_wrong'),
+        opened: t('lock_opened'), timeUp: t('lock_time_up'), pressStart: t('lock_press_start'),
+        editorNew: t('lock_new'), editorEdit: t('lock_editor_edit'), editorCopy: t('lock_editor_copy'), lockName: t('lock_lock_name'),
+        code: t('lock_code'), cluesLabel: t('lock_clues_label'),
+        finalMsg: t('lock_final_msg'), save: t('lock_save'), cancel: t('lock_cancel'), remove: t('lock_remove'),
+        removeSure: t('lock_remove_sure'), badCode: t('lock_bad_code'), copyOf: (n) => t('lock_copy_of', n),
     };
+    // Content in Spanish: per-language content comes in a later step.
     const EXAMPLE = {
-        id: 'ejemplo', name: STR.example, code: '4127', final: '¡Bien hecho! Han abierto el candado entre todos.',
+        id: 'ejemplo', name: 'Candado de ejemplo', code: '4127', final: '¡Bien hecho! Han abierto el candado entre todos.',
         clues: ['El primer número son las patas que tiene un gato.', 'El segundo, los dedos de una mano menos cuatro.',
             'El tercero, los ojos que tiene una persona.', 'El cuarto, los días que tiene una semana.'],
     };
@@ -163,7 +163,8 @@
             s.over = true; clearInterval(s.timer); games.playing('codigo', false);
             art.classList.add('ct-open');
             const m = $('#sc2-msg'); m.className = 'total ct-win'; m.textContent = s.lock.final || STR.opened;
-            paintClues(); paintOver(); play('fin'); announce(STR.opened + ' ' + (s.lock.final || ''));
+            paintClues(); paintOver(); play('fin');
+            if (core.celebrate) { core.celebrate(art.closest('.ct-stage'), { title: STR.opened, text: s.lock.final || '', glow: [art], again: STR.again, onAgain: start }); } else { announce(STR.opened + ' ' + (s.lock.final || '')); }
             return;
         }
         art.classList.remove('ct-shake'); void art.offsetWidth; art.classList.add('ct-shake');

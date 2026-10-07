@@ -8,11 +8,11 @@
     const core = window.ClasstoolsCore;
     const root = document.getElementById('h-juegos');
     if (!core || !root) { return; }
-    const { $, $$, save, load } = core;
+    const { $, $$, save, load, t, escape } = core;
 
     root.innerHTML = `
-        <div class="barra-herr ct-top"><div class="segmentos" role="radiogroup" aria-label="Juego" id="ga-mode"></div>
-            <button type="button" class="boton suave ct-push" id="ga-setup" hidden><span data-icono="editar"></span>Ajustes</button></div>
+        <div class="barra-herr ct-top"><div class="segmentos" role="radiogroup" aria-label="${escape(t('ga_game'))}" id="ga-mode"></div>
+            <button type="button" class="boton suave ct-push" id="ga-setup" hidden><span data-icono="editar"></span>${t('ga_settings')}</button></div>
         <div class="ct-body" id="ga-body"></div>`;
     const games = [];
     let current = null, visible = false;
@@ -49,6 +49,7 @@
     const norm = (text) => String(text).toUpperCase().split('').map((c) => ACCENTS[c] || c).join('');
     const isLetter = (c) => /^[A-ZÑ]$/.test(c);
     const KEY_ROWS = ['QWERTYUIOP', 'ASDFGHJKLÑ', 'ZXCVBNM'];
+    // Content in Spanish: per-language content comes in a later step.
     const WORDS = {
         primaria: ['ELEFANTE', 'JIRAFA', 'MARIPOSA', 'COCODRILO', 'PINGÜINO', 'TORTUGA', 'DELFÍN', 'CANGURO', 'ARDILLA', 'CABALLO',
             'VOLCÁN', 'MONTAÑA', 'OCÉANO', 'PLANETA', 'ESTRELLA', 'ARCOÍRIS', 'TORMENTA', 'CASCADA', 'DESIERTO', 'BOSQUE',
@@ -62,9 +63,9 @@
     WORDS.cinco = WORDS.cinco.filter((w) => norm(w).length === 5);
     const keyboard = (box, onKey, { enter = false } = {}) => {
         box.classList.add('ct-keyboard');
-        box.innerHTML = KEY_ROWS.map((row, r) => `<div class="ct-krow">${r === 2 && enter ? '<button type="button" class="ct-key ct-wide" data-k="ENTER">Probar</button>' : ''}`
+        box.innerHTML = KEY_ROWS.map((row, r) => `<div class="ct-krow">${r === 2 && enter ? `<button type="button" class="ct-key ct-wide" data-k="ENTER">${t('ga_try')}</button>` : ''}`
             + row.split('').map((k) => `<button type="button" class="ct-key" data-k="${k}">${k}</button>`).join('')
-            + `${r === 2 && enter ? '<button type="button" class="ct-key ct-wide" data-k="BACK" aria-label="Borrar">⌫</button>' : ''}</div>`).join('');
+            + `${r === 2 && enter ? `<button type="button" class="ct-key ct-wide" data-k="BACK" aria-label="${escape(t('ga_delete'))}">⌫</button>` : ''}</div>`).join('');
         box.addEventListener('click', (e) => { const b = e.target.closest('.ct-key'); if (b && !b.disabled) { onKey(b.dataset.k); } });
         return {
             mark: (k, state) => {
@@ -90,15 +91,15 @@
     // The secret word: typed hidden («Escribirla yo») or at random from built-in words or the teacher's lists.
     const wordSource = (prefix, builtin, { lengthHint } = {}) => {
         const html = `
-            <label class="campo apilado"><span>Palabra</span><select id="${prefix}-src"></select></label>
-            <label class="campo apilado" id="${prefix}-type-box"><span>Palabra secreta (no se ve)</span>
-                <input type="password" id="${prefix}-word" autocomplete="off" spellcheck="false" maxlength="24"${lengthHint ? ` placeholder="${lengthHint}"` : ''}></label>
-            <label class="campo apilado"><span>Pista (si quieres)</span><input type="text" id="${prefix}-clue" maxlength="90" autocomplete="off"></label>`;
+            <label class="campo apilado"><span>${t('ga_word')}</span><select id="${prefix}-src"></select></label>
+            <label class="campo apilado" id="${prefix}-type-box"><span>${t('ga_secret_word')}</span>
+                <input type="password" id="${prefix}-word" autocomplete="off" spellcheck="false" maxlength="24"${lengthHint ? ` placeholder="${escape(lengthHint)}"` : ''}></label>
+            <label class="campo apilado"><span>${t('ga_clue_optional')}</span><input type="text" id="${prefix}-clue" maxlength="90" autocomplete="off"></label>`;
         const fill = () => {
             const sel = $(`#${prefix}-src`), before = sel.value || load(prefix + '-fuente', 'builtin');
             const own = core.lists().filter((l) => !l.aula);
-            sel.innerHTML = `<option value="type">Escribirla yo</option><option value="builtin">${builtin.label}</option>`
-                + (own.length ? `<optgroup label="Al azar de tus listas">${own.map((l) => `<option value="list:${core.escape(l.id)}">${core.escape(l.nombre)}</option>`).join('')}</optgroup>` : '');
+            sel.innerHTML = `<option value="type">${t('ga_type_it')}</option><option value="builtin">${builtin.label}</option>`
+                + (own.length ? `<optgroup label="${escape(t('ga_from_lists'))}">${own.map((l) => `<option value="list:${core.escape(l.id)}">${core.escape(l.nombre)}</option>`).join('')}</optgroup>` : '');
             sel.value = [...sel.options].some((o) => o.value === before) ? before : 'builtin';
             $(`#${prefix}-type-box`).hidden = sel.value !== 'type';
         };

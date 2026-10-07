@@ -842,3 +842,18 @@ a.redondo { text-decoration: none; }
 .ct-cl-msg { margin: 0; color: var(--azul-osc); font-size: clamp(1.2rem, 3.4vh, 1.7rem); font-weight: 900; line-height: 1.25; text-align: center; text-wrap: balance; }
 .ct-cl-msg.ct-win { color: var(--verde); }
 .ct-cl-msg.ct-lose { color: var(--rojo); }
+
+/* Celebration: confetti, a glow and a big message over the stage (celebrate.js). */
+.ct-celebra { position: absolute; inset: 0; z-index: 30; display: grid; place-items: end center; padding: 1rem; border-radius: inherit; background: rgba(244, 247, 251, .25); animation: ct-aparece .25s ease-out; }
+.ct-confetti { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.ct-celebra-card { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: .8rem; max-width: min(34rem, 90%); padding: 1.6rem 2rem; border-radius: 28px; background: var(--superficie); box-shadow: 0 24px 60px rgba(15, 47, 94, .3); text-align: center; animation: ct-salta .5s cubic-bezier(.3, 1.6, .5, 1); }
+.ct-celebra-title { margin: 0; color: var(--verde); font-size: clamp(2rem, 7vh, 3.6rem); font-weight: 1000; line-height: 1.05; text-wrap: balance; }
+.ct-celebra-text { margin: 0; color: var(--tinta-2); font-size: clamp(1.1rem, 3vh, 1.5rem); font-weight: 800; text-wrap: balance; }
+.ct-glow { animation: ct-brillo 1.6s ease-in-out 2; }
+@keyframes ct-brillo { 0%, 100% { filter: none; } 50% { filter: drop-shadow(0 0 10px rgba(251, 190, 23, .95)) brightness(1.12); } }
+@keyframes ct-salta { from { opacity: 0; transform: scale(.6); } to { opacity: 1; transform: none; } }
+@keyframes ct-aparece { from { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .ct-celebra, .ct-celebra-card, .ct-glow { animation: none; } }
+
+/* The celebration goes over the stage of each tool. */
+.ct-stage { position: relative; }

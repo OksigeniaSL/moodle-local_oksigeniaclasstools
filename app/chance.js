@@ -1,6 +1,6 @@
 // Chance tools for the classroom board: wheel, dice, coin and cards.
 // They can use the class lists (names and photos, leaving out who is missing today), the teacher's own lists
-// (words, questions…) or built-in sets (numbers, letters). UI strings live in STR (Spanish for now; i18n later).
+// (words, questions…) or built-in sets (numbers, letters). UI strings live in STR, from the language packs.
 //
 // @copyright 2026 Oksigenia <dev@oksigenia.cc>
 // @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -9,26 +9,27 @@
     const core = window.ClasstoolsCore;
     const root = document.getElementById('h-azar');
     if (!core || !root) { return; }
-    const { $, $$, random, shuffle, escape, reducedMotion, save, load, play, icon, setIcon, announce } = core;
+    const { $, $$, t, random, shuffle, escape, reducedMotion, save, load, play, icon, setIcon, announce } = core;
 
     const STR = {
-        modes: { wheel: 'Ruleta', dice: 'Dados', coin: 'Moneda', cards: 'Cartas' },
-        what: '¿Qué usamos?',
-        source: 'Casillas', deck: 'Mazo', students: 'Alumnos', ownlists: 'Tus listas', builtin: 'Otras',
-        numbers: (a, b) => `Números del ${a} al ${b}`, numbersPick: 'Números…', from: 'Del', to: 'al',
-        letters: 'Letras (A–Z)', lettersStop: 'Letras para el «Stop» (sin K, Ñ, Q, W, X, Y)',
-        newList: 'Nueva lista', editList: 'Editar',
-        removePicked: 'Quitar la que sale', putBack: 'Volver a ponerlas todas', noRepeat: 'Sin repetir',
-        spin: 'Girar', roll: 'Tirar', toss: 'Lanzar', draw: 'Sacar carta', reshuffle: 'Barajar de nuevo',
-        empty: 'No quedan casillas. Pulsa «Volver a ponerlas todas».', lastOne: (x) => `Solo queda «${x}»: es el último`,
-        onlyOne: (x) => `Solo hay una casilla: «${x}»`, emptyDeck: 'No quedan cartas. Pulsa «Barajar de nuevo».',
-        noList: 'Esa lista está vacía.', left: (n) => `Quedan ${n}`, result: (r) => `Ha salido: ${r}`,
-        howMany: '¿Cuántos dados?', die: (i) => `Dado ${i}`, total: (t) => `Total: ${t}`,
-        customFaces: 'Caras del dado personalizado, una por línea', customHint: 'Por ejemplo: «verbo en pasado»',
-        motif: 'Motivo', other: 'Otra', side1: 'Una cara', side2: 'La otra', resetTally: 'Poner a cero',
-        pressTo: (b) => `Pulsa «${b}»`,
+        modes: { wheel: t('ch_wheel'), dice: t('ch_dice'), coin: t('ch_coin'), cards: t('ch_cards') },
+        what: t('ch_what'),
+        source: t('ch_source'), deck: t('ch_deck'), students: t('ch_students'), ownlists: t('ch_ownlists'), builtin: t('ch_builtin'),
+        numbers: (a, b) => t('ch_numbers', { a, b }), numbersPick: t('ch_numbers_pick'), from: t('ch_from'), to: t('ch_to'),
+        letters: t('ch_letters_az'), lettersStop: t('ch_letters_stop'),
+        newList: t('ch_new_list'), editList: t('ch_edit_list'),
+        removePicked: t('ch_remove_picked'), putBack: t('ch_put_back'), noRepeat: t('ch_no_repeat'),
+        spin: t('ch_spin'), roll: t('ch_roll'), toss: t('ch_toss'), draw: t('ch_draw'), reshuffle: t('ch_reshuffle'),
+        empty: t('ch_empty'), lastOne: (x) => t('ch_last_one', x),
+        onlyOne: (x) => t('ch_only_one', x), emptyDeck: t('ch_empty_deck'),
+        noList: t('ch_no_list'), left: (n) => t('ch_left', n), result: (r) => t('ch_result', r),
+        howMany: t('ch_how_many'), die: (i) => t('ch_die', i), total: (n) => t('ch_total', n),
+        customFaces: t('ch_custom_faces'), customHint: t('ch_custom_hint'),
+        motif: t('ch_motif'), other: t('ch_other'), side1: t('ch_side1'), side2: t('ch_side2'), resetTally: t('ch_reset_tally'),
+        pressTo: (b) => t('ch_press_to', b), exclaim: (w) => t('ch_exclaim', w),
     };
     const PALETTE = [['#164281'], ['#ce1423'], ['#067e36'], ['#fbbe17', true], ['#5b2fb8'], ['#0e7c86'], ['#c2410c'], ['#0f2f5e']];
+    // Content in Spanish: per-language content comes in a later step.
     const LETTERS = 'ABCDEFGHIJKLMNÑOPQRSTUVWXYZ'.split('');
     const STOP_OUT = ['K', 'Ñ', 'Q', 'W', 'X', 'Y'];
     const fmt = (n) => String(n).replace('.', ',');
@@ -39,7 +40,7 @@
 
     root.innerHTML = `
         <div class="barra-herr ct-top">
-            <div class="segmentos" role="radiogroup" aria-label="${STR.what}" id="ch-mode">
+            <div class="segmentos" role="radiogroup" aria-label="${escape(STR.what)}" id="ch-mode">
                 ${Object.entries(STR.modes).map(([k, v]) => `<button type="button" role="radio" aria-checked="false" data-mode="${k}">${v}</button>`).join('')}
             </div>
         </div>
@@ -70,12 +71,12 @@
             <div class="ct-panel" data-panel="dice" hidden>
                 <aside class="tarjeta ct-side">
                     <p class="ante">${STR.howMany}</p>
-                    <div class="segmentos" role="radiogroup" aria-label="${STR.howMany}" id="di-count">
+                    <div class="segmentos" role="radiogroup" aria-label="${escape(STR.howMany)}" id="di-count">
                         ${[1, 2, 3, 4].map((n) => `<button type="button" role="radio" aria-checked="false" data-n="${n}">${n}</button>`).join('')}
                     </div>
                     <div class="ct-dice-types" id="di-types"></div>
                     <label class="campo apilado" id="di-custom-box" hidden><span>${STR.customFaces}</span>
-                        <textarea id="di-custom" rows="4" spellcheck="false" placeholder="${STR.customHint}"></textarea></label>
+                        <textarea id="di-custom" rows="4" spellcheck="false" placeholder="${escape(STR.customHint)}"></textarea></label>
                 </aside>
                 <div class="tarjeta ct-stage">
                     <div class="ct-dice" id="di-dice"></div>
@@ -131,9 +132,9 @@
         const lists = core.lists();
         const moodle = lists.filter((l) => l.aula), own = lists.filter((l) => !l.aula);
         const opt = (l) => `<option value="list:${escape(l.id)}">${escape(l.nombre)} (${core.present(l).length})</option>`;
-        return (moodle.length ? `<optgroup label="${STR.students}">${moodle.map(opt).join('')}</optgroup>` : '')
-            + (own.length ? `<optgroup label="${STR.ownlists}">${own.map(opt).join('')}</optgroup>` : '')
-            + `<optgroup label="${STR.builtin}"><option value="numbers">${STR.numbersPick}</option>`
+        return (moodle.length ? `<optgroup label="${escape(STR.students)}">${moodle.map(opt).join('')}</optgroup>` : '')
+            + (own.length ? `<optgroup label="${escape(STR.ownlists)}">${own.map(opt).join('')}</optgroup>` : '')
+            + `<optgroup label="${escape(STR.builtin)}"><option value="numbers">${STR.numbersPick}</option>`
             + (withLetters ? `<option value="letters">${STR.letters}</option><option value="stop">${STR.lettersStop}</option>` : '')
             + '</optgroup>';
     };
@@ -325,22 +326,23 @@
     // ---------------------------------------------------------------------------------------------------
     const range = (a, b) => Array.from({ length: b - a + 1 }, (_, i) => a + i);
     const ARROWS4 = ['↑', '→', '↓', '←'], ARROWS8 = ['↑', '↗', '→', '↘', '↓', '↙', '←', '↖'];
-    const COLORS = [['Rojo', '#ce1423'], ['Azul', '#164281'], ['Verde', '#067e36'], ['Amarillo', '#fbbe17'], ['Morado', '#5b2fb8'], ['Naranja', '#c2410c']];
+    const COLORS = [[t('ch_red'), '#ce1423'], [t('ch_blue'), '#164281'], [t('ch_green'), '#067e36'], [t('ch_yellow'), '#fbbe17'], [t('ch_purple'), '#5b2fb8'], [t('ch_orange'), '#c2410c']];
     const DICE = {
-        d6: { label: 'De 6 (puntos)', faces: range(1, 6), pips: true },
-        d4: { label: 'De 4', faces: range(1, 4), shape: 'tri' },
-        d8: { label: 'De 8', faces: range(1, 8), shape: 'diamond' },
-        d10: { label: 'De 10', faces: range(1, 10), shape: 'pentagon' },
-        d12: { label: 'De 12', faces: range(1, 12), shape: 'pentagon' },
-        d20: { label: 'De 20', faces: range(1, 20), shape: 'hexagon' },
-        ops: { label: 'Operaciones (+ − × ÷)', faces: ['+', '−', '×', '÷'] },
-        ops2: { label: 'Sumar o restar (+ −)', faces: ['+', '−'] },
-        dir4: { label: 'Dirección (4 flechas)', faces: ARROWS4 },
-        dir8: { label: 'Dirección (8 flechas)', faces: ARROWS8 },
-        colors: { label: 'Colores', faces: COLORS.map((c) => c[0]) },
-        vowels: { label: 'Vocales', faces: ['A', 'E', 'I', 'O', 'U'] },
-        letters: { label: 'Letras', faces: LETTERS },
-        custom: { label: 'Personalizado', faces: [] },
+        d6: { label: t('ch_d6'), faces: range(1, 6), pips: true },
+        d4: { label: t('ch_d_sides', 4), faces: range(1, 4), shape: 'tri' },
+        d8: { label: t('ch_d_sides', 8), faces: range(1, 8), shape: 'diamond' },
+        d10: { label: t('ch_d_sides', 10), faces: range(1, 10), shape: 'pentagon' },
+        d12: { label: t('ch_d_sides', 12), faces: range(1, 12), shape: 'pentagon' },
+        d20: { label: t('ch_d_sides', 20), faces: range(1, 20), shape: 'hexagon' },
+        ops: { label: t('ch_d_ops'), faces: ['+', '−', '×', '÷'] },
+        ops2: { label: t('ch_d_add_sub'), faces: ['+', '−'] },
+        dir4: { label: t('ch_d_arrows', 4), faces: ARROWS4 },
+        dir8: { label: t('ch_d_arrows', 8), faces: ARROWS8 },
+        colors: { label: t('ch_d_colours'), faces: COLORS.map((c) => c[0]) },
+        // Content in Spanish: per-language content comes in a later step.
+        vowels: { label: t('ch_d_vowels'), faces: ['A', 'E', 'I', 'O', 'U'] },
+        letters: { label: t('ch_d_letters'), faces: LETTERS },
+        custom: { label: t('ch_d_custom'), faces: [] },
     };
     const PIPS = { 1: [4], 2: [0, 8], 3: [0, 4, 8], 4: [0, 2, 6, 8], 5: [0, 2, 4, 6, 8], 6: [0, 2, 3, 5, 6, 8] };
     let diN = Math.max(1, Math.min(4, Number(load('dados-n', 2)) || 2));
@@ -432,12 +434,12 @@
     // Coin
     // ---------------------------------------------------------------------------------------------------
     const MOTIFS = {
-        heads: { label: 'Cara o cruz', a: 'Cara', b: 'Cruz' },
-        yesno: { label: 'Sí o no', a: 'Sí', b: 'No' },
-        truefalse: { label: 'Verdadero o falso', a: 'Verdadero', b: 'Falso' },
-        teams: { label: 'Equipo rojo o azul', a: 'Rojo', b: 'Azul', ca: '#ce1423', cb: '#164281' },
-        thumbs: { label: 'Pulgar arriba o abajo', a: 'Bien', b: 'Mal', ia: 'pulgararriba', ib: 'pulgarabajo' },
-        evenodd: { label: 'Par o impar', a: 'Par', b: 'Impar' },
+        heads: { label: t('ch_heads_tails'), a: t('ch_heads'), b: t('ch_tails') },
+        yesno: { label: t('ch_yes_no'), a: t('ch_yes'), b: t('ch_no') },
+        truefalse: { label: t('ch_true_false'), a: t('ch_true'), b: t('ch_false') },
+        teams: { label: t('ch_red_blue'), a: t('ch_red'), b: t('ch_blue'), ca: '#ce1423', cb: '#164281' },
+        thumbs: { label: t('ch_thumbs'), a: t('ch_good'), b: t('ch_bad'), ia: 'pulgararriba', ib: 'pulgarabajo' },
+        evenodd: { label: t('ch_even_odd'), a: t('ch_even'), b: t('ch_odd') },
         custom: { label: STR.other, a: '', b: '' },
     };
     const co = { angle: 0, tossing: false, history: [], tally: [0, 0] };
@@ -470,7 +472,7 @@
             co.tossing = false; $('#co-toss').disabled = false;
             co.tally[side]++; co.history.unshift(side); if (co.history.length > 12) { co.history.pop(); }
             const m = coSides(), word = side ? m.b : m.a;
-            $('#co-result').className = 'total'; $('#co-result').textContent = `¡${word}!`;
+            $('#co-result').className = 'total'; $('#co-result').textContent = STR.exclaim(word);
             coPaint(); announce(STR.result(word));
         };
         coin.style.transform = `rotateY(${co.angle}deg)`;

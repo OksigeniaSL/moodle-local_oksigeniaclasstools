@@ -89,6 +89,32 @@ function local_oksigeniaclasstools_visible_userids(stdClass $course, context_cou
 }
 
 /**
+ * Moodle 4.3 has no navigation hooks: there the link goes in the course navigation (it shows in its «More» menu).
+ * From 4.4 on the hooks in classes/hook_callbacks.php put it next to «Settings», and this does nothing.
+ *
+ * @param navigation_node $parentnode
+ * @param stdClass $course
+ * @param context_course $context
+ */
+function local_oksigeniaclasstools_extend_navigation_course(
+    navigation_node $parentnode,
+    stdClass $course,
+    context_course $context
+): void {
+    if (class_exists('\\core\\hook\\navigation\\secondary_extend') || !local_oksigeniaclasstools_mode($context)) {
+        return;
+    }
+    $parentnode->add(
+        get_string('navlabel', 'local_oksigeniaclasstools'),
+        new moodle_url('/local/oksigeniaclasstools/index.php', ['id' => $course->id]),
+        navigation_node::TYPE_CUSTOM,
+        null,
+        'local_oksigeniaclasstools',
+        new pix_icon('i/group', '')
+    );
+}
+
+/**
  * Screen data for a course: its name, the way back and the lists with each student's name and photo.
  *
  * One list per group and per cohort enrolled with cohort sync (a course with cohorts 5A to 5F gives six lists),
@@ -215,7 +241,7 @@ function local_oksigeniaclasstools_data(stdClass $course, context_course $contex
 /**
  * What the screen shows of the site itself, also outside a course: its icon for the middle of the QR codes (the
  * favicon, or the compact logo if the favicon is an .ico, which looks blurred when enlarged), the school levels
- * whose built-in sets are offered, and the time zone and language for the clock.
+ * whose built-in sets are offered, the time zone and language, and the board's texts in that language.
  *
  * @return array
  */
@@ -228,7 +254,20 @@ function local_oksigeniaclasstools_site(): array {
     // Not saved yet (before the settings page is first stored): all levels.
     $levels = get_config('local_oksigeniaclasstools', 'levels');
     $levels = $levels === false ? LOCAL_OKSIGENIACLASSTOOLS_LEVELS : array_values(array_filter(explode(',', $levels)));
-    return ['logo' => $logo, 'levels' => $levels, 'tz' => core_date::get_user_timezone(), 'lang' => current_language()];
+    // The board's texts («app_» strings), in the user's language with English for anything missing.
+    $str = [];
+    foreach (get_string_manager()->load_component_strings('local_oksigeniaclasstools', current_language()) as $key => $text) {
+        if (strpos($key, 'app_') === 0) {
+            $str[substr($key, 4)] = $text;
+        }
+    }
+    return [
+        'logo' => $logo,
+        'levels' => $levels,
+        'tz' => core_date::get_user_timezone(),
+        'lang' => current_language(),
+        'str' => (object) $str,
+    ];
 }
 
 /**

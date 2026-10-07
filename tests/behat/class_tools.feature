@@ -28,4 +28,4 @@ Feature: Teachers open the class tools from their course
   Scenario: The class tools open from the course
     Given I am on the "C1" "Course" page logged in as "teacher1"
     When I click on "Class tools" "link" in the ".secondary-navigation" "css_element"
-    Then I should see "Temporizador"
+    Then I should see "Timer"

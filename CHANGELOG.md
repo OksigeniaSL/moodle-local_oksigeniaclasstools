@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.8.0 (2026-10-09)
+
+- **Languages**:
+  - The board's texts come from the language packs: about 570 strings, in English and Spanish. Each teacher sees the
+    board in their language; the time zone and the clock follow the site.
+  - Outside Moodle (the SCORM package), `app/strings.js` carries the texts. `tools/strings.py` writes it from a
+    language pack, and a test checks it is in step with the English pack.
+  - Built-in content (word lists, examples, pair sets) is still in Spanish; it becomes per language next.
+- **Moodle 4.3 and 4.4**: the plugin now installs from Moodle 4.3. Where there are no navigation hooks, the link goes
+  in the course navigation. The course chooser works with Bootstrap 4 and 5. Moodle 4.1 and 4.2 are not possible:
+  their table names are limited to 28 characters.
+- **Tangram**:
+  - 18 figures: the 5 pictures and the 13 convex shapes of the tangram (square, triangle, rectangle, parallelogram,
+    trapezium, two right trapeziums, two pentagons and four hexagons). All were found and solved by exhaustive search.
+  - Guide lines can be switched on and off (off by default).
+  - When a figure is done: confetti, a glow and a big message with «Another shape».
+- **Celebrations** also when Pairs, Word and Hangman are won and when the lock opens.
+- Continuous integration from Moodle 4.3.
+
+
 ## 0.7.0 (2026-10-08)
 
 - **Drawing board** (new tab): pens in six colours and three thicknesses, an eraser, undo (also Ctrl+Z), clearing

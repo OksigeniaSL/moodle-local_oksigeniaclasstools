@@ -33,6 +33,13 @@ require_once(__DIR__ . '/generator_trait.php');
 final class hook_callbacks_test extends \advanced_testcase {
     use generator_trait;
 
+    protected function setUp(): void {
+        parent::setUp();
+        if (!class_exists(\core\hook\navigation\secondary_extend::class)) {
+            $this->markTestSkipped('The navigation hooks arrived in Moodle 4.4 (legacy_navigation_test covers older versions).');
+        }
+    }
+
     /**
      * Sets the global page as the course page and returns its navigation.
      *

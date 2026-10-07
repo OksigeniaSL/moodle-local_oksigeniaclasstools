@@ -8,14 +8,14 @@
 (() => {
     const core = window.ClasstoolsCore, games = window.ClasstoolsGames;
     if (!core || !games) { return; }
-    const { $, $$, escape, save, load, play, setIcon, announce, random, shuffle } = core;
+    const { $, $$, escape, save, load, play, setIcon, announce, random, shuffle, t } = core;
 
     const STR = {
-        name: 'Simón', pads: 'Colores', speed: 'Velocidad', normal: 'Normal', fast: 'Rápida', turns: 'Turnos',
-        everyone: 'Toda la clase', start: 'Empezar', again: 'Otra vez', watch: '¡Miren!', yourTurn: '¡Ahora tú!',
-        round: (n) => `Ronda ${n}`, record: (n, who) => `Récord: ${n}${who ? ` (${who})` : ''}`, fail: '¡Uy! Fallo',
-        failWho: (w) => `¡Uy! ${w} ha fallado`, next: (w) => `Le toca a ${w}`, pressStart: 'Pulsa «Empezar»',
-        colors: ['Verde', 'Rojo', 'Amarillo', 'Azul', 'Morado', 'Naranja'],
+        name: t('si_name'), pads: t('si_pads'), speed: t('si_speed'), normal: t('si_normal'), fast: t('si_fast'), turns: t('si_turns'),
+        everyone: t('ga_whole_class'), start: t('ga_start'), again: t('si_again'), watch: t('si_watch'), yourTurn: t('si_your_turn'),
+        round: (n) => t('si_round', n), record: (n, who) => (who ? t('si_record_who', { n, who }) : t('si_record', n)), fail: t('si_fail'),
+        failWho: (w) => t('si_fail_who', w), next: (w) => t('si_next', w), pressStart: t('si_press_start'),
+        colors: [t('si_green'), t('si_red'), t('si_yellow'), t('si_blue'), t('si_purple'), t('si_orange')],
     };
     // Classic Simon notes (green, red, yellow, blue) and two more for six pads.
     const PADS = [['#067e36', 164.81], ['#ce1423', 440], ['#fbbe17', 277.18], ['#164281', 329.63], ['#5b2fb8', 392], ['#c2410c', 220]];
@@ -39,12 +39,12 @@
                 <aside class="tarjeta ct-side">
                     <div class="ct-setup ct-setup-group">
                     <p class="ante">${STR.pads}</p>
-                    <div class="segmentos" role="radiogroup" aria-label="${STR.pads}" id="si-pads">
+                    <div class="segmentos" role="radiogroup" aria-label="${escape(STR.pads)}" id="si-pads">
                         <button type="button" role="radio" aria-checked="true" data-n="4">4</button>
                         <button type="button" role="radio" aria-checked="false" data-n="6">6</button>
                     </div>
                     <p class="ante">${STR.speed}</p>
-                    <div class="segmentos" role="radiogroup" aria-label="${STR.speed}" id="si-speed">
+                    <div class="segmentos" role="radiogroup" aria-label="${escape(STR.speed)}" id="si-speed">
                         <button type="button" role="radio" aria-checked="true" data-v="normal">${STR.normal}</button>
                         <button type="button" role="radio" aria-checked="false" data-v="fast">${STR.fast}</button>
                     </div>
@@ -68,7 +68,7 @@
     const paintBoard = () => {
         const n = nPads();
         $('#si-board').dataset.n = n;
-        $('#si-board').innerHTML = Array.from({ length: n }, (_, i) => `<button type="button" class="ct-pad" style="--c:${PADS[i][0]}" data-i="${i}" aria-label="${STR.colors[i]} (${i + 1})"></button>`).join('');
+        $('#si-board').innerHTML = Array.from({ length: n }, (_, i) => `<button type="button" class="ct-pad" style="--c:${PADS[i][0]}" data-i="${i}" aria-label="${escape(STR.colors[i])} (${i + 1})"></button>`).join('');
     };
     const fillTurns = () => {
         const sel = $('#si-turns'), before = sel.value || load('simon-turnos', '');

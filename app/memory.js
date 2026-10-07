@@ -9,20 +9,22 @@
 (() => {
     const core = window.ClasstoolsCore, games = window.ClasstoolsGames;
     if (!core || !games) { return; }
-    const { $, $$, escape, play, setIcon, announce, random, shuffle, load, save } = core;
+    const { $, $$, t, escape, play, setIcon, announce, random, shuffle, load, save } = core;
 
     const STR = {
-        name: 'Parejas', what: 'Qué emparejar', pairs: 'Parejas', who: '¿Quién juega?', wholeClass: 'Toda la clase',
-        twoTeams: 'Dos equipos', start: 'Repartir', shapes: 'Formas y colores', colors: 'Un color y su nombre',
-        numbers: 'Un número y su nombre', faces: (n) => `Caras y nombres: ${n}`, own: 'Tus listas', students: 'Alumnos',
-        level: 'Nivel', allLevels: 'Todos los niveles',
-        team: (n) => `Equipo ${n}`, moves: (n) => `${n} ${n === 1 ? 'intento' : 'intentos'}`, found: (a, b) => `${a} de ${b} parejas`,
-        done: (n) => `¡Todas! En ${n} intentos`, winner: (t) => `¡Gana ${t}!`, tie: '¡Empate!', few: 'Hacen falta al menos dos parejas.',
-        pressStart: 'Elige qué emparejar y pulsa «Repartir»', turn: (t) => `Le toca a ${t}`,
+        name: t('me_pairs'), what: t('me_what'), pairs: t('me_pairs'), who: t('me_who'), wholeClass: t('me_whole_class'),
+        twoTeams: t('me_two_teams'), start: t('me_start'), shapes: t('me_set_shapes'), colors: t('me_set_colours'),
+        numbers: t('me_set_numbers'), faces: (n) => t('me_faces', n), own: t('me_own'), students: t('me_students'),
+        level: t('me_level'), allLevels: t('me_all_levels'),
+        team: (n) => t('me_team', n), moves: (n) => t(n === 1 ? 'me_moves_one' : 'me_moves_many', n), found: (a, b) => t('me_found', { a, b }),
+        done: (n) => t('me_done', n), winner: (n) => t('me_winner', n), tie: t('me_tie'), few: t('me_few'),
+        pressStart: t('me_press_start'), turn: (n) => t('me_turn', n), card: (n) => t('me_card', n),
     };
+    // Content in Spanish: per-language content comes in a later step.
     const COLORS = [['Rojo', '#ce1423'], ['Azul', '#164281'], ['Verde', '#067e36'], ['Amarillo', '#fbbe17'], ['Morado', '#5b2fb8'],
         ['Naranja', '#ea7317'], ['Rosa', '#e85d9e'], ['Marrón', '#7b4a24'], ['Negro', '#1c1a19'], ['Blanco', '#ffffff'], ['Gris', '#8a94a3'], ['Celeste', '#5cc2ef']];
     const SHAPES = ['circle', 'square', 'triangle', 'diamond', 'hexagon', 'star', 'pentagon', 'cross'];
+    // Content in Spanish: per-language content comes in a later step.
     const NUMBERS = ['uno', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'siete', 'ocho', 'nueve', 'diez', 'once', 'doce', 'trece', 'catorce',
         'quince', 'dieciséis', 'diecisiete', 'dieciocho', 'diecinueve', 'veinte'];
 
@@ -30,8 +32,8 @@
     // Built-in sets by school level. The administrator chooses the levels of the school (all of them outside
     // Moodle) and the teacher can narrow them in the panel. Each set gives up to n pairs: [half, half].
     // ---------------------------------------------------------------------------------------------------------
-    const LEVELS = [['early', 'Infantil'], ['primary', 'Primaria'], ['secondary', 'Secundaria'], ['upper', 'Bachillerato'],
-        ['higher', 'Universidad y superior']];
+    const LEVELS = [['early', t('me_level_early')], ['primary', t('me_level_primary')], ['secondary', t('me_level_secondary')],
+        ['upper', t('me_level_upper')], ['higher', t('me_level_higher')]];
     const site = window.CLASSTOOLS_SITE || {};
     const levels = LEVELS.filter(([k]) => !Array.isArray(site.levels) || site.levels.includes(k));
     const courseKey = 'parejas-nivel-' + ((window.CLASSTOOLS && window.CLASSTOOLS.courseid) || 0);
@@ -73,6 +75,7 @@
     const ANIMALS = [['an-cat', '#e07a1f'], ['an-dog', '#7b4a24'], ['an-fish', '#1f7fd6'], ['an-horse', '#8a5a2b'], ['an-frog', '#2f9e44'],
         ['an-crow', '#5b2fb8'], ['an-hippo', '#6c7a91'], ['an-spider', '#c2185b'], ['an-otter', '#a0522d'], ['an-kiwi', '#8d6e3f'],
         ['an-dove', '#3d84c6'], ['an-cow', '#d6336c'], ['an-shrimp', '#f06c4f'], ['an-bug', '#ce1423']];
+    // Content in Spanish: per-language content comes in a later step.
     const OPPOSITES = [['alto', 'bajo'], ['grande', 'pequeño'], ['frío', 'caliente'], ['día', 'noche'], ['abrir', 'cerrar'], ['rápido', 'lento'],
         ['lleno', 'vacío'], ['arriba', 'abajo'], ['dentro', 'fuera'], ['mucho', 'poco'], ['nuevo', 'viejo'], ['claro', 'oscuro'],
         ['ganar', 'perder'], ['entrar', 'salir'], ['duro', 'blando'], ['limpio', 'sucio']];
@@ -120,37 +123,37 @@
         early: [
             { id: 'shapes', name: STR.shapes },
             { id: 'colors', name: STR.colors },
-            { id: 'animals', name: 'Un animal y su sombra', make: (n) => pick(ANIMALS, n).map(([i, c]) => [{ icon: i, color: c }, { icon: i, color: '#2b2d33', shadow: true }]) },
-            { id: 'dots', name: 'Puntos y números', make: (n) => pick([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], n).map((k) => [{ html: tenFrame(k) }, text(String(k), true)]) },
-            { id: 'letters', name: 'Mayúscula y minúscula', make: (n) => pick(LETTER_PAIRS, n).map((l) => [text(l, true), text(l.toLowerCase(), true)]) },
+            { id: 'animals', name: t('me_set_animals'), make: (n) => pick(ANIMALS, n).map(([i, c]) => [{ icon: i, color: c }, { icon: i, color: '#2b2d33', shadow: true }]) },
+            { id: 'dots', name: t('me_set_dots'), make: (n) => pick([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], n).map((k) => [{ html: tenFrame(k) }, text(String(k), true)]) },
+            { id: 'letters', name: t('me_set_letters'), make: (n) => pick(LETTER_PAIRS, n).map((l) => [text(l, true), text(l.toLowerCase(), true)]) },
         ],
         primary: [
             { id: 'numbers', name: STR.numbers },
-            { id: 'times', name: 'Tablas de multiplicar', make: (n) => unique(n, () => { const a = 2 + random(8), b = 2 + random(8); return [a * b, [text(`${a} × ${b}`), text(String(a * b), true)]]; }) },
-            { id: 'clock', name: 'La hora: reloj y digital', make: (n) => unique(n, () => { const h = 1 + random(12), m = [0, 15, 30, 45][random(4)], t = `${h}:${String(m).padStart(2, '0')}`; return [t, [{ html: clock(h, m) }, text(t, true)]]; }) },
-            { id: 'fractions', name: 'Fracciones', make: (n) => pick([[1, 2], [1, 3], [2, 3], [1, 4], [3, 4], [1, 5], [2, 5], [3, 5], [4, 5], [1, 6], [5, 6], [1, 8], [3, 8], [5, 8], [7, 8]], n).map(([a, b]) => [{ html: pie(a, b) }, { html: fraction(a, b) }]) },
-            { id: 'opposites', name: 'Contrarios', make: (n) => pick(OPPOSITES, n).map(([a, b]) => [text(a), text(b)]) },
+            { id: 'times', name: t('me_set_times'), make: (n) => unique(n, () => { const a = 2 + random(8), b = 2 + random(8); return [a * b, [text(`${a} × ${b}`), text(String(a * b), true)]]; }) },
+            { id: 'clock', name: t('me_set_clock'), make: (n) => unique(n, () => { const h = 1 + random(12), m = [0, 15, 30, 45][random(4)], t = `${h}:${String(m).padStart(2, '0')}`; return [t, [{ html: clock(h, m) }, text(t, true)]]; }) },
+            { id: 'fractions', name: t('me_set_fractions'), make: (n) => pick([[1, 2], [1, 3], [2, 3], [1, 4], [3, 4], [1, 5], [2, 5], [3, 5], [4, 5], [1, 6], [5, 6], [1, 8], [3, 8], [5, 8], [7, 8]], n).map(([a, b]) => [{ html: pie(a, b) }, { html: fraction(a, b) }]) },
+            { id: 'opposites', name: t('me_set_opposites'), make: (n) => pick(OPPOSITES, n).map(([a, b]) => [text(a), text(b)]) },
         ],
         secondary: [
-            { id: 'elements', name: 'Elementos químicos: símbolo y nombre', make: (n) => pick(ELEMENTS, n).map(([a, b]) => [text(a, true), text(b)]) },
-            { id: 'units', name: 'Magnitudes y unidades', make: (n) => pick(UNITS, n).map(([a, b]) => [text(a), text(b)]) },
-            { id: 'prefixes', name: 'Prefijos y potencias de 10', make: (n) => pick(PREFIXES, n).map(([a, b]) => [text(a), text(b)]) },
-            { id: 'equations', name: 'Ecuaciones y su solución', make: (n) => unique(n, () => {
+            { id: 'elements', name: t('me_set_elements'), make: (n) => pick(ELEMENTS, n).map(([a, b]) => [text(a, true), text(b)]) },
+            { id: 'units', name: t('me_set_units'), make: (n) => pick(UNITS, n).map(([a, b]) => [text(a), text(b)]) },
+            { id: 'prefixes', name: t('me_set_prefixes'), make: (n) => pick(PREFIXES, n).map(([a, b]) => [text(a), text(b)]) },
+            { id: 'equations', name: t('me_set_equations'), make: (n) => unique(n, () => {
                 const x = 1 + random(12), a = 2 + random(8), b = 1 + random(20), plus = random(2) === 0;
                 return [x, [text(`${a}x ${plus ? '+' : '−'} ${b} = ${plus ? a * x + b : a * x - b}`), text(`x = ${x}`)]];
             }) },
         ],
         upper: [
-            { id: 'formulas', name: 'Fórmulas químicas', make: (n) => pick(FORMULAS, n).map(([a, b]) => [text(a), text(b)]) },
-            { id: 'laws', name: 'Leyes de la física', make: (n) => pick(LAWS, n).map(([a, b]) => [text(a), text(b)]) },
-            { id: 'graphs', name: 'Funciones y sus gráficas', make: (n) => pick(FUNCTIONS, n).map(([a, f]) => [{ html: graph(f) }, text(a)]) },
-            { id: 'derivatives', name: 'Derivadas', make: (n) => pick(DERIVATIVES, n).map(([a, b]) => [text(`f(x) = ${a}`), text(`f′(x) = ${b}`)]) },
+            { id: 'formulas', name: t('me_set_formulas'), make: (n) => pick(FORMULAS, n).map(([a, b]) => [text(a), text(b)]) },
+            { id: 'laws', name: t('me_set_laws'), make: (n) => pick(LAWS, n).map(([a, b]) => [text(a), text(b)]) },
+            { id: 'graphs', name: t('me_set_graphs'), make: (n) => pick(FUNCTIONS, n).map(([a, f]) => [{ html: graph(f) }, text(a)]) },
+            { id: 'derivatives', name: t('me_set_derivatives'), make: (n) => pick(DERIVATIVES, n).map(([a, b]) => [text(`f(x) = ${a}`), text(`f′(x) = ${b}`)]) },
         ],
         higher: [
-            { id: 'integrals', name: 'Integrales inmediatas', make: (n) => pick(INTEGRALS, n).map(([a, b]) => [text(`∫ ${a}`), text(b)]) },
-            { id: 'fgroups', name: 'Grupos funcionales', make: (n) => pick(GROUPS, n).map(([a, b]) => [text(a, true), text(b)]) },
-            { id: 'constants', name: 'Constantes físicas', make: (n) => pick(CONSTANTS, n).map(([a, b]) => [text(a), text(b)]) },
-            { id: 'greek', name: 'Letras griegas', make: (n) => pick(GREEK, n).map(([a, b]) => [text(a, true), text(b)]) },
+            { id: 'integrals', name: t('me_set_integrals'), make: (n) => pick(INTEGRALS, n).map(([a, b]) => [text(`∫ ${a}`), text(b)]) },
+            { id: 'fgroups', name: t('me_set_fgroups'), make: (n) => pick(GROUPS, n).map(([a, b]) => [text(a, true), text(b)]) },
+            { id: 'constants', name: t('me_set_constants'), make: (n) => pick(CONSTANTS, n).map(([a, b]) => [text(a), text(b)]) },
+            { id: 'greek', name: t('me_set_greek'), make: (n) => pick(GREEK, n).map(([a, b]) => [text(a, true), text(b)]) },
         ],
     };
     const preset = (id) => Object.values(PRESETS).flat().find((p) => p.id === id);
@@ -164,11 +167,11 @@
                     <label class="campo apilado" id="me-level-box"><span>${STR.level}</span><select id="me-level"></select></label>
                     <label class="campo apilado"><span>${STR.what}</span><select id="me-src"></select></label>
                     <p class="ante">${STR.pairs}</p>
-                    <div class="segmentos" role="radiogroup" aria-label="${STR.pairs}" id="me-n">
+                    <div class="segmentos" role="radiogroup" aria-label="${escape(STR.pairs)}" id="me-n">
                         ${[6, 8, 10, 12].map((n) => `<button type="button" role="radio" aria-checked="${n === 8}" data-n="${n}">${n}</button>`).join('')}
                     </div>
                     <p class="ante">${STR.who}</p>
-                    <div class="segmentos" role="radiogroup" aria-label="${STR.who}" id="me-who">
+                    <div class="segmentos" role="radiogroup" aria-label="${escape(STR.who)}" id="me-who">
                         <button type="button" role="radio" aria-checked="true" data-who="class">${STR.wholeClass}</button>
                         <button type="button" role="radio" aria-checked="false" data-who="teams">${STR.twoTeams}</button>
                     </div>
@@ -203,9 +206,9 @@
         const sel = $('#me-src'), before = sel.value || load('parejas-fuente', 'shapes');
         const lists = core.lists(), moodle = lists.filter((l) => l.aula), own = lists.filter((l) => !l.aula);
         sel.innerHTML = levels.filter(([k]) => lv.value === 'all' || lv.value === k)
-            .map(([k, name]) => `<optgroup label="${name}">${PRESETS[k].map((pr) => `<option value="${pr.id}">${escape(pr.name)}</option>`).join('')}</optgroup>`).join('')
-            + (moodle.length ? `<optgroup label="${STR.students}">${moodle.map((l) => `<option value="faces:${escape(l.id)}">${escape(STR.faces(l.nombre))}</option>`).join('')}</optgroup>` : '')
-            + (own.length ? `<optgroup label="${STR.own}">${own.map((l) => `<option value="list:${escape(l.id)}">${escape(l.nombre)}</option>`).join('')}</optgroup>` : '');
+            .map(([k, name]) => `<optgroup label="${escape(name)}">${PRESETS[k].map((pr) => `<option value="${pr.id}">${escape(pr.name)}</option>`).join('')}</optgroup>`).join('')
+            + (moodle.length ? `<optgroup label="${escape(STR.students)}">${moodle.map((l) => `<option value="faces:${escape(l.id)}">${escape(STR.faces(l.nombre))}</option>`).join('')}</optgroup>` : '')
+            + (own.length ? `<optgroup label="${escape(STR.own)}">${own.map((l) => `<option value="list:${escape(l.id)}">${escape(l.nombre)}</option>`).join('')}</optgroup>` : '');
         const values = [...sel.options].map((o) => o.value);
         sel.value = values.includes(before) ? before : (values[0] || '');
     };
@@ -252,7 +255,7 @@
         s.cards = shuffle(pairs.flatMap((p, k) => p.map((half) => ({ pair: k, half, state: 'down' }))));
         s.open = []; s.found = 0; s.pairs = pairs.length; s.moves = 0; s.busy = false; s.over = false; s.turn = 0;
         s.teams = who() === 'teams' ? [{ name: STR.team(1), score: 0 }, { name: STR.team(2), score: 0 }] : [];
-        $('#me-grid').innerHTML = s.cards.map((c, i) => `<button type="button" class="ct-mcard" data-i="${i}" aria-label="Carta ${i + 1}">
+        $('#me-grid').innerHTML = s.cards.map((c, i) => `<button type="button" class="ct-mcard" data-i="${i}" aria-label="${escape(STR.card(i + 1))}">
             <span class="ct-mface-in ct-mback"></span><span class="ct-mface-in ct-mfront">${faceHTML(c.half)}</span></button>`).join('');
         games.playing('parejas', true);
         fit(); paintScore(); play('card');
@@ -316,6 +319,7 @@
             text = a.score === b.score ? STR.tie : STR.winner(a.score > b.score ? a.name : b.name);
         }
         const m = $('#me-msg'); m.className = 'total ct-win'; m.textContent = text;
+        if (core.celebrate) { core.celebrate($('#me-grid').closest('.ct-stage'), { title: text, glow: [$('#me-grid')], again: STR.start, onAgain: start }); }
         play('fin'); announce(text);
     };
 

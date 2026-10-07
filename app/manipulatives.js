@@ -10,16 +10,17 @@
     const core = window.ClasstoolsCore;
     const root = document.getElementById('h-material');
     if (!core || !root) { return; }
-    const { $, $$, save, load, play, setIcon, announce, shuffle, random } = core;
+    const { $, $$, t, escape, save, load, play, setIcon, announce, shuffle, random } = core;
 
     const STR = {
-        modes: { rods: 'Regletas', tangram: 'Tangram' }, what: 'Material',
-        numbers: 'Ver los números', turn: 'Girar', clear: 'Quitar todas', clearSure: '¿Seguro? Pulsa otra vez',
-        rodsHelp: 'Arrastra regletas de la escalera a la mesa. Para girar una, tócala dos veces. Para quitarla, devuélvela a la escalera.',
-        rod: (n) => `Regleta del ${n}`, total: (n) => `Juntas en fila: ${n}`,
-        figure: 'Figura', free: 'Libre, sin figura', flip: 'Voltear', hint: 'Pista', hideHint: 'Quitar la pista', reset: 'Colocar de nuevo',
-        tangramHelp: 'Arrastra las piezas. Para girar una, tócala dos veces o pulsa «Girar». El paralelogramo se voltea con «Voltear». Las piezas se imantan al acercarlas.',
-        done: '¡Conseguido!', piece: 'Pieza del tangram',
+        modes: { rods: t('mt_rods'), tangram: t('mt_tangram') }, what: t('mt_what'),
+        numbers: t('mt_numbers'), turn: t('mt_turn'), clear: t('mt_clear'), clearSure: t('mt_clear_sure'),
+        rodsHelp: t('mt_rods_help'),
+        rod: (n) => t('mt_rod', n),
+        figure: t('mt_figure'), free: t('mt_free'), flip: t('mt_flip'), guides: t('mt_guides'), reset: t('mt_reset'),
+        pictures: t('mt_group_figures'), shapes: t('mt_group_shapes'), next: t('mt_next_figure'), madeIt: (f) => t('mt_fig_done', f),
+        tangramHelp: t('mt_tangram_help'),
+        done: t('mt_done'), piece: t('mt_piece'),
     };
     const NS = 'http://www.w3.org/2000/svg';
     const el = (name, attrs = {}, parent = null) => {
@@ -36,7 +37,7 @@
 
     root.innerHTML = `
         <div class="barra-herr ct-top">
-            <div class="segmentos" role="radiogroup" aria-label="${STR.what}" id="mt-mode">
+            <div class="segmentos" role="radiogroup" aria-label="${escape(STR.what)}" id="mt-mode">
                 ${Object.entries(STR.modes).map(([k, v]) => `<button type="button" role="radio" aria-checked="false" data-mode="${k}">${v}</button>`).join('')}
             </div>
         </div>
@@ -48,7 +49,7 @@
                     <button type="button" class="boton suave" id="rd-clear"><span data-icono="limpiar"></span><span>${STR.clear}</span></button>
                     <p class="nota">${STR.rodsHelp}</p>
                 </aside>
-                <div class="tarjeta ct-stage ct-mt-stage"><svg class="ct-mt-svg" id="rd-svg" role="application" aria-label="${STR.modes.rods}"></svg></div>
+                <div class="tarjeta ct-stage ct-mt-stage"><svg class="ct-mt-svg" id="rd-svg" role="application" aria-label="${escape(STR.modes.rods)}"></svg></div>
             </div>
             <div class="ct-panel" data-panel="tangram" hidden>
                 <aside class="tarjeta ct-side">
@@ -57,12 +58,12 @@
                         <button type="button" class="boton suave" id="tg-turn"><span data-icono="girar"></span>${STR.turn}</button>
                         <button type="button" class="boton suave" id="tg-flip"><span data-icono="voltear"></span>${STR.flip}</button>
                     </div>
-                    <button type="button" class="boton suave" id="tg-hint"><span data-icono="pista"></span><span>${STR.hint}</span></button>
+                    <label class="interruptor" id="tg-guides-box"><input type="checkbox" id="tg-guides"><span>${STR.guides}</span></label>
                     <button type="button" class="boton suave" id="tg-reset"><span data-icono="reiniciar"></span>${STR.reset}</button>
                     <p class="nota">${STR.tangramHelp}</p>
                 </aside>
                 <div class="tarjeta ct-stage ct-mt-stage">
-                    <svg class="ct-mt-svg" id="tg-svg" role="application" aria-label="${STR.modes.tangram}"></svg>
+                    <svg class="ct-mt-svg" id="tg-svg" role="application" aria-label="${escape(STR.modes.tangram)}"></svg>
                     <p class="total ct-mt-msg" id="tg-msg" aria-live="polite"></p>
                 </div>
             </div>
@@ -231,20 +232,44 @@
     // silhouette can be made; «pieces» holds one solution, shown as the hint.
     // =========================================================================================================
     const FIGURES = {
-        cuadrado: { name: 'Cuadrado', outline: [[[0,0],[4,0],[4,4],[0,4]]],
+        cuadrado: { name: t('mt_fig_square'), shape: true, outline: [[[0,0],[4,0],[4,4],[0,4]]],
             pieces: [[[0,0],[4,0],[2,2]],[[0,4],[0,0],[2,2]],[[4,0],[4,2],[3,1]],[[3,1],[4,2],[3,3],[2,2]],[[3,3],[1,3],[2,2]],[[4,4],[2,4],[4,2]],[[3,3],[1,3],[0,4],[2,4]]] },
-        triangulo: { name: 'Triángulo', outline: [[[0,0],[8,0],[4,4]]],
+        triangulo: { name: t('mt_fig_triangle'), shape: true, outline: [[[0,0],[8,0],[4,4]]],
             pieces: [[[0,0],[4,0],[2,2]],[[4,0],[4,4],[2,2]],[[4,0],[6,0],[4,2]],[[6,0],[7,1],[6,2],[5,1]],[[6,0],[8,0],[7,1]],[[5,1],[5,3],[4,4],[4,2]],[[5,3],[5,1],[6,2]]] },
-        casa: { name: 'Casa', outline: [[[0,0],[4,0],[4,2],[2,4],[0,2]],[[1,3],[2,4],[2,6],[1,5]],[[4,1],[5,0],[6,1],[5,2]]],
+        casa: { name: t('mt_fig_house'), outline: [[[0,0],[4,0],[4,2],[2,4],[0,2]],[[1,3],[2,4],[2,6],[1,5]],[[4,1],[5,0],[6,1],[5,2]]],
             pieces: [[[0,0],[4,0],[2,2]],[[0,2],[0,0],[2,2]],[[4,0],[4,2],[3,1]],[[5,0],[6,1],[5,2],[4,1]],[[4,2],[2,2],[3,1]],[[0,2],[4,2],[2,4]],[[2,6],[2,4],[1,3],[1,5]]] },
-        barco: { name: 'Barco', outline: [[[2,0],[6,0],[8,2],[6,2],[4,4],[2,2],[0,2]]],
+        barco: { name: t('mt_fig_boat'), outline: [[[2,0],[6,0],[8,2],[6,2],[4,4],[2,2],[0,2]]],
             pieces: [[[4,2],[0,2],[2,0]],[[2,0],[6,0],[4,2]],[[6,0],[6,2],[5,1]],[[6,2],[6,0],[8,2]],[[5,1],[6,2],[5,3],[4,2]],[[2,2],[4,2],[5,3],[3,3]],[[3,3],[5,3],[4,4]]] },
-        pez: { name: 'Pez', outline: [[[0,2],[2,0],[4,2],[2,4]],[[4,2],[6,0],[6,4]],[[2,4],[3,5],[2,6],[1,5]],[[2,0],[3,-1],[5,-1],[4,0]]],
+        pez: { name: t('mt_fig_fish'), outline: [[[0,2],[2,0],[4,2],[2,4]],[[4,2],[6,0],[6,4]],[[2,4],[3,5],[2,6],[1,5]],[[2,0],[3,-1],[5,-1],[4,0]]],
             pieces: [[[5,-1],[3,-1],[2,0],[4,0]],[[2,0],[2,4],[0,2]],[[2,4],[2,0],[4,2]],[[6,2],[4,2],[6,0]],[[4,2],[6,2],[5,3]],[[6,2],[6,4],[5,3]],[[2,4],[3,5],[2,6],[1,5]]] },
-        gato: { name: 'Gato', outline: [[[0,0],[4,0],[0,4]],[[0,4],[1,5],[0,6],[-1,5]],[[-1,5],[0,6],[-1,7]],[[0,6],[1,5],[1,7]],[[4,0],[6,0],[7,1],[5,1]],[[-2,0],[0,0],[0,2]]],
+        gato: { name: t('mt_fig_cat'), outline: [[[0,0],[4,0],[0,4]],[[0,4],[1,5],[0,6],[-1,5]],[[-1,5],[0,6],[-1,7]],[[0,6],[1,5],[1,7]],[[4,0],[6,0],[7,1],[5,1]],[[-2,0],[0,0],[0,2]]],
             pieces: [[[0,0],[0,2],[-2,0]],[[0,0],[4,0],[2,2]],[[0,4],[0,0],[2,2]],[[4,0],[6,0],[7,1],[5,1]],[[0,4],[1,5],[0,6],[-1,5]],[[-1,7],[-1,5],[0,6]],[[1,5],[1,7],[0,6]]] },
-        velero: { name: 'Velero', outline: [[[2,0],[4,0],[6,2],[0,2]],[[2,2],[6,2],[2,6]]],
-            pieces: [[[4,2],[0,2],[2,0]],[[4,0],[4,2],[2,0]],[[4,2],[4,0],[5,1]],[[5,1],[6,2],[5,3],[4,2]],[[2,2],[4,2],[5,3],[3,3]],[[2,6],[2,2],[4,4]],[[3,3],[5,3],[4,4]]] },    };
+        velero: { name: t('mt_fig_sailboat'), outline: [[[2,0],[4,0],[6,2],[0,2]],[[2,2],[6,2],[2,6]]],
+            pieces: [[[4,2],[0,2],[2,0]],[[4,0],[4,2],[2,0]],[[4,2],[4,0],[5,1]],[[5,1],[6,2],[5,3],[4,2]],[[2,2],[4,2],[5,3],[3,3]],[[2,6],[2,2],[4,4]],[[3,3],[5,3],[4,4]]] },
+        // The 13 convex figures of the tangram (the square and the triangle are above), found by search and solved.
+        rectangulo: { name: t('mt_fig_rectangle'), shape: true, outline: [[[0,0],[0,2.8284],[-5.6569,2.8284],[-5.6569,0]]],
+            pieces: [[[0,0],[-2.8284,2.8284],[-2.8284,0]],[[-2.8284,2.8284],[0,0],[0,2.8284]],[[-4.2426,1.4142],[-5.6569,0],[-2.8284,0]],[[-4.2426,1.4142],[-2.8284,0],[-2.8284,1.4142]],[[-2.8284,1.4142],[-2.8284,2.8284],[-4.2426,2.8284],[-4.2426,1.4142]],[[-5.6569,0],[-4.2426,1.4142],[-4.2426,2.8284],[-5.6569,1.4142]],[[-5.6569,1.4142],[-4.2426,2.8284],[-5.6569,2.8284]]] },
+        romboide: { name: t('mt_fig_rhomboid'), shape: true, outline: [[[0,0],[-2.8284,2.8284],[-8.4853,2.8284],[-5.6569,0]]],
+            pieces: [[[0,0],[-2.8284,2.8284],[-2.8284,0]],[[-2.8284,2.8284],[-5.6569,0],[-2.8284,0]],[[-5.6569,0],[-4.2426,1.4142],[-7.0711,1.4142]],[[-4.2426,1.4142],[-4.2426,2.8284],[-5.6569,2.8284],[-5.6569,1.4142]],[[-4.2426,1.4142],[-2.8284,2.8284],[-4.2426,2.8284]],[[-5.6569,1.4142],[-7.0711,2.8284],[-8.4853,2.8284],[-7.0711,1.4142]],[[-7.0711,2.8284],[-5.6569,1.4142],[-5.6569,2.8284]]] },
+        trapecio: { name: t('mt_fig_trapezium'), shape: true, outline: [[[0,0],[-2.8284,2.8284],[-5.6569,2.8284],[-8.4853,0]]],
+            pieces: [[[0,0],[-2.8284,2.8284],[-2.8284,0]],[[-4.2426,1.4142],[-5.6569,0],[-2.8284,0]],[[-4.2426,1.4142],[-2.8284,0],[-2.8284,1.4142]],[[-2.8284,1.4142],[-2.8284,2.8284],[-4.2426,2.8284],[-4.2426,1.4142]],[[-5.6569,2.8284],[-8.4853,0],[-5.6569,0]],[[-5.6569,0],[-4.2426,1.4142],[-4.2426,2.8284],[-5.6569,1.4142]],[[-5.6569,1.4142],[-4.2426,2.8284],[-5.6569,2.8284]]] },
+        trapecio_rect_1: { name: t('mt_fig_right_trapezium', 1), shape: true, outline: [[[0,0],[-2.8284,2.8284],[-7.0711,2.8284],[-7.0711,0]]],
+            pieces: [[[0,0],[-2.8284,2.8284],[-2.8284,0]],[[-2.8284,2.8284],[-5.6569,0],[-2.8284,0]],[[-5.6569,0],[-7.0711,1.4142],[-7.0711,0]],[[-5.6569,0],[-4.2426,1.4142],[-7.0711,1.4142]],[[-2.8284,2.8284],[-4.2426,1.4142],[-5.6569,1.4142],[-4.2426,2.8284]],[[-5.6569,1.4142],[-5.6569,2.8284],[-7.0711,2.8284],[-7.0711,1.4142]],[[-5.6569,1.4142],[-4.2426,2.8284],[-5.6569,2.8284]]] },
+        trapecio_rect_2: { name: t('mt_fig_right_trapezium', 2), shape: true, outline: [[[0,0],[-6,0],[-6,4],[-4,4]]],
+            pieces: [[[0,0],[-4,0],[-2,2]],[[-3,1],[-3,3],[-2,2]],[[-3,3],[-4,2],[-5,3],[-4,4]],[[-3,1],[-5,1],[-3,3]],[[-6,0],[-4,0],[-3,1],[-5,1]],[[-6,4],[-4,4],[-5,3]],[[-6,0],[-6,4],[-4,2]]] },
+        pentagono_1: { name: t('mt_fig_pentagon', 1), shape: true, outline: [[[0,0],[0,1.4142],[-2.8284,4.2426],[-5.6569,1.4142],[-5.6569,0]]],
+            pieces: [[[-1.4142,1.4142],[-2.8284,0],[0,0]],[[-1.4142,1.4142],[0,0],[0,1.4142]],[[0,1.4142],[-2.8284,4.2426],[-2.8284,1.4142]],[[-1.4142,1.4142],[-2.8284,0],[-4.2426,0],[-2.8284,1.4142]],[[-4.2426,0],[-4.2426,1.4142],[-5.6569,1.4142],[-5.6569,0]],[[-4.2426,0],[-2.8284,1.4142],[-4.2426,1.4142]],[[-2.8284,4.2426],[-5.6569,1.4142],[-2.8284,1.4142]]] },
+        pentagono_2: { name: t('mt_fig_pentagon', 2), shape: true, outline: [[[0,0],[-6,0],[-7,1],[-7,3],[-3,3]]],
+            pieces: [[[0,0],[-4,0],[-2,2]],[[-2,2],[-4,2],[-3,3]],[[-6,2],[-2,2],[-4,0]],[[-6,2],[-4,2],[-3,3],[-5,3]],[[-4,0],[-6,0],[-5,1]],[[-7,3],[-5,3],[-7,1]],[[-5,1],[-6,0],[-7,1],[-6,2]]] },
+        hexagono_1: { name: t('mt_fig_hexagon', 1), shape: true, outline: [[[0,0],[1.4142,1.4142],[0,2.8284],[-4.2426,2.8284],[-5.6569,1.4142],[-4.2426,0]]],
+            pieces: [[[0,0],[-2.8284,2.8284],[-2.8284,0]],[[1.4142,1.4142],[0,2.8284],[0,0]],[[-2.8284,2.8284],[0,0],[0,2.8284]],[[-2.8284,0],[-2.8284,1.4142],[-4.2426,1.4142],[-4.2426,0]],[[-5.6569,1.4142],[-4.2426,0],[-4.2426,1.4142]],[[-2.8284,2.8284],[-4.2426,1.4142],[-2.8284,1.4142]],[[-2.8284,2.8284],[-4.2426,1.4142],[-5.6569,1.4142],[-4.2426,2.8284]]] },
+        hexagono_2: { name: t('mt_fig_hexagon', 2), shape: true, outline: [[[0,0],[-1,1],[-5,1],[-7,-1],[-6,-2],[-2,-2]]],
+            pieces: [[[0,0],[-4,0],[-2,-2]],[[-2,0],[0,0],[-1,1]],[[-1,1],[-3,1],[-4,0],[-2,0]],[[-6,-2],[-2,-2],[-4,0]],[[-5,1],[-5,-1],[-3,1]],[[-5,-1],[-6,0],[-7,-1],[-6,-2]],[[-5,-1],[-5,1],[-6,0]]] },
+        hexagono_3: { name: t('mt_fig_hexagon', 3), shape: true, outline: [[[0,0],[0,2.8284],[-1.4142,4.2426],[-2.8284,4.2426],[-4.2426,2.8284],[-4.2426,0]]],
+            pieces: [[[0,0],[-2.8284,2.8284],[-2.8284,0]],[[-2.8284,2.8284],[0,0],[0,2.8284]],[[-2.8284,0],[-4.2426,1.4142],[-4.2426,0]],[[-4.2426,1.4142],[-2.8284,0],[-2.8284,2.8284]],[[0,2.8284],[-1.4142,4.2426],[-1.4142,2.8284]],[[-1.4142,2.8284],[-1.4142,4.2426],[-2.8284,4.2426],[-2.8284,2.8284]],[[-4.2426,1.4142],[-2.8284,2.8284],[-2.8284,4.2426],[-4.2426,2.8284]]] },
+        hexagono_4: { name: t('mt_fig_hexagon', 4), shape: true, outline: [[[0,0],[-2.8284,0],[-4.2426,-1.4142],[-4.2426,-4.2426],[-1.4142,-4.2426],[0,-2.8284]]],
+            pieces: [[[0,0],[-2.8284,-2.8284],[0,-2.8284]],[[-2.8284,-2.8284],[0,0],[-2.8284,0]],[[-1.4142,-4.2426],[0,-2.8284],[-2.8284,-2.8284]],[[-2.8284,0],[-4.2426,-1.4142],[-2.8284,-1.4142]],[[-2.8284,-1.4142],[-4.2426,-1.4142],[-4.2426,-2.8284],[-2.8284,-2.8284]],[[-1.4142,-4.2426],[-2.8284,-2.8284],[-4.2426,-2.8284],[-2.8284,-4.2426]],[[-2.8284,-4.2426],[-4.2426,-2.8284],[-4.2426,-4.2426]]] },
+    };
     // Each piece: its polygon around its own centre, and its colour.
     const centred = (poly) => {
         const cx = poly.reduce((a, p) => a + p[0], 0) / poly.length, cy = poly.reduce((a, p) => a + p[1], 0) / poly.length;
@@ -257,7 +282,7 @@
     ].map(([kind, poly, color], i) => ({ i, kind, local: centred(poly), color }));
     const TW = 22;
     let TH = 13;
-    const tg = { fig: load('tangram-figura', 'cuadrado'), state: [], sel: null, hint: false, done: false };
+    const tg = { fig: load('tangram-figura', 'cuadrado'), state: [], sel: null, hint: load('tangram-guias', false) === true, done: false };
     if (tg.fig !== 'free' && !FIGURES[tg.fig]) { tg.fig = 'cuadrado'; }
     let tgDrag = null;
     const tgTap = tapper();
@@ -319,8 +344,8 @@
         });
         // The piece being moved or turned goes on top.
         if (tg.sel !== null) { const top = $(`#tg-svg [data-i="${tg.sel}"]`); if (top) { svg.append(top); } }
-        $('#tg-hint').hidden = !place;
-        core.relabel($('#tg-hint'), tg.hint ? STR.hideHint : STR.hint);
+        $('#tg-guides-box').hidden = !place;
+        $('#tg-guides').checked = tg.hint;
         const m = $('#tg-msg'); m.textContent = tg.done ? STR.done : ''; m.className = 'total ct-mt-msg' + (tg.done ? ' ct-win' : '');
     };
     // Magnet: if a corner of the piece is close to a corner of another piece or of the silhouette, they meet.
@@ -361,7 +386,11 @@
             }
         }
         if (inSil && covered / inSil > 0.97 && out / inSil < 0.03) {
-            tg.done = true; tg.sel = null; tgPaint(); play('fin'); announce(STR.done);
+            tg.done = true; tg.sel = null; tgPaint(); play('fin');
+            const name = FIGURES[tg.fig].name;
+            if (core.celebrate) {
+                core.celebrate($('#tg-svg').parentElement, { title: STR.done, text: STR.madeIt(name), glow: [$('#tg-svg')], again: STR.next, onAgain: nextFigure });
+            } else { announce(STR.done); }
         }
     };
     const tgTurn = (i) => {
@@ -425,13 +454,21 @@
         const g = e.target.closest('.ct-tg-piece');
         if (g) { tg.sel = Number(g.dataset.i); $$('#tg-svg .ct-tg-piece').forEach((x) => x.classList.toggle('ct-sel', x === g)); }
     });
-    $('#tg-fig').innerHTML = `<option value="free">${STR.free}</option>` + Object.entries(FIGURES).map(([k, f]) => `<option value="${k}">${f.name}</option>`).join('');
+    const options = (shape) => Object.entries(FIGURES).filter(([, f]) => !!f.shape === shape).map(([k, f]) => `<option value="${k}">${escape(f.name)}</option>`).join('');
+    $('#tg-fig').innerHTML = `<option value="free">${escape(STR.free)}</option><optgroup label="${escape(STR.pictures)}">${options(false)}</optgroup>`
+        + `<optgroup label="${escape(STR.shapes)}">${options(true)}</optgroup>`;
+    // «Otra figura» after a figure is done: the next one in the list (the pictures first, then the shapes).
+    const nextFigure = () => {
+        const keys = [...$('#tg-fig').options].map((o) => o.value).filter((v) => v !== 'free');
+        tg.fig = keys[(keys.indexOf(tg.fig) + 1) % keys.length];
+        $('#tg-fig').value = tg.fig; save('tangram-figura', tg.fig); scatter(); tgPaint(); play('card');
+    };
     $('#tg-fig').value = tg.fig;
-    $('#tg-fig').addEventListener('change', () => { tg.fig = $('#tg-fig').value; save('tangram-figura', tg.fig); tg.hint = false; scatter(); tgPaint(); });
+    $('#tg-fig').addEventListener('change', () => { tg.fig = $('#tg-fig').value; save('tangram-figura', tg.fig); scatter(); tgPaint(); });
     $('#tg-turn').addEventListener('click', () => tgTurn(tg.sel));
     $('#tg-flip').addEventListener('click', () => tgFlip(tg.sel));
-    $('#tg-hint').addEventListener('click', () => { tg.hint = !tg.hint; tgPaint(); });
-    $('#tg-reset').addEventListener('click', () => { tg.hint = false; scatter(); tgPaint(); play('card'); });
+    $('#tg-guides').addEventListener('change', () => { tg.hint = $('#tg-guides').checked; save('tangram-guias', tg.hint); tgPaint(); });
+    $('#tg-reset').addEventListener('click', () => { scatter(); tgPaint(); play('card'); });
 
     // =========================================================================================================
     let mode = ['rods', 'tangram'].includes(load('material-modo', 'rods')) ? load('material-modo', 'rods') : 'rods';

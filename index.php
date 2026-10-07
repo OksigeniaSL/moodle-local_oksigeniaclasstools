@@ -54,10 +54,11 @@ if (!$id) {
             $buttons .= html_writer::link(
                 new moodle_url('/local/oksigeniaclasstools/index.php', ['id' => $c->id]),
                 format_string($c->fullname, true, ['context' => context_course::instance($c->id)]),
-                ['class' => 'btn btn-outline-primary btn-lg text-start']
+                ['class' => 'btn btn-outline-primary btn-lg mb-2 text-left text-start']
             );
         }
-        echo html_writer::div($buttons, 'd-grid gap-2 mb-4', ['style' => 'max-width: 40rem']);
+        // Classes from both Bootstrap 4 (Moodle up to 4.5) and 5.
+        echo html_writer::div($buttons, 'd-flex flex-column mb-4', ['style' => 'max-width: 40rem']);
     } else {
         echo $OUTPUT->notification(get_string('nocourses', 'local_oksigeniaclasstools'), 'info');
     }

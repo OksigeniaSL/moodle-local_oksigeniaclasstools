@@ -10,24 +10,24 @@
     const core = window.ClasstoolsCore;
     const root = document.getElementById('h-qr');
     if (!core || !root) { return; }
-    const { $, $$, escape, save, load, icon, setIcon, announce } = core;
+    const { $, $$, t, escape, save, load, icon, setIcon, announce } = core;
     const siteLogo = (window.CLASSTOOLS_SITE && window.CLASSTOOLS_SITE.logo) || null;   // only inside Moodle
     const course = (window.CLASSTOOLS && window.CLASSTOOLS.back) || '';
 
     const STR = {
-        text: 'Texto o enlace', placeholder: 'Pega aquí un enlace o escribe un texto', modules: 'Puntos', eyes: 'Esquinas',
-        moduleStyles: { square: 'Cuadrados', rounded: 'Redondeados', dots: 'Círculos' },
-        eyeStyles: { square: 'Cuadradas', rounded: 'Redondeadas', circle: 'Círculos' },
-        color: 'Color', eyeColor: 'Color de las esquinas', same: 'Igual', logo: 'Logo en el centro', none: 'Sin logo',
-        site: 'El del sitio', mine: 'Una imagen mía', choose: 'Elegir imagen', big: 'Ampliar', png: 'Descargar PNG',
-        svg: 'Descargar SVG', erase: 'Borrar', note: 'El código se crea aquí mismo, sin conexión. Con logo, el código lleva más corrección de errores para que se siga leyendo.',
-        empty: 'Escribe o pega un enlace y aquí saldrá su código.', tooLong: 'Es demasiado largo para un código QR. Acórtalo un poco.',
-        noLib: 'No se ha podido cargar el generador de QR.', bigImage: 'Esa imagen es muy grande: elige una de menos de 300 KB.',
-        label: (t) => `Código QR de: ${t}`, saved: (f) => `Descargado: ${f}`,
+        text: t('qr_text'), placeholder: t('qr_placeholder'), modules: t('qr_modules'), eyes: t('qr_eyes'),
+        moduleStyles: { square: t('qr_modules_square'), rounded: t('qr_modules_rounded'), dots: t('qr_circles') },
+        eyeStyles: { square: t('qr_eyes_square'), rounded: t('qr_eyes_rounded'), circle: t('qr_circles') },
+        color: t('qr_colour'), eyeColor: t('qr_eye_colour'), same: t('qr_same'), logo: t('qr_logo'), none: t('qr_no_logo'),
+        site: t('qr_site_logo'), mine: t('qr_my_image'), choose: t('qr_choose'), big: t('qr_enlarge'), png: t('qr_png'),
+        svg: t('qr_svg'), erase: t('qr_erase'), note: t('qr_note'),
+        empty: t('qr_empty'), tooLong: t('qr_too_long'),
+        noLib: t('qr_no_lib'), bigImage: t('qr_big_image'),
+        label: (x) => t('qr_label', x), saved: (f) => t('qr_saved', f),
     };
     // Dark colours only: QR readers need strong contrast with the white background (all of them ≥ 4.5:1).
-    const COLORS = [['Negro', '#1c1a19'], ['Azul', '#164281'], ['Verde', '#067e36'], ['Rojo', '#b3121f'],
-        ['Morado', '#5b2fb8'], ['Petróleo', '#0b6670'], ['Teja', '#a8380b']];
+    const COLORS = [[t('qr_black'), '#1c1a19'], [t('qr_blue'), '#164281'], [t('qr_green'), '#067e36'], [t('qr_red'), '#b3121f'],
+        [t('qr_purple'), '#5b2fb8'], [t('qr_teal'), '#0b6670'], [t('qr_terracotta'), '#a8380b']];
     const hasLib = typeof qrcode === 'function';
     if (hasLib && qrcode.stringToBytesFuncs && qrcode.stringToBytesFuncs['UTF-8']) { qrcode.stringToBytes = qrcode.stringToBytesFuncs['UTF-8']; }
 
@@ -38,12 +38,12 @@
     let logoData = null;                   // the logo as a data URL, so that downloads carry it inside
     let text = '', timer = 0;
 
-    const swatches = (withSame) => (withSame ? `<button type="button" role="radio" class="ct-swatch ct-same" data-v="same" aria-label="${STR.same}">${STR.same}</button>` : '')
-        + COLORS.map(([label, c]) => `<button type="button" role="radio" class="ct-swatch" data-v="${c}" style="--c:${c}" aria-label="${label}" title="${label}"></button>`).join('');
+    const swatches = (withSame) => (withSame ? `<button type="button" role="radio" class="ct-swatch ct-same" data-v="same" aria-label="${escape(STR.same)}">${STR.same}</button>` : '')
+        + COLORS.map(([label, c]) => `<button type="button" role="radio" class="ct-swatch" data-v="${c}" style="--c:${c}" aria-label="${escape(label)}" title="${escape(label)}"></button>`).join('');
     root.innerHTML = `
         <div class="tarjeta qr-ajustes">
             <label class="campo apilado" for="qr-texto"><span>${STR.text}</span></label>
-            <textarea id="qr-texto" rows="2" maxlength="1200" spellcheck="false" placeholder="${STR.placeholder}"></textarea>
+            <textarea id="qr-texto" rows="2" maxlength="1200" spellcheck="false" placeholder="${escape(STR.placeholder)}"></textarea>
             <div class="botonera">
                 <button type="button" class="boton" id="qr-ampliar"><span data-icono="ampliar"></span>${STR.big}</button>
                 <button type="button" class="boton suave" id="qr-png"><span data-icono="guardar"></span>${STR.png}</button>
@@ -51,13 +51,13 @@
                 <button type="button" class="boton suave" id="qr-borrar"><span data-icono="borrar"></span>${STR.erase}</button>
             </div>
             <p class="ante">${STR.modules}</p>
-            <div class="segmentos" role="radiogroup" aria-label="${STR.modules}" id="qr-modules">${Object.entries(STR.moduleStyles).map(([k, v]) => `<button type="button" role="radio" aria-checked="false" data-v="${k}">${v}</button>`).join('')}</div>
+            <div class="segmentos" role="radiogroup" aria-label="${escape(STR.modules)}" id="qr-modules">${Object.entries(STR.moduleStyles).map(([k, v]) => `<button type="button" role="radio" aria-checked="false" data-v="${k}">${v}</button>`).join('')}</div>
             <p class="ante">${STR.eyes}</p>
-            <div class="segmentos" role="radiogroup" aria-label="${STR.eyes}" id="qr-eyes">${Object.entries(STR.eyeStyles).map(([k, v]) => `<button type="button" role="radio" aria-checked="false" data-v="${k}">${v}</button>`).join('')}</div>
+            <div class="segmentos" role="radiogroup" aria-label="${escape(STR.eyes)}" id="qr-eyes">${Object.entries(STR.eyeStyles).map(([k, v]) => `<button type="button" role="radio" aria-checked="false" data-v="${k}">${v}</button>`).join('')}</div>
             <p class="ante">${STR.color}</p>
-            <div class="ct-swatches" role="radiogroup" aria-label="${STR.color}" id="qr-color">${swatches(false)}</div>
+            <div class="ct-swatches" role="radiogroup" aria-label="${escape(STR.color)}" id="qr-color">${swatches(false)}</div>
             <p class="ante">${STR.eyeColor}</p>
-            <div class="ct-swatches" role="radiogroup" aria-label="${STR.eyeColor}" id="qr-eyecolor">${swatches(true)}</div>
+            <div class="ct-swatches" role="radiogroup" aria-label="${escape(STR.eyeColor)}" id="qr-eyecolor">${swatches(true)}</div>
             <label class="campo apilado"><span>${STR.logo}</span><select id="qr-logo">
                 <option value="none">${STR.none}</option>${siteLogo ? `<option value="site">${STR.site}</option>` : ''}<option value="mine">${STR.mine}</option></select></label>
             <div class="ct-row" id="qr-mine-box" hidden>

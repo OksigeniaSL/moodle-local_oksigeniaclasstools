@@ -8,14 +8,14 @@
 (() => {
     const core = window.ClasstoolsCore, games = window.ClasstoolsGames;
     if (!core || !games || !games.util) { return; }
-    const { $, $$, escape, play, setIcon, announce } = core;
+    const { $, $$, escape, play, setIcon, announce, t } = core;
     const { norm, isLetter, keyboard, keys, wordSource, WORDS } = games.util;
 
     const STR = {
-        name: 'Palabra', start: 'Nueva palabra', builtin: 'Al azar: palabras de 5 letras', tries: 'Intentos',
-        needWord: 'La palabra tiene que tener de 3 a 8 letras, sin espacios.', pressStart: 'Elige la palabra y pulsa «Nueva palabra»',
-        letters: (n) => `Palabra de ${n} letras`, short: (n) => `Faltan letras: tiene ${n}`, won: (n) => `¡Muy bien! Al ${n}.º intento`,
-        lost: (w) => `¡Uy! Era «${w}»`, clue: (c) => `Pista: ${c}`, hint: 'de 3 a 8 letras',
+        name: t('wo_name'), start: t('ga_new_word'), builtin: t('wo_builtin'), tries: t('wo_tries'),
+        needWord: t('wo_need_word'), pressStart: t('ga_press_new_word'),
+        letters: (n) => t('wo_letters', n), short: (n) => t('wo_short', n), won: (n) => t('wo_won', n),
+        lost: (w) => t('ga_lost', w), clue: (c) => t('ga_clue', c), hint: t('wo_hint'),
     };
     const source = wordSource('wo', { label: STR.builtin, words: WORDS.cinco }, { lengthHint: STR.hint });
     const s = { word: '', target: '', rows: [], current: '', over: true, maxRows: 6 };
@@ -90,6 +90,7 @@
                 s.over = true; paint(); games.playing('palabra', false);
                 const m = $('#wo-msg'); m.className = 'total ' + (won ? 'ct-win' : 'ct-lose');
                 m.textContent = won ? STR.won(s.rows.length) : STR.lost(s.word);
+                if (won && core.celebrate) { core.celebrate($('#wo-grid').closest('.ct-stage'), { title: STR.won(s.rows.length), text: s.word, glow: [$('#wo-grid')], again: STR.start, onAgain: start }); }
                 play(won ? 'fin' : 'wrong'); announce(m.textContent);
                 return;
             }

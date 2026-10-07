@@ -9,15 +9,16 @@
     const core = window.ClasstoolsCore;
     const root = document.getElementById('h-pizarra');
     if (!core || !root) { return; }
-    const { $, $$, save, load, setIcon, announce } = core;
+    const { $, $$, t, escape, save, load, setIcon, announce } = core;
 
     const STR = {
-        colours: 'Color', size: 'Grosor', sizes: { s: 'Fino', m: 'Medio', l: 'Grueso' }, eraser: 'Goma', undo: 'Deshacer',
-        clear: 'Borrar todo', clearSure: '¿Seguro? Pulsa otra vez', background: 'Fondo', download: 'Descargar',
-        backgrounds: { blank: 'Blanco', grid: 'Cuadrícula', lines: 'Pauta', staff: 'Pentagrama' },
-        board: 'Pizarra para dibujar', saved: (f) => `Descargado: ${f}`,
+        colours: t('wb_colour'), size: t('wb_size'), sizes: { s: t('wb_size_s'), m: t('wb_size_m'), l: t('wb_size_l') }, eraser: t('wb_eraser'), undo: t('wb_undo'),
+        clear: t('wb_clear'), clearSure: t('wb_clear_sure'), background: t('wb_background'), download: t('wb_download'),
+        backgrounds: { blank: t('wb_bg_blank'), grid: t('wb_bg_grid'), lines: t('wb_bg_lines'), staff: t('wb_bg_staff') },
+        board: t('wb_board'), saved: (f) => t('wb_saved', f), file: t('wb_file'),
     };
-    const COLOURS = [['Negro', '#1c1a19'], ['Azul', '#164281'], ['Rojo', '#ce1423'], ['Verde', '#067e36'], ['Naranja', '#ea7317'], ['Morado', '#5b2fb8']];
+    const COLOURS = [[t('wb_black'), '#1c1a19'], [t('wb_blue'), '#164281'], [t('wb_red'), '#ce1423'], [t('wb_green'), '#067e36'],
+        [t('wb_orange'), '#ea7317'], [t('wb_purple'), '#5b2fb8']];
     const SIZES = { s: 0.0035, m: 0.007, l: 0.014 };   // as a share of the board's width
     const ERASER = 0.03;
 
@@ -32,11 +33,11 @@
 
     root.innerHTML = `
         <div class="barra-herr ct-top ct-wb-bar">
-            <div class="ct-swatches" role="radiogroup" aria-label="${STR.colours}" id="wb-colours">
-                ${COLOURS.map(([n, c]) => `<button type="button" role="radio" class="ct-swatch" data-v="${c}" style="--c:${c}" aria-label="${n}" title="${n}"></button>`).join('')}
+            <div class="ct-swatches" role="radiogroup" aria-label="${escape(STR.colours)}" id="wb-colours">
+                ${COLOURS.map(([n, c]) => `<button type="button" role="radio" class="ct-swatch" data-v="${c}" style="--c:${c}" aria-label="${escape(n)}" title="${escape(n)}"></button>`).join('')}
             </div>
-            <div class="segmentos ct-wb-sizes" role="radiogroup" aria-label="${STR.size}" id="wb-size">
-                ${Object.entries(STR.sizes).map(([k, v]) => `<button type="button" role="radio" data-v="${k}" aria-label="${v}" title="${v}"><span class="ct-wb-dot ct-wb-${k}"></span></button>`).join('')}
+            <div class="segmentos ct-wb-sizes" role="radiogroup" aria-label="${escape(STR.size)}" id="wb-size">
+                ${Object.entries(STR.sizes).map(([k, v]) => `<button type="button" role="radio" data-v="${k}" aria-label="${escape(v)}" title="${escape(v)}"><span class="ct-wb-dot ct-wb-${k}"></span></button>`).join('')}
             </div>
             <button type="button" class="boton suave" id="wb-eraser" aria-pressed="false"><span data-icono="goma"></span>${STR.eraser}</button>
             <button type="button" class="boton suave" id="wb-undo"><span data-icono="deshacer"></span>${STR.undo}</button>
@@ -46,7 +47,7 @@
         </div>
         <div class="tarjeta ct-wb-stage" id="wb-stage">
             <canvas class="ct-wb-bgcanvas" id="wb-bgc" aria-hidden="true"></canvas>
-            <canvas class="ct-wb-ink" id="wb-ink" role="img" aria-label="${STR.board}"></canvas>
+            <canvas class="ct-wb-ink" id="wb-ink" role="img" aria-label="${escape(STR.board)}"></canvas>
         </div>`;
     $$('[data-icono]', root).forEach((e) => setIcon(e, e.dataset.icono));
     const stage = $('#wb-stage'), bgc = $('#wb-bgc'), ink = $('#wb-ink');
@@ -173,7 +174,7 @@
         c.width = ink.width; c.height = ink.height;
         const ctx = c.getContext('2d');
         ctx.drawImage(bgc, 0, 0); ctx.drawImage(ink, 0, 0);
-        const name = 'pizarra-' + new Date().toISOString().slice(0, 16).replace(/[T:]/g, '-') + '.png';
+        const name = STR.file + '-' + new Date().toISOString().slice(0, 16).replace(/[T:]/g, '-') + '.png';
         c.toBlob((blob) => {
             if (!blob) { return; }
             const a = document.createElement('a');

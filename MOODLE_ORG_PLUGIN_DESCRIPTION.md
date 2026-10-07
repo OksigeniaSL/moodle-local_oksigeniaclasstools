@@ -21,7 +21,7 @@
 <p>Two tables, both covered by the privacy provider: the picks (course, student, teacher, time; deleted once older than the days counted for fair picking) and what each teacher keeps of each tool in each course. Nothing is stored for students. No external services, no tracking.</p>
 <h3>Requirements</h3>
 <ul>
-<li>Moodle 4.5 LTS or later.</li>
+<li>Moodle 4.3 or later (the main-menu link from 4.4).</li>
 <li>Any theme and any modern browser.</li>
 </ul>
 <h3>License</h3>

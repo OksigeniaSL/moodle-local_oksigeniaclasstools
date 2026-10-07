@@ -8,26 +8,27 @@
 (() => {
     const core = window.ClasstoolsCore, games = window.ClasstoolsGames;
     if (!core || !games) { return; }
-    const { $, $$, escape, save, load, play, icon, setIcon, announce } = core;
+    const { $, $$, escape, save, load, play, icon, setIcon, announce, t } = core;
 
     const STR = {
-        name: 'Rosco', rosco: 'Rosco', newRosco: 'Nuevo rosco', edit: 'Editar', who: '¿Quién juega?',
-        wholeClass: 'Toda la clase', twoTeams: 'Dos equipos', secondRosco: 'Rosco del equipo 2', time: 'Tiempo de cada uno',
-        noTime: 'Sin tiempo', minutes: (s) => (s % 60 ? `${Math.floor(s / 60)} min ${s % 60} s` : `${s / 60} min`),
-        start: 'Empezar', right: 'Acierto', wrong: 'Fallo', pass: 'Pasapalabra', pause: 'Pausa', resume: 'Seguir',
-        finish: 'Terminar', keys: 'Teclas: Intro, acierto · Retroceso, fallo · Espacio, pasapalabra',
-        starts: (l) => `Empieza por la ${l}`, contains: (l) => `Contiene la ${l}`, team: (n) => `Equipo ${n}`, class: 'La clase',
-        timeUp: '¡Se acabó el tiempo!', finished: '¡Rosco terminado!', again: 'Volver a jugar', change: 'Cambiar de rosco',
-        winner: (t) => `¡Gana ${t}!`, tie: '¡Empate!', okCount: (n) => `${n} ${n === 1 ? 'acierto' : 'aciertos'}`,
-        badCount: (n) => `${n} ${n === 1 ? 'fallo' : 'fallos'}`, left: (n) => `${n} sin contestar`,
-        editorNew: 'Nuevo rosco', editorEdit: 'Editar el rosco', editorCopy: 'Copia del rosco de ejemplo', roscoName: 'Nombre del rosco',
-        letter: 'Letra', kind: 'Tipo', clue: 'Pista', answer: 'Respuesta', kindStarts: 'Empieza', kindContains: 'Contiene',
-        editorNote: 'Deja vacías las letras que no quieras: el rosco se hace con las que tengan pista y respuesta.',
-        save: 'Guardar', cancel: 'Cancelar', remove: 'Borrar el rosco', removeSure: '¿Seguro? Pulsa otra vez',
-        needOne: 'Escribe al menos una letra con su pista y su respuesta.', copyOf: (n) => `${n} (copia)`,
-        example: 'Rosco de ejemplo', answerIs: (a) => `Era «${a}»`,
+        name: t('ro_name'), rosco: t('ro_name'), newRosco: t('ro_new'), edit: t('ro_edit'), who: t('ro_who'),
+        wholeClass: t('ga_whole_class'), twoTeams: t('ro_two_teams'), secondRosco: t('ro_second'), time: t('ro_time'),
+        noTime: t('ro_no_time'), minutes: (s) => (s % 60 ? t('ro_min_sec', { m: Math.floor(s / 60), s: s % 60 }) : t('ro_min', s / 60)),
+        start: t('ga_start'), right: t('ro_right'), wrong: t('ro_wrong'), pass: t('ro_pass'), pause: t('ro_pause'), resume: t('ro_resume'),
+        finish: t('ro_finish'), keys: t('ro_keys'),
+        starts: (l) => t('ro_starts', l), contains: (l) => t('ro_contains', l), team: (n) => t('ro_team', n), class: t('ro_class'),
+        timeUp: t('ro_time_up'), finished: t('ro_finished'), again: t('ro_again'), change: t('ro_change'),
+        winner: (w) => t('ro_winner', w), tie: t('ro_tie'), okCount: (n) => t(n === 1 ? 'ro_ok_one' : 'ro_ok_many', n),
+        badCount: (n) => t(n === 1 ? 'ro_bad_one' : 'ro_bad_many', n), left: (n) => t('ro_left', n),
+        editorNew: t('ro_new'), editorEdit: t('ro_edit_title'), editorCopy: t('ro_copy_example'), roscoName: t('ro_wheel_name'),
+        letter: t('ro_letter'), kind: t('ro_kind'), clue: t('ro_clue'), answer: t('ro_answer'), kindStarts: t('ro_kind_starts'), kindContains: t('ro_kind_contains'),
+        editorNote: t('ro_editor_note'),
+        save: t('ro_save'), cancel: t('ro_cancel'), remove: t('ro_remove'), removeSure: t('ro_remove_sure'),
+        needOne: t('ro_need_one'), copyOf: (n) => t('ro_copy_of', n),
+        example: t('ro_example'), answerIs: (a) => t('ro_answer_was', a),
     };
     const LETTERS = 'ABCDEFGHIJKLMNÑOPQRSTUVWXYZ'.split('');
+    // Content in Spanish: per-language content comes in a later step.
     const EXAMPLE = {
         id: 'ejemplo', name: STR.example, items: [
             ['A', 's', 'Insecto que fabrica miel', 'Abeja'], ['B', 's', 'Vehículo de dos ruedas que se mueve con pedales', 'Bicicleta'],
@@ -86,7 +87,7 @@
                         <button type="button" class="boton suave" id="ro-edit"><span data-icono="editar"></span>${STR.edit}</button>
                     </div>
                     <p class="ante">${STR.who}</p>
-                    <div class="segmentos" role="radiogroup" aria-label="${STR.who}" id="ro-who">
+                    <div class="segmentos" role="radiogroup" aria-label="${escape(STR.who)}" id="ro-who">
                         <button type="button" role="radio" aria-checked="true" data-who="class">${STR.wholeClass}</button>
                         <button type="button" role="radio" aria-checked="false" data-who="teams">${STR.twoTeams}</button>
                     </div>
@@ -127,9 +128,9 @@
                 <div class="ct-rosco-table" role="table">
                     <div class="ct-rosco-row ct-head" role="row"><span role="columnheader">${STR.letter}</span><span role="columnheader">${STR.kind}</span><span role="columnheader">${STR.clue}</span><span role="columnheader">${STR.answer}</span></div>
                     ${LETTERS.map((l) => `<div class="ct-rosco-row" role="row" data-l="${l}"><strong role="cell">${l}</strong>
-                        <select role="cell" aria-label="${STR.kind} ${l}"><option value="s">${STR.kindStarts}</option><option value="c">${STR.kindContains}</option></select>
-                        <input role="cell" type="text" class="ct-clue" maxlength="160" aria-label="${STR.clue} ${l}">
-                        <input role="cell" type="text" class="ct-answer" maxlength="40" aria-label="${STR.answer} ${l}"></div>`).join('')}
+                        <select role="cell" aria-label="${escape(STR.kind)} ${l}"><option value="s">${STR.kindStarts}</option><option value="c">${STR.kindContains}</option></select>
+                        <input role="cell" type="text" class="ct-clue" maxlength="160" aria-label="${escape(STR.clue)} ${l}">
+                        <input role="cell" type="text" class="ct-answer" maxlength="40" aria-label="${escape(STR.answer)} ${l}"></div>`).join('')}
                 </div>
                 <p class="nota" id="ro-ed-note"></p>
                 <div class="botonera">

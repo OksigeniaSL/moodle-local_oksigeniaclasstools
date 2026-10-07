@@ -7,13 +7,13 @@
 (() => {
     const core = window.ClasstoolsCore, games = window.ClasstoolsGames;
     if (!core || !games || !games.util) { return; }
-    const { $, $$, escape, play, setIcon, announce } = core;
+    const { $, $$, escape, play, setIcon, announce, t } = core;
     const { norm, isLetter, keyboard, keys, wordSource, WORDS } = games.util;
 
     const STR = {
-        name: 'Ahorcado', start: 'Nueva palabra', builtin: 'Al azar: palabras de Primaria', needWord: 'Escribe la palabra o elige una lista.',
-        won: '¡Muy bien! La han adivinado', lost: (w) => `¡Uy! Era «${w}»`, left: (n) => `${n} ${n === 1 ? 'globo' : 'globos'}`,
-        reveal: 'Ver la palabra', pressStart: 'Elige la palabra y pulsa «Nueva palabra»', clue: (c) => `Pista: ${c}`,
+        name: t('ah_name'), start: t('ga_new_word'), builtin: t('ah_builtin'), needWord: t('ah_need_word'),
+        won: t('ah_won'), lost: (w) => t('ga_lost', w), left: (n) => t(n === 1 ? 'ah_left_one' : 'ah_left_many', n),
+        reveal: t('ah_reveal'), pressStart: t('ga_press_new_word'), clue: (c) => t('ga_clue', c),
     };
     const BALLOONS = ['#ce1423', '#fbbe17', '#067e36', '#164281', '#5b2fb8', '#0e7c86', '#c2410c'];
     const source = wordSource('ah', { label: STR.builtin, words: WORDS.primaria });
@@ -98,6 +98,7 @@
         paintSlots(true);
         const m = $('#ah-msg'); m.className = 'total ' + (won ? 'ct-win' : 'ct-lose');
         m.textContent = won ? STR.won : STR.lost(s.word.toUpperCase());
+        if (won && core.celebrate) { core.celebrate($('#ah-slots').closest('.ct-stage'), { title: STR.won, text: s.word.toUpperCase(), glow: [$('#ah-slots')], again: STR.start, onAgain: start }); }
         $('#ah-reveal').hidden = true;
         play(won ? 'fin' : 'wrong'); announce(m.textContent);
     };

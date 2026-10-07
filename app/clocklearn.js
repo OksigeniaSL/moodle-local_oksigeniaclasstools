@@ -10,22 +10,24 @@
     const core = window.ClasstoolsCore;
     const root = document.getElementById('h-reloj');
     if (!core || !root) { return; }
-    const { $, $$, save, load, play, setIcon, announce, random } = core;
+    const { $, $$, t, escape, save, load, play, setIcon, announce, random } = core;
 
     const STR = {
-        modes: { now: 'Hora actual', learn: 'Aprender la hora' }, mode: 'Reloj',
-        level: 'Nivel', levels: { h: 'En punto', half: 'Y media', quarter: 'Y cuarto y menos cuarto', five: 'De 5 en 5 minutos', minute: 'Minuto a minuto' },
-        digital: 'Ver la hora digital', words: 'Ver en palabras', h24: '24 horas', minutes: 'Ver los minutos',
-        ask: '¿Qué hora es?', set: 'Pon la hora', check: 'Comprobar', reveal: 'Ver la respuesta',
-        setThis: (t) => `Pon: ${t}`, right: '¡Muy bien! Es esa hora', wrong: 'Todavía no: mira bien las agujas', dragHint: 'Mueve las agujas con el dedo o el ratón',
-        clock: 'Reloj para aprender la hora',
+        modes: { now: t('cl_now'), learn: t('cl_learn') }, mode: t('cl_mode'),
+        level: t('cl_level'), levels: { h: t('cl_level_h'), half: t('cl_level_half'), quarter: t('cl_level_quarter'), five: t('cl_level_five'), minute: t('cl_level_minute') },
+        digital: t('cl_digital'), words: t('cl_words'), h24: t('cl_h24'), minutes: t('cl_minutes'),
+        ask: t('cl_ask'), set: t('cl_set'), check: t('cl_check'), reveal: t('cl_reveal'),
+        setThis: (x) => t('cl_set_this', x), right: t('cl_right'), wrong: t('cl_wrong'), dragHint: t('cl_drag_hint'),
+        clock: t('cl_clock'),
     };
+    // Content in Spanish: per-language content comes in a later step.
     const HOURS = ['doce', 'una', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'siete', 'ocho', 'nueve', 'diez', 'once'];
     const NUM = ['', 'uno', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'siete', 'ocho', 'nueve', 'diez', 'once', 'doce', 'trece', 'catorce',
         'quince', 'dieciséis', 'diecisiete', 'dieciocho', 'diecinueve', 'veinte', 'veintiuno', 'veintidós', 'veintitrés', 'veinticuatro',
         'veinticinco', 'veintiséis', 'veintisiete', 'veintiocho', 'veintinueve'];
     const STEP = { h: 60, half: 30, quarter: 15, five: 5, minute: 1 };
     const pad = (n) => String(n).padStart(2, '0');
+    // Content in Spanish: per-language content comes in a later step.
     // «Las tres y cuarto», «la una menos diez», «las doce en punto».
     const inWords = (t) => {
         let h = Math.floor(t / 60) % 12, m = t % 60, menos = false;
@@ -42,7 +44,7 @@
     // The bar on top and the learning panel; the clock of now stays as it was.
     const bar = document.createElement('div');
     bar.className = 'barra-herr ct-top ct-cl-bar';
-    bar.innerHTML = `<div class="segmentos" role="radiogroup" aria-label="${STR.mode}" id="cl-mode">
+    bar.innerHTML = `<div class="segmentos" role="radiogroup" aria-label="${escape(STR.mode)}" id="cl-mode">
         ${Object.entries(STR.modes).map(([k, v]) => `<button type="button" role="radio" aria-checked="false" data-v="${k}">${v}</button>`).join('')}</div>`;
     const panel = document.createElement('div');
     panel.className = 'ct-cl-learn';
@@ -59,7 +61,7 @@
     }
     panel.innerHTML = `
         <div class="ct-cl-face">
-            <svg viewBox="-12 -12 224 224" id="cl-svg" role="img" aria-label="${STR.clock}">
+            <svg viewBox="-12 -12 224 224" id="cl-svg" role="img" aria-label="${escape(STR.clock)}">
                 <circle class="cl-bg" cx="100" cy="100" r="94"/>
                 <g id="cl-face">${face}</g>
                 <g class="cl-hand cl-hand-h" id="cl-h"><line x1="100" y1="112" x2="100" y2="54"/><line class="cl-hit" x1="100" y1="100" x2="100" y2="50"/><circle class="cl-tip" cx="100" cy="54" r="7"/></g>

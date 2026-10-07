@@ -99,6 +99,7 @@ final class modes_test extends \advanced_testcase {
         $this->assertNotEmpty($site['logo']);
         $this->assertNotEmpty($site['tz']);
         $this->assertSame(current_language(), $site['lang']);
+        $this->assertSame(get_string('app_tab_timer', 'local_oksigeniaclasstools'), $site['str']->tab_timer);
         set_config('levels', 'primary,secondary', 'local_oksigeniaclasstools');
         $this->assertSame(['primary', 'secondary'], local_oksigeniaclasstools_site()['levels']);
     }
