@@ -223,4 +223,16 @@ final class lib_test extends \advanced_testcase {
         global $DB;
         return (int) $DB->get_field('role', 'id', ['shortname' => $shortname]);
     }
+
+    /**
+     * The content of the games comes in the user's language, or the nearest one there is.
+     */
+    public function test_content_file(): void {
+        $this->assertSame('es.js', local_oksigeniaclasstools_content_file('es'));
+        $this->assertSame('en.js', local_oksigeniaclasstools_content_file('en'));
+        $this->assertSame('en.js', local_oksigeniaclasstools_content_file('en_us'));
+        $this->assertSame('en.js', local_oksigeniaclasstools_content_file('xx'));
+        $this->assertSame('es.js', local_oksigeniaclasstools_content_file('es_ve'));
+        $this->assertSame('en.js', local_oksigeniaclasstools_content_file('../es'));
+    }
 }

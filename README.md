@@ -98,9 +98,10 @@ Two tables, both covered by the privacy provider (export and deletion) and remov
 
 Beta, developed with a school in Tenerife as its test classroom. Before the first stable release:
 
-- **Content per language**: the board's texts already come from the language packs (English and Spanish, others
-  through AMOS). Next, the built-in content (word lists, examples, pair sets, the time in words) and the alphabet and
-  on-screen keyboard follow the user's language.
+- **Languages**: the board's texts come from the language packs (English and Spanish, others through AMOS), and the
+  built-in content (alphabet, keyboard, words, pair sets, the time in words, examples) from a content pack per
+  language in `app/content/` (English, Spanish, Spanish of Mexico, German, French, Italian, Dutch, Swedish and
+  Portuguese of Brazil). Next: the interface strings for those languages in AMOS.
 - **Site configuration**: which tools and games are shown, the default Hangman drawing, and site-wide lists, roscos
   and locks shared by all teachers. Built-in examples become neutral and per language.
 - **Code**: the board scripts move to AMD modules, with `moodle-plugin-ci` (PHPUnit and Behat) in GitHub Actions.

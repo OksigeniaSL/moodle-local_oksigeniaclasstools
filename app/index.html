@@ -175,10 +175,11 @@
   <section class="herramienta semaforo" id="h-semaforo" role="tabpanel" aria-labelledby="t-semaforo" hidden>
     <div class="farola">
       <div class="caja-semaforo apagado" id="s-caja" role="img" aria-label="Semáforo apagado" data-t-aria="sm_off">
-        <span class="luz" data-zona="rojo"></span>
-        <span class="luz" data-zona="amarillo"></span>
-        <span class="luz" data-zona="verde"></span>
+        <span class="luz" data-zona="rojo"><svg class="cara" viewBox="0 0 100 100" aria-hidden="true"><circle cx="34" cy="40" r="7"/><circle cx="66" cy="40" r="7"/><path d="M28 74Q50 58 72 74"/></svg></span>
+        <span class="luz" data-zona="amarillo"><svg class="cara" viewBox="0 0 100 100" aria-hidden="true"><circle cx="34" cy="40" r="7"/><circle cx="66" cy="40" r="7"/><path d="M30 68H70"/></svg></span>
+        <span class="luz" data-zona="verde"><svg class="cara" viewBox="0 0 100 100" aria-hidden="true"><circle cx="34" cy="40" r="7"/><circle cx="66" cy="40" r="7"/><path d="M28 62Q50 82 72 62"/></svg></span>
       </div>
+      <div class="ondas" id="s-ondas" aria-hidden="true"></div>
     </div>
     <div class="tarjeta mandos-ruido">
       <p class="mensaje-ruido" id="s-mensaje" aria-live="polite" data-t="sm_off">Semáforo apagado</p>
@@ -186,12 +187,18 @@
         <span class="relleno" id="s-relleno"></span>
       </div>
       <div class="escala" aria-hidden="true"><span data-t="sm_scale_ok">Bien</span><span data-t="sm_scale_lower">Más bajo</span><span data-t="sm_scale_too">Demasiado</span></div>
+      <div class="rastro" id="s-rastro-caja" hidden><span class="ante" data-t="sm_trail">El último minuto</span><canvas id="s-rastro" aria-hidden="true"></canvas></div>
       <div class="ruido-extra" id="s-extra">
         <div class="ruido-dato"><span class="ante" data-t="sm_streak">Racha en calma</span><strong class="ruido-cifra" id="s-racha">0:00</strong><span class="nota" id="s-mejor"></span></div>
         <div class="ruido-dato"><span class="ante" id="s-paciencia-titulo" data-t="sm_patience">Paciencia</span>
           <div class="paciencia" id="s-paciencia" role="meter" aria-label="Paciencia de la clase" data-t-aria="sm_patience_aria" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100"><span id="s-paciencia-relleno"></span></div>
           <span class="nota" data-t="sm_patience_note">Se gasta con el ruido que dura y vuelve con la calma.</span></div>
       </div>
+      <details class="ruido-opciones"><summary data-t="sm_extras">Más cosas en el semáforo</summary>
+        <label class="interruptor"><input type="checkbox" id="s-op-ondas"><span data-t="sm_waves">Ondas cuando sube</span></label>
+        <label class="interruptor"><input type="checkbox" id="s-op-rastro"><span data-t="sm_trail">El último minuto</span></label>
+        <label class="interruptor"><input type="checkbox" id="s-op-cara"><span data-t="sm_face">Una cara en la luz</span></label>
+      </details>
       <label class="campo apilado deslizador"><span><span data-t="sm_sensitivity">Sensibilidad</span> <em id="s-sens-valor" data-t="sm_sens_medium">media</em></span><input type="range" id="s-sensibilidad" min="1" max="10" step="1" value="5"></label>
       <button type="button" class="boton grande ancho" id="s-marcha"><span data-icono="micro"></span><span data-t="sm_listen">Escuchar la clase</span></button>
       <div class="sin-micro" id="s-sinmicro" role="alert" hidden>
@@ -306,6 +313,7 @@
 
 <p class="solo-lector" id="anuncio" aria-live="assertive"></p>
 <script src="strings.js"></script>
+<script src="content/es.js"></script>
 <script src="icons.js"></script>
 <script src="lib/qrcode.js"></script>
 <script src="scorm.js"></script>

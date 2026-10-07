@@ -27,30 +27,9 @@
         needOne: t('ro_need_one'), copyOf: (n) => t('ro_copy_of', n),
         example: t('ro_example'), answerIs: (a) => t('ro_answer_was', a),
     };
-    const LETTERS = 'ABCDEFGHIJKLMNÑOPQRSTUVWXYZ'.split('');
-    // Content in Spanish: per-language content comes in a later step.
-    const EXAMPLE = {
-        id: 'ejemplo', name: STR.example, items: [
-            ['A', 's', 'Insecto que fabrica miel', 'Abeja'], ['B', 's', 'Vehículo de dos ruedas que se mueve con pedales', 'Bicicleta'],
-            ['C', 's', 'Animal que lleva su casa a cuestas y deja un rastro brillante', 'Caracol'],
-            ['D', 's', 'Reptil enorme que vivió hace millones de años', 'Dinosaurio'],
-            ['E', 's', 'Animal con trompa que vive en África y en Asia', 'Elefante'],
-            ['F', 's', 'Fruta roja y pequeña con las semillas por fuera', 'Fresa'], ['G', 's', 'Animal que maúlla', 'Gato'],
-            ['H', 's', 'Agua congelada', 'Hielo'], ['I', 's', 'Porción de tierra rodeada de agua por todas partes', 'Isla'],
-            ['J', 's', 'Animal con el cuello muy largo', 'Jirafa'], ['K', 's', 'Fruta de piel marrón y peluda, verde por dentro', 'Kiwi'],
-            ['L', 's', 'Satélite natural de la Tierra', 'Luna'], ['M', 's', 'Gran masa de agua salada que rodea las islas', 'Mar'],
-            ['N', 's', 'Agua helada que cae del cielo en copos blancos', 'Nieve'],
-            ['Ñ', 'c', 'Animal pequeño de ocho patas que teje telas para cazar insectos', 'Araña'],
-            ['O', 's', 'Estación del año en la que caen las hojas de los árboles', 'Otoño'],
-            ['P', 's', 'Ave blanca y negra que vive en el Polo Sur y no vuela', 'Pingüino'],
-            ['Q', 's', 'Alimento que se elabora con leche cuajada', 'Queso'], ['R', 's', 'Lo usamos para saber la hora', 'Reloj'],
-            ['S', 's', 'Estrella que nos da luz y calor', 'Sol'], ['T', 's', 'El volcán más alto de España, en Tenerife', 'Teide'],
-            ['U', 's', 'Fruta pequeña que crece en racimos', 'Uva'], ['V', 's', 'Montaña que puede expulsar lava', 'Volcán'],
-            ['W', 's', 'Conexión a internet sin cables', 'Wifi'],
-            ['X', 'c', 'Coche con conductor que nos lleva a donde le pidamos, pagando', 'Taxi'],
-            ['Y', 's', 'Alimento hecho con leche que se toma con cuchara', 'Yogur'], ['Z', 's', 'Calzado que nos ponemos en los pies', 'Zapato'],
-        ].map(([l, k, c, a]) => ({ l, k, c, a })),
-    };
+    // The letters of the language and the example rosco come in window.CLASSTOOLS_CONTENT.
+    const LETTERS = [...window.CLASSTOOLS_CONTENT.alphabet];
+    const EXAMPLE = { id: 'ejemplo', name: STR.example, items: window.CLASSTOOLS_CONTENT.rosco.map(([l, k, c, a]) => ({ l, k, c, a })) };
     const TIMES = [0, 120, 150, 180, 240, 300];
 
     // Own roscos: in the browser and, inside Moodle, for the teacher in the course (the newest one wins).

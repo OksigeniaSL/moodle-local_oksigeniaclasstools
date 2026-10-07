@@ -1,0 +1,107 @@
+// Content of the games and materials in Dutch: letters, keyboard, words, pairs, the time in words and the
+// examples. Every language has its file with the same keys (see README.md in this folder); Moodle loads the user's one.
+//
+// @copyright 2026 Oksigenia <dev@oksigenia.cc>
+// @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+'use strict';
+window.CLASSTOOLS_CONTENT = {
+    lang: 'nl',
+    decimal: ',',
+    alphabet: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+    fold: { Á: 'A', À: 'A', Ä: 'A', Â: 'A', Å: 'A', É: 'E', È: 'E', Ë: 'E', Ê: 'E', Í: 'I', Ì: 'I', Ï: 'I', Î: 'I', Ó: 'O', Ò: 'O', Ö: 'O', Ô: 'O',
+        Ú: 'U', Ù: 'U', Ü: 'U', Û: 'U', Ç: 'C', Ñ: 'N', Ĳ: 'IJ' },
+    keyboard: ['QWERTYUIOP', 'ASDFGHJKL', 'ZXCVBNM'],
+    vowels: 'AEIOU',
+    stopOut: 'CQXY',
+    words: {
+        long: ['OLIFANT', 'GIRAF', 'VLINDER', 'KROKODIL', 'PINGUÏN', 'SCHILDPAD', 'DOLFIJN', 'KANGOEROE', 'EEKHOORN', 'OCTOPUS',
+            'VULKAAN', 'GEBERGTE', 'OCEAAN', 'PLANEET', 'REGENBOOG', 'ONWEER', 'WATERVAL', 'WOESTIJN', 'OERWOUD', 'EILAND',
+            'SCHOOLBORD', 'RUGZAK', 'SCHRIFT', 'COMPUTER', 'BIBLIOTHEEK', 'SCHAAR', 'KALENDER', 'WOORDENBOEK', 'SCHOOLPLEIN', 'POTLOOD',
+            'FIETS', 'HELIKOPTER', 'DUIKBOOT', 'TELESCOOP', 'GITAAR', 'TROMPET', 'CHOCOLADE', 'AARDBEI', 'BANAAN', 'WATERMELOEN',
+            'ROBOT', 'ASTRONAUT', 'KASTEEL', 'DINOSAURUS', 'PIRAMIDE', 'KOMPAS', 'VUURTOREN', 'PARAPLU', 'SPINNENWEB', 'SNEEUWVLOK'],
+        five: ['APPEL', 'BLOEM', 'STEEN', 'TAFEL', 'STOEL', 'KAART', 'PAARD', 'ZEBRA', 'VOGEL', 'MEEUW', 'LEEUW', 'SLANG', 'ZWAAN',
+            'BEVER', 'OTTER', 'BROOD', 'BOTER', 'MANGO', 'DRUIF', 'TAART', 'SNOEP', 'WATER', 'AARDE', 'REGEN', 'STORM', 'KAARS',
+            'BRIEF', 'FLUIT', 'PIANO', 'ROBOT', 'TREIN', 'SCHIP', 'FIETS', 'BROEK', 'LEPEL', 'BEKER', 'KAMER', 'NACHT', 'AVOND',
+            'MAAND', 'KRIJT', 'PRINS', 'KROON', 'DRAAK', 'PLANT', 'GROEN', 'PAARS', 'BRUIN', 'ZWART', 'BLAUW'],
+    },
+    colours: ['Rood', 'Blauw', 'Groen', 'Geel', 'Paars', 'Oranje', 'Roze', 'Bruin', 'Zwart', 'Wit', 'Grijs', 'Lichtblauw'],
+    numbers: ['één', 'twee', 'drie', 'vier', 'vijf', 'zes', 'zeven', 'acht', 'negen', 'tien', 'elf', 'twaalf', 'dertien', 'veertien',
+        'vijftien', 'zestien', 'zeventien', 'achttien', 'negentien', 'twintig'],
+    opposites: [['hoog', 'laag'], ['groot', 'klein'], ['koud', 'heet'], ['dag', 'nacht'], ['openen', 'sluiten'], ['snel', 'langzaam'],
+        ['vol', 'leeg'], ['boven', 'onder'], ['binnen', 'buiten'], ['veel', 'weinig'], ['nieuw', 'oud'], ['licht', 'donker'],
+        ['winnen', 'verliezen'], ['komen', 'gaan'], ['hard', 'zacht'], ['schoon', 'vies']],
+    elements: ['Waterstof', 'Helium', 'Lithium', 'Koolstof', 'Stikstof', 'Zuurstof', 'Fluor', 'Neon', 'Natrium', 'Magnesium', 'Aluminium',
+        'Silicium', 'Fosfor', 'Zwavel', 'Chloor', 'Argon', 'Kalium', 'Calcium', 'IJzer', 'Koper', 'Zink', 'Zilver', 'Tin', 'Jood',
+        'Goud', 'Kwik', 'Lood', 'Uraan'],
+    units: [['Lengte', 'meter (m)'], ['Massa', 'kilogram (kg)'], ['Tijd', 'seconde (s)'], ['Temperatuur', 'kelvin (K)'],
+        ['Stroomsterkte', 'ampère (A)'], ['Hoeveelheid stof', 'mol (mol)'], ['Lichtsterkte', 'candela (cd)'],
+        ['Kracht', 'newton (N)'], ['Energie', 'joule (J)'], ['Vermogen', 'watt (W)'], ['Druk', 'pascal (Pa)'], ['Frequentie', 'hertz (Hz)'],
+        ['Elektrische lading', 'coulomb (C)'], ['Elektrische spanning', 'volt (V)'], ['Elektrische weerstand', 'ohm (Ω)']],
+    prefixes: [['tera (T)', '10¹²'], ['giga (G)', '10⁹'], ['mega (M)', '10⁶'], ['kilo (k)', '10³'], ['hecto (h)', '10²'], ['deca (da)', '10¹'],
+        ['deci (d)', '10⁻¹'], ['centi (c)', '10⁻²'], ['milli (m)', '10⁻³'], ['micro (µ)', '10⁻⁶'], ['nano (n)', '10⁻⁹'], ['pico (p)', '10⁻¹²']],
+    formulas: [['H₂O', 'Water'], ['CO₂', 'Koolstofdioxide'], ['NaCl', 'Natriumchloride'], ['NH₃', 'Ammoniak'], ['CH₄', 'Methaan'],
+        ['H₂SO₄', 'Zwavelzuur'], ['HCl', 'Zoutzuur'], ['NaOH', 'Natriumhydroxide'], ['CaCO₃', 'Calciumcarbonaat'],
+        ['O₃', 'Ozon'], ['C₆H₁₂O₆', 'Glucose'], ['HNO₃', 'Salpeterzuur'], ['CO', 'Koolstofmonoxide'], ['H₂O₂', 'Waterstofperoxide'],
+        ['C₂H₅OH', 'Ethanol'], ['Fe₂O₃', 'IJzer(III)oxide']],
+    laws: [['F = m·a', 'Tweede wet van Newton'], ['E = m·c²', 'Equivalentie van massa en energie'], ['U = I·R', 'Wet van Ohm'],
+        ['p·V = n·R·T', 'Algemene gaswet'], ['F = G·m₁·m₂/r²', 'Gravitatiewet'], ['F = f·q₁·q₂/r²', 'Wet van Coulomb'],
+        ['E = h·f', 'Energie van een foton'], ['p = m·v', 'Impuls'], ['Ek = ½·m·v²', 'Kinetische energie'],
+        ['Ez = m·g·h', 'Zwaarte-energie'], ['W = F·s', 'Arbeid'], ['P = W/t', 'Vermogen'], ['ρ = m/V', 'Dichtheid'],
+        ['v = f·λ', 'Golfsnelheid'], ['F = C·u', 'Wet van Hooke']],
+    functions: ['y = x²', 'y = x³', 'y = √x', 'y = 1/x', 'y = sin x', 'y = cos x', 'y = eˣ', 'y = ln x', 'y = |x|', 'y = 2x + 1', 'y = −x²', 'y = x'],
+    derivatives: [['x²', '2x'], ['x³', '3x²'], ['sin x', 'cos x'], ['cos x', '−sin x'], ['ln x', '1/x'], ['√x', '1 / (2√x)'],
+        ['1/x', '−1/x²'], ['tan x', '1 / cos² x'], ['5x', '5'], ['e²ˣ', '2e²ˣ'], ['x⁴', '4x³']],
+    integrals: [['x dx', 'x²/2 + C'], ['1/x dx', 'ln|x| + C'], ['eˣ dx', 'eˣ + C'], ['cos x dx', 'sin x + C'],
+        ['sin x dx', '−cos x + C'], ['3x² dx', 'x³ + C'], ['1/(1 + x²) dx', 'arctan x + C'], ['1/√(1 − x²) dx', 'arcsin x + C'],
+        ['1/cos² x dx', 'tan x + C'], ['aˣ dx', 'aˣ/ln a + C'], ['k dx', 'kx + C'], ['1/(2√x) dx', '√x + C']],
+    groups: [['–OH', 'Alcohol'], ['–CHO', 'Aldehyde'], ['–CO–', 'Keton'], ['–COOH', 'Carbonzuur'], ['–COO–', 'Ester'],
+        ['–O–', 'Ether'], ['–NH₂', 'Amine'], ['–CONH₂', 'Amide'], ['–C≡N', 'Nitril'], ['–NO₂', 'Nitroverbinding'],
+        ['C=C', 'Alkeen'], ['C≡C', 'Alkyn'], ['–X (F, Cl, Br, I)', 'Halogeenalkaan']],
+    constants: [['c = 3,00·10⁸ m/s', 'Lichtsnelheid'], ['h = 6,63·10⁻³⁴ J·s', 'Constante van Planck'],
+        ['G = 6,67·10⁻¹¹ N·m²/kg²', 'Gravitatieconstante'], ['e = 1,60·10⁻¹⁹ C', 'Elementaire lading'],
+        ['NA = 6,02·10²³ mol⁻¹', 'Constante van Avogadro'], ['R = 8,31 J/(mol·K)', 'Gasconstante'],
+        ['k = 1,38·10⁻²³ J/K', 'Constante van Boltzmann'], ['g = 9,81 m/s²', 'Valversnelling op aarde'],
+        ['mₑ = 9,11·10⁻³¹ kg', 'Massa van het elektron'], ['mₚ = 1,67·10⁻²⁷ kg', 'Massa van het proton'],
+        ['ε₀ = 8,85·10⁻¹² F/m', 'Elektrische veldconstante'], ['μ₀ = 4π·10⁻⁷ T·m/A', 'Magnetische veldconstante']],
+    greek: [['α', 'alfa'], ['β', 'bèta'], ['γ', 'gamma'], ['δ', 'delta'], ['ε', 'epsilon'], ['θ', 'thèta'], ['λ', 'lambda'],
+        ['μ', 'mu'], ['π', 'pi'], ['ρ', 'rho'], ['σ', 'sigma'], ['φ', 'phi'], ['ω', 'omega']],
+    clock: (t) => {
+        const H = ['twaalf', 'één', 'twee', 'drie', 'vier', 'vijf', 'zes', 'zeven', 'acht', 'negen', 'tien', 'elf'];
+        const N = ['', 'één', 'twee', 'drie', 'vier', 'vijf', 'zes', 'zeven', 'acht', 'negen', 'tien', 'elf', 'twaalf', 'dertien', 'veertien'];
+        const h = Math.floor(t / 60) % 12, m = t % 60, next = H[(h + 1) % 12];
+        const min = (k) => (k % 5 === 0 ? N[k] : `${N[k]} ${k === 1 ? 'minuut' : 'minuten'}`);
+        let text;
+        if (m === 0) { text = `${H[h]} uur`; }
+        else if (m === 15) { text = `kwart over ${H[h]}`; }
+        else if (m === 30) { text = `half ${next}`; }
+        else if (m === 45) { text = `kwart voor ${next}`; }
+        else if (m < 15) { text = `${min(m)} over ${H[h]}`; }
+        else if (m < 30) { text = `${min(30 - m)} voor half ${next}`; }
+        else if (m < 45) { text = `${min(m - 30)} over half ${next}`; }
+        else { text = `${min(60 - m)} voor ${next}`; }
+        return text.startsWith('één') ? `Eén${text.slice(3)}` : text.charAt(0).toUpperCase() + text.slice(1);
+    },
+    rosco: [
+        ['A', 's', 'Rode of groene vrucht die aan een boom groeit', 'Appel'], ['B', 's', 'Insect dat honing maakt', 'Bij'],
+        ['C', 's', 'Apparaat met een scherm en een toetsenbord', 'Computer'],
+        ['D', 's', 'Reusachtig reptiel dat miljoenen jaren geleden leefde', 'Dinosaurus'],
+        ['E', 's', 'Klein dier met stekels op zijn rug', 'Egel'], ['F', 's', 'Voertuig met twee wielen dat je met pedalen laat rijden', 'Fiets'],
+        ['G', 's', 'Dier met een heel lange nek', 'Giraf'], ['H', 's', 'Dier dat blaft en kwispelt', 'Hond'],
+        ['I', 's', 'Zeedier met acht armen dat inkt kan spuiten', 'Inktvis'],
+        ['J', 's', 'Kledingstuk dat je aantrekt als het buiten koud is', 'Jas'], ['K', 's', 'Dier dat spint en miauwt', 'Kat'],
+        ['L', 's', 'Koning van de dieren, met grote manen', 'Leeuw'], ['M', 's', 'Natuurlijke satelliet van de aarde', 'Maan'],
+        ['N', 's', 'Deel van de dag waarin het donker is en we slapen', 'Nacht'],
+        ['O', 's', 'Dier met een slurf dat in Afrika en Azië leeft', 'Olifant'],
+        ['P', 's', 'Zwart-witte vogel die bij de Zuidpool leeft en niet kan vliegen', 'Pinguïn'],
+        ['Q', 's', 'Spel met vragen waarmee je punten kunt verdienen', 'Quiz'], ['R', 's', 'Boog van kleuren aan de hemel na de regen', 'Regenboog'],
+        ['S', 's', 'Witte, koude vlokken die in de winter uit de lucht vallen', 'Sneeuw'], ['T', 's', 'Grote gestreepte roofkat', 'Tijger'],
+        ['U', 's', 'Vogel die \'s nachts jaagt en grote ogen heeft', 'Uil'], ['V', 's', 'Berg die lava kan uitspuwen', 'Vulkaan'],
+        ['W', 's', 'Het koudste seizoen van het jaar', 'Winter'], ['X', 's', 'Muziekinstrument met houten staafjes waarop je slaat', 'Xylofoon'],
+        ['Y', 's', 'Zuivel van melk die je met een lepel eet', 'Yoghurt'], ['Z', 's', 'Ster die ons licht en warmte geeft', 'Zon'],
+    ],
+    lock: {
+        name: 'Voorbeeldslot', final: 'Goed gedaan! Jullie hebben samen het slot opengemaakt.',
+        clues: ['Het eerste cijfer is het aantal poten van een kat.', 'Het tweede: de vingers van één hand min vier.',
+            'Het derde: het aantal ogen van een mens.', 'Het vierde: het aantal dagen in een week.'],
+    },
+};

@@ -20,13 +20,11 @@
         done: (n) => t('me_done', n), winner: (n) => t('me_winner', n), tie: t('me_tie'), few: t('me_few'),
         pressStart: t('me_press_start'), turn: (n) => t('me_turn', n), card: (n) => t('me_card', n),
     };
-    // Content in Spanish: per-language content comes in a later step.
-    const COLORS = [['Rojo', '#ce1423'], ['Azul', '#164281'], ['Verde', '#067e36'], ['Amarillo', '#fbbe17'], ['Morado', '#5b2fb8'],
-        ['Naranja', '#ea7317'], ['Rosa', '#e85d9e'], ['Marrón', '#7b4a24'], ['Negro', '#1c1a19'], ['Blanco', '#ffffff'], ['Gris', '#8a94a3'], ['Celeste', '#5cc2ef']];
+    // Names and texts in the user's language (window.CLASSTOOLS_CONTENT); colours, symbols and formulas are the same.
+    const CONTENT = window.CLASSTOOLS_CONTENT;
+    const COLORS = ['#ce1423', '#164281', '#067e36', '#fbbe17', '#5b2fb8', '#ea7317', '#e85d9e', '#7b4a24', '#1c1a19', '#ffffff', '#8a94a3', '#5cc2ef']
+        .map((hex, i) => [CONTENT.colours[i], hex]);
     const SHAPES = ['circle', 'square', 'triangle', 'diamond', 'hexagon', 'star', 'pentagon', 'cross'];
-    // Content in Spanish: per-language content comes in a later step.
-    const NUMBERS = ['uno', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'siete', 'ocho', 'nueve', 'diez', 'once', 'doce', 'trece', 'catorce',
-        'quince', 'dieciséis', 'diecisiete', 'dieciocho', 'diecinueve', 'veinte'];
 
     // ---------------------------------------------------------------------------------------------------------
     // Built-in sets by school level. The administrator chooses the levels of the school (all of them outside
@@ -78,49 +76,14 @@
     const ANIMALS = [['an-cat', '#e07a1f'], ['an-dog', '#7b4a24'], ['an-fish', '#1f7fd6'], ['an-horse', '#8a5a2b'], ['an-frog', '#2f9e44'],
         ['an-crow', '#5b2fb8'], ['an-hippo', '#6c7a91'], ['an-spider', '#c2185b'], ['an-otter', '#a0522d'], ['an-kiwi', '#8d6e3f'],
         ['an-dove', '#3d84c6'], ['an-cow', '#d6336c'], ['an-shrimp', '#f06c4f'], ['an-bug', '#ce1423']];
-    // Content in Spanish: per-language content comes in a later step.
-    const OPPOSITES = [['alto', 'bajo'], ['grande', 'pequeño'], ['frío', 'caliente'], ['día', 'noche'], ['abrir', 'cerrar'], ['rápido', 'lento'],
-        ['lleno', 'vacío'], ['arriba', 'abajo'], ['dentro', 'fuera'], ['mucho', 'poco'], ['nuevo', 'viejo'], ['claro', 'oscuro'],
-        ['ganar', 'perder'], ['entrar', 'salir'], ['duro', 'blando'], ['limpio', 'sucio']];
-    const ELEMENTS = [['H', 'Hidrógeno'], ['He', 'Helio'], ['Li', 'Litio'], ['C', 'Carbono'], ['N', 'Nitrógeno'], ['O', 'Oxígeno'], ['F', 'Flúor'],
-        ['Ne', 'Neón'], ['Na', 'Sodio'], ['Mg', 'Magnesio'], ['Al', 'Aluminio'], ['Si', 'Silicio'], ['P', 'Fósforo'], ['S', 'Azufre'],
-        ['Cl', 'Cloro'], ['Ar', 'Argón'], ['K', 'Potasio'], ['Ca', 'Calcio'], ['Fe', 'Hierro'], ['Cu', 'Cobre'], ['Zn', 'Cinc'], ['Ag', 'Plata'],
-        ['Sn', 'Estaño'], ['I', 'Yodo'], ['Au', 'Oro'], ['Hg', 'Mercurio'], ['Pb', 'Plomo'], ['U', 'Uranio']];
-    const UNITS = [['Longitud', 'metro (m)'], ['Masa', 'kilogramo (kg)'], ['Tiempo', 'segundo (s)'], ['Temperatura', 'kelvin (K)'],
-        ['Intensidad de corriente', 'amperio (A)'], ['Cantidad de sustancia', 'mol (mol)'], ['Intensidad luminosa', 'candela (cd)'],
-        ['Fuerza', 'newton (N)'], ['Energía', 'julio (J)'], ['Potencia', 'vatio (W)'], ['Presión', 'pascal (Pa)'], ['Frecuencia', 'hercio (Hz)'],
-        ['Carga eléctrica', 'culombio (C)'], ['Tensión eléctrica', 'voltio (V)'], ['Resistencia eléctrica', 'ohmio (Ω)']];
-    const PREFIXES = [['tera (T)', '10¹²'], ['giga (G)', '10⁹'], ['mega (M)', '10⁶'], ['kilo (k)', '10³'], ['hecto (h)', '10²'], ['deca (da)', '10¹'],
-        ['deci (d)', '10⁻¹'], ['centi (c)', '10⁻²'], ['mili (m)', '10⁻³'], ['micro (µ)', '10⁻⁶'], ['nano (n)', '10⁻⁹'], ['pico (p)', '10⁻¹²']];
-    const FORMULAS = [['H₂O', 'Agua'], ['CO₂', 'Dióxido de carbono'], ['NaCl', 'Cloruro de sodio'], ['NH₃', 'Amoníaco'], ['CH₄', 'Metano'],
-        ['H₂SO₄', 'Ácido sulfúrico'], ['HCl', 'Ácido clorhídrico'], ['NaOH', 'Hidróxido de sodio'], ['CaCO₃', 'Carbonato de calcio'],
-        ['O₃', 'Ozono'], ['C₆H₁₂O₆', 'Glucosa'], ['HNO₃', 'Ácido nítrico'], ['CO', 'Monóxido de carbono'], ['H₂O₂', 'Peróxido de hidrógeno'],
-        ['C₂H₅OH', 'Etanol'], ['Fe₂O₃', 'Óxido de hierro(III)']];
-    const LAWS = [['F = m·a', 'Segunda ley de Newton'], ['E = m·c²', 'Equivalencia masa-energía'], ['V = I·R', 'Ley de Ohm'],
-        ['p·V = n·R·T', 'Gases ideales'], ['F = G·m₁·m₂/r²', 'Gravitación universal'], ['F = k·q₁·q₂/r²', 'Ley de Coulomb'],
-        ['E = h·f', 'Energía de un fotón'], ['p = m·v', 'Cantidad de movimiento'], ['Ec = ½·m·v²', 'Energía cinética'],
-        ['Ep = m·g·h', 'Energía potencial gravitatoria'], ['W = F·d', 'Trabajo'], ['P = W/t', 'Potencia'], ['ρ = m/V', 'Densidad'],
-        ['v = λ·f', 'Velocidad de una onda'], ['F = −k·x', 'Ley de Hooke']];
-    const FUNCTIONS = [['y = x²', (x) => x * x], ['y = x³', (x) => x ** 3], ['y = √x', Math.sqrt], ['y = 1/x', (x) => 1 / x],
-        ['y = sen x', Math.sin], ['y = cos x', Math.cos], ['y = eˣ', Math.exp], ['y = ln x', Math.log], ['y = |x|', Math.abs],
-        ['y = 2x + 1', (x) => 2 * x + 1], ['y = −x²', (x) => -x * x], ['y = x', (x) => x]];
-    const DERIVATIVES = [['x²', '2x'], ['x³', '3x²'], ['sen x', 'cos x'], ['cos x', '−sen x'], ['ln x', '1/x'], ['√x', '1 / (2√x)'],
-        ['1/x', '−1/x²'], ['tg x', '1 / cos² x'], ['5x', '5'], ['e²ˣ', '2e²ˣ'], ['x⁴', '4x³']];
-    const INTEGRALS = [['x dx', 'x²/2 + C'], ['1/x dx', 'ln|x| + C'], ['eˣ dx', 'eˣ + C'], ['cos x dx', 'sen x + C'],
-        ['sen x dx', '−cos x + C'], ['3x² dx', 'x³ + C'], ['1/(1 + x²) dx', 'arctg x + C'], ['1/√(1 − x²) dx', 'arcsen x + C'],
-        ['1/cos² x dx', 'tg x + C'], ['aˣ dx', 'aˣ/ln a + C'], ['k dx', 'kx + C'], ['1/(2√x) dx', '√x + C']];
-    const GROUPS = [['–OH', 'Alcohol'], ['–CHO', 'Aldehído'], ['–CO–', 'Cetona'], ['–COOH', 'Ácido carboxílico'], ['–COO–', 'Éster'],
-        ['–O–', 'Éter'], ['–NH₂', 'Amina'], ['–CONH₂', 'Amida'], ['–C≡N', 'Nitrilo'], ['–NO₂', 'Nitroderivado'],
-        ['C=C', 'Alqueno'], ['C≡C', 'Alquino'], ['–X (F, Cl, Br, I)', 'Haluro']];
-    const CONSTANTS = [['c = 3,00·10⁸ m/s', 'Velocidad de la luz'], ['h = 6,63·10⁻³⁴ J·s', 'Constante de Planck'],
-        ['G = 6,67·10⁻¹¹ N·m²/kg²', 'Gravitación universal'], ['e = 1,60·10⁻¹⁹ C', 'Carga elemental'],
-        ['NA = 6,02·10²³ mol⁻¹', 'Número de Avogadro'], ['R = 8,31 J/(mol·K)', 'Constante de los gases'],
-        ['k = 1,38·10⁻²³ J/K', 'Constante de Boltzmann'], ['g = 9,81 m/s²', 'Gravedad en la Tierra'],
-        ['mₑ = 9,11·10⁻³¹ kg', 'Masa del electrón'], ['mₚ = 1,67·10⁻²⁷ kg', 'Masa del protón'],
-        ['ε₀ = 8,85·10⁻¹² F/m', 'Permitividad del vacío'], ['μ₀ = 4π·10⁻⁷ T·m/A', 'Permeabilidad del vacío']];
-    const GREEK = [['α', 'alfa'], ['β', 'beta'], ['γ', 'gamma'], ['δ', 'delta'], ['ε', 'épsilon'], ['θ', 'theta'], ['λ', 'lambda'],
-        ['μ', 'mu'], ['π', 'pi'], ['ρ', 'rho'], ['σ', 'sigma'], ['φ', 'fi'], ['ω', 'omega']];
-    const LETTER_PAIRS = 'ABCDEFGHIJKLMNÑOPQRSTUVWXYZ'.split('');
+    const NUMBERS = CONTENT.numbers, OPPOSITES = CONTENT.opposites, UNITS = CONTENT.units, PREFIXES = CONTENT.prefixes;
+    const FORMULAS = CONTENT.formulas, LAWS = CONTENT.laws, DERIVATIVES = CONTENT.derivatives, INTEGRALS = CONTENT.integrals;
+    const GROUPS = CONTENT.groups, CONSTANTS = CONTENT.constants, GREEK = CONTENT.greek;
+    const ELEMENTS = ['H', 'He', 'Li', 'C', 'N', 'O', 'F', 'Ne', 'Na', 'Mg', 'Al', 'Si', 'P', 'S', 'Cl', 'Ar', 'K', 'Ca', 'Fe', 'Cu', 'Zn', 'Ag',
+        'Sn', 'I', 'Au', 'Hg', 'Pb', 'U'].map((sym, i) => [sym, CONTENT.elements[i]]);
+    const FUNCTIONS = [(x) => x * x, (x) => x ** 3, Math.sqrt, (x) => 1 / x, Math.sin, Math.cos, Math.exp, Math.log, Math.abs,
+        (x) => 2 * x + 1, (x) => -x * x, (x) => x].map((f, i) => [CONTENT.functions[i], f]);
+    const LETTER_PAIRS = [...CONTENT.alphabet];
     const text = (t, big) => ({ text: t, big: !!big });
     const PRESETS = {
         early: [

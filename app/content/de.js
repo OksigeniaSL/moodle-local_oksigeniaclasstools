@@ -1,0 +1,109 @@
+// Content of the games and materials in German: letters, keyboard, words, pairs, the time in words and the
+// examples. Every language has its file with the same keys (see README.md in this folder); Moodle loads the user's one.
+//
+// @copyright 2026 Oksigenia <dev@oksigenia.cc>
+// @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+'use strict';
+window.CLASSTOOLS_CONTENT = {
+    lang: 'de',
+    decimal: ',',
+    alphabet: 'ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜß',
+    fold: { Á: 'A', À: 'A', Â: 'A', Å: 'A', É: 'E', È: 'E', Ë: 'E', Ê: 'E', Í: 'I', Ì: 'I', Ï: 'I', Î: 'I', Ó: 'O', Ò: 'O', Ô: 'O',
+        Ú: 'U', Ù: 'U', Û: 'U', Ç: 'C', Ñ: 'N', ẞ: 'ß' },
+    keyboard: ['QWERTZUIOPÜ', 'ASDFGHJKLÖÄ', 'YXCVBNMß'],
+    vowels: 'AEIOUÄÖÜ',
+    stopOut: 'CQXYÄÖÜß',
+    words: {
+        long: ['ELEFANT', 'GIRAFFE', 'SCHMETTERLING', 'KROKODIL', 'PINGUIN', 'SCHILDKRÖTE', 'DELFIN', 'KÄNGURU', 'EICHHÖRNCHEN', 'TINTENFISCH',
+            'VULKAN', 'GEBIRGE', 'OZEAN', 'PLANET', 'REGENBOGEN', 'GEWITTER', 'WASSERFALL', 'WÜSTE', 'DSCHUNGEL', 'INSEL',
+            'TAFEL', 'RUCKSACK', 'SCHULHEFT', 'COMPUTER', 'BIBLIOTHEK', 'SCHERE', 'KALENDER', 'WÖRTERBUCH', 'PAUSENHOF', 'BLEISTIFT',
+            'FAHRRAD', 'HUBSCHRAUBER', 'RADIERGUMMI', 'TELESKOP', 'GITARRE', 'TROMPETE', 'SCHOKOLADE', 'ERDBEERE', 'BANANE', 'WASSERMELONE',
+            'ROBOTER', 'ASTRONAUT', 'RITTERBURG', 'DINOSAURIER', 'PYRAMIDE', 'KOMPASS', 'LEUCHTTURM', 'REGENSCHIRM', 'SPINNENNETZ', 'SCHNEEFLOCKE'],
+        five: ['APFEL', 'BIRNE', 'BLUME', 'WOLKE', 'STEIN', 'INSEL', 'TAFEL', 'STUHL', 'TISCH', 'KATZE', 'PFERD', 'TIGER', 'ZEBRA',
+            'SCHAF', 'ZIEGE', 'BIENE', 'VOGEL', 'ADLER', 'FISCH', 'FUCHS', 'RAUPE', 'MILCH', 'HONIG', 'SUPPE', 'MANGO', 'GURKE',
+            'SALAT', 'TORTE', 'STERN', 'SONNE', 'REGEN', 'NEBEL', 'BLITZ', 'WIESE', 'FARBE', 'LAMPE', 'KERZE', 'BRIEF', 'KARTE',
+            'MUSIK', 'FLÖTE', 'SPIEL', 'PUPPE', 'JACKE', 'MÜTZE', 'KLEID', 'GABEL', 'TASSE', 'KÖNIG', 'KRONE', 'KÜCHE', 'NACHT', 'BLATT'],
+    },
+    colours: ['Rot', 'Blau', 'Grün', 'Gelb', 'Lila', 'Orange', 'Rosa', 'Braun', 'Schwarz', 'Weiß', 'Grau', 'Hellblau'],
+    numbers: ['eins', 'zwei', 'drei', 'vier', 'fünf', 'sechs', 'sieben', 'acht', 'neun', 'zehn', 'elf', 'zwölf', 'dreizehn', 'vierzehn',
+        'fünfzehn', 'sechzehn', 'siebzehn', 'achtzehn', 'neunzehn', 'zwanzig'],
+    opposites: [['hoch', 'niedrig'], ['groß', 'klein'], ['kalt', 'heiß'], ['Tag', 'Nacht'], ['öffnen', 'schließen'], ['schnell', 'langsam'],
+        ['voll', 'leer'], ['oben', 'unten'], ['drinnen', 'draußen'], ['viel', 'wenig'], ['neu', 'alt'], ['hell', 'dunkel'],
+        ['gewinnen', 'verlieren'], ['kommen', 'gehen'], ['hart', 'weich'], ['sauber', 'schmutzig']],
+    elements: ['Wasserstoff', 'Helium', 'Lithium', 'Kohlenstoff', 'Stickstoff', 'Sauerstoff', 'Fluor', 'Neon', 'Natrium', 'Magnesium',
+        'Aluminium', 'Silicium', 'Phosphor', 'Schwefel', 'Chlor', 'Argon', 'Kalium', 'Calcium', 'Eisen', 'Kupfer', 'Zink', 'Silber', 'Zinn',
+        'Iod', 'Gold', 'Quecksilber', 'Blei', 'Uran'],
+    units: [['Länge', 'Meter (m)'], ['Masse', 'Kilogramm (kg)'], ['Zeit', 'Sekunde (s)'], ['Temperatur', 'Kelvin (K)'],
+        ['Elektrische Stromstärke', 'Ampere (A)'], ['Stoffmenge', 'Mol (mol)'], ['Lichtstärke', 'Candela (cd)'],
+        ['Kraft', 'Newton (N)'], ['Energie', 'Joule (J)'], ['Leistung', 'Watt (W)'], ['Druck', 'Pascal (Pa)'], ['Frequenz', 'Hertz (Hz)'],
+        ['Elektrische Ladung', 'Coulomb (C)'], ['Elektrische Spannung', 'Volt (V)'], ['Elektrischer Widerstand', 'Ohm (Ω)']],
+    prefixes: [['Tera (T)', '10¹²'], ['Giga (G)', '10⁹'], ['Mega (M)', '10⁶'], ['Kilo (k)', '10³'], ['Hekto (h)', '10²'], ['Deka (da)', '10¹'],
+        ['Dezi (d)', '10⁻¹'], ['Zenti (c)', '10⁻²'], ['Milli (m)', '10⁻³'], ['Mikro (µ)', '10⁻⁶'], ['Nano (n)', '10⁻⁹'], ['Piko (p)', '10⁻¹²']],
+    formulas: [['H₂O', 'Wasser'], ['CO₂', 'Kohlenstoffdioxid'], ['NaCl', 'Natriumchlorid'], ['NH₃', 'Ammoniak'], ['CH₄', 'Methan'],
+        ['H₂SO₄', 'Schwefelsäure'], ['HCl', 'Salzsäure'], ['NaOH', 'Natriumhydroxid'], ['CaCO₃', 'Calciumcarbonat'],
+        ['O₃', 'Ozon'], ['C₆H₁₂O₆', 'Glucose'], ['HNO₃', 'Salpetersäure'], ['CO', 'Kohlenstoffmonoxid'], ['H₂O₂', 'Wasserstoffperoxid'],
+        ['C₂H₅OH', 'Ethanol'], ['Fe₂O₃', 'Eisen(III)-oxid']],
+    laws: [['F = m·a', 'Zweites newtonsches Gesetz'], ['E = m·c²', 'Äquivalenz von Masse und Energie'], ['U = R·I', 'Ohmsches Gesetz'],
+        ['p·V = n·R·T', 'Allgemeine Gasgleichung'], ['F = G·m₁·m₂/r²', 'Gravitationsgesetz'], ['F = k·Q₁·Q₂/r²', 'Coulombsches Gesetz'],
+        ['E = h·f', 'Energie eines Photons'], ['p = m·v', 'Impuls'], ['Ekin = ½·m·v²', 'Kinetische Energie'],
+        ['Epot = m·g·h', 'Potenzielle Energie'], ['W = F·s', 'Arbeit'], ['P = W/t', 'Leistung'], ['ρ = m/V', 'Dichte'],
+        ['c = λ·f', 'Ausbreitungsgeschwindigkeit einer Welle'], ['F = D·s', 'Hookesches Gesetz']],
+    functions: ['y = x²', 'y = x³', 'y = √x', 'y = 1/x', 'y = sin x', 'y = cos x', 'y = eˣ', 'y = ln x', 'y = |x|', 'y = 2x + 1', 'y = −x²', 'y = x'],
+    derivatives: [['x²', '2x'], ['x³', '3x²'], ['sin x', 'cos x'], ['cos x', '−sin x'], ['ln x', '1/x'], ['√x', '1 / (2√x)'],
+        ['1/x', '−1/x²'], ['tan x', '1 / cos² x'], ['5x', '5'], ['e²ˣ', '2e²ˣ'], ['x⁴', '4x³']],
+    integrals: [['x dx', 'x²/2 + C'], ['1/x dx', 'ln|x| + C'], ['eˣ dx', 'eˣ + C'], ['cos x dx', 'sin x + C'],
+        ['sin x dx', '−cos x + C'], ['3x² dx', 'x³ + C'], ['1/(1 + x²) dx', 'arctan x + C'], ['1/√(1 − x²) dx', 'arcsin x + C'],
+        ['1/cos² x dx', 'tan x + C'], ['aˣ dx', 'aˣ/ln a + C'], ['k dx', 'kx + C'], ['1/(2√x) dx', '√x + C']],
+    groups: [['–OH', 'Alkohol'], ['–CHO', 'Aldehyd'], ['–CO–', 'Keton'], ['–COOH', 'Carbonsäure'], ['–COO–', 'Ester'],
+        ['–O–', 'Ether'], ['–NH₂', 'Amin'], ['–CONH₂', 'Amid'], ['–C≡N', 'Nitril'], ['–NO₂', 'Nitroverbindung'],
+        ['C=C', 'Alken'], ['C≡C', 'Alkin'], ['–X (F, Cl, Br, I)', 'Halogenalkan']],
+    constants: [['c = 3,00·10⁸ m/s', 'Lichtgeschwindigkeit'], ['h = 6,63·10⁻³⁴ J·s', 'Plancksches Wirkungsquantum'],
+        ['G = 6,67·10⁻¹¹ N·m²/kg²', 'Gravitationskonstante'], ['e = 1,60·10⁻¹⁹ C', 'Elementarladung'],
+        ['NA = 6,02·10²³ mol⁻¹', 'Avogadro-Konstante'], ['R = 8,31 J/(mol·K)', 'Universelle Gaskonstante'],
+        ['k = 1,38·10⁻²³ J/K', 'Boltzmann-Konstante'], ['g = 9,81 m/s²', 'Erdbeschleunigung'],
+        ['mₑ = 9,11·10⁻³¹ kg', 'Masse des Elektrons'], ['mₚ = 1,67·10⁻²⁷ kg', 'Masse des Protons'],
+        ['ε₀ = 8,85·10⁻¹² F/m', 'Elektrische Feldkonstante'], ['μ₀ = 4π·10⁻⁷ T·m/A', 'Magnetische Feldkonstante']],
+    greek: [['α', 'Alpha'], ['β', 'Beta'], ['γ', 'Gamma'], ['δ', 'Delta'], ['ε', 'Epsilon'], ['θ', 'Theta'], ['λ', 'Lambda'],
+        ['μ', 'My'], ['π', 'Pi'], ['ρ', 'Rho'], ['σ', 'Sigma'], ['φ', 'Phi'], ['ω', 'Omega']],
+    clock: (t) => {
+        const H = ['zwölf', 'eins', 'zwei', 'drei', 'vier', 'fünf', 'sechs', 'sieben', 'acht', 'neun', 'zehn', 'elf'];
+        const N = ['', 'eine', 'zwei', 'drei', 'vier', 'fünf', 'sechs', 'sieben', 'acht', 'neun', 'zehn', 'elf', 'zwölf', 'dreizehn',
+            'vierzehn', 'fünfzehn', 'sechzehn', 'siebzehn', 'achtzehn', 'neunzehn', 'zwanzig'];
+        const h = Math.floor(t / 60) % 12, m = t % 60, next = H[(h + 1) % 12];
+        const min = (k) => (k % 5 === 0 ? N[k] : `${N[k]} ${k === 1 ? 'Minute' : 'Minuten'}`);
+        let text;
+        if (m === 0) { text = `${h === 1 ? 'ein' : H[h]} Uhr`; }
+        else if (m === 15) { text = `Viertel nach ${H[h]}`; }
+        else if (m === 30) { text = `halb ${next}`; }
+        else if (m === 45) { text = `Viertel vor ${next}`; }
+        else if (m <= 20) { text = `${min(m)} nach ${H[h]}`; }
+        else if (m < 30) { text = `${min(30 - m)} vor halb ${next}`; }
+        else if (m < 40) { text = `${min(m - 30)} nach halb ${next}`; }
+        else { text = `${min(60 - m)} vor ${next}`; }
+        return text.charAt(0).toUpperCase() + text.slice(1);
+    },
+    rosco: [
+        ['A', 's', 'Rote oder grüne Frucht, die an Bäumen wächst', 'Apfel'], ['B', 's', 'Insekt, das Honig macht', 'Biene'],
+        ['C', 's', 'Lustiger Künstler im Zirkus mit roter Nase', 'Clown'], ['D', 's', 'Riesiges Reptil, das vor Millionen von Jahren lebte', 'Dinosaurier'],
+        ['E', 's', 'Tier mit Rüssel, das in Afrika und Asien lebt', 'Elefant'], ['F', 's', 'Grünes Tier, das hüpft und quakt', 'Frosch'],
+        ['G', 's', 'Tier mit einem sehr langen Hals', 'Giraffe'], ['H', 's', 'Tier mit langen Ohren, das gern Möhren frisst', 'Hase'],
+        ['I', 's', 'Land, das ringsum von Wasser umgeben ist', 'Insel'], ['J', 's', 'Kleidungsstück, das wir anziehen, wenn es draußen kalt ist', 'Jacke'],
+        ['K', 's', 'Tier, das schnurrt und miaut', 'Katze'], ['L', 's', 'König der Tiere, mit einer großen Mähne', 'Löwe'],
+        ['M', 's', 'Natürlicher Begleiter der Erde, der nachts am Himmel leuchtet', 'Mond'],
+        ['N', 's', 'Zeit des Tages, in der es dunkel ist und wir schlafen', 'Nacht'],
+        ['O', 's', 'Riesige Menge Salzwasser, die den größten Teil der Erde bedeckt', 'Ozean'],
+        ['P', 's', 'Schwarz-weißer Vogel, der am Südpol lebt und nicht fliegen kann', 'Pinguin'],
+        ['Q', 's', 'Durchsichtiges Meerestier, das brennen kann', 'Qualle'], ['R', 's', 'Bunter Bogen am Himmel nach dem Regen', 'Regenbogen'],
+        ['S', 's', 'Stern, der uns Licht und Wärme gibt', 'Sonne'], ['T', 's', 'Große, gestreifte Raubkatze', 'Tiger'],
+        ['U', 's', 'Damit sehen wir, wie spät es ist', 'Uhr'], ['V', 's', 'Berg, der Lava ausspucken kann', 'Vulkan'],
+        ['W', 's', 'Die kälteste Jahreszeit', 'Winter'], ['X', 's', 'Musikinstrument mit Holzplättchen, auf die man mit Schlägeln schlägt', 'Xylofon'],
+        ['Y', 'c', 'Kleines Pferd', 'Pony'], ['Z', 's', 'Gestreiftes Tier, das wie ein Pferd aussieht', 'Zebra'],
+        ['Ä', 's', 'Teil der Jacke, in dem der Arm steckt', 'Ärmel'], ['Ö', 's', 'Flüssigkeit aus Oliven oder Sonnenblumen, mit der man kocht', 'Öl'],
+        ['Ü', 's', 'Etwas Schönes, mit dem niemand gerechnet hat', 'Überraschung'], ['ß', 'c', 'Körperteil am Ende des Beins, mit dem wir gehen', 'Fuß'],
+    ],
+    lock: {
+        name: 'Beispielschloss', final: 'Gut gemacht! Ihr habt das Schloss gemeinsam geöffnet.',
+        clues: ['Die erste Ziffer: So viele Beine hat eine Katze.', 'Die zweite: die Finger einer Hand minus vier.',
+            'Die dritte: So viele Augen hat ein Mensch.', 'Die vierte: So viele Tage hat eine Woche.'],
+    },
+};

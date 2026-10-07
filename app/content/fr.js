@@ -1,0 +1,117 @@
+// Content of the games and materials in French: letters, keyboard, words, pairs, the time in words and the examples.
+// Every language has its file with the same keys (see README.md in this folder); Moodle loads the user's one.
+//
+// @copyright 2026 Oksigenia <dev@oksigenia.cc>
+// @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+'use strict';
+window.CLASSTOOLS_CONTENT = {
+    lang: 'fr',
+    decimal: ',',
+    // Letters: A to Z; accents and the cedilla count as the base letter, and the ligatures as two letters (Œ → OE).
+    alphabet: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+    fold: { Á: 'A', À: 'A', Â: 'A', Ä: 'A', Å: 'A', Æ: 'AE', Ç: 'C', É: 'E', È: 'E', Ê: 'E', Ë: 'E', Í: 'I', Ì: 'I', Î: 'I', Ï: 'I',
+        Ñ: 'N', Ó: 'O', Ò: 'O', Ô: 'O', Ö: 'O', Œ: 'OE', Ú: 'U', Ù: 'U', Û: 'U', Ü: 'U', Ÿ: 'Y' },
+    keyboard: ['AZERTYUIOP', 'QSDFGHJKLM', 'WXCVBN'],
+    vowels: 'AEIOUY',
+    stopOut: 'KQWXYZ',
+    words: {
+        long: ['ÉLÉPHANT', 'GIRAFE', 'PAPILLON', 'CROCODILE', 'PINGOUIN', 'TORTUE', 'DAUPHIN', 'KANGOUROU', 'ÉCUREUIL', 'COCCINELLE',
+            'VOLCAN', 'MONTAGNE', 'OCÉAN', 'PLANÈTE', 'ÉTOILE', 'TEMPÊTE', 'CASCADE', 'DÉSERT', 'FORÊT', 'RIVIÈRE',
+            'TABLEAU', 'CARTABLE', 'CAHIER', 'ORDINATEUR', 'BIBLIOTHÈQUE', 'CISEAUX', 'CALENDRIER', 'DICTIONNAIRE', 'RÉCRÉATION', 'CRAYON',
+            'BICYCLETTE', 'HÉLICOPTÈRE', 'TÉLESCOPE', 'GUITARE', 'TROMPETTE', 'CHOCOLAT', 'FRAISE', 'BANANE', 'PASTÈQUE', 'TOURNESOL',
+            'ROBOT', 'ASTRONAUTE', 'CHÂTEAU', 'DINOSAURE', 'PYRAMIDE', 'BOUSSOLE', 'MONTGOLFIÈRE', 'PARAPLUIE', 'ARAIGNÉE', 'GRENOUILLE',
+            'ESCARGOT', 'FLOCON'],
+        five: ['ARBRE', 'LIVRE', 'PLAGE', 'NUAGE', 'ROUGE', 'JAUNE', 'BLANC', 'TABLE', 'STYLO', 'POIRE', 'POMME', 'PÊCHE', 'MELON',
+            'TRAIN', 'AVION', 'TERRE', 'MONDE', 'PIANO', 'ROBOT', 'TIGRE', 'ZÈBRE', 'SINGE', 'LAPIN', 'CHIEN', 'POULE', 'AIGLE',
+            'SUCRE', 'FRUIT', 'SOUPE', 'NEIGE', 'PLUIE', 'HEURE', 'CRAIE', 'GOMME', 'COLLE', 'RÈGLE', 'JOUET', 'BALLE', 'FLEUR',
+            'HERBE', 'JAMBE', 'DOIGT', 'PORTE', 'CŒUR', 'ÉCOLE', 'OCÉAN', 'SABLE', 'VAGUE', 'PLUME', 'SAPIN', 'GLACE', 'MATIN'],
+    },
+    colours: ['Rouge', 'Bleu', 'Vert', 'Jaune', 'Violet', 'Orange', 'Rose', 'Marron', 'Noir', 'Blanc', 'Gris', 'Bleu ciel'],
+    numbers: ['un', 'deux', 'trois', 'quatre', 'cinq', 'six', 'sept', 'huit', 'neuf', 'dix', 'onze', 'douze', 'treize', 'quatorze',
+        'quinze', 'seize', 'dix-sept', 'dix-huit', 'dix-neuf', 'vingt'],
+    opposites: [['haut', 'bas'], ['grand', 'petit'], ['froid', 'chaud'], ['jour', 'nuit'], ['ouvrir', 'fermer'], ['rapide', 'lent'],
+        ['plein', 'vide'], ['dessus', 'dessous'], ['dedans', 'dehors'], ['beaucoup', 'peu'], ['nouveau', 'vieux'], ['clair', 'sombre'],
+        ['gagner', 'perdre'], ['entrer', 'sortir'], ['dur', 'mou'], ['propre', 'sale']],
+    elements: ['Hydrogène', 'Hélium', 'Lithium', 'Carbone', 'Azote', 'Oxygène', 'Fluor', 'Néon', 'Sodium', 'Magnésium', 'Aluminium',
+        'Silicium', 'Phosphore', 'Soufre', 'Chlore', 'Argon', 'Potassium', 'Calcium', 'Fer', 'Cuivre', 'Zinc', 'Argent', 'Étain', 'Iode',
+        'Or', 'Mercure', 'Plomb', 'Uranium'],
+    units: [['Longueur', 'mètre (m)'], ['Masse', 'kilogramme (kg)'], ['Temps', 'seconde (s)'], ['Température', 'kelvin (K)'],
+        ['Intensité du courant', 'ampère (A)'], ['Quantité de matière', 'mole (mol)'], ['Intensité lumineuse', 'candela (cd)'],
+        ['Force', 'newton (N)'], ['Énergie', 'joule (J)'], ['Puissance', 'watt (W)'], ['Pression', 'pascal (Pa)'], ['Fréquence', 'hertz (Hz)'],
+        ['Charge électrique', 'coulomb (C)'], ['Tension électrique', 'volt (V)'], ['Résistance électrique', 'ohm (Ω)']],
+    prefixes: [['téra (T)', '10¹²'], ['giga (G)', '10⁹'], ['méga (M)', '10⁶'], ['kilo (k)', '10³'], ['hecto (h)', '10²'], ['déca (da)', '10¹'],
+        ['déci (d)', '10⁻¹'], ['centi (c)', '10⁻²'], ['milli (m)', '10⁻³'], ['micro (µ)', '10⁻⁶'], ['nano (n)', '10⁻⁹'], ['pico (p)', '10⁻¹²']],
+    formulas: [['H₂O', 'Eau'], ['CO₂', 'Dioxyde de carbone'], ['NaCl', 'Chlorure de sodium'], ['NH₃', 'Ammoniac'], ['CH₄', 'Méthane'],
+        ['H₂SO₄', 'Acide sulfurique'], ['HCl', 'Acide chlorhydrique'], ['NaOH', 'Hydroxyde de sodium'], ['CaCO₃', 'Carbonate de calcium'],
+        ['O₃', 'Ozone'], ['C₆H₁₂O₆', 'Glucose'], ['HNO₃', 'Acide nitrique'], ['CO', 'Monoxyde de carbone'], ['H₂O₂', 'Peroxyde d\'hydrogène'],
+        ['C₂H₅OH', 'Éthanol'], ['Fe₂O₃', 'Oxyde de fer(III)']],
+    laws: [['F = m·a', 'Deuxième loi de Newton'], ['E = m·c²', 'Équivalence masse-énergie'], ['U = R·I', 'Loi d\'Ohm'],
+        ['p·V = n·R·T', 'Loi des gaz parfaits'], ['F = G·m₁·m₂/r²', 'Gravitation universelle'], ['F = k·q₁·q₂/r²', 'Loi de Coulomb'],
+        ['E = h·ν', 'Énergie d\'un photon'], ['p = m·v', 'Quantité de mouvement'], ['Ec = ½·m·v²', 'Énergie cinétique'],
+        ['Epp = m·g·h', 'Énergie potentielle de pesanteur'], ['W = F·d', 'Travail d\'une force'], ['P = W/t', 'Puissance'],
+        ['ρ = m/V', 'Masse volumique'], ['v = λ·f', 'Célérité d\'une onde'], ['F = −k·x', 'Loi de Hooke']],
+    functions: ['y = x²', 'y = x³', 'y = √x', 'y = 1/x', 'y = sin x', 'y = cos x', 'y = eˣ', 'y = ln x', 'y = |x|', 'y = 2x + 1', 'y = −x²', 'y = x'],
+    derivatives: [['x²', '2x'], ['x³', '3x²'], ['sin x', 'cos x'], ['cos x', '−sin x'], ['ln x', '1/x'], ['√x', '1 / (2√x)'],
+        ['1/x', '−1/x²'], ['tan x', '1 / cos² x'], ['5x', '5'], ['e²ˣ', '2e²ˣ'], ['x⁴', '4x³']],
+    integrals: [['x dx', 'x²/2 + C'], ['1/x dx', 'ln|x| + C'], ['eˣ dx', 'eˣ + C'], ['cos x dx', 'sin x + C'],
+        ['sin x dx', '−cos x + C'], ['3x² dx', 'x³ + C'], ['1/(1 + x²) dx', 'arctan x + C'], ['1/√(1 − x²) dx', 'arcsin x + C'],
+        ['1/cos² x dx', 'tan x + C'], ['aˣ dx', 'aˣ/ln a + C'], ['k dx', 'kx + C'], ['1/(2√x) dx', '√x + C']],
+    groups: [['–OH', 'Alcool'], ['–CHO', 'Aldéhyde'], ['–CO–', 'Cétone'], ['–COOH', 'Acide carboxylique'], ['–COO–', 'Ester'],
+        ['–O–', 'Éther'], ['–NH₂', 'Amine'], ['–CONH₂', 'Amide'], ['–C≡N', 'Nitrile'], ['–NO₂', 'Dérivé nitré'],
+        ['C=C', 'Alcène'], ['C≡C', 'Alcyne'], ['–X (F, Cl, Br, I)', 'Dérivé halogéné']],
+    constants: [['c = 3,00·10⁸ m/s', 'Vitesse de la lumière'], ['h = 6,63·10⁻³⁴ J·s', 'Constante de Planck'],
+        ['G = 6,67·10⁻¹¹ N·m²/kg²', 'Constante de gravitation universelle'], ['e = 1,60·10⁻¹⁹ C', 'Charge élémentaire'],
+        ['NA = 6,02·10²³ mol⁻¹', 'Nombre d\'Avogadro'], ['R = 8,31 J/(mol·K)', 'Constante des gaz parfaits'],
+        ['k = 1,38·10⁻²³ J/K', 'Constante de Boltzmann'], ['g = 9,81 m/s²', 'Intensité de la pesanteur'],
+        ['mₑ = 9,11·10⁻³¹ kg', 'Masse de l\'électron'], ['mₚ = 1,67·10⁻²⁷ kg', 'Masse du proton'],
+        ['ε₀ = 8,85·10⁻¹² F/m', 'Permittivité du vide'], ['μ₀ = 4π·10⁻⁷ T·m/A', 'Perméabilité du vide']],
+    greek: [['α', 'alpha'], ['β', 'bêta'], ['γ', 'gamma'], ['δ', 'delta'], ['ε', 'epsilon'], ['θ', 'thêta'], ['λ', 'lambda'],
+        ['μ', 'mu'], ['π', 'pi'], ['ρ', 'rhô'], ['σ', 'sigma'], ['φ', 'phi'], ['ω', 'oméga']],
+    // «Trois heures et quart», «Quatre heures moins vingt», «Une heure cinq», «Midi et demi», «Minuit moins le quart».
+    // The minutes are feminine (une minute): «Trois heures une», «Quatre heures moins vingt et une».
+    clock: (t) => {
+        const HOURS = ['', 'une heure', 'deux heures', 'trois heures', 'quatre heures', 'cinq heures', 'six heures', 'sept heures',
+            'huit heures', 'neuf heures', 'dix heures', 'onze heures'];
+        const NUM = ['', 'une', 'deux', 'trois', 'quatre', 'cinq', 'six', 'sept', 'huit', 'neuf', 'dix', 'onze', 'douze', 'treize', 'quatorze',
+            'quinze', 'seize', 'dix-sept', 'dix-huit', 'dix-neuf', 'vingt', 'vingt et une', 'vingt-deux', 'vingt-trois', 'vingt-quatre',
+            'vingt-cinq', 'vingt-six', 'vingt-sept', 'vingt-huit', 'vingt-neuf'];
+        let h = Math.floor(t / 60), m = t % 60, moins = false;
+        if (m > 30) { h += 1; m = 60 - m; moins = true; }
+        h %= 24;
+        const hour = h === 0 ? 'minuit' : (h === 12 ? 'midi' : HOURS[h % 12]);
+        let text;
+        if (m === 0) { text = hour; }
+        else if (m === 15) { text = `${hour} ${moins ? 'moins le quart' : 'et quart'}`; }
+        else if (m === 30) { text = `${hour} et ${h % 12 === 0 ? 'demi' : 'demie'}`; }
+        else { text = `${hour} ${moins ? 'moins ' : ''}${NUM[m]}`; }
+        return text.charAt(0).toUpperCase() + text.slice(1);
+    },
+    rosco: [
+        ['A', 's', 'Insecte qui fabrique le miel', 'Abeille'],
+        ['B', 's', 'Le plus grand animal de la mer, qui souffle de l\'eau par un trou sur sa tête', 'Baleine'],
+        ['C', 's', 'Animal qui miaule et ronronne', 'Chat'], ['D', 's', 'Énorme reptile qui vivait il y a des millions d\'années', 'Dinosaure'],
+        ['E', 's', 'Petit animal qui porte sa coquille sur le dos et laisse une trace brillante', 'Escargot'],
+        ['F', 's', 'Petit fruit rouge qui a ses graines à l\'extérieur', 'Fraise'], ['G', 's', 'Animal qui a un très long cou', 'Girafe'],
+        ['H', 's', 'Oiseau de nuit aux grands yeux ronds', 'Hibou'], ['I', 's', 'Morceau de terre entouré d\'eau de tous les côtés', 'Île'],
+        ['J', 's', 'Couleur du citron et de la banane', 'Jaune'],
+        ['K', 's', 'Petit fruit à la peau marron et poilue, vert à l\'intérieur', 'Kiwi'], ['L', 's', 'Satellite naturel de la Terre', 'Lune'],
+        ['M', 's', 'Grande étendue d\'eau salée où vivent les poissons et les dauphins', 'Mer'],
+        ['N', 's', 'Eau gelée qui tombe du ciel en flocons blancs', 'Neige'],
+        ['O', 's', 'Animal qui a des plumes, un bec et des ailes', 'Oiseau'],
+        ['P', 's', 'Insecte aux ailes colorées qui a d\'abord été une chenille', 'Papillon'],
+        ['Q', 's', 'Le nombre qui vient juste après trois', 'Quatre'],
+        ['R', 's', 'Animal roux à la queue touffue, très rusé dans les contes', 'Renard'],
+        ['S', 's', 'Étoile qui nous donne la lumière et la chaleur', 'Soleil'], ['T', 's', 'Animal à carapace qui marche très lentement', 'Tortue'],
+        ['U', 's', 'Tout ce qui existe : les étoiles, les planètes et les galaxies', 'Univers'],
+        ['V', 's', 'Montagne qui peut cracher de la lave', 'Volcan'],
+        ['W', 's', 'Voiture d\'un train dans laquelle voyagent les passagers', 'Wagon'],
+        ['X', 's', 'Instrument de musique à lames que l\'on frappe avec des baguettes', 'Xylophone'],
+        ['Y', 's', 'Aliment fait avec du lait que l\'on mange à la cuillère', 'Yaourt'],
+        ['Z', 's', 'Animal rayé noir et blanc qui ressemble à un cheval', 'Zèbre'],
+    ],
+    lock: {
+        name: 'Cadenas d\'exemple', final: 'Bravo ! Vous avez ouvert le cadenas tous ensemble.',
+        clues: ['Le premier chiffre, c\'est le nombre de pattes d\'un chat.', 'Le deuxième, les doigts d\'une main moins quatre.',
+            'Le troisième, le nombre d\'yeux d\'une personne.', 'Le quatrième, le nombre de jours dans une semaine.'],
+    },
+};

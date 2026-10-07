@@ -1,0 +1,108 @@
+// Content of the games and materials in Swedish: letters, keyboard, words, pairs, the time in words and the
+// examples. Every language has its file with the same keys (see README.md in this folder); Moodle loads the user's one.
+//
+// @copyright 2026 Oksigenia <dev@oksigenia.cc>
+// @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+'use strict';
+window.CLASSTOOLS_CONTENT = {
+    lang: 'sv',
+    decimal: ',',
+    alphabet: 'ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ',
+    fold: { Á: 'A', À: 'A', Â: 'A', É: 'E', È: 'E', Ë: 'E', Ê: 'E', Í: 'I', Ì: 'I', Ï: 'I', Î: 'I', Ó: 'O', Ò: 'O', Ô: 'O',
+        Ú: 'U', Ù: 'U', Û: 'U', Ü: 'Y', Ç: 'C', Ñ: 'N', Æ: 'Ä', Ø: 'Ö' },
+    keyboard: ['QWERTYUIOPÅ', 'ASDFGHJKLÖÄ', 'ZXCVBNM'],
+    vowels: 'AEIOUYÅÄÖ',
+    stopOut: 'CQWXZÅ',
+    words: {
+        long: ['ELEFANT', 'GIRAFF', 'FJÄRIL', 'KROKODIL', 'PINGVIN', 'SKÖLDPADDA', 'DELFIN', 'KÄNGURU', 'EKORRE', 'BLÄCKFISK',
+            'VULKAN', 'BERGSTOPP', 'OCEAN', 'PLANET', 'REGNBÅGE', 'ÅSKVÄDER', 'VATTENFALL', 'ÖKEN', 'DJUNGEL', 'STJÄRNA',
+            'TAVLA', 'RYGGSÄCK', 'SKRIVBOK', 'DATOR', 'BIBLIOTEK', 'PENNFODRAL', 'KALENDER', 'ORDBOK', 'SKOLGÅRD', 'BLYERTSPENNA',
+            'CYKEL', 'HELIKOPTER', 'UBÅT', 'TELESKOP', 'GITARR', 'TRUMPET', 'CHOKLAD', 'JORDGUBBE', 'BANAN', 'VATTENMELON',
+            'ROBOT', 'ASTRONAUT', 'SLOTT', 'DINOSAURIE', 'PYRAMID', 'KOMPASS', 'FYRTORN', 'PARAPLY', 'SPINDELNÄT', 'SNÖFLINGA'],
+        five: ['ÄPPLE', 'PÄRON', 'TAVLA', 'ZEBRA', 'TIGER', 'LEJON', 'FÅGEL', 'KANIN', 'BJÖRN', 'HJORT', 'GRODA', 'MANET', 'UGGLA',
+            'KRÅKA', 'HUMLA', 'MJÖLK', 'SOPPA', 'MANGO', 'DRUVA', 'BANAN', 'TÅRTA', 'GODIS', 'PASTA', 'GLASS', 'STORM', 'BLIXT',
+            'DIMMA', 'KULLE', 'LAMPA', 'KARTA', 'MUSIK', 'FLÖJT', 'PIANO', 'DOCKA', 'ROBOT', 'CYKEL', 'RAKET', 'JACKA', 'MÖSSA',
+            'BYXOR', 'SOFFA', 'HYLLA', 'KVÄLL', 'VECKA', 'MÅNAD', 'KRITA', 'PENNA', 'PRINS', 'JÄTTE', 'DRAKE', 'SVART'],
+    },
+    colours: ['Röd', 'Blå', 'Grön', 'Gul', 'Lila', 'Orange', 'Rosa', 'Brun', 'Svart', 'Vit', 'Grå', 'Ljusblå'],
+    numbers: ['ett', 'två', 'tre', 'fyra', 'fem', 'sex', 'sju', 'åtta', 'nio', 'tio', 'elva', 'tolv', 'tretton', 'fjorton',
+        'femton', 'sexton', 'sjutton', 'arton', 'nitton', 'tjugo'],
+    opposites: [['hög', 'låg'], ['stor', 'liten'], ['kall', 'varm'], ['dag', 'natt'], ['öppna', 'stänga'], ['snabb', 'långsam'],
+        ['full', 'tom'], ['upp', 'ner'], ['inne', 'ute'], ['många', 'få'], ['ny', 'gammal'], ['ljus', 'mörk'],
+        ['vinna', 'förlora'], ['komma', 'gå'], ['hård', 'mjuk'], ['ren', 'smutsig']],
+    elements: ['Väte', 'Helium', 'Litium', 'Kol', 'Kväve', 'Syre', 'Fluor', 'Neon', 'Natrium', 'Magnesium', 'Aluminium', 'Kisel',
+        'Fosfor', 'Svavel', 'Klor', 'Argon', 'Kalium', 'Kalcium', 'Järn', 'Koppar', 'Zink', 'Silver', 'Tenn', 'Jod', 'Guld',
+        'Kvicksilver', 'Bly', 'Uran'],
+    units: [['Längd', 'meter (m)'], ['Massa', 'kilogram (kg)'], ['Tid', 'sekund (s)'], ['Temperatur', 'kelvin (K)'],
+        ['Elektrisk ström', 'ampere (A)'], ['Substansmängd', 'mol (mol)'], ['Ljusstyrka', 'candela (cd)'],
+        ['Kraft', 'newton (N)'], ['Energi', 'joule (J)'], ['Effekt', 'watt (W)'], ['Tryck', 'pascal (Pa)'], ['Frekvens', 'hertz (Hz)'],
+        ['Elektrisk laddning', 'coulomb (C)'], ['Elektrisk spänning', 'volt (V)'], ['Elektrisk resistans', 'ohm (Ω)']],
+    prefixes: [['tera (T)', '10¹²'], ['giga (G)', '10⁹'], ['mega (M)', '10⁶'], ['kilo (k)', '10³'], ['hekto (h)', '10²'], ['deka (da)', '10¹'],
+        ['deci (d)', '10⁻¹'], ['centi (c)', '10⁻²'], ['milli (m)', '10⁻³'], ['mikro (µ)', '10⁻⁶'], ['nano (n)', '10⁻⁹'], ['piko (p)', '10⁻¹²']],
+    formulas: [['H₂O', 'Vatten'], ['CO₂', 'Koldioxid'], ['NaCl', 'Natriumklorid'], ['NH₃', 'Ammoniak'], ['CH₄', 'Metan'],
+        ['H₂SO₄', 'Svavelsyra'], ['HCl', 'Saltsyra'], ['NaOH', 'Natriumhydroxid'], ['CaCO₃', 'Kalciumkarbonat'],
+        ['O₃', 'Ozon'], ['C₆H₁₂O₆', 'Glukos'], ['HNO₃', 'Salpetersyra'], ['CO', 'Kolmonoxid'], ['H₂O₂', 'Väteperoxid'],
+        ['C₂H₅OH', 'Etanol'], ['Fe₂O₃', 'Järn(III)oxid']],
+    laws: [['F = m·a', 'Newtons andra lag'], ['E = m·c²', 'Ekvivalens mellan massa och energi'], ['U = R·I', 'Ohms lag'],
+        ['p·V = n·R·T', 'Allmänna gaslagen'], ['F = G·m₁·m₂/r²', 'Gravitationslagen'], ['F = k·Q₁·Q₂/r²', 'Coulombs lag'],
+        ['E = h·f', 'Fotonens energi'], ['p = m·v', 'Rörelsemängd'], ['Ek = m·v²/2', 'Rörelseenergi'],
+        ['Ep = m·g·h', 'Lägesenergi'], ['W = F·s', 'Arbete'], ['P = W/t', 'Effekt'], ['ρ = m/V', 'Densitet'],
+        ['v = f·λ', 'Vågens hastighet'], ['F = k·Δl', 'Hookes lag']],
+    functions: ['y = x²', 'y = x³', 'y = √x', 'y = 1/x', 'y = sin x', 'y = cos x', 'y = eˣ', 'y = ln x', 'y = |x|', 'y = 2x + 1', 'y = −x²', 'y = x'],
+    derivatives: [['x²', '2x'], ['x³', '3x²'], ['sin x', 'cos x'], ['cos x', '−sin x'], ['ln x', '1/x'], ['√x', '1 / (2√x)'],
+        ['1/x', '−1/x²'], ['tan x', '1 / cos² x'], ['5x', '5'], ['e²ˣ', '2e²ˣ'], ['x⁴', '4x³']],
+    integrals: [['x dx', 'x²/2 + C'], ['1/x dx', 'ln|x| + C'], ['eˣ dx', 'eˣ + C'], ['cos x dx', 'sin x + C'],
+        ['sin x dx', '−cos x + C'], ['3x² dx', 'x³ + C'], ['1/(1 + x²) dx', 'arctan x + C'], ['1/√(1 − x²) dx', 'arcsin x + C'],
+        ['1/cos² x dx', 'tan x + C'], ['aˣ dx', 'aˣ/ln a + C'], ['k dx', 'kx + C'], ['1/(2√x) dx', '√x + C']],
+    groups: [['–OH', 'Alkohol'], ['–CHO', 'Aldehyd'], ['–CO–', 'Keton'], ['–COOH', 'Karboxylsyra'], ['–COO–', 'Ester'],
+        ['–O–', 'Eter'], ['–NH₂', 'Amin'], ['–CONH₂', 'Amid'], ['–C≡N', 'Nitril'], ['–NO₂', 'Nitroförening'],
+        ['C=C', 'Alken'], ['C≡C', 'Alkyn'], ['–X (F, Cl, Br, I)', 'Halogenalkan']],
+    constants: [['c = 3,00·10⁸ m/s', 'Ljusets hastighet'], ['h = 6,63·10⁻³⁴ J·s', 'Plancks konstant'],
+        ['G = 6,67·10⁻¹¹ N·m²/kg²', 'Gravitationskonstanten'], ['e = 1,60·10⁻¹⁹ C', 'Elementarladdningen'],
+        ['NA = 6,02·10²³ mol⁻¹', 'Avogadros konstant'], ['R = 8,31 J/(mol·K)', 'Allmänna gaskonstanten'],
+        ['k = 1,38·10⁻²³ J/K', 'Boltzmanns konstant'], ['g = 9,81 m/s²', 'Tyngdaccelerationen'],
+        ['mₑ = 9,11·10⁻³¹ kg', 'Elektronens massa'], ['mₚ = 1,67·10⁻²⁷ kg', 'Protonens massa'],
+        ['ε₀ = 8,85·10⁻¹² F/m', 'Permittivitet i vakuum'], ['μ₀ = 4π·10⁻⁷ T·m/A', 'Permeabilitet i vakuum']],
+    greek: [['α', 'alfa'], ['β', 'beta'], ['γ', 'gamma'], ['δ', 'delta'], ['ε', 'epsilon'], ['θ', 'theta'], ['λ', 'lambda'],
+        ['μ', 'my'], ['π', 'pi'], ['ρ', 'rho'], ['σ', 'sigma'], ['φ', 'fi'], ['ω', 'omega']],
+    clock: (t) => {
+        const H = ['tolv', 'ett', 'två', 'tre', 'fyra', 'fem', 'sex', 'sju', 'åtta', 'nio', 'tio', 'elva'];
+        const N = ['', 'en', 'två', 'tre', 'fyra', 'fem', 'sex', 'sju', 'åtta', 'nio', 'tio', 'elva', 'tolv', 'tretton', 'fjorton'];
+        const h = Math.floor(t / 60) % 12, m = t % 60, next = H[(h + 1) % 12];
+        const min = (k) => (k % 5 === 0 ? N[k] : `${N[k]} ${k === 1 ? 'minut' : 'minuter'}`);
+        let text;
+        if (m === 0) { text = `klockan ${H[h]}`; }
+        else if (m === 15) { text = `kvart över ${H[h]}`; }
+        else if (m === 30) { text = `halv ${next}`; }
+        else if (m === 45) { text = `kvart i ${next}`; }
+        else if (m < 15) { text = `${min(m)} över ${H[h]}`; }
+        else if (m < 30) { text = `${min(30 - m)} i halv ${next}`; }
+        else if (m < 45) { text = `${min(m - 30)} över halv ${next}`; }
+        else { text = `${min(60 - m)} i ${next}`; }
+        return text.charAt(0).toUpperCase() + text.slice(1);
+    },
+    rosco: [
+        ['A', 's', 'Fågel som säger kvack och simmar i dammen', 'Anka'], ['B', 's', 'Insekt som gör honung', 'Bi'],
+        ['C', 's', 'Fordon med två hjul som man trampar fram', 'Cykel'],
+        ['D', 's', 'Jättestort kräldjur som levde för miljontals år sedan', 'Dinosaurie'],
+        ['E', 's', 'Djur med snabel som lever i Afrika och Asien', 'Elefant'], ['F', 's', 'Insekt med stora, färgglada vingar', 'Fjäril'],
+        ['G', 's', 'Djur med en väldigt lång hals', 'Giraff'], ['H', 's', 'Djur som gnäggar och som man kan rida på', 'Häst'],
+        ['I', 's', 'Fruset vatten', 'Is'], ['J', 's', 'Planeten som vi bor på', 'Jorden'],
+        ['K', 's', 'Djur som spinner och säger mjau', 'Katt'], ['L', 's', 'Djurens kung, med stor man', 'Lejon'],
+        ['M', 's', 'Jordens naturliga satellit', 'Månen'], ['N', 's', 'Tid på dygnet när det är mörkt och vi sover', 'Natt'],
+        ['O', 's', 'Mat som görs av mjölk och som möss sägs älska', 'Ost'],
+        ['P', 's', 'Svartvit fågel som lever nära sydpolen och inte kan flyga', 'Pingvin'],
+        ['Q', 's', 'Tävling med frågor där man kan vinna poäng', 'Quiz'], ['R', 's', 'Båge i alla färger på himlen efter regnet', 'Regnbåge'],
+        ['S', 's', 'Stjärnan som ger oss ljus och värme', 'Solen'], ['T', 's', 'Stort, randigt kattdjur', 'Tiger'],
+        ['U', 's', 'Fågel som jagar på natten och har stora ögon', 'Uggla'], ['V', 's', 'Berg som kan spruta ut lava', 'Vulkan'],
+        ['W', 's', 'Trådlös uppkoppling till internet', 'Wifi'], ['X', 's', 'Musikinstrument med träplattor som man slår på', 'Xylofon'],
+        ['Y', 's', 'Verktyg som man hugger ved med', 'Yxa'], ['Z', 's', 'Randigt djur som liknar en häst', 'Zebra'],
+        ['Å', 's', 'Väder med blixtar och muller', 'Åska'], ['Ä', 's', 'Rund frukt som kan vara röd eller grön', 'Äpple'],
+        ['Ö', 's', 'Kroppsdel som vi hör med', 'Öra'],
+    ],
+    lock: {
+        name: 'Exempellås', final: 'Bra jobbat! Ni har öppnat låset tillsammans.',
+        clues: ['Den första siffran är hur många ben en katt har.', 'Den andra: fingrarna på en hand minus fyra.',
+            'Den tredje: hur många ögon en människa har.', 'Den fjärde: dagarna i en vecka.'],
+    },
+};

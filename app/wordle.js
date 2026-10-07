@@ -54,6 +54,7 @@
     const paint = () => {
         const n = s.target.length;
         $('#wo-grid').style.setProperty('--cols', n);
+        $('#wo-grid').style.setProperty('--rows', s.maxRows);
         $('#wo-grid').innerHTML = Array.from({ length: s.maxRows }, (_, r) => {
             const row = s.rows[r];
             const letters = row ? row.word.split('') : (r === s.rows.length ? s.current.split('') : []);

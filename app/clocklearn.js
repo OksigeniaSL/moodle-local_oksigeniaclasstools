@@ -20,21 +20,15 @@
         setThis: (x) => t('cl_set_this', x), right: t('cl_right'), wrong: t('cl_wrong'), dragHint: t('cl_drag_hint'),
         clock: t('cl_clock'),
     };
-    // Content in Spanish: per-language content comes in a later step.
-    const HOURS = ['doce', 'una', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'siete', 'ocho', 'nueve', 'diez', 'once'];
-    const NUM = ['', 'uno', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'siete', 'ocho', 'nueve', 'diez', 'once', 'doce', 'trece', 'catorce',
-        'quince', 'dieciséis', 'diecisiete', 'dieciocho', 'diecinueve', 'veinte', 'veintiuno', 'veintidós', 'veintitrés', 'veinticuatro',
-        'veinticinco', 'veintiséis', 'veintisiete', 'veintiocho', 'veintinueve'];
     const STEP = { h: 60, half: 30, quarter: 15, five: 5, minute: 1 };
     const pad = (n) => String(n).padStart(2, '0');
-    // Content in Spanish: per-language content comes in a later step.
-    // «Las tres y cuarto», «la una menos diez», «las doce en punto».
+    // The time in words comes with the content of the user's language («Las tres y cuarto», «Quarter past three»).
+    // On a 12-hour clock the twelve is read as noon: in languages that say it («Midi», «Meio-dia», «Mezzogiorno»),
+    // «Midnight and a quarter» would not match the 12:15 on the screen.
     const inWords = (t) => {
-        let h = Math.floor(t / 60) % 12, m = t % 60, menos = false;
-        if (m > 30) { h = (h + 1) % 12; m = 60 - m; menos = true; }
-        const hour = `${h === 1 ? 'la' : 'las'} ${HOURS[h]}`;
-        const text = m === 0 ? `${hour} en punto` : `${hour} ${menos ? 'menos' : 'y'} ${m === 15 ? 'cuarto' : m === 30 ? 'media' : NUM[m]}`;
-        return text.charAt(0).toUpperCase() + text.slice(1);
+        if (opt.h24) { return window.CLASSTOOLS_CONTENT.clock(t); }
+        const d = t % 720;
+        return window.CLASSTOOLS_CONTENT.clock(d < 60 ? d + 720 : d);
     };
 
     const MODE_LEVEL = { early: 'h', primary: 'quarter', secondary: 'five', advanced: 'minute' };

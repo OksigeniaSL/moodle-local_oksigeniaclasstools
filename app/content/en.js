@@ -1,0 +1,103 @@
+// Content of the games and materials in English: letters, keyboard, words, pairs, the time in words and the examples.
+// Every language has its file with the same keys (see README.md in this folder); Moodle loads the user's one.
+//
+// @copyright 2026 Oksigenia <dev@oksigenia.cc>
+// @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+'use strict';
+window.CLASSTOOLS_CONTENT = {
+    lang: 'en',
+    decimal: '.',
+    alphabet: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+    fold: { Á: 'A', À: 'A', Ä: 'A', Â: 'A', Å: 'A', É: 'E', È: 'E', Ë: 'E', Ê: 'E', Í: 'I', Ì: 'I', Ï: 'I', Î: 'I', Ó: 'O', Ò: 'O', Ö: 'O', Ô: 'O',
+        Ú: 'U', Ù: 'U', Ü: 'U', Û: 'U', Ç: 'C', Ñ: 'N' },
+    keyboard: ['QWERTYUIOP', 'ASDFGHJKL', 'ZXCVBNM'],
+    vowels: 'AEIOU',
+    stopOut: 'QXYZ',
+    words: {
+        long: ['ELEPHANT', 'GIRAFFE', 'BUTTERFLY', 'CROCODILE', 'PENGUIN', 'TORTOISE', 'DOLPHIN', 'KANGAROO', 'SQUIRREL', 'OCTOPUS',
+            'VOLCANO', 'MOUNTAIN', 'OCEAN', 'PLANET', 'RAINBOW', 'THUNDERSTORM', 'WATERFALL', 'DESERT', 'FOREST', 'ISLAND',
+            'WHITEBOARD', 'BACKPACK', 'NOTEBOOK', 'COMPUTER', 'LIBRARY', 'SCISSORS', 'CALENDAR', 'DICTIONARY', 'PLAYGROUND', 'PENCIL',
+            'BICYCLE', 'HELICOPTER', 'SUBMARINE', 'TELESCOPE', 'GUITAR', 'TRUMPET', 'CHOCOLATE', 'STRAWBERRY', 'BANANA', 'WATERMELON',
+            'ROBOT', 'ASTRONAUT', 'CASTLE', 'DINOSAUR', 'PYRAMID', 'COMPASS', 'LIGHTHOUSE', 'UMBRELLA', 'SPIDERWEB', 'SNOWFLAKE'],
+        five: ['APPLE', 'BEACH', 'CLOUD', 'GREEN', 'CHAIR', 'PIANO', 'TIGER', 'ZEBRA', 'HOUSE', 'MOUSE', 'HORSE', 'SNAKE', 'LEMON',
+            'MANGO', 'PEACH', 'GRAPE', 'BREAD', 'WATER', 'PLANT', 'STONE', 'RIVER', 'EARTH', 'SPACE', 'LIGHT', 'NIGHT', 'SOUND',
+            'MUSIC', 'PAPER', 'CLOCK', 'TRAIN', 'PLANE', 'TRUCK', 'SHEEP', 'WHALE', 'SHARK', 'EAGLE', 'ROBOT', 'TOWER', 'CHALK',
+            'BOARD', 'STORY', 'SMILE', 'HAPPY', 'TABLE', 'GLASS', 'SPOON', 'FRUIT', 'OCEAN'],
+    },
+    colours: ['Red', 'Blue', 'Green', 'Yellow', 'Purple', 'Orange', 'Pink', 'Brown', 'Black', 'White', 'Grey', 'Light blue'],
+    numbers: ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen',
+        'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen', 'twenty'],
+    opposites: [['tall', 'short'], ['big', 'small'], ['cold', 'hot'], ['day', 'night'], ['open', 'close'], ['fast', 'slow'],
+        ['full', 'empty'], ['up', 'down'], ['inside', 'outside'], ['many', 'few'], ['new', 'old'], ['light', 'dark'],
+        ['win', 'lose'], ['come in', 'go out'], ['hard', 'soft'], ['clean', 'dirty']],
+    elements: ['Hydrogen', 'Helium', 'Lithium', 'Carbon', 'Nitrogen', 'Oxygen', 'Fluorine', 'Neon', 'Sodium', 'Magnesium', 'Aluminium',
+        'Silicon', 'Phosphorus', 'Sulfur', 'Chlorine', 'Argon', 'Potassium', 'Calcium', 'Iron', 'Copper', 'Zinc', 'Silver', 'Tin', 'Iodine',
+        'Gold', 'Mercury', 'Lead', 'Uranium'],
+    units: [['Length', 'metre (m)'], ['Mass', 'kilogram (kg)'], ['Time', 'second (s)'], ['Temperature', 'kelvin (K)'],
+        ['Electric current', 'ampere (A)'], ['Amount of substance', 'mole (mol)'], ['Luminous intensity', 'candela (cd)'],
+        ['Force', 'newton (N)'], ['Energy', 'joule (J)'], ['Power', 'watt (W)'], ['Pressure', 'pascal (Pa)'], ['Frequency', 'hertz (Hz)'],
+        ['Electric charge', 'coulomb (C)'], ['Voltage', 'volt (V)'], ['Electrical resistance', 'ohm (Ω)']],
+    prefixes: [['tera (T)', '10¹²'], ['giga (G)', '10⁹'], ['mega (M)', '10⁶'], ['kilo (k)', '10³'], ['hecto (h)', '10²'], ['deca (da)', '10¹'],
+        ['deci (d)', '10⁻¹'], ['centi (c)', '10⁻²'], ['milli (m)', '10⁻³'], ['micro (µ)', '10⁻⁶'], ['nano (n)', '10⁻⁹'], ['pico (p)', '10⁻¹²']],
+    formulas: [['H₂O', 'Water'], ['CO₂', 'Carbon dioxide'], ['NaCl', 'Sodium chloride'], ['NH₃', 'Ammonia'], ['CH₄', 'Methane'],
+        ['H₂SO₄', 'Sulfuric acid'], ['HCl', 'Hydrochloric acid'], ['NaOH', 'Sodium hydroxide'], ['CaCO₃', 'Calcium carbonate'],
+        ['O₃', 'Ozone'], ['C₆H₁₂O₆', 'Glucose'], ['HNO₃', 'Nitric acid'], ['CO', 'Carbon monoxide'], ['H₂O₂', 'Hydrogen peroxide'],
+        ['C₂H₅OH', 'Ethanol'], ['Fe₂O₃', 'Iron(III) oxide']],
+    laws: [['F = m·a', 'Newton\'s second law'], ['E = m·c²', 'Mass–energy equivalence'], ['V = I·R', 'Ohm\'s law'],
+        ['p·V = n·R·T', 'Ideal gas law'], ['F = G·m₁·m₂/r²', 'Universal gravitation'], ['F = k·q₁·q₂/r²', 'Coulomb\'s law'],
+        ['E = h·f', 'Energy of a photon'], ['p = m·v', 'Momentum'], ['Ek = ½·m·v²', 'Kinetic energy'],
+        ['Ep = m·g·h', 'Gravitational potential energy'], ['W = F·d', 'Work'], ['P = W/t', 'Power'], ['ρ = m/V', 'Density'],
+        ['v = λ·f', 'Speed of a wave'], ['F = −k·x', 'Hooke\'s law']],
+    functions: ['y = x²', 'y = x³', 'y = √x', 'y = 1/x', 'y = sin x', 'y = cos x', 'y = eˣ', 'y = ln x', 'y = |x|', 'y = 2x + 1', 'y = −x²', 'y = x'],
+    derivatives: [['x²', '2x'], ['x³', '3x²'], ['sin x', 'cos x'], ['cos x', '−sin x'], ['ln x', '1/x'], ['√x', '1 / (2√x)'],
+        ['1/x', '−1/x²'], ['tan x', '1 / cos² x'], ['5x', '5'], ['e²ˣ', '2e²ˣ'], ['x⁴', '4x³']],
+    integrals: [['x dx', 'x²/2 + C'], ['1/x dx', 'ln|x| + C'], ['eˣ dx', 'eˣ + C'], ['cos x dx', 'sin x + C'],
+        ['sin x dx', '−cos x + C'], ['3x² dx', 'x³ + C'], ['1/(1 + x²) dx', 'arctan x + C'], ['1/√(1 − x²) dx', 'arcsin x + C'],
+        ['1/cos² x dx', 'tan x + C'], ['aˣ dx', 'aˣ/ln a + C'], ['k dx', 'kx + C'], ['1/(2√x) dx', '√x + C']],
+    groups: [['–OH', 'Alcohol'], ['–CHO', 'Aldehyde'], ['–CO–', 'Ketone'], ['–COOH', 'Carboxylic acid'], ['–COO–', 'Ester'],
+        ['–O–', 'Ether'], ['–NH₂', 'Amine'], ['–CONH₂', 'Amide'], ['–C≡N', 'Nitrile'], ['–NO₂', 'Nitro compound'],
+        ['C=C', 'Alkene'], ['C≡C', 'Alkyne'], ['–X (F, Cl, Br, I)', 'Halide']],
+    constants: [['c = 3.00·10⁸ m/s', 'Speed of light'], ['h = 6.63·10⁻³⁴ J·s', 'Planck constant'],
+        ['G = 6.67·10⁻¹¹ N·m²/kg²', 'Gravitational constant'], ['e = 1.60·10⁻¹⁹ C', 'Elementary charge'],
+        ['NA = 6.02·10²³ mol⁻¹', 'Avogadro constant'], ['R = 8.31 J/(mol·K)', 'Gas constant'],
+        ['k = 1.38·10⁻²³ J/K', 'Boltzmann constant'], ['g = 9.81 m/s²', 'Gravity on Earth'],
+        ['mₑ = 9.11·10⁻³¹ kg', 'Mass of the electron'], ['mₚ = 1.67·10⁻²⁷ kg', 'Mass of the proton'],
+        ['ε₀ = 8.85·10⁻¹² F/m', 'Vacuum permittivity'], ['μ₀ = 4π·10⁻⁷ T·m/A', 'Vacuum permeability']],
+    greek: [['α', 'alpha'], ['β', 'beta'], ['γ', 'gamma'], ['δ', 'delta'], ['ε', 'epsilon'], ['θ', 'theta'], ['λ', 'lambda'],
+        ['μ', 'mu'], ['π', 'pi'], ['ρ', 'rho'], ['σ', 'sigma'], ['φ', 'phi'], ['ω', 'omega']],
+    // «Quarter past three», «Twenty to four», «Seven minutes past nine», «Twelve o'clock».
+    clock: (t) => {
+        const N = ['twelve', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen',
+            'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen', 'twenty', 'twenty-one', 'twenty-two', 'twenty-three',
+            'twenty-four', 'twenty-five', 'twenty-six', 'twenty-seven', 'twenty-eight', 'twenty-nine'];
+        let h = Math.floor(t / 60) % 12, m = t % 60, to = false;
+        if (m > 30) { h = (h + 1) % 12; m = 60 - m; to = true; }
+        let text;
+        if (m === 0) { text = `${N[h]} o'clock`; }
+        else if (m === 15) { text = `quarter ${to ? 'to' : 'past'} ${N[h]}`; }
+        else if (m === 30) { text = `half past ${N[h]}`; }
+        else { text = `${m === 1 ? 'one minute' : (m % 5 === 0 ? N[m] : `${N[m]} minutes`)} ${to ? 'to' : 'past'} ${N[h]}`; }
+        return text.charAt(0).toUpperCase() + text.slice(1);
+    },
+    rosco: [
+        ['A', 's', 'Fruit that can be red or green and grows on trees', 'Apple'], ['B', 's', 'Vehicle with two wheels that moves with pedals', 'Bicycle'],
+        ['C', 's', 'Animal that purrs and says miaow', 'Cat'], ['D', 's', 'Huge reptile that lived millions of years ago', 'Dinosaur'],
+        ['E', 's', 'Animal with a trunk that lives in Africa and Asia', 'Elephant'], ['F', 's', 'Green animal that hops and croaks', 'Frog'],
+        ['G', 's', 'Animal with a very long neck', 'Giraffe'], ['H', 's', 'Animal that neighs and can be ridden', 'Horse'],
+        ['I', 's', 'Frozen water', 'Ice'], ['J', 's', 'Sweet spread made with fruit and sugar', 'Jam'],
+        ['K', 's', 'Small fruit, brown and hairy outside, green inside', 'Kiwi'], ['L', 's', 'Yellow fruit with a sour taste', 'Lemon'],
+        ['M', 's', 'Natural satellite of the Earth', 'Moon'], ['N', 's', 'Time of the day when it is dark and we sleep', 'Night'],
+        ['O', 's', 'Huge mass of salt water that covers most of the Earth', 'Ocean'],
+        ['P', 's', 'Black and white bird that lives near the South Pole and cannot fly', 'Penguin'],
+        ['Q', 's', 'The wife of a king', 'Queen'], ['R', 's', 'Arc of colours in the sky after the rain', 'Rainbow'],
+        ['S', 's', 'Star that gives us light and heat', 'Sun'], ['T', 's', 'Animal with a shell that walks very slowly', 'Tortoise'],
+        ['U', 's', 'We open it when it rains', 'Umbrella'], ['V', 's', 'Mountain that can throw out lava', 'Volcano'],
+        ['W', 's', 'The coldest season of the year', 'Winter'], ['X', 's', 'Picture of your bones taken at the hospital', 'X-ray'],
+        ['Y', 's', 'Colour of a banana', 'Yellow'], ['Z', 's', 'Striped animal that looks like a horse', 'Zebra'],
+    ],
+    lock: {
+        name: 'Example lock', final: 'Well done! You opened the lock together.',
+        clues: ['The first number is how many legs a cat has.', 'The second, the fingers of one hand minus four.',
+            'The third, how many eyes a person has.', 'The fourth, the days in a week.'],
+    },
+};

@@ -30,10 +30,11 @@
         dieKinds: t('ch_die_kinds'), allOut: t('ch_all_out'),
     };
     const PALETTE = [['#164281'], ['#ce1423'], ['#067e36'], ['#fbbe17', true], ['#5b2fb8'], ['#0e7c86'], ['#c2410c'], ['#0f2f5e']];
-    // Content in Spanish: per-language content comes in a later step.
-    const LETTERS = 'ABCDEFGHIJKLMNÑOPQRSTUVWXYZ'.split('');
-    const STOP_OUT = ['K', 'Ñ', 'Q', 'W', 'X', 'Y'];
-    const fmt = (n) => String(n).replace('.', ',');
+    // Letters and decimal mark of the user's language (window.CLASSTOOLS_CONTENT).
+    const CONTENT = window.CLASSTOOLS_CONTENT;
+    const LETTERS = [...CONTENT.alphabet];
+    const STOP_OUT = [...CONTENT.stopOut];
+    const fmt = (n) => String(n).replace('.', CONTENT.decimal);
 
     // Extra sounds for these tools.
     core.sounds.wheeltick = (a) => core.click(a, 1250, 0, 0.08);
@@ -342,8 +343,7 @@
         dir4: { label: t('ch_d_arrows', 4), faces: ARROWS4 },
         dir8: { label: t('ch_d_arrows', 8), faces: ARROWS8 },
         colors: { label: t('ch_d_colours'), faces: COLORS.map((c) => c[0]) },
-        // Content in Spanish: per-language content comes in a later step.
-        vowels: { label: t('ch_d_vowels'), faces: ['A', 'E', 'I', 'O', 'U'] },
+        vowels: { label: t('ch_d_vowels'), faces: [...CONTENT.vowels] },
         letters: { label: t('ch_d_letters'), faces: LETTERS },
         custom: { label: t('ch_d_custom'), faces: [] },
     };

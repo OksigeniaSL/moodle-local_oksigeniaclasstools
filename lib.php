@@ -296,6 +296,32 @@ function local_oksigeniaclasstools_site(): array {
 }
 
 /**
+ * The content pack of the board for a language: its own (es_mx), its parent language (es), the base language, or
+ * English. Portuguese of Portugal takes the Brazilian one.
+ *
+ * @param string $lang Moodle language code.
+ * @return string File name in app/content.
+ */
+function local_oksigeniaclasstools_content_file(string $lang): string {
+    if (!preg_match('/^[a-z]+(_[a-z]+)*$/', $lang)) {
+        return 'en.js';
+    }
+    $candidates = [$lang];
+    if ($parent = get_parent_language($lang)) {
+        $candidates[] = $parent;
+    }
+    $candidates[] = strtok($lang, '_');
+    $candidates[] = ['pt' => 'pt_br'][strtok($lang, '_')] ?? 'en';
+    $candidates[] = 'en';
+    foreach ($candidates as $code) {
+        if (preg_match('/^[a-z]+(_[a-z]+)*$/', $code) && is_readable(__DIR__ . '/app/content/' . $code . '.js')) {
+            return $code . '.js';
+        }
+    }
+    return 'en.js';
+}
+
+/**
  * Outputs the classroom screen (the same one as the SCORM package), with the course data if there is any.
  *
  * @param array|null $data
@@ -303,6 +329,8 @@ function local_oksigeniaclasstools_site(): array {
 function local_oksigeniaclasstools_output(?array $data): void {
     global $OUTPUT;
     $html = file_get_contents(__DIR__ . '/app/index.html');
+    // The content of the games and materials (words, alphabet, keyboard, the time in words…) in the user's language.
+    $html = str_replace('content/es.js', 'content/' . local_oksigeniaclasstools_content_file(current_language()), $html);
     $base = (new moodle_url('/local/oksigeniaclasstools/app/'))->out(false);
     // The site's icon in the browser tab, as on any other page of the site (the one of the theme or of Appearance).
     $icon = $OUTPUT->favicon()->out(false);

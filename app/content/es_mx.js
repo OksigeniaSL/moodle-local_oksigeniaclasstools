@@ -1,0 +1,101 @@
+// Content of the games and materials in Spanish (Mexico): letters, keyboard, words, pairs, the time in words and the
+// examples. Every language has its file with the same keys (see README.md in this folder); Moodle loads the user's one.
+//
+// @copyright 2026 Oksigenia <dev@oksigenia.cc>
+// @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+'use strict';
+window.CLASSTOOLS_CONTENT = {
+    lang: 'es_mx',
+    decimal: '.',
+    alphabet: 'ABCDEFGHIJKLMNÑOPQRSTUVWXYZ',
+    fold: { Á: 'A', À: 'A', Ä: 'A', Â: 'A', É: 'E', È: 'E', Ë: 'E', Ê: 'E', Í: 'I', Ì: 'I', Ï: 'I', Î: 'I', Ó: 'O', Ò: 'O', Ö: 'O', Ô: 'O',
+        Ú: 'U', Ù: 'U', Ü: 'U', Û: 'U', Ç: 'C' },
+    keyboard: ['QWERTYUIOP', 'ASDFGHJKLÑ', 'ZXCVBNM'],
+    vowels: 'AEIOU',
+    stopOut: 'KÑQWXY',
+    words: { long: ['ELEFANTE', 'JIRAFA', 'MARIPOSA', 'COCODRILO', 'PINGÜINO', 'TORTUGA', 'DELFÍN', 'CANGURO', 'ARDILLA', 'CABALLO',
+            'VOLCÁN', 'MONTAÑA', 'OCÉANO', 'PLANETA', 'ESTRELLA', 'ARCOÍRIS', 'TORMENTA', 'CASCADA', 'DESIERTO', 'BOSQUE',
+            'PIZARRÓN', 'MOCHILA', 'CUADERNO', 'COMPUTADORA', 'BIBLIOTECA', 'TIJERAS', 'CALENDARIO', 'DICCIONARIO', 'RECREO', 'LÁPIZ',
+            'SACAPUNTAS', 'BICICLETA', 'HELICÓPTERO', 'SUBMARINO', 'TELESCOPIO', 'GUITARRA', 'TAMBOR', 'CHOCOLATE', 'NARANJA', 'PLÁTANO',
+            'SANDÍA', 'AGUACATE', 'DURAZNO', 'ROBOT', 'ASTRONAUTA', 'CASTILLO', 'DINOSAURIO', 'PIRÁMIDE', 'BRÚJULA', 'COLIBRÍ',
+            'PARAGUAS', 'TELARAÑA', 'MURCIÉLAGO'],
+        five: ['ÁRBOL', 'LIBRO', 'CERRO', 'PLAYA', 'NUBES', 'VERDE', 'SILLA', 'LÁPIZ', 'RELOJ', 'FRESA', 'LIMÓN', 'BARCO', 'CIELO',
+            'PLATO', 'CAMPO', 'ROBOT', 'MANGO', 'PIANO', 'TECLA', 'NIEVE', 'VOLAR', 'SALTO', 'PUNTO', 'TIGRE', 'CEBRA', 'PATIO',
+            'AVIÓN', 'QUESO', 'LECHE', 'HUEVO', 'MAPAS', 'PERRO', 'GATOS', 'NARIZ', 'RATÓN', 'BRAZO', 'DEDOS', 'CARTA', 'LLAVE',
+            'TORRE', 'HOJAS', 'CARRO', 'BOTAS', 'GRANO', 'MARZO', 'ELOTE', 'PASTO', 'PLUMA', 'PAPAS', 'DULCE'] },
+    colours: ['Rojo', 'Azul', 'Verde', 'Amarillo', 'Morado', 'Naranja', 'Rosa', 'Café', 'Negro', 'Blanco', 'Gris', 'Azul cielo'],
+    numbers: ['uno', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'siete', 'ocho', 'nueve', 'diez', 'once', 'doce', 'trece', 'catorce',
+        'quince', 'dieciséis', 'diecisiete', 'dieciocho', 'diecinueve', 'veinte'],
+    opposites: [['alto', 'bajo'], ['grande', 'chico'], ['frío', 'caliente'], ['día', 'noche'], ['abrir', 'cerrar'], ['rápido', 'lento'],
+        ['lleno', 'vacío'], ['arriba', 'abajo'], ['adentro', 'afuera'], ['mucho', 'poco'], ['nuevo', 'viejo'], ['claro', 'oscuro'],
+        ['ganar', 'perder'], ['entrar', 'salir'], ['duro', 'suave'], ['limpio', 'sucio']],
+    elements: ['Hidrógeno', 'Helio', 'Litio', 'Carbono', 'Nitrógeno', 'Oxígeno', 'Flúor', 'Neón', 'Sodio', 'Magnesio', 'Aluminio', 'Silicio', 'Fósforo', 'Azufre', 'Cloro', 'Argón', 'Potasio', 'Calcio', 'Hierro', 'Cobre', 'Zinc', 'Plata', 'Estaño', 'Yodo', 'Oro', 'Mercurio', 'Plomo', 'Uranio'],
+    units: [['Longitud', 'metro (m)'], ['Masa', 'kilogramo (kg)'], ['Tiempo', 'segundo (s)'], ['Temperatura', 'kelvin (K)'],
+        ['Corriente eléctrica', 'ampere (A)'], ['Cantidad de sustancia', 'mol (mol)'], ['Intensidad luminosa', 'candela (cd)'],
+        ['Fuerza', 'newton (N)'], ['Energía', 'joule (J)'], ['Potencia', 'watt (W)'], ['Presión', 'pascal (Pa)'], ['Frecuencia', 'hertz (Hz)'],
+        ['Carga eléctrica', 'coulomb (C)'], ['Voltaje', 'volt (V)'], ['Resistencia eléctrica', 'ohm (Ω)']],
+    prefixes: [['tera (T)', '10¹²'], ['giga (G)', '10⁹'], ['mega (M)', '10⁶'], ['kilo (k)', '10³'], ['hecto (h)', '10²'], ['deca (da)', '10¹'],
+        ['deci (d)', '10⁻¹'], ['centi (c)', '10⁻²'], ['mili (m)', '10⁻³'], ['micro (µ)', '10⁻⁶'], ['nano (n)', '10⁻⁹'], ['pico (p)', '10⁻¹²']],
+    formulas: [['H₂O', 'Agua'], ['CO₂', 'Dióxido de carbono'], ['NaCl', 'Cloruro de sodio'], ['NH₃', 'Amoniaco'], ['CH₄', 'Metano'],
+        ['H₂SO₄', 'Ácido sulfúrico'], ['HCl', 'Ácido clorhídrico'], ['NaOH', 'Hidróxido de sodio'], ['CaCO₃', 'Carbonato de calcio'],
+        ['O₃', 'Ozono'], ['C₆H₁₂O₆', 'Glucosa'], ['HNO₃', 'Ácido nítrico'], ['CO', 'Monóxido de carbono'], ['H₂O₂', 'Peróxido de hidrógeno'],
+        ['C₂H₅OH', 'Etanol'], ['Fe₂O₃', 'Óxido de hierro(III)']],
+    laws: [['F = m·a', 'Segunda ley de Newton'], ['E = m·c²', 'Equivalencia masa-energía'], ['V = I·R', 'Ley de Ohm'],
+        ['p·V = n·R·T', 'Ley de los gases ideales'], ['F = G·m₁·m₂/r²', 'Ley de la gravitación universal'], ['F = k·q₁·q₂/r²', 'Ley de Coulomb'],
+        ['E = h·f', 'Energía de un fotón'], ['p = m·v', 'Cantidad de movimiento'], ['Ec = ½·m·v²', 'Energía cinética'],
+        ['Ep = m·g·h', 'Energía potencial gravitacional'], ['W = F·d', 'Trabajo'], ['P = W/t', 'Potencia'], ['ρ = m/V', 'Densidad'],
+        ['v = λ·f', 'Velocidad de una onda'], ['F = −k·x', 'Ley de Hooke']],
+    functions: ['y = x²', 'y = x³', 'y = √x', 'y = 1/x', 'y = sen x', 'y = cos x', 'y = eˣ', 'y = ln x', 'y = |x|', 'y = 2x + 1', 'y = −x²', 'y = x'],
+    derivatives: [['x²', '2x'], ['x³', '3x²'], ['sen x', 'cos x'], ['cos x', '−sen x'], ['ln x', '1/x'], ['√x', '1 / (2√x)'],
+        ['1/x', '−1/x²'], ['tan x', '1 / cos² x'], ['5x', '5'], ['e²ˣ', '2e²ˣ'], ['x⁴', '4x³']],
+    integrals: [['x dx', 'x²/2 + C'], ['1/x dx', 'ln|x| + C'], ['eˣ dx', 'eˣ + C'], ['cos x dx', 'sen x + C'],
+        ['sen x dx', '−cos x + C'], ['3x² dx', 'x³ + C'], ['1/(1 + x²) dx', 'arctan x + C'], ['1/√(1 − x²) dx', 'arcsen x + C'],
+        ['1/cos² x dx', 'tan x + C'], ['aˣ dx', 'aˣ/ln a + C'], ['k dx', 'kx + C'], ['1/(2√x) dx', '√x + C']],
+    groups: [['–OH', 'Alcohol'], ['–CHO', 'Aldehído'], ['–CO–', 'Cetona'], ['–COOH', 'Ácido carboxílico'], ['–COO–', 'Éster'],
+        ['–O–', 'Éter'], ['–NH₂', 'Amina'], ['–CONH₂', 'Amida'], ['–C≡N', 'Nitrilo'], ['–NO₂', 'Nitrocompuesto'],
+        ['C=C', 'Alqueno'], ['C≡C', 'Alquino'], ['–X (F, Cl, Br, I)', 'Halogenuro']],
+    constants: [['c = 3.00·10⁸ m/s', 'Velocidad de la luz'], ['h = 6.63·10⁻³⁴ J·s', 'Constante de Planck'],
+        ['G = 6.67·10⁻¹¹ N·m²/kg²', 'Constante de gravitación universal'], ['e = 1.60·10⁻¹⁹ C', 'Carga elemental'],
+        ['NA = 6.02·10²³ mol⁻¹', 'Número de Avogadro'], ['R = 8.31 J/(mol·K)', 'Constante universal de los gases'],
+        ['k = 1.38·10⁻²³ J/K', 'Constante de Boltzmann'], ['g = 9.81 m/s²', 'Aceleración de la gravedad'],
+        ['mₑ = 9.11·10⁻³¹ kg', 'Masa del electrón'], ['mₚ = 1.67·10⁻²⁷ kg', 'Masa del protón'],
+        ['ε₀ = 8.85·10⁻¹² F/m', 'Permitividad del vacío'], ['μ₀ = 4π·10⁻⁷ T·m/A', 'Permeabilidad del vacío']],
+    greek: [['α', 'alfa'], ['β', 'beta'], ['γ', 'gamma'], ['δ', 'delta'], ['ε', 'épsilon'], ['θ', 'theta'], ['λ', 'lambda'],
+        ['μ', 'mu'], ['π', 'pi'], ['ρ', 'rho'], ['σ', 'sigma'], ['φ', 'fi'], ['ω', 'omega']],
+    clock: (t) => {
+        const HOURS = ['doce', 'una', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'siete', 'ocho', 'nueve', 'diez', 'once'];
+        const NUM = ['', 'uno', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'siete', 'ocho', 'nueve', 'diez', 'once', 'doce', 'trece', 'catorce',
+            'quince', 'dieciséis', 'diecisiete', 'dieciocho', 'diecinueve', 'veinte', 'veintiuno', 'veintidós', 'veintitrés', 'veinticuatro',
+            'veinticinco', 'veintiséis', 'veintisiete', 'veintiocho', 'veintinueve'];
+        let h = Math.floor(t / 60) % 12, m = t % 60, para = false;
+        if (m > 30) { h = (h + 1) % 12; m = 60 - m; para = true; }
+        const hour = `${h === 1 ? 'la' : 'las'} ${HOURS[h]}`;
+        let text;
+        if (m === 0) { text = `${hour} en punto`; }
+        else if (para) { text = `${m === 15 ? 'cuarto' : m === 1 ? 'un minuto' : NUM[m]} para ${hour}`; }
+        else { text = `${hour} y ${m === 15 ? 'cuarto' : m === 30 ? 'media' : NUM[m]}`; }
+        return text.charAt(0).toUpperCase() + text.slice(1);
+    },
+    rosco: [
+            ['A', 's', 'Insecto que hace miel', 'Abeja'], ['B', 's', 'Vehículo de dos ruedas que se mueve con pedales', 'Bicicleta'],
+            ['C', 's', 'Animal que carga su casa en la espalda y deja un rastro brillante', 'Caracol'],
+            ['D', 's', 'Reptil enorme que vivió hace millones de años', 'Dinosaurio'],
+            ['E', 's', 'Animal con trompa que vive en África y en Asia', 'Elefante'],
+            ['F', 's', 'Fruta roja y pequeña con las semillas por fuera', 'Fresa'], ['G', 's', 'Animal que maúlla', 'Gato'],
+            ['H', 's', 'Agua congelada', 'Hielo'], ['I', 's', 'Porción de tierra rodeada de agua por todas partes', 'Isla'],
+            ['J', 's', 'Bebida que sale al exprimir una naranja', 'Jugo'], ['K', 's', 'Fruta de cáscara café y peluda, verde por dentro', 'Kiwi'],
+            ['L', 's', 'Satélite natural de la Tierra', 'Luna'], ['M', 's', 'Gran masa de agua salada que rodea las islas', 'Mar'],
+            ['N', 's', 'Agua helada que cae del cielo en copos blancos', 'Nieve'],
+            ['Ñ', 'c', 'Animal pequeño de ocho patas que teje telarañas para atrapar insectos', 'Araña'],
+            ['O', 's', 'Estación del año en la que se caen las hojas de los árboles', 'Otoño'],
+            ['P', 's', 'Ave blanca y negra que vive en el Polo Sur y no vuela', 'Pingüino'],
+            ['Q', 's', 'Alimento que se hace con leche cuajada', 'Queso'], ['R', 's', 'Lo usamos para saber la hora', 'Reloj'],
+            ['S', 's', 'Estrella que nos da luz y calor', 'Sol'], ['T', 's', 'Animal con caparazón que camina muy despacio', 'Tortuga'],
+            ['U', 's', 'Fruta pequeña que crece en racimos', 'Uva'], ['V', 's', 'Montaña que puede echar lava', 'Volcán'],
+            ['W', 's', 'Conexión a internet sin cables', 'Wifi'],
+            ['X', 'c', 'Carro con chofer que nos lleva a donde le pidamos, pagando', 'Taxi'],
+            ['Y', 's', 'Alimento hecho con leche que se come con cuchara', 'Yogurt'], ['Z', 's', 'Calzado que nos ponemos en los pies', 'Zapato'],
+        ],
+    lock: { name: 'Candado de ejemplo', final: '¡Muy bien! Abrieron el candado entre todos.', clues: ['El primer número es cuántas patas tiene un gato.', 'El segundo, los dedos de una mano menos cuatro.',
+            'El tercero, cuántos ojos tiene una persona.', 'El cuarto, los días que tiene una semana.'] },
+};

@@ -1,0 +1,103 @@
+// Content of the games and materials in Portuguese (Brazil): letters, keyboard, words, pairs, the time in words and the
+// examples. Every language has its file with the same keys (see README.md in this folder); Moodle loads the user's one.
+//
+// @copyright 2026 Oksigenia <dev@oksigenia.cc>
+// @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+'use strict';
+window.CLASSTOOLS_CONTENT = {
+    lang: 'pt_br',
+    decimal: ',',
+    alphabet: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+    fold: { Á: 'A', À: 'A', Â: 'A', Ã: 'A', Ä: 'A', É: 'E', È: 'E', Ê: 'E', Ë: 'E', Í: 'I', Ì: 'I', Î: 'I', Ï: 'I', Ó: 'O', Ò: 'O', Ô: 'O',
+        Õ: 'O', Ö: 'O', Ú: 'U', Ù: 'U', Û: 'U', Ü: 'U', Ç: 'C', Ñ: 'N' },
+    keyboard: ['QWERTYUIOP', 'ASDFGHJKL', 'ZXCVBNM'],
+    vowels: 'AEIOU',
+    stopOut: 'KWXYZ',
+    words: { long: ['ELEFANTE', 'GIRAFA', 'BORBOLETA', 'CROCODILO', 'PINGUIM', 'TARTARUGA', 'GOLFINHO', 'CANGURU', 'ESQUILO', 'CAVALO',
+            'VULCÃO', 'MONTANHA', 'OCEANO', 'PLANETA', 'ESTRELA', 'TEMPESTADE', 'RELÂMPAGO', 'CACHOEIRA', 'DESERTO', 'FLORESTA',
+            'LOUSA', 'MOCHILA', 'CADERNO', 'COMPUTADOR', 'BIBLIOTECA', 'TESOURA', 'CALENDÁRIO', 'DICIONÁRIO', 'RECREIO', 'LÁPIS',
+            'BORRACHA', 'APONTADOR', 'BICICLETA', 'HELICÓPTERO', 'SUBMARINO', 'TELESCÓPIO', 'VIOLÃO', 'TAMBOR', 'CHOCOLATE', 'MORANGO',
+            'BANANA', 'MELANCIA', 'ABACAXI', 'ROBÔ', 'ASTRONAUTA', 'CASTELO', 'DINOSSAURO', 'PIRÂMIDE', 'BÚSSOLA', 'FAROL',
+            'MORCEGO', 'JACARÉ'],
+        five: ['LIVRO', 'PRAIA', 'NUVEM', 'VERDE', 'LÁPIS', 'TIGRE', 'ZEBRA', 'PEIXE', 'PORCO', 'COBRA', 'PANDA', 'POMBO', 'FRUTA',
+            'MANGA', 'LIMÃO', 'LEITE', 'MILHO', 'ARROZ', 'MELÃO', 'AMORA', 'CHUVA', 'TERRA', 'PEDRA', 'FOLHA', 'CAMPO', 'VENTO',
+            'AREIA', 'PAPEL', 'RÉGUA', 'LOUSA', 'TINTA', 'CARTA', 'PIANO', 'BARCO', 'CARRO', 'AVIÃO', 'CHAVE', 'PORTA', 'CAIXA',
+            'PRATO', 'GARFO', 'TORRE', 'NARIZ', 'BRAÇO', 'DEDOS', 'OLHOS', 'DENTE', 'FELIZ', 'NADAR', 'PULAR', 'MARÇO'] },
+    colours: ['Vermelho', 'Azul', 'Verde', 'Amarelo', 'Roxo', 'Laranja', 'Rosa', 'Marrom', 'Preto', 'Branco', 'Cinza', 'Azul-claro'],
+    numbers: ['um', 'dois', 'três', 'quatro', 'cinco', 'seis', 'sete', 'oito', 'nove', 'dez', 'onze', 'doze', 'treze', 'quatorze',
+        'quinze', 'dezesseis', 'dezessete', 'dezoito', 'dezenove', 'vinte'],
+    opposites: [['alto', 'baixo'], ['grande', 'pequeno'], ['frio', 'quente'], ['dia', 'noite'], ['abrir', 'fechar'], ['rápido', 'lento'],
+        ['cheio', 'vazio'], ['em cima', 'embaixo'], ['dentro', 'fora'], ['muito', 'pouco'], ['novo', 'velho'], ['claro', 'escuro'],
+        ['ganhar', 'perder'], ['entrar', 'sair'], ['duro', 'mole'], ['limpo', 'sujo']],
+    elements: ['Hidrogênio', 'Hélio', 'Lítio', 'Carbono', 'Nitrogênio', 'Oxigênio', 'Flúor', 'Neônio', 'Sódio', 'Magnésio', 'Alumínio', 'Silício', 'Fósforo', 'Enxofre', 'Cloro', 'Argônio', 'Potássio', 'Cálcio', 'Ferro', 'Cobre', 'Zinco', 'Prata', 'Estanho', 'Iodo', 'Ouro', 'Mercúrio', 'Chumbo', 'Urânio'],
+    units: [['Comprimento', 'metro (m)'], ['Massa', 'quilograma (kg)'], ['Tempo', 'segundo (s)'], ['Temperatura', 'kelvin (K)'],
+        ['Corrente elétrica', 'ampere (A)'], ['Quantidade de substância', 'mol (mol)'], ['Intensidade luminosa', 'candela (cd)'],
+        ['Força', 'newton (N)'], ['Energia', 'joule (J)'], ['Potência', 'watt (W)'], ['Pressão', 'pascal (Pa)'], ['Frequência', 'hertz (Hz)'],
+        ['Carga elétrica', 'coulomb (C)'], ['Tensão elétrica', 'volt (V)'], ['Resistência elétrica', 'ohm (Ω)']],
+    prefixes: [['tera (T)', '10¹²'], ['giga (G)', '10⁹'], ['mega (M)', '10⁶'], ['quilo (k)', '10³'], ['hecto (h)', '10²'], ['deca (da)', '10¹'],
+        ['deci (d)', '10⁻¹'], ['centi (c)', '10⁻²'], ['mili (m)', '10⁻³'], ['micro (µ)', '10⁻⁶'], ['nano (n)', '10⁻⁹'], ['pico (p)', '10⁻¹²']],
+    formulas: [['H₂O', 'Água'], ['CO₂', 'Dióxido de carbono'], ['NaCl', 'Cloreto de sódio'], ['NH₃', 'Amônia'], ['CH₄', 'Metano'],
+        ['H₂SO₄', 'Ácido sulfúrico'], ['HCl', 'Ácido clorídrico'], ['NaOH', 'Hidróxido de sódio'], ['CaCO₃', 'Carbonato de cálcio'],
+        ['O₃', 'Ozônio'], ['C₆H₁₂O₆', 'Glicose'], ['HNO₃', 'Ácido nítrico'], ['CO', 'Monóxido de carbono'], ['H₂O₂', 'Peróxido de hidrogênio'],
+        ['C₂H₅OH', 'Etanol'], ['Fe₂O₃', 'Óxido de ferro(III)']],
+    laws: [['F = m·a', 'Segunda lei de Newton'], ['E = m·c²', 'Equivalência massa-energia'], ['U = R·i', 'Primeira lei de Ohm'],
+        ['p·V = n·R·T', 'Equação de Clapeyron'], ['F = G·m₁·m₂/r²', 'Lei da gravitação universal'], ['F = k·q₁·q₂/r²', 'Lei de Coulomb'],
+        ['E = h·f', 'Energia de um fóton'], ['Q = m·v', 'Quantidade de movimento'], ['Ec = ½·m·v²', 'Energia cinética'],
+        ['Ep = m·g·h', 'Energia potencial gravitacional'], ['τ = F·d', 'Trabalho'], ['P = τ/Δt', 'Potência'], ['d = m/V', 'Densidade'],
+        ['v = λ·f', 'Velocidade de uma onda'], ['F = −k·x', 'Lei de Hooke']],
+    functions: ['y = x²', 'y = x³', 'y = √x', 'y = 1/x', 'y = sen x', 'y = cos x', 'y = eˣ', 'y = ln x', 'y = |x|', 'y = 2x + 1', 'y = −x²', 'y = x'],
+    derivatives: [['x²', '2x'], ['x³', '3x²'], ['sen x', 'cos x'], ['cos x', '−sen x'], ['ln x', '1/x'], ['√x', '1 / (2√x)'],
+        ['1/x', '−1/x²'], ['tg x', '1 / cos² x'], ['5x', '5'], ['e²ˣ', '2e²ˣ'], ['x⁴', '4x³']],
+    integrals: [['x dx', 'x²/2 + C'], ['1/x dx', 'ln|x| + C'], ['eˣ dx', 'eˣ + C'], ['cos x dx', 'sen x + C'],
+        ['sen x dx', '−cos x + C'], ['3x² dx', 'x³ + C'], ['1/(1 + x²) dx', 'arctg x + C'], ['1/√(1 − x²) dx', 'arcsen x + C'],
+        ['1/cos² x dx', 'tg x + C'], ['aˣ dx', 'aˣ/ln a + C'], ['k dx', 'kx + C'], ['1/(2√x) dx', '√x + C']],
+    groups: [['–OH', 'Álcool'], ['–CHO', 'Aldeído'], ['–CO–', 'Cetona'], ['–COOH', 'Ácido carboxílico'], ['–COO–', 'Éster'],
+        ['–O–', 'Éter'], ['–NH₂', 'Amina'], ['–CONH₂', 'Amida'], ['–C≡N', 'Nitrila'], ['–NO₂', 'Nitrocomposto'],
+        ['C=C', 'Alceno'], ['C≡C', 'Alcino'], ['–X (F, Cl, Br, I)', 'Haleto orgânico']],
+    constants: [['c = 3,00·10⁸ m/s', 'Velocidade da luz'], ['h = 6,63·10⁻³⁴ J·s', 'Constante de Planck'],
+        ['G = 6,67·10⁻¹¹ N·m²/kg²', 'Constante da gravitação universal'], ['e = 1,60·10⁻¹⁹ C', 'Carga elementar'],
+        ['NA = 6,02·10²³ mol⁻¹', 'Constante de Avogadro'], ['R = 8,31 J/(mol·K)', 'Constante universal dos gases'],
+        ['k = 1,38·10⁻²³ J/K', 'Constante de Boltzmann'], ['g = 9,81 m/s²', 'Aceleração da gravidade'],
+        ['mₑ = 9,11·10⁻³¹ kg', 'Massa do elétron'], ['mₚ = 1,67·10⁻²⁷ kg', 'Massa do próton'],
+        ['ε₀ = 8,85·10⁻¹² F/m', 'Permissividade do vácuo'], ['μ₀ = 4π·10⁻⁷ T·m/A', 'Permeabilidade do vácuo']],
+    greek: [['α', 'alfa'], ['β', 'beta'], ['γ', 'gama'], ['δ', 'delta'], ['ε', 'épsilon'], ['θ', 'teta'], ['λ', 'lambda'],
+        ['μ', 'mi'], ['π', 'pi'], ['ρ', 'rô'], ['σ', 'sigma'], ['φ', 'fi'], ['ω', 'ômega']],
+    clock: (t) => {
+        const HOURS = ['doze', 'uma', 'duas', 'três', 'quatro', 'cinco', 'seis', 'sete', 'oito', 'nove', 'dez', 'onze'];
+        const NUM = ['', 'um', 'dois', 'três', 'quatro', 'cinco', 'seis', 'sete', 'oito', 'nove', 'dez', 'onze', 'doze', 'treze', 'quatorze',
+            'quinze', 'dezesseis', 'dezessete', 'dezoito', 'dezenove', 'vinte', 'vinte e um', 'vinte e dois', 'vinte e três', 'vinte e quatro',
+            'vinte e cinco', 'vinte e seis', 'vinte e sete', 'vinte e oito', 'vinte e nove'];
+        let h = Math.floor(t / 60) % 24, m = t % 60, para = false;
+        if (m > 30) { h = (h + 1) % 24; m = 60 - m; para = true; }
+        const name = h === 0 ? 'meia-noite' : h === 12 ? 'meio-dia' : HOURS[h % 12];
+        const article = h === 0 ? 'a meia-noite' : h === 12 ? 'o meio-dia' : `${h % 12 === 1 ? 'a' : 'as'} ${name}`;
+        const mins = m === 1 ? 'um minuto' : m === 30 ? 'meia' : NUM[m];
+        let text;
+        if (m === 0) { text = h % 12 === 0 ? name : `${name} ${h % 12 === 1 ? 'hora' : 'horas'}`; }
+        else if (para) { text = `${mins} para ${article}`; }
+        else { text = `${name} e ${mins}`; }
+        return text.charAt(0).toUpperCase() + text.slice(1);
+    },
+    rosco: [
+            ['A', 's', 'Inseto que produz mel', 'Abelha'], ['B', 's', 'Veículo de duas rodas que anda com pedais', 'Bicicleta'],
+            ['C', 's', 'Animal que carrega a casa nas costas e deixa um rastro brilhante', 'Caracol'],
+            ['D', 's', 'Réptil enorme que viveu há milhões de anos', 'Dinossauro'],
+            ['E', 's', 'Animal com tromba que vive na África e na Ásia', 'Elefante'],
+            ['F', 's', 'Inseto pequeno que vive em grupo e carrega pedacinhos de folhas', 'Formiga'], ['G', 's', 'Animal que mia', 'Gato'],
+            ['H', 's', 'Animal enorme que passa boa parte do dia dentro da água dos rios', 'Hipopótamo'],
+            ['I', 's', 'Porção de terra cercada de água por todos os lados', 'Ilha'],
+            ['J', 's', 'Abertura na parede por onde entram a luz e o ar', 'Janela'], ['K', 's', 'Fruta marrom e peluda por fora, verde por dentro', 'Kiwi'],
+            ['L', 's', 'Satélite natural da Terra', 'Lua'], ['M', 's', 'Grande massa de água salgada que cerca as ilhas', 'Mar'],
+            ['N', 's', 'Água congelada que cai do céu em flocos brancos', 'Neve'], ['O', 's', 'Animal que nos dá lã', 'Ovelha'],
+            ['P', 's', 'Ave preta e branca que vive no Polo Sul e não voa', 'Pinguim'],
+            ['Q', 's', 'Alimento feito com leite coalhado', 'Queijo'], ['R', 's', 'Usamos para saber as horas', 'Relógio'],
+            ['S', 's', 'Estrela que nos dá luz e calor', 'Sol'], ['T', 's', 'Animal com casco que anda muito devagar', 'Tartaruga'],
+            ['U', 's', 'Fruta pequena que cresce em cachos', 'Uva'], ['V', 's', 'Montanha que pode lançar lava', 'Vulcão'],
+            ['W', 's', 'Conexão com a internet sem fio', 'Wi-fi'],
+            ['X', 's', 'Recipiente pequeno com asa em que tomamos leite ou chá', 'Xícara'],
+            ['Y', 's', 'Prática de posturas e respiração que relaxa o corpo e a mente', 'Yoga'],
+            ['Z', 's', 'Animal listrado parecido com um cavalo', 'Zebra'],
+        ],
+    lock: { name: 'Cadeado de exemplo', final: 'Muito bem! Vocês abriram o cadeado juntos.', clues: ['O primeiro número é quantas patas tem um gato.', 'O segundo, os dedos de uma mão menos quatro.',
+            'O terceiro, quantos olhos tem uma pessoa.', 'O quarto, os dias de uma semana.'] },
+};

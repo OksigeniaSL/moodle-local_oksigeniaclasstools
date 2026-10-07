@@ -1227,6 +1227,7 @@
             anuncia(t('sm_patience_gone'));
         } else if (sm.agotada && sm.paciencia >= 50) { sm.agotada = false; }
         smPintaExtra();
+        smOndas(ahora); smRastro(ahora);
         const redondo = Math.round(sm.suave / 5) * 5;
         if (redondo !== sm.ultimoAria) { sm.ultimoAria = redondo; $('#s-medidor').setAttribute('aria-valuenow', String(redondo)); }
         sm.rf = requestAnimationFrame(smBucle);
@@ -1243,6 +1244,54 @@
         $('#s-paciencia').setAttribute('aria-valuenow', String(p));
         $('#s-paciencia-titulo').textContent = sm.agotada ? t('sm_patience_out') : t('sm_patience');
         $('#s-extra').classList.toggle('agotada', sm.agotada);
+    };
+    // Extras que el profesor elige (todos apagados al principio): ondas que salen de la luz cuando sube el ruido, el
+    // rastro del último minuto y una cara en la luz encendida para los pequeños.
+    const smOp = Object.assign({ ondas: false, rastro: false, cara: false }, lee('semaforo-extras', {}));
+    const smPintaOp = () => {
+        $('#s-caja').classList.toggle('con-cara', smOp.cara);
+        $('#s-rastro-caja').hidden = !smOp.rastro;
+        ['ondas', 'rastro', 'cara'].forEach((k) => { $('#s-op-' + k).checked = smOp[k]; });
+    };
+    ['ondas', 'rastro', 'cara'].forEach((k) => $('#s-op-' + k).addEventListener('change', (e) => {
+        smOp[k] = e.target.checked; guarda('semaforo-extras', smOp); smPintaOp(); if (k === 'rastro') { smRastro(0, true); }
+    }));
+    let smUltimaOnda = 0;
+    const smOndas = (ahora) => {
+        if (!smOp.ondas || reducido() || !sm.zona) { return; }
+        const vol = sm.suave / 100;
+        // Más ruido, más ondas: ninguna en calma, una cada 0,3 s con mucho jaleo.
+        if (vol < 0.35 || ahora - smUltimaOnda < 1000 - vol * 700) { return; }
+        smUltimaOnda = ahora;
+        const luz = $(`#s-caja .luz[data-zona="${sm.zona}"]`), caja = $('#s-ondas');
+        const r = luz.getBoundingClientRect(), b = caja.getBoundingClientRect();
+        const o = document.createElement('span');
+        o.className = 'onda ' + sm.zona;
+        Object.assign(o.style, { left: `${r.left - b.left + r.width / 2}px`, top: `${r.top - b.top + r.height / 2}px`, width: `${r.width}px`, height: `${r.width}px` });
+        caja.append(o);
+        setTimeout(() => o.remove(), 1600);
+    };
+    // El último minuto: el nivel cada cuarto de segundo, con las franjas de los tres colores detrás.
+    const smHist = [];
+    let smUltimoPunto = 0;
+    const smRastro = (ahora, forzar) => {
+        if (!smOp.rastro) { return; }
+        if (!forzar) {
+            if (ahora - smUltimoPunto < 250) { return; }
+            smUltimoPunto = ahora; smHist.push(sm.suave); if (smHist.length > 240) { smHist.shift(); }
+        }
+        const c = $('#s-rastro'), w = c.clientWidth, h = c.clientHeight, dpr = window.devicePixelRatio || 1;
+        if (!w || !h) { return; }
+        if (c.width !== Math.round(w * dpr)) { c.width = Math.round(w * dpr); c.height = Math.round(h * dpr); }
+        const x = c.getContext('2d');
+        x.setTransform(dpr, 0, 0, dpr, 0, 0); x.clearRect(0, 0, w, h);
+        [[0, 50, 'rgba(18, 166, 80, .14)'], [50, 75, 'rgba(251, 190, 23, .2)'], [75, 100, 'rgba(236, 34, 51, .16)']].forEach(([a, b2, col]) => {
+            x.fillStyle = col; x.fillRect(0, h - (b2 / 100) * h, w, ((b2 - a) / 100) * h);
+        });
+        if (smHist.length < 2) { return; }
+        x.beginPath();
+        smHist.forEach((v, i) => { const px = w - (smHist.length - 1 - i) * (w / 239), py = h - (v / 100) * h; if (i) { x.lineTo(px, py); } else { x.moveTo(px, py); } });
+        x.strokeStyle = '#164281'; x.lineWidth = 2.5; x.lineJoin = 'round'; x.stroke();
     };
     const smApaga = () => {
         cancelAnimationFrame(sm.rf);
@@ -1298,6 +1347,7 @@
     };
     $('#s-sensibilidad').value = Math.max(1, Math.min(10, Number(lee('sensibilidad', 5)) || 5));
     $('#s-sensibilidad').addEventListener('input', () => { pintaSens(); guarda('sensibilidad', Number($('#s-sensibilidad').value)); });
+    smPintaOp();
     pintaSens();
     HERR.semaforo = {
         // Dentro de un marco sin permiso lo decimos antes de que lo intenten.

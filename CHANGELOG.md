@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.12.0 (2026-10-13)
+
+- **Content in the user's language**: the games and materials take their content from a pack per language
+  (`app/content/`): alphabet and letters that count as another, on-screen keyboard (QWERTY, QWERTZ, AZERTY, with Ñ,
+  Ä Ö Ü ß or Å Ä Ö as letters of their own), vowels and «Stop» letters, the words of Hangman and Word, every Pairs set
+  (colours, numbers, opposites, elements, units, prefixes, formulas, laws, functions, derivatives, integrals,
+  functional groups, constants, Greek letters), the time in words as said in each country's classrooms, and the
+  example rosco and lock. Packs: English, Spanish (Spain and Mexico), German, French, Italian, Dutch, Swedish and
+  Portuguese (Brazil); Moodle picks the user's language, its parent or base language, or English. A checker
+  (`tools/content_check.js`) validates each pack. The Spanish example rosco is neutral now (no Teide).
+- Clock: on a 12-hour clock, twelve reads as noon in every language («Midi et quart», not «Minuit et quart»).
+- Traffic light: «More on the traffic light» with three switches, all off at first: waves from the light when it
+  gets loud, a graph of the last minute over the three colour bands, and a face in the lit light.
+- Word: the squares size themselves to the space left by the keyboard, so the last row no longer covers the message
+  on short screens.
+
 ## 0.11.1 (2026-10-12)
 
 - Live vote: it can close by itself after 10, 20 or 30 seconds, 1 or 2 minutes (or not at all, as before). The

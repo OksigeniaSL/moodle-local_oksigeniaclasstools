@@ -41,26 +41,21 @@
     core.setIcon($('#ga-setup [data-icono]'), 'editar');
 
     // ---------------------------------------------------------------------------------------------------
-    // Shared helpers for the word games: letters without accents (but Ñ is its own letter), a Spanish
-    // on-screen keyboard and the secret word (typed hidden on the board, or picked at random from a list).
+    // Shared helpers for the word games: letters without accents (but the letters of the language stay, like Ñ or
+    // Å), the on-screen keyboard of the language and the secret word (typed hidden on the board, or picked at random
+    // from a list). Everything that depends on the language comes in window.CLASSTOOLS_CONTENT.
     // ---------------------------------------------------------------------------------------------------
-    const ACCENTS = { 'Á': 'A', 'À': 'A', 'Ä': 'A', 'Â': 'A', 'É': 'E', 'È': 'E', 'Ë': 'E', 'Ê': 'E', 'Í': 'I', 'Ì': 'I', 'Ï': 'I',
-        'Î': 'I', 'Ó': 'O', 'Ò': 'O', 'Ö': 'O', 'Ô': 'O', 'Ú': 'U', 'Ù': 'U', 'Ü': 'U', 'Û': 'U', 'Ç': 'C' };
-    const norm = (text) => String(text).toUpperCase().split('').map((c) => ACCENTS[c] || c).join('');
-    const isLetter = (c) => /^[A-ZÑ]$/.test(c);
-    const KEY_ROWS = ['QWERTYUIOP', 'ASDFGHJKLÑ', 'ZXCVBNM'];
-    // Content in Spanish: per-language content comes in a later step.
-    const WORDS = {
-        primaria: ['ELEFANTE', 'JIRAFA', 'MARIPOSA', 'COCODRILO', 'PINGÜINO', 'TORTUGA', 'DELFÍN', 'CANGURO', 'ARDILLA', 'CABALLO',
-            'VOLCÁN', 'MONTAÑA', 'OCÉANO', 'PLANETA', 'ESTRELLA', 'ARCOÍRIS', 'TORMENTA', 'CASCADA', 'DESIERTO', 'BOSQUE',
-            'PIZARRA', 'MOCHILA', 'CUADERNO', 'ORDENADOR', 'BIBLIOTECA', 'TIJERAS', 'CALENDARIO', 'DICCIONARIO', 'RECREO', 'LÁPIZ',
-            'BICICLETA', 'HELICÓPTERO', 'SUBMARINO', 'TELESCOPIO', 'GUITARRA', 'TAMBOR', 'CHOCOLATE', 'NARANJA', 'PLÁTANO', 'SANDÍA',
-            'ROBOT', 'ASTRONAUTA', 'CASTILLO', 'DINOSAURIO', 'PIRÁMIDE', 'BRÚJULA', 'FAROLA', 'PARAGUAS', 'TELARAÑA', 'MURCIÉLAGO'],
-        cinco: ['ÁRBOL', 'LIBRO', 'MONTE', 'PLAYA', 'NUBES', 'VERDE', 'SILLA', 'LÁPIZ', 'RELOJ', 'FRESA', 'LIMÓN', 'BARCO', 'CIELO',
-            'PLATO', 'CAMPO', 'ROBOT', 'MANGO', 'PIANO', 'TECLA', 'NIEVE', 'VOLAR', 'SALTO', 'PUNTO', 'TIGRE', 'CEBRA', 'PATIO',
-            'AVIÓN', 'QUESO', 'LECHE', 'HUEVO', 'MAPAS', 'PERRO', 'GATOS', 'FLORES', 'RATÓN', 'BRAZO', 'DEDOS', 'CARTA', 'LLAVE', 'TORRE'],
-    };
-    WORDS.cinco = WORDS.cinco.filter((w) => norm(w).length === 5);
+    const CONTENT = window.CLASSTOOLS_CONTENT;
+    const ALPHABET = new Set([...CONTENT.alphabet]);
+    // Each character: a letter of the alphabet as it is (ß stays ß), otherwise in capitals and folded (Á → A).
+    const norm = (text) => [...String(text)].map((c) => {
+        if (ALPHABET.has(c)) { return c; }
+        const u = c.toUpperCase();
+        return ALPHABET.has(u) ? u : (CONTENT.fold[u] || u);
+    }).join('');
+    const isLetter = (c) => ALPHABET.has(c);
+    const KEY_ROWS = CONTENT.keyboard;
+    const WORDS = { primaria: CONTENT.words.long, cinco: CONTENT.words.five.filter((w) => [...norm(w)].length === 5) };
     const keyboard = (box, onKey, { enter = false } = {}) => {
         box.classList.add('ct-keyboard');
         box.innerHTML = KEY_ROWS.map((row, r) => `<div class="ct-krow">${r === 2 && enter ? `<button type="button" class="ct-key ct-wide" data-k="ENTER">${t('ga_try')}</button>` : ''}`

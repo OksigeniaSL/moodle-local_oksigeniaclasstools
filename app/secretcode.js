@@ -21,12 +21,8 @@
         finalMsg: t('lock_final_msg'), save: t('lock_save'), cancel: t('lock_cancel'), remove: t('lock_remove'),
         removeSure: t('lock_remove_sure'), badCode: t('lock_bad_code'), copyOf: (n) => t('lock_copy_of', n),
     };
-    // Content in Spanish: per-language content comes in a later step.
-    const EXAMPLE = {
-        id: 'ejemplo', name: 'Candado de ejemplo', code: '4127', final: '¡Bien hecho! Han abierto el candado entre todos.',
-        clues: ['El primer número son las patas que tiene un gato.', 'El segundo, los dedos de una mano menos cuatro.',
-            'El tercero, los ojos que tiene una persona.', 'El cuarto, los días que tiene una semana.'],
-    };
+    // The example lock, in the user's language (window.CLASSTOOLS_CONTENT); its code is always 4127.
+    const EXAMPLE = Object.assign({ id: 'ejemplo', code: '4127' }, window.CLASSTOOLS_CONTENT.lock);
     // Per course, like Moodle keeps them (the old global key only seeds a course that has nothing yet).
     const storeKey = 'candados' + (core.moodle ? ':' + core.moodle.courseid : '');
     let store = load(storeKey, null) || (core.moodle && !core.kept('candados') ? load('candados', null) : null);
