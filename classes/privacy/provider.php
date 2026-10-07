@@ -59,6 +59,8 @@ class provider implements
             'data' => 'privacy:metadata:state:data',
             'timemodified' => 'privacy:metadata:state:timemodified',
         ], 'privacy:metadata:state');
+        // Boards shared with a class are course content (a folder); its students get a Moodle notification.
+        $collection->add_subsystem_link('core_message', [], 'privacy:metadata:core_message');
         return $collection;
     }
 

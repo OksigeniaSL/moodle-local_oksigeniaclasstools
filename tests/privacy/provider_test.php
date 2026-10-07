@@ -59,6 +59,7 @@ final class provider_test extends provider_testcase {
         $tables = array_map(fn($item) => $item->get_name(), $collection->get_collection());
         $this->assertContains('local_oksigeniaclasstools_picks', $tables);
         $this->assertContains('local_oksigeniaclasstools_state', $tables);
+        $this->assertContains('core_message', $tables);
     }
 
     public function test_contexts_and_users(): void {

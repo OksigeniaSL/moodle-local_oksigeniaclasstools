@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.8.1 (2026-10-09)
+
+- **Share the drawing board with a class**, for teachers who can add content to the course:
+  - The board is saved in the course, in the section «Class boards», in one folder per class. If the class is a
+    Moodle group, only that group sees the folder.
+  - It can be saved as PNG, or as PDF made with Moodle's own PDF library.
+  - Each student of the class gets a Moodle notification in their language, with a link.
+- **The teacher plays too**: a switch, off by default, in «Whose turn» and «Groups».
+  - The teacher who opens the board joins the class lists, with their photo, in every tool that uses them: picker,
+    groups, wheel, Simon's turns, pairs with faces.
+  - Their turns are not saved, and in fair picking they count as one more.
+- Opened without a course (inside Moodle), the board has a «Back to home» button, which goes to each user's home
+  page.
+
+
 ## 0.8.0 (2026-10-09)
 
 - **Languages**:

@@ -98,6 +98,7 @@ final class modes_test extends \advanced_testcase {
         $this->assertSame(LOCAL_OKSIGENIACLASSTOOLS_LEVELS, $site['levels']);
         $this->assertNotEmpty($site['logo']);
         $this->assertNotEmpty($site['tz']);
+        $this->assertSame((new \moodle_url('/'))->out(false), $site['home']);
         $this->assertSame(current_language(), $site['lang']);
         $this->assertSame(get_string('app_tab_timer', 'local_oksigeniaclasstools'), $site['str']->tab_timer);
         set_config('levels', 'primary,secondary', 'local_oksigeniaclasstools');

@@ -219,6 +219,14 @@ function local_oksigeniaclasstools_data(stdClass $course, context_course $contex
             'students' => array_values($students)];
     }
 
+    // The teacher who opens the board, to join the lists when they want to play too (never recorded as a pick).
+    $me = ['n' => $displayname($USER), 'i' => (int) $USER->id];
+    if (!empty($USER->picture)) {
+        $picture = new user_picture($USER);
+        $picture->size = 200;
+        $me['f'] = $picture->get_url($PAGE)->out(false);
+    }
+
     // What this teacher keeps of each tool in this course.
     $state = \local_oksigeniaclasstools\local\kept::all($course->id, $USER->id);
 
@@ -228,6 +236,7 @@ function local_oksigeniaclasstools_data(stdClass $course, context_course $contex
         'lists' => $lists,
         'courseid' => (int) $course->id,
         'mode' => 'teacher',
+        'me' => $me,
         'sesskey' => sesskey(),
         'days' => $days,
         'pickurl' => (new moodle_url('/local/oksigeniaclasstools/pick.php'))->out(false),
@@ -235,6 +244,9 @@ function local_oksigeniaclasstools_data(stdClass $course, context_course $contex
         'stateurl' => (new moodle_url('/local/oksigeniaclasstools/state.php'))->out(false),
         'groupsurl' => has_capability('moodle/course:managegroups', $context)
             ? (new moodle_url('/local/oksigeniaclasstools/savegroups.php'))->out(false) : null,
+        // Sharing a board saves it in the course: only for who can add content to it.
+        'boardurl' => has_capability('moodle/course:manageactivities', $context)
+            ? (new moodle_url('/local/oksigeniaclasstools/board.php'))->out(false) : null,
     ];
 }
 
@@ -262,6 +274,9 @@ function local_oksigeniaclasstools_site(): array {
         }
     }
     return [
+        // The site's front page sends each user on to their home page (Dashboard, My courses…): the way back when the
+        // board is open without a course.
+        'home' => (new moodle_url('/'))->out(false),
         'logo' => $logo,
         'levels' => $levels,
         'tz' => core_date::get_user_timezone(),

@@ -16,7 +16,15 @@
         clear: t('wb_clear'), clearSure: t('wb_clear_sure'), background: t('wb_background'), download: t('wb_download'),
         backgrounds: { blank: t('wb_bg_blank'), grid: t('wb_bg_grid'), lines: t('wb_bg_lines'), staff: t('wb_bg_staff') },
         board: t('wb_board'), saved: (f) => t('wb_saved', f), file: t('wb_file'),
+        send: t('wb_send'), sendTitle: t('wb_send_title'), sendFor: t('wb_send_for'), sendName: t('wb_send_name'),
+        sendFormat: t('wb_send_format'), sendNote: t('wb_send_note'), sendNoteCohort: t('wb_send_note_cohort'),
+        sendGo: t('wb_send_go'), cancel: t('wb_cancel'), sending: t('wb_sending'), sent: (a) => t('wb_sent', a),
+        sentOpen: t('wb_sent_open'), sendError: (e) => t('wb_send_error', e), sendEmpty: t('wb_send_empty'),
+        defaultName: (d) => t('wb_default_name', d),
     };
+    // Inside a course, a teacher who can add content can share the board with a class (saved in the course, and its
+    // students get a notification).
+    const AULA = core.moodle && core.moodle.boardurl ? core.moodle : null;
     const COLOURS = [[t('wb_black'), '#1c1a19'], [t('wb_blue'), '#164281'], [t('wb_red'), '#ce1423'], [t('wb_green'), '#067e36'],
         [t('wb_orange'), '#ea7317'], [t('wb_purple'), '#5b2fb8']];
     const SIZES = { s: 0.0035, m: 0.007, l: 0.014 };   // as a share of the board's width
@@ -43,6 +51,7 @@
             <button type="button" class="boton suave" id="wb-undo"><span data-icono="deshacer"></span>${STR.undo}</button>
             <label class="campo ct-wb-bg"><span>${STR.background}</span><select id="wb-bg">${Object.entries(STR.backgrounds).map(([k, v]) => `<option value="${k}">${v}</option>`).join('')}</select></label>
             <button type="button" class="boton suave" id="wb-download"><span data-icono="descargar"></span>${STR.download}</button>
+            ${AULA ? `<button type="button" class="boton" id="wb-send"><span data-icono="enviar"></span>${STR.send}</button>` : ''}
             <button type="button" class="boton rojo-suave ct-push" id="wb-clear"><span data-icono="borrar"></span><span>${STR.clear}</span></button>
         </div>
         <div class="tarjeta ct-wb-stage" id="wb-stage">
@@ -169,11 +178,16 @@
         clearTimeout(clearTimer); b.classList.remove('confirma'); core.relabel(b, STR.clear);
         strokes.length = 0; redraw();
     });
-    $('#wb-download').addEventListener('click', () => {
+    // The drawing with its background, as one image.
+    const compose = () => {
         const c = document.createElement('canvas');
         c.width = ink.width; c.height = ink.height;
         const ctx = c.getContext('2d');
         ctx.drawImage(bgc, 0, 0); ctx.drawImage(ink, 0, 0);
+        return c;
+    };
+    $('#wb-download').addEventListener('click', () => {
+        const c = compose();
         const name = STR.file + '-' + new Date().toISOString().slice(0, 16).replace(/[T:]/g, '-') + '.png';
         c.toBlob((blob) => {
             if (!blob) { return; }
@@ -184,6 +198,63 @@
             announce(STR.saved(name));
         }, 'image/png');
     });
+    // --- Sharing with a class -------------------------------------------------------------------------------
+    if (AULA) {
+        const dialog = document.createElement('dialog');
+        dialog.className = 'editor'; dialog.id = 'wb-send-dialog'; dialog.setAttribute('aria-labelledby', 'wb-send-title');
+        dialog.innerHTML = `
+            <form method="dialog" id="wb-send-form">
+                <h2 id="wb-send-title">${escape(STR.sendTitle)}</h2>
+                <label class="campo apilado"><span>${escape(STR.sendFor)}</span><select id="wb-send-list">
+                    ${(AULA.lists || []).map((l) => `<option value="${escape(l.id)}">${escape(l.name)} (${(l.students || []).length})</option>`).join('')}</select></label>
+                <label class="campo apilado"><span>${escape(STR.sendName)}</span><input type="text" id="wb-send-name" maxlength="100" autocomplete="off"></label>
+                <p class="ante">${escape(STR.sendFormat)}</p>
+                <div class="segmentos" role="radiogroup" aria-label="${escape(STR.sendFormat)}" id="wb-send-format">
+                    <button type="button" role="radio" aria-checked="true" data-v="png">PNG</button>
+                    <button type="button" role="radio" aria-checked="false" data-v="pdf">PDF</button>
+                </div>
+                <p class="nota" id="wb-send-note"></p>
+                <p class="nota" id="wb-send-result" aria-live="polite"></p>
+                <div class="botonera">
+                    <button type="submit" class="boton" id="wb-send-go"><span data-icono="enviar"></span><span>${escape(STR.sendGo)}</span></button>
+                    <button type="button" class="boton suave" id="wb-send-cancel">${escape(STR.cancel)}</button>
+                </div>
+            </form>`;
+        document.body.append(dialog);
+        $$('[data-icono]', dialog).forEach((e) => setIcon(e, e.dataset.icono));
+        const note = () => { $('#wb-send-note').textContent = $('#wb-send-list').value.startsWith('h') ? `${STR.sendNote} ${STR.sendNoteCohort}` : STR.sendNote; };
+        $('#wb-send-list').addEventListener('change', note);
+        $('#wb-send-format').addEventListener('click', (e) => {
+            const b = e.target.closest('[data-v]'); if (!b) { return; }
+            $$('#wb-send-format button').forEach((x) => x.setAttribute('aria-checked', String(x === b)));
+        });
+        const close = () => { if (dialog.close) { dialog.close(); } else { dialog.removeAttribute('open'); } };
+        $('#wb-send-cancel').addEventListener('click', close);
+        $('#wb-send').addEventListener('click', () => {
+            const r = $('#wb-send-result'); r.textContent = ''; r.classList.remove('error');
+            $('#wb-send-go').disabled = !strokes.length;
+            if (!strokes.length) { r.textContent = STR.sendEmpty; }
+            const when = new Date().toLocaleString(document.documentElement.lang || undefined, { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+            $('#wb-send-name').value = STR.defaultName(when);
+            note();
+            if (dialog.showModal) { dialog.showModal(); } else { dialog.setAttribute('open', ''); }
+        });
+        $('#wb-send-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const r = $('#wb-send-result'), go = $('#wb-send-go');
+            const format = ($('#wb-send-format [aria-checked="true"]') || { dataset: { v: 'png' } }).dataset.v;
+            go.disabled = true; r.classList.remove('error'); r.textContent = STR.sending;
+            core.toMoodle(AULA.boardurl, { listid: $('#wb-send-list').value, name: $('#wb-send-name').value, format, image: compose().toDataURL('image/png') })
+                .then((j) => {
+                    r.innerHTML = `${escape(STR.sent({ folder: j.folder, n: j.notified }))} <a href="${escape(j.url)}" target="_blank" rel="noopener">${escape(STR.sentOpen)}</a>`;
+                    announce(STR.sent({ folder: j.folder, n: j.notified }));
+                    core.play('elegido');
+                })
+                .catch((err) => { r.textContent = STR.sendError(err.message || ''); r.classList.add('error'); })
+                .finally(() => { go.disabled = false; });
+        });
+    }
+
     // Ctrl+Z undoes, while the board is on screen.
     document.addEventListener('keydown', (e) => {
         if (root.hidden || !(e.ctrlKey || e.metaKey) || e.key.toLowerCase() !== 'z' || document.querySelector('dialog[open]')) { return; }

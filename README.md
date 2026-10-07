@@ -24,7 +24,7 @@ tracking, no build step.
 | Chance | Configurable wheel (students, own lists, numbers), dice (4 to 20 faces, operations, directions, colours, letters, custom), coins with motifs, and cards. |
 | Games | Rosco (letter ring with clues; whole class or two teams), Simon (turns with the class list), Hangman (with balloons), Word (like Wordle), Pairs (built-in sets by school level — from animal shadows and clocks to chemical elements and graphs of functions —, faces and names, own lists) and Secret code (escape-room lock with clues). |
 | Materials | Cuisenaire rods and a tangram with silhouettes, made for touch boards. |
-| Drawing board | Pens, eraser, undo and backgrounds (squared paper, handwriting lines, music staves); several fingers at once; PNG download. |
+| Drawing board | Pens, eraser, undo and backgrounds (squared paper, handwriting lines, music staves); several fingers at once; PNG download, or **shared with a class**: saved in the course (a folder per class, only for its group) and notified to its students. |
 | Clock | The time now, or **learning to tell the time**: hands dragged with a finger, digits and words, five levels and two class games. |
 | Noise meter | Microphone level only (nothing is recorded or sent). A light that breathes with the noise, a calm streak and a patience reserve that only sustained noise uses up. |
 | Also | Work symbols, clock, and a QR code with styles, the site logo in the middle and PNG/SVG download. |

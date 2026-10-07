@@ -354,6 +354,22 @@
         });
         return { id: 'aula-' + l.id, nombre: l.name, alumnos, fotos, ids, veces, aula: true };
     }) : [];
+    // El profe también juega (si lo enciende): quien tiene la pantalla abierta entra en las listas del curso, con su
+    // foto. Sus turnos no se guardan en Moodle, y en el sorteo justo cuenta como uno más, sin colarse el primero.
+    const YO = AULA && AULA.me && AULA.me.n ? AULA.me : null;
+    const claveYo = 'conmigo-' + (AULA ? AULA.courseid : 0);
+    let conmigo = !!YO && lee(claveYo, false) === true;
+    const ponYo = () => {
+        listasAula.forEach((l) => {
+            if (l.yo) { l.alumnos = l.alumnos.filter((n) => n !== l.yo); delete l.fotos[l.yo]; delete l.veces[l.yo]; l.yo = null; }
+            if (!conmigo || !YO) { return; }
+            const n = l.alumnos.includes(YO.n) ? t('q_me_name', YO.n) : YO.n;
+            const vs = Object.values(l.veces);
+            l.yo = n; l.alumnos = l.alumnos.concat(n); l.veces[n] = vs.length ? Math.min(...vs) : 0;
+            if (YO.f) { l.fotos[n] = YO.f; }
+        });
+    };
+    ponYo();
     // Si la sesión del aula virtual caduca (una pantalla encendida toda la mañana), lo que se envía no llega: se avisa
     // en vez de perderlo en silencio, y lo pendiente sigue en este ordenador.
     const SIN_SESION = ['requireloginerror', 'invalidsesskey', 'servicerequireslogin', 'sitemaintenance'];
@@ -597,7 +613,7 @@
             if (conTurnos(l) && l.ids[elegido]) {
                 sumaTurno(l.ids[elegido]);
                 alAula(AULA.pickurl, { userid: l.ids[elegido] }).catch(() => { /* sin conexión: ese turno no cuenta, el sorteo sigue */ });
-            }
+            } else if (l.yo === elegido) { l.veces[elegido] = (l.veces[elegido] || 0) + 1; }   // el profe: solo aquí
             quienPinta();
             qNombre.className = 'nombre-grande elegido';
             suena('elegido');
@@ -628,6 +644,17 @@
     $('#q-lista').addEventListener('change', (e) => { listaActiva = e.target.value || null; qUltimo = null; guarda('lista-activa', listaActiva); quienPinta(); });
     $('#q-sinrepetir').addEventListener('change', (e) => { qSinRepetir = e.target.checked; guarda('sin-repetir', qSinRepetir); quienPinta(); });
     $('#q-justo').addEventListener('change', (e) => { qJusto = e.target.checked; guarda('justo', qJusto); });
+    // «El profe también juega», en «¿A quién le toca?» y en «Grupos» (es el mismo interruptor).
+    ['#q-yo', '#g-yo'].forEach((sel) => {
+        $(sel + '-caja').hidden = !YO;
+        $(sel).checked = conmigo;
+        $(sel).addEventListener('change', (e) => {
+            conmigo = e.target.checked; guarda(claveYo, conmigo);
+            $('#q-yo').checked = conmigo; $('#g-yo').checked = conmigo;
+            ponYo(); pintaSelects(); quienPinta();
+            document.dispatchEvent(new CustomEvent('classtools:lists'));
+        });
+    });
     // Participación: cuántas veces le ha tocado a cada uno en el curso (con cualquier profesor), quien menos arriba.
     const dParticipa = $('#participa');
     $('#q-participa').addEventListener('click', () => {
@@ -1070,10 +1097,13 @@
         audioContext: () => audio(), soundOn: () => sonido, output: () => maestro,
     };
     // Abierta desde un curso del aula: título con el curso y botón para volver a él.
-    if (AULA && AULA.back) {
+    // La vuelta: al curso si se abrió desde uno; si no (dentro de Moodle, sin curso), al inicio de cada usuario.
+    const vuelta = AULA && AULA.back ? [AULA.back, t('bar_back')]
+        : (window.CLASSTOOLS_SITE && window.CLASSTOOLS_SITE.home ? [window.CLASSTOOLS_SITE.home, t('bar_home')] : null);
+    if (vuelta) {
         const v = document.createElement('a');
-        v.className = 'redondo'; v.href = AULA.back; v.title = t('bar_back');
-        v.innerHTML = `<span>${icono('salir')}</span><span class="redondo-texto">${t('bar_back')}</span>`;
+        v.className = 'redondo'; v.href = vuelta[0]; v.title = vuelta[1];
+        v.innerHTML = `<span>${icono('salir')}</span><span class="redondo-texto">${escapa(vuelta[1])}</span>`;
         $('.acciones').prepend(v);
     }
     if (AULA && AULA.course) { document.title = `${t('bar_title')} · ${AULA.course}`; }

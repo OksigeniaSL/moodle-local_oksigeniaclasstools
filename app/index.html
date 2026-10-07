@@ -103,6 +103,7 @@
       <button type="button" class="boton suave" id="q-faltan" hidden><span data-icono="lista"></span><span data-t="q_absent">¿Quién falta hoy?</span></button>
       <button type="button" class="boton suave" id="q-participa" hidden><span data-icono="lista"></span><span data-t="q_participation">Participación</span></button>
       <label class="interruptor"><input type="checkbox" id="q-sinrepetir" checked><span data-t="q_no_repeat">Sin repetir</span></label>
+      <label class="interruptor" id="q-yo-caja" hidden><input type="checkbox" id="q-yo"><span data-t="q_with_me">El profe también juega</span></label>
       <label class="interruptor" id="q-justo-caja" hidden title="Sale alguien de entre los que menos veces han salido estas semanas" data-t-title="q_fair_hint"><input type="checkbox" id="q-justo" checked><span data-t="q_fair">Primero los que menos</span></label>
     </div>
     <div class="quien-cuerpo">
@@ -129,6 +130,7 @@
       <textarea id="g-pegados" rows="5" spellcheck="false" aria-label="Nombres pegados, uno por línea" data-t-aria="g_pasted_aria" placeholder="Pega aquí los nombres, uno por línea" data-t-placeholder="g_paste_placeholder" hidden></textarea>
       <button type="button" class="boton suave" id="g-guardar" hidden><span data-icono="guardar"></span><span data-t="g_save_list">Guardar como lista</span></button>
       <button type="button" class="boton suave" id="g-faltan" hidden><span data-icono="lista"></span><span data-t="q_absent">¿Quién falta hoy?</span></button>
+      <label class="interruptor" id="g-yo-caja" hidden><input type="checkbox" id="g-yo"><span data-t="q_with_me">El profe también juega</span></label>
       <p class="ante" id="l-reparto" data-t="g_how">¿Cómo los repartimos?</p>
       <div class="segmentos" role="radiogroup" aria-labelledby="l-reparto" id="g-modo">
         <button type="button" role="radio" aria-checked="true" data-modo="num" data-t="g_mode_num">Nº de grupos</button>
