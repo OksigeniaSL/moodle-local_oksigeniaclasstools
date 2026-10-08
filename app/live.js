@@ -22,10 +22,10 @@
     const TEAMS = [['#164281'], ['#ce1423'], ['#067e36'], ['#5b2fb8'], ['#fbbe17', true], ['#0e7c86']];
     const label = (v) => (['yes', 'no', 'green', 'yellow', 'red'].includes(v) ? t('lv_' + v) : v);
     const KEY = 'envivo-' + (LIVE ? AULA.courseid : 0);   // the open session, to find it again after reloading the page
-    const KINDS = LIVE ? ['vote', 'ideas', 'buzz', 'remote', 'hands'] : ['hands'];
+    const KINDS = LIVE ? ['vote', 'ideas', 'quiz', 'buzz', 'remote', 'hands'] : ['hands'];
 
     // Each choice as a card: an icon, its name and what it is, in a line.
-    const KIND_ICONS = { vote: 'encuesta', ideas: 'nube', buzz: 'campana', remote: 'mando', hands: 'mano' };
+    const KIND_ICONS = { vote: 'encuesta', ideas: 'nube', quiz: 'trofeo', buzz: 'campana', remote: 'mando', hands: 'mano' };
     const card = (v, ico, name, text) => `<button type="button" role="radio" aria-checked="false" data-v="${v}" class="lv-opcion">`
         + `<span class="lv-opcion-ico">${core.icon(ico)}</span><span class="lv-opcion-texto"><strong>${escape(name)}</strong><small>${escape(text)}</small></span></button>`;
     root.innerHTML = `
@@ -108,7 +108,9 @@
         $('#lv-start').hidden = hands;
         $('#lv-n').textContent = teams;
         if (S) { return; }
-        if (hands) { paintHands(); } else { stage.innerHTML = `<div class="vacio">${core.icon(kind === 'remote' ? 'mando' : 'mano')}<p>${escape(t('lv_intro_' + kind))}</p></div>`; }
+        if (hands) { paintHands(); } else if (kind === 'quiz' && window.ClasstoolsQuiz) { window.ClasstoolsQuiz.setup(stage); } else {
+            stage.innerHTML = `<div class="vacio">${core.icon(kind === 'remote' ? 'mando' : 'mano')}<p>${escape(t('lv_intro_' + kind))}</p></div>`;
+        }
     };
 
     // ---------------------------------------------------------------------------------------------------
@@ -194,7 +196,13 @@
     $('#lv-start').addEventListener('click', () => {
         const b = $('#lv-start'); b.disabled = true; $('#lv-error').hidden = true;
         const names = Array.from({ length: teams }, (_, i) => t('lv_team_n', i + 1));
-        call('start', { kind, identity, vote: $('#lv-vote').value, teams: JSON.stringify(names), max: $('#lv-max').value })
+        // A quiz brings its own options and teams (and needs a set with questions).
+        let extra = {};
+        if (kind === 'quiz') {
+            extra = window.ClasstoolsQuiz ? window.ClasstoolsQuiz.startOptions() : null;
+            if (!extra) { b.disabled = false; $('#lv-error').hidden = false; $('#lv-error').textContent = t('qz_empty'); return; }
+        }
+        call('start', { kind, identity, vote: $('#lv-vote').value, teams: JSON.stringify(names), max: $('#lv-max').value, ...extra })
             .then((v) => { seq = 0; question = ''; apply(v); save(KEY, v.id); announce(t('lv_opened', v.code)); schedule(); })
             .catch(() => { $('#lv-error').hidden = false; $('#lv-error').textContent = t('lv_failed'); })
             .finally(() => { b.disabled = false; });
@@ -241,6 +249,8 @@
         paintJoin(v);
         if (v.kind === 'remote') { runCommands(v); paintRemote(v, first); } else if (v.kind === 'vote') { paintVote(v, first); } else if (v.kind === 'ideas') {
             if (window.ClasstoolsLiveIdeas) { window.ClasstoolsLiveIdeas.paint(stage, v, first, act); }
+        } else if (v.kind === 'quiz') {
+            if (window.ClasstoolsQuiz) { window.ClasstoolsQuiz.paint(stage, v, first, act); }
         } else { paintBuzz(v, first); }
     }
     const paintJoin = (v) => {

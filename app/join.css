@@ -85,3 +85,16 @@ button { touch-action: manipulation; -webkit-user-select: none; user-select: non
 .jn-yo p { display: flex; flex-direction: column; margin: 0; text-align: left; }
 .jn-yo strong { color: var(--azul-osc); font-size: 1.2rem; font-weight: 900; line-height: 1.2; }
 .jn-yo span { color: var(--tinta-3); font-size: .85rem; font-weight: 700; }
+/* A quiz: four big buttons (two for true/false) with their letter and, if shown, their answer; the points after. */
+.jn-ops.cuatro { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.jn-op-quiz { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .3rem; }
+.jn-op-quiz span { font-size: clamp(2rem, 9vw, 3rem); line-height: 1; }
+.jn-op-quiz small { font-size: clamp(.95rem, 4vw, 1.2rem); font-weight: 800; line-height: 1.2; overflow-wrap: anywhere; }
+.jn-op-quiz:disabled { opacity: .55; }
+.jn-pregunta { font-size: clamp(1.2rem, 5vw, 1.7rem); }
+.jn-titulo.jn-bien { color: var(--verde); }
+.jn-titulo.jn-mal { color: var(--rojo); }
+.jn-puntos { margin: 0; color: var(--tinta-3); font-size: clamp(2.6rem, 14vw, 4.5rem); font-weight: 1000; line-height: 1; }
+.jn-puntos.bien { color: var(--verde); }
+.jn-mini { display: inline-flex; flex-direction: row; gap: .6rem; min-height: 0; width: auto; max-width: 100%; padding: .5rem 1.1rem; font-size: 1rem; pointer-events: none; }
+.jn-mini > span { font-size: 1.4rem; }

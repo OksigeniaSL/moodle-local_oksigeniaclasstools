@@ -29,7 +29,13 @@ namespace local_oksigeniaclasstools\local;
  */
 class live {
     /** What a session is for. */
-    const KINDS = ['vote', 'buzz', 'remote', 'ideas'];
+    const KINDS = ['vote', 'buzz', 'remote', 'ideas', 'quiz'];
+
+    /** Most teams in a quiz. */
+    const MAX_TEAMS = 8;
+
+    /** How many of the top ones a quiz may show in its ranking (0: all). */
+    const TOPS = [0, 3, 4, 5];
 
     /** Longest answer of a brainstorm (a word or two), in characters. */
     const IDEA_LENGTH = 32;
@@ -71,7 +77,10 @@ class live {
      * @param string $kind vote, buzz or remote.
      * @param string $identity anon, moodle or hidden (a remote is always moodle).
      * @param array $options vote => kind of vote; teams => names of the teams (buzz); max => answers of each device
-     *     (ideas, 1 to 3); lang => the teacher's language (the names of the anonymous critters come in it).
+     *     (ideas, 1 to 3); lang => the teacher's language (the names of the anonymous critters come in it); for a
+     *     quiz: teams (names), members (user id => team, from the groups made on the board), pick (devices choose
+     *     their team), mode (calm: a right answer is worth 1000; fast: 500 to 1000 by how soon), top (how many of the
+     *     top ones the devices see in the ranking, 0 all) and devtext (the question and its answers on the devices).
      * @return \stdClass The session.
      * @throws \moodle_exception If the kind or the options are not valid.
      */
@@ -112,6 +121,26 @@ class live {
         if ($kind === 'ideas') {
             $state['max'] = max(1, min(self::MAX_IDEAS, (int) ($options['max'] ?? 1)));
             $state['q'] = '';
+        }
+        if ($kind === 'quiz') {
+            $teams = array_slice(array_values(array_filter(array_map(
+                fn($t) => \core_text::substr(trim(clean_param((string) $t, PARAM_TEXT)), 0, 24),
+                (array) ($options['teams'] ?? [])
+            ), fn($t) => $t !== '')), 0, self::MAX_TEAMS);
+            $state['teams'] = count($teams) >= 2 ? $teams : [];
+            $state['members'] = [];
+            foreach ($state['teams'] ? (array) ($options['members'] ?? []) : [] as $userid => $team) {
+                if ((int) $userid > 0 && (int) $team >= 1 && (int) $team <= count($teams)) {
+                    $state['members'][(int) $userid] = (int) $team;
+                }
+            }
+            $state['pick'] = $state['teams'] && !empty($options['pick']);
+            $state['mode'] = ($options['mode'] ?? '') === 'fast' ? 'fast' : 'calm';
+            $top = (int) ($options['top'] ?? 0);
+            $state['top'] = in_array($top, self::TOPS, true) ? $top : 0;
+            $state['devtext'] = !empty($options['devtext']);
+            $state['qs'] = [];
+            $state['revealed'] = 0;
         }
         $now = time();
         $DB->set_field_select(
@@ -206,9 +235,11 @@ class live {
      *
      * @param \stdClass $live
      * @param string $action open (a new question or round), reopen (a brainstorm question again, keeping its answers),
-     *     close, show (results on the devices too), kick, command (from the remote) or end.
+     *     close, reveal (a quiz question: its right answer and the points reach the devices), show (results on the
+     *     devices too), kick, command (from the remote) or end.
      * @param array $data device (kick), command (command), vote (open: another kind of vote), q and max (open: the
-     *     brainstorm question, which the devices see, and how many answers each).
+     *     brainstorm question, which the devices see, and how many answers each); q, options, correct and secs (open:
+     *     a quiz question, its 2 to 4 answers, the right one, from 0, and its seconds).
      * @return \stdClass The session.
      */
     public static function control(\stdClass $live, string $action, array $data = []): \stdClass {
@@ -224,6 +255,24 @@ class live {
                 // A vote can close by itself: from then on no answer gets in, whatever the board is doing.
                 $secs = (int) ($data['secs'] ?? 0);
                 $state['closesat'] = $live->kind === 'vote' && $secs > 0 ? time() + min(600, $secs) : 0;
+                if ($live->kind === 'quiz') {
+                    $answers = array_slice(array_values(array_filter(array_map(
+                        fn($o) => \core_text::substr(trim(clean_param((string) $o, PARAM_TEXT)), 0, 120),
+                        (array) ($data['options'] ?? [])
+                    ), fn($o) => $o !== '')), 0, 4);
+                    $right = (int) ($data['correct'] ?? -1);
+                    if (count($answers) < 2 || $right < 0 || $right >= count($answers)) {
+                        throw new \moodle_exception('invalidparameter', 'debug');
+                    }
+                    $secs = max(5, min(120, (int) ($data['secs'] ?? 20)));
+                    $state['qs'][$live->round] = [
+                        'q' => \core_text::substr(trim(clean_param((string) ($data['q'] ?? ''), PARAM_TEXT)), 0, 300),
+                        'o' => $answers, 'c' => $right, 'at' => self::ms(), 'secs' => $secs,
+                    ];
+                    // A second of grace for slow connections; then no answer gets in.
+                    $state['closesat'] = time() + $secs + 1;
+                    $state['revealed'] = 0;
+                }
                 if ($live->kind === 'ideas') {
                     $state['q'] = \core_text::substr(trim(clean_param((string) ($data['q'] ?? ''), PARAM_TEXT)), 0, 140);
                     if (!empty($data['max'])) {
@@ -240,6 +289,14 @@ class live {
             case 'close':
                 $state['open'] = false;
                 $state['closesat'] = 0;
+                break;
+            case 'reveal':
+                if ($live->kind !== 'quiz' || $live->round < 1) {
+                    throw new \moodle_exception('invalidparameter', 'debug');
+                }
+                $state['open'] = false;
+                $state['closesat'] = 0;
+                $state['revealed'] = (int) $live->round;
                 break;
             case 'show':
                 $state['show'] = !empty($data['show']);
@@ -323,17 +380,25 @@ class live {
      *
      * @param \stdClass $live
      * @param string $device
-     * @param int $userid With a Moodle account; 0 with the code only.
-     * @param int $team Buzzer team, from 1.
+     * @param int $userid With a Moodle account; 0 with the code only (or anonymous).
+     * @param int $team Buzzer or quiz team, from 1, when the device chooses it.
+     * @param int $teamof In a quiz with teams made from groups, the user whose team it is (also when anonymous, where
+     *     no user id is kept).
      * @throws \moodle_exception If it was sent out or the session is full.
      */
-    public static function join(\stdClass $live, string $device, int $userid = 0, int $team = 0): void {
+    public static function join(\stdClass $live, string $device, int $userid = 0, int $team = 0, int $teamof = 0): void {
         global $DB;
         $state = json_decode($live->state, true);
         if (in_array($device, $state['kicked'], true)) {
             throw new \moodle_exception('kicked', 'local_oksigeniaclasstools');
         }
-        $team = $live->kind === 'buzz' ? max(0, min(count($state['teams']), $team)) : 0;
+        if ($live->kind === 'quiz') {
+            // The team of their group if there is one; otherwise the one they chose (if they may choose).
+            $given = (int) ($state['members'][$teamof ?: $userid] ?? 0);
+            $team = $given ?: (!empty($state['pick']) ? max(0, min(count($state['teams']), $team)) : 0);
+        } else {
+            $team = $live->kind === 'buzz' ? max(0, min(count($state['teams']), $team)) : 0;
+        }
         $where = ['liveid' => $live->id, 'round' => 0, 'device' => $device];
         if ($id = $DB->get_field('local_oksigeniaclasstools_livein', 'id', $where)) {
             $DB->set_field('local_oksigeniaclasstools_livein', 'team', $team, ['id' => $id]);
@@ -383,6 +448,12 @@ class live {
                     $DB->update_record('local_oksigeniaclasstools_livein', $row);
                 }
                 return 0;
+            }
+        } else if ($live->kind === 'quiz') {
+            // One of the answers of the question; only the first tap counts.
+            $question = $state['qs'][$live->round] ?? null;
+            if (!$question || !ctype_digit($answer) || (int) $answer >= count($question['o'])) {
+                throw new \moodle_exception('invalidparameter', 'debug');
             }
         } else if ($live->kind !== 'buzz' || $answer !== 'press') {
             throw new \moodle_exception('invalidparameter', 'debug');
@@ -526,6 +597,34 @@ class live {
         if ($live->kind === 'buzz') {
             $view['teams'] = $state['teams'];
         }
+        if ($live->kind === 'quiz') {
+            $question = $state['qs'][$live->round] ?? null;
+            $view['n'] = $question ? count($question['o']) : 0;
+            if ($question && !empty($state['devtext'])) {
+                $view['q'] = $question['q'];
+                $view['options'] = $question['o'];
+            }
+            $view['teams'] = $state['teams'];
+            $view['pick'] = !empty($state['pick']);
+            $mine = $live->round ? $DB->get_record(
+                'local_oksigeniaclasstools_livein',
+                ['liveid' => $live->id, 'round' => $live->round, 'device' => $device]
+            ) : null;
+            $view['mine'] = $mine ? $mine->answer : '';
+            if ($live->round && (int) $state['revealed'] === (int) $live->round) {
+                // Right or not, the points, and the place (only among the top ones the teacher shows) or the team's.
+                $scores = self::scores($live);
+                $me = $scores[$device] ?? ['total' => 0, 'last' => 0, 'right' => null, 'team' => 0];
+                $better = count(array_filter($scores, fn($s) => $s['total'] > $me['total']));
+                $view['result'] = ['right' => $me['right'], 'points' => $me['last'], 'total' => $me['total'],
+                    'correct' => (int) $question['c'], 'rank' => !$state['top'] || $better < $state['top'] ? $better + 1 : 0];
+                if ($state['teams'] && $me['team']) {
+                    $order = array_column(self::team_scores($state, $scores), 'team');
+                    $view['result']['teamrank'] = array_search($me['team'], $order, true) + 1;
+                }
+            }
+            return $view;
+        }
         if ($live->kind === 'ideas') {
             $view['q'] = $state['q'];
             $view['max'] = (int) $state['max'];
@@ -624,7 +723,118 @@ class live {
             }
             $view['ideas'] = $ideas;
         }
+        if ($live->kind === 'quiz') {
+            $view['teams'] = $state['teams'];
+            $view['pick'] = !empty($state['pick']);
+            $view['mode'] = $state['mode'];
+            $view['top'] = (int) $state['top'];
+            $view['revealed'] = $live->round && (int) $state['revealed'] === (int) $live->round;
+            $answers = $live->round ? $DB->get_records_menu(
+                'local_oksigeniaclasstools_livein',
+                ['liveid' => $live->id, 'round' => $live->round],
+                '',
+                'device, answer'
+            ) : [];
+            $view['answered'] = count($answers);
+            $question = $state['qs'][$live->round] ?? null;
+            $view['counts'] = $view['revealed'] && $question ? array_map(
+                fn($i) => count(array_filter($answers, fn($a) => (int) $a === $i)),
+                array_keys($question['o'])
+            ) : [];
+            $scores = self::scores($live);
+            $list = [];
+            foreach ($scores as $device => $score) {
+                $list[] = ['device' => (string) $device, 'name' => $names[$device] ?? ''] + $score;
+            }
+            usort($list, fn($a, $b) => $b['total'] <=> $a['total'] ?: $b['hits'] <=> $a['hits']);
+            $view['scores'] = $list;
+            $view['teamscores'] = $state['teams'] ? self::team_scores($state, $scores) : [];
+            // For the teacher's summary: each question, how many answered it and how many got it right.
+            $all = $DB->get_records_select(
+                'local_oksigeniaclasstools_livein',
+                'liveid = ? AND round > 0',
+                [$live->id],
+                'id',
+                'id, round, answer'
+            );
+            $summary = [];
+            foreach ($state['qs'] as $round => $q) {
+                $rows = array_filter($all, fn($r) => (int) $r->round === (int) $round);
+                $summary[] = ['round' => (int) $round, 'q' => $q['q'], 'answered' => count($rows),
+                    'right' => count(array_filter($rows, fn($r) => (int) $r->answer === (int) $q['c']))];
+            }
+            $view['summary'] = $summary;
+        }
         return $view;
+    }
+
+    /**
+     * The points of a quiz: each device with its total, what it got in the current question (once revealed), whether
+     * it was right, how many it got right, and its team. Questions count once they are revealed or left behind. A right
+     * answer is worth 1000 (calm), or from 500 to 1000 by how soon it came (fast, timed by the site, with a third of a
+     * second of grace for the connection).
+     *
+     * @param \stdClass $live
+     * @return array device => [total, last, right (null: no answer), hits, team]
+     */
+    public static function scores(\stdClass $live): array {
+        global $DB;
+        $state = json_decode($live->state, true);
+        $scores = [];
+        $joined = $DB->get_records(
+            'local_oksigeniaclasstools_livein',
+            ['liveid' => $live->id, 'round' => 0],
+            'id',
+            'id, device, team'
+        );
+        foreach ($joined as $row) {
+            $scores[$row->device] = ['total' => 0, 'last' => 0, 'right' => null, 'hits' => 0, 'team' => (int) $row->team];
+        }
+        $upto = (int) $state['revealed'] === (int) $live->round ? (int) $live->round : (int) $live->round - 1;
+        $rows = $DB->get_records_select(
+            'local_oksigeniaclasstools_livein',
+            'liveid = ? AND round > 0 AND round <= ?',
+            [$live->id, $upto],
+            'id',
+            'id, device, round, answer, timecreated'
+        );
+        foreach ($rows as $row) {
+            $question = $state['qs'][$row->round] ?? null;
+            if (!$question || !isset($scores[$row->device])) {
+                continue;
+            }
+            $right = (int) $row->answer === (int) $question['c'];
+            $points = 0;
+            if ($right) {
+                $late = max(0, $row->timecreated - $question['at'] - 300) / ($question['secs'] * 1000);
+                $points = $state['mode'] === 'fast' ? (int) round(500 + 500 * max(0, 1 - $late)) : 1000;
+            }
+            $scores[$row->device]['total'] += $points;
+            $scores[$row->device]['hits'] += $right ? 1 : 0;
+            if ((int) $row->round === (int) $live->round) {
+                $scores[$row->device]['last'] = $points;
+                $scores[$row->device]['right'] = $right;
+            }
+        }
+        return $scores;
+    }
+
+    /**
+     * The teams of a quiz by their average points (so a bigger team is not ahead just for being bigger).
+     *
+     * @param array $state
+     * @param array $scores From scores().
+     * @return array [team (from 1), name, total, members], best first
+     */
+    private static function team_scores(array $state, array $scores): array {
+        $teams = [];
+        foreach ($state['teams'] as $i => $name) {
+            $members = array_filter($scores, fn($s) => $s['team'] === $i + 1);
+            $total = $members ? (int) round(array_sum(array_column($members, 'total')) / count($members)) : 0;
+            $teams[] = ['team' => $i + 1, 'name' => $name, 'total' => $total, 'members' => count($members)];
+        }
+        usort($teams, fn($a, $b) => $b['total'] <=> $a['total']);
+        return $teams;
     }
 
     /**

@@ -233,6 +233,100 @@ final class live_test extends \advanced_testcase {
         $this->assertSame('es', json_decode($live->state, true)['lang']);
     }
 
+    public function test_a_quiz_scores_right_answers_and_shows_only_the_top_ones(): void {
+        global $DB;
+        $this->resetAfterTest();
+        $course = $this->getDataGenerator()->create_course();
+        $live = live::start($course, 2, 'quiz', 'anon', ['mode' => 'calm', 'top' => 3]);
+        $devices = array_map(fn($c) => str_repeat($c, 32), ['a', 'b', 'c', 'd', 'e']);
+        foreach ($devices as $d) {
+            live::join($live, $d);
+        }
+        $question = ['q' => 'Capital of France?', 'options' => ['Rome', 'Paris', 'Oslo'], 'correct' => 1, 'secs' => 20];
+        $live = live::control($live, 'open', $question);
+        // Before the reveal the devices see how many answers there are, not which one is right.
+        $view = live::device_view($live, $devices[0]);
+        $this->assertSame(3, $view['n']);
+        $this->assertArrayNotHasKey('result', $view);
+        $this->assertArrayNotHasKey('options', $view);
+        live::answer($live, $devices[0], '1');
+        live::answer($live, $devices[0], '2');            // Only the first tap counts.
+        live::answer($live, $devices[1], '1');
+        live::answer($live, $devices[2], '0');
+        try {
+            live::answer($live, $devices[3], '7');
+            $this->fail('An answer that is not there');
+        } catch (\moodle_exception $e) {
+            $this->assertSame('invalidparameter', $e->errorcode);
+        }
+        $board = live::board_view($live);
+        $this->assertSame(3, $board['answered']);
+        $this->assertSame([], $board['counts']);
+        $this->assertSame(0, $board['scores'][0]['total']);   // Nothing counts until it is revealed.
+        $live = live::control($live, 'reveal');
+        $board = live::board_view($live);
+        $this->assertSame([1, 2, 0], $board['counts']);
+        $this->assertSame([1000, 1000, 0, 0, 0], array_column($board['scores'], 'total'));
+        $mine = live::device_view($live, $devices[0]);
+        $this->assertSame(['right' => true, 'points' => 1000, 'total' => 1000, 'correct' => 1, 'rank' => 1], $mine['result']);
+        $this->assertFalse(live::device_view($live, $devices[2])['result']['right']);
+        $this->assertNull(live::device_view($live, $devices[3])['result']['right']);
+        // Second question: four devices tie at the top, the one with no points is fourth and does not see its place.
+        $live = live::control($live, 'open', ['q' => 'True?', 'options' => ['True', 'False'], 'correct' => 0, 'secs' => 10]);
+        foreach ([2, 3] as $i) {
+            live::answer($live, $devices[$i], '0');
+        }
+        $live = live::control($live, 'reveal');
+        $this->assertSame(0, live::device_view($live, $devices[4])['result']['rank']);
+        $this->assertSame(1, live::device_view($live, $devices[2])['result']['rank']);
+        $summary = live::board_view($live)['summary'];
+        $this->assertSame([[1, 3, 2], [2, 2, 2]], array_map(fn($q) => [$q['round'], $q['answered'], $q['right']], $summary));
+        // Fast: an answer right at the start is worth almost 1000, one at the very end about 500.
+        $fast = live::start($course, 3, 'quiz', 'anon', ['mode' => 'fast']);
+        live::join($fast, $devices[0]);
+        live::join($fast, $devices[1]);
+        $fast = live::control($fast, 'open', ['q' => 'Q', 'options' => ['A', 'B'], 'correct' => 0, 'secs' => 10]);
+        live::answer($fast, $devices[0], '0');
+        live::answer($fast, $devices[1], '0');
+        $late = json_decode($fast->state, true)['qs'][1]['at'] + 10300;
+        $DB->set_field(
+            'local_oksigeniaclasstools_livein',
+            'timecreated',
+            $late,
+            ['liveid' => $fast->id, 'device' => $devices[1], 'round' => 1]
+        );
+        $fast = live::control($fast, 'reveal');
+        $totals = array_column(live::board_view($fast)['scores'], 'total', 'device');
+        $this->assertGreaterThan(990, $totals[$devices[0]]);
+        $this->assertSame(500, $totals[$devices[1]]);
+    }
+
+    public function test_quiz_teams_come_from_the_groups_or_are_chosen(): void {
+        $this->resetAfterTest();
+        $course = $this->getDataGenerator()->create_course();
+        $options = ['teams' => ['Blue', 'Red'], 'members' => [41 => 2, 42 => 1], 'pick' => 1];
+        $live = live::start($course, 2, 'quiz', 'hidden', $options);
+        $one = live::hidden_device($live, 41);
+        $two = live::hidden_device($live, 42);
+        $three = live::hidden_device($live, 43);
+        live::join($live, $one, 0, 1, 41);       // In a group: that team, whatever it chooses.
+        live::join($live, $two, 0, 0, 42);
+        live::join($live, $three, 0, 2, 43);     // Not in any group: the one it chose.
+        $teams = array_column(live::board_view($live)['scores'], 'team', 'device');
+        $this->assertSame([2, 1, 2], [$teams[$one], $teams[$two], $teams[$three]]);
+        $live = live::control($live, 'open', ['q' => 'Q', 'options' => ['A', 'B'], 'correct' => 1]);
+        live::answer($live, $one, '1');
+        live::answer($live, $two, '1');
+        live::answer($live, $three, '0');
+        $live = live::control($live, 'reveal');
+        // Teams by their average: Blue 1000 (one member), Red 500 (two members).
+        $board = live::board_view($live);
+        $teams = array_map(fn($t) => [$t['name'], $t['total'], $t['members']], $board['teamscores']);
+        $this->assertSame([['Blue', 1000, 1], ['Red', 500, 2]], $teams);
+        $this->assertSame(1, live::device_view($live, $two)['result']['teamrank']);
+        $this->assertSame(2, live::device_view($live, $three)['result']['teamrank']);
+    }
+
     public function test_a_device_sent_out_cannot_come_back(): void {
         $this->resetAfterTest();
         $course = $this->getDataGenerator()->create_course();

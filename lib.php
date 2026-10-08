@@ -286,6 +286,8 @@ function local_oksigeniaclasstools_data(stdClass $course, context_course $contex
         // Live sessions (votes, buzzers, the phone as a remote), unless the site turns them off.
         'liveurl' => get_config('local_oksigeniaclasstools', 'live') !== '0'
             ? (new moodle_url('/local/oksigeniaclasstools/livehost.php'))->out(false) : null,
+        // Questions of the Moodle question bank for a quiz (multiple choice with one answer, true/false).
+        'bankurl' => (new moodle_url('/local/oksigeniaclasstools/quizbank.php'))->out(false),
     ];
 }
 

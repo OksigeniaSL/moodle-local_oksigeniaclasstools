@@ -50,7 +50,8 @@ if ($action === 'command') {
     if ($live->kind === 'remote' && $live->userid != $USER->id) {
         throw new moodle_exception('nopermissions', 'error', '', 'remote');
     }
-    live::join($live, $device, $hidden ? 0 : (int) $USER->id, optional_param('team', 0, PARAM_INT));
+    // In a quiz with teams made from groups, their team comes from who they are (also when anonymous).
+    live::join($live, $device, $hidden ? 0 : (int) $USER->id, optional_param('team', 0, PARAM_INT), (int) $USER->id);
 } else if ($action === 'answer') {
     live::answer($live, $device, required_param('answer', PARAM_ALPHANUM));
 } else if ($action === 'idea') {

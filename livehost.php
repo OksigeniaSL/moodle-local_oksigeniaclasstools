@@ -52,6 +52,11 @@ if ($action === 'start') {
             'show' => optional_param('show', 0, PARAM_BOOL),
             'max' => optional_param('max', 1, PARAM_INT),
             'lang' => current_language(),
+            'members' => json_decode(optional_param('members', '{}', PARAM_RAW), true) ?: [],
+            'pick' => optional_param('pick', 0, PARAM_BOOL),
+            'mode' => optional_param('mode', 'calm', PARAM_ALPHA),
+            'top' => optional_param('top', 0, PARAM_INT),
+            'devtext' => optional_param('devtext', 0, PARAM_BOOL),
         ]
     );
 } else {
@@ -64,6 +69,8 @@ if ($action === 'start') {
             'secs' => optional_param('secs', 0, PARAM_INT),
             'q' => optional_param('q', '', PARAM_TEXT),
             'max' => optional_param('max', 0, PARAM_INT),
+            'options' => json_decode(optional_param('options', '[]', PARAM_RAW), true) ?: [],
+            'correct' => optional_param('correct', -1, PARAM_INT),
         ]);
     }
 }

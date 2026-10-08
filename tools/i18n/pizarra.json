@@ -66,5 +66,157 @@
  "wb_yellow": {
   "en": "Yellow",
   "es": "Amarillo"
+ },
+ "wb_t_select": {
+  "en": "Select, move and resize",
+  "es": "Seleccionar, mover y cambiar de tamaño"
+ },
+ "wb_t_hand": {
+  "en": "Move around the page",
+  "es": "Moverse por la página"
+ },
+ "wb_t_laser": {
+  "en": "Laser pointer",
+  "es": "Puntero láser"
+ },
+ "wb_surface": {
+  "en": "Board",
+  "es": "Pizarra"
+ },
+ "wb_sf_white": {
+  "en": "White",
+  "es": "Blanca"
+ },
+ "wb_sf_green": {
+  "en": "Green",
+  "es": "Verde"
+ },
+ "wb_sf_black": {
+  "en": "Black",
+  "es": "Negra"
+ },
+ "wb_full": {
+  "en": "Full board: pages, instruments, picture or PDF",
+  "es": "Pizarra completa: páginas, instrumentos, imagen o PDF"
+ },
+ "wb_more": {
+  "en": "Full board",
+  "es": "Pizarra completa"
+ },
+ "wb_image": {
+  "en": "Picture or PDF as background",
+  "es": "Imagen o PDF de fondo"
+ },
+ "wb_image_remove": {
+  "en": "Remove the picture",
+  "es": "Quitar la imagen"
+ },
+ "wb_image_missing": {
+  "en": "The picture is in the browser it was added in",
+  "es": "La imagen está en el navegador donde se puso"
+ },
+ "wb_importing": {
+  "en": "Bringing in page {$a->n} of {$a->of}…",
+  "es": "Trayendo la página {$a->n} de {$a->of}…"
+ },
+ "wb_import_error": {
+  "en": "That file cannot be opened: try a picture (PNG, JPG) or a PDF.",
+  "es": "Ese archivo no se puede abrir: prueba con una imagen (PNG, JPG) o un PDF."
+ },
+ "wb_pdf_many": {
+  "en": "Only the first {$a} pages fit.",
+  "es": "Solo caben las primeras {$a} páginas."
+ },
+ "wb_zoom_in": {
+  "en": "Zoom in",
+  "es": "Acercar"
+ },
+ "wb_zoom_out": {
+  "en": "Zoom out",
+  "es": "Alejar"
+ },
+ "wb_zoom_reset": {
+  "en": "Back to the whole page",
+  "es": "Volver a la página entera"
+ },
+ "wb_fit": {
+  "en": "The picture as wide as the screen",
+  "es": "La imagen a lo ancho de la pantalla"
+ },
+ "wb_pages": {
+  "en": "Pages",
+  "es": "Páginas"
+ },
+ "wb_page_of": {
+  "en": "Page {$a->n} of {$a->of}",
+  "es": "Página {$a->n} de {$a->of}"
+ },
+ "wb_prev": {
+  "en": "Previous page",
+  "es": "Página anterior"
+ },
+ "wb_next": {
+  "en": "Next page",
+  "es": "Página siguiente"
+ },
+ "wb_new_page": {
+  "en": "New page",
+  "es": "Página nueva"
+ },
+ "wb_dup_page": {
+  "en": "Duplicate",
+  "es": "Duplicar"
+ },
+ "wb_del_page": {
+  "en": "Delete the page",
+  "es": "Borrar la página"
+ },
+ "wb_del_page_sure": {
+  "en": "Are you sure? Press again",
+  "es": "¿Seguro? Pulsa otra vez"
+ },
+ "wb_too_big": {
+  "en": "These pages are too big to keep in the course: they stay in this browser.",
+  "es": "Estas páginas ocupan demasiado para guardarlas en el curso: se quedan en este navegador."
+ },
+ "wb_sel_copy": {
+  "en": "Copy",
+  "es": "Copiar"
+ },
+ "wb_sel_delete": {
+  "en": "Delete",
+  "es": "Borrar"
+ },
+ "in_ruler": {
+  "en": "Ruler",
+  "es": "Regla"
+ },
+ "in_square": {
+  "en": "Set square (45°)",
+  "es": "Escuadra"
+ },
+ "in_bevel": {
+  "en": "Set square (30° and 60°)",
+  "es": "Cartabón"
+ },
+ "in_protractor": {
+  "en": "Protractor",
+  "es": "Transportador"
+ },
+ "in_compass": {
+  "en": "Compass",
+  "es": "Compás"
+ },
+ "in_curtain": {
+  "en": "Curtain: cover the board and uncover it bit by bit",
+  "es": "Cortina: tapar la pizarra y destaparla poco a poco"
+ },
+ "in_spot": {
+  "en": "Spotlight",
+  "es": "Foco"
+ },
+ "in_close": {
+  "en": "Remove",
+  "es": "Quitar"
  }
 }

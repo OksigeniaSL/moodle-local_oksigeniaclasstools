@@ -15,18 +15,30 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * Version metadata for local_oksigeniaclasstools.
+ * The board asks for the questions of the Moodle question bank it can use for a quiz: the categories, and the
+ * questions of one of them.
  *
  * @package    local_oksigeniaclasstools
  * @copyright  2026 Oksigenia <dev@oksigenia.cc>
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+define('AJAX_SCRIPT', true);
+require(__DIR__ . '/../../config.php');
 
-$plugin->component = 'local_oksigeniaclasstools';
-$plugin->version   = 2026101802;
-$plugin->release   = '0.17.0';
-$plugin->maturity  = MATURITY_BETA;
-$plugin->requires  = 2023100900; // Moodle 4.3: before it, table names could not be longer than 28 characters.
-$plugin->supported = [403, 600];
+use local_oksigeniaclasstools\local\bank;
+
+$courseid = required_param('courseid', PARAM_INT);
+$action = required_param('action', PARAM_ALPHA);
+require_sesskey();
+$course = get_course($courseid);
+require_login($course, false, null, false, true);
+require_capability('local/oksigeniaclasstools:use', context_course::instance($course->id));
+
+if ($action === 'categories') {
+    echo json_encode(['categories' => bank::categories($course)]);
+} else if ($action === 'questions') {
+    echo json_encode(bank::questions($course, required_param('categoryid', PARAM_INT)));
+} else {
+    throw new moodle_exception('invalidparameter', 'debug');
+}

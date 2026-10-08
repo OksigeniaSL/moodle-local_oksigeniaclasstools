@@ -24,4 +24,12 @@
         <license>CC BY</license>
         <licenseversion>4.0</licenseversion>
     </library>
+    <library>
+        <location>app/lib/pdfjs</location>
+        <name>PDF.js</name>
+        <description>Mozilla's PDF renderer (legacy build), loaded only to bring the pages of a PDF onto the board. The .mjs files of the package renamed to .js so every server sends them as JavaScript.</description>
+        <version>6.3.289</version>
+        <license>Apache</license>
+        <licenseversion>2.0</licenseversion>
+    </library>
 </libraries>

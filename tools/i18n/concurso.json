@@ -1,0 +1,418 @@
+{
+ "lv_kind_quiz": {
+  "en": "Quiz",
+  "es": "Concurso"
+ },
+ "lv_short_quiz": {
+  "en": "Questions with points, each one or by teams",
+  "es": "Preguntas con puntos, cada uno o por equipos"
+ },
+ "lv_intro_quiz": {
+  "en": "Questions with one right answer: the devices answer, the board reveals it and counts the points.",
+  "es": "Preguntas con una respuesta buena: contestan desde las tabletas, la pizarra la destapa y cuenta los puntos."
+ },
+ "lv_quiz_wait": {
+  "en": "Wait for the first question",
+  "es": "Espera a la primera pregunta"
+ },
+ "lv_quiz_sent": {
+  "en": "Answer sent!",
+  "es": "¡Respuesta enviada!"
+ },
+ "lv_quiz_wait_reveal": {
+  "en": "Look at the board",
+  "es": "Mira la pizarra"
+ },
+ "lv_quiz_time": {
+  "en": "Time is up",
+  "es": "Se acabó el tiempo"
+ },
+ "lv_quiz_right": {
+  "en": "Right!",
+  "es": "¡Correcto!"
+ },
+ "lv_quiz_wrong": {
+  "en": "Not that one",
+  "es": "No era esa"
+ },
+ "lv_quiz_none": {
+  "en": "No answer",
+  "es": "No contestaste"
+ },
+ "lv_quiz_total": {
+  "en": "{$a} points so far",
+  "es": "Llevas {$a} puntos"
+ },
+ "lv_quiz_rank": {
+  "en": "Place {$a}",
+  "es": "Puesto {$a}"
+ },
+ "lv_quiz_teamrank": {
+  "en": "Your team: place {$a}",
+  "es": "Tu equipo: puesto {$a}"
+ },
+ "qz_set": {
+  "en": "Set of questions",
+  "es": "Juego de preguntas"
+ },
+ "qz_edit": {
+  "en": "Edit the questions",
+  "es": "Editar las preguntas"
+ },
+ "qz_new": {
+  "en": "New set",
+  "es": "Nuevo juego"
+ },
+ "qz_bank": {
+  "en": "From the question bank",
+  "es": "Del banco de preguntas"
+ },
+ "qz_points": {
+  "en": "Points",
+  "es": "Puntos"
+ },
+ "qz_mode_calm": {
+  "en": "Calm",
+  "es": "Tranquilo"
+ },
+ "qz_mode_fast": {
+  "en": "Fast",
+  "es": "Rápido"
+ },
+ "qz_mode_hint_calm": {
+  "en": "Calm: each right answer is worth 1000 points, whenever it comes.",
+  "es": "Tranquilo: cada acierto vale 1000 puntos, llegue cuando llegue."
+ },
+ "qz_mode_hint_fast": {
+  "en": "Fast: a right answer is worth from 500 to 1000 points, more the sooner it comes.",
+  "es": "Rápido: un acierto vale de 500 a 1000 puntos, más cuanto antes llegue."
+ },
+ "qz_secs": {
+  "en": "Time for each question",
+  "es": "Tiempo por pregunta"
+ },
+ "qz_secs_n": {
+  "en": "{$a} seconds",
+  "es": "{$a} segundos"
+ },
+ "qz_secs_default": {
+  "en": "As the quiz",
+  "es": "El del concurso"
+ },
+ "qz_teams": {
+  "en": "Teams",
+  "es": "Equipos"
+ },
+ "qz_teams_none": {
+  "en": "Each one",
+  "es": "Cada uno"
+ },
+ "qz_teams_groups": {
+  "en": "The {$a} groups made",
+  "es": "Los {$a} grupos hechos"
+ },
+ "qz_teams_pick": {
+  "en": "They choose",
+  "es": "Eligen ellos"
+ },
+ "qz_nteams": {
+  "en": "Teams",
+  "es": "Equipos"
+ },
+ "qz_teams_none_hint": {
+  "en": "Each one plays for themselves.",
+  "es": "Cada uno juega por su cuenta."
+ },
+ "qz_teams_groups_hint": {
+  "en": "The groups of «Groups» are the teams; whoever is in none chooses on the device.",
+  "es": "Los grupos de «Grupos» son los equipos; quien no está en ninguno elige en la tableta."
+ },
+ "qz_teams_pick_hint": {
+  "en": "Each one chooses a team on the device; the teams count their average.",
+  "es": "Cada uno elige equipo en la tableta; los equipos cuentan su media."
+ },
+ "qz_ranking": {
+  "en": "Ranking",
+  "es": "Clasificación"
+ },
+ "qz_after": {
+  "en": "After each question",
+  "es": "Después de cada pregunta"
+ },
+ "qz_end": {
+  "en": "Podium at the end",
+  "es": "Podio al final"
+ },
+ "qz_top": {
+  "en": "Show",
+  "es": "Enseñar"
+ },
+ "qz_top_all": {
+  "en": "Everyone",
+  "es": "A todos"
+ },
+ "qz_top_n": {
+  "en": "Only the first {$a}",
+  "es": "Solo los {$a} primeros"
+ },
+ "qz_devtext": {
+  "en": "The question and its answers on the devices",
+  "es": "La pregunta y sus respuestas en las tabletas"
+ },
+ "qz_ready": {
+  "en": "{$a} questions. Open the session when they are ready.",
+  "es": "{$a} preguntas. Abre la sesión cuando estén listos."
+ },
+ "qz_empty": {
+  "en": "Choose a set with questions, or write one.",
+  "es": "Elige un juego con preguntas, o escribe uno."
+ },
+ "qz_new_name": {
+  "en": "Set {$a}",
+  "es": "Juego {$a}"
+ },
+ "qz_example": {
+  "en": "Example",
+  "es": "Ejemplo"
+ },
+ "qz_ex_q1": {
+  "en": "How many days does a week have?",
+  "es": "¿Cuántos días tiene una semana?"
+ },
+ "qz_ex_o1": {
+  "en": "Seven|Five|Ten|Six",
+  "es": "Siete|Cinco|Diez|Seis"
+ },
+ "qz_ex_q2": {
+  "en": "Water freezes at 0 °C.",
+  "es": "El agua se congela a 0 °C."
+ },
+ "qz_ex_o2": {
+  "en": "True|False",
+  "es": "Verdadero|Falso"
+ },
+ "qz_ex_q3": {
+  "en": "Which one is a mammal?",
+  "es": "¿Cuál es un mamífero?"
+ },
+ "qz_ex_o3": {
+  "en": "Dolphin|Shark|Trout",
+  "es": "Delfín|Tiburón|Trucha"
+ },
+ "qz_true": {
+  "en": "True",
+  "es": "Verdadero"
+ },
+ "qz_false": {
+  "en": "False",
+  "es": "Falso"
+ },
+ "qz_edit_title": {
+  "en": "Questions of the set",
+  "es": "Preguntas del juego"
+ },
+ "qz_set_name": {
+  "en": "Name of the set",
+  "es": "Nombre del juego"
+ },
+ "qz_edit_q": {
+  "en": "Edit the question",
+  "es": "Editar la pregunta"
+ },
+ "qz_del_q": {
+  "en": "Delete the question",
+  "es": "Borrar la pregunta"
+ },
+ "qz_add_q": {
+  "en": "Add the question",
+  "es": "Añadir la pregunta"
+ },
+ "qz_save_q": {
+  "en": "Save the question",
+  "es": "Guardar la pregunta"
+ },
+ "qz_q_ph": {
+  "en": "The question",
+  "es": "La pregunta"
+ },
+ "qz_kind_choice": {
+  "en": "2 to 4 answers",
+  "es": "De 2 a 4 respuestas"
+ },
+ "qz_kind_tf": {
+  "en": "True or false",
+  "es": "Verdadero o falso"
+ },
+ "qz_right": {
+  "en": "The right one",
+  "es": "La buena"
+ },
+ "qz_answer": {
+  "en": "Answer",
+  "es": "Respuesta"
+ },
+ "qz_answer_optional": {
+  "en": "Answer (optional)",
+  "es": "Respuesta (si quieres)"
+ },
+ "qz_need": {
+  "en": "Write the question and at least two answers, and mark the right one.",
+  "es": "Escribe la pregunta y al menos dos respuestas, y marca la buena."
+ },
+ "qz_paste": {
+  "en": "Paste several questions",
+  "es": "Pegar varias preguntas"
+ },
+ "qz_paste_hint": {
+  "en": "One per line: the question, then the answers separated by |, with * before the right one. For true/false, V or F after the question.",
+  "es": "Una por línea: la pregunta y luego las respuestas separadas por |, con * delante de la buena. Para verdadero o falso, V o F después de la pregunta."
+ },
+ "qz_paste_ph": {
+  "en": "Capital of Italy? | *Rome | Milan | Naples\nThe Sun is a star | V",
+  "es": "¿Capital de Italia? | *Roma | Milán | Nápoles\nEl Sol es una estrella | V"
+ },
+ "qz_paste_go": {
+  "en": "Add them",
+  "es": "Añadirlas"
+ },
+ "qz_paste_none": {
+  "en": "No question could be read: check the | and the *.",
+  "es": "No se ha podido leer ninguna pregunta: revisa las | y el *."
+ },
+ "qz_done": {
+  "en": "Done",
+  "es": "Listo"
+ },
+ "qz_del_set": {
+  "en": "Delete this set",
+  "es": "Borrar este juego"
+ },
+ "qz_del_set_sure": {
+  "en": "Sure? Press again",
+  "es": "¿Seguro? Pulsa otra vez"
+ },
+ "qz_bank_title": {
+  "en": "Questions from the question bank",
+  "es": "Preguntas del banco de preguntas"
+ },
+ "qz_bank_loading": {
+  "en": "Looking…",
+  "es": "Buscando…"
+ },
+ "qz_bank_category": {
+  "en": "Category",
+  "es": "Categoría"
+ },
+ "qz_bank_add": {
+  "en": "Add the ticked ones to the set",
+  "es": "Añadir las marcadas al juego"
+ },
+ "qz_bank_none": {
+  "en": "No question of this category fits (multiple choice with one answer, or true/false).",
+  "es": "Ninguna pregunta de esta categoría sirve (opción múltiple con una respuesta, o verdadero/falso)."
+ },
+ "qz_bank_skipped": {
+  "en": "{$a} left out: several right answers, more than four answers or no text.",
+  "es": "Quedan fuera {$a}: varias respuestas buenas, más de cuatro respuestas o sin texto."
+ },
+ "qz_bank_empty": {
+  "en": "This course has no banks with questions you can use.",
+  "es": "Este curso no tiene bancos con preguntas que puedas usar."
+ },
+ "qz_bank_error": {
+  "en": "The question bank could not be read.",
+  "es": "No se ha podido leer el banco de preguntas."
+ },
+ "qz_q_n": {
+  "en": "Question {$a->n} of {$a->of}",
+  "es": "Pregunta {$a->n} de {$a->of}"
+ },
+ "qz_lobby": {
+  "en": "{$a->n} questions · {$a->m} in",
+  "es": "{$a->n} preguntas · {$a->m} dentro"
+ },
+ "qz_start": {
+  "en": "Start the quiz",
+  "es": "Empezar el concurso"
+ },
+ "qz_reveal": {
+  "en": "Reveal the answer",
+  "es": "Destapar la respuesta"
+ },
+ "qz_next": {
+  "en": "Next question",
+  "es": "Siguiente pregunta"
+ },
+ "qz_to_ranking": {
+  "en": "See the ranking",
+  "es": "Ver la clasificación"
+ },
+ "qz_to_podium": {
+  "en": "See the podium",
+  "es": "Ver el podio"
+ },
+ "qz_to_results": {
+  "en": "See the results",
+  "es": "Ver los resultados"
+ },
+ "qz_podium": {
+  "en": "Podium",
+  "es": "Podio"
+ },
+ "qz_results": {
+  "en": "Results",
+  "es": "Resultados"
+ },
+ "qz_question": {
+  "en": "Question",
+  "es": "Pregunta"
+ },
+ "qz_right_col": {
+  "en": "Right",
+  "es": "Aciertos"
+ },
+ "qz_by_student": {
+  "en": "By student",
+  "es": "Por alumno"
+ },
+ "qz_student": {
+  "en": "Student",
+  "es": "Alumno"
+ },
+ "qz_hits": {
+  "en": "Right answers",
+  "es": "Aciertos"
+ },
+ "qz_points_col": {
+  "en": "Points",
+  "es": "Puntos"
+ },
+ "qz_results_note": {
+  "en": "Only you see this; nothing goes to the gradebook.",
+  "es": "Esto solo lo ves tú; no va al calificador."
+ },
+ "qz_first": {
+  "en": "First place",
+  "es": "Primer puesto"
+ },
+ "qz_first_tie": {
+  "en": "Tied for first place",
+  "es": "Empate en el primer puesto"
+ },
+ "qz_tie_n": {
+  "en": "{$a} tied",
+  "es": "{$a} empatados"
+ },
+ "qz_and_more": {
+  "en": "and {$a} more",
+  "es": "y {$a} más"
+ },
+ "lv_quiz_was": {
+  "en": "The right one was",
+  "es": "La buena era"
+ },
+ "lv_quiz_yours": {
+  "en": "Your answer",
+  "es": "Tu respuesta"
+ }
+}

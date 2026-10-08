@@ -1,5 +1,31 @@
 # Changelog
 
+## 0.17.0 (2026-10-18)
+
+- **Quiz**, a new kind of live session (a light Kahoot): questions with one right answer (two to four) or true or
+  false, on the board in big coloured tiles with A, B, C, D; the devices answer with the same tiles (and the text,
+  if the teacher wants it on them). Calm (a right answer is worth 1000) or fast (500 to 1000, by how soon it came).
+  The answer is revealed when the time runs out, when everybody has answered or with «Reveal»: the right one marked,
+  how many chose each, and on each device right or not, the points, the place (only among the top ones, if the
+  teacher shows 3, 4 or 5) and the right answer when it missed. A ranking after each question and/or at the end, a
+  podium (a tie shares its step) and the results per question for the teacher. By teams: the groups made on the
+  board, or teams the devices choose; the ranking by teams shows them all.
+- **Questions** from three places: sets written on the board (kept for the teacher in the course), several pasted at
+  once (`Question | *right | other`, `Question | T/F`), or the course's question bank (multiple choice with one
+  answer and true/false; Moodle 4.3 to 6.0, also question bank activities).
+- **Full board**, with its button (by default from Secondary on; the simple board stays as it was): pages with
+  thumbnails (add, duplicate, delete, reorder by dragging), kept for each course in the browser and, inside Moodle,
+  for the teacher; a picture or the pages of a PDF as the background of a page, with «as wide as the screen» to read
+  a sheet; select to move, resize, copy, recolour, change thickness or delete (with undo); zoom and move around the
+  page (buttons, two fingers, the wheel); a laser pointer.
+- **Instruments**: ruler, 45° set square, 30°-60° set square, protractor and compass, laid over the board. They move
+  and turn (snapping every 15°) and the set squares turn over; the pen goes straight along their edges; the
+  protractor has an arm that reads the angle, and the pen follows its arm and base line from the centre; the
+  compass opens from its leg and draws circles and arcs. **Curtain** (covers the board, uncovered from any side) and
+  **spotlight** (only a circle lit).
+- **Chalkboard**: green or black boards, for any background; the inks turn to chalk on them.
+- Ideas from OpenBoard (GPL 3), written anew for the web. PDF.js 6.3 (Apache 2.0), only loaded to bring in a PDF.
+
 ## 0.16.0 (2026-10-17)
 
 - **Live sessions, easier to join**: students enrolled in the course see a small notice with «Join» on the course

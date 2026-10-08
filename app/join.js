@@ -96,6 +96,9 @@
         if (v.full) { screen(t('lv_full')); return; }
         if (v.kind === 'remote') { remote(); return; }
         if (v.kind === 'buzz' && (!v.joined || !v.team || team === -1)) { pickTeam(v); return; }
+        // A quiz by teams that they choose: the team first (unless their group already gave them one).
+        if (v.kind === 'quiz' && v.pick && v.joined && (!v.team || team === -1)) { pickTeam(v); return; }
+        if (v.kind === 'quiz') { quiz(v); return; }
         if (v.kind === 'vote') { vote(v); return; }
         if (v.kind === 'ideas') { ideas(v); return; }
         if (v.kind === 'buzz') { buzzer(v); }
@@ -169,6 +172,51 @@
         }));
     };
 
+    // A quiz: one big button per answer, in its colour and with its letter (and its text, if the teacher shows it on
+    // the devices); one tap. Once the board reveals it: right or not, the points, the total and the place.
+    const QUIZ = [['#ce1423'], ['#164281'], ['#fbbe17', true], ['#067e36']];
+    // One answer, small: its letter and colour (and its text, if the devices have it).
+    const tile = (v, i) => {
+        const [c, light] = QUIZ[i] || QUIZ[0];
+        return `<span class="jn-op jn-op-quiz jn-mini${light ? ' claro' : ''}" style="--c:${c}"><span>${'ABCD'[i] || ''}</span>${v.options && v.options[i] ? `<small>${escape(v.options[i])}</small>` : ''}</span>`;
+    };
+    const quiz = (v) => {
+        const tm = v.team && v.teams && v.teams[v.team - 1] ? TEAMS[(v.team - 1) % TEAMS.length] : null;
+        const chip = tm ? `<span class="jn-equipo${tm[1] ? ' claro' : ''}" style="--c:${tm[0]}">${escape(v.teams[v.team - 1])}</span>` : '';
+        if (!v.round) { screen(t('lv_quiz_wait'), t('lv_joined'), chip); return; }
+        if (v.result) {
+            const r = v.result;
+            const title = r.right ? t('lv_quiz_right') : (r.right === false ? t('lv_quiz_wrong') : t('lv_quiz_none'));
+            const lines = [r.right ? '' : `<p class="jn-texto">${escape(t('lv_quiz_was'))}</p>${tile(v, r.correct)}`, `<p class="jn-puntos${r.right ? ' bien' : ''}">${r.right ? '+' + r.points : '0'}</p>`,
+                `<p class="jn-texto">${escape(t('lv_quiz_total', r.total))}</p>`];
+            if (r.rank) { lines.push(`<p class="jn-texto">${escape(t('lv_quiz_rank', r.rank))}</p>`); }
+            if (r.teamrank) { lines.push(`<p class="jn-texto">${escape(t('lv_quiz_teamrank', r.teamrank))}</p>`); }
+            screen(title, '', chip + lines.join(''));
+            root.querySelector('.jn-titulo').classList.add(r.right ? 'jn-bien' : 'jn-mal');
+            return;
+        }
+        if (v.open && v.mine === '') {
+            const n = v.n || 2;
+            root.innerHTML = `${head()}<div class="jn-centro">${chip}${v.q ? `<p class="jn-titulo jn-pregunta">${escape(v.q)}</p>` : `<p class="jn-texto">${escape(t('lv_question_n', v.round))}</p>`}
+                <div class="jn-reloj" id="jn-left" hidden><b><i></i></b><span></span></div>
+                <div class="jn-ops${n === 2 ? '' : ' cuatro'}">${Array.from({ length: n }, (_, i) => {
+                    const [c, light] = QUIZ[i];
+                    const text = v.options && v.options[i] ? `<small>${escape(v.options[i])}</small>` : '';
+                    return `<button type="button" class="jn-op jn-op-quiz${light ? ' claro' : ''}" style="--c:${c}" data-o="${i}"><span>${'ABCD'[i]}</span>${text}</button>`;
+                }).join('')}</div></div>`;
+            root.querySelectorAll('.jn-op').forEach((b) => b.addEventListener('click', () => {
+                buzz();
+                root.querySelectorAll('.jn-op').forEach((x) => { x.disabled = true; });
+                view = { ...view, mine: b.dataset.o }; render();
+                post('answer', { answer: b.dataset.o }).then(apply).catch(() => {});
+            }));
+            return;
+        }
+        const yours = v.mine !== '' && /^\d$/.test(String(v.mine)) ? `<p class="jn-texto">${escape(t('lv_quiz_yours'))}</p>${tile(v, Number(v.mine))}` : '';
+        if (v.open) { screen(t('lv_quiz_sent'), t('lv_quiz_wait_reveal'), chip + yours); return; }
+        screen(t('lv_quiz_time'), t('lv_quiz_wait_reveal'), chip + yours);
+    };
+
     const pickTeam = (v) => {
         root.innerHTML = `${head()}<div class="jn-centro"><p class="jn-titulo">${escape(t('lv_pick_team'))}</p>
             <div class="jn-equipos">${(v.teams || []).map((name, i) => {
@@ -231,7 +279,7 @@
         } else {
             deadline = 0; total = 0;
         }
-        if (v.kind === 'buzz' && v.joined && v.team && team !== -1) { team = v.team; }   // -1: choosing another
+        if ((v.kind === 'buzz' || v.kind === 'quiz') && v.joined && v.team && team !== -1) { team = v.team; }   // -1: choosing another
         view = v; render(); ticker();
         // Not in yet: a vote or a remote joins at once; a buzzer, when its team is chosen.
         if (!v.joined && !v.ended && !v.kicked && !v.full && v.kind !== 'buzz') { post('join').then(apply).catch(() => {}); }
