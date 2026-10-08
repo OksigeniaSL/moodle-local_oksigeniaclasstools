@@ -1,0 +1,598 @@
+{
+ "me_pairs": {
+  "en": "Pairs",
+  "es": "Parejas"
+ },
+ "me_what": {
+  "en": "What to match",
+  "es": "Qué emparejar"
+ },
+ "me_who": {
+  "en": "Who's playing?",
+  "es": "¿Quién juega?"
+ },
+ "me_whole_class": {
+  "en": "The whole class",
+  "es": "Toda la clase"
+ },
+ "me_two_teams": {
+  "en": "Two teams",
+  "es": "Dos equipos"
+ },
+ "me_start": {
+  "en": "Deal",
+  "es": "Repartir"
+ },
+ "me_set_shapes": {
+  "en": "Shapes and colours",
+  "es": "Formas y colores"
+ },
+ "me_set_colours": {
+  "en": "A colour and its name",
+  "es": "Un color y su nombre"
+ },
+ "me_set_numbers": {
+  "en": "A number and its name",
+  "es": "Un número y su nombre"
+ },
+ "me_faces": {
+  "en": "Faces and names: {$a}",
+  "es": "Caras y nombres: {$a}"
+ },
+ "me_own": {
+  "en": "Your lists",
+  "es": "Tus listas"
+ },
+ "me_students": {
+  "en": "Students",
+  "es": "Alumnos"
+ },
+ "me_level": {
+  "en": "Level",
+  "es": "Nivel"
+ },
+ "me_all_levels": {
+  "en": "All levels",
+  "es": "Todos los niveles"
+ },
+ "me_team": {
+  "en": "Team {$a}",
+  "es": "Equipo {$a}"
+ },
+ "me_moves_one": {
+  "en": "{$a} try",
+  "es": "{$a} intento"
+ },
+ "me_moves_many": {
+  "en": "{$a} tries",
+  "es": "{$a} intentos"
+ },
+ "me_found": {
+  "en": "{$a->a} of {$a->b} pairs",
+  "es": "{$a->a} de {$a->b} parejas"
+ },
+ "me_done": {
+  "en": "All of them! In {$a} tries",
+  "es": "¡Todas! En {$a} intentos"
+ },
+ "me_winner": {
+  "en": "{$a} wins!",
+  "es": "¡Gana {$a}!"
+ },
+ "me_tie": {
+  "en": "It's a draw!",
+  "es": "¡Empate!"
+ },
+ "me_few": {
+  "en": "At least two pairs are needed.",
+  "es": "Hacen falta al menos dos parejas."
+ },
+ "me_press_start": {
+  "en": "Choose what to match and press “Deal”",
+  "es": "Elige qué emparejar y pulsa «Repartir»"
+ },
+ "me_turn": {
+  "en": "{$a}'s turn",
+  "es": "Le toca a {$a}"
+ },
+ "me_card": {
+  "en": "Card {$a}",
+  "es": "Carta {$a}"
+ },
+ "me_level_early": {
+  "en": "Early years",
+  "es": "Infantil"
+ },
+ "me_level_primary": {
+  "en": "Primary",
+  "es": "Primaria"
+ },
+ "me_level_secondary": {
+  "en": "Secondary",
+  "es": "Secundaria"
+ },
+ "me_level_upper": {
+  "en": "Upper secondary",
+  "es": "Bachillerato"
+ },
+ "me_level_higher": {
+  "en": "Higher education",
+  "es": "Universidad y superior"
+ },
+ "me_set_animals": {
+  "en": "An animal and its shadow",
+  "es": "Un animal y su sombra"
+ },
+ "me_set_dots": {
+  "en": "Dots and numbers",
+  "es": "Puntos y números"
+ },
+ "me_set_letters": {
+  "en": "Capital and small letter",
+  "es": "Mayúscula y minúscula"
+ },
+ "me_set_times": {
+  "en": "Times tables",
+  "es": "Tablas de multiplicar"
+ },
+ "me_set_clock": {
+  "en": "The time: clock and digital",
+  "es": "La hora: reloj y digital"
+ },
+ "me_set_fractions": {
+  "en": "Fractions",
+  "es": "Fracciones"
+ },
+ "me_set_opposites": {
+  "en": "Opposites",
+  "es": "Contrarios"
+ },
+ "me_set_elements": {
+  "en": "Chemical elements: symbol and name",
+  "es": "Elementos químicos: símbolo y nombre"
+ },
+ "me_set_units": {
+  "en": "Quantities and units",
+  "es": "Magnitudes y unidades"
+ },
+ "me_set_prefixes": {
+  "en": "Prefixes and powers of 10",
+  "es": "Prefijos y potencias de 10"
+ },
+ "me_set_equations": {
+  "en": "Equations and their solutions",
+  "es": "Ecuaciones y su solución"
+ },
+ "me_set_formulas": {
+  "en": "Chemical formulas",
+  "es": "Fórmulas químicas"
+ },
+ "me_set_laws": {
+  "en": "Laws of physics",
+  "es": "Leyes de la física"
+ },
+ "me_set_graphs": {
+  "en": "Functions and their graphs",
+  "es": "Funciones y sus gráficas"
+ },
+ "me_set_derivatives": {
+  "en": "Derivatives",
+  "es": "Derivadas"
+ },
+ "me_set_integrals": {
+  "en": "Standard integrals",
+  "es": "Integrales inmediatas"
+ },
+ "me_set_fgroups": {
+  "en": "Functional groups",
+  "es": "Grupos funcionales"
+ },
+ "me_set_constants": {
+  "en": "Physical constants",
+  "es": "Constantes físicas"
+ },
+ "me_set_greek": {
+  "en": "Greek letters",
+  "es": "Letras griegas"
+ },
+ "lock_name": {
+  "en": "Secret code",
+  "es": "Código secreto"
+ },
+ "lock_lock": {
+  "en": "Lock",
+  "es": "Candado"
+ },
+ "lock_new": {
+  "en": "New lock",
+  "es": "Nuevo candado"
+ },
+ "lock_edit": {
+  "en": "Edit",
+  "es": "Editar"
+ },
+ "lock_time": {
+  "en": "Time",
+  "es": "Tiempo"
+ },
+ "lock_no_time": {
+  "en": "No time limit",
+  "es": "Sin tiempo"
+ },
+ "lock_minutes": {
+  "en": "{$a} min",
+  "es": "{$a} min"
+ },
+ "lock_start": {
+  "en": "Start",
+  "es": "Empezar"
+ },
+ "lock_clues": {
+  "en": "Clues",
+  "es": "Pistas"
+ },
+ "lock_next_clue": {
+  "en": "Show the next clue",
+  "es": "Ver la siguiente pista"
+ },
+ "lock_no_more_clues": {
+  "en": "No more clues",
+  "es": "No hay más pistas"
+ },
+ "lock_erase": {
+  "en": "Delete",
+  "es": "Borrar"
+ },
+ "lock_again": {
+  "en": "Again",
+  "es": "Otra vez"
+ },
+ "lock_tries_one": {
+  "en": "{$a} try",
+  "es": "{$a} intento"
+ },
+ "lock_tries_many": {
+  "en": "{$a} tries",
+  "es": "{$a} intentos"
+ },
+ "lock_wrong": {
+  "en": "That's not the code!",
+  "es": "¡No es ese código!"
+ },
+ "lock_opened": {
+  "en": "Unlocked!",
+  "es": "¡Abierto!"
+ },
+ "lock_time_up": {
+  "en": "Time's up!",
+  "es": "¡Se acabó el tiempo!"
+ },
+ "lock_press_start": {
+  "en": "Choose the lock and press “Start”",
+  "es": "Elige el candado y pulsa «Empezar»"
+ },
+ "lock_editor_edit": {
+  "en": "Edit the lock",
+  "es": "Editar el candado"
+ },
+ "lock_editor_copy": {
+  "en": "Copy of the example lock",
+  "es": "Copia del candado de ejemplo"
+ },
+ "lock_lock_name": {
+  "en": "Lock name",
+  "es": "Nombre del candado"
+ },
+ "lock_code": {
+  "en": "Code (2 to 8 numbers or letters)",
+  "es": "Código (de 2 a 8 números o letras)"
+ },
+ "lock_clues_label": {
+  "en": "Clues, one per line (shown in this order)",
+  "es": "Pistas, una por línea (se enseñan en este orden)"
+ },
+ "lock_final_msg": {
+  "en": "Message when it opens (optional)",
+  "es": "Mensaje al abrirlo (si quieres)"
+ },
+ "lock_save": {
+  "en": "Save",
+  "es": "Guardar"
+ },
+ "lock_cancel": {
+  "en": "Cancel",
+  "es": "Cancelar"
+ },
+ "lock_remove": {
+  "en": "Delete the lock",
+  "es": "Borrar el candado"
+ },
+ "lock_remove_sure": {
+  "en": "Are you sure? Press again",
+  "es": "¿Seguro? Pulsa otra vez"
+ },
+ "lock_bad_code": {
+  "en": "The code must have 2 to 8 numbers or letters.",
+  "es": "El código tiene que tener de 2 a 8 números o letras."
+ },
+ "lock_copy_of": {
+  "en": "{$a} (copy)",
+  "es": "{$a} (copia)"
+ },
+ "mt_rods": {
+  "en": "Rods",
+  "es": "Regletas"
+ },
+ "mt_tangram": {
+  "en": "Tangram",
+  "es": "Tangram"
+ },
+ "mt_what": {
+  "en": "Material",
+  "es": "Material"
+ },
+ "mt_numbers": {
+  "en": "Show the numbers",
+  "es": "Ver los números"
+ },
+ "mt_turn": {
+  "en": "Rotate",
+  "es": "Girar"
+ },
+ "mt_clear": {
+  "en": "Remove all",
+  "es": "Quitar todas"
+ },
+ "mt_clear_sure": {
+  "en": "Are you sure? Press again",
+  "es": "¿Seguro? Pulsa otra vez"
+ },
+ "mt_rods_help": {
+  "en": "Drag rods from the staircase to the table. To rotate one, tap it twice. To remove it, put it back on the staircase.",
+  "es": "Arrastra regletas de la escalera a la mesa. Para girar una, tócala dos veces. Para quitarla, devuélvela a la escalera."
+ },
+ "mt_rod": {
+  "en": "Rod {$a}",
+  "es": "Regleta del {$a}"
+ },
+ "mt_figure": {
+  "en": "Shape",
+  "es": "Figura"
+ },
+ "mt_free": {
+  "en": "Free, no shape",
+  "es": "Libre, sin figura"
+ },
+ "mt_flip": {
+  "en": "Flip",
+  "es": "Voltear"
+ },
+ "mt_reset": {
+  "en": "Start again",
+  "es": "Colocar de nuevo"
+ },
+ "mt_tangram_help": {
+  "en": "Drag the pieces. To rotate one, tap it twice or press “Rotate”. The parallelogram flips with “Flip”. Pieces snap together when they get close.",
+  "es": "Arrastra las piezas. Para girar una, tócala dos veces o pulsa «Girar». El paralelogramo se voltea con «Voltear». Las piezas se imantan al acercarlas."
+ },
+ "mt_done": {
+  "en": "You did it!",
+  "es": "¡Conseguido!"
+ },
+ "mt_piece": {
+  "en": "Tangram piece",
+  "es": "Pieza del tangram"
+ },
+ "mt_fig_square": {
+  "en": "Square",
+  "es": "Cuadrado"
+ },
+ "mt_fig_triangle": {
+  "en": "Triangle",
+  "es": "Triángulo"
+ },
+ "mt_fig_house": {
+  "en": "House",
+  "es": "Casa"
+ },
+ "mt_fig_boat": {
+  "en": "Boat",
+  "es": "Barco"
+ },
+ "mt_fig_fish": {
+  "en": "Fish",
+  "es": "Pez"
+ },
+ "mt_fig_cat": {
+  "en": "Cat",
+  "es": "Gato"
+ },
+ "mt_fig_sailboat": {
+  "en": "Sailing boat",
+  "es": "Velero"
+ },
+ "wb_colour": {
+  "en": "Colour",
+  "es": "Color"
+ },
+ "wb_size": {
+  "en": "Thickness",
+  "es": "Grosor"
+ },
+ "wb_size_s": {
+  "en": "Thin",
+  "es": "Fino"
+ },
+ "wb_size_m": {
+  "en": "Medium",
+  "es": "Medio"
+ },
+ "wb_size_l": {
+  "en": "Thick",
+  "es": "Grueso"
+ },
+ "wb_eraser": {
+  "en": "Eraser",
+  "es": "Goma"
+ },
+ "wb_undo": {
+  "en": "Undo",
+  "es": "Deshacer"
+ },
+ "wb_clear": {
+  "en": "Clear all",
+  "es": "Borrar todo"
+ },
+ "wb_clear_sure": {
+  "en": "Are you sure? Press again",
+  "es": "¿Seguro? Pulsa otra vez"
+ },
+ "wb_background": {
+  "en": "Background",
+  "es": "Fondo"
+ },
+ "wb_download": {
+  "en": "Download",
+  "es": "Descargar"
+ },
+ "wb_bg_blank": {
+  "en": "Blank",
+  "es": "Blanco"
+ },
+ "wb_bg_grid": {
+  "en": "Squared paper",
+  "es": "Cuadrícula"
+ },
+ "wb_bg_lines": {
+  "en": "Handwriting lines",
+  "es": "Pauta"
+ },
+ "wb_bg_staff": {
+  "en": "Music staves",
+  "es": "Pentagrama"
+ },
+ "wb_board": {
+  "en": "Drawing board",
+  "es": "Pizarra para dibujar"
+ },
+ "wb_saved": {
+  "en": "Downloaded: {$a}",
+  "es": "Descargado: {$a}"
+ },
+ "wb_file": {
+  "en": "whiteboard",
+  "es": "pizarra"
+ },
+ "wb_black": {
+  "en": "Black",
+  "es": "Negro"
+ },
+ "wb_blue": {
+  "en": "Blue",
+  "es": "Azul"
+ },
+ "wb_red": {
+  "en": "Red",
+  "es": "Rojo"
+ },
+ "wb_green": {
+  "en": "Green",
+  "es": "Verde"
+ },
+ "wb_orange": {
+  "en": "Orange",
+  "es": "Naranja"
+ },
+ "wb_purple": {
+  "en": "Purple",
+  "es": "Morado"
+ },
+ "cl_now": {
+  "en": "Current time",
+  "es": "Hora actual"
+ },
+ "cl_learn": {
+  "en": "Learn the time",
+  "es": "Aprender la hora"
+ },
+ "cl_mode": {
+  "en": "Clock",
+  "es": "Reloj"
+ },
+ "cl_level": {
+  "en": "Level",
+  "es": "Nivel"
+ },
+ "cl_level_h": {
+  "en": "O'clock",
+  "es": "En punto"
+ },
+ "cl_level_half": {
+  "en": "Half past",
+  "es": "Y media"
+ },
+ "cl_level_quarter": {
+  "en": "Quarter past and quarter to",
+  "es": "Y cuarto y menos cuarto"
+ },
+ "cl_level_five": {
+  "en": "Every 5 minutes",
+  "es": "De 5 en 5 minutos"
+ },
+ "cl_level_minute": {
+  "en": "Minute by minute",
+  "es": "Minuto a minuto"
+ },
+ "cl_digital": {
+  "en": "Show the digital time",
+  "es": "Ver la hora digital"
+ },
+ "cl_words": {
+  "en": "Show in words",
+  "es": "Ver en palabras"
+ },
+ "cl_h24": {
+  "en": "24-hour clock",
+  "es": "24 horas"
+ },
+ "cl_minutes": {
+  "en": "Show the minutes",
+  "es": "Ver los minutos"
+ },
+ "cl_ask": {
+  "en": "What time is it?",
+  "es": "¿Qué hora es?"
+ },
+ "cl_set": {
+  "en": "Set the time",
+  "es": "Pon la hora"
+ },
+ "cl_check": {
+  "en": "Check",
+  "es": "Comprobar"
+ },
+ "cl_reveal": {
+  "en": "Show the answer",
+  "es": "Ver la respuesta"
+ },
+ "cl_set_this": {
+  "en": "Set: {$a}",
+  "es": "Pon: {$a}"
+ },
+ "cl_right": {
+  "en": "Well done! That's the time",
+  "es": "¡Muy bien! Es esa hora"
+ },
+ "cl_wrong": {
+  "en": "Not yet: look carefully at the hands",
+  "es": "Todavía no: mira bien las agujas"
+ },
+ "cl_drag_hint": {
+  "en": "Move the hands with your finger or the mouse",
+  "es": "Mueve las agujas con el dedo o el ratón"
+ },
+ "cl_clock": {
+  "en": "Clock for learning the time",
+  "es": "Reloj para aprender la hora"
+ }
+}

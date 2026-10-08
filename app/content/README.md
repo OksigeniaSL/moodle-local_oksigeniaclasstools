@@ -23,6 +23,7 @@ Check a file with `node tools/content_check.js app/content/xx.js` (all of them w
 | `words.five` | Word in the Primary mode: 40–60 words of exactly five letters once folded. |
 | `words.six` | Word in the Secondary mode: 40–60 words of exactly six letters once folded. |
 | `words.seven` | Word in the Advanced mode: 40–60 words of exactly seven letters once folded, of an educated adult vocabulary. |
+| `avatar` | Names of the anonymous participants of a live session, made of an animal and a word: `{ order, join, animals, words }`. `order` is `aw` (animal then word: «Búho valiente») or `wa` (word then animal: «Brave owl»); `join` is what goes between them (`' '`, `'-'` or `''`). `animals`: 40–60 animals children like, singular, written as inside a sentence (the board puts the first letter in capitals); no animal used as an insult in the language. `words`: 30–50 positive words or short phrases that go with **every** animal without changing (in languages where adjectives agree in gender, use invariable ones or phrases like «de la suerte», «en patines»; or a compound pattern with `join: '-'`, like «Turbo-Bär»). |
 | `colours` | 12 colour names, in this order: red, blue, green, yellow, purple, orange, pink, brown, black, white, grey, light blue. |
 | `numbers` | 1 to 20 in words. |
 | `opposites` | 16 pairs of opposites. |

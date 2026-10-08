@@ -18,9 +18,10 @@ namespace local_oksigeniaclasstools\local;
 
 /**
  * Live sessions: the board opens one, the students' devices join it (with a code, or with their Moodle account) and
- * answer — a vote, a buzzer per team, or a word or two for a brainstorm — and the board shows it as it happens. The teacher's phone can also join a
- * session of its own and work as a remote. Devices ask every second or so (no sockets): the state lives in two small
- * tables, where each answer is one row, so presses at the same moment never overwrite each other.
+ * answer — a vote, a buzzer per team, or a word or two for a brainstorm — and the board shows it as it happens. The
+ * teacher's phone can also join a session of its own and work as a remote. Devices ask every second or so (no
+ * sockets): the state lives in two small tables, where each answer is one row, so presses at the same moment never
+ * overwrite each other.
  *
  * @package    local_oksigeniaclasstools
  * @copyright  2026 Oksigenia <dev@oksigenia.cc>
@@ -36,8 +37,11 @@ class live {
     /** Most answers of one device to a brainstorm question. */
     const MAX_IDEAS = 3;
 
-    /** How devices join: with the code only, or with their Moodle account. */
-    const IDENTITIES = ['anon', 'moodle'];
+    /**
+     * How devices join: with the code only, with their Moodle account (the board shows their names), or with their
+     * account but anonymous (only the course's students get in, once each, and nobody sees who answered what).
+     */
+    const IDENTITIES = ['anon', 'moodle', 'hidden'];
 
     /** Characters of the codes (no 0/O or 1/I, which get mixed up). */
     const CODE_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -65,9 +69,9 @@ class live {
      * @param \stdClass $course
      * @param int $teacherid
      * @param string $kind vote, buzz or remote.
-     * @param string $identity anon or moodle (a remote is always moodle).
+     * @param string $identity anon, moodle or hidden (a remote is always moodle).
      * @param array $options vote => kind of vote; teams => names of the teams (buzz); max => answers of each device
-     *     (ideas, 1 to 3).
+     *     (ideas, 1 to 3); lang => the teacher's language (the names of the anonymous critters come in it).
      * @return \stdClass The session.
      * @throws \moodle_exception If the kind or the options are not valid.
      */
@@ -85,7 +89,9 @@ class live {
         if ($kind === 'remote') {
             $identity = 'moodle';
         }
-        $state = ['open' => false, 'kicked' => [], 'show' => !empty($options['show'])];
+        $lang = (string) ($options['lang'] ?? '');
+        $state = ['open' => false, 'kicked' => [], 'show' => !empty($options['show']),
+            'lang' => preg_match('/^[a-z]+(_[a-z]+)*$/', $lang) ? $lang : 'en'];
         if ($kind === 'vote') {
             $state['vote'] = isset(self::VOTES[$options['vote'] ?? '']) ? $options['vote'] : 'abcd';
         }
@@ -290,6 +296,19 @@ class live {
     }
 
     /**
+     * The device of a student who joins with their account but anonymous: a token that is always the same for them in
+     * this session (so they get in only once) and says nothing of who they are. No user id is kept with it.
+     *
+     * @param \stdClass $live
+     * @param int $userid
+     * @return string
+     */
+    public static function hidden_device(\stdClass $live, int $userid): string {
+        $seed = 'classtools:' . $live->id . ':' . $live->timecreated . ':' . $userid . ':' . get_site_identifier();
+        return substr(hash('sha256', $seed), 0, 32);
+    }
+
+    /**
      * A device token as the devices send it: their own random one, or «u» + user id with a Moodle account.
      *
      * @param string $device
@@ -491,8 +510,12 @@ class live {
         $state = json_decode($live->state, true);
         $view = [
             'kind' => $live->kind, 'round' => (int) $live->round, 'open' => self::is_open($state), 'left' => self::left($state),
-            'ended' => (bool) $live->timeend, 'kicked' => in_array($device, $state['kicked'], true),
+            'ended' => (bool) $live->timeend, 'kicked' => in_array($device, $state['kicked'], true), 'identity' => $live->identity,
         ];
+        if ($live->identity !== 'moodle') {
+            // Its critter and its name come from its token (the same on the board).
+            $view['seed'] = $device;
+        }
         $joined = $DB->get_record('local_oksigeniaclasstools_livein', ['liveid' => $live->id, 'round' => 0, 'device' => $device]);
         $view['joined'] = (bool) $joined;
         $view['team'] = $joined ? (int) $joined->team : 0;

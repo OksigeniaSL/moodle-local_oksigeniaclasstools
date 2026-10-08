@@ -1,0 +1,510 @@
+{
+ "ch_wheel": {
+  "en": "Wheel",
+  "es": "Ruleta"
+ },
+ "ch_dice": {
+  "en": "Dice",
+  "es": "Dados"
+ },
+ "ch_coin": {
+  "en": "Coin",
+  "es": "Moneda"
+ },
+ "ch_cards": {
+  "en": "Cards",
+  "es": "Cartas"
+ },
+ "ch_what": {
+  "en": "What shall we use?",
+  "es": "¿Qué usamos?"
+ },
+ "ch_source": {
+  "en": "Segments",
+  "es": "Casillas"
+ },
+ "ch_deck": {
+  "en": "Deck",
+  "es": "Mazo"
+ },
+ "ch_students": {
+  "en": "Students",
+  "es": "Alumnos"
+ },
+ "ch_ownlists": {
+  "en": "Your lists",
+  "es": "Tus listas"
+ },
+ "ch_builtin": {
+  "en": "Others",
+  "es": "Otras"
+ },
+ "ch_numbers": {
+  "en": "Numbers from {$a->a} to {$a->b}",
+  "es": "Números del {$a->a} al {$a->b}"
+ },
+ "ch_numbers_pick": {
+  "en": "Numbers…",
+  "es": "Números…"
+ },
+ "ch_from": {
+  "en": "From",
+  "es": "Del"
+ },
+ "ch_to": {
+  "en": "to",
+  "es": "al"
+ },
+ "ch_letters_az": {
+  "en": "Letters (A–Z)",
+  "es": "Letras (A–Z)"
+ },
+ "ch_letters_stop": {
+  "en": "Letters for “Stop” (no K, Ñ, Q, W, X, Y)",
+  "es": "Letras para el «Stop» (sin K, Ñ, Q, W, X, Y)"
+ },
+ "ch_new_list": {
+  "en": "New list",
+  "es": "Nueva lista"
+ },
+ "ch_edit_list": {
+  "en": "Edit",
+  "es": "Editar"
+ },
+ "ch_remove_picked": {
+  "en": "Remove the one picked",
+  "es": "Quitar la que sale"
+ },
+ "ch_put_back": {
+  "en": "Put them all back",
+  "es": "Volver a ponerlas todas"
+ },
+ "ch_no_repeat": {
+  "en": "No repeats",
+  "es": "Sin repetir"
+ },
+ "ch_spin": {
+  "en": "Spin",
+  "es": "Girar"
+ },
+ "ch_roll": {
+  "en": "Roll",
+  "es": "Tirar"
+ },
+ "ch_toss": {
+  "en": "Toss",
+  "es": "Lanzar"
+ },
+ "ch_draw": {
+  "en": "Draw a card",
+  "es": "Sacar carta"
+ },
+ "ch_reshuffle": {
+  "en": "Shuffle again",
+  "es": "Barajar de nuevo"
+ },
+ "ch_empty": {
+  "en": "No segments left. Press “Put them all back”.",
+  "es": "No quedan casillas. Pulsa «Volver a ponerlas todas»."
+ },
+ "ch_last_one": {
+  "en": "Only “{$a}” is left: it is the last one",
+  "es": "Solo queda «{$a}»: es el último"
+ },
+ "ch_only_one": {
+  "en": "There is only one segment: “{$a}”",
+  "es": "Solo hay una casilla: «{$a}»"
+ },
+ "ch_empty_deck": {
+  "en": "No cards left. Press “Shuffle again”.",
+  "es": "No quedan cartas. Pulsa «Barajar de nuevo»."
+ },
+ "ch_no_list": {
+  "en": "That list is empty.",
+  "es": "Esa lista está vacía."
+ },
+ "ch_left": {
+  "en": "{$a} left",
+  "es": "Quedan {$a}"
+ },
+ "ch_result": {
+  "en": "Result: {$a}",
+  "es": "Ha salido: {$a}"
+ },
+ "ch_how_many": {
+  "en": "How many dice?",
+  "es": "¿Cuántos dados?"
+ },
+ "ch_die": {
+  "en": "Die {$a}",
+  "es": "Dado {$a}"
+ },
+ "ch_total": {
+  "en": "Total: {$a}",
+  "es": "Total: {$a}"
+ },
+ "ch_custom_faces": {
+  "en": "Faces of the custom die, one per line",
+  "es": "Caras del dado personalizado, una por línea"
+ },
+ "ch_custom_hint": {
+  "en": "For example: “verb in the past”",
+  "es": "Por ejemplo: «verbo en pasado»"
+ },
+ "ch_motif": {
+  "en": "Design",
+  "es": "Motivo"
+ },
+ "ch_other": {
+  "en": "Other",
+  "es": "Otra"
+ },
+ "ch_side1": {
+  "en": "One side",
+  "es": "Una cara"
+ },
+ "ch_side2": {
+  "en": "The other",
+  "es": "La otra"
+ },
+ "ch_reset_tally": {
+  "en": "Reset to zero",
+  "es": "Poner a cero"
+ },
+ "ch_press_to": {
+  "en": "Press “{$a}”",
+  "es": "Pulsa «{$a}»"
+ },
+ "ch_exclaim": {
+  "en": "{$a}!",
+  "es": "¡{$a}!"
+ },
+ "ch_red": {
+  "en": "Red",
+  "es": "Rojo"
+ },
+ "ch_blue": {
+  "en": "Blue",
+  "es": "Azul"
+ },
+ "ch_green": {
+  "en": "Green",
+  "es": "Verde"
+ },
+ "ch_yellow": {
+  "en": "Yellow",
+  "es": "Amarillo"
+ },
+ "ch_purple": {
+  "en": "Purple",
+  "es": "Morado"
+ },
+ "ch_orange": {
+  "en": "Orange",
+  "es": "Naranja"
+ },
+ "ch_d6": {
+  "en": "6-sided (dots)",
+  "es": "De 6 (puntos)"
+ },
+ "ch_d_sides": {
+  "en": "{$a}-sided",
+  "es": "De {$a}"
+ },
+ "ch_d_ops": {
+  "en": "Operations (+ − × ÷)",
+  "es": "Operaciones (+ − × ÷)"
+ },
+ "ch_d_add_sub": {
+  "en": "Add or subtract (+ −)",
+  "es": "Sumar o restar (+ −)"
+ },
+ "ch_d_arrows": {
+  "en": "Direction ({$a} arrows)",
+  "es": "Dirección ({$a} flechas)"
+ },
+ "ch_d_colours": {
+  "en": "Colours",
+  "es": "Colores"
+ },
+ "ch_d_vowels": {
+  "en": "Vowels",
+  "es": "Vocales"
+ },
+ "ch_d_letters": {
+  "en": "Letters",
+  "es": "Letras"
+ },
+ "ch_d_custom": {
+  "en": "Custom",
+  "es": "Personalizado"
+ },
+ "ch_heads_tails": {
+  "en": "Heads or tails",
+  "es": "Cara o cruz"
+ },
+ "ch_heads": {
+  "en": "Heads",
+  "es": "Cara"
+ },
+ "ch_tails": {
+  "en": "Tails",
+  "es": "Cruz"
+ },
+ "ch_yes_no": {
+  "en": "Yes or no",
+  "es": "Sí o no"
+ },
+ "ch_yes": {
+  "en": "Yes",
+  "es": "Sí"
+ },
+ "ch_no": {
+  "en": "No",
+  "es": "No"
+ },
+ "ch_true_false": {
+  "en": "True or false",
+  "es": "Verdadero o falso"
+ },
+ "ch_true": {
+  "en": "True",
+  "es": "Verdadero"
+ },
+ "ch_false": {
+  "en": "False",
+  "es": "Falso"
+ },
+ "ch_red_blue": {
+  "en": "Red or blue team",
+  "es": "Equipo rojo o azul"
+ },
+ "ch_thumbs": {
+  "en": "Thumbs up or down",
+  "es": "Pulgar arriba o abajo"
+ },
+ "ch_good": {
+  "en": "Good",
+  "es": "Bien"
+ },
+ "ch_bad": {
+  "en": "Bad",
+  "es": "Mal"
+ },
+ "ch_even_odd": {
+  "en": "Even or odd",
+  "es": "Par o impar"
+ },
+ "ch_even": {
+  "en": "Even",
+  "es": "Par"
+ },
+ "ch_odd": {
+  "en": "Odd",
+  "es": "Impar"
+ },
+ "sc_add_team": {
+  "en": "Add team",
+  "es": "Añadir equipo"
+ },
+ "sc_from_groups": {
+  "en": "Use the teams from “Groups”",
+  "es": "Usar los equipos de «Grupos»"
+ },
+ "sc_reset": {
+  "en": "Reset to zero",
+  "es": "Poner a cero"
+ },
+ "sc_reset_sure": {
+  "en": "Sure? Press again",
+  "es": "¿Seguro? Pulsa otra vez"
+ },
+ "sc_team": {
+  "en": "Team {$a}",
+  "es": "Equipo {$a}"
+ },
+ "sc_group": {
+  "en": "Group {$a}",
+  "es": "Grupo {$a}"
+ },
+ "sc_remove": {
+  "en": "Remove this team",
+  "es": "Quitar este equipo"
+ },
+ "sc_name": {
+  "en": "Team name",
+  "es": "Nombre del equipo"
+ },
+ "sc_colour": {
+  "en": "Change the colour",
+  "es": "Cambiar el color"
+ },
+ "sc_points_one": {
+  "en": "{$a} point",
+  "es": "{$a} punto"
+ },
+ "sc_points_many": {
+  "en": "{$a} points",
+  "es": "{$a} puntos"
+ },
+ "sc_leads": {
+  "en": "In the lead: {$a}",
+  "es": "Va primero: {$a}"
+ },
+ "sc_tie": {
+  "en": "Draw",
+  "es": "Empate"
+ },
+ "sc_no_groups": {
+  "en": "Make the teams first in the “Groups” tab.",
+  "es": "Haz antes los equipos en la pestaña «Grupos»."
+ },
+ "sc_teams_one": {
+  "en": "{$a} team",
+  "es": "{$a} equipo"
+ },
+ "sc_teams_many": {
+  "en": "{$a} teams",
+  "es": "{$a} equipos"
+ },
+ "qr_text": {
+  "en": "Text or link",
+  "es": "Texto o enlace"
+ },
+ "qr_placeholder": {
+  "en": "Paste a link or type some text here",
+  "es": "Pega aquí un enlace o escribe un texto"
+ },
+ "qr_modules": {
+  "en": "Dots",
+  "es": "Puntos"
+ },
+ "qr_eyes": {
+  "en": "Corners",
+  "es": "Esquinas"
+ },
+ "qr_modules_square": {
+  "en": "Squares",
+  "es": "Cuadrados"
+ },
+ "qr_modules_rounded": {
+  "en": "Rounded",
+  "es": "Redondeados"
+ },
+ "qr_circles": {
+  "en": "Circles",
+  "es": "Círculos"
+ },
+ "qr_eyes_square": {
+  "en": "Squares",
+  "es": "Cuadradas"
+ },
+ "qr_eyes_rounded": {
+  "en": "Rounded",
+  "es": "Redondeadas"
+ },
+ "qr_colour": {
+  "en": "Colour",
+  "es": "Color"
+ },
+ "qr_eye_colour": {
+  "en": "Corner colour",
+  "es": "Color de las esquinas"
+ },
+ "qr_same": {
+  "en": "Same",
+  "es": "Igual"
+ },
+ "qr_logo": {
+  "en": "Logo in the middle",
+  "es": "Logo en el centro"
+ },
+ "qr_no_logo": {
+  "en": "No logo",
+  "es": "Sin logo"
+ },
+ "qr_site_logo": {
+  "en": "The site's logo",
+  "es": "El del sitio"
+ },
+ "qr_my_image": {
+  "en": "My own image",
+  "es": "Una imagen mía"
+ },
+ "qr_choose": {
+  "en": "Choose image",
+  "es": "Elegir imagen"
+ },
+ "qr_enlarge": {
+  "en": "Enlarge",
+  "es": "Ampliar"
+ },
+ "qr_png": {
+  "en": "Download PNG",
+  "es": "Descargar PNG"
+ },
+ "qr_svg": {
+  "en": "Download SVG",
+  "es": "Descargar SVG"
+ },
+ "qr_erase": {
+  "en": "Clear",
+  "es": "Borrar"
+ },
+ "qr_note": {
+  "en": "The code is made right here, offline. With a logo, the code has more error correction so that it can still be read.",
+  "es": "El código se crea aquí mismo, sin conexión. Con logo, el código lleva más corrección de errores para que se siga leyendo."
+ },
+ "qr_empty": {
+  "en": "Type or paste a link and its code will appear here.",
+  "es": "Escribe o pega un enlace y aquí saldrá su código."
+ },
+ "qr_too_long": {
+  "en": "It is too long for a QR code. Shorten it a little.",
+  "es": "Es demasiado largo para un código QR. Acórtalo un poco."
+ },
+ "qr_no_lib": {
+  "en": "The QR generator could not be loaded.",
+  "es": "No se ha podido cargar el generador de QR."
+ },
+ "qr_big_image": {
+  "en": "That image is too big: choose one under 300 KB.",
+  "es": "Esa imagen es muy grande: elige una de menos de 300 KB."
+ },
+ "qr_label": {
+  "en": "QR code for: {$a}",
+  "es": "Código QR de: {$a}"
+ },
+ "qr_saved": {
+  "en": "Downloaded: {$a}",
+  "es": "Descargado: {$a}"
+ },
+ "qr_black": {
+  "en": "Black",
+  "es": "Negro"
+ },
+ "qr_blue": {
+  "en": "Blue",
+  "es": "Azul"
+ },
+ "qr_green": {
+  "en": "Green",
+  "es": "Verde"
+ },
+ "qr_red": {
+  "en": "Red",
+  "es": "Rojo"
+ },
+ "qr_purple": {
+  "en": "Purple",
+  "es": "Morado"
+ },
+ "qr_teal": {
+  "en": "Teal",
+  "es": "Petróleo"
+ },
+ "qr_terracotta": {
+  "en": "Terracotta",
+  "es": "Teja"
+ }
+}

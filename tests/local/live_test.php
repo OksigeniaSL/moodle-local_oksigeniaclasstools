@@ -202,6 +202,37 @@ final class live_test extends \advanced_testcase {
         live::control(live::start($course, 2, 'vote', 'anon'), 'reopen');
     }
 
+    public function test_anonymous_with_their_account_keeps_no_name(): void {
+        global $DB;
+        $this->resetAfterTest();
+        $course = $this->getDataGenerator()->create_course();
+        $student = $this->getDataGenerator()->create_user(['firstname' => 'Ana', 'lastname' => 'López']);
+        $live = live::start($course, 2, 'vote', 'hidden', ['lang' => 'es']);
+        $this->assertSame('hidden', $live->identity);
+        $device = live::hidden_device($live, (int) $student->id);
+        // The same student gets the same token in the session (in only once), and another one in another session.
+        $this->assertSame($device, live::hidden_device($live, (int) $student->id));
+        $this->assertNotSame($device, live::hidden_device($live, (int) $student->id + 1));
+        $other = live::start($course, 3, 'vote', 'hidden');
+        $this->assertNotSame($device, live::hidden_device($other, (int) $student->id));
+        $this->assertSame($device, live::device_param($device));
+        live::join($live, $device, 0);
+        $live = live::control($live, 'open');
+        live::answer($live, $device, 'B');
+        // No user id kept and no name on the board; the device sees its own token (for its critter).
+        $named = $DB->count_records_select('local_oksigeniaclasstools_livein', 'liveid = ? AND userid <> 0', [$live->id]);
+        $this->assertSame(0, $named);
+        $view = live::board_view($live);
+        $this->assertSame('', $view['devices'][0]['name']);
+        $this->assertSame(['A' => 0, 'B' => 1, 'C' => 0, 'D' => 0], $view['results']);
+        $mine = live::device_view($live, $device);
+        $this->assertSame('hidden', $mine['identity']);
+        $this->assertSame($device, $mine['seed']);
+        // With their names, no seed; the language of the session is kept for the critters' names.
+        $this->assertArrayNotHasKey('seed', live::device_view(live::start($course, 4, 'vote', 'moodle'), 'u5'));
+        $this->assertSame('es', json_decode($live->state, true)['lang']);
+    }
+
     public function test_a_device_sent_out_cannot_come_back(): void {
         $this->resetAfterTest();
         $course = $this->getDataGenerator()->create_course();

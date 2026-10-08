@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.15.0 (2026-10-16)
+
+- **Anonymous with their account**, a third way of joining a live session: only the course's students get in, once
+  each, but no user id is kept with the answers and the board shows no names. The device says clearly that the
+  teacher does not see their name.
+- **Critters**: whoever takes part without their name (anonymous, or with the code only) is a little creature drawn
+  from their device's token, with a name made of an animal and a word in the teacher's language («Búho valiente»,
+  «Brave owl», «Turbo-Bär»). The board shows the critters of those who are in; the device shows its own. Names in the
+  nine content packs (`avatar`), with words that work with every animal.
+- **Scratch to reveal**: a silver layer to scratch with a finger or the mouse (it uncovers by itself at about half,
+  or with «Reveal»): the name in «Whose turn?», each group in «Groups», and the list dice (or all of them) in Dice.
+- **Timer bar travellers**: besides the rocket, a racing car, a snail and a sailing boat travel the bar, with a fact
+  under it before it starts; for older students, a phone battery that runs down and a retro loading bar of pixels;
+  or just the bar. Each screen mode starts with its own (rocket, battery for Secondary, just the bar for Advanced).
+- **Class goal**, in the Scoreboard tab: a jar that fills with marbles for the whole class up to a goal and its
+  prize, with a celebration when it is full.
+- **Countdown**, in the Clock tab: what the class is waiting for, its day and time, the days, hours, minutes and
+  seconds left, and the school days in between.
+- **Site settings**: the administrator chooses which tools, games and materials the board shows.
+- The board's texts are written from JSON fragments in `tools/i18n/` (`python3 tools/i18n/merge.py`).
+
 ## 0.14.0 (2026-10-15)
 
 - **Brainstorm**, a new kind of live session: everyone sends a word or two from their device (1, 2 or 3 answers

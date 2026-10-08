@@ -31,12 +31,14 @@ use local_oksigeniaclasstools\local\live;
 $action = required_param('action', PARAM_ALPHA);
 $live = live::by_code(required_param('c', PARAM_ALPHANUM));
 require_sesskey();
-if (!$live || $live->identity !== 'moodle') {
+if (!$live || !in_array($live->identity, ['moodle', 'hidden'], true)) {
     echo json_encode(['ended' => true]);
     exit;
 }
 require_login(get_course($live->courseid), false, null, false, true);
-$device = 'u' . $USER->id;
+// Anonymous with their account: a token that does not say who they are, and no user id kept.
+$hidden = $live->identity === 'hidden';
+$device = $hidden ? live::hidden_device($live, (int) $USER->id) : 'u' . $USER->id;
 
 if ($action === 'command') {
     // Only the teacher who opened it, from their phone.
@@ -48,7 +50,7 @@ if ($action === 'command') {
     if ($live->kind === 'remote' && $live->userid != $USER->id) {
         throw new moodle_exception('nopermissions', 'error', '', 'remote');
     }
-    live::join($live, $device, $USER->id, optional_param('team', 0, PARAM_INT));
+    live::join($live, $device, $hidden ? 0 : (int) $USER->id, optional_param('team', 0, PARAM_INT));
 } else if ($action === 'answer') {
     live::answer($live, $device, required_param('answer', PARAM_ALPHANUM));
 } else if ($action === 'idea') {

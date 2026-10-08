@@ -149,6 +149,9 @@
     window.ClasstoolsGames = {
         util: { norm, isLetter, keyboard, keys, wordSource, listOf, mode },
         add(game) {
+            // Only the games the site wants (the administrator chooses them; none chosen: all).
+            const site = window.CLASSTOOLS_SITE && Array.isArray(window.CLASSTOOLS_SITE.games) && window.CLASSTOOLS_SITE.games.length ? window.CLASSTOOLS_SITE.games : null;
+            if (site && !site.includes(game.id)) { return; }
             const panel = document.createElement('div');
             panel.className = 'ct-game';
             panel.dataset.game = game.id;

@@ -34,7 +34,7 @@
                 <div class="lv-box" id="lv-identity-box">
                     <p class="ante" id="lv-l-identity">${escape(t('lv_how'))}</p>
                     <div class="segmentos" role="radiogroup" aria-labelledby="lv-l-identity" id="lv-identity">
-                        ${['anon', 'moodle'].map((k) => `<button type="button" role="radio" aria-checked="false" data-v="${k}">${escape(t('lv_' + k))}</button>`).join('')}
+                        ${['anon', 'moodle', 'hidden'].map((k) => `<button type="button" role="radio" aria-checked="false" data-v="${k}">${escape(t('lv_' + k))}</button>`).join('')}
                     </div>
                     <p class="nota" id="lv-identity-hint"></p>
                 </div>
@@ -64,6 +64,7 @@
                 <p class="lv-codigo"><span class="ante">${escape(t('lv_code'))}</span><strong id="lv-code"></strong></p>
                 <p class="nota lv-url" id="lv-url"></p>
                 <p class="lv-cuenta" id="lv-count" aria-live="polite"></p>
+                <div class="lv-bichos" id="lv-critters" aria-hidden="true"></div>
                 <p class="nota lv-aviso" id="lv-others" role="status" hidden></p>
                 <details class="lv-quien" id="lv-who"><summary>${escape(t('lv_devices'))}</summary><ul id="lv-devices"></ul></details>
                 <button type="button" class="boton suave ancho" id="lv-end"><span data-icono="cerrar"></span><span>${escape(t('lv_end'))}</span></button>
@@ -77,7 +78,15 @@
     // Setting it up
     // ---------------------------------------------------------------------------------------------------
     let kind = KINDS.includes(load('envivo-tipo', KINDS[0])) ? load('envivo-tipo', KINDS[0]) : KINDS[0];
-    let identity = load('envivo-entrada', 'anon') === 'moodle' ? 'moodle' : 'anon';
+    let identity = ['anon', 'moodle', 'hidden'].includes(load('envivo-entrada', 'anon')) ? load('envivo-entrada', 'anon') : 'anon';
+    // Without names (with the code, or anonymous with their account), each device is a critter with a name of its own,
+    // the same on the board and on the device.
+    const CONTENT = window.CLASSTOOLS_CONTENT || {};
+    const nameOf = (v, d, i) => {
+        if (v.identity === 'moodle') { return d.name || t('lv_device_n', i + 1); }
+        return window.ClasstoolsCritter && CONTENT.avatar ? window.ClasstoolsCritter.name(d.device, CONTENT.avatar) : t('lv_device_n', i + 1);
+    };
+    const critters = new Set();
     let teams = Math.max(2, Math.min(6, Number(load('envivo-equipos', 2)) || 2));
     $('#lv-vote').value = ['abcd', 'yesno', 'light', 'five', 'custom'].includes(load('envivo-voto', 'abcd')) ? load('envivo-voto', 'abcd') : 'abcd';
     const paintSetup = () => {
@@ -233,8 +242,21 @@
         if (v.others) { others.textContent = t(v.others === 1 ? 'lv_others_one' : 'lv_others_many', v.others); }
         $('#lv-who').hidden = v.kind === 'remote' || !v.devices.length;
         if (v.kind === 'remote') { return; }
-        const names = v.devices.map((d, i) => d.name || t('lv_device_n', i + 1));
-        const html = v.devices.map((d, i) => `<li><span>${escape(names[i])}${d.team && v.teams ? ` <small>${escape(v.teams[d.team - 1] || '')}</small>` : ''}</span>`
+        const names = v.devices.map((d, i) => nameOf(v, d, i));
+        // The critters of those who are in (the new ones pop in).
+        const box = $('#lv-critters');
+        const show = v.identity !== 'moodle' && window.ClasstoolsCritter;
+        box.hidden = !show || !v.devices.length;
+        if (show) {
+            const ids = v.devices.map((d) => d.device).join(',');
+            if (box.dataset.ids !== ids) {
+                box.dataset.ids = ids;
+                box.innerHTML = v.devices.slice(0, 60).map((d, i) => `<span class="lv-bicho${critters.has(d.device) ? '' : ' nuevo'}" title="${escape(names[i])}">${window.ClasstoolsCritter.svg(d.device, names[i])}</span>`).join('')
+                    + (v.devices.length > 60 ? `<span class="lv-bicho-mas">+${v.devices.length - 60}</span>` : '');
+                v.devices.forEach((d) => critters.add(d.device));
+            }
+        }
+        const html = v.devices.map((d, i) => `<li><span>${show ? window.ClasstoolsCritter.svg(d.device) : ''}${escape(names[i])}${d.team && v.teams ? ` <small>${escape(v.teams[d.team - 1] || '')}</small>` : ''}</span>`
             + `<button type="button" class="lv-saca" data-device="${escape(d.device)}" aria-label="${escape(t('lv_kick', names[i]))}" title="${escape(t('lv_kick', names[i]))}">${core.icon('cerrar')}</button></li>`).join('');
         if ($('#lv-devices').dataset.html !== html) { $('#lv-devices').innerHTML = html; $('#lv-devices').dataset.html = html; }
     };
@@ -342,7 +364,8 @@
         relabel($('#lv-open'), v.open ? t('lv_close_round') : (v.round ? t('lv_next_round') : t('lv_open_round')), v.open ? 'pausa' : 'empezar');
         $('#lv-open').classList.toggle('amarillo', v.open);
         const p = v.presses || [];
-        const who = (x) => `${escape(v.teams[x.team - 1] || '')}${x.name ? ` <small>${escape(x.name)}</small>` : ''}`;
+        const pressName = (x) => (v.identity === 'moodle' ? x.name : nameOf(v, x, 0));
+        const who = (x) => `${escape(v.teams[x.team - 1] || '')}${pressName(x) ? ` <small>${escape(pressName(x))}</small>` : ''}`;
         if (!p.length) {
             $('#lv-winner').innerHTML = `<p class="lv-grande">${escape(v.open ? t('lv_nobody') : (v.round ? '' : t('lv_wait_round_board')))}</p>`;
             $('#lv-presses').innerHTML = '';

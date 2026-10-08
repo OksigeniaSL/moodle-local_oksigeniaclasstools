@@ -129,6 +129,11 @@
         document.documentElement.classList.add('modo-alumno');
         $$('.pestana').forEach((b) => { if (!PERMITIDAS.includes(b.dataset.h)) { b.remove(); } });
     }
+    // --- Las herramientas que el centro quiere (lo elige el administrador); sin ninguna, todas. ---
+    const DEL_CENTRO = window.CLASSTOOLS_SITE && Array.isArray(window.CLASSTOOLS_SITE.tools) && window.CLASSTOOLS_SITE.tools.length ? window.CLASSTOOLS_SITE.tools : null;
+    if (DEL_CENTRO && $$('.pestana').some((b) => DEL_CENTRO.includes(b.dataset.h))) {
+        $$('.pestana').forEach((b) => { if (!DEL_CENTRO.includes(b.dataset.h)) { b.remove(); $('#' + b.getAttribute('aria-controls')).hidden = true; } });
+    }
 
     // --- Pestañas ---
     const HERR = {};   // cada herramienta puede tener entra() y sale()
@@ -250,12 +255,13 @@
     // Cada modo empieza con lo suyo: Infantil con el disco rojo que se va comiendo, Superior con la barra sobria; los
     // tiempos rápidos, de más cortos a más largos; la cuenta de los últimos 10 segundos, solo con los pequeños.
     const tmModo = porModo('tm', {
-        early: { aspecto: 'disco', rapidos: [1, 2, 3, 5, 10], final: true },
-        primary: { aspecto: 'anillo', rapidos: [1, 3, 5, 10, 15], final: true },
-        secondary: { aspecto: 'anillo', rapidos: [2, 5, 10, 15, 20], final: false },
-        advanced: { aspecto: 'barra', rapidos: [5, 10, 15, 20, 30], final: false },
+        early: { aspecto: 'disco', rapidos: [1, 2, 3, 5, 10], final: true, viajero: 'cohete' },
+        primary: { aspecto: 'anillo', rapidos: [1, 3, 5, 10, 15], final: true, viajero: 'cohete' },
+        secondary: { aspecto: 'anillo', rapidos: [2, 5, 10, 15, 20], final: false, viajero: 'bateria' },
+        advanced: { aspecto: 'barra', rapidos: [5, 10, 15, 20, 30], final: false, viajero: 'ninguno' },
     }, { aspecto: 'tm-aspecto', final: 'tm-final' });
     let aspecto = ASPECTOS.includes(tmModo.get().aspecto) ? tmModo.get().aspecto : 'anillo';
+    let viajero = tmModo.get().viajero;
     const POSICION = { anillo: [100, 104, 100, 148], disco: [100, 104, 100, 152], barra: [100, 78, 100, 178], arena: [145, 98, 145, 132], pulsar: [100, 164, 100, 30] };
     // El color de la barra según lo que queda: verde, amarillo y, al final, rojo.
     // (En HSL, para que entre medias salgan lima y naranja vivos y no colores sucios.)
@@ -264,6 +270,58 @@
     const colorBarra = (f) => {
         const [h, s, l] = f > 0.5 ? mezcla(AMARILLO, VERDE, (f - 0.5) * 2) : mezcla(ROJO, AMARILLO, f * 2);
         return `hsl(${Math.round((h + 360) % 360)}, ${Math.round(s)}%, ${Math.round(l)}%)`;
+    };
+    // La barra según su viajero (o sin él).
+    const VIAJEROS = ['cohete', 'coche', 'caracol', 'barco', 'bateria', 'pixel', 'ninguno'];
+    const dibujaBarra = (v, by, bh, br) => {
+        let rayas = '';
+        for (let i = -3; i < 14; i++) { rayas += `<path d="M${12 + i * 14} 150L${24 + i * 14} 118h7L${19 + i * 14} 150Z"/>`; }
+        let cuadros = '';
+        for (let i = 0; i < 9; i++) { cuadros += `<rect x="${186 + (i % 3) * 4}" y="${100 + Math.floor(i / 3) * 4}" width="4" height="4" fill="${((i % 3) + Math.floor(i / 3)) % 2 ? '#fff' : '#1c1a19'}"/>`; }
+        const meta = `<g class="tm-meta"><line x1="186" y1="99" x2="186" y2="152"/>${cuadros}<rect class="tm-meta-borde" x="186" y="100" width="12" height="12"/></g>`;
+        const estela = `<defs><clipPath id="tmEstela"><rect class="tm-estela" x="12" y="${by}" width="0" height="${bh}" rx="${br}"/></clipPath></defs>`;
+        const dato = '<text class="tm-dato" x="100" y="197" text-anchor="middle"></text>';
+        if (v === 'cohete' || v === 'ninguno') {
+            return estela + `<rect class="tm-pista-barra" x="12" y="${by}" width="170" height="${bh}" rx="${br}"/>`
+                + `<g clip-path="url(#tmEstela)"><rect class="tm-barra" x="12" y="${by}" width="170" height="${bh}"/><g class="tm-rayas">${rayas}</g></g>`
+                + (v === 'ninguno' ? '' : meta + '<g class="tm-viajero tm-cohete"><path class="tm-llama" d="M-17 -5Q-31 0 -17 5Z"/>'
+                    + '<path class="tm-aleta" d="M-14 -6L-20 -14H-11L-5 -6ZM-14 6L-20 14H-11L-5 6Z"/>'
+                    + '<path class="tm-casco" d="M-17 -7H5Q17 -7 22 0Q17 7 5 7H-17Z"/><circle class="tm-ventana" cx="4" cy="0" r="3.6"/></g>' + dato);
+        }
+        if (v === 'coche') {
+            return '<rect class="tm-carretera" x="12" y="118" width="170" height="32" rx="6"/><line class="tm-raya" x1="16" y1="134" x2="180" y2="134"/>' + meta
+                + '<g class="tm-viajero tm-coche"><g class="tm-velocidad"><line x1="-31" y1="-5" x2="-23" y2="-5"/><line x1="-34" y1="0" x2="-23" y2="0"/></g>'
+                + '<path class="tm-coche-cuerpo" d="M-19 4 L-17 -3 L-7 -4 L-1 -10 L9 -10 L14 -4 L19 -2 L19 4 Z"/>'
+                + '<path class="tm-coche-ventana" d="M0 -4 L3 -8.4 L8.4 -8.4 L11.6 -4 Z"/><rect class="tm-coche-franja" x="-15" y="-1.4" width="11" height="2.4" rx="1"/>'
+                + '<circle class="tm-rueda" cx="-10" cy="5" r="4.4"/><circle class="tm-rueda" cx="11" cy="5" r="4.4"/>'
+                + '<circle class="tm-llanta" cx="-10" cy="5" r="1.7"/><circle class="tm-llanta" cx="11" cy="5" r="1.7"/></g>' + dato;
+        }
+        if (v === 'caracol') {
+            return estela + '<rect class="tm-suelo" x="10" y="141" width="180" height="9" rx="4.5"/>'
+                + '<g clip-path="url(#tmEstela)"><rect class="tm-baba" x="12" y="137" width="170" height="5" rx="2.5"/></g>'
+                + '<path class="tm-hoja" d="M190 141 Q177 128 188 112 Q202 124 190 141 Z"/><path class="tm-hoja-nervio" d="M190 140 Q188 127 188 114"/>'
+                + '<g class="tm-viajero tm-caracol"><path class="tm-caracol-cuerpo" d="M-17 8 Q-19 3 -13 3 L8 3 Q13 3 14 -4 L15 -10 Q16 -12 17.5 -10 L17 -3 Q16.5 7 9 8 Z"/>'
+                + '<path class="tm-antena" d="M14 -8 L12 -15 M16.5 -7 L19 -14"/><circle class="tm-ojito" cx="12" cy="-15.5" r="1.7"/><circle class="tm-ojito" cx="19" cy="-14.5" r="1.7"/>'
+                + '<circle class="tm-concha" cx="-3" cy="-4" r="9"/><path class="tm-espiral" d="M-3 -4 a2 2 0 1 1 2 2 a4 4 0 1 1 -4 -4 a6.5 6.5 0 1 1 6.5 6.5"/></g>' + dato;
+        }
+        if (v === 'barco') {
+            return '<rect class="tm-mar" x="10" y="129" width="180" height="21" rx="8"/>'
+                + '<path class="tm-olas" d="M12 129 q5 -3.5 10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0"/>'
+                + '<ellipse class="tm-arena" cx="191" cy="130" rx="10" ry="4.5"/><path class="tm-palmera" d="M192 129 Q191 119 194 111"/>'
+                + '<path class="tm-palma" d="M194 111 q-8 -2 -12 4 M194 111 q8 -3 11 3 M194 111 q-2 -7 -8 -9 M194 111 q4 -6 10 -6"/>'
+                + '<g class="tm-viajero tm-barco"><g class="tm-mece"><path class="tm-casco-barco" d="M-15 2 L15 2 L10 9 L-10 9 Z"/><path class="tm-mastil" d="M0 2 V-18"/>'
+                + '<path class="tm-vela" d="M1.5 -17 L13 0 L1.5 0 Z"/><path class="tm-foque" d="M-1.5 -14 L-11 0 L-1.5 0 Z"/></g></g>' + dato;
+        }
+        if (v === 'bateria') {
+            let celdas = '';
+            for (let k = 1; k < 4; k++) { celdas += `<line class="tm-celda" x1="${16 + 39 * k}" y1="118" x2="${16 + 39 * k}" y2="150"/>`; }
+            return '<g class="tm-bateria-dibujo"><rect class="tm-bateria" x="12" y="114" width="164" height="40" rx="8"/><rect class="tm-borne" x="177" y="126" width="7" height="16" rx="2"/>'
+                + `<rect class="tm-carga" x="16" y="118" width="156" height="32" rx="5"/>${celdas}</g>`;
+        }
+        // Píxel: una barra de carga de las de antes, a bloques.
+        let bloques = '';
+        for (let i = 0; i < 16; i++) { bloques += `<rect class="tm-bloque" x="${(13 + i * 10.625).toFixed(2)}" y="121" width="8.6" height="26"/>`; }
+        return `<rect class="tm-pixel-marco" x="10" y="118" width="174" height="32"/>${bloques}`;
     };
     const pintaAspecto = (frac) => {
         tmAnillo.dataset.aspecto = aspecto;
@@ -281,32 +339,32 @@
             for (let i = 0; i < 60; i += 5) { const r = i * 6 * Math.PI / 180; marcas += `<line x1="${(100 + 86 * Math.sin(r)).toFixed(1)}" y1="${(100 - 86 * Math.cos(r)).toFixed(1)}" x2="${(100 + (i % 15 ? 91 : 94) * Math.sin(r)).toFixed(1)}" y2="${(100 - (i % 15 ? 91 : 94) * Math.cos(r)).toFixed(1)}"/>`; }
             g.innerHTML = `<circle class="tm-cara" cx="100" cy="100" r="95"/>${sector}<g class="tm-marcas">${marcas}</g>`;
         } else if (aspecto === 'barra') {
-            // Un cohete que va de la salida a la meta mientras pasa el tiempo: cuando llega a la bandera, se acabó. La
-            // estela lleva rayas que se mueven y pasa del verde al amarillo y al rojo. Se dibuja una vez y luego solo
-            // avanza (así las rayas no saltan). En Secundaria y Superior, sin cohete ni bandera: solo la barra.
-            // El grosor, según el modo: la barra gorda de los pequeños, media en Secundaria y fina en Superior.
-            const [by, bh, br] = modo === 'advanced' ? [128, 12, 2] : (modo === 'secondary' ? [124, 20, 10] : [118, 32, 16]);
-            if (g.dataset.hecho !== 'barra' + bh) {
-                let rayas = '';
-                for (let i = -3; i < 14; i++) { rayas += `<path d="M${12 + i * 14} 150L${24 + i * 14} 118h7L${19 + i * 14} 150Z"/>`; }
-                let cuadros = '';
-                for (let i = 0; i < 9; i++) { cuadros += `<rect x="${186 + (i % 3) * 4}" y="${100 + Math.floor(i / 3) * 4}" width="4" height="4" fill="${((i % 3) + Math.floor(i / 3)) % 2 ? '#fff' : '#1c1a19'}"/>`; }
-                g.innerHTML = `<defs><clipPath id="tmEstela"><rect class="tm-estela" x="12" y="${by}" width="0" height="${bh}" rx="${br}"/></clipPath></defs>`
-                    + `<rect class="tm-pista-barra" x="12" y="${by}" width="170" height="${bh}" rx="${br}"/>`
-                    + `<g clip-path="url(#tmEstela)"><rect class="tm-barra" x="12" y="${by}" width="170" height="${bh}"/><g class="tm-rayas">${rayas}</g></g>`
-                    + `<g class="tm-meta"><line x1="186" y1="99" x2="186" y2="152"/>${cuadros}<rect class="tm-meta-borde" x="186" y="100" width="12" height="12"/></g>`
-                    + '<g class="tm-cohete"><path class="tm-llama" d="M-17 -5Q-31 0 -17 5Z"/>'
-                    + '<path class="tm-aleta" d="M-14 -6L-20 -14H-11L-5 -6ZM-14 6L-20 14H-11L-5 6Z"/>'
-                    + '<path class="tm-casco" d="M-17 -7H5Q17 -7 22 0Q17 7 5 7H-17Z"/><circle class="tm-ventana" cx="4" cy="0" r="3.6"/></g>';
-                g.dataset.hecho = 'barra' + bh;
-            }
-            // El cohete, de la salida (su cola en el borde) a la meta (la punta en el mástil); la estela llega hasta él.
-            // Sin cohete (Secundaria y Superior), la barra es lo que queda: llena al empezar y se vacía.
+            // Algo recorre la barra mientras pasa el tiempo, de la salida a la meta (el cohete de siempre, un coche de
+            // carreras, un caracol, un velero), o la barra es lo que queda (la batería de un móvil, una barra de carga de
+            // videojuego antiguo, o solo la barra). Se dibuja una vez; luego solo se mueve lo que se mueve.
+            const v = VIAJEROS.includes(viajero) ? viajero : 'cohete';
+            const [by, bh, br] = v === 'ninguno' ? (modo === 'advanced' ? [128, 12, 2] : (modo === 'secondary' ? [124, 20, 10] : [118, 32, 16]))
+                : (v === 'bateria' ? [114, 40, 8] : [118, 32, v === 'pixel' ? 0 : 16]);
+            const clave = `barra-${v}-${bh}`;
+            if (g.dataset.hecho !== clave) { g.innerHTML = dibujaBarra(v, by, bh, br); g.dataset.hecho = clave; }
             const x = 29 + 135 * (1 - f);
-            const sinCohete = modo === 'secondary' || modo === 'advanced';
-            g.querySelector('.tm-estela').setAttribute('width', (sinCohete ? 170 * f : x - 8).toFixed(2));
-            g.querySelector('.tm-barra').style.fill = colorBarra(f);
-            g.querySelector('.tm-cohete').setAttribute('transform', `translate(${x.toFixed(2)} 134)`);
+            const pon = (sel, attr, val) => { const e = g.querySelector(sel); if (e) { e.setAttribute(attr, val); } };
+            if (v === 'cohete') { pon('.tm-estela', 'width', (x - 8).toFixed(2)); g.querySelector('.tm-barra').style.fill = colorBarra(f); }
+            if (v === 'caracol') { pon('.tm-estela', 'width', Math.max(0, x - 24).toFixed(2)); }
+            if (v === 'ninguno') { pon('.tm-estela', 'width', (170 * f).toFixed(2)); g.querySelector('.tm-barra').style.fill = colorBarra(f); }
+            if (v === 'bateria') {
+                pon('.tm-carga', 'width', Math.max(0, 156 * f).toFixed(2));
+                g.querySelector('.tm-carga').style.fill = colorBarra(f);
+                g.querySelector('.tm-bateria-dibujo').classList.toggle('baja', f > 0 && f < 0.15);
+            }
+            if (v === 'pixel') {
+                const n = Math.ceil(f * 16 - 1e-9), c = f > 0.5 ? '#35b24a' : (f > 0.2 ? '#f2b705' : '#e8432e');
+                g.querySelectorAll('.tm-bloque').forEach((q, i) => { q.style.fill = i < n ? c : ''; q.classList.toggle('ultimo', i === n - 1 && f < 0.2); });
+            }
+            if (['cohete', 'coche', 'caracol', 'barco'].includes(v)) { pon('.tm-viajero', 'transform', `translate(${x.toFixed(2)} ${v === 'barco' ? 125 : 134})`); }
+            // Antes de empezar, un dato del viajero: el tiempo también se mide en velocidades.
+            const dato = g.querySelector('.tm-dato');
+            if (dato) { dato.textContent = !tm.marcha && tm.total > 0 && tm.resta === tm.total && dato.dataset.hay !== '0' ? t('tm_fact_' + v) : ''; }
         } else if (aspecto === 'arena') {
             // Un reloj de arena de verdad: marco de madera, ampollas de cristal y arena que baja y se amontona. La
             // cantidad es la del tiempo (no la altura): el cristal se estrecha hacia el cuello.
@@ -351,14 +409,25 @@
             g.innerHTML = '';
         }
     };
+    // Qué recorre la barra: solo se ve con el aspecto «Barra».
+    $('#tm-viajeros').innerHTML = VIAJEROS.map((k) => `<button type="button" role="radio" aria-checked="false" data-v="${k}">${escapa(t('tm_v_' + k))}</button>`).join('');
+    const tmPintaViajeros = () => {
+        $('#tm-viajeros-caja').hidden = aspecto !== 'barra';
+        $$('#tm-viajeros button').forEach((x) => x.setAttribute('aria-checked', String(x.dataset.v === (VIAJEROS.includes(viajero) ? viajero : 'cohete'))));
+    };
+    $('#tm-viajeros').addEventListener('click', (e) => {
+        const b = e.target.closest('[data-v]'); if (!b) { return; }
+        viajero = b.dataset.v; tmModo.set({ viajero }); tmPintaViajeros(); tmPinta();
+    });
     $$('#tm-aspectos button').forEach((b) => {
         b.setAttribute('aria-checked', String(b.dataset.v === aspecto));
         b.addEventListener('click', () => {
             aspecto = b.dataset.v; tmModo.set({ aspecto });
             $$('#tm-aspectos button').forEach((x) => x.setAttribute('aria-checked', String(x === b)));
-            tmPinta();
+            tmPintaViajeros(); tmPinta();
         });
     });
+    tmPintaViajeros();
 
     // Aviso cuando queda 1 minuto (solo en tiempos de más de 2 minutos: en los cortos no tiene sentido).
     let avisar = lee('tm-avisar', true) !== false;
@@ -478,7 +547,9 @@
     document.addEventListener('classtools:mode', () => {
         const v = tmModo.get();
         aspecto = ASPECTOS.includes(v.aspecto) ? v.aspecto : 'anillo';
+        viajero = v.viajero;
         $$('#tm-aspectos button').forEach((x) => x.setAttribute('aria-checked', String(x.dataset.v === aspecto)));
+        tmPintaViajeros();
         finalAnimado = v.final !== false; $('#tm-final').checked = finalAnimado;
         tmRapidos(); tmChips(); pintaFavoritos(); tmPinta();
     });
@@ -738,6 +809,8 @@
     // ===================================================================================================
     const qNombre = $('#q-nombre'), qCaja = $('#q-caja'), qFoto = $('#q-foto');
     let qSinRepetir = lee('sin-repetir', true) !== false, qBarajando = false, qUltimo = null, qTimer = 0;
+    // Rasca y gana: el nombre elegido sale tapado (y en la columna de los que ya salieron, borroso hasta destaparlo).
+    let qRasca = lee('quien-rasca', false) === true, qTapado = null;
     $('#q-sinrepetir').checked = qSinRepetir;
     let qJusto = lee('justo', true) !== false;
     $('#q-justo').checked = qJusto;
@@ -796,7 +869,7 @@
         rotula($('#q-faltan'), nf ? t('q_absent_n', nf) : t('q_absent'));
         const s = (salidos[l.id] || []).filter((n) => pres.includes(n));
         $('#q-cuenta').textContent = t('q_count', { a: s.length, b: pres.length });
-        $('#q-salidos').innerHTML = s.slice().reverse().map((n) => `<li>${cara(l, n, 'cara-mini')}<span>${escapa(n)}</span></li>`).join('');
+        $('#q-salidos').innerHTML = s.slice().reverse().map((n) => `<li${n === qTapado ? ' class="ct-tapado"' : ''}>${cara(l, n, 'cara-mini')}<span>${escapa(n)}</span></li>`).join('');
         $('#q-reset').disabled = !s.length || qBarajando;
         $('#q-lista').disabled = qBarajando;
         const quedan = qSinRepetir ? pres.length - s.length : pres.length;
@@ -817,6 +890,8 @@
     const elegir = () => {
         const l = listaQ();
         if (!l || qBarajando) { return; }
+        const tapa = qCaja.querySelector('.ct-rasca');
+        if (tapa) { tapa.remove(); qTapado = null; }
         const s = salidos[l.id] || [], pres = presentes(l);
         const bolsa = qSinRepetir ? pres.filter((n) => !s.includes(n)) : pres.slice();
         if (!bolsa.length) { quienPinta(); return; }
@@ -832,10 +907,22 @@
                 sumaTurno(l.ids[elegido]);
                 alAula(AULA.pickurl, { userid: l.ids[elegido] }).catch(() => { /* sin conexión: ese turno no cuenta, el sorteo sigue */ });
             } else if (l.yo === elegido) { l.veces[elegido] = (l.veces[elegido] || 0) + 1; }   // el profe: solo aquí
+            const destapa = () => {
+                qTapado = null;
+                $$('#q-salidos .ct-tapado').forEach((li) => li.classList.remove('ct-tapado'));
+                qNombre.className = 'nombre-grande elegido';
+                suena('elegido');
+                anuncia(t('q_turn', elegido));
+            };
+            if (qRasca && window.ClasstoolsScratch) {
+                qTapado = elegido;
+                quienPinta();
+                window.ClasstoolsScratch.cover(qCaja, { onReveal: destapa });
+                suena('tic');
+                return;
+            }
             quienPinta();
-            qNombre.className = 'nombre-grande elegido';
-            suena('elegido');
-            anuncia(t('q_turn', elegido));
+            destapa();
         };
         if (reducido() || bolsa.length < 2) { acaba(); return; }
         // Barajado: los nombres pasan cada vez más despacio (unos dos segundos) hasta pararse en el elegido.
@@ -861,6 +948,8 @@
     $('#q-editar').addEventListener('click', () => abreEditor(listaActiva));
     $('#q-lista').addEventListener('change', (e) => { listaActiva = e.target.value || null; qUltimo = null; guarda('lista-activa', listaActiva); quienPinta(); });
     $('#q-sinrepetir').addEventListener('change', (e) => { qSinRepetir = e.target.checked; guarda('sin-repetir', qSinRepetir); quienPinta(); });
+    $('#q-rasca').checked = qRasca;
+    $('#q-rasca').addEventListener('change', (e) => { qRasca = e.target.checked; guarda('quien-rasca', qRasca); });
     $('#q-justo').addEventListener('change', (e) => { qJusto = e.target.checked; guarda('justo', qJusto); });
     // «El profe también juega», en «¿A quién le toca?» y en «Grupos» (es el mismo interruptor).
     ['#q-yo', '#g-yo'].forEach((sel) => {
@@ -954,6 +1043,7 @@
     // Repartir con emoción: en vez de salir todos de golpe, una tarjeta baraja los nombres, se para en uno, dice su
     // grupo y el nombre vuela a su sitio, aquí y allá, hasta el último (los primeros y los últimos, más despacio).
     let gEmocion = lee('grupos-emocion', false) === true;
+    let gRasca = lee('grupos-rasca', false) === true;   // rasca y gana: cada grupo, tapado hasta que lo rascan
     let gReparto = null;   // el reparto en marcha: { acaba } los coloca a todos ya
     // Un rol para cada uno dentro de su grupo (portavoz, secretario…), que el profesor puede cambiar. El reparto es
     // justo: a cada uno le toca antes el rol que menos ha tenido con esa lista (y, a igualdad, quien menos roles ha
@@ -1027,7 +1117,8 @@
         const k = gModo === 'num' ? Math.min(gN, b.length) : Math.max(1, Math.round(b.length / gN));
         const grupos = Array.from({ length: k }, () => []);
         b.forEach((n, i) => grupos[i % k].push(n));
-        const emocion = gEmocion && b.length > 1;
+        const rasca = gRasca && b.length > 1 && !!window.ClasstoolsScratch;
+        const emocion = gEmocion && !rasca && b.length > 1;
         gRejilla.classList.remove('vacia');
         // Con emoción, cada nombre ocupa ya su sitio pero sin verse: así la letra no cambia mientras van saliendo.
         gRejilla.innerHTML = grupos.map((g, i) => {
@@ -1054,6 +1145,7 @@
             anuncia(t('g_made', k));
         };
         if (emocion) { gReparte(grupos, lg, listo); } else { listo(); }
+        if (rasca) { $$('.grupo ul', gRejilla).forEach((ul) => window.ClasstoolsScratch.cover(ul, { onReveal: () => suena('card') })); }
     };
     const gReparte = (grupos, lg, listo) => {
         // Otra vez barajados, para que salgan aquí y allá y no grupo por grupo.
@@ -1166,6 +1258,8 @@
     });
     $('#g-roles-texto').addEventListener('change', gPonRoles);
     $('#g-rotar').addEventListener('click', () => { gPonRoles(); suena('dado'); anuncia(t('g_roles_done')); });
+    $('#g-rasca').checked = gRasca;
+    $('#g-rasca').addEventListener('change', (e) => { gRasca = e.target.checked; guarda('grupos-rasca', gRasca); });
     $('#g-emocion').checked = gEmocion;
     $('#g-emocion').addEventListener('change', (e) => { gEmocion = e.target.checked; guarda('grupos-emocion', gEmocion); });
     $('#g-lista').addEventListener('change', gCambiaLista);
@@ -1615,7 +1709,8 @@
     pintaSelects();
     quienPinta();
     tmPon(5 * 60000);
-    muestra(listasAula.length ? 'quien' : (PERMITIDAS ? PERMITIDAS[0] : 'temporizador'));
+    const hay = (h) => pestanas.some((b) => b.dataset.h === h);
+    muestra(listasAula.length && hay('quien') ? 'quien' : (hay('temporizador') ? 'temporizador' : pestanas[0].dataset.h));
     ajustaBarra();
     try { SCORM.iniciar(); SCORM.guardar({}, 100, true); } catch (e) { /* sin Moodle */ }
 

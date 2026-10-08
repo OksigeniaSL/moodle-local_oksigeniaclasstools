@@ -1,0 +1,50 @@
+{
+ "tm_traveller": {
+  "en": "What travels the bar",
+  "es": "Qué recorre la barra"
+ },
+ "tm_v_cohete": {
+  "en": "Rocket",
+  "es": "Cohete"
+ },
+ "tm_v_coche": {
+  "en": "Racing car",
+  "es": "Coche de carreras"
+ },
+ "tm_v_caracol": {
+  "en": "Snail",
+  "es": "Caracol"
+ },
+ "tm_v_barco": {
+  "en": "Sailing boat",
+  "es": "Velero"
+ },
+ "tm_v_bateria": {
+  "en": "Battery",
+  "es": "Batería"
+ },
+ "tm_v_pixel": {
+  "en": "Pixels",
+  "es": "Píxeles"
+ },
+ "tm_v_ninguno": {
+  "en": "Just the bar",
+  "es": "Solo la barra"
+ },
+ "tm_fact_cohete": {
+  "en": "A rocket goes up at more than 28,000 km/h.",
+  "es": "Un cohete sube a más de 28 000 km/h."
+ },
+ "tm_fact_coche": {
+  "en": "A racing car goes faster than 300 km/h.",
+  "es": "Un coche de carreras pasa de 300 km/h."
+ },
+ "tm_fact_caracol": {
+  "en": "A snail travels about 50 metres in an hour.",
+  "es": "Un caracol recorre unos 50 metros en una hora."
+ },
+ "tm_fact_barco": {
+  "en": "A sailing boat sails at about 15 km/h.",
+  "es": "Un velero navega a unos 15 km/h."
+ }
+}

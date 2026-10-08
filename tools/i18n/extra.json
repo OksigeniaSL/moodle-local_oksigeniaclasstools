@@ -1,0 +1,986 @@
+{
+ "cel_done": {
+  "en": "Well done!",
+  "es": "¡Conseguido!"
+ },
+ "cel_continue": {
+  "en": "Continue",
+  "es": "Seguir"
+ },
+ "mt_guides": {
+  "en": "Guide lines",
+  "es": "Líneas guía"
+ },
+ "mt_group_figures": {
+  "en": "Pictures",
+  "es": "Dibujos"
+ },
+ "mt_group_shapes": {
+  "en": "Geometric shapes",
+  "es": "Formas geométricas"
+ },
+ "mt_next_figure": {
+  "en": "Another shape",
+  "es": "Otra figura"
+ },
+ "mt_fig_done": {
+  "en": "You made “{$a}” with the seven pieces.",
+  "es": "Han hecho «{$a}» con las siete piezas."
+ },
+ "mt_fig_rectangle": {
+  "en": "Rectangle",
+  "es": "Rectángulo"
+ },
+ "mt_fig_rhomboid": {
+  "en": "Parallelogram",
+  "es": "Romboide"
+ },
+ "mt_fig_trapezium": {
+  "en": "Trapezium",
+  "es": "Trapecio"
+ },
+ "mt_fig_right_trapezium": {
+  "en": "Right trapezium {$a}",
+  "es": "Trapecio rectángulo {$a}"
+ },
+ "mt_fig_pentagon": {
+  "en": "Pentagon {$a}",
+  "es": "Pentágono {$a}"
+ },
+ "mt_fig_hexagon": {
+  "en": "Hexagon {$a}",
+  "es": "Hexágono {$a}"
+ },
+ "wb_send": {
+  "en": "Share with the class",
+  "es": "Enviar a la clase"
+ },
+ "wb_send_title": {
+  "en": "Save in the course and notify the class",
+  "es": "Guardar en el curso y avisar a la clase"
+ },
+ "wb_send_for": {
+  "en": "For",
+  "es": "Para"
+ },
+ "wb_send_name": {
+  "en": "Name",
+  "es": "Nombre"
+ },
+ "wb_send_format": {
+  "en": "Format",
+  "es": "Formato"
+ },
+ "wb_send_note": {
+  "en": "It is saved in the course, in the section “Class boards”, in a folder for that class, and its students get a notification.",
+  "es": "Se guarda en el curso, en la sección «Pizarras de clase», en una carpeta para esa clase, y sus alumnos reciben un aviso."
+ },
+ "wb_send_note_cohort": {
+  "en": "This class is not a Moodle group: everyone in the course can see its folder; only its students get the notification.",
+  "es": "Esta clase no es un grupo de Moodle: su carpeta la puede ver todo el curso; el aviso solo llega a sus alumnos."
+ },
+ "wb_send_go": {
+  "en": "Save and notify",
+  "es": "Guardar y avisar"
+ },
+ "wb_cancel": {
+  "en": "Cancel",
+  "es": "Cancelar"
+ },
+ "wb_sending": {
+  "en": "Saving…",
+  "es": "Guardando…"
+ },
+ "wb_sent": {
+  "en": "Saved in “{$a->folder}”. Notified: {$a->n}.",
+  "es": "Guardada en «{$a->folder}». Avisados: {$a->n}."
+ },
+ "wb_sent_open": {
+  "en": "Open the folder",
+  "es": "Abrir la carpeta"
+ },
+ "wb_send_error": {
+  "en": "It could not be saved: {$a}",
+  "es": "No se ha podido guardar: {$a}"
+ },
+ "wb_send_empty": {
+  "en": "The board is empty.",
+  "es": "La pizarra está vacía."
+ },
+ "wb_default_name": {
+  "en": "Board {$a}",
+  "es": "Pizarra {$a}"
+ },
+ "q_with_me": {
+  "en": "The teacher plays too",
+  "es": "El profe también juega"
+ },
+ "q_me_name": {
+  "en": "{$a} (teacher)",
+  "es": "{$a} (profe)"
+ },
+ "bar_home": {
+  "en": "Back to home",
+  "es": "Volver al inicio"
+ },
+ "bar_mode": {
+  "en": "Mode",
+  "es": "Modo"
+ },
+ "bar_mode_title": {
+  "en": "Screen mode (one at a time)",
+  "es": "Modo de la pantalla (uno cada vez)"
+ },
+ "mode_early": {
+  "en": "Early years",
+  "es": "Infantil"
+ },
+ "mode_primary": {
+  "en": "Primary",
+  "es": "Primaria"
+ },
+ "mode_secondary": {
+  "en": "Secondary",
+  "es": "Secundaria"
+ },
+ "mode_advanced": {
+  "en": "Advanced",
+  "es": "Superior"
+ },
+ "mode_early_hint": {
+  "en": "Ages 3 to 6: bigger, with more help",
+  "es": "De 3 a 6 años: más grande y con más ayudas"
+ },
+ "mode_primary_hint": {
+  "en": "Ages 6 to 12",
+  "es": "De 6 a 12 años"
+ },
+ "mode_secondary_hint": {
+  "en": "Ages 12 to 16: more sober",
+  "es": "De 12 a 16 años: más sobrio"
+ },
+ "mode_advanced_hint": {
+  "en": "Upper secondary and university: everything at full",
+  "es": "Bachillerato y universidad: todo a tope"
+ },
+ "tm_look": {
+  "en": "Look",
+  "es": "Aspecto"
+ },
+ "tm_look_ring": {
+  "en": "Ring",
+  "es": "Anillo"
+ },
+ "tm_look_disc": {
+  "en": "Disc",
+  "es": "Disco"
+ },
+ "tm_look_bar": {
+  "en": "Bar",
+  "es": "Barra"
+ },
+ "tm_look_sand": {
+  "en": "Sand",
+  "es": "Arena"
+ },
+ "tm_warn": {
+  "en": "Warn when 1 minute is left",
+  "es": "Avisar cuando quede 1 minuto"
+ },
+ "tm_one_left": {
+  "en": "1 minute left",
+  "es": "Queda 1 minuto"
+ },
+ "tm_fav_add": {
+  "en": "Keep {$a}",
+  "es": "Guardar {$a}"
+ },
+ "tm_fav_add_title": {
+  "en": "Keep this time among yours (up to two)",
+  "es": "Guardar este tiempo entre los tuyos (hasta dos)"
+ },
+ "tm_fav_remove": {
+  "en": "Remove {$a} from your times",
+  "es": "Quitar {$a} de tus tiempos"
+ },
+ "tm_fav": {
+  "en": "Your time: {$a}",
+  "es": "Tu tiempo: {$a}"
+ },
+ "bar_present": {
+  "en": "Present",
+  "es": "Presentar"
+ },
+ "bar_present_exit": {
+  "en": "Show the tools",
+  "es": "Ver las herramientas"
+ },
+ "tm_final": {
+  "en": "Liven up the last 10 seconds",
+  "es": "Animar los últimos 10 segundos"
+ },
+ "tm_look_pulsar": {
+  "en": "Pulsar",
+  "es": "Púlsar"
+ },
+ "g_suspense": {
+  "en": "Deal them out with suspense",
+  "es": "Repartir con emoción"
+ },
+ "g_and_now": {
+  "en": "And now…",
+  "es": "Y ahora…"
+ },
+ "g_place_all": {
+  "en": "Place everyone now",
+  "es": "Colocarlos a todos ya"
+ },
+ "g_goes_to": {
+  "en": "{$a->name}: group {$a->n}",
+  "es": "{$a->name}: grupo {$a->n}"
+ },
+ "ch_die_kinds": {
+  "en": "Dice",
+  "es": "Dados"
+ },
+ "ch_all_out": {
+  "en": "Everyone has come out: starting again.",
+  "es": "Ya han salido todos: empezamos otra vuelta."
+ },
+ "tab_live": {
+  "en": "Live",
+  "es": "En vivo"
+ },
+ "lv_what": {
+  "en": "What shall we do?",
+  "es": "¿Qué hacemos?"
+ },
+ "lv_kind_vote": {
+  "en": "Vote",
+  "es": "Votación"
+ },
+ "lv_kind_buzz": {
+  "en": "Buzzers",
+  "es": "Pulsadores"
+ },
+ "lv_kind_remote": {
+  "en": "Remote",
+  "es": "Mando"
+ },
+ "lv_intro_vote": {
+  "en": "The class answers from their tablets or computers, and the board counts the votes.",
+  "es": "La clase contesta desde sus tabletas u ordenadores, y la pizarra cuenta los votos."
+ },
+ "lv_intro_buzz": {
+  "en": "Each tablet presses for its team: the board shows who was first, to the hundredth of a second.",
+  "es": "Cada tableta pulsa por su equipo: la pizarra enseña quién fue el primero, por centésimas."
+ },
+ "lv_intro_remote": {
+  "en": "Your phone as a remote: start the timer, pick a student or change tool from anywhere in the classroom.",
+  "es": "Tu móvil como mando: arranca el temporizador, elige a un alumno o cambia de herramienta desde cualquier sitio del aula."
+ },
+ "lv_how": {
+  "en": "How do they join?",
+  "es": "¿Cómo entran?"
+ },
+ "lv_anon": {
+  "en": "With the code",
+  "es": "Con el código"
+ },
+ "lv_moodle": {
+  "en": "With their account",
+  "es": "Con su usuario"
+ },
+ "lv_anon_hint": {
+  "en": "Nobody logs in and no name shows: each device is a critter with a name.",
+  "es": "Nadie inicia sesión y no sale ningún nombre: cada dispositivo es un bichito con nombre."
+ },
+ "lv_moodle_hint": {
+  "en": "Students of this course log in, and the board shows their names.",
+  "es": "Entran los alumnos de este curso con su usuario, y la pizarra enseña sus nombres."
+ },
+ "lv_answers": {
+  "en": "Answers",
+  "es": "Respuestas"
+ },
+ "lv_v_abcd": {
+  "en": "A, B, C, D",
+  "es": "A, B, C, D"
+ },
+ "lv_v_yesno": {
+  "en": "Yes or no",
+  "es": "Sí o no"
+ },
+ "lv_v_light": {
+  "en": "Traffic light: I get it, more or less, I don’t",
+  "es": "Semáforo: lo entiendo, más o menos, no lo entiendo"
+ },
+ "lv_v_five": {
+  "en": "From 1 to 5",
+  "es": "Del 1 al 5"
+ },
+ "lv_teams": {
+  "en": "Teams",
+  "es": "Equipos"
+ },
+ "lv_team_n": {
+  "en": "Team {$a}",
+  "es": "Equipo {$a}"
+ },
+ "lv_remote_hint": {
+  "en": "Then open the address or the QR on your phone, with your own account.",
+  "es": "Luego abre la dirección o el QR en tu móvil, con tu usuario."
+ },
+ "lv_start": {
+  "en": "Open the session",
+  "es": "Abrir la sesión"
+ },
+ "lv_opened": {
+  "en": "Session open. The code is {$a}.",
+  "es": "Sesión abierta. El código es {$a}."
+ },
+ "lv_failed": {
+  "en": "The site does not answer. Trying again…",
+  "es": "El sitio no contesta. Lo intento otra vez…"
+ },
+ "lv_code": {
+  "en": "Code",
+  "es": "Código"
+ },
+ "lv_in_one": {
+  "en": "{$a} device in",
+  "es": "{$a} dispositivo dentro"
+ },
+ "lv_in_many": {
+  "en": "{$a} devices in",
+  "es": "{$a} dispositivos dentro"
+ },
+ "lv_others_one": {
+  "en": "There is another live session open on the site: answers may take a little longer.",
+  "es": "Hay otra sesión en vivo abierta en el sitio: las respuestas pueden tardar un poco más."
+ },
+ "lv_others_many": {
+  "en": "There are {$a} other live sessions open on the site: answers may take a little longer.",
+  "es": "Hay otras {$a} sesiones en vivo abiertas en el sitio: las respuestas pueden tardar un poco más."
+ },
+ "lv_devices": {
+  "en": "Who is in",
+  "es": "Quién está dentro"
+ },
+ "lv_device_n": {
+  "en": "Device {$a}",
+  "es": "Dispositivo {$a}"
+ },
+ "lv_kick": {
+  "en": "Take {$a} out of the session",
+  "es": "Sacar a {$a} de la sesión"
+ },
+ "lv_end": {
+  "en": "End the session",
+  "es": "Terminar la sesión"
+ },
+ "lv_end_confirm": {
+  "en": "Tap again to end it",
+  "es": "Pulsa otra vez para terminarla"
+ },
+ "lv_ended": {
+  "en": "Session ended",
+  "es": "Sesión terminada"
+ },
+ "lv_question_ph": {
+  "en": "Question (optional)",
+  "es": "Pregunta (opcional)"
+ },
+ "lv_question_n": {
+  "en": "Question {$a}",
+  "es": "Pregunta {$a}"
+ },
+ "lv_open_vote": {
+  "en": "Open the vote",
+  "es": "Abrir la votación"
+ },
+ "lv_close_vote": {
+  "en": "Close the vote",
+  "es": "Cerrar la votación"
+ },
+ "lv_again": {
+  "en": "Another question",
+  "es": "Otra pregunta"
+ },
+ "lv_wait_open": {
+  "en": "When everyone is in, open the vote.",
+  "es": "Cuando estén todos dentro, abre la votación."
+ },
+ "lv_answered": {
+  "en": "{$a->n} of {$a->of} have answered",
+  "es": "Han contestado {$a->n} de {$a->of}"
+ },
+ "lv_votes_one": {
+  "en": "{$a} vote",
+  "es": "{$a} voto"
+ },
+ "lv_votes_many": {
+  "en": "{$a} votes",
+  "es": "{$a} votos"
+ },
+ "lv_show": {
+  "en": "Show the results on the devices",
+  "es": "Enseñar los resultados en las tabletas"
+ },
+ "lv_open_round": {
+  "en": "Open the buzzers",
+  "es": "Abrir los pulsadores"
+ },
+ "lv_close_round": {
+  "en": "Close the buzzers",
+  "es": "Cerrar los pulsadores"
+ },
+ "lv_next_round": {
+  "en": "Another round",
+  "es": "Otra ronda"
+ },
+ "lv_nobody": {
+  "en": "Nobody has pressed yet…",
+  "es": "Nadie ha pulsado todavía…"
+ },
+ "lv_wait_round_board": {
+  "en": "When the teams are ready, open the buzzers.",
+  "es": "Cuando los equipos estén listos, abre los pulsadores."
+ },
+ "lv_after": {
+  "en": "+{$a} s",
+  "es": "+{$a} s"
+ },
+ "lv_first": {
+  "en": "{$a} pressed first!",
+  "es": "¡{$a} ha pulsado primero!"
+ },
+ "lv_remote_waiting": {
+  "en": "Waiting for your phone…",
+  "es": "Esperando a tu móvil…"
+ },
+ "lv_remote_ok": {
+  "en": "Phone connected",
+  "es": "Móvil conectado"
+ },
+ "lv_remote_help": {
+  "en": "It works on any tool, also while presenting.",
+  "es": "Funciona en cualquier herramienta, también al presentar."
+ },
+ "lv_yes": {
+  "en": "Yes",
+  "es": "Sí"
+ },
+ "lv_no": {
+  "en": "No",
+  "es": "No"
+ },
+ "lv_green": {
+  "en": "I get it",
+  "es": "Lo entiendo"
+ },
+ "lv_yellow": {
+  "en": "More or less",
+  "es": "Más o menos"
+ },
+ "lv_red": {
+  "en": "I don’t get it",
+  "es": "No lo entiendo"
+ },
+ "lv_join_title": {
+  "en": "Join the class",
+  "es": "Entra en la clase"
+ },
+ "lv_type_code": {
+  "en": "Type the code on the board",
+  "es": "Escribe el código de la pizarra"
+ },
+ "lv_enter": {
+  "en": "Enter",
+  "es": "Entrar"
+ },
+ "lv_no_session": {
+  "en": "There is no open session with that code.",
+  "es": "No hay ninguna sesión abierta con ese código."
+ },
+ "lv_joined": {
+  "en": "You are in.",
+  "es": "Ya estás dentro."
+ },
+ "lv_wait_question": {
+  "en": "Look at the board: the question is coming.",
+  "es": "Mira la pizarra: ya viene la pregunta."
+ },
+ "lv_choose": {
+  "en": "Choose your answer.",
+  "es": "Elige tu respuesta."
+ },
+ "lv_change": {
+  "en": "You can change it until it closes.",
+  "es": "Puedes cambiarla hasta que se cierre."
+ },
+ "lv_closed": {
+  "en": "Vote closed",
+  "es": "Votación cerrada"
+ },
+ "lv_your_answer": {
+  "en": "Your answer: {$a}",
+  "es": "Tu respuesta: {$a}"
+ },
+ "lv_pick_team": {
+  "en": "Which is your team?",
+  "es": "¿Cuál es tu equipo?"
+ },
+ "lv_change_team": {
+  "en": "Change team",
+  "es": "Cambiar de equipo"
+ },
+ "lv_wait_round": {
+  "en": "Get ready…",
+  "es": "Preparados…"
+ },
+ "lv_go": {
+  "en": "Go!",
+  "es": "¡Ya!"
+ },
+ "lv_place_1": {
+  "en": "First!",
+  "es": "¡El primero!"
+ },
+ "lv_place_n": {
+  "en": "Number {$a}",
+  "es": "El {$a}.º"
+ },
+ "lv_kicked": {
+  "en": "The teacher has taken this device out of the session.",
+  "es": "El profe ha sacado este dispositivo de la sesión."
+ },
+ "lv_full": {
+  "en": "The session is full.",
+  "es": "La sesión está llena."
+ },
+ "lv_bye": {
+  "en": "The session is over. Thank you!",
+  "es": "Se acabó la sesión. ¡Gracias!"
+ },
+ "lv_offline": {
+  "en": "No connection. Trying again…",
+  "es": "Sin conexión. Lo intento otra vez…"
+ },
+ "lv_remote_title": {
+  "en": "Remote for the board",
+  "es": "Mando de la pizarra"
+ },
+ "lv_cmd_timer": {
+  "en": "Timer: start or pause",
+  "es": "Temporizador: empezar o pausa"
+ },
+ "lv_cmd_reset": {
+  "en": "Reset the timer",
+  "es": "Reiniciar el temporizador"
+ },
+ "lv_cmd_plus": {
+  "en": "+1 minute",
+  "es": "+1 minuto"
+ },
+ "lv_cmd_pick": {
+  "en": "Whose turn?",
+  "es": "¿A quién le toca?"
+ },
+ "lv_cmd_present": {
+  "en": "Present",
+  "es": "Presentar"
+ },
+ "lv_cmd_prev": {
+  "en": "Previous tool",
+  "es": "Herramienta anterior"
+ },
+ "lv_cmd_next": {
+  "en": "Next tool",
+  "es": "Herramienta siguiente"
+ },
+ "lv_sent": {
+  "en": "sent",
+  "es": "enviado"
+ },
+ "mt_line": {
+  "en": "Number line",
+  "es": "Recta numérica"
+ },
+ "nl_numbers": {
+  "en": "Numbers",
+  "es": "Números"
+ },
+ "nl_p_to10": {
+  "en": "From 0 to 10",
+  "es": "Del 0 al 10"
+ },
+ "nl_p_to20": {
+  "en": "From 0 to 20",
+  "es": "Del 0 al 20"
+ },
+ "nl_p_to100": {
+  "en": "From 0 to 100",
+  "es": "Del 0 al 100"
+ },
+ "nl_p_to1000": {
+  "en": "From 0 to 1000, in tens",
+  "es": "Del 0 al 1000, de 10 en 10"
+ },
+ "nl_p_negative": {
+  "en": "From −10 to 10",
+  "es": "Del −10 al 10"
+ },
+ "nl_p_tenths": {
+  "en": "Tenths, from 0 to 1",
+  "es": "Décimas, del 0 al 1"
+ },
+ "nl_p_halves": {
+  "en": "Halves, from 0 to 3",
+  "es": "Medios, del 0 al 3"
+ },
+ "nl_p_thirds": {
+  "en": "Thirds, from 0 to 2",
+  "es": "Tercios, del 0 al 2"
+ },
+ "nl_p_quarters": {
+  "en": "Quarters, from 0 to 2",
+  "es": "Cuartos, del 0 al 2"
+ },
+ "nl_p_custom": {
+  "en": "My own",
+  "es": "A mi manera"
+ },
+ "nl_step": {
+  "en": "In steps of",
+  "es": "De … en …"
+ },
+ "nl_hide": {
+  "en": "Hide the numbers",
+  "es": "Esconder los números"
+ },
+ "nl_undo": {
+  "en": "Undo",
+  "es": "Deshacer"
+ },
+ "nl_clear": {
+  "en": "Clear",
+  "es": "Borrar"
+ },
+ "nl_help": {
+  "en": "Tap a point to start, then where each jump lands. Tap the point again to start somewhere else.",
+  "es": "Toca un punto para empezar y luego donde cae cada salto. Toca otra vez el punto para empezar en otro sitio."
+ },
+ "nl_help_hidden": {
+  "en": "Tap a hidden number to uncover it (and again to hide it). The jumps work the same.",
+  "es": "Toca un número escondido para descubrirlo (y otra vez para esconderlo). Los saltos funcionan igual."
+ },
+ "nl_start": {
+  "en": "Tap the line where we start",
+  "es": "Toca la recta donde empezamos"
+ },
+ "nl_now_jump": {
+  "en": "Now tap where the jump lands",
+  "es": "Ahora toca donde cae el salto"
+ },
+ "nl_starts": {
+  "en": "We start at {$a}",
+  "es": "Empezamos en el {$a}"
+ },
+ "mt_fractions": {
+  "en": "Fraction wall",
+  "es": "Muro de fracciones"
+ },
+ "fw_rows": {
+  "en": "Rows",
+  "es": "Filas"
+ },
+ "fw_labels": {
+  "en": "On the pieces",
+  "es": "En las piezas"
+ },
+ "fw_l_fraction": {
+  "en": "Fractions",
+  "es": "Fracciones"
+ },
+ "fw_l_decimal": {
+  "en": "Decimals",
+  "es": "Decimales"
+ },
+ "fw_l_percent": {
+  "en": "Percentages",
+  "es": "Porcentajes"
+ },
+ "fw_l_none": {
+  "en": "Nothing",
+  "es": "Nada"
+ },
+ "fw_ruler": {
+  "en": "Ruler to compare",
+  "es": "Regla para comparar"
+ },
+ "fw_help": {
+  "en": "Tap the pieces to colour them: the same width is the same amount. The ruler slides from its red handle.",
+  "es": "Toca las piezas para colorearlas: el mismo ancho es la misma cantidad. La regla se mueve desde su asa roja."
+ },
+ "fw_start": {
+  "en": "Colour some pieces",
+  "es": "Colorea algunas piezas"
+ },
+ "fw_compare": {
+  "en": "Colour the same amount in another row",
+  "es": "Colorea lo mismo en otra fila"
+ },
+ "mt_geoboard": {
+  "en": "Geoboard",
+  "es": "Geoplano"
+ },
+ "gb_size": {
+  "en": "Pegs",
+  "es": "Clavos"
+ },
+ "gb_n_by_n": {
+  "en": "{$a} × {$a}",
+  "es": "{$a} × {$a}"
+ },
+ "gb_measure": {
+  "en": "Area and perimeter",
+  "es": "Área y perímetro"
+ },
+ "gb_squares": {
+  "en": "Show the little squares",
+  "es": "Ver los cuadraditos"
+ },
+ "gb_help": {
+  "en": "Tap pegs to stretch a band: the first peg again closes the shape, the last one again leaves it as a line. Drag a corner to move it to another peg.",
+  "es": "Toca clavos para estirar una goma: el primer clavo otra vez cierra la figura, y el último otra vez la deja como línea. Arrastra una esquina para llevarla a otro clavo."
+ },
+ "gb_start": {
+  "en": "Tap a peg to start a band",
+  "es": "Toca un clavo para empezar una goma"
+ },
+ "gb_next": {
+  "en": "Tap the next peg",
+  "es": "Toca el siguiente clavo"
+ },
+ "gb_close": {
+  "en": "Tap the first peg to close the shape",
+  "es": "Toca el primer clavo para cerrar la figura"
+ },
+ "gb_drag": {
+  "en": "Drag a corner to change the shape",
+  "es": "Arrastra una esquina para cambiar la figura"
+ },
+ "gb_area_perimeter": {
+  "en": "Area: {$a->area} little squares · Perimeter: {$a->perimeter}",
+  "es": "Área: {$a->area} cuadraditos · Perímetro: {$a->perimeter}"
+ },
+ "gb_length": {
+  "en": "Length: {$a}",
+  "es": "Longitud: {$a}"
+ },
+ "mt_base10": {
+  "en": "Base 10 blocks",
+  "es": "Bloques de base 10"
+ },
+ "b10_u": {
+  "en": "Ones",
+  "es": "Unidades"
+ },
+ "b10_t": {
+  "en": "Tens",
+  "es": "Decenas"
+ },
+ "b10_h": {
+  "en": "Hundreds",
+  "es": "Centenas"
+ },
+ "b10_th": {
+  "en": "Thousands",
+  "es": "Millares"
+ },
+ "b10_upto": {
+  "en": "Up to",
+  "es": "Hasta"
+ },
+ "b10_build": {
+  "en": "Build a number",
+  "es": "Construir un número"
+ },
+ "b10_put": {
+  "en": "Put",
+  "es": "Poner"
+ },
+ "b10_hide": {
+  "en": "Hide the number",
+  "es": "Esconder el número"
+ },
+ "b10_empty": {
+  "en": "Empty",
+  "es": "Vaciar"
+ },
+ "b10_help": {
+  "en": "Add and take away blocks with + and −, or tap a block to take it away. With ten of a kind, swap them for one of the next column; one can be broken into ten.",
+  "es": "Pon y quita bloques con + y −, o toca un bloque para quitarlo. Con diez iguales, cámbialos por uno de la columna siguiente; uno se puede romper en diez."
+ },
+ "b10_take": {
+  "en": "{$a}: take one away",
+  "es": "{$a}: quitar uno"
+ },
+ "b10_less": {
+  "en": "{$a}: one less",
+  "es": "{$a}: uno menos"
+ },
+ "b10_more": {
+  "en": "{$a}: one more",
+  "es": "{$a}: uno más"
+ },
+ "b10_group": {
+  "en": "Swap 10 for 1 ←",
+  "es": "Cambiar 10 por 1 ←"
+ },
+ "b10_break": {
+  "en": "Break into 10 →",
+  "es": "Romper en 10 →"
+ },
+ "b10_grouped": {
+  "en": "10 in {$a->a} → 1 in {$a->b}",
+  "es": "10 en {$a->a} → 1 en {$a->b}"
+ },
+ "b10_broken": {
+  "en": "1 in {$a->a} → 10 in {$a->b}",
+  "es": "1 en {$a->a} → 10 en {$a->b}"
+ },
+ "b10_guess": {
+  "en": "What number is it? Tap to see it",
+  "es": "¿Qué número es? Toca para verlo"
+ },
+ "lv_kind_hands": {
+  "en": "Hands up",
+  "es": "A mano alzada"
+ },
+ "lv_intro_hands": {
+  "en": "Count the raised hands for each answer with + and −.",
+  "es": "Cuenta con + y − las manos levantadas de cada respuesta."
+ },
+ "lv_v_custom": {
+  "en": "My own answers",
+  "es": "Mis respuestas"
+ },
+ "lv_custom": {
+  "en": "Answers, one per line (2 to 5)",
+  "es": "Respuestas, una por línea (de 2 a 5)"
+ },
+ "lv_custom_ph": {
+  "en": "Red\nBlue\nGreen",
+  "es": "Rojo\nAzul\nVerde"
+ },
+ "lv_hands_reset": {
+  "en": "Back to zero",
+  "es": "Poner a cero"
+ },
+ "lv_hands_one": {
+  "en": "{$a} hand",
+  "es": "{$a} mano"
+ },
+ "lv_hands_many": {
+  "en": "{$a} hands",
+  "es": "{$a} manos"
+ },
+ "lv_hand_less": {
+  "en": "{$a}: one hand less",
+  "es": "{$a}: una mano menos"
+ },
+ "lv_hand_more": {
+  "en": "{$a}: one hand more",
+  "es": "{$a}: una mano más"
+ },
+ "g_roles": {
+  "en": "A role for each one",
+  "es": "Un rol para cada uno"
+ },
+ "g_roles_edit": {
+  "en": "Change the roles",
+  "es": "Cambiar los roles"
+ },
+ "g_roles_list": {
+  "en": "Roles, one per line",
+  "es": "Roles, uno por línea"
+ },
+ "g_roles_hint": {
+  "en": "One per line (up to 6). Empty: the usual ones.",
+  "es": "Uno por línea (hasta 6). Vacío: los de siempre."
+ },
+ "g_roles_rotate": {
+  "en": "Other roles",
+  "es": "Otros roles"
+ },
+ "g_roles_done": {
+  "en": "Roles handed out",
+  "es": "Roles repartidos"
+ },
+ "rl_spokesperson": {
+  "en": "Spokesperson",
+  "es": "Portavoz"
+ },
+ "rl_secretary": {
+  "en": "Secretary",
+  "es": "Secretario"
+ },
+ "rl_materials": {
+  "en": "Materials manager",
+  "es": "Encargado del material"
+ },
+ "rl_time": {
+  "en": "Timekeeper",
+  "es": "Controlador del tiempo"
+ },
+ "lv_limit": {
+  "en": "Closes by itself",
+  "es": "Cierre automático"
+ },
+ "lv_limit_none": {
+  "en": "No time limit",
+  "es": "Sin límite de tiempo"
+ },
+ "lv_limit_s": {
+  "en": "Closes in {$a} seconds",
+  "es": "Se cierra a los {$a} segundos"
+ },
+ "lv_limit_m1": {
+  "en": "Closes in 1 minute",
+  "es": "Se cierra al minuto"
+ },
+ "lv_limit_m": {
+  "en": "Closes in {$a} minutes",
+  "es": "Se cierra a los {$a} minutos"
+ },
+ "lv_closes_in": {
+  "en": "Closes in {$a}",
+  "es": "Se cierra en {$a}"
+ },
+ "lv_left": {
+  "en": "{$a} left",
+  "es": "Quedan {$a}"
+ },
+ "sm_extras": {
+  "en": "More on the traffic light",
+  "es": "Más cosas en el semáforo"
+ },
+ "sm_waves": {
+  "en": "Waves when it gets loud",
+  "es": "Ondas cuando sube"
+ },
+ "sm_trail": {
+  "en": "The last minute",
+  "es": "El último minuto"
+ },
+ "sm_face": {
+  "en": "A face in the light",
+  "es": "Una cara en la luz"
+ },
+ "nl_p_negquarters": {
+  "en": "Quarters, from −2 to 2",
+  "es": "Cuartos, del −2 al 2"
+ }
+}

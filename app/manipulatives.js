@@ -476,10 +476,19 @@
 
     // =========================================================================================================
     // The other materials (number line, fraction wall…) come in files of their own and add themselves with
-    // core.material.add(): a button in the bar, a panel, and what to do when it is shown or resized.
-    const LAYOUT = { rods: () => rdLayout(), tangram: () => tgLayout() };
+    // core.material.add(): a button in the bar, a panel, and what to do when it is shown or resized. Only the materials
+    // the site wants (the administrator chooses them; none chosen: all).
+    const SITE = window.CLASSTOOLS_SITE && Array.isArray(window.CLASSTOOLS_SITE.materials) && window.CLASSTOOLS_SITE.materials.length ? window.CLASSTOOLS_SITE.materials : null;
+    const wants = (key) => !SITE || SITE.includes(key);
+    const LAYOUT = {};
+    [['rods', () => rdLayout()], ['tangram', () => tgLayout()]].forEach(([key, fn]) => {
+        if (wants(key)) { LAYOUT[key] = fn; return; }
+        const b = $(`#mt-mode [data-mode="${key}"]`), p = $(`.ct-panel[data-panel="${key}"]`, root);
+        if (b) { b.remove(); }
+        if (p) { p.remove(); }
+    });
     const wanted = load('material-modo', 'rods');
-    let mode = LAYOUT[wanted] ? wanted : 'rods';
+    let mode = LAYOUT[wanted] ? wanted : (Object.keys(LAYOUT)[0] || 'rods');
     const showMode = (m) => {
         if (!LAYOUT[m]) { return; }
         mode = m; save('material-modo', m);
@@ -487,9 +496,10 @@
         $$('.ct-panel', root).forEach((p) => { p.hidden = p.dataset.panel !== m; });
         requestAnimationFrame(LAYOUT[m]);
     };
+    const first = () => { if (!LAYOUT[mode]) { const k = Object.keys(LAYOUT)[0]; if (k) { showMode(k); } } };
     $('#mt-mode').addEventListener('click', (e) => { const b = e.target.closest('[data-mode]'); if (b) { showMode(b.dataset.mode); } });
     if (window.ResizeObserver) {
-        new ResizeObserver(() => requestAnimationFrame(LAYOUT[mode])).observe(root);
+        new ResizeObserver(() => requestAnimationFrame(LAYOUT[mode] || (() => {}))).observe(root);
     }
     core.material = {
         /**
@@ -502,6 +512,12 @@
          * @return {HTMLElement} The panel.
          */
         add: (key, label, html, layout) => {
+            if (!wants(key)) {
+                // Not wanted: a panel that is never shown, so the material's code works on it without errors.
+                const away = document.createElement('div');
+                away.innerHTML = html;
+                return away;
+            }
             const b = document.createElement('button');
             b.type = 'button'; b.setAttribute('role', 'radio'); b.setAttribute('aria-checked', 'false'); b.dataset.mode = key; b.textContent = label;
             $('#mt-mode').append(b);
@@ -510,12 +526,12 @@
             $$('[data-icono]', panel).forEach((e) => setIcon(e, e.dataset.icono));
             root.querySelector('.ct-body').append(panel);
             LAYOUT[key] = layout || (() => {});
-            if (key === wanted) { showMode(key); }
+            if (key === wanted || !LAYOUT[mode]) { showMode(key); }
             return panel;
         },
     };
-    core.register('material', { entra: () => showMode(mode) });
-    showMode(mode);
+    core.register('material', { entra: () => { first(); if (LAYOUT[mode]) { showMode(mode); } } });
+    if (LAYOUT[mode]) { showMode(mode); }
 
     window.ClasstoolsMaterial = { showMode, rods: () => rd, tangram: () => tg, FIGURES, PIECES, world, check, snap, place: figPlace, paint: tgPaint };   // for automated tests
 })();

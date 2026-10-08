@@ -28,6 +28,26 @@ const LOCAL_OKSIGENIACLASSTOOLS_MODES = ['early', 'primary', 'secondary', 'advan
 /** School levels with built-in sets in the games, from the youngest. */
 const LOCAL_OKSIGENIACLASSTOOLS_LEVELS = ['early', 'primary', 'secondary', 'upper', 'higher'];
 
+/** The tabs of the board, with the string of their name; the administrator chooses which ones the site shows. */
+const LOCAL_OKSIGENIACLASSTOOLS_TOOLS = [
+    'temporizador' => 'app_tab_timer', 'cronometro' => 'app_tab_stopwatch', 'quien' => 'app_tab_picker',
+    'grupos' => 'app_tab_groups', 'semaforo' => 'app_tab_noise', 'azar' => 'app_tab_chance', 'juegos' => 'app_tab_games',
+    'material' => 'app_tab_materials', 'pizarra' => 'app_tab_board', 'marcador' => 'app_tab_scoreboard',
+    'asi' => 'app_tab_rules', 'reloj' => 'app_tab_clock', 'qr' => 'app_tab_qr', 'envivo' => 'app_tab_live',
+];
+
+/** The games, with the string of their name. */
+const LOCAL_OKSIGENIACLASSTOOLS_GAMES = [
+    'rosco' => 'app_ro_name', 'simon' => 'app_si_name', 'ahorcado' => 'app_ah_name', 'palabra' => 'app_wo_name',
+    'parejas' => 'app_me_pairs', 'codigo' => 'app_lock_name',
+];
+
+/** The materials, with the string of their name. */
+const LOCAL_OKSIGENIACLASSTOOLS_MATERIALS = [
+    'rods' => 'app_mt_rods', 'tangram' => 'app_mt_tangram', 'line' => 'app_mt_line', 'fractions' => 'app_mt_fractions',
+    'geoboard' => 'app_mt_geoboard', 'base10' => 'app_mt_base10',
+];
+
 /** Tools a student sees when the site opens the board to students (none uses data of the class). */
 const LOCAL_OKSIGENIACLASSTOOLS_STUDENT_TOOLS = [
     'temporizador', 'cronometro', 'azar', 'juegos', 'material', 'pizarra', 'reloj', 'qr',
@@ -275,6 +295,11 @@ function local_oksigeniaclasstools_site(): array {
     // The screen mode a course starts in, until the teacher chooses another.
     $mode = get_config('local_oksigeniaclasstools', 'defaultmode');
     $mode = in_array($mode, LOCAL_OKSIGENIACLASSTOOLS_MODES, true) ? $mode : 'primary';
+    // The tools, games and materials the site shows (all until the administrator chooses).
+    $chosen = function (string $name, array $all): array {
+        $value = get_config('local_oksigeniaclasstools', $name);
+        return $value === false ? array_keys($all) : array_values(array_intersect(array_keys($all), explode(',', $value)));
+    };
     // The board's texts («app_» strings), in the user's language with English for anything missing.
     $str = [];
     foreach (get_string_manager()->load_component_strings('local_oksigeniaclasstools', current_language()) as $key => $text) {
@@ -289,6 +314,9 @@ function local_oksigeniaclasstools_site(): array {
         'logo' => $logo,
         'levels' => $levels,
         'mode' => $mode,
+        'tools' => $chosen('tools', LOCAL_OKSIGENIACLASSTOOLS_TOOLS),
+        'games' => $chosen('games', LOCAL_OKSIGENIACLASSTOOLS_GAMES),
+        'materials' => $chosen('materials', LOCAL_OKSIGENIACLASSTOOLS_MATERIALS),
         'tz' => core_date::get_user_timezone(),
         'lang' => current_language(),
         'str' => (object) $str,
@@ -378,7 +406,14 @@ function local_oksigeniaclasstools_join_output(?stdClass $live, string $code): v
             $str[substr($key, 4)] = $text;
         }
     }
-    $moodle = $live && $live->identity === 'moodle';
+    $moodle = $live && in_array($live->identity, ['moodle', 'hidden'], true);
+    // Without their name on the board, a critter and its name, from the content pack of the teacher's language.
+    if ($live && $live->identity !== 'moodle') {
+        $state = json_decode($live->state, true);
+        $content = local_oksigeniaclasstools_content_file((string) ($state['lang'] ?? 'en'));
+        $html = str_replace('<script src="join.js', '<script src="critter.js?v=' . $version . '"></script>' . "\n"
+            . '<script src="content/' . $content . '?v=' . $version . '"></script>' . "\n" . '<script src="join.js', $html);
+    }
     $config = [
         'code' => $live ? $live->code : strtoupper($code),
         'found' => (bool) $live,

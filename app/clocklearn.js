@@ -13,7 +13,7 @@
     const { $, $$, t, escape, save, load, play, setIcon, announce, random } = core;
 
     const STR = {
-        modes: { now: t('cl_now'), learn: t('cl_learn') }, mode: t('cl_mode'),
+        modes: { now: t('cl_now'), learn: t('cl_learn'), countdown: t('cl_countdown') }, mode: t('cl_mode'),
         level: t('cl_level'), levels: { h: t('cl_level_h'), half: t('cl_level_half'), quarter: t('cl_level_quarter'), five: t('cl_level_five'), minute: t('cl_level_minute') },
         digital: t('cl_digital'), words: t('cl_words'), h24: t('cl_h24'), minutes: t('cl_minutes'),
         ask: t('cl_ask'), set: t('cl_set'), check: t('cl_check'), reveal: t('cl_reveal'),
@@ -108,6 +108,8 @@
     const paintControls = () => {
         $$('#cl-mode button').forEach((b) => b.setAttribute('aria-checked', String(b.dataset.v === opt.mode)));
         root.classList.toggle('ct-cl-learning', opt.mode === 'learn');
+        // The countdown (countdown.js) is a panel of its own in this tab.
+        root.classList.toggle('ct-cl-countdown', opt.mode === 'countdown');
         panel.hidden = opt.mode !== 'learn';
         $('#cl-level').value = opt.level;
         $('#cl-o-digital').checked = opt.digital; $('#cl-o-words').checked = opt.words;
@@ -188,7 +190,11 @@
     $('#cl-svg').addEventListener('pointercancel', stop);
 
     // --- Controls ---------------------------------------------------------------------------------------------
-    $('#cl-mode').addEventListener('click', (e) => { const b = e.target.closest('[data-v]'); if (b) { opt.mode = b.dataset.v; persist(); paintControls(); paint(); } });
+    $('#cl-mode').addEventListener('click', (e) => {
+        const b = e.target.closest('[data-v]'); if (!b) { return; }
+        opt.mode = b.dataset.v; persist(); paintControls(); paint();
+        if (opt.mode === 'countdown' && window.ClasstoolsCountdown) { window.ClasstoolsCountdown.paint(); }
+    });
     $('#cl-level').addEventListener('change', () => {
         opt.level = $('#cl-level').value; persist();
         const step = STEP[opt.level]; st.t = Math.round(st.t / step) * step % 1440; paint();

@@ -1,0 +1,422 @@
+{
+ "ga_game": {
+  "en": "Game",
+  "es": "Juego"
+ },
+ "ga_settings": {
+  "en": "Settings",
+  "es": "Ajustes"
+ },
+ "ga_try": {
+  "en": "Try",
+  "es": "Probar"
+ },
+ "ga_delete": {
+  "en": "Delete",
+  "es": "Borrar"
+ },
+ "ga_word": {
+  "en": "Word",
+  "es": "Palabra"
+ },
+ "ga_secret_word": {
+  "en": "Secret word (hidden)",
+  "es": "Palabra secreta (no se ve)"
+ },
+ "ga_clue_optional": {
+  "en": "Clue (optional)",
+  "es": "Pista (si quieres)"
+ },
+ "ga_type_it": {
+  "en": "I'll type it",
+  "es": "Escribirla yo"
+ },
+ "ga_from_lists": {
+  "en": "At random from your lists",
+  "es": "Al azar de tus listas"
+ },
+ "ga_start": {
+  "en": "Start",
+  "es": "Empezar"
+ },
+ "ga_whole_class": {
+  "en": "Whole class",
+  "es": "Toda la clase"
+ },
+ "ga_new_word": {
+  "en": "New word",
+  "es": "Nueva palabra"
+ },
+ "ga_press_new_word": {
+  "en": "Choose the word and press “New word”",
+  "es": "Elige la palabra y pulsa «Nueva palabra»"
+ },
+ "ga_clue": {
+  "en": "Clue: {$a}",
+  "es": "Pista: {$a}"
+ },
+ "ga_lost": {
+  "en": "Oops! It was “{$a}”",
+  "es": "¡Uy! Era «{$a}»"
+ },
+ "ro_name": {
+  "en": "Alphabet wheel",
+  "es": "Rosco"
+ },
+ "ro_new": {
+  "en": "New wheel",
+  "es": "Nuevo rosco"
+ },
+ "ro_edit": {
+  "en": "Edit",
+  "es": "Editar"
+ },
+ "ro_who": {
+  "en": "Who is playing?",
+  "es": "¿Quién juega?"
+ },
+ "ro_two_teams": {
+  "en": "Two teams",
+  "es": "Dos equipos"
+ },
+ "ro_second": {
+  "en": "Team 2's wheel",
+  "es": "Rosco del equipo 2"
+ },
+ "ro_time": {
+  "en": "Time for each",
+  "es": "Tiempo de cada uno"
+ },
+ "ro_no_time": {
+  "en": "No time limit",
+  "es": "Sin tiempo"
+ },
+ "ro_min_sec": {
+  "en": "{$a->m} min {$a->s} s",
+  "es": "{$a->m} min {$a->s} s"
+ },
+ "ro_min": {
+  "en": "{$a} min",
+  "es": "{$a} min"
+ },
+ "ro_right": {
+  "en": "Right",
+  "es": "Acierto"
+ },
+ "ro_wrong": {
+  "en": "Wrong",
+  "es": "Fallo"
+ },
+ "ro_pass": {
+  "en": "Pass",
+  "es": "Pasapalabra"
+ },
+ "ro_pause": {
+  "en": "Pause",
+  "es": "Pausa"
+ },
+ "ro_resume": {
+  "en": "Resume",
+  "es": "Seguir"
+ },
+ "ro_finish": {
+  "en": "Finish",
+  "es": "Terminar"
+ },
+ "ro_keys": {
+  "en": "Keys: Enter, right · Backspace, wrong · Space, pass",
+  "es": "Teclas: Intro, acierto · Retroceso, fallo · Espacio, pasapalabra"
+ },
+ "ro_starts": {
+  "en": "Starts with {$a}",
+  "es": "Empieza por la {$a}"
+ },
+ "ro_contains": {
+  "en": "Contains {$a}",
+  "es": "Contiene la {$a}"
+ },
+ "ro_team": {
+  "en": "Team {$a}",
+  "es": "Equipo {$a}"
+ },
+ "ro_class": {
+  "en": "The class",
+  "es": "La clase"
+ },
+ "ro_time_up": {
+  "en": "Time's up!",
+  "es": "¡Se acabó el tiempo!"
+ },
+ "ro_finished": {
+  "en": "Wheel complete!",
+  "es": "¡Rosco terminado!"
+ },
+ "ro_again": {
+  "en": "Play again",
+  "es": "Volver a jugar"
+ },
+ "ro_change": {
+  "en": "Change wheel",
+  "es": "Cambiar de rosco"
+ },
+ "ro_winner": {
+  "en": "{$a} wins!",
+  "es": "¡Gana {$a}!"
+ },
+ "ro_tie": {
+  "en": "It's a draw!",
+  "es": "¡Empate!"
+ },
+ "ro_ok_one": {
+  "en": "{$a} right",
+  "es": "{$a} acierto"
+ },
+ "ro_ok_many": {
+  "en": "{$a} right",
+  "es": "{$a} aciertos"
+ },
+ "ro_bad_one": {
+  "en": "{$a} wrong",
+  "es": "{$a} fallo"
+ },
+ "ro_bad_many": {
+  "en": "{$a} wrong",
+  "es": "{$a} fallos"
+ },
+ "ro_left": {
+  "en": "{$a} unanswered",
+  "es": "{$a} sin contestar"
+ },
+ "ro_edit_title": {
+  "en": "Edit the wheel",
+  "es": "Editar el rosco"
+ },
+ "ro_copy_example": {
+  "en": "Copy of the example wheel",
+  "es": "Copia del rosco de ejemplo"
+ },
+ "ro_wheel_name": {
+  "en": "Wheel name",
+  "es": "Nombre del rosco"
+ },
+ "ro_letter": {
+  "en": "Letter",
+  "es": "Letra"
+ },
+ "ro_kind": {
+  "en": "Type",
+  "es": "Tipo"
+ },
+ "ro_clue": {
+  "en": "Clue",
+  "es": "Pista"
+ },
+ "ro_answer": {
+  "en": "Answer",
+  "es": "Respuesta"
+ },
+ "ro_kind_starts": {
+  "en": "Starts",
+  "es": "Empieza"
+ },
+ "ro_kind_contains": {
+  "en": "Contains",
+  "es": "Contiene"
+ },
+ "ro_editor_note": {
+  "en": "Leave blank the letters you don't want: the wheel is made from those with a clue and an answer.",
+  "es": "Deja vacías las letras que no quieras: el rosco se hace con las que tengan pista y respuesta."
+ },
+ "ro_save": {
+  "en": "Save",
+  "es": "Guardar"
+ },
+ "ro_cancel": {
+  "en": "Cancel",
+  "es": "Cancelar"
+ },
+ "ro_remove": {
+  "en": "Delete the wheel",
+  "es": "Borrar el rosco"
+ },
+ "ro_remove_sure": {
+  "en": "Sure? Press again",
+  "es": "¿Seguro? Pulsa otra vez"
+ },
+ "ro_need_one": {
+  "en": "Write at least one letter with its clue and its answer.",
+  "es": "Escribe al menos una letra con su pista y su respuesta."
+ },
+ "ro_copy_of": {
+  "en": "{$a} (copy)",
+  "es": "{$a} (copia)"
+ },
+ "ro_example": {
+  "en": "Example wheel",
+  "es": "Rosco de ejemplo"
+ },
+ "ro_answer_was": {
+  "en": "It was “{$a}”",
+  "es": "Era «{$a}»"
+ },
+ "si_name": {
+  "en": "Simon",
+  "es": "Simón"
+ },
+ "si_pads": {
+  "en": "Colours",
+  "es": "Colores"
+ },
+ "si_speed": {
+  "en": "Speed",
+  "es": "Velocidad"
+ },
+ "si_normal": {
+  "en": "Normal",
+  "es": "Normal"
+ },
+ "si_fast": {
+  "en": "Fast",
+  "es": "Rápida"
+ },
+ "si_turns": {
+  "en": "Turns",
+  "es": "Turnos"
+ },
+ "si_again": {
+  "en": "Again",
+  "es": "Otra vez"
+ },
+ "si_watch": {
+  "en": "Watch!",
+  "es": "¡Miren!"
+ },
+ "si_your_turn": {
+  "en": "Your turn!",
+  "es": "¡Ahora tú!"
+ },
+ "si_round": {
+  "en": "Round {$a}",
+  "es": "Ronda {$a}"
+ },
+ "si_record": {
+  "en": "Record: {$a}",
+  "es": "Récord: {$a}"
+ },
+ "si_record_who": {
+  "en": "Record: {$a->n} ({$a->who})",
+  "es": "Récord: {$a->n} ({$a->who})"
+ },
+ "si_fail": {
+  "en": "Oops! Wrong",
+  "es": "¡Uy! Fallo"
+ },
+ "si_fail_who": {
+  "en": "Oops! {$a} got it wrong",
+  "es": "¡Uy! {$a} ha fallado"
+ },
+ "si_next": {
+  "en": "{$a}'s turn",
+  "es": "Le toca a {$a}"
+ },
+ "si_press_start": {
+  "en": "Press “Start”",
+  "es": "Pulsa «Empezar»"
+ },
+ "si_green": {
+  "en": "Green",
+  "es": "Verde"
+ },
+ "si_red": {
+  "en": "Red",
+  "es": "Rojo"
+ },
+ "si_yellow": {
+  "en": "Yellow",
+  "es": "Amarillo"
+ },
+ "si_blue": {
+  "en": "Blue",
+  "es": "Azul"
+ },
+ "si_purple": {
+  "en": "Purple",
+  "es": "Morado"
+ },
+ "si_orange": {
+  "en": "Orange",
+  "es": "Naranja"
+ },
+ "ah_name": {
+  "en": "Hangman",
+  "es": "Ahorcado"
+ },
+ "ah_need_word": {
+  "en": "Type the word or choose a list.",
+  "es": "Escribe la palabra o elige una lista."
+ },
+ "ah_won": {
+  "en": "Well done! You've guessed it",
+  "es": "¡Muy bien! La han adivinado"
+ },
+ "ah_left_one": {
+  "en": "{$a} balloon",
+  "es": "{$a} globo"
+ },
+ "ah_left_many": {
+  "en": "{$a} balloons",
+  "es": "{$a} globos"
+ },
+ "ah_reveal": {
+  "en": "Show the word",
+  "es": "Ver la palabra"
+ },
+ "wo_name": {
+  "en": "Word",
+  "es": "Palabra"
+ },
+ "wo_builtin": {
+  "en": "At random: {$a}-letter words",
+  "es": "Al azar: palabras de {$a} letras"
+ },
+ "wo_tries": {
+  "en": "Tries",
+  "es": "Intentos"
+ },
+ "wo_need_word": {
+  "en": "The word must have 3 to 8 letters, with no spaces.",
+  "es": "La palabra tiene que tener de 3 a 8 letras, sin espacios."
+ },
+ "wo_letters": {
+  "en": "{$a}-letter word",
+  "es": "Palabra de {$a} letras"
+ },
+ "wo_short": {
+  "en": "Not enough letters: it has {$a}",
+  "es": "Faltan letras: tiene {$a}"
+ },
+ "wo_won": {
+  "en": "Well done! On try {$a}",
+  "es": "¡Muy bien! Al {$a}.º intento"
+ },
+ "wo_hint": {
+  "en": "3 to 8 letters",
+  "es": "de 3 a 8 letras"
+ },
+ "ah_builtin_early": {
+  "en": "At random: early years words",
+  "es": "Al azar: palabras de Infantil"
+ },
+ "ah_builtin_primary": {
+  "en": "At random: primary school words",
+  "es": "Al azar: palabras de Primaria"
+ },
+ "ah_builtin_secondary": {
+  "en": "At random: secondary school words",
+  "es": "Al azar: palabras de Secundaria"
+ },
+ "ah_builtin_advanced": {
+  "en": "At random: upper secondary and university words",
+  "es": "Al azar: palabras de Bachillerato y universidad"
+ }
+}

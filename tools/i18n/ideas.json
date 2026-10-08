@@ -1,0 +1,250 @@
+{
+ "lv_kind_ideas": {
+  "en": "Brainstorm",
+  "es": "Lluvia de ideas"
+ },
+ "lv_intro_ideas": {
+  "en": "Everyone writes a word or two from their device. The board makes a live cloud of them that you can highlight, join, sort and drag into a template.",
+  "es": "Cada uno escribe una o dos palabras desde su dispositivo. La pizarra hace con ellas una nube viva que puedes destacar, juntar, ordenar y llevar a una plantilla."
+ },
+ "id_max": {
+  "en": "Answers each",
+  "es": "Respuestas por persona"
+ },
+ "id_max_one": {
+  "en": "1 answer each",
+  "es": "1 respuesta cada uno"
+ },
+ "id_max_many": {
+  "en": "{$a} answers each",
+  "es": "{$a} respuestas cada uno"
+ },
+ "id_question_ph": {
+  "en": "The question or the topic (the devices see it)",
+  "es": "La pregunta o el tema (lo ven los dispositivos)"
+ },
+ "id_open": {
+  "en": "Open the answers",
+  "es": "Abrir las respuestas"
+ },
+ "id_close": {
+  "en": "Close the answers",
+  "es": "Cerrar las respuestas"
+ },
+ "id_reopen": {
+  "en": "Open again",
+  "es": "Volver a abrir"
+ },
+ "id_new": {
+  "en": "New question",
+  "es": "Nueva pregunta"
+ },
+ "id_view": {
+  "en": "View",
+  "es": "Vista"
+ },
+ "id_v_cloud": {
+  "en": "Cloud",
+  "es": "Nube"
+ },
+ "id_v_list": {
+  "en": "Ranking",
+  "es": "Lista"
+ },
+ "id_v_swot": {
+  "en": "SWOT",
+  "es": "DAFO"
+ },
+ "id_v_eisen": {
+  "en": "Urgent or important",
+  "es": "Urgente o importante"
+ },
+ "id_v_procon": {
+  "en": "For and against",
+  "es": "A favor y en contra"
+ },
+ "id_v_scale": {
+  "en": "Scale from 1 to 5",
+  "es": "Escala del 1 al 5"
+ },
+ "id_review": {
+  "en": "Check before showing",
+  "es": "Revisar antes de mostrar"
+ },
+ "id_pending": {
+  "en": "To check: {$a}",
+  "es": "Por revisar: {$a}"
+ },
+ "id_accept": {
+  "en": "Show “{$a}”",
+  "es": "Mostrar «{$a}»"
+ },
+ "id_reject": {
+  "en": "Hide “{$a}”",
+  "es": "Ocultar «{$a}»"
+ },
+ "id_show_all": {
+  "en": "Show all",
+  "es": "Mostrar todas"
+ },
+ "id_hidden": {
+  "en": "Hidden: {$a}",
+  "es": "Ocultas: {$a}"
+ },
+ "id_restore": {
+  "en": "Tap one to show it again",
+  "es": "Toca una para volver a mostrarla"
+ },
+ "id_star": {
+  "en": "Highlight",
+  "es": "Destacar"
+ },
+ "id_unstar": {
+  "en": "Remove the highlight",
+  "es": "Quitar el destacado"
+ },
+ "id_merge": {
+  "en": "Join",
+  "es": "Juntar"
+ },
+ "id_hide": {
+  "en": "Hide",
+  "es": "Ocultar"
+ },
+ "id_unselect": {
+  "en": "Done",
+  "es": "Listo"
+ },
+ "id_selected_one": {
+  "en": "1 chosen",
+  "es": "1 elegida"
+ },
+ "id_selected_many": {
+  "en": "{$a} chosen",
+  "es": "{$a} elegidas"
+ },
+ "id_sort": {
+  "en": "Sort by how many times",
+  "es": "Ordenar por veces"
+ },
+ "id_tray": {
+  "en": "Drag each answer to its box",
+  "es": "Arrastra cada respuesta a su casilla"
+ },
+ "id_tray_empty": {
+  "en": "All placed. Drag one back here to take it out.",
+  "es": "Todas colocadas. Arrastra una aquí para sacarla."
+ },
+ "id_z_s": {
+  "en": "Strengths",
+  "es": "Fortalezas"
+ },
+ "id_z_w": {
+  "en": "Weaknesses",
+  "es": "Debilidades"
+ },
+ "id_z_o": {
+  "en": "Opportunities",
+  "es": "Oportunidades"
+ },
+ "id_z_t": {
+  "en": "Threats",
+  "es": "Amenazas"
+ },
+ "id_z_ui": {
+  "en": "Urgent and important",
+  "es": "Urgente e importante"
+ },
+ "id_z_ni": {
+  "en": "Important, not urgent",
+  "es": "Importante, no urgente"
+ },
+ "id_z_un": {
+  "en": "Urgent, not important",
+  "es": "Urgente, no importante"
+ },
+ "id_z_nn": {
+  "en": "Neither urgent nor important",
+  "es": "Ni urgente ni importante"
+ },
+ "id_z_pro": {
+  "en": "For",
+  "es": "A favor"
+ },
+ "id_z_con": {
+  "en": "Against",
+  "es": "En contra"
+ },
+ "id_scale_low": {
+  "en": "not at all",
+  "es": "nada"
+ },
+ "id_scale_high": {
+  "en": "very much",
+  "es": "mucho"
+ },
+ "id_count": {
+  "en": "{$a->n} answers from {$a->who} of {$a->of} devices",
+  "es": "{$a->n} respuestas de {$a->who} de {$a->of} dispositivos"
+ },
+ "id_wait_open": {
+  "en": "Write the question and open the answers.",
+  "es": "Escribe la pregunta y abre las respuestas."
+ },
+ "id_empty": {
+  "en": "No answers yet.",
+  "es": "Todavía no hay respuestas."
+ },
+ "id_check_first": {
+  "en": "There are answers waiting to be checked below.",
+  "es": "Hay respuestas esperando revisión debajo."
+ },
+ "id_save": {
+  "en": "Save image",
+  "es": "Guardar imagen"
+ },
+ "id_saved": {
+  "en": "Image saved",
+  "es": "Imagen guardada"
+ },
+ "id_send": {
+  "en": "Send to the class",
+  "es": "Enviar a la clase"
+ },
+ "id_file": {
+  "en": "brainstorm",
+  "es": "lluvia-de-ideas"
+ },
+ "id_default_name": {
+  "en": "Brainstorm {$a}",
+  "es": "Lluvia de ideas {$a}"
+ },
+ "lv_idea_ph": {
+  "en": "One or two words",
+  "es": "Una o dos palabras"
+ },
+ "lv_idea_send": {
+  "en": "Send",
+  "es": "Enviar"
+ },
+ "lv_idea_left_one": {
+  "en": "You can send 1 more",
+  "es": "Puedes enviar 1 más"
+ },
+ "lv_idea_left_many": {
+  "en": "You can send {$a} more",
+  "es": "Puedes enviar {$a} más"
+ },
+ "lv_idea_done": {
+  "en": "Sent. Look at the board!",
+  "es": "Enviado. ¡Mira la pizarra!"
+ },
+ "lv_idea_yours": {
+  "en": "Your answers",
+  "es": "Tus respuestas"
+ },
+ "lv_idea_remove": {
+  "en": "Take back “{$a}”",
+  "es": "Quitar «{$a}»"
+ }
+}

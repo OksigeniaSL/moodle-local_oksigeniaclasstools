@@ -28,7 +28,15 @@
     const TEAMS = [['#164281'], ['#ce1423'], ['#067e36'], ['#5b2fb8'], ['#fbbe17', true], ['#0e7c86']];
     const label = (v) => (['yes', 'no', 'green', 'yellow', 'red'].includes(v) ? t('lv_' + v) : v);
 
-    const head = () => `<header class="jn-cabeza"><span>${escape(J.site || '')}</span><strong>${escape(J.code || '')}</strong></header>`;
+    // Without their name: their critter, its name, and that nobody sees who they are.
+    const me = () => {
+        if (!view || !view.seed || !window.ClasstoolsCritter) { return ''; }
+        const pack = window.CLASSTOOLS_CONTENT && window.CLASSTOOLS_CONTENT.avatar;
+        const name = window.ClasstoolsCritter.name(view.seed, pack);
+        return `<div class="jn-yo">${window.ClasstoolsCritter.svg(view.seed, name)}<p>${name ? `<strong>${escape(name)}</strong>` : ''}`
+            + `<span>${escape(t(view.identity === 'hidden' ? 'lv_you_hidden' : 'lv_you_anon'))}</span></p></div>`;
+    };
+    const head = () => `<header class="jn-cabeza"><span>${escape(J.site || '')}</span><strong>${escape(J.code || '')}</strong></header>${me()}`;
     const screen = (title, text = '', extra = '') => {
         root.innerHTML = `${head()}<div class="jn-centro"><p class="jn-titulo">${escape(title)}</p>${text ? `<p class="jn-texto">${escape(text)}</p>` : ''}${extra}</div>`;
     };
@@ -51,7 +59,7 @@
 
     // Who this device is: with an account, the site knows; with the code only, a random token it keeps.
     let device = '';
-    if (J.identity !== 'moodle') {
+    if (J.identity === 'anon') {
         try { device = localStorage.getItem('classtools-device') || ''; } catch (e) { device = ''; }
         if (!/^[a-f0-9]{32}$/.test(device)) {
             const a = new Uint8Array(16); crypto.getRandomValues(a);
@@ -61,7 +69,7 @@
     }
     const post = (action, extra = {}) => fetch(J.api, {
         method: 'POST',
-        credentials: J.identity === 'moodle' ? 'same-origin' : 'omit',
+        credentials: J.identity === 'anon' ? 'omit' : 'same-origin',
         body: new URLSearchParams({ action, c: J.code, device, sesskey: J.sesskey || '', ...extra }),
     }).then((r) => r.json());
 

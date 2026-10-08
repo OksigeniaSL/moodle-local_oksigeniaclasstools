@@ -1,0 +1,18 @@
+{
+ "lv_hidden": {
+  "en": "Anonymous with their account",
+  "es": "Anónimo con su usuario"
+ },
+ "lv_hidden_hint": {
+  "en": "Only this course's students get in, once each, but nobody sees who answered what: each one is a critter with a name.",
+  "es": "Entran solo los alumnos de este curso, una vez cada uno, pero nadie ve quién ha contestado qué: cada uno es un bichito con nombre."
+ },
+ "lv_you_hidden": {
+  "en": "You are taking part anonymously: your teacher does not see your name.",
+  "es": "Participas de forma anónima: tu profesor no ve tu nombre."
+ },
+ "lv_you_anon": {
+  "en": "You are taking part without an account: nobody sees your name.",
+  "es": "Participas sin cuenta: nadie ve tu nombre."
+ }
+}

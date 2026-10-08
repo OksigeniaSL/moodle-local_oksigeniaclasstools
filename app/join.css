@@ -79,3 +79,9 @@ button { touch-action: manipulation; -webkit-user-select: none; user-select: non
 .jn-ideas li { display: inline-flex; align-items: center; gap: .3rem; padding: .35rem .5rem .35rem 1rem; border-radius: 50rem; background: var(--azul-suave); color: var(--azul-osc); font-weight: 900; }
 .jn-ideas li:not(:has(button)) { padding-right: 1rem; }
 .jn-quita { display: inline-grid; place-items: center; width: 2.2rem; height: 2.2rem; padding: 0; border: 0; border-radius: 50%; background: var(--superficie); color: var(--rojo); font-size: 1.4rem; font-weight: 900; line-height: 1; }
+/* Without their name: their critter and its name, and that nobody sees who they are. */
+.jn-yo { display: flex; align-items: center; gap: .7rem; padding: .5rem .9rem .5rem .6rem; border-radius: 20px; background: var(--superficie); box-shadow: 0 1px 0 var(--borde), 0 6px 18px rgba(15, 47, 94, .06); }
+.jn-yo .ct-critter { flex: none; width: 3.6rem; height: 3.6rem; overflow: visible; }
+.jn-yo p { display: flex; flex-direction: column; margin: 0; text-align: left; }
+.jn-yo strong { color: var(--azul-osc); font-size: 1.2rem; font-weight: 900; line-height: 1.2; }
+.jn-yo span { color: var(--tinta-3); font-size: .85rem; font-weight: 700; }

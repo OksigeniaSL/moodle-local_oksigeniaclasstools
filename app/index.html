@@ -89,6 +89,10 @@
           <button type="button" role="radio" aria-checked="false" data-v="arena" data-t="tm_look_sand">Arena</button>
           <button type="button" role="radio" aria-checked="false" data-v="pulsar" data-t="tm_look_pulsar">Púlsar</button>
         </div>
+        <div class="tm-viajeros-caja" id="tm-viajeros-caja" hidden>
+          <p class="ante" id="l-viajero" data-t="tm_traveller">Qué recorre la barra</p>
+          <div class="tm-viajeros" role="radiogroup" aria-labelledby="l-viajero" id="tm-viajeros"></div>
+        </div>
         <label class="interruptor tm-avisar" id="tm-avisar-caja"><input type="checkbox" id="tm-avisar" checked><span data-t="tm_warn">Avisar cuando quede 1 minuto</span></label>
         <label class="interruptor tm-avisar"><input type="checkbox" id="tm-final" checked><span data-t="tm_final">Animar los últimos 10 segundos</span></label>
       </div>
@@ -120,6 +124,7 @@
       <button type="button" class="boton suave" id="q-faltan" hidden><span data-icono="lista"></span><span data-t="q_absent">¿Quién falta hoy?</span></button>
       <button type="button" class="boton suave" id="q-participa" hidden><span data-icono="lista"></span><span data-t="q_participation">Participación</span></button>
       <label class="interruptor"><input type="checkbox" id="q-sinrepetir" checked><span data-t="q_no_repeat">Sin repetir</span></label>
+      <label class="interruptor"><input type="checkbox" id="q-rasca"><span data-t="rs_toggle">Rasca y gana</span></label>
       <label class="interruptor" id="q-yo-caja" hidden><input type="checkbox" id="q-yo"><span data-t="q_with_me">El profe también juega</span></label>
       <label class="interruptor" id="q-justo-caja" hidden title="Sale alguien de entre los que menos veces han salido estas semanas" data-t-title="q_fair_hint"><input type="checkbox" id="q-justo" checked><span data-t="q_fair">Primero los que menos</span></label>
     </div>
@@ -159,6 +164,7 @@
         <button type="button" class="redondo suave" id="g-mas" aria-label="Uno más" data-t-aria="g_more"><span data-icono="mas"></span></button>
       </div>
       <label class="interruptor"><input type="checkbox" id="g-emocion"><span data-t="g_suspense">Repartir con emoción</span></label>
+      <label class="interruptor"><input type="checkbox" id="g-rasca"><span data-t="rs_toggle">Rasca y gana</span></label>
       <label class="interruptor"><input type="checkbox" id="g-roles"><span data-t="g_roles">Un rol para cada uno</span></label>
       <details class="g-roles-caja" id="g-roles-caja" hidden><summary data-t="g_roles_edit">Cambiar los roles</summary>
         <textarea id="g-roles-texto" rows="4" spellcheck="false" aria-label="Roles, uno por línea" data-t-aria="g_roles_list"></textarea>
@@ -318,10 +324,12 @@
 <script src="lib/qrcode.js"></script>
 <script src="scorm.js"></script>
 <script src="app.js"></script>
+<script src="scratch.js"></script>
 <script src="celebrate.js"></script>
 <script src="qr.js"></script>
 <script src="chance.js"></script>
 <script src="scoreboard.js"></script>
+<script src="goal.js"></script>
 <script src="games.js"></script>
 <script src="rosco.js"></script>
 <script src="simon.js"></script>
@@ -336,6 +344,8 @@
 <script src="base10.js"></script>
 <script src="whiteboard.js"></script>
 <script src="clocklearn.js"></script>
+<script src="countdown.js"></script>
+<script src="critter.js"></script>
 <script src="live.js"></script>
 <script src="ideas.js"></script>
 </body>

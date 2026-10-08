@@ -1,0 +1,18 @@
+{
+ "rs_toggle": {
+  "en": "Scratch to reveal",
+  "es": "Rasca y gana"
+ },
+ "rs_scratch": {
+  "en": "Scratch",
+  "es": "Rasca"
+ },
+ "rs_reveal": {
+  "en": "Reveal",
+  "es": "Destapar"
+ },
+ "rs_dice_wait": {
+  "en": "Scratch to see what came out",
+  "es": "Rasca para ver qué ha salido"
+ }
+}

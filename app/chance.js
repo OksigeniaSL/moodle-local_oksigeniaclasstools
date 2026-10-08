@@ -80,6 +80,7 @@
                     <label class="campo apilado" id="di-custom-box" hidden><span>${STR.customFaces}</span>
                         <textarea id="di-custom" rows="4" spellcheck="false" placeholder="${escape(STR.customHint)}"></textarea></label>
                     <label class="interruptor" id="di-norepeat-box" hidden><input type="checkbox" id="di-norepeat"><span>${STR.noRepeat}</span></label>
+                    <label class="interruptor"><input type="checkbox" id="di-rasca"><span>${escape(t('rs_toggle'))}</span></label>
                 </aside>
                 <div class="tarjeta ct-stage">
                     <div class="ct-dice" id="di-dice"></div>
@@ -354,6 +355,8 @@
     diTypes = [0, 1, 2, 3].map((i) => (DICE[diTypes[i]] || String(diTypes[i]).startsWith('list:') ? diTypes[i] : 'd6'));
     $('#di-custom').value = load('dados-personalizado', '');
     let diValues = [], diRolling = false, diHistory = [];
+    // Scratch to reveal: the dice of a list (who got it) come out covered; without a list, all of them.
+    let diScratch = load('dados-rasca', false) === true;
     const customFaces = () => $('#di-custom').value.split(/\r?\n/).map((x) => x.trim()).filter(Boolean).slice(0, 20);
     // A die can also be a list: the class (with photos, leaving out who is missing today) or one of the teacher's lists.
     // With «No repeats», everyone comes out once before anyone comes out again.
@@ -458,11 +461,22 @@
         const taken = [];
         const finals = diTypes.slice(0, diN).map((ty) => { const v = pickFrom(ty, taken); taken.push(v); return v; });
         const done = () => {
-            diRolling = false; diValues = finals; diPaint(finals); diSetTotal();
+            diRolling = false; diValues = finals; diPaint(finals);
             $('#di-roll').disabled = false;
-            // With a list, a record of the turns: «Virginia – 6», «Pablo – 3»…
-            if (diTypes.slice(0, diN).some(isList)) { diHistory = [diSummary(finals)].concat(diHistory).slice(0, 12); diPaintHistory(); }
-            announce(diSummary(finals));
+            const finish = () => {
+                diSetTotal();
+                // With a list, a record of the turns: «Virginia – 6», «Pablo – 3»…
+                if (diTypes.slice(0, diN).some(isList)) { diHistory = [diSummary(finals)].concat(diHistory).slice(0, 12); diPaintHistory(); }
+                announce(diSummary(finals));
+            };
+            if (!diScratch || !window.ClasstoolsScratch) { finish(); return; }
+            const types = diTypes.slice(0, diN), covered = types.some(isList) ? types.map(isList) : types.map(() => true);
+            let left = covered.filter(Boolean).length;
+            const total = $('#di-total'); total.className = 'total espera'; total.textContent = t('rs_dice_wait');
+            $$('#di-dice .ct-die').forEach((d, i) => {
+                if (!covered[i]) { return; }
+                window.ClasstoolsScratch.cover(d, { onReveal: () => { if (--left === 0) { play('elegido'); finish(); } else { play('card'); } } });
+            });
         };
         play('dado');
         if (reducedMotion()) { done(); return; }
@@ -476,6 +490,8 @@
         turn();
     };
     $('#di-roll').addEventListener('click', roll);
+    $('#di-rasca').checked = diScratch;
+    $('#di-rasca').addEventListener('change', (e) => { diScratch = e.target.checked; save('dados-rasca', diScratch); });
     $$('#di-count button').forEach((b) => b.addEventListener('click', () => {
         diN = Number(b.dataset.n); save('dados-n', diN); diPaintCount(); diPaintTypes(); diReset();
     }));

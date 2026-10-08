@@ -1,0 +1,130 @@
+{
+ "gl_what": {
+  "en": "What to count",
+  "es": "Qué contamos"
+ },
+ "gl_teams": {
+  "en": "Teams",
+  "es": "Equipos"
+ },
+ "gl_goal": {
+  "en": "Class goal",
+  "es": "Meta de la clase"
+ },
+ "gl_target": {
+  "en": "Goal",
+  "es": "Meta"
+ },
+ "gl_prize": {
+  "en": "Prize",
+  "es": "Premio"
+ },
+ "gl_prize_ph": {
+  "en": "An afternoon of games",
+  "es": "Una tarde de juegos"
+ },
+ "gl_reset": {
+  "en": "Start again",
+  "es": "Empezar de nuevo"
+ },
+ "gl_reset_sure": {
+  "en": "Sure? Press again",
+  "es": "¿Seguro? Pulsa otra vez"
+ },
+ "gl_help": {
+  "en": "The whole class earns marbles together; when the jar is full, the prize.",
+  "es": "Toda la clase gana canicas a la vez; cuando el bote se llena, llega el premio."
+ },
+ "gl_count": {
+  "en": "{$a->n} of {$a->of}",
+  "es": "{$a->n} de {$a->of}"
+ },
+ "gl_done": {
+  "en": "We did it!",
+  "es": "¡Lo conseguimos!"
+ },
+ "gl_for": {
+  "en": "For: {$a}",
+  "es": "Para: {$a}"
+ },
+ "gl_add": {
+  "en": "Add {$a}",
+  "es": "Sumar {$a}"
+ },
+ "gl_take": {
+  "en": "Take away {$a}",
+  "es": "Quitar {$a}"
+ },
+ "cl_countdown": {
+  "en": "Countdown",
+  "es": "Cuenta atrás"
+ },
+ "cd_what": {
+  "en": "What are we waiting for?",
+  "es": "¿Qué esperamos?"
+ },
+ "cd_what_ph": {
+  "en": "The school trip",
+  "es": "La excursión"
+ },
+ "cd_day": {
+  "en": "Day",
+  "es": "Día"
+ },
+ "cd_time": {
+  "en": "Time",
+  "es": "Hora"
+ },
+ "cd_left": {
+  "en": "Still to go",
+  "es": "Faltan"
+ },
+ "cd_day_one": {
+  "en": "day",
+  "es": "día"
+ },
+ "cd_days": {
+  "en": "days",
+  "es": "días"
+ },
+ "cd_hour_one": {
+  "en": "hour",
+  "es": "hora"
+ },
+ "cd_hours": {
+  "en": "hours",
+  "es": "horas"
+ },
+ "cd_minute_one": {
+  "en": "minute",
+  "es": "minuto"
+ },
+ "cd_minutes": {
+  "en": "minutes",
+  "es": "minutos"
+ },
+ "cd_second_one": {
+  "en": "second",
+  "es": "segundo"
+ },
+ "cd_seconds": {
+  "en": "seconds",
+  "es": "segundos"
+ },
+ "cd_hint": {
+  "en": "Choose what we are waiting for, the day and the time.",
+  "es": "Elige qué esperamos, el día y la hora."
+ },
+ "cd_here": {
+  "en": "It's here!",
+  "es": "¡Ya ha llegado!"
+ },
+ "cd_school_one": {
+  "en": "1 school day in between",
+  "es": "1 día de clase entre medias"
+ },
+ "cd_school_many": {
+  "en": "{$a} school days in between",
+  "es": "{$a} días de clase entre medias"
+ }
+}

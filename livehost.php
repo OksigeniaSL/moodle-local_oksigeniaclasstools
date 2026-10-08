@@ -51,6 +51,7 @@ if ($action === 'start') {
             'teams' => json_decode(optional_param('teams', '[]', PARAM_RAW), true) ?: [],
             'show' => optional_param('show', 0, PARAM_BOOL),
             'max' => optional_param('max', 1, PARAM_INT),
+            'lang' => current_language(),
         ]
     );
 } else {

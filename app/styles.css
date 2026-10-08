@@ -1183,8 +1183,6 @@ a.redondo { text-decoration: none; }
 .tm-llama { fill: #f59e0b; opacity: 0; transform-box: fill-box; transform-origin: right center; }
 .anillo.en-marcha .tm-llama { opacity: 1; animation: tm-llama .18s ease-in-out infinite alternate; }
 @keyframes tm-llama { from { transform: scaleX(.7); fill: #fbbe17; } to { transform: scaleX(1.25); fill: #ea580c; } }
-:root[data-modo="secondary"] .tm-cohete, :root[data-modo="advanced"] .tm-cohete,
-:root[data-modo="secondary"] .tm-meta, :root[data-modo="advanced"] .tm-meta { display: none; }
 @media (prefers-reduced-motion: reduce) { .anillo.en-marcha .tm-rayas, .anillo.en-marcha .tm-llama { animation: none; } }
 .anillo[data-aspecto="barra"] .cifras { font-size: 64px; }
 .anillo[data-aspecto="barra"] .cifras.larga { font-size: 46px; }
@@ -1373,3 +1371,103 @@ button.id-revisar { padding-right: .8rem; cursor: pointer; }
 .id-lienzo .centro { margin: .4rem 0 0; }
 :root[data-modo="advanced"] .id-palabra, :root[data-modo="advanced"] .id-texto { font-weight: 700; }
 @media (prefers-reduced-motion: reduce) { .id-lienzo .nueva { animation: none; } .id-palabra { transition: none; } }
+
+/* Live sessions without names: the critters of those who are in, under the count, and in the list. */
+.lv-bichos { display: flex; flex-wrap: wrap; justify-content: center; gap: .1rem; max-height: 9.5rem; overflow: hidden; }
+.lv-bicho { display: inline-block; width: 2.3rem; height: 2.3rem; }
+.lv-bicho .ct-critter { width: 100%; height: 100%; overflow: visible; }
+.lv-bicho.nuevo { animation: salta .5s ease-out; }
+.lv-bicho-mas { align-self: center; color: var(--tinta-3); font-weight: 900; }
+.lv-quien li > span { display: inline-flex; align-items: center; gap: .35rem; }
+.lv-quien li .ct-critter { flex: none; width: 1.7rem; height: 1.7rem; overflow: visible; }
+
+/* Scratch to reveal (scratch.js): a silver layer that goes away under the finger. */
+.ct-rasca-sitio { position: relative; }
+.ct-rasca { position: absolute; inset: 0; z-index: 6; overflow: hidden; transition: opacity .45s ease; touch-action: none; cursor: grab; }
+.ct-rasca canvas { display: block; width: 100%; height: 100%; }
+.ct-rasca.fuera { opacity: 0; pointer-events: none; }
+.ct-rasca-destapa { position: absolute; right: .4rem; bottom: .4rem; min-height: 32px; padding: .2rem .75rem; border: 0; border-radius: 50rem; background: rgba(255, 255, 255, .88); color: var(--azul-osc); font-size: .8rem; font-weight: 800; cursor: pointer; box-shadow: 0 1px 3px rgba(15, 47, 94, .25); }
+.grupo ul { position: relative; min-height: 3em; }
+.ct-die-wrap .ct-rasca-destapa { right: 50%; bottom: .3rem; transform: translateX(50%); font-size: .72rem; }
+#q-salidos .ct-tapado { filter: blur(6px); }
+@media (prefers-reduced-motion: reduce) { .ct-rasca { transition: none; } }
+
+/* What travels the timer bar (besides the rocket): a racing car, a snail, a sailing boat; or what is left of it: a
+   phone battery or a retro loading bar. Before it starts, a fact about the traveller under the bar. */
+.tm-viajeros-caja { display: flex; flex-direction: column; gap: .4rem; }
+.tm-viajeros { display: flex; flex-wrap: wrap; gap: .3rem; }
+.tm-viajeros button { min-height: 40px; padding: .2rem .7rem; border: 1px solid var(--borde); border-radius: 50rem; background: var(--superficie); color: var(--tinta-2); font-size: .85rem; font-weight: 800; cursor: pointer; }
+.tm-viajeros button[aria-checked="true"] { border-color: var(--azul); background: var(--azul); color: #fff; }
+.tm-dato { fill: var(--tinta-3); font-size: 7px; font-weight: 700; }
+.tm-carretera { fill: #4b5563; }
+.tm-raya { stroke: #fff; stroke-width: 1.6; stroke-dasharray: 7 6; }
+.tm-coche-cuerpo { fill: #e11d2e; stroke: #1c1a19; stroke-width: 1.2; stroke-linejoin: round; }
+.tm-coche-ventana { fill: #9bd7f5; stroke: #1c1a19; stroke-width: 1; }
+.tm-coche-franja { fill: #fff; }
+.tm-rueda { fill: #1c1a19; }
+.tm-llanta { fill: #c9ced6; }
+.tm-velocidad line { stroke: #fff; stroke-width: 1.6; stroke-linecap: round; opacity: 0; }
+.anillo.en-marcha .tm-velocidad line { opacity: .85; animation: tm-zas .3s linear infinite; }
+@keyframes tm-zas { from { transform: translateX(3px); } to { transform: translateX(-3px); } }
+.tm-suelo { fill: #a7d68f; }
+.tm-baba { fill: #c9d8ea; opacity: .9; }
+.tm-hoja { fill: #4caf50; stroke: #2e7d32; stroke-width: 1.2; }
+.tm-hoja-nervio { fill: none; stroke: #2e7d32; stroke-width: 1; }
+.tm-caracol-cuerpo { fill: #e9c46a; stroke: #6b4a00; stroke-width: 1.2; stroke-linejoin: round; }
+.tm-antena { fill: none; stroke: #6b4a00; stroke-width: 1.2; stroke-linecap: round; }
+.tm-ojito { fill: #1c1a19; }
+.tm-concha { fill: #c86b3c; stroke: #6b3a1c; stroke-width: 1.4; }
+.tm-espiral { fill: none; stroke: #6b3a1c; stroke-width: 1.3; stroke-linecap: round; }
+.tm-mar { fill: #7cc4e8; }
+.tm-olas { fill: none; stroke: #e8f6fd; stroke-width: 1.6; stroke-linecap: round; }
+.tm-arena { fill: #f2d39b; }
+.tm-palmera { fill: none; stroke: #8b5a2b; stroke-width: 2; stroke-linecap: round; }
+.tm-palma { fill: none; stroke: #2e9e4f; stroke-width: 2; stroke-linecap: round; }
+.tm-casco-barco { fill: #164281; stroke: #0f2f5e; stroke-width: 1; stroke-linejoin: round; }
+.tm-mastil { stroke: #5b3a1c; stroke-width: 1.4; }
+.tm-vela { fill: #fff; stroke: #0f2f5e; stroke-width: 1; stroke-linejoin: round; }
+.tm-foque { fill: #ce1423; stroke: #0f2f5e; stroke-width: 1; stroke-linejoin: round; }
+.anillo.en-marcha .tm-mece { transform-box: fill-box; transform-origin: center bottom; animation: tm-mece 1.6s ease-in-out infinite alternate; }
+@keyframes tm-mece { from { transform: rotate(-4deg); } to { transform: rotate(4deg); } }
+.tm-bateria { fill: var(--superficie); stroke: var(--tinta-2); stroke-width: 3; }
+.tm-borne { fill: var(--tinta-2); }
+.tm-carga { transition: fill .4s; }
+.tm-celda { stroke: var(--superficie); stroke-width: 2; opacity: .8; }
+.tm-bateria-dibujo.baja .tm-carga { animation: tm-parpadeo .8s steps(2) infinite; }
+@keyframes tm-parpadeo { 50% { opacity: .25; } }
+.tm-pixel-marco { fill: #111827; stroke: #111827; stroke-width: 3; }
+.tm-bloque { fill: #2b3445; }
+.tm-bloque.ultimo { animation: tm-parpadeo .5s steps(2) infinite; }
+@media (prefers-reduced-motion: reduce) { .anillo.en-marcha .tm-velocidad line, .anillo.en-marcha .tm-mece, .tm-bateria-dibujo.baja .tm-carga, .tm-bloque.ultimo { animation: none; } }
+
+/* The class goal (goal.js), in the Scoreboard tab: the jar of marbles and the prize. */
+.ct-goal { display: none; grid-template-columns: minmax(15rem, 20rem) minmax(0, 1fr); gap: 1rem; flex: 1; min-height: 0; }
+.ct-goal-on .ct-goal { display: grid; }
+.ct-goal-on #sc-teams, .ct-goal-on #sc-add, .ct-goal-on #sc-groups, .ct-goal-on #sc-reset, .ct-goal-on #sc-note { display: none; }
+.ct-goal-mode { flex: none; }
+.ct-goal-stage { justify-content: center; }
+.ct-goal-prize { margin: 0; color: var(--azul-osc); font-size: clamp(1.2rem, 3vh, 2rem); font-weight: 900; text-align: center; text-wrap: balance; }
+.ct-goal-jar { flex: 1; min-height: 0; width: 100%; max-height: 60vh; overflow: visible; }
+.ct-goal-glass { fill: rgba(228, 236, 248, .55); stroke: var(--azul-osc); stroke-width: 3; stroke-linejoin: round; }
+.ct-goal-lid { fill: var(--azul); stroke: var(--azul-osc); stroke-width: 2; }
+.ct-goal-shine { fill: none; stroke: #fff; stroke-width: 5; stroke-linecap: round; opacity: .7; }
+.ct-goal-marble { stroke: rgba(0, 0, 0, .25); stroke-width: 1; }
+.ct-goal-marble.nueva { transform-box: fill-box; transform-origin: center; animation: ct-canica .5s cubic-bezier(.3, 1.4, .5, 1); }
+@keyframes ct-canica { from { transform: translateY(-120px); opacity: 0; } }
+.ct-goal-jar.llena .ct-goal-glass { stroke: var(--verde); filter: drop-shadow(0 0 10px rgba(6, 126, 54, .45)); }
+/* The countdown (countdown.js), in the Clock tab. */
+.ct-cd { display: none; }
+.reloj.ct-cl-countdown > .esfera-caja, .reloj.ct-cl-countdown > .digital { display: none; }
+.reloj.ct-cl-countdown > .ct-cd { display: grid; grid-column: 1 / -1; grid-template-columns: minmax(15rem, 20rem) minmax(0, 1fr); gap: 1rem; align-self: stretch; min-height: 0; }
+.ct-cd-stage { justify-content: center; text-align: center; }
+.ct-cd-left { margin: 0; color: var(--tinta-3); font-size: clamp(1rem, 2.4vh, 1.4rem); font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+.ct-cd-name { margin: 0; color: var(--azul-osc); font-size: clamp(1.6rem, 5vh, 3.2rem); font-weight: 900; line-height: 1.1; text-wrap: balance; }
+.ct-cd-units { display: flex; flex-wrap: wrap; justify-content: center; gap: clamp(.5rem, 1.5vw, 1.2rem); }
+.ct-cd-unit { display: flex; flex-direction: column; align-items: center; min-width: 5.5em; padding: .5em .8em; border-radius: var(--radio); background: var(--azul-suave); }
+.ct-cd-unit strong { color: var(--azul-osc); font-size: clamp(2.4rem, 9vh, 6rem); font-weight: 1000; line-height: 1; font-variant-numeric: tabular-nums; }
+.ct-cd-unit small { color: var(--azul); font-size: clamp(.9rem, 2vh, 1.2rem); font-weight: 800; }
+.ct-cd-hint { margin: 0; color: var(--tinta-3); font-size: 1.2rem; font-weight: 800; }
+.ct-cd-here { margin: 0; color: var(--verde); font-size: clamp(2rem, 7vh, 4.5rem); font-weight: 1000; }
+:root[data-modo="advanced"] .ct-cd-unit strong { font-weight: 300; }
+@media (max-width: 760px) { .ct-goal-on .ct-goal, .reloj.ct-cl-countdown > .ct-cd { grid-template-columns: minmax(0, 1fr); } }
+@media (prefers-reduced-motion: reduce) { .ct-goal-marble.nueva { animation: none; } }

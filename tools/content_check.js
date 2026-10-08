@@ -49,6 +49,20 @@ for (const file of files) {
         const twice = Object.entries(seen).filter(([, ks]) => ks.filter((k) => hang.includes(k)).length > 1).map(([w]) => w);
         if (twice.length) { warn.push(`in two Hangman lists: ${twice.join(', ')}`); }
     }
+    // Names of the anonymous participants of a live session: an animal and a word that goes with any animal.
+    need('avatar', (v) => v && ['aw', 'wa'].includes(v.order) && [' ', '-', ''].includes(v.join) && Array.isArray(v.animals) && Array.isArray(v.words),
+        'order aw or wa, join, animals and words');
+    if (C.avatar && Array.isArray(C.avatar.animals) && Array.isArray(C.avatar.words)) {
+        const emoji = /[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}]/u;
+        [['animals', 40, 60], ['words', 30, 50]].forEach(([k, lo, hi]) => {
+            const l = C.avatar[k];
+            if (l.length < lo || l.length > hi) { errors.push(`avatar.${k}: ${l.length} (${lo}–${hi})`); }
+            const bad = l.filter((w) => typeof w !== 'string' || !w.trim() || w !== w.trim() || emoji.test(w));
+            if (bad.length) { errors.push(`avatar.${k}: ${bad.join(', ')}`); }
+            const dup = l.filter((w, i) => l.indexOf(w) !== i);
+            if (dup.length) { errors.push(`avatar.${k} repeated: ${dup.join(', ')}`); }
+        });
+    }
     need('colours', list(12), '12 names'); need('numbers', list(20), '20 words'); need('opposites', pairs(16), '16 pairs');
     need('elements', list(28), '28 names'); need('units', pairs(15), '15 pairs'); need('prefixes', pairs(12), '12 pairs');
     need('formulas', pairs(16), '16 pairs'); need('laws', pairs(15), '15 pairs'); need('functions', list(12), '12 labels');

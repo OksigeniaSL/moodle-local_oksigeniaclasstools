@@ -1,0 +1,70 @@
+{
+ "wb_tool": {
+  "en": "Tool",
+  "es": "Herramienta"
+ },
+ "wb_t_pen": {
+  "en": "Pen",
+  "es": "Rotulador"
+ },
+ "wb_t_hl": {
+  "en": "Highlighter",
+  "es": "Fluorescente"
+ },
+ "wb_t_line": {
+  "en": "Straight line",
+  "es": "Línea recta"
+ },
+ "wb_t_arrow": {
+  "en": "Arrow",
+  "es": "Flecha"
+ },
+ "wb_t_rect": {
+  "en": "Rectangle",
+  "es": "Rectángulo"
+ },
+ "wb_t_ellipse": {
+  "en": "Circle or oval",
+  "es": "Círculo u óvalo"
+ },
+ "wb_t_text": {
+  "en": "Text",
+  "es": "Texto"
+ },
+ "wb_redo": {
+  "en": "Redo",
+  "es": "Rehacer"
+ },
+ "wb_bg_double": {
+  "en": "Double lines",
+  "es": "Doble pauta"
+ },
+ "wb_bg_ruled": {
+  "en": "Lined",
+  "es": "Una raya"
+ },
+ "wb_bg_size": {
+  "en": "Size",
+  "es": "Tamaño"
+ },
+ "wb_bg_smaller": {
+  "en": "Smaller",
+  "es": "Más pequeño"
+ },
+ "wb_bg_bigger": {
+  "en": "Bigger",
+  "es": "Más grande"
+ },
+ "wb_margin": {
+  "en": "Margin line",
+  "es": "Margen"
+ },
+ "wb_text_ph": {
+  "en": "Type and press Enter",
+  "es": "Escribe y pulsa Intro"
+ },
+ "wb_yellow": {
+  "en": "Yellow",
+  "es": "Amarillo"
+ }
+}

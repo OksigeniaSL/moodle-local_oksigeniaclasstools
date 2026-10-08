@@ -70,6 +70,22 @@ if ($hassiteconfig) {
             array_fill_keys(array_keys($levels), 1),
             $levels
         ));
+        // What the site shows: tools, games and materials (all of them unless the administrator leaves some out).
+        $shown = [
+            'tools' => LOCAL_OKSIGENIACLASSTOOLS_TOOLS,
+            'games' => LOCAL_OKSIGENIACLASSTOOLS_GAMES,
+            'materials' => LOCAL_OKSIGENIACLASSTOOLS_MATERIALS,
+        ];
+        foreach ($shown as $name => $all) {
+            $choices = array_map(fn($key) => get_string($key, 'local_oksigeniaclasstools'), $all);
+            $settings->add(new admin_setting_configmulticheckbox(
+                'local_oksigeniaclasstools/' . $name,
+                get_string('show_' . $name, 'local_oksigeniaclasstools'),
+                get_string('show_' . $name . '_desc', 'local_oksigeniaclasstools'),
+                array_fill_keys(array_keys($all), 1),
+                $choices
+            ));
+        }
         $settings->add(new admin_setting_configcheckbox(
             'local_oksigeniaclasstools/students',
             get_string('students', 'local_oksigeniaclasstools'),

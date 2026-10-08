@@ -16,7 +16,8 @@
 
 /**
  * Where a device joins a live session: from the QR on the board it comes with the code and goes straight in; with
- * the address alone it asks for the code. With the code only nobody logs in; with their account, Moodle asks them to.
+ * the address alone it asks for the code. With the code only nobody logs in; with their account (named or anonymous),
+ * Moodle asks them to.
  *
  * @package    local_oksigeniaclasstools
  * @copyright  2026 Oksigenia <dev@oksigenia.cc>
@@ -34,7 +35,7 @@ if (get_config('local_oksigeniaclasstools', 'live') === '0') {
     throw new moodle_exception('livedisabled', 'local_oksigeniaclasstools');
 }
 $live = $code !== '' ? live::by_code($code) : null;
-if ($live && $live->identity === 'moodle') {
+if ($live && in_array($live->identity, ['moodle', 'hidden'], true)) {
     require_login(get_course($live->courseid));
 } else {
     $PAGE->set_context(context_system::instance());
