@@ -854,7 +854,8 @@ a.redondo { text-decoration: none; }
 .ct-rd { cursor: grab; }
 .ct-rd-body { stroke: rgba(0, 0, 0, .3); stroke-width: .04; }
 .ct-rd-num { display: none; font: 900 .56px Nunito, system-ui, sans-serif; text-anchor: middle; dominant-baseline: central; pointer-events: none; }
-.ct-rd-numbers .ct-rd-num { display: inline; }
+.ct-rd-numbers .ct-rd-tray .ct-rd-num, .ct-rd-con-num .ct-rd-num { display: inline; }
+.ct-rd-mesa { fill: var(--tinta-3); font: 900 .6px Nunito, system-ui, sans-serif; pointer-events: none; }
 .ct-rd-traybg { fill: var(--fondo); }
 .ct-rd.ct-sel .ct-rd-body { stroke: var(--azul); stroke-width: .1; }
 .ct-rd:focus, .ct-tg-piece:focus { outline: none; }
@@ -1202,7 +1203,10 @@ a.redondo { text-decoration: none; }
 .chip-fav .chip { flex: 1; min-width: 0; }
 .chip-quita { display: inline-grid; place-items: center; width: 30px; height: 30px; margin-left: -.35rem; padding: 0; border: 0; border-radius: 50%; background: var(--azul-suave); color: var(--azul-osc); cursor: pointer; }
 .chip-quita .ico { width: .8rem; height: .8rem; }
-.chip.chip-guardar { display: inline-flex; align-items: center; gap: .3rem; border-style: dashed; }
+.tm-rapidos-cab { display: flex; align-items: center; justify-content: space-between; gap: .5rem; }
+.chip.chip-guardar { display: inline-flex; align-items: center; gap: .3rem; min-height: 34px; padding: .1rem .7rem; border-style: dashed; border-radius: 50rem; font-size: .85rem; white-space: nowrap; }
+.tm-viajeros-caja { justify-content: space-between; }
+.tm-viajeros-caja select { flex: 1; min-width: 0; max-width: 13rem; }
 .tm-avisar { margin-top: .5rem; }
 
 /* Live sessions: on the left, how to join (QR, code, who is in); on the right, the vote, the buzzers or the remote. */
@@ -1308,9 +1312,9 @@ a.redondo { text-decoration: none; }
 .anillo[data-aspecto="pulsar"].ultimo .cifras { fill: #fecaca; }
 @media (prefers-reduced-motion: reduce) { .tm-pulsar-onda { animation: none; opacity: 0; } }
 
-/* The timer's five looks wrap onto a second row instead of overflowing the card. */
-#tm-aspectos { display: grid; grid-template-columns: repeat(auto-fit, minmax(5rem, 1fr)); border-radius: 22px; }
-#tm-aspectos button { padding-inline: .5rem; }
+/* The timer's five looks in one row (a second one pushed the column into scrolling). */
+#tm-aspectos { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); }
+#tm-aspectos button { min-width: 0; padding: .3rem .2rem; font-size: .88rem; }
 
 /* ---------- Brainstorm (ideas.js): the question and the view fill the stage; below, what to check and the controls ---------- */
 .lv-setup .segmentos { flex-wrap: wrap; }
@@ -1394,16 +1398,15 @@ button.id-revisar { padding-right: .8rem; cursor: pointer; }
 
 /* What travels the timer bar (besides the rocket): a racing car, a snail, a sailing boat; or what is left of it: a
    phone battery or a retro loading bar. Before it starts, a fact about the traveller under the bar. */
-.tm-viajeros-caja { display: flex; flex-direction: column; gap: .4rem; }
-.tm-viajeros { display: flex; flex-wrap: wrap; gap: .3rem; }
-.tm-viajeros button { min-height: 40px; padding: .2rem .7rem; border: 1px solid var(--borde); border-radius: 50rem; background: var(--superficie); color: var(--tinta-2); font-size: .85rem; font-weight: 800; cursor: pointer; }
-.tm-viajeros button[aria-checked="true"] { border-color: var(--azul); background: var(--azul); color: #fff; }
 .tm-dato { fill: var(--tinta-3); font-size: 7px; font-weight: 700; }
 .tm-carretera { fill: #4b5563; }
 .tm-raya { stroke: #fff; stroke-width: 1.6; stroke-dasharray: 7 6; }
-.tm-coche-cuerpo { fill: #e11d2e; stroke: #1c1a19; stroke-width: 1.2; stroke-linejoin: round; }
-.tm-coche-ventana { fill: #9bd7f5; stroke: #1c1a19; stroke-width: 1; }
-.tm-coche-franja { fill: #fff; }
+.tm-f1-cuerpo { fill: #e11d2e; stroke: #1c1a19; stroke-width: 1; stroke-linejoin: round; }
+.tm-f1-aleron { fill: #1c1a19; stroke: #1c1a19; stroke-width: 1; stroke-linejoin: round; }
+.tm-f1-franja { fill: none; stroke: #fff; stroke-width: 1.6; stroke-linecap: round; }
+.tm-f1-casco { fill: #fbbe17; stroke: #1c1a19; stroke-width: 1; }
+.tm-f1-visera { fill: none; stroke: #1c1a19; stroke-width: 1.3; stroke-linecap: round; }
+.tm-f1-halo { fill: none; stroke: #1c1a19; stroke-width: 1.3; stroke-linecap: round; }
 .tm-rueda { fill: #1c1a19; }
 .tm-llanta { fill: #c9ced6; }
 .tm-velocidad line { stroke: #fff; stroke-width: 1.6; stroke-linecap: round; opacity: 0; }
@@ -1471,3 +1474,37 @@ button.id-revisar { padding-right: .8rem; cursor: pointer; }
 :root[data-modo="advanced"] .ct-cd-unit strong { font-weight: 300; }
 @media (max-width: 760px) { .ct-goal-on .ct-goal, .reloj.ct-cl-countdown > .ct-cd { grid-template-columns: minmax(0, 1fr); } }
 @media (prefers-reduced-motion: reduce) { .ct-goal-marble.nueva { animation: none; } }
+
+/* The small timer in a corner while another tab is in front. */
+.tm-mini { position: fixed; right: 1rem; bottom: 1rem; z-index: 55; display: flex; align-items: center; gap: .35rem; padding: .35rem .45rem .35rem .35rem; border: 1px solid var(--borde); border-radius: 50rem; background: var(--superficie); box-shadow: 0 10px 28px rgba(15, 47, 94, .22); }
+.tm-mini[hidden] { display: none; }
+.tm-mini-ir { display: inline-flex; align-items: center; gap: .45rem; min-height: 44px; padding: 0 .6rem 0 .2rem; border: 0; border-radius: 50rem; background: none; color: var(--azul-osc); cursor: pointer; }
+.tm-mini-ir svg { width: 36px; height: 36px; }
+.tm-mini-pista { fill: none; stroke: var(--azul-suave); stroke-width: 4; }
+.tm-mini-arco { fill: none; stroke: var(--azul); stroke-width: 4; stroke-linecap: round; stroke-dasharray: 100; transition: stroke-dashoffset .3s linear; }
+.tm-mini-ir strong { font-size: 1.4rem; font-weight: 900; font-variant-numeric: tabular-nums; }
+.tm-mini .redondo { width: 40px; height: 40px; }
+.tm-mini.pausa strong { opacity: .6; }
+.tm-mini.ultimo { border-color: var(--rojo); }
+.tm-mini.ultimo .tm-mini-arco { stroke: var(--rojo); }
+.tm-mini.ultimo strong { color: var(--rojo); animation: tm-mini-late 1s ease-in-out infinite; }
+@keyframes tm-mini-late { 50% { transform: scale(1.08); } }
+@media (max-width: 760px) { .tm-mini { bottom: calc(5rem + env(safe-area-inset-bottom)); } }
+@media (prefers-reduced-motion: reduce) { .tm-mini.ultimo strong { animation: none; } }
+
+/* Groups: the header drags the group to another place. */
+.grupo h3 { cursor: grab; touch-action: none; -webkit-user-select: none; user-select: none; }
+.grupo.moviendo { opacity: .55; outline: 3px dashed var(--azul-osc); outline-offset: 2px; }
+
+/* Live sessions: each choice as a card with its icon and a line about it; the steps to get in under the code. */
+.lv-opciones { display: flex; flex-direction: column; gap: .35rem; }
+.lv-opcion { display: flex; align-items: center; gap: .65rem; width: 100%; padding: .45rem .6rem; border: 2px solid var(--borde); border-radius: calc(var(--radio) - 6px); background: var(--superficie); color: var(--tinta); text-align: left; cursor: pointer; }
+.lv-opcion:hover { border-color: var(--azul-hover); background: var(--azul-suave); }
+.lv-opcion[aria-checked="true"] { border-color: var(--azul); background: var(--azul-suave); }
+.lv-opcion-ico { display: inline-grid; flex: none; place-items: center; width: 2.3rem; height: 2.3rem; border-radius: 50%; background: var(--fondo); color: var(--azul); font-size: 1.05rem; }
+.lv-opcion[aria-checked="true"] .lv-opcion-ico { background: var(--azul); color: #fff; }
+.lv-opcion-texto { display: flex; flex-direction: column; min-width: 0; }
+.lv-opcion-texto strong { font-weight: 900; line-height: 1.2; }
+.lv-opcion-texto small { color: var(--tinta-3); font-size: .8rem; font-weight: 700; line-height: 1.25; }
+.lv-pasos { display: flex; flex-direction: column; gap: .3rem; margin: 0; padding-left: 1.3rem; color: var(--tinta-2); font-size: .88rem; font-weight: 700; }
+.lv-pasos .lv-url { color: var(--azul-osc); font-weight: 900; overflow-wrap: anywhere; }

@@ -24,19 +24,22 @@
     const KEY = 'envivo-' + (LIVE ? AULA.courseid : 0);   // the open session, to find it again after reloading the page
     const KINDS = LIVE ? ['vote', 'ideas', 'buzz', 'remote', 'hands'] : ['hands'];
 
+    // Each choice as a card: an icon, its name and what it is, in a line.
+    const KIND_ICONS = { vote: 'encuesta', ideas: 'nube', buzz: 'campana', remote: 'mando', hands: 'mano' };
+    const card = (v, ico, name, text) => `<button type="button" role="radio" aria-checked="false" data-v="${v}" class="lv-opcion">`
+        + `<span class="lv-opcion-ico">${core.icon(ico)}</span><span class="lv-opcion-texto"><strong>${escape(name)}</strong><small>${escape(text)}</small></span></button>`;
     root.innerHTML = `
         <aside class="tarjeta lv-side">
             <div class="lv-setup" id="lv-setup">
                 <p class="ante" id="lv-l-kind">${escape(t('lv_what'))}</p>
-                <div class="segmentos" role="radiogroup" aria-labelledby="lv-l-kind" id="lv-kind">
-                    ${KINDS.map((k) => `<button type="button" role="radio" aria-checked="false" data-v="${k}">${escape(t('lv_kind_' + k))}</button>`).join('')}
+                <div class="lv-opciones" role="radiogroup" aria-labelledby="lv-l-kind" id="lv-kind">
+                    ${KINDS.map((k) => card(k, KIND_ICONS[k], t('lv_kind_' + k), t('lv_short_' + k))).join('')}
                 </div>
                 <div class="lv-box" id="lv-identity-box">
                     <p class="ante" id="lv-l-identity">${escape(t('lv_how'))}</p>
-                    <div class="segmentos" role="radiogroup" aria-labelledby="lv-l-identity" id="lv-identity">
-                        ${['anon', 'moodle', 'hidden'].map((k) => `<button type="button" role="radio" aria-checked="false" data-v="${k}">${escape(t('lv_' + k))}</button>`).join('')}
+                    <div class="lv-opciones" role="radiogroup" aria-labelledby="lv-l-identity" id="lv-identity">
+                        ${['anon', 'moodle', 'hidden'].map((k) => card(k, { anon: 'qr', moodle: 'usuario', hidden: 'anonimo' }[k], t('lv_' + k), t('lv_' + k + '_short'))).join('')}
                     </div>
-                    <p class="nota" id="lv-identity-hint"></p>
                 </div>
                 <label class="campo apilado" id="lv-vote-box"><span>${escape(t('lv_answers'))}</span><select id="lv-vote">
                     ${['abcd', 'yesno', 'light', 'five'].map((k) => `<option value="${k}">${escape(t('lv_v_' + k))}</option>`).join('')}
@@ -62,7 +65,7 @@
             <div class="lv-join" id="lv-join" hidden>
                 <div class="lv-qr" id="lv-qr"></div>
                 <p class="lv-codigo"><span class="ante">${escape(t('lv_code'))}</span><strong id="lv-code"></strong></p>
-                <p class="nota lv-url" id="lv-url"></p>
+                <ol class="lv-pasos" id="lv-pasos"></ol>
                 <p class="lv-cuenta" id="lv-count" aria-live="polite"></p>
                 <div class="lv-bichos" id="lv-critters" aria-hidden="true"></div>
                 <p class="nota lv-aviso" id="lv-others" role="status" hidden></p>
@@ -94,7 +97,6 @@
         $$('#lv-identity button').forEach((b) => b.setAttribute('aria-checked', String(b.dataset.v === identity)));
         const hands = kind === 'hands';
         $('#lv-identity-box').hidden = kind === 'remote' || hands;
-        $('#lv-identity-hint').textContent = t('lv_' + identity + '_hint');
         $('#lv-vote-box').hidden = kind !== 'vote' && !hands;
         // Answers of your own only by a show of hands (the devices have their buttons).
         $('#lv-vote-custom').hidden = !hands;
@@ -226,8 +228,15 @@
         if (first) {
             $('#lv-qr').innerHTML = window.ClasstoolsQr ? window.ClasstoolsQr.build(v.url, null) : '';
             $('#lv-code').textContent = v.code;
-            // The address to type (without the code, which the page asks for), with breaks allowed after each «/».
-            $('#lv-url').innerHTML = escape(v.url.replace(/^https?:\/\//, '').replace(/\?.*$/, '')).split('/').join('/<wbr>');
+            // How they get in, step by step: the notice in the course (inside Moodle), the QR, or the address and the
+            // code (the address with breaks allowed after each «/»).
+            const url = escape(v.url.replace(/^https?:\/\//, '').replace(/\?.*$/, '')).split('/').join('/<wbr>');
+            const steps = [];
+            if (v.kind !== 'remote' && v.notice) { steps.push(escape(t('lv_step_notice'))); }
+            steps.push(escape(t('lv_step_qr')));
+            steps.push(t('lv_step_url', `<span class="lv-url">${url}</span>`));
+            steps.push(escape(t(v.identity === 'anon' ? 'lv_step_anon' : 'lv_step_login')));
+            $('#lv-pasos').innerHTML = steps.map((x) => `<li>${x}</li>`).join('');
         }
         paintJoin(v);
         if (v.kind === 'remote') { runCommands(v); paintRemote(v, first); } else if (v.kind === 'vote') { paintVote(v, first); } else if (v.kind === 'ideas') {

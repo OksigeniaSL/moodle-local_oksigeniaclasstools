@@ -126,5 +126,53 @@
  "cd_school_many": {
   "en": "{$a} school days in between",
   "es": "{$a} días de clase entre medias"
+ },
+ "sm_adjust": {
+  "en": "Adjust to this class",
+  "es": "Ajustar a esta clase"
+ },
+ "sm_adjust_hint": {
+  "en": "With the class working at a volume that is fine, press it: that will be green.",
+  "es": "Con la clase trabajando a un volumen que vale, pulsa: lo de ahora quedará en verde."
+ },
+ "sm_adjusting": {
+  "en": "Listening… {$a}",
+  "es": "Escuchando… {$a}"
+ },
+ "sm_adjusted": {
+  "en": "Adjusted: that noise is green now. Sensitivity moves it up or down.",
+  "es": "Ajustado: ese ruido es ahora el verde. La sensibilidad lo sube o lo baja."
+ },
+ "tm_mini_go": {
+  "en": "Back to the timer",
+  "es": "Volver al temporizador"
+ },
+ "g_clear": {
+  "en": "Clear the result",
+  "es": "Borrar resultado"
+ },
+ "g_drag_hint": {
+  "en": "Drag to change the order",
+  "es": "Arrastra para cambiar el orden"
+ },
+ "mt_size": {
+  "en": "Table size",
+  "es": "Tamaño de la mesa"
+ },
+ "mt_cols": {
+  "en": "{$a} columns",
+  "es": "{$a} columnas"
+ },
+ "mt_two": {
+  "en": "Compare: two tables",
+  "es": "Comparar: dos mesas"
+ },
+ "mt_numbers_a": {
+  "en": "Numbers on table A",
+  "es": "Números en la mesa A"
+ },
+ "mt_numbers_b": {
+  "en": "Numbers on table B",
+  "es": "Números en la mesa B"
  }
 }

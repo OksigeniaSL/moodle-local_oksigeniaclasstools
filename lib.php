@@ -138,6 +138,19 @@ function local_oksigeniaclasstools_extend_navigation_course(
 }
 
 /**
+ * Moodle 4.3 has no output hooks: there the notice of a live session goes in through this callback. From 4.4 on the
+ * hook in classes/hook_callbacks.php adds it, and this does nothing.
+ *
+ * @return string
+ */
+function local_oksigeniaclasstools_before_standard_top_of_body_html(): string {
+    if (class_exists('\\core\\hook\\output\\before_standard_top_of_body_html_generation')) {
+        return '';
+    }
+    return \local_oksigeniaclasstools\local\notice::html();
+}
+
+/**
  * Screen data for a course: its name, the way back and the lists with each student's name and photo.
  *
  * One list per group and per cohort enrolled with cohort sync (a course with cohorts 5A to 5F gives six lists),

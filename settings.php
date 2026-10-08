@@ -104,5 +104,11 @@ if ($hassiteconfig) {
             get_string('live_desc', 'local_oksigeniaclasstools'),
             1
         ));
+        $settings->add(new admin_setting_configcheckbox(
+            'local_oksigeniaclasstools/livenotice',
+            get_string('livenotice', 'local_oksigeniaclasstools'),
+            get_string('livenotice_desc', 'local_oksigeniaclasstools'),
+            1
+        ));
     }
 }

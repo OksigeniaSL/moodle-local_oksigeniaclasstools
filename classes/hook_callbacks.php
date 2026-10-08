@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * Navigation hook callbacks.
+ * Hook callbacks: navigation, and the notice of a live session.
  *
  * @package    local_oksigeniaclasstools
  * @copyright  2026 Oksigenia <dev@oksigenia.cc>
@@ -31,9 +31,20 @@ use navigation_node;
 use pix_icon;
 
 /**
- * Links to the classroom tools.
+ * Links to the classroom tools, and the notice of a live session.
  */
 class hook_callbacks {
+    /**
+     * At the top of every page: the notice of a live session for the students of its course (Moodle 4.4 and later).
+     *
+     * @param \core\hook\output\before_standard_top_of_body_html_generation $hook
+     */
+    public static function before_standard_top_of_body_html(
+        \core\hook\output\before_standard_top_of_body_html_generation $hook
+    ): void {
+        $hook->add_html(\local_oksigeniaclasstools\local\notice::html());
+    }
+
     /**
      * In the course bar, right after «Course» (otherwise it would end up in the «More» menu). For teachers, and for
      * students when the site opens the board to them.

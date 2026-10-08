@@ -14,7 +14,7 @@
 
     const STR = {
         modes: { rods: t('mt_rods'), tangram: t('mt_tangram') }, what: t('mt_what'),
-        numbers: t('mt_numbers'), turn: t('mt_turn'), clear: t('mt_clear'), clearSure: t('mt_clear_sure'),
+        numbers: t('mt_numbers'), numbersA: t('mt_numbers_a'), numbersB: t('mt_numbers_b'), size: t('mt_size'), two: t('mt_two'), turn: t('mt_turn'), clear: t('mt_clear'), clearSure: t('mt_clear_sure'),
         rodsHelp: t('mt_rods_help'),
         rod: (n) => t('mt_rod', n),
         figure: t('mt_figure'), free: t('mt_free'), flip: t('mt_flip'), guides: t('mt_guides'), reset: t('mt_reset'),
@@ -35,6 +35,7 @@
     };
     const fmt = (n) => Number(n.toFixed(3));
 
+    const RD_COLS = [12, 18, 24, 30, 40];   // columns of the rods table, from big cells to small ones
     root.innerHTML = `
         <div class="barra-herr ct-top">
             <div class="segmentos" role="radiogroup" aria-label="${escape(STR.what)}" id="mt-mode">
@@ -44,7 +45,10 @@
         <div class="ct-body">
             <div class="ct-panel" data-panel="rods" hidden>
                 <aside class="tarjeta ct-side">
-                    <label class="interruptor"><input type="checkbox" id="rd-numbers"><span>${STR.numbers}</span></label>
+                    <label class="campo apilado"><span>${STR.size}</span><select id="rd-cols">${RD_COLS.map((c) => `<option value="${c}">${escape(t('mt_cols', c))}</option>`).join('')}</select></label>
+                    <label class="interruptor"><input type="checkbox" id="rd-two"><span>${STR.two}</span></label>
+                    <label class="interruptor"><input type="checkbox" id="rd-numbers"><span id="rd-numbers-label">${STR.numbers}</span></label>
+                    <label class="interruptor" id="rd-numbers2-box" hidden><input type="checkbox" id="rd-numbers2"><span>${STR.numbersB}</span></label>
                     <button type="button" class="boton suave" id="rd-turn" disabled><span data-icono="girar"></span>${STR.turn}</button>
                     <button type="button" class="boton suave" id="rd-clear"><span data-icono="limpiar"></span><span>${STR.clear}</span></button>
                     <p class="nota">${STR.rodsHelp}</p>
@@ -81,14 +85,22 @@
     // =========================================================================================================
     const ROD_COLORS = [null, ['#f4f4f2', '#1c1a19'], ['#e03131', '#fff'], ['#8ccf3f', '#1c1a19'], ['#b45dc8', '#fff'], ['#fbd023', '#1c1a19'],
         ['#1f7a3a', '#fff'], ['#2b2b2b', '#fff'], ['#8b5a2b', '#fff'], ['#1f5fbf', '#fff'], ['#f08c00', '#1c1a19']];
-    const RW = 30, TRAY = 11.6, BX = 12;   // width of the scene, in rod units; where the table starts
-    let RH = 14;
-    const rd = Object.assign({ rods: [], numbers: false }, load('regletas', {}));
+    // The table: as many columns as chosen (more columns, smaller cells), and to compare, two tables side by side,
+    // each one with its own numbers on or off. Rods keep their place as columns and rows of their table.
+    const TRAY = 11.6, BX = 12, GAP = 1.5, COLS = RD_COLS;
+    let RW = 30, RH = 14;
+    const rd = Object.assign({ rods: [], numbers: false, numbers2: false, cols: 18, two: false }, load('regletas', {}));
+    if (!COLS.includes(Number(rd.cols))) { rd.cols = 18; }
     rd.rods = Array.isArray(rd.rods) ? rd.rods.filter((r) => r && r.n >= 1 && r.n <= 10) : [];
+    // Saved before there were tables: x was from the left of the scene.
+    if (!rd.rv) { rd.rods.forEach((r) => { r.x -= BX; r.t = 0; }); rd.rv = 2; }
+    rd.rods.forEach((r) => { r.t = rd.two && r.t === 1 ? 1 : 0; });
     let rdSel = null, rdDrag = null, clearTimer = 0;
     const rdTap = tapper();
-    const rdSave = () => save('regletas', { rods: rd.rods.map(({ id, n, x, y, v }) => ({ id, n, x, y, v })), numbers: rd.numbers });
+    const rdSave = () => save('regletas', { rods: rd.rods.map(({ id, n, x, y, v, t }) => ({ id, n, x, y, v, t })), numbers: rd.numbers, numbers2: rd.numbers2, cols: rd.cols, two: rd.two, rv: 2 });
     const rdSize = (r) => (r.v ? [1, r.n] : [r.n, 1]);
+    const origin = (t) => BX + t * (rd.cols + GAP);
+    const rdNumbers = (t) => (t === 1 ? rd.numbers2 : rd.numbers);
     const rodShape = (g, n, vertical) => {
         const [w, h] = vertical ? [1, n] : [n, 1], [fill, ink] = ROD_COLORS[n];
         el('rect', { x: 0.04, y: 0.04, width: w - 0.08, height: h - 0.08, rx: 0.14, fill, class: 'ct-rd-body' + (n === 1 ? ' ct-rd-white' : '') }, g);
@@ -97,17 +109,21 @@
     };
     const rdClamp = (r) => {
         const [w, h] = rdSize(r);
-        r.x = Math.max(BX, Math.min(RW - w, r.x)); r.y = Math.max(0, Math.min(RH - h, r.y));
+        r.x = Math.max(0, Math.min(rd.cols - w, r.x)); r.y = Math.max(0, Math.min(RH - h, r.y));
     };
     const rdPaint = () => {
         const svg = $('#rd-svg');
+        RW = BX + rd.cols * (rd.two ? 2 : 1) + (rd.two ? GAP : 0);
         svg.setAttribute('viewBox', `0 0 ${RW} ${RH}`);
         svg.classList.toggle('ct-rd-numbers', rd.numbers);
         svg.innerHTML = '';
         const defs = el('defs', {}, svg);
         const pat = el('pattern', { id: 'rd-grid', width: 1, height: 1, patternUnits: 'userSpaceOnUse' }, defs);
         el('path', { d: 'M1 0V1H0', fill: 'none', stroke: '#d9e2ee', 'stroke-width': 0.03 }, pat);
-        el('rect', { x: BX, y: 0, width: RW - BX, height: RH, fill: 'url(#rd-grid)', class: 'ct-rd-table' }, svg);
+        (rd.two ? [0, 1] : [0]).forEach((t) => {
+            el('rect', { x: origin(t), y: 0, width: rd.cols, height: RH, fill: 'url(#rd-grid)', class: 'ct-rd-table' }, svg);
+            if (rd.two) { el('text', { x: origin(t) + 0.3, y: 0.55, class: 'ct-rd-mesa' }, svg).textContent = t ? 'B' : 'A'; }
+        });
         const tray = el('g', { class: 'ct-rd-trayzone' }, svg);
         el('rect', { x: 0, y: 0, width: TRAY, height: RH, rx: 0.4, class: 'ct-rd-traybg' }, tray);
         for (let n = 1; n <= 10; n++) {
@@ -118,7 +134,8 @@
         $('#rd-turn').disabled = !rd.rods.some((r) => r.id === rdSel);
     };
     const rdAdd = (svg, r) => {
-        const g = el('g', { class: 'ct-rd ct-rd-on' + (r.id === rdSel ? ' ct-sel' : ''), 'data-id': r.id, transform: `translate(${fmt(r.x)} ${fmt(r.y)})`, tabindex: 0, role: 'img', 'aria-label': STR.rod(r.n) }, svg);
+        const g = el('g', { class: 'ct-rd ct-rd-on' + (r.id === rdSel ? ' ct-sel' : '') + (rdNumbers(r.t) ? ' ct-rd-con-num' : ''), 'data-id': r.id,
+            transform: `translate(${fmt(origin(r.t) + r.x)} ${fmt(r.y)})`, tabindex: 0, role: 'img', 'aria-label': STR.rod(r.n) }, svg);
         rodShape(g, r.n, r.v);
         return g;
     };
@@ -129,7 +146,8 @@
     const rdLayout = () => {
         const svg = $('#rd-svg'), box = svg.parentElement.getBoundingClientRect();
         if (!box.width) { return; }
-        RH = Math.max(12.4, Math.min(24, RW * box.height / box.width));
+        RW = BX + rd.cols * (rd.two ? 2 : 1) + (rd.two ? GAP : 0);
+        RH = Math.max(12.4, Math.min(RW * 0.9, RW * box.height / box.width));
         rd.rods.forEach(rdClamp);
         rdPaint();
     };
@@ -141,14 +159,16 @@
         let r;
         if (g.classList.contains('ct-rd-tray')) {
             const n = Number(g.dataset.n), y0 = 0.45 + (n - 1) * (RH - 0.9) / 10;
-            r = { id: 'r' + Date.now().toString(36) + random(1000), n, x: 0.5, y: y0, v: false };
+            r = { id: 'r' + Date.now().toString(36) + random(1000), n, x: 0.5 - BX, y: y0, v: false, t: 0 };
             rd.rods.push(r);
         } else {
             r = rd.rods.find((x) => x.id === g.dataset.id);
             rd.rods = rd.rods.filter((x) => x !== r).concat(r);   // on top
         }
         rdSel = r.id;
-        rdDrag = { r, dx: p.x - r.x, dy: p.y - r.y, sx: p.x, sy: p.y, moved: false, fresh: g.classList.contains('ct-rd-tray') };
+        // While it is dragged, the rod is placed in scene units (ax, ay); on dropping it lands on a table.
+        r.ax = origin(r.t) + r.x; r.ay = r.y;
+        rdDrag = { r, dx: p.x - r.ax, dy: p.y - r.ay, sx: p.x, sy: p.y, moved: false, fresh: g.classList.contains('ct-rd-tray') };
         // No repainting while the finger is down: removing the touched element leaves the touch without its target,
         // and Android then swallows the next tap. The new rod is added and the touched one only comes to the front.
         if (rdDrag.fresh) { rdAdd(svg, r); } else { svg.append(g); }
@@ -159,38 +179,44 @@
     $('#rd-svg').addEventListener('pointermove', (e) => {
         if (!rdDrag) { return; }
         const p = toSvg($('#rd-svg'), e), d = rdDrag;
-        d.r.x = p.x - d.dx; d.r.y = p.y - d.dy;
+        d.r.ax = p.x - d.dx; d.r.ay = p.y - d.dy;
         if (Math.abs(p.x - d.sx) + Math.abs(p.y - d.sy) > 0.15) { d.moved = true; }
         const g = $(`#rd-svg [data-id="${d.r.id}"]`);
-        if (g) { g.setAttribute('transform', `translate(${fmt(d.r.x)} ${fmt(d.r.y)})`); }
+        if (g) { g.setAttribute('transform', `translate(${fmt(d.r.ax)} ${fmt(d.r.ay)})`); }
     });
+    // The first free place, in table A and then in B.
     const rdFree = (r) => {
         const [w, h] = rdSize(r);
-        const busy = (x, y) => rd.rods.some((o) => {
-            if (o === r) { return false; }
+        const busy = (t, x, y) => rd.rods.some((o) => {
+            if (o === r || o.t !== t) { return false; }
             const [ow, oh] = rdSize(o);
             return x < o.x + ow && o.x < x + w && y < o.y + oh && o.y < y + h;
         });
-        for (let y = 1; y + h <= Math.floor(RH); y++) {
-            for (let x = BX + 1; x + w <= RW; x++) { if (!busy(x, y)) { r.x = x; r.y = y; return true; } }
+        for (const t of rd.two ? [0, 1] : [0]) {
+            for (let y = 1; y + h <= Math.floor(RH); y++) {
+                for (let x = 1; x + w <= rd.cols; x++) { if (!busy(t, x, y)) { r.t = t; r.x = x; r.y = y; return true; } }
+            }
         }
         return false;
     };
     const rdDrop = () => {
         const d = rdDrag; rdDrag = null;
         if (!d) { return; }
-        const [w] = rdSize(d.r);
+        const r = d.r, [w] = rdSize(r);
         if (d.fresh && !d.moved) {
             // A tap on the staircase: the rod goes to the first free place of the table.
-            if (!rdFree(d.r)) { rd.rods = rd.rods.filter((x) => x !== d.r); rdSel = null; } else { play('tic'); }
-        } else if (d.r.x + w / 2 < BX - 0.3) {
+            if (!rdFree(r)) { rd.rods = rd.rods.filter((x) => x !== r); rdSel = null; } else { play('tic'); }
+        } else if (r.ax + w / 2 < BX - 0.3) {
             // Back to the staircase: the rod goes away.
-            rd.rods = rd.rods.filter((x) => x !== d.r); rdSel = null;
+            rd.rods = rd.rods.filter((x) => x !== r); rdSel = null;
         } else {
-            if (!d.moved && rdTap(d.r.id)) { d.r.v = !d.r.v; }
-            d.r.x = Math.round(d.r.x); d.r.y = Math.round(d.r.y); rdClamp(d.r);
+            if (!d.moved && rdTap(r.id)) { r.v = !r.v; }
+            // On the table where its middle is (between the two, the nearest).
+            r.t = rd.two && r.ax + w / 2 > origin(1) - GAP / 2 ? 1 : 0;
+            r.x = Math.round(r.ax - origin(r.t)); r.y = Math.round(r.ay); rdClamp(r);
             if (d.moved) { play('tic'); }
         }
+        delete r.ax; delete r.ay;
         rdSave(); rdPaint();
         if (rdSel) { const g = $(`#rd-svg [data-id="${rdSel}"]`); if (g) { g.focus({ preventScroll: true }); } }
     };
@@ -214,8 +240,21 @@
         if (g && g.dataset.id !== rdSel) { rdSel = g.dataset.id; $$('#rd-svg .ct-rd-on').forEach((x) => x.classList.toggle('ct-sel', x === g)); $('#rd-turn').disabled = false; }
     });
     $('#rd-turn').addEventListener('click', () => rdTurn(rdSel));
-    $('#rd-numbers').checked = rd.numbers;
+    const rdControls = () => {
+        $('#rd-numbers').checked = rd.numbers; $('#rd-numbers2').checked = rd.numbers2; $('#rd-two').checked = rd.two;
+        $('#rd-numbers2-box').hidden = !rd.two;
+        $('#rd-numbers-label').textContent = rd.two ? STR.numbersA : STR.numbers;
+        $('#rd-cols').value = String(rd.cols);
+    };
     $('#rd-numbers').addEventListener('change', () => { rd.numbers = $('#rd-numbers').checked; rdSave(); rdPaint(); });
+    $('#rd-numbers2').addEventListener('change', () => { rd.numbers2 = $('#rd-numbers2').checked; rdSave(); rdPaint(); });
+    $('#rd-two').addEventListener('change', () => {
+        rd.two = $('#rd-two').checked;
+        if (!rd.two) { rd.rods.forEach((r) => { r.t = 0; }); }
+        rdControls(); rdSave(); rdLayout();
+    });
+    $('#rd-cols').addEventListener('change', () => { rd.cols = Number($('#rd-cols').value); rdSave(); rdLayout(); });
+    rdControls();
     $('#rd-clear').addEventListener('click', () => {
         const b = $('#rd-clear');
         if (!b.classList.contains('confirma')) {

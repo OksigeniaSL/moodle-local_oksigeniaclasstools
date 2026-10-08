@@ -1,0 +1,51 @@
+/* The notice of a live session for students, at the bottom right of Moodle pages (classes/local/notice.php). */
+.local-oksigeniaclasstools-live {
+    position: fixed;
+    right: 1rem;
+    bottom: 1rem;
+    z-index: 1040;
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    max-width: calc(100vw - 2rem);
+    padding: .65rem .65rem .65rem .9rem;
+    border-radius: 1rem;
+    background: #fff;
+    color: #1c1a19;
+    box-shadow: 0 12px 32px rgba(15, 47, 94, .28);
+}
+.local-oksigeniaclasstools-live .live-dot {
+    flex: none;
+    width: .8rem;
+    height: .8rem;
+    border-radius: 50%;
+    background: #ce1423;
+    animation: local-oksigeniaclasstools-pulse 1.4s ease-in-out infinite;
+}
+.local-oksigeniaclasstools-live .live-text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    line-height: 1.25;
+}
+.local-oksigeniaclasstools-live .live-text span {
+    color: #55514d;
+    font-size: .85rem;
+}
+.local-oksigeniaclasstools-live .live-close {
+    border: 0;
+    background: none;
+    color: #55514d;
+    font-size: 1.4rem;
+    line-height: 1;
+}
+@keyframes local-oksigeniaclasstools-pulse {
+    50% {
+        opacity: .35;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .local-oksigeniaclasstools-live .live-dot {
+        animation: none;
+    }
+}

@@ -156,6 +156,7 @@
         if (HERR[h] && HERR[h].entra) { HERR[h].entra(); }
         insignias();
         if (barra.classList.contains('compacta')) { ajustaBarra(); }
+        document.dispatchEvent(new CustomEvent('classtools:tab', { detail: h }));
     };
     pestanas.forEach((b) => b.addEventListener('click', () => muestra(b.dataset.h)));
     $('#pestanas').addEventListener('keydown', (e) => {
@@ -240,7 +241,36 @@
         pintaAspecto(frac);
         $('#tm-estado').textContent = tm.acabado ? t('fin_time') : tm.marcha ? t('tm_running') : tm.resta < tm.total ? t('tm_paused') : t('tm_ready');
         insignias();
+        tmMini();
     };
+    // Con el temporizador en marcha (o en pausa) y otra pestaña delante: un reloj pequeño en una esquina, para verlo,
+    // pausarlo o pararlo sin volver; tocándolo, se vuelve al temporizador.
+    const mini = document.createElement('div');
+    mini.className = 'tm-mini'; mini.hidden = true;
+    mini.innerHTML = `<button type="button" class="tm-mini-ir" id="tm-mini-ir"><svg viewBox="0 0 36 36" aria-hidden="true"><circle class="tm-mini-pista" cx="18" cy="18" r="15"/>`
+        + `<circle class="tm-mini-arco" id="tm-mini-arco" cx="18" cy="18" r="15" pathLength="100" transform="rotate(-90 18 18)"/></svg><strong id="tm-mini-cifras"></strong></button>`
+        + `<button type="button" class="redondo suave" id="tm-mini-marcha"></button>`
+        + `<button type="button" class="redondo suave" id="tm-mini-parar">${icono('reiniciar')}</button>`;
+    document.body.append(mini);
+    mini.querySelector('#tm-mini-ir').setAttribute('title', t('tm_mini_go'));
+    mini.querySelector('#tm-mini-parar').setAttribute('title', t('gen_reset'));
+    mini.querySelector('#tm-mini-parar').setAttribute('aria-label', t('gen_reset'));
+    function tmMini() {
+        const activo = !tm.acabado && (tm.marcha || (tm.resta > 0 && tm.resta < tm.total));
+        mini.hidden = !activo || actual === 'temporizador';
+        if (mini.hidden) { return; }
+        mini.querySelector('#tm-mini-cifras').textContent = fmtSeg(Math.ceil(tm.resta / 1000));
+        mini.querySelector('#tm-mini-arco').style.strokeDashoffset = String(100 * (1 - (tm.total ? tm.resta / tm.total : 0)));
+        mini.classList.toggle('ultimo', tm.resta <= 10000);
+        mini.classList.toggle('pausa', !tm.marcha);
+        const b = mini.querySelector('#tm-mini-marcha'), etiqueta = tm.marcha ? t('gen_pause') : t('gen_resume');
+        if (b.dataset.estado !== String(tm.marcha)) { b.innerHTML = icono(tm.marcha ? 'pausa' : 'empezar'); b.dataset.estado = String(tm.marcha); }
+        b.title = etiqueta; b.setAttribute('aria-label', etiqueta);
+    }
+    mini.querySelector('#tm-mini-ir').addEventListener('click', () => muestra('temporizador'));
+    mini.querySelector('#tm-mini-marcha').addEventListener('click', () => $('#tm-marcha').click());
+    mini.querySelector('#tm-mini-parar').addEventListener('click', () => $('#tm-reiniciar').click());
+    document.addEventListener('classtools:tab', () => tmMini());
     const tmBotones = () => {
         const b = $('#tm-marcha');
         if (tm.marcha) { rotula(b, t('gen_pause'), 'pausa'); b.className = 'boton grande amarillo ancho'; }
@@ -290,11 +320,13 @@
         }
         if (v === 'coche') {
             return '<rect class="tm-carretera" x="12" y="118" width="170" height="32" rx="6"/><line class="tm-raya" x1="16" y1="134" x2="180" y2="134"/>' + meta
-                + '<g class="tm-viajero tm-coche"><g class="tm-velocidad"><line x1="-31" y1="-5" x2="-23" y2="-5"/><line x1="-34" y1="0" x2="-23" y2="0"/></g>'
-                + '<path class="tm-coche-cuerpo" d="M-19 4 L-17 -3 L-7 -4 L-1 -10 L9 -10 L14 -4 L19 -2 L19 4 Z"/>'
-                + '<path class="tm-coche-ventana" d="M0 -4 L3 -8.4 L8.4 -8.4 L11.6 -4 Z"/><rect class="tm-coche-franja" x="-15" y="-1.4" width="11" height="2.4" rx="1"/>'
-                + '<circle class="tm-rueda" cx="-10" cy="5" r="4.4"/><circle class="tm-rueda" cx="11" cy="5" r="4.4"/>'
-                + '<circle class="tm-llanta" cx="-10" cy="5" r="1.7"/><circle class="tm-llanta" cx="11" cy="5" r="1.7"/></g>' + dato;
+                + '<g class="tm-viajero tm-coche"><g class="tm-velocidad"><line x1="-34" y1="-4" x2="-26" y2="-4"/><line x1="-37" y1="1" x2="-26" y2="1"/></g>'
+                + '<path class="tm-f1-aleron" d="M-25 -12 H-15 V-8.5 H-25 Z M-20 -8.5 V-3"/>'
+                + '<path class="tm-f1-cuerpo" d="M-21 3.5 V-2.5 L-13 -3.5 L-7 -7 L1 -7 L4 -4 L13 -2 L21 1 L23 3.5 Z"/>'
+                + '<path class="tm-f1-franja" d="M-12 0 H10"/><circle class="tm-f1-casco" cx="-2.5" cy="-7.6" r="2.7"/><path class="tm-f1-visera" d="M-1.6 -8.6 H0.6"/>'
+                + '<path class="tm-f1-halo" d="M-6 -8.5 Q-1 -12 4 -6.5"/><path class="tm-f1-aleron" d="M14 3.8 H25.5 V6 H14 Z"/>'
+                + '<circle class="tm-rueda" cx="-14" cy="4.2" r="5"/><circle class="tm-rueda" cx="13.5" cy="4.6" r="4.2"/>'
+                + '<circle class="tm-llanta" cx="-14" cy="4.2" r="1.8"/><circle class="tm-llanta" cx="13.5" cy="4.6" r="1.5"/></g>' + dato;
         }
         if (v === 'caracol') {
             return estela + '<rect class="tm-suelo" x="10" y="141" width="180" height="9" rx="4.5"/>'
@@ -410,15 +442,12 @@
         }
     };
     // Qué recorre la barra: solo se ve con el aspecto «Barra».
-    $('#tm-viajeros').innerHTML = VIAJEROS.map((k) => `<button type="button" role="radio" aria-checked="false" data-v="${k}">${escapa(t('tm_v_' + k))}</button>`).join('');
+    $('#tm-viajeros').innerHTML = VIAJEROS.map((k) => `<option value="${k}">${escapa(t('tm_v_' + k))}</option>`).join('');
     const tmPintaViajeros = () => {
         $('#tm-viajeros-caja').hidden = aspecto !== 'barra';
-        $$('#tm-viajeros button').forEach((x) => x.setAttribute('aria-checked', String(x.dataset.v === (VIAJEROS.includes(viajero) ? viajero : 'cohete'))));
+        $('#tm-viajeros').value = VIAJEROS.includes(viajero) ? viajero : 'cohete';
     };
-    $('#tm-viajeros').addEventListener('click', (e) => {
-        const b = e.target.closest('[data-v]'); if (!b) { return; }
-        viajero = b.dataset.v; tmModo.set({ viajero }); tmPintaViajeros(); tmPinta();
-    });
+    $('#tm-viajeros').addEventListener('change', () => { viajero = $('#tm-viajeros').value; tmModo.set({ viajero }); tmPinta(); });
     $$('#tm-aspectos button').forEach((b) => {
         b.setAttribute('aria-checked', String(b.dataset.v === aspecto));
         b.addEventListener('click', () => {
@@ -1124,8 +1153,8 @@
         gRejilla.innerHTML = grupos.map((g, i) => {
             const [c, claro] = COLORES[i % COLORES.length];
             const retraso = reducido() ? 0 : i * 60;
-            return `<article class="grupo${claro ? ' claro' : ''}" style="--c:${c}; animation-delay:${retraso}ms">
-                <h3>${t('g_group_n', i + 1)} <small>${emocion ? 0 : g.length}</small></h3>
+            return `<article class="grupo${claro ? ' claro' : ''}" style="--c:${c}; animation-delay:${retraso}ms" data-gi="${i}">
+                <h3 title="${escapa(t('g_drag_hint'))}"><span class="g-titulo">${t('g_group_n', i + 1)}</span> <small>${emocion ? 0 : g.length}</small></h3>
                 <ul>${g.map((n, ni) => `<li${emocion ? ` class="por-salir" data-n="${ni}"` : ''}>${cara(lg, n, 'cara-mini')}<span>${escapa(n)}</span></li>`).join('')}</ul></article>`;
         }).join('');
         $('#g-resumen').textContent = '';
@@ -1139,6 +1168,7 @@
             // Guardarlos como grupos del curso: solo si se pulsa (por defecto no se crea nada).
             gUltimos = lg && lg.aula && AULA.groupsurl ? { lista: lg, grupos } : null;
             $('#g-moodle').hidden = !gUltimos; $('#g-moodle').disabled = false;
+            $('#g-borrar').hidden = false;
             rotula($('#g-moodle'), t('g_save_course'), 'guardar');
             gPonRoles();
             suena(emocion ? 'elegido' : 'dado');
@@ -1258,6 +1288,54 @@
     });
     $('#g-roles-texto').addEventListener('change', gPonRoles);
     $('#g-rotar').addEventListener('click', () => { gPonRoles(); suena('dado'); anuncia(t('g_roles_done')); });
+    // Borrar el resultado: la pantalla vuelve a estar en blanco.
+    $('#g-borrar').addEventListener('click', () => {
+        gHechos = null; gUltimos = null;
+        gVacio(t('g_empty_start'));
+        $('#g-resumen').textContent = '';
+        ['#g-moodle', '#g-rotar', '#g-borrar'].forEach((s) => { $(s).hidden = true; });
+        gListo();
+    });
+    // Cambiar el orden de los grupos arrastrando su cabecera: los demás se apartan y los números se ponen por orden.
+    let gArrastre = null;
+    gRejilla.addEventListener('pointerdown', (e) => {
+        const h = e.target.closest('.grupo h3');
+        if (!h || !gHechos || e.button > 0) { return; }
+        gArrastre = { art: h.closest('.grupo'), x: e.clientX, y: e.clientY, id: e.pointerId, moviendo: false };
+    });
+    gRejilla.addEventListener('pointermove', (e) => {
+        const a = gArrastre;
+        if (!a || e.pointerId !== a.id) { return; }
+        if (!a.moviendo) {
+            if (Math.hypot(e.clientX - a.x, e.clientY - a.y) < 8) { return; }
+            a.moviendo = true; a.art.classList.add('moviendo');
+            try { gRejilla.setPointerCapture(e.pointerId); } catch (err) { /* sigue sin captura */ }
+        }
+        e.preventDefault();
+        const bajo = document.elementFromPoint(e.clientX, e.clientY);
+        const otro = bajo && bajo.closest('.grupo');
+        if (!otro || otro === a.art || !gRejilla.contains(otro)) { return; }
+        const arts = $$('.grupo', gRejilla);
+        gRejilla.insertBefore(a.art, arts.indexOf(otro) > arts.indexOf(a.art) ? otro.nextSibling : otro);
+    });
+    const gSuelta = (e) => {
+        const a = gArrastre;
+        if (!a || e.pointerId !== a.id) { return; }
+        gArrastre = null;
+        if (!a.moviendo) { return; }
+        a.art.classList.remove('moviendo');
+        // Los grupos, en el orden nuevo (el mismo array: lo usan el Marcador y «Guardar como grupos del curso»).
+        const arts = $$('.grupo', gRejilla), antes = gHechos.grupos.slice();
+        gHechos.grupos.length = 0;
+        arts.forEach((art, i) => {
+            gHechos.grupos.push(antes[Number(art.dataset.gi)]);
+            art.dataset.gi = i;
+            art.querySelector('.g-titulo').textContent = t('g_group_n', i + 1);
+        });
+        suena('tic');
+    };
+    gRejilla.addEventListener('pointerup', gSuelta);
+    gRejilla.addEventListener('pointercancel', gSuelta);
     $('#g-rasca').checked = gRasca;
     $('#g-rasca').addEventListener('change', (e) => { gRasca = e.target.checked; guarda('grupos-rasca', gRasca); });
     $('#g-emocion').checked = gEmocion;
@@ -1327,10 +1405,15 @@
         let suma = 0;
         for (let i = 0; i < sm.buf.length; i++) { suma += sm.buf[i] * sm.buf[i]; }
         const db = 20 * Math.log10(Math.sqrt(suma / sm.buf.length) + 1e-9);
-        // De unos −62 dB (clase en silencio) a −14 dB (mucho jaleo); la sensibilidad corre la escala ±17 dB.
+        // Midiendo el ruido normal de la clase (Ajustar): se guardan unos segundos de niveles.
+        if (sm.midiendo) { sm.midiendo.push(db); }
+        // La escala: ajustada a la clase (lo normal queda en un tercio, en verde), o de unos −62 dB (silencio) a −14 dB
+        // (mucho jaleo). La sensibilidad la corre ±20 dB. Cada micrófono capta distinto: por eso ajustar es lo mejor.
         const sens = Number($('#s-sensibilidad').value);
-        const nivel = Math.max(0, Math.min(100, ((db + 62 + (sens - 5) * 3.5) / 48) * 100));
-        sm.suave += (nivel - sm.suave) * (nivel > sm.suave ? 0.3 : 0.05);
+        const cero = sm.base !== null ? sm.base - 16 : -62;
+        const nivel = Math.max(0, Math.min(100, ((db - cero + (sens - 5) * 4) / 48) * 100));
+        // Sube despacio (un golpe o una silla no lo ponen en rojo) y baja más despacio aún.
+        sm.suave += (nivel - sm.suave) * (nivel > sm.suave ? 0.06 : 0.04);
         const z = sm.suave >= 75 ? 'rojo' : sm.suave >= 50 ? 'amarillo' : 'verde';
         const ahora = performance.now();
         // Sube de color al momento; para bajar tiene que estar 1,5 s por debajo (así no parpadea).
@@ -1424,6 +1507,34 @@
         smHist.forEach((v, i) => { const px = w - (smHist.length - 1 - i) * (w / 239), py = h - (v / 100) * h; if (i) { x.lineTo(px, py); } else { x.moveTo(px, py); } });
         x.strokeStyle = '#164281'; x.lineWidth = 2.5; x.lineJoin = 'round'; x.stroke();
     };
+    // Ajustar a esta clase: unos segundos de su ruido normal de trabajo pasan a ser el verde de la escala.
+    sm.base = typeof lee('ruido-base', null) === 'number' ? lee('ruido-base', null) : null;
+    sm.midiendo = null;
+    const smAjusta = async () => {
+        const b = $('#s-ajustar'), nota = $('#s-ajuste-nota');
+        if (!sm.flujo) { await smEmpieza(); }
+        if (!sm.flujo) { return; }
+        b.disabled = true;
+        sm.midiendo = [];
+        let quedan = 4;
+        nota.textContent = t('sm_adjusting', quedan);
+        const cuenta = setInterval(() => {
+            quedan--;
+            if (quedan > 0) { nota.textContent = t('sm_adjusting', quedan); return; }
+            clearInterval(cuenta);
+            const v = (sm.midiendo || []).filter((x) => x > -120).sort((x, y) => x - y);
+            sm.midiendo = null;
+            b.disabled = false;
+            if (v.length < 10) { nota.textContent = t('sm_adjust_hint'); return; }
+            sm.base = v[Math.floor(v.length * 0.6)];   // algo por encima de la mediana: lo normal, sin los silencios
+            guarda('ruido-base', sm.base);
+            $('#s-sensibilidad').value = 5; guarda('sensibilidad', 5); pintaSens();
+            sm.suave = 33;
+            nota.textContent = t('sm_adjusted');
+            suena('elegido');
+        }, 1000);
+    };
+    $('#s-ajustar').addEventListener('click', smAjusta);
     const smApaga = () => {
         cancelAnimationFrame(sm.rf);
         if (sm.fuente) { try { sm.fuente.disconnect(); } catch (e) { /* ya estaba */ } }

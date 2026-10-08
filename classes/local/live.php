@@ -565,6 +565,7 @@ class live {
             'round' => (int) $live->round, 'open' => self::is_open($state), 'left' => self::left($state),
             'show' => !empty($state['show']),
             'ended' => (bool) $live->timeend, 'others' => self::others((int) $live->id),
+            'notice' => get_config('local_oksigeniaclasstools', 'livenotice') !== '0',
             'url' => (new \moodle_url('/local/oksigeniaclasstools/join.php', ['c' => $live->code]))->out(false),
         ];
         if ($live->kind === 'remote') {

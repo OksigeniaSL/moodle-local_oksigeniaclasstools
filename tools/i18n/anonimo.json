@@ -14,5 +14,57 @@
  "lv_you_anon": {
   "en": "You are taking part without an account: nobody sees your name.",
   "es": "Participas sin cuenta: nadie ve tu nombre."
+ },
+ "lv_short_vote": {
+  "en": "They answer A–D, yes or no from their device",
+  "es": "Contestan A, B, C, D, sí o no desde su tableta"
+ },
+ "lv_short_ideas": {
+  "en": "They write a word or two: a live cloud",
+  "es": "Escriben una o dos palabras: una nube viva"
+ },
+ "lv_short_buzz": {
+  "en": "In teams: who presses first?",
+  "es": "Por equipos: ¿quién pulsa antes?"
+ },
+ "lv_short_remote": {
+  "en": "Your phone runs the board",
+  "es": "Tu móvil maneja la pizarra"
+ },
+ "lv_short_hands": {
+  "en": "No devices: you count the hands",
+  "es": "Sin tabletas: tú cuentas las manos"
+ },
+ "lv_anon_short": {
+  "en": "No account: anyone can join, also from outside",
+  "es": "Sin cuenta: entra cualquiera, también de fuera"
+ },
+ "lv_moodle_short": {
+  "en": "Only this course's students; their names show",
+  "es": "Solo alumnos del curso; se ven sus nombres"
+ },
+ "lv_hidden_short": {
+  "en": "Only this course's students, no names: critters",
+  "es": "Solo alumnos del curso, sin nombres: bichitos"
+ },
+ "lv_step_notice": {
+  "en": "In the course, a notice with «Join» pops up for them.",
+  "es": "En el curso les sale un aviso con «Entrar»."
+ },
+ "lv_step_qr": {
+  "en": "Or they scan the QR with their device.",
+  "es": "O escanean el QR con la tableta."
+ },
+ "lv_step_url": {
+  "en": "Or they go to {$a} and type the code.",
+  "es": "O van a {$a} y escriben el código."
+ },
+ "lv_step_anon": {
+  "en": "They need no account.",
+  "es": "No necesitan cuenta."
+ },
+ "lv_step_login": {
+  "en": "They log in with their account if asked.",
+  "es": "Si les pide entrar, con su usuario del aula."
  }
 }

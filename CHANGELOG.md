@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.16.0 (2026-10-17)
+
+- **Live sessions, easier to join**: students enrolled in the course see a small notice with «Join» on the course
+  pages while a session is open (setting «Notice for students», on), so they need not type the code or scan the QR.
+  On the board, the steps to get in are written under the code (the notice, the QR, the address and the code; no
+  account needed with the code, also for people outside Moodle). The choices of what to do and how they join are
+  cards with an icon and a line about each one, instead of pills.
+- **Timer**: while it runs (or is paused) and another tab is in front, a small timer in a corner shows the time left,
+  pauses it, stops it or goes back to it. Its controls fit in the column: «Save» goes to the header of quick times,
+  the five looks fit in one row and the traveller is a list. The racing car is a Formula 1 now.
+- **Noise meter**: «Adjust to this class» listens a few seconds to the normal noise of the class and puts it in the
+  green; the meter rises more slowly (a single bang does not turn it red) and the sensitivity reaches further.
+- **Groups**: drag a group by its header to put it in another place (the numbers follow the order); «Clear the
+  result» empties the screen.
+- **Cuisenaire rods**: table size from 12 to 40 columns, and «Compare: two tables» side by side, each with its own
+  numbers on or off.
+
 ## 0.15.0 (2026-10-16)
 
 - **Anonymous with their account**, a third way of joining a live session: only the course's students get in, once

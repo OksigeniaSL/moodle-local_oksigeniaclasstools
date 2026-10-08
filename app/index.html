@@ -47,7 +47,8 @@
     </div>
     <div class="mandos">
       <div class="tarjeta">
-        <p class="ante" id="l-rapidos" data-t="tm_quick">Tiempos rápidos</p>
+        <div class="tm-rapidos-cab"><p class="ante" id="l-rapidos" data-t="tm_quick">Tiempos rápidos</p>
+          <button type="button" class="chip chip-guardar" id="tm-fav-add" hidden></button></div>
         <div class="rapidos" role="group" aria-labelledby="l-rapidos">
           <button type="button" class="chip" data-min="1">1 min</button>
           <button type="button" class="chip" data-min="3">3 min</button>
@@ -55,7 +56,6 @@
           <button type="button" class="chip" data-min="10">10 min</button>
           <button type="button" class="chip" data-min="15">15 min</button>
           <span class="tm-favoritos" id="tm-favoritos"></span>
-          <button type="button" class="chip chip-guardar" id="tm-fav-add" hidden></button>
         </div>
       </div>
       <div class="tarjeta">
@@ -89,10 +89,7 @@
           <button type="button" role="radio" aria-checked="false" data-v="arena" data-t="tm_look_sand">Arena</button>
           <button type="button" role="radio" aria-checked="false" data-v="pulsar" data-t="tm_look_pulsar">Púlsar</button>
         </div>
-        <div class="tm-viajeros-caja" id="tm-viajeros-caja" hidden>
-          <p class="ante" id="l-viajero" data-t="tm_traveller">Qué recorre la barra</p>
-          <div class="tm-viajeros" role="radiogroup" aria-labelledby="l-viajero" id="tm-viajeros"></div>
-        </div>
+        <label class="campo tm-viajeros-caja" id="tm-viajeros-caja" hidden><span data-t="tm_traveller">Qué recorre la barra</span><select id="tm-viajeros"></select></label>
         <label class="interruptor tm-avisar" id="tm-avisar-caja"><input type="checkbox" id="tm-avisar" checked><span data-t="tm_warn">Avisar cuando quede 1 minuto</span></label>
         <label class="interruptor tm-avisar"><input type="checkbox" id="tm-final" checked><span data-t="tm_final">Animar los últimos 10 segundos</span></label>
       </div>
@@ -172,6 +169,7 @@
       <button type="button" class="boton grande ancho" id="g-hacer"><span data-icono="mezclar"></span><span data-t="g_make">Hacer grupos</span></button>
       <button type="button" class="boton suave ancho" id="g-rotar" hidden><span data-icono="girar"></span><span data-t="g_roles_rotate">Otros roles</span></button>
       <button type="button" class="boton suave ancho" id="g-moodle" hidden><span data-icono="guardar"></span><span data-t="g_save_course">Guardar como grupos del curso</span></button>
+      <button type="button" class="boton rojo-suave ancho" id="g-borrar" hidden><span data-icono="borrar"></span><span data-t="g_clear">Borrar resultado</span></button>
       <p class="nota" id="g-resumen" aria-live="polite"></p>
     </aside>
     <div class="rejilla-grupos" id="g-rejilla"></div>
@@ -206,6 +204,8 @@
         <label class="interruptor"><input type="checkbox" id="s-op-cara"><span data-t="sm_face">Una cara en la luz</span></label>
       </details>
       <label class="campo apilado deslizador"><span><span data-t="sm_sensitivity">Sensibilidad</span> <em id="s-sens-valor" data-t="sm_sens_medium">media</em></span><input type="range" id="s-sensibilidad" min="1" max="10" step="1" value="5"></label>
+      <button type="button" class="boton suave ancho" id="s-ajustar"><span data-icono="escucha"></span><span data-t="sm_adjust">Ajustar a esta clase</span></button>
+      <p class="nota" id="s-ajuste-nota" aria-live="polite" data-t="sm_adjust_hint">Con la clase trabajando a un volumen que vale, pulsa: lo de ahora quedará en verde.</p>
       <button type="button" class="boton grande ancho" id="s-marcha"><span data-icono="micro"></span><span data-t="sm_listen">Escuchar la clase</span></button>
       <div class="sin-micro" id="s-sinmicro" role="alert" hidden>
         <span data-icono="micro-no"></span>

@@ -15,7 +15,8 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * Hook callbacks: links in the course bar and in the main menu, only for teachers.
+ * Hook callbacks: links in the course bar and in the main menu (only for teachers), and the notice of a live session
+ * for students.
  *
  * @package    local_oksigeniaclasstools
  * @copyright  2026 Oksigenia <dev@oksigenia.cc>
@@ -32,5 +33,9 @@ $callbacks = [
     [
         'hook' => \core\hook\navigation\primary_extend::class,
         'callback' => [\local_oksigeniaclasstools\hook_callbacks::class, 'primary_extend'],
+    ],
+    [
+        'hook' => \core\hook\output\before_standard_top_of_body_html_generation::class,
+        'callback' => [\local_oksigeniaclasstools\hook_callbacks::class, 'before_standard_top_of_body_html'],
     ],
 ];
