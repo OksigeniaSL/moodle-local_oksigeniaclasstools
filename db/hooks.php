@@ -28,14 +28,14 @@ defined('MOODLE_INTERNAL') || die();
 $callbacks = [
     [
         'hook' => \core\hook\navigation\secondary_extend::class,
-        'callback' => [\local_oksigeniaclasstools\hook_callbacks::class, 'secondary_extend'],
+        'callback' => \local_oksigeniaclasstools\hook_callbacks::class . '::secondary_extend',
     ],
     [
         'hook' => \core\hook\navigation\primary_extend::class,
-        'callback' => [\local_oksigeniaclasstools\hook_callbacks::class, 'primary_extend'],
+        'callback' => \local_oksigeniaclasstools\hook_callbacks::class . '::primary_extend',
     ],
     [
         'hook' => \core\hook\output\before_standard_top_of_body_html_generation::class,
-        'callback' => [\local_oksigeniaclasstools\hook_callbacks::class, 'before_standard_top_of_body_html'],
+        'callback' => \local_oksigeniaclasstools\hook_callbacks::class . '::before_standard_top_of_body_html',
     ],
 ];

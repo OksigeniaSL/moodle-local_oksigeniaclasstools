@@ -39,11 +39,13 @@
     font-size: 1.4rem;
     line-height: 1;
 }
+
 @keyframes local-oksigeniaclasstools-pulse {
     50% {
         opacity: .35;
     }
 }
+
 @media (prefers-reduced-motion: reduce) {
     .local-oksigeniaclasstools-live .live-dot {
         animation: none;
