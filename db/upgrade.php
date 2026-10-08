@@ -97,5 +97,12 @@ function xmldb_local_oksigeniaclasstools_upgrade($oldversion) {
         }
         upgrade_plugin_savepoint(true, 2026101100, 'local', 'oksigeniaclasstools');
     }
+
+    if ($oldversion < 2026102300) {
+        // The calculator and the score came after the choice of materials was saved: they are shown too.
+        require_once(__DIR__ . '/../lib.php');
+        local_oksigeniaclasstools_show_new('materials', ['calc', 'score']);
+        upgrade_plugin_savepoint(true, 2026102300, 'local', 'oksigeniaclasstools');
+    }
     return true;
 }

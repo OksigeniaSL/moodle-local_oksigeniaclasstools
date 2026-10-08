@@ -172,6 +172,8 @@ input[type="range"]:focus-visible { outline: 3px solid var(--azul-osc); outline-
 .barra-herr { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem .6rem; flex: none; }
 #q-lista { min-width: 13rem; max-width: 22rem; }
 .barra-herr .interruptor { margin-left: auto; }
+/* Several switches: together, the first one pushed to the right. */
+.barra-herr .interruptor ~ .interruptor { margin-left: 0; }
 .quien-cuerpo { display: grid; grid-template-columns: minmax(0, 1fr) minmax(14rem, 19rem); gap: 1rem; flex: 1; min-height: 0; }
 .quien-cuerpo.sin-columna { grid-template-columns: minmax(0, 1fr); }
 .escenario-nombre { position: relative; display: flex; flex-direction: column; align-items: center; gap: .6rem; min-height: 0; overflow: hidden; padding-top: 1.4rem; }

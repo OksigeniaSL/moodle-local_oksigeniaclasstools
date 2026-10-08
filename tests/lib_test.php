@@ -235,4 +235,20 @@ final class lib_test extends \advanced_testcase {
         $this->assertSame('es.js', local_oksigeniaclasstools_content_file('es_ve'));
         $this->assertSame('en.js', local_oksigeniaclasstools_content_file('../es'));
     }
+
+    public function test_new_materials_join_the_ones_chosen(): void {
+        $this->resetAfterTest();
+        // Nothing chosen: nothing to add (all are shown).
+        unset_config('materials', 'local_oksigeniaclasstools');
+        local_oksigeniaclasstools_show_new('materials', ['calc', 'score']);
+        $this->assertFalse(get_config('local_oksigeniaclasstools', 'materials'));
+        // A choice without the new ones (one left out on purpose stays out).
+        set_config('materials', 'rods,line,base10', 'local_oksigeniaclasstools');
+        local_oksigeniaclasstools_show_new('materials', ['calc', 'score']);
+        $this->assertSame('rods,line,base10,calc,score', get_config('local_oksigeniaclasstools', 'materials'));
+        local_oksigeniaclasstools_show_new('materials', ['calc']);
+        $this->assertSame('rods,line,base10,calc,score', get_config('local_oksigeniaclasstools', 'materials'));
+        $site = local_oksigeniaclasstools_site();
+        $this->assertSame(['rods', 'line', 'base10', 'calc', 'score'], $site['materials']);
+    }
 }

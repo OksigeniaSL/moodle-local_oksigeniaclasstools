@@ -481,3 +481,19 @@ function local_oksigeniaclasstools_pluginfile($course, $cm, $context, $filearea,
     // A picture never changes under its name: it can be kept for a long time.
     send_stored_file($file, YEARSECS, 0, $forcedownload, $options);
 }
+
+/**
+ * Shows tools, games or materials that came after the administrator chose what the site shows: an upgrade adds them
+ * to that choice (the ones left out on purpose stay out). Nothing chosen yet: all are shown already.
+ *
+ * @param string $name tools, games or materials
+ * @param string[] $keys The new ones.
+ */
+function local_oksigeniaclasstools_show_new(string $name, array $keys): void {
+    $value = get_config('local_oksigeniaclasstools', $name);
+    if ($value === false) {
+        return;
+    }
+    $list = array_values(array_filter(explode(',', (string) $value), 'strlen'));
+    set_config($name, implode(',', array_values(array_unique(array_merge($list, $keys)))), 'local_oksigeniaclasstools');
+}

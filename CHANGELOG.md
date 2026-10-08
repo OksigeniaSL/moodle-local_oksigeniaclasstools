@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.20.1 (2026-10-23)
+
+- The **calculator** and the **score** were missing where the administrator's choice of materials had been saved
+  before they existed (with the defaults of the time): the upgrade adds them to it. From now on, each new tool, game
+  or material is added the same way; those left out on purpose stay out.
+- «Whose turn?»: its switches go together on the right, instead of each one pushing the next to another line.
+
 ## 0.20.0 (2026-10-22)
 
 - **Score**, among the materials: treble or bass clef, 2/4, 3/4, 4/4 or 6/8 and a tempo; notes written with a tap on
