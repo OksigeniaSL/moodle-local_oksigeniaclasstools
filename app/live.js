@@ -1,5 +1,5 @@
-// Live sessions on the board: a vote or team buzzers answered from the students' devices, or the teacher's phone as a
-// remote. The board opens the session in Moodle, shows the code and its QR, and asks every second and a half how it
+// Live sessions on the board: a vote, team buzzers or a brainstorm (ideas.js) answered from the students' devices, or
+// the teacher's phone as a remote. The board opens the session in Moodle, shows the code and its QR, and asks every second and a half how it
 // goes (only inside a Moodle course, where the session lives). And, anywhere, a vote by a show of hands, counted on the
 // board with + and −.
 //
@@ -22,7 +22,7 @@
     const TEAMS = [['#164281'], ['#ce1423'], ['#067e36'], ['#5b2fb8'], ['#fbbe17', true], ['#0e7c86']];
     const label = (v) => (['yes', 'no', 'green', 'yellow', 'red'].includes(v) ? t('lv_' + v) : v);
     const KEY = 'envivo-' + (LIVE ? AULA.courseid : 0);   // the open session, to find it again after reloading the page
-    const KINDS = LIVE ? ['vote', 'buzz', 'remote', 'hands'] : ['hands'];
+    const KINDS = LIVE ? ['vote', 'ideas', 'buzz', 'remote', 'hands'] : ['hands'];
 
     root.innerHTML = `
         <aside class="tarjeta lv-side">
@@ -52,6 +52,9 @@
                         <button type="button" class="redondo suave" id="lv-mas" aria-label="${escape(t('g_more'))}"><span data-icono="mas"></span></button>
                     </div>
                 </div>
+                <label class="campo apilado" id="lv-max-box"><span>${escape(t('id_max'))}</span><select id="lv-max">
+                    ${[1, 2, 3].map((n) => `<option value="${n}">${escape(n === 1 ? t('id_max_one') : t('id_max_many', n))}</option>`).join('')}
+                </select></label>
                 <p class="nota" id="lv-remote-hint">${escape(t('lv_remote_hint'))}</p>
                 <button type="button" class="boton grande ancho" id="lv-start"><span data-icono="empezar"></span><span>${escape(t('lv_start'))}</span></button>
                 <p class="nota lv-error" id="lv-error" role="alert" hidden></p>
@@ -89,6 +92,7 @@
         if (!hands && $('#lv-vote').value === 'custom') { $('#lv-vote').value = 'abcd'; }
         $('#lv-custom-box').hidden = !hands || $('#lv-vote').value !== 'custom';
         $('#lv-teams-box').hidden = kind !== 'buzz';
+        $('#lv-max-box').hidden = kind !== 'ideas';
         $('#lv-remote-hint').hidden = kind !== 'remote';
         $('#lv-start').hidden = hands;
         $('#lv-n').textContent = teams;
@@ -142,6 +146,8 @@
     $('#lv-kind').addEventListener('click', (e) => { const b = e.target.closest('[data-v]'); if (b) { kind = b.dataset.v; save('envivo-tipo', kind); paintSetup(); } });
     $('#lv-identity').addEventListener('click', (e) => { const b = e.target.closest('[data-v]'); if (b) { identity = b.dataset.v; save('envivo-entrada', identity); paintSetup(); } });
     $('#lv-vote').addEventListener('change', () => { save('envivo-voto', $('#lv-vote').value); hd.counts = {}; keepHands(); paintSetup(); });
+    $('#lv-max').value = String([1, 2, 3].includes(Number(load('ideas-max', 1))) ? Number(load('ideas-max', 1)) : 1);
+    $('#lv-max').addEventListener('change', () => save('ideas-max', Number($('#lv-max').value) || 1));
     const changeTeams = (d) => { teams = Math.max(2, Math.min(6, teams + d)); save('envivo-equipos', teams); paintSetup(); };
     repeatWhileHeld($('#lv-menos'), () => changeTeams(-1));
     repeatWhileHeld($('#lv-mas'), () => changeTeams(1));
@@ -177,7 +183,7 @@
     $('#lv-start').addEventListener('click', () => {
         const b = $('#lv-start'); b.disabled = true; $('#lv-error').hidden = true;
         const names = Array.from({ length: teams }, (_, i) => t('lv_team_n', i + 1));
-        call('start', { kind, identity, vote: $('#lv-vote').value, teams: JSON.stringify(names) })
+        call('start', { kind, identity, vote: $('#lv-vote').value, teams: JSON.stringify(names), max: $('#lv-max').value })
             .then((v) => { seq = 0; question = ''; apply(v); save(KEY, v.id); announce(t('lv_opened', v.code)); schedule(); })
             .catch(() => { $('#lv-error').hidden = false; $('#lv-error').textContent = t('lv_failed'); })
             .finally(() => { b.disabled = false; });
@@ -215,7 +221,9 @@
             $('#lv-url').innerHTML = escape(v.url.replace(/^https?:\/\//, '').replace(/\?.*$/, '')).split('/').join('/<wbr>');
         }
         paintJoin(v);
-        if (v.kind === 'remote') { runCommands(v); paintRemote(v, first); } else if (v.kind === 'vote') { paintVote(v, first); } else { paintBuzz(v, first); }
+        if (v.kind === 'remote') { runCommands(v); paintRemote(v, first); } else if (v.kind === 'vote') { paintVote(v, first); } else if (v.kind === 'ideas') {
+            if (window.ClasstoolsLiveIdeas) { window.ClasstoolsLiveIdeas.paint(stage, v, first, act); }
+        } else { paintBuzz(v, first); }
     }
     const paintJoin = (v) => {
         const n = v.kind === 'remote' ? (v.joined ? 1 : 0) : v.devices.length;

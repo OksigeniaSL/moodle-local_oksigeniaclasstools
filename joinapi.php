@@ -15,8 +15,8 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * What a device that joined a live session with its Moodle account does: join (or pick a team), answer, ask how it
- * goes and, for the teacher's own phone, send commands to the board.
+ * What a device that joined a live session with its Moodle account does: join (or pick a team), answer (or send and
+ * take back brainstorm answers), ask how it goes and, for the teacher's own phone, send commands to the board.
  *
  * @package    local_oksigeniaclasstools
  * @copyright  2026 Oksigenia <dev@oksigenia.cc>
@@ -51,5 +51,9 @@ if ($action === 'command') {
     live::join($live, $device, $USER->id, optional_param('team', 0, PARAM_INT));
 } else if ($action === 'answer') {
     live::answer($live, $device, required_param('answer', PARAM_ALPHANUM));
+} else if ($action === 'idea') {
+    live::idea($live, $device, required_param('text', PARAM_TEXT));
+} else if ($action === 'unidea') {
+    live::unidea($live, $device, required_param('slot', PARAM_INT));
 }
 echo json_encode(live::device_view($live, $device));

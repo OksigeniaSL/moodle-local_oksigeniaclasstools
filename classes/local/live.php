@@ -18,7 +18,7 @@ namespace local_oksigeniaclasstools\local;
 
 /**
  * Live sessions: the board opens one, the students' devices join it (with a code, or with their Moodle account) and
- * answer — a vote, or a buzzer per team — and the board shows it as it happens. The teacher's phone can also join a
+ * answer — a vote, a buzzer per team, or a word or two for a brainstorm — and the board shows it as it happens. The teacher's phone can also join a
  * session of its own and work as a remote. Devices ask every second or so (no sockets): the state lives in two small
  * tables, where each answer is one row, so presses at the same moment never overwrite each other.
  *
@@ -28,7 +28,13 @@ namespace local_oksigeniaclasstools\local;
  */
 class live {
     /** What a session is for. */
-    const KINDS = ['vote', 'buzz', 'remote'];
+    const KINDS = ['vote', 'buzz', 'remote', 'ideas'];
+
+    /** Longest answer of a brainstorm (a word or two), in characters. */
+    const IDEA_LENGTH = 32;
+
+    /** Most answers of one device to a brainstorm question. */
+    const MAX_IDEAS = 3;
 
     /** How devices join: with the code only, or with their Moodle account. */
     const IDENTITIES = ['anon', 'moodle'];
@@ -60,7 +66,8 @@ class live {
      * @param int $teacherid
      * @param string $kind vote, buzz or remote.
      * @param string $identity anon or moodle (a remote is always moodle).
-     * @param array $options vote => kind of vote; teams => names of the teams (buzz).
+     * @param array $options vote => kind of vote; teams => names of the teams (buzz); max => answers of each device
+     *     (ideas, 1 to 3).
      * @return \stdClass The session.
      * @throws \moodle_exception If the kind or the options are not valid.
      */
@@ -95,6 +102,10 @@ class live {
         if ($kind === 'remote') {
             $state['cmds'] = [];
             $state['seq'] = 0;
+        }
+        if ($kind === 'ideas') {
+            $state['max'] = max(1, min(self::MAX_IDEAS, (int) ($options['max'] ?? 1)));
+            $state['q'] = '';
         }
         $now = time();
         $DB->set_field_select(
@@ -188,9 +199,10 @@ class live {
      * What the teacher does with an open session.
      *
      * @param \stdClass $live
-     * @param string $action open (a new question or round), close, show (results on the devices too), kick, command
-     *     (from the remote) or end.
-     * @param array $data device (kick), command (command), vote (open: another kind of vote).
+     * @param string $action open (a new question or round), reopen (a brainstorm question again, keeping its answers),
+     *     close, show (results on the devices too), kick, command (from the remote) or end.
+     * @param array $data device (kick), command (command), vote (open: another kind of vote), q and max (open: the
+     *     brainstorm question, which the devices see, and how many answers each).
      * @return \stdClass The session.
      */
     public static function control(\stdClass $live, string $action, array $data = []): \stdClass {
@@ -206,6 +218,18 @@ class live {
                 // A vote can close by itself: from then on no answer gets in, whatever the board is doing.
                 $secs = (int) ($data['secs'] ?? 0);
                 $state['closesat'] = $live->kind === 'vote' && $secs > 0 ? time() + min(600, $secs) : 0;
+                if ($live->kind === 'ideas') {
+                    $state['q'] = \core_text::substr(trim(clean_param((string) ($data['q'] ?? ''), PARAM_TEXT)), 0, 140);
+                    if (!empty($data['max'])) {
+                        $state['max'] = max(1, min(self::MAX_IDEAS, (int) $data['max']));
+                    }
+                }
+                break;
+            case 'reopen':
+                if ($live->kind !== 'ideas' || $live->round < 1) {
+                    throw new \moodle_exception('invalidparameter', 'debug');
+                }
+                $state['open'] = true;
                 break;
             case 'close':
                 $state['open'] = false;
@@ -218,7 +242,12 @@ class live {
                 $device = self::device_param((string) ($data['device'] ?? ''));
                 if ($device !== '' && !in_array($device, $state['kicked'], true)) {
                     $state['kicked'][] = $device;
-                    $DB->delete_records('local_oksigeniaclasstools_livein', ['liveid' => $live->id, 'device' => $device]);
+                    // Its row of joining and its answers (in a brainstorm, «device:slot»).
+                    $DB->delete_records_select(
+                        'local_oksigeniaclasstools_livein',
+                        'liveid = :liveid AND (device = :device OR ' . $DB->sql_like('device', ':slots') . ')',
+                        ['liveid' => $live->id, 'device' => $device, 'slots' => $DB->sql_like_escape($device) . ':%']
+                    );
                 }
                 break;
             case 'command':
@@ -354,6 +383,88 @@ class live {
     }
 
     /**
+     * A device sends a word or two to the open brainstorm question. Each device has up to «max» answers in a question
+     * (rows «device:1», «device:2»…); the same answer twice from the same device counts once. Too many answers, or an
+     * empty one, are left out without an error.
+     *
+     * @param \stdClass $live
+     * @param string $device
+     * @param string $text
+     * @throws \moodle_exception If the device is not in or the question is closed.
+     */
+    public static function idea(\stdClass $live, string $device, string $text): void {
+        global $DB;
+        $state = json_decode($live->state, true);
+        $joined = $DB->get_record('local_oksigeniaclasstools_livein', ['liveid' => $live->id, 'round' => 0, 'device' => $device]);
+        $kicked = in_array($device, $state['kicked'], true);
+        if ($live->kind !== 'ideas' || !$joined || $kicked || !self::is_open($state) || $live->round < 1) {
+            throw new \moodle_exception('liveclosed', 'local_oksigeniaclasstools');
+        }
+        $text = \core_text::substr(trim(preg_replace('/\s+/u', ' ', clean_param($text, PARAM_TEXT))), 0, self::IDEA_LENGTH);
+        if ($text === '') {
+            return;
+        }
+        $mine = self::ideas_of($live, $device);
+        $same = in_array(\core_text::strtolower($text), array_map('core_text::strtolower', $mine), true);
+        if ($same || count($mine) >= ($state['max'] ?? 1)) {
+            return;
+        }
+        $slot = 1;
+        while (isset($mine[$slot])) {
+            $slot++;
+        }
+        try {
+            $DB->insert_record('local_oksigeniaclasstools_livein', (object) [
+                'liveid' => $live->id, 'round' => $live->round, 'device' => $device . ':' . $slot,
+                'userid' => $joined->userid, 'team' => 0, 'answer' => $text, 'timecreated' => self::ms(),
+            ]);
+        } catch (\dml_write_exception $e) {
+            // Two answers of the same device at once: the first one keeps the slot.
+            unset($e);
+        }
+    }
+
+    /**
+     * A device takes back one of its answers to the open brainstorm question.
+     *
+     * @param \stdClass $live
+     * @param string $device
+     * @param int $slot
+     */
+    public static function unidea(\stdClass $live, string $device, int $slot): void {
+        global $DB;
+        $state = json_decode($live->state, true);
+        if ($live->kind === 'ideas' && self::is_open($state) && $slot >= 1 && $slot <= self::MAX_IDEAS) {
+            $DB->delete_records('local_oksigeniaclasstools_livein', ['liveid' => $live->id, 'round' => $live->round,
+                'device' => $device . ':' . $slot]);
+        }
+    }
+
+    /**
+     * The answers of a device to the current brainstorm question.
+     *
+     * @param \stdClass $live
+     * @param string $device
+     * @return array slot => text
+     */
+    private static function ideas_of(\stdClass $live, string $device): array {
+        global $DB;
+        $rows = $DB->get_records_select(
+            'local_oksigeniaclasstools_livein',
+            'liveid = :liveid AND round = :round AND ' . $DB->sql_like('device', ':slots'),
+            ['liveid' => $live->id, 'round' => $live->round, 'slots' => $DB->sql_like_escape($device) . ':%'],
+            'device',
+            'id, device, answer'
+        );
+        $mine = [];
+        foreach ($rows as $row) {
+            $mine[(int) substr($row->device, strrpos($row->device, ':') + 1)] = $row->answer;
+        }
+        ksort($mine);
+        return $mine;
+    }
+
+    /**
      * The place of a press in its round (by the millisecond, and by arrival when two share it).
      *
      * @param \stdClass $press
@@ -391,6 +502,16 @@ class live {
         }
         if ($live->kind === 'buzz') {
             $view['teams'] = $state['teams'];
+        }
+        if ($live->kind === 'ideas') {
+            $view['q'] = $state['q'];
+            $view['max'] = (int) $state['max'];
+            $view['length'] = self::IDEA_LENGTH;
+            $view['mine'] = [];
+            foreach ($live->round ? self::ideas_of($live, $device) : [] as $slot => $text) {
+                $view['mine'][] = ['slot' => $slot, 'text' => $text];
+            }
+            return $view;
         }
         $mine = $live->round ? $DB->get_record(
             'local_oksigeniaclasstools_livein',
@@ -458,6 +579,26 @@ class live {
                 }
             }
             $view['presses'] = $presses;
+        }
+        if ($live->kind === 'ideas') {
+            $view['q'] = $state['q'];
+            $view['max'] = (int) $state['max'];
+            $ideas = [];
+            if ($live->round) {
+                $rows = $DB->get_records_select(
+                    'local_oksigeniaclasstools_livein',
+                    'liveid = ? AND round = ?',
+                    [$live->id, $live->round],
+                    'timecreated, id',
+                    'id, device, answer, timecreated'
+                );
+                foreach ($rows as $row) {
+                    $device = substr($row->device, 0, (int) strrpos($row->device, ':'));
+                    $ideas[] = ['id' => (int) $row->id, 'device' => $device, 'name' => $names[$device] ?? '',
+                        'text' => $row->answer, 't' => (int) $row->timecreated];
+                }
+            }
+            $view['ideas'] = $ideas;
         }
         return $view;
     }

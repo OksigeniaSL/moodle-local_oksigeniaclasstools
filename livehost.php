@@ -16,7 +16,8 @@
 
 /**
  * The board's side of a live session: open one, ask how it goes (who is in, the answers, the remote's commands) and
- * run it (open a question or a round, close it, show the results on the devices, send a device out, end it).
+ * run it (open a question or a round, reopen a brainstorm question, close it, show the results on the devices, send
+ * a device out, end it).
  *
  * @package    local_oksigeniaclasstools
  * @copyright  2026 Oksigenia <dev@oksigenia.cc>
@@ -49,6 +50,7 @@ if ($action === 'start') {
             'vote' => optional_param('vote', 'abcd', PARAM_ALPHA),
             'teams' => json_decode(optional_param('teams', '[]', PARAM_RAW), true) ?: [],
             'show' => optional_param('show', 0, PARAM_BOOL),
+            'max' => optional_param('max', 1, PARAM_INT),
         ]
     );
 } else {
@@ -59,6 +61,8 @@ if ($action === 'start') {
             'vote' => optional_param('vote', '', PARAM_ALPHA),
             'show' => optional_param('show', 0, PARAM_BOOL),
             'secs' => optional_param('secs', 0, PARAM_INT),
+            'q' => optional_param('q', '', PARAM_TEXT),
+            'max' => optional_param('max', 0, PARAM_INT),
         ]);
     }
 }

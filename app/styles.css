@@ -936,6 +936,27 @@ a.redondo { text-decoration: none; }
 .ct-wb-stage { position: relative; flex: 1; min-height: 0; padding: 0; overflow: hidden; }
 .ct-wb-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
 .ct-wb-ink { touch-action: none; cursor: crosshair; }
+.ct-wb-stage canvas.ct-wb-pre { pointer-events: none; }
+.ct-wb-stage[data-tool="text"] .ct-wb-ink { cursor: text; }
+/* Text on the board: a box where it will be written, in the size and colour chosen. */
+#wb-stage .ct-wb-text { position: absolute; z-index: 5; min-width: 8em; min-height: 0; margin: 0; padding: 0 .1em; border: 1px dashed var(--azul); border-radius: 4px; background: rgba(255, 255, 255, .75); box-shadow: none; font-family: "Nunito", system-ui, sans-serif; font-weight: 800; line-height: 1; }
+/* The tools as icons; undo and redo together; the background in a small panel. */
+.ct-wb-tools button { min-width: 2.6rem; padding-inline: .4rem; }
+.ct-wb-tools .ico { font-size: 1.05rem; }
+.ct-wb-hist { display: inline-flex; gap: .3rem; }
+.ct-wb-redo { padding-inline: .85rem; }
+.ct-wb-fondo { position: relative; }
+.ct-wb-panel { position: absolute; top: calc(100% + .4rem); right: 0; z-index: 30; display: flex; flex-direction: column; gap: .55rem; width: min(25rem, 92vw); box-shadow: 0 18px 40px rgba(15, 47, 94, .22); }
+.ct-wb-fondos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .4rem; }
+.ct-wb-fondos button { display: flex; flex-direction: column; align-items: stretch; gap: .3rem; padding: .4rem; border: 2px solid var(--borde); border-radius: 12px; background: var(--superficie); color: var(--tinta-2); font-size: .85rem; font-weight: 800; cursor: pointer; }
+.ct-wb-fondos button[aria-checked="true"] { border-color: var(--azul); background: var(--azul-suave); color: var(--azul); }
+.ct-wb-muestra { height: 2.4rem; border: 1px solid var(--borde); border-radius: 6px; background-color: #fff; }
+.ct-wb-m-grid { background-image: linear-gradient(#cfdaea 1px, transparent 1px), linear-gradient(90deg, #cfdaea 1px, transparent 1px); background-size: 8px 8px; }
+.ct-wb-m-lines { background-image: repeating-linear-gradient(to bottom, transparent 0 3px, #d6e0ee 3px 4px, transparent 4px 7px, #d6e0ee 7px 8px, transparent 8px 11px, #8fa6c8 11px 12px); }
+.ct-wb-m-double { background-image: repeating-linear-gradient(to bottom, transparent 0 6px, #9db2d2 6px 7px, transparent 7px 10px, #9db2d2 10px 11px, transparent 11px 14px); }
+.ct-wb-m-ruled { background-image: repeating-linear-gradient(to bottom, transparent 0 7px, #a9bad3 7px 8px); }
+.ct-wb-m-staff { background-image: repeating-linear-gradient(to bottom, #7f8fa6 0 1px, transparent 1px 4px); background-position: 0 11px; background-repeat: no-repeat; background-size: 100% 17px; }
+.ct-wb-zoom output { min-width: 4.5ch; font-size: 1.4rem; }
 .ct-wb-erasing .ct-wb-ink { cursor: cell; }
 @media (max-width: 760px) { .ct-wb-stage { flex: none; height: 70vh; } }
 
@@ -1292,3 +1313,63 @@ a.redondo { text-decoration: none; }
 /* The timer's five looks wrap onto a second row instead of overflowing the card. */
 #tm-aspectos { display: grid; grid-template-columns: repeat(auto-fit, minmax(5rem, 1fr)); border-radius: 22px; }
 #tm-aspectos button { padding-inline: .5rem; }
+
+/* ---------- Brainstorm (ideas.js): the question and the view fill the stage; below, what to check and the controls ---------- */
+.lv-setup .segmentos { flex-wrap: wrap; }
+.lv-setup .segmentos button { flex: 1 1 auto; }
+.id-foto { display: flex; flex: 1; flex-direction: column; gap: .6rem; min-height: 0; background: var(--superficie); }
+.id-lienzo { position: relative; display: flex; flex: 1; flex-direction: column; gap: .8rem; min-height: 0; padding: .4rem; overflow: auto; }
+.id-cuenta { margin: 0; color: var(--tinta-3); font-weight: 800; text-align: center; font-variant-numeric: tabular-nums; }
+.id-vacio { margin: auto; color: var(--tinta-3); font-size: clamp(1.1rem, 2.4vw, 1.6rem); font-weight: 800; text-align: center; }
+/* The cloud: each answer in its colour, bigger the more times it came; highlighted ones on yellow. */
+.id-nube { display: flex; flex-wrap: wrap; align-content: center; align-items: center; justify-content: center; gap: .25em .7em; max-width: 100%; margin: auto; padding: .5rem; }
+.id-palabra { position: relative; padding: .05em .3em; border: 0; border-radius: .35em; background: none; color: var(--c); font-weight: 900; line-height: 1.1; cursor: pointer; transition: transform .15s, background-color .15s; }
+.id-palabra sup { margin-left: .12em; font-size: .45em; font-weight: 900; opacity: .7; }
+.id-palabra:hover { transform: scale(1.05); }
+.id-palabra.destacada { background: var(--amarillo); color: var(--tinta); box-shadow: 0 0 0 .12em var(--amarillo); }
+.id-palabra.elegida, .id-tarjeta.elegida, .id-fila.elegida { outline: 3px dashed var(--azul-osc); outline-offset: 3px; }
+.id-lienzo .nueva { animation: id-entra .5s cubic-bezier(.3, 1.6, .5, 1); }
+@keyframes id-entra { from { opacity: 0; transform: scale(.4); } }
+/* The ranking: rows with a bar, dragged by hand to another place. */
+.id-lista { display: flex; flex-direction: column; gap: .45rem; width: min(100%, 52rem); margin: 0 auto; padding: 0; list-style: none; }
+.id-fila { display: grid; grid-template-columns: auto minmax(8rem, 1.2fr) minmax(0, 2fr) 3rem; align-items: center; gap: .7rem; padding: .45rem .8rem; border: 1px solid var(--borde); border-radius: 14px; background: var(--superficie); font-size: clamp(1rem, 2vw, 1.5rem); cursor: grab; }
+.id-asa { display: inline-flex; color: var(--tinta-3); }
+.id-texto { color: var(--azul-osc); font-weight: 900; overflow-wrap: anywhere; }
+.id-pista { height: 1.1rem; border-radius: 50rem; background: var(--azul-suave); overflow: hidden; }
+.id-pista i { display: block; height: 100%; border-radius: 50rem; background: var(--c); }
+.id-fila strong { color: var(--azul-osc); text-align: right; font-variant-numeric: tabular-nums; }
+.id-fila.destacada { border-color: var(--amarillo); background: var(--amarillo-suave); }
+.id-fila.encima { box-shadow: 0 -4px 0 var(--azul); }
+/* The templates: the answers not placed yet in a tray, and the boxes in their colours. */
+.id-bandeja { display: flex; flex-direction: column; gap: .4rem; padding: .6rem; border: 2px dashed var(--borde); border-radius: var(--radio); }
+.id-bandeja.encima { border-color: var(--azul); background: var(--azul-suave); }
+.id-tarjetas { display: flex; flex-wrap: wrap; align-content: flex-start; gap: .4rem; }
+.id-tarjeta { display: inline-flex; align-items: center; gap: .45rem; min-height: 44px; padding: .35rem .8rem; border: 0; border-left: 6px solid var(--c); border-radius: 10px; background: var(--superficie); box-shadow: 0 1px 3px rgba(15, 47, 94, .2); color: var(--tinta); font-size: clamp(.95rem, 1.6vw, 1.2rem); font-weight: 800; text-align: left; cursor: grab; }
+.id-tarjeta b { padding: 0 .45em; border-radius: 50rem; background: var(--azul-suave); color: var(--azul-osc); font-size: .8em; }
+.id-tarjeta.destacada { background: var(--amarillo); }
+.id-plantilla { display: grid; flex: 1; gap: .7rem; min-height: 16rem; }
+.id-t-swot, .id-t-eisen { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(8rem, 1fr)); }
+.id-t-procon { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.id-t-scale { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.id-zona { display: flex; flex-direction: column; gap: .5rem; min-height: 0; padding: .6rem; border: 2px solid var(--c); border-radius: var(--radio); background: color-mix(in srgb, var(--c) 7%, var(--superficie)); overflow: auto; }
+.id-zona h3 { margin: 0; color: var(--c); font-size: clamp(1rem, 1.8vw, 1.35rem); font-weight: 900; }
+.id-zona.encima { background: color-mix(in srgb, var(--c) 18%, var(--superficie)); box-shadow: inset 0 0 0 3px var(--c); }
+.id-lienzo:not([data-view="cloud"]) [data-k] { touch-action: none; }
+.id-lienzo .arrastrando { opacity: .3; }
+.id-fantasma { position: fixed; z-index: 80; margin: 0; pointer-events: none; box-shadow: 0 12px 28px rgba(15, 47, 94, .3); opacity: .95; transform: rotate(-2deg); }
+/* Checking before showing, the hidden ones, and what to do with the chosen ones. */
+.id-bandeja-revisar { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; padding: .5rem .7rem; border-radius: var(--radio); background: var(--amarillo-suave); }
+.id-bandeja-revisar.id-ocultas { background: var(--fondo); }
+.id-revisar-lista { display: flex; flex: 1; flex-wrap: wrap; gap: .4rem; }
+.id-revisar { display: inline-flex; align-items: center; gap: .3rem; padding: .2rem .3rem .2rem .8rem; border: 1px solid var(--borde); border-radius: 50rem; background: var(--superficie); font-weight: 800; }
+.id-revisar b { color: var(--tinta-3); }
+button.id-revisar { padding-right: .8rem; cursor: pointer; }
+.id-si, .id-no { display: inline-grid; place-items: center; width: 34px; height: 34px; padding: 0; border: 0; border-radius: 50%; color: #fff; cursor: pointer; }
+.id-si { background: var(--verde); }
+.id-no { background: var(--rojo); }
+.id-seleccion { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: .5rem; padding: .4rem; border-radius: var(--radio); background: var(--azul-suave); }
+.id-seleccion > span:first-child { color: var(--azul-osc); font-weight: 900; }
+.id-mandos { flex-wrap: wrap; }
+.id-lienzo .centro { margin: .4rem 0 0; }
+:root[data-modo="advanced"] .id-palabra, :root[data-modo="advanced"] .id-texto { font-weight: 700; }
+@media (prefers-reduced-motion: reduce) { .id-lienzo .nueva { animation: none; } .id-palabra { transition: none; } }

@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.14.0 (2026-10-15)
+
+- **Brainstorm**, a new kind of live session: everyone sends a word or two from their device (1, 2 or 3 answers
+  each, which they can take back while it is open), with the question on their screen. On the board the answers
+  become a live cloud where the same answer however it is written (capitals, accents, punctuation) counts as one and
+  grows. The teacher taps answers to highlight them, joins answers that mean the same, hides any of them, and can
+  check every answer before it shows («Check before showing»). Views: cloud, ranking (sorted by how many times or
+  dragged by hand), and templates to drag the answers into — SWOT, urgent or important, for and against, a scale
+  from 1 to 5. The result is saved as an image or sent to the class like a board. A question can be opened again or
+  followed by a new one. Answers are kept like those of a vote (in the same table, one row each; nothing new to
+  install).
+- **Whiteboard**: more tools — highlighter (see-through, so what is under it still shows), straight line, arrow,
+  rectangle, circle or oval, and text — plus redo (also Ctrl+Y) and yellow among the colours. The background is
+  chosen in a small panel: plain, squared paper, handwriting lines, double lines (new), lined (new) or music staves,
+  now as many as fit and spread over the board; its size can be made smaller or bigger (from 60 % to 250 %, and each
+  screen mode starts with its own: bigger for Early years, smaller for Advanced), with a red margin line on the left
+  like in the notebooks. Eraser, undo, download and send are icons now, so the bar fits in one row.
+- «Send to the class» takes a picture from another tool too (`ClasstoolsWhiteboard.share`).
+
 ## 0.13.0 (2026-10-14)
 
 - **Screen modes that show**: each mode has a look of its own, so the class sees at once which one is on.

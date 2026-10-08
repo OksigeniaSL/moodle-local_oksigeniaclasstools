@@ -16,7 +16,8 @@
 
 /**
  * What a device that joined a live session with the code only does (no Moodle account, no cookies): join (or pick
- * a team), answer and ask how it goes. The device is a random token it keeps for itself.
+ * a team), answer (or send and take back brainstorm answers) and ask how it goes. The device is a random token it
+ * keeps for itself.
  *
  * @package    local_oksigeniaclasstools
  * @copyright  2026 Oksigenia <dev@oksigenia.cc>
@@ -41,5 +42,9 @@ if ($action === 'join') {
     live::join($live, $device, 0, optional_param('team', 0, PARAM_INT));
 } else if ($action === 'answer') {
     live::answer($live, $device, required_param('answer', PARAM_ALPHANUM));
+} else if ($action === 'idea') {
+    live::idea($live, $device, required_param('text', PARAM_TEXT));
+} else if ($action === 'unidea') {
+    live::unidea($live, $device, required_param('slot', PARAM_INT));
 }
 echo json_encode(live::device_view($live, $device));

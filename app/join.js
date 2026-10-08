@@ -1,6 +1,6 @@
 // The page where a device joins a live session of the board: it asks for the code (unless it came in the address,
-// from the QR), joins, and then shows only buttons — the answers of a vote, the team buzzer, or the remote for the
-// teacher's own phone. It asks the site every second and a half how the session goes.
+// from the QR), joins, and then shows only buttons — the answers of a vote, the team buzzer, a box for a word or two
+// in a brainstorm, or the remote for the teacher's own phone. It asks the site every second and a half how the session goes.
 //
 // @copyright 2026 Oksigenia <dev@oksigenia.cc>
 // @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -89,6 +89,7 @@
         if (v.kind === 'remote') { remote(); return; }
         if (v.kind === 'buzz' && (!v.joined || !v.team || team === -1)) { pickTeam(v); return; }
         if (v.kind === 'vote') { vote(v); return; }
+        if (v.kind === 'ideas') { ideas(v); return; }
         if (v.kind === 'buzz') { buzzer(v); }
     };
 
@@ -119,6 +120,45 @@
             return `<div class="jn-barra"><span>${escape(label(o))}</span><i style="--c:${c}; width:${Math.round(100 * n / most)}%"></i><span>${n}</span></div>`;
         }).join('')}</div>` : '';
         screen(t('lv_closed'), v.mine ? t('lv_your_answer', label(v.mine)) : '', bars);
+    };
+
+    // A brainstorm: the question, a box for a word or two, and the answers sent, which can be taken back while it is
+    // open. What is being typed survives the screen being drawn again.
+    const ideas = (v) => {
+        const mine = v.mine || [];
+        const list = mine.length ? `<div class="jn-ideas"><p class="jn-texto">${escape(t('lv_idea_yours'))}</p><ul>${mine.map((m) => `<li><span>${escape(m.text)}</span>`
+            + (v.open ? `<button type="button" class="jn-quita" data-slot="${m.slot}" aria-label="${escape(t('lv_idea_remove', m.text))}" title="${escape(t('lv_idea_remove', m.text))}">×</button>` : '')
+            + '</li>').join('')}</ul></div>` : '';
+        if (!v.round) { screen(t('lv_wait_question'), t('lv_joined')); return; }
+        if (!v.open) { screen(t('lv_closed'), v.q || '', list); return; }
+        const before = document.getElementById('jn-idea');
+        const typed = before ? before.value : '', focused = !!before && document.activeElement === before;
+        const left = Math.max(0, (v.max || 1) - mine.length);
+        root.innerHTML = `${head()}<div class="jn-centro">
+            ${v.q ? `<p class="jn-titulo">${escape(v.q)}</p>` : `<p class="jn-texto">${escape(t('lv_question_n', v.round))}</p>`}
+            ${left ? `<form class="jn-idea" id="jn-idea-form"><input id="jn-idea" maxlength="${v.length || 32}" autocomplete="off" enterkeyhint="send" spellcheck="true"
+                placeholder="${escape(t('lv_idea_ph'))}" aria-label="${escape(t('lv_idea_ph'))}"><button class="jn-boton" type="submit">${escape(t('lv_idea_send'))}</button></form>
+                <p class="jn-texto">${escape(left === 1 ? t('lv_idea_left_one') : t('lv_idea_left_many', left))}</p>`
+                : `<p class="jn-titulo jn-listo">${escape(t('lv_idea_done'))}</p>`}
+            ${list}</div>`;
+        const input = document.getElementById('jn-idea');
+        if (input) {
+            input.value = typed;
+            if (focused) { input.focus(); }
+            document.getElementById('jn-idea-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const text = input.value.trim();
+                if (!text) { input.focus(); return; }
+                buzz();
+                const b = e.currentTarget.querySelector('button'); b.disabled = true;
+                post('idea', { text }).then((r) => { input.value = ''; apply(r); const again = document.getElementById('jn-idea'); if (again) { again.focus(); } })
+                    .catch(() => { b.disabled = false; });
+            });
+        }
+        root.querySelectorAll('.jn-quita').forEach((b) => b.addEventListener('click', () => {
+            buzz(); b.disabled = true;
+            post('unidea', { slot: b.dataset.slot }).then(apply).catch(() => { b.disabled = false; });
+        }));
     };
 
     const pickTeam = (v) => {

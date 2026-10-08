@@ -68,3 +68,14 @@ button { touch-action: manipulation; -webkit-user-select: none; user-select: non
 .jn-reloj span { min-width: 7ch; color: var(--azul-osc); font-weight: 900; font-variant-numeric: tabular-nums; }
 .jn-reloj.ultimo i { background: var(--rojo); }
 .jn-reloj.ultimo span { color: var(--rojo); }
+/* A brainstorm: a big box for a word or two, and the answers sent as chips that can be taken back. */
+.jn-idea { display: flex; flex-direction: column; gap: .7rem; width: 100%; }
+.jn-idea input { width: 100%; min-height: 64px; padding: .6rem 1rem; border: 3px solid var(--borde); border-radius: 18px; background: var(--superficie); font-size: 1.6rem; font-weight: 800; text-align: center; }
+.jn-idea input:focus { border-color: var(--azul); outline: none; }
+.jn-idea .jn-boton { min-height: 60px; font-size: 1.3rem; }
+.jn-listo { color: var(--verde); }
+.jn-ideas { display: flex; flex-direction: column; align-items: center; gap: .4rem; width: 100%; }
+.jn-ideas ul { display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem; margin: 0; padding: 0; list-style: none; }
+.jn-ideas li { display: inline-flex; align-items: center; gap: .3rem; padding: .35rem .5rem .35rem 1rem; border-radius: 50rem; background: var(--azul-suave); color: var(--azul-osc); font-weight: 900; }
+.jn-ideas li:not(:has(button)) { padding-right: 1rem; }
+.jn-quita { display: inline-grid; place-items: center; width: 2.2rem; height: 2.2rem; padding: 0; border: 0; border-radius: 50%; background: var(--superficie); color: var(--rojo); font-size: 1.4rem; font-weight: 900; line-height: 1; }

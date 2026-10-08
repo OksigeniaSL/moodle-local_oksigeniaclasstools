@@ -17,7 +17,7 @@
 namespace local_oksigeniaclasstools\local;
 
 /**
- * Tests for live sessions: votes, team buzzers and the teacher's phone as a remote.
+ * Tests for live sessions: votes, team buzzers, brainstorms and the teacher's phone as a remote.
  *
  * @package    local_oksigeniaclasstools
  * @category   test
@@ -133,6 +133,73 @@ final class live_test extends \advanced_testcase {
         // Another round starts empty.
         $live = live::control($live, 'open');
         $this->assertSame([], live::board_view($live)['presses']);
+    }
+
+    public function test_a_brainstorm_takes_up_to_max_answers_per_device(): void {
+        $this->resetAfterTest();
+        $course = $this->getDataGenerator()->create_course();
+        $live = live::start($course, 2, 'ideas', 'anon', ['max' => 2]);
+        $a = str_repeat('a', 32);
+        $b = str_repeat('b', 32);
+        live::join($live, $a);
+        live::join($live, $b);
+        // Closed: nothing gets in.
+        try {
+            live::idea($live, $a, 'Sol');
+            $this->fail('Answered a closed question');
+        } catch (\moodle_exception $e) {
+            $this->assertSame('liveclosed', $e->errorcode);
+        }
+        $live = live::control($live, 'open', ['q' => '  What does a plant need? <b>now</b> ']);
+        live::idea($live, $a, '  Sun   light ');
+        // The same answer again counts once; a third one with max 2, and an empty one, are left out; a long one is cut.
+        live::idea($live, $a, 'sun LIGHT');
+        live::idea($live, $a, '<script>x</script>Water');
+        live::idea($live, $a, 'Soil');
+        live::idea($live, $b, str_repeat('x', 50));
+        live::idea($live, $b, '   ');
+        $view = live::board_view($live);
+        $this->assertSame('What does a plant need? now', $view['q']);
+        $this->assertSame(['Sun light', 'xWater', str_repeat('x', 32)], array_column($view['ideas'], 'text'));
+        $this->assertSame([$a, $a, $b], array_column($view['ideas'], 'device'));
+        $mine = live::device_view($live, $a);
+        $this->assertSame('What does a plant need? now', $mine['q']);
+        $this->assertSame(2, $mine['max']);
+        $this->assertSame([['slot' => 1, 'text' => 'Sun light'], ['slot' => 2, 'text' => 'xWater']], $mine['mine']);
+        // Taking one back frees its slot.
+        live::unidea($live, $a, 1);
+        live::idea($live, $a, 'Soil');
+        $mine = live::device_view($live, $a)['mine'];
+        $this->assertSame([['slot' => 1, 'text' => 'Soil'], ['slot' => 2, 'text' => 'xWater']], $mine);
+        // Closed and opened again, the answers stay; a new question starts empty.
+        $live = live::control($live, 'close');
+        $this->assertFalse(live::device_view($live, $a)['open']);
+        $live = live::control($live, 'reopen');
+        $this->assertTrue(live::device_view($live, $a)['open']);
+        $this->assertCount(3, live::board_view($live)['ideas']);
+        $live = live::control($live, 'open', ['q' => 'Another one', 'max' => 3]);
+        $this->assertSame([], live::board_view($live)['ideas']);
+        $this->assertSame(3, live::device_view($live, $b)['max']);
+    }
+
+    public function test_a_device_sent_out_of_a_brainstorm_loses_its_answers(): void {
+        $this->resetAfterTest();
+        $course = $this->getDataGenerator()->create_course();
+        $live = live::start($course, 2, 'ideas', 'anon', ['max' => 3]);
+        $a = str_repeat('a', 32);
+        $b = str_repeat('b', 32);
+        live::join($live, $a);
+        live::join($live, $b);
+        $live = live::control($live, 'open', ['q' => 'Q']);
+        live::idea($live, $a, 'One');
+        live::idea($live, $a, 'Two');
+        live::idea($live, $b, 'Three');
+        $live = live::control($live, 'kick', ['device' => $a]);
+        $view = live::board_view($live);
+        $this->assertSame(['Three'], array_column($view['ideas'], 'text'));
+        $this->assertCount(1, $view['devices']);
+        $this->expectException(\moodle_exception::class);
+        live::control(live::start($course, 2, 'vote', 'anon'), 'reopen');
     }
 
     public function test_a_device_sent_out_cannot_come_back(): void {
