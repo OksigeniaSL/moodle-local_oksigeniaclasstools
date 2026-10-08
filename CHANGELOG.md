@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.17.1 (2026-10-19)
+
+- **The course on top**: opened from a course, the bar shows its name under «Class tools», so a teacher who moves
+  from class to class (or comes back to an open laptop) sees which one it is.
+- **More room at the sides** of the screen and of the bar, for projectors that are not quite lined up and cut the
+  edge of the picture.
+
 ## 0.17.0 (2026-10-18)
 
 - **Quiz**, a new kind of live session (a light Kahoot): questions with one right answer (two to four) or true or

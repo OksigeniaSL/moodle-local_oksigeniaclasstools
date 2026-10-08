@@ -32,11 +32,16 @@ h2, h3 { margin: 0; }
 :focus-visible { outline: 3px solid var(--azul-osc); outline-offset: 3px; }
 
 /* ---------- Barra de arriba ---------- */
-.barra { position: relative; z-index: 5; display: flex; align-items: center; gap: .5rem .8rem; flex: none; padding: .45rem 1rem; background: var(--superficie); box-shadow: 0 1px 0 var(--borde); }
+.barra { position: relative; z-index: 5; display: flex; align-items: center; gap: .5rem .8rem; flex: none; padding: .45rem clamp(1rem, 2vw, 2rem); background: var(--superficie); box-shadow: 0 1px 0 var(--borde); }
 .barra::after { content: ""; position: absolute; left: 0; right: 0; bottom: -4px; height: 4px;
     background: linear-gradient(to right, var(--rojo) 0 25%, var(--amarillo) 25% 50%, var(--verde) 50% 75%, var(--azul) 75% 100%); }
 .marca { display: flex; align-items: center; gap: .6rem; flex: none; font-size: 1.2rem; font-weight: 700; white-space: nowrap; }
 .marca strong { color: var(--azul); font-weight: 900; }
+/* Dentro de un curso: el nombre de las herramientas, pequeño, y el curso debajo. */
+.marca.con-curso > span:last-child { display: flex; flex-direction: column; min-width: 0; line-height: 1.15; }
+.marca-app { color: var(--tinta-2); font-size: .78rem; font-weight: 700; }
+.marca-app strong { color: inherit; font-weight: 800; }
+.marca-curso { max-width: 17rem; overflow: hidden; color: var(--azul-osc); font-size: 1.15rem; font-weight: 900; text-overflow: ellipsis; }
 .sello { display: grid; place-items: center; width: 2.4rem; height: 2.4rem; border-radius: 12px; background: var(--azul); color: #fff; font-size: 1.15rem; }
 .pestanas { position: relative; display: flex; gap: .15rem; flex: 0 1 auto; min-width: 0; margin: 0 auto; padding: .25rem; border-radius: 50rem; background: var(--fondo); }
 .pestana { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: .45rem; flex: none; min-height: 48px; padding: .4rem .6rem; border: 0; border-radius: 50rem; background: none; color: var(--tinta-3); font-weight: 800; white-space: nowrap; cursor: pointer; transition: background-color .15s, color .15s; }
@@ -61,7 +66,8 @@ h2, h3 { margin: 0; }
 .barra.dos-filas .redondo-texto { display: inline; }
 
 /* ---------- Piezas comunes ---------- */
-.mesa { position: relative; flex: 1; min-height: 0; padding: 1rem; container-type: size; }
+/* A los lados, algo más de aire: un proyector desajustado o torcido se come el borde de la imagen. */
+.mesa { position: relative; flex: 1; min-height: 0; padding: 1rem clamp(1.25rem, 2.5vw, 2.5rem); container-type: size; }
 .herramienta { height: 100%; min-height: 0; animation: aparece .22s ease-out; }
 .tarjeta { min-width: 0; padding: 1rem 1.1rem; border: 1px solid var(--borde); border-radius: var(--radio); background: var(--superficie); box-shadow: var(--sombra); }
 .boton { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; min-height: 48px; padding: .55rem 1.2rem; border: 0; border-radius: 50rem; background: var(--azul); color: #fff; font-weight: 800; line-height: 1.15; cursor: pointer; box-shadow: 0 2px 0 rgba(15, 47, 94, .22); transition: background-color .15s, transform .1s; }
@@ -376,7 +382,7 @@ input[type="range"]:focus-visible { outline: 3px solid var(--azul-osc); outline-
 
 /* ---------- Pantallas bajas (portátil con la barra del navegador) ---------- */
 @media (max-height: 620px) and (min-width: 761px) {
-    .mesa { padding: .75rem; }
+    .mesa { padding: .75rem clamp(1.25rem, 2.5vw, 2.5rem); }
     .tarjeta { padding: .8rem .95rem; }
     .boton.grande { min-height: 54px; font-size: 1.1rem; }
     .boton.enorme { min-height: 62px; font-size: 1.4rem; }
@@ -390,6 +396,7 @@ input[type="range"]:focus-visible { outline: 3px solid var(--azul-osc); outline-
     .barra.dos-filas .redondo-texto { display: none; }
     .barra.dos-filas .acciones .redondo { width: 48px; padding: 0; justify-content: center; border-radius: 50%; }
     .marca { font-size: 1.05rem; }
+    .marca-curso { max-width: 11rem; font-size: 1rem; }
     .mesa { flex: none; padding: .75rem; container-type: normal; }
     .herramienta { height: auto; }
     .temporizador, .cronometro, .cronometro.con-vueltas, .grupos, .semaforo, .azar, .reloj, .qr, .quien-cuerpo { grid-template-columns: minmax(0, 1fr); }
@@ -1159,6 +1166,8 @@ a.redondo { text-decoration: none; }
 :root[data-modo="advanced"] .barra::after { bottom: -2px; height: 2px; }
 :root[data-modo="advanced"] .marca { font-weight: 500; }
 :root[data-modo="advanced"] .marca strong { color: #fff; font-weight: 700; }
+:root[data-modo="advanced"] .marca-app, :root[data-modo="advanced"] .marca-app strong { color: rgba(255, 255, 255, .7); font-weight: 600; }
+:root[data-modo="advanced"] .marca-curso { color: #fff; }
 :root[data-modo="advanced"] .sello { border-radius: 4px; background: #fff; color: var(--barra-osc); }
 :root[data-modo="advanced"] .pestanas { gap: .1rem; padding: 0; border-radius: 0; background: var(--barra-osc); }
 :root[data-modo="advanced"] .pestana { border-radius: 0; color: rgba(255, 255, 255, .66); font-weight: 600; }

@@ -1816,7 +1816,19 @@
         v.innerHTML = `<span>${icono('salir')}</span><span class="redondo-texto">${escapa(vuelta[1])}</span>`;
         $('.acciones').prepend(v);
     }
-    if (AULA && AULA.course) { document.title = `${t('bar_title')} · ${AULA.course}`; }
+    if (AULA && AULA.course) {
+        document.title = `${t('bar_title')} · ${AULA.course}`;
+        // El curso, bajo el nombre de las herramientas: con varias clases al día (o un especialista que rota), que se
+        // vea en cuál está abierta.
+        const marca = $('.marca'), textos = marca.lastElementChild, app = document.createElement('span');
+        app.className = 'marca-app';
+        app.append(...textos.childNodes);
+        const curso = document.createElement('span');
+        curso.className = 'marca-curso'; curso.textContent = AULA.course; curso.title = AULA.course;
+        textos.append(app, curso);
+        marca.classList.add('con-curso');
+        ajustaBarra();
+    }
     pintaSelects();
     quienPinta();
     tmPon(5 * 60000);
