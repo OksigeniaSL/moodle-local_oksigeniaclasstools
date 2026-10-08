@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.20.2 (2026-10-24)
+
+- **Score**: the names of the notes can be chosen: as the language (do re mi in Spanish, French, Italian or
+  Portuguese; C D E in English; C D E … H in German, Dutch or Swedish, where H is our B), do re mi, C D E, or
+  C D E … H. On the notes, the glockenspiel and the songs downloaded as text.
+
 ## 0.20.1 (2026-10-23)
 
 - The **calculator** and the **score** were missing where the administrator's choice of materials had been saved

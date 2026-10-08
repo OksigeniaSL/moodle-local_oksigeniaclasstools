@@ -1454,5 +1454,25 @@
  "turn_task_note": {
   "en": "Which note is it?",
   "es": "¿Qué nota es?"
+ },
+ "sc_naming": {
+  "en": "Notation",
+  "es": "Notación"
+ },
+ "sc_naming_auto": {
+  "en": "As the language ({$a})",
+  "es": "Según el idioma ({$a})"
+ },
+ "sc_naming_solfa": {
+  "en": "do re mi",
+  "es": "do re mi"
+ },
+ "sc_naming_letters": {
+  "en": "C D E (English)",
+  "es": "C D E (anglosajona)"
+ },
+ "sc_naming_german": {
+  "en": "C D E … H (German)",
+  "es": "C D E … H (alemana)"
  }
 }

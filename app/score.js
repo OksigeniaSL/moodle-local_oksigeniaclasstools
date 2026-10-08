@@ -20,14 +20,19 @@
     // A note: s, its step on the staff (octave × 7 + letter; middle C is 28), a (−1 flat, 1 sharp), t, how long (in
     // sixteenths: 16 whole, 8 half, 4 quarter, 2 eighth, 1 sixteenth; half as much again with a dot) and r, a rest.
     const SOLFA = ['es', 'fr', 'it', 'pt', 'ca', 'gl', 'eu', 'ro'].includes(base);
-    const NAMES = SOLFA ? (base === 'fr' ? ['do', 'ré', 'mi', 'fa', 'sol', 'la', 'si'] : ['do', 're', 'mi', 'fa', 'sol', 'la', 'si'])
-        : (['de', 'nl', 'sv', 'da', 'no', 'fi'].includes(base) ? ['C', 'D', 'E', 'F', 'G', 'A', 'H'] : ['C', 'D', 'E', 'F', 'G', 'A', 'B']);
+    // The names of the notes: do re mi, C D E, or C D E … H as in German (where H is our B and B is B flat). Each
+    // language has its own, and the teacher can choose another.
+    const NAMESETS = { solfa: base === 'fr' ? ['do', 'ré', 'mi', 'fa', 'sol', 'la', 'si'] : ['do', 're', 'mi', 'fa', 'sol', 'la', 'si'],
+        letters: ['C', 'D', 'E', 'F', 'G', 'A', 'B'], german: ['C', 'D', 'E', 'F', 'G', 'A', 'H'] };
+    const AUTO = SOLFA ? 'solfa' : (['de', 'nl', 'sv', 'da', 'no', 'fi'].includes(base) ? 'german' : 'letters');
+    let naming = AUTO;
+    const names = () => NAMESETS[naming];
     const COLOURS = ['#e53935', '#f57c00', '#f9c80e', '#43a047', '#00acc1', '#3949ab', '#8e24aa'];   // as on school glockenspiels
     const SEMI = [0, 2, 4, 5, 7, 9, 11];
     const letter = (s) => ((s % 7) + 7) % 7;
     const midi = (n) => 12 * (Math.floor(n.s / 7) + 1) + SEMI[letter(n.s)] + (n.a || 0);
     const hz = (m) => 440 * Math.pow(2, (m - 69) / 12);
-    const nameOf = (n) => NAMES[letter(n.s)] + (n.a > 0 ? '♯' : (n.a < 0 ? '♭' : ''));
+    const nameOf = (n) => names()[letter(n.s)] + (n.a > 0 ? '♯' : (n.a < 0 ? '♭' : ''));
     const FIGS = [['r', 16], ['b', 8], ['n', 4], ['c', 2], ['s', 1]];
     const LEN = Object.fromEntries(FIGS);
     const SHAPES = new Map([[16, ['r', false]], [8, ['b', false]], [4, ['n', false]], [2, ['c', false]], [1, ['s', false]], [24, ['r', true]], [12, ['b', true]], [6, ['n', true]], [3, ['c', true]]]);
@@ -188,14 +193,14 @@
     const parseSong = (text) => (isAbc(text) ? readAbc(text) : readText(text));
     // And back, to download it (in the names of the language: do re mi or C D E).
     const writeText = (song) => {
-        const durs = SOLFA ? ['r', 'b', 'n', 'c', 's'] : ['w', 'h', 'q', 'e', 's'];
+        const durs = naming === 'solfa' ? ['r', 'b', 'n', 'c', 's'] : ['w', 'h', 'q', 'e', 's'];
         const lenText = (tk) => { const [f, dot] = SHAPES.get(tk) || ['n', false]; return durs[FIGS.findIndex(([k]) => k === f)] + (dot ? '.' : ''); };
         const head = [[t('sc_h_title'), song.title], [t('sc_h_from'), song.from], [t('sc_h_clef'), song.clef === 'fa' ? 'fa' : 'sol'],
             [t('sc_h_time'), song.time.join('/')], [t('sc_h_tempo'), song.tempo], [t('sc_h_pickup'), song.pickup ? lenText(song.pickup) : ''], [t('sc_h_lyrics'), song.lyrics]];
         const per = (song.time[0] * 16) / song.time[1];
         let inBar = song.pickup ? per - song.pickup : 0, prev = 0;
         const words = song.notes.map((n) => {
-            let w = n.r ? '-' : NAMES[letter(n.s)].toLowerCase().replace('é', 'e') + (n.a > 0 ? '#' : (n.a < 0 ? 'b' : '')) + (Math.floor(n.s / 7) === (song.clef === 'fa' ? 3 : 4) ? '' : Math.floor(n.s / 7));
+            let w = n.r ? '-' : names()[letter(n.s)].toLowerCase().replace('é', 'e') + (n.a > 0 ? '#' : (n.a < 0 ? 'b' : '')) + (Math.floor(n.s / 7) === (song.clef === 'fa' ? 3 : 4) ? '' : Math.floor(n.s / 7));
             if (n.t !== prev) { w += ':' + lenText(n.t); prev = n.t; }
             inBar += n.t;
             if (inBar >= per) { inBar = 0; w += ' |'; }
@@ -249,7 +254,8 @@
         pickup: SHAPES.has(Number(x.pickup)) ? Number(x.pickup) : 0, lyrics: String(x.lyrics || '').slice(0, 2000), mine: true,
         notes: (Array.isArray(x.notes) ? x.notes : []).slice(0, 600).filter((n) => n && SHAPES.has(Number(n.t))).map((n) => ({ s: Math.round(Number(n.s)) || 28, a: Math.max(-1, Math.min(1, Math.round(Number(n.a) || 0))), t: Number(n.t), r: !!n.r })) });
     const mine = (kept && Array.isArray(kept.songs) ? kept.songs : []).slice(0, 60).map(clean).filter((x) => x.id);
-    const opt = Object.assign({ current: builtIn[0].id, voice: 'piano', names: null, colours: null, rhythm: false, metro: false, lyrics: true }, load('partitura-opciones', {}));
+    const opt = Object.assign({ current: builtIn[0].id, voice: 'piano', names: null, colours: null, rhythm: false, metro: false, lyrics: true, naming: 'auto' }, load('partitura-opciones', {}));
+    naming = NAMESETS[opt.naming] ? opt.naming : AUTO;
     const persist = () => {
         const data = { updated: Date.now(), songs: mine };
         save(KEY, data);
@@ -352,6 +358,9 @@
                 <label class="campo apilado"><span>${escape(t('sc_tempo'))} <output id="sc-tempo-v"></output></span><input type="range" id="sc-tempo" min="40" max="200" step="4"></label>
                 <label class="campo"><span>${escape(t('sc_voice'))}</span><select id="sc-voice">${VOICE_KEYS.map((k) => `<option value="${k}">${escape(t('sc_v_' + k))}</option>`).join('')}</select></label>
                 <label class="interruptor"><input type="checkbox" id="sc-names"><span>${escape(t('sc_names'))}</span></label>
+                <label class="campo"><span>${escape(t('sc_naming'))}</span><select id="sc-naming">
+                    <option value="auto">${escape(t('sc_naming_auto', NAMESETS[AUTO].slice(0, 3).join(' ')))}</option>
+                    ${['solfa', 'letters', 'german'].map((k) => `<option value="${k}">${escape(t('sc_naming_' + k))}</option>`).join('')}</select></label>
                 <label class="interruptor"><input type="checkbox" id="sc-colours"><span>${escape(t('sc_colours'))}</span></label>
                 <label class="interruptor"><input type="checkbox" id="sc-rhythm"><span>${escape(t('sc_rhythm'))}</span></label>
                 <label class="interruptor" id="sc-lyrics-box"><input type="checkbox" id="sc-lyrics"><span>${escape(t('sc_lyrics'))}</span></label>
@@ -548,13 +557,13 @@
         const bars = [];
         for (let s = lo; s <= hi; s++) {
             const k = s - lo;
-            bars.push(`<button type="button" class="ct-sc-tecla" data-s="${s}" data-a="0" style="--c:${COLOURS[letter(s)]};--h:${(100 - (k / Math.max(1, n - 1)) * 38).toFixed(0)}%" aria-label="${escape(nameOf({ s, a: 0 }))}"><span>${escape(NAMES[letter(s)])}</span></button>`);
+            bars.push(`<button type="button" class="ct-sc-tecla" data-s="${s}" data-a="0" style="--c:${COLOURS[letter(s)]};--h:${(100 - (k / Math.max(1, n - 1)) * 38).toFixed(0)}%" aria-label="${escape(nameOf({ s, a: 0 }))}"><span>${escape(names()[letter(s)])}</span></button>`);
         }
         const tops = chromatic ? [] : null;
         if (tops) {
             for (let s = lo; s < hi; s++) {
                 const l = letter(s);
-                tops.push(l === 2 || l === 6 ? '<span class="ct-sc-hueco"></span>' : `<button type="button" class="ct-sc-tecla negra" data-s="${s}" data-a="1" aria-label="${escape(nameOf({ s, a: 1 }))}"><span>${escape(NAMES[l])}♯</span></button>`);
+                tops.push(l === 2 || l === 6 ? '<span class="ct-sc-hueco"></span>' : `<button type="button" class="ct-sc-tecla negra" data-s="${s}" data-a="1" aria-label="${escape(nameOf({ s, a: 1 }))}"><span>${escape(names()[l])}♯</span></button>`);
             }
         }
         $('#sc-keys').innerHTML = (tops ? `<div class="ct-sc-cromaticas" style="--n:${n}">${tops.join('')}</div>` : '') + `<div class="ct-sc-naturales">${bars.join('')}</div>`;
@@ -767,6 +776,7 @@
         $('#sc-clef').value = song.clef; $('#sc-time').value = song.time.join('/'); $('#sc-tempo').value = song.tempo;
         $('#sc-tempo-v').textContent = `${song.tempo} · ${t(song.tempo < 76 ? 'sc_slow' : (song.tempo < 120 ? 'sc_medium' : 'sc_fast'))}`;
         $('#sc-voice').value = opt.voice;
+        $('#sc-naming').value = NAMESETS[opt.naming] ? opt.naming : 'auto';
         $('#sc-names').checked = showNames(); $('#sc-colours').checked = showColours(); $('#sc-rhythm').checked = !!opt.rhythm;
         $('#sc-metro').checked = !!opt.metro; $('#sc-lyrics').checked = !!opt.lyrics; $('#sc-lyrics-box').hidden = !song.lyrics;
         $('#sc-keys').hidden = false;
@@ -844,6 +854,7 @@
         paintTools();
     });
     $('#sc-voice').addEventListener('change', () => { opt.voice = $('#sc-voice').value; keepOpt(); sound({ s: 32, a: 0 }); });
+    $('#sc-naming').addEventListener('change', () => { opt.naming = $('#sc-naming').value; naming = NAMESETS[opt.naming] ? opt.naming : AUTO; keepOpt(); paint(); });
     [['names', 'names'], ['colours', 'colours'], ['rhythm', 'rhythm'], ['metro', 'metro'], ['lyrics', 'lyrics']].forEach(([id, k]) => $('#sc-' + id).addEventListener('change', () => {
         opt[k] = $('#sc-' + id).checked; keepOpt(); paint();
     }));
