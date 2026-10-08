@@ -3,6 +3,7 @@
 // its seconds, the answers from the devices, the right one revealed with how many chose each, points (calm: being
 // right; fast: also how soon), a ranking after each question and/or at the end (only the top ones, if the teacher
 // wants), teams from the groups made on the board or chosen on the devices, a podium, and a summary for the teacher.
+// A question can have a picture, shown on the board beside its answers.
 //
 // @copyright 2026 Oksigenia <dev@oksigenia.cc>
 // @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -33,6 +34,40 @@
     const keepOpt = () => save('concurso-opciones', opt);
     const current = () => data.sets.find((x) => x.id === opt.set) || data.sets[0] || null;
     const clean = (s, n) => String(s || '').replace(/\s+/g, ' ').trim().slice(0, n);
+
+    // The picture of a question: inside Moodle it is kept in the course and the question keeps its name; outside, the
+    // question keeps the picture itself (smaller), in the browser.
+    const IMG_NAME = /^[0-9a-f]{40}\.(jpg|png|gif|webp)$/;
+    const imgSrc = (img) => {
+        if (!img) { return ''; }
+        if (/^data:image\/(png|jpeg|gif|webp);base64,/.test(img)) { return img; }
+        return AULA && AULA.quizimg && IMG_NAME.test(img) ? AULA.quizimg + img : '';
+    };
+    // Made smaller in the browser before keeping it: a photo of the phone does not need more for a board.
+    const shrink = (file, max, quality) => new Promise((ok, ko) => {
+        const im = new Image();
+        im.onload = () => {
+            const k = Math.min(1, max / Math.max(im.naturalWidth, im.naturalHeight)), c = document.createElement('canvas');
+            c.width = Math.max(1, Math.round(im.naturalWidth * k)); c.height = Math.max(1, Math.round(im.naturalHeight * k));
+            const g = c.getContext('2d');
+            URL.revokeObjectURL(im.src);
+            // A drawing with see-through parts stays a PNG, unless it is too big; the rest, a JPEG on white.
+            if (/png|gif/.test(file.type)) {
+                g.drawImage(im, 0, 0, c.width, c.height);
+                const png = c.toDataURL('image/png');
+                if (png.length < 1.4e6) { ok(png); return; }
+            }
+            g.fillStyle = '#fff'; g.fillRect(0, 0, c.width, c.height); g.drawImage(im, 0, 0, c.width, c.height);
+            ok(c.toDataURL('image/jpeg', quality));
+        };
+        im.onerror = ko;
+        im.src = URL.createObjectURL(file);
+    });
+    const putImage = async (file) => {
+        if (!file || !/^image\//.test(file.type)) { throw new Error('type'); }
+        if (AULA && AULA.quizimgurl) { return (await core.toMoodle(AULA.quizimgurl, { image: await shrink(file, 1280, 0.85) })).name; }
+        return shrink(file, 900, 0.8);
+    };
 
     // Questions pasted as text, one per line: «Question | *right | other | other», or «Question | V» / «| F».
     const TRUE = /^(v|verdadero|true|t|wahr|w|vrai|vero|waar|sant|verdadeiro)$/i, FALSE = /^(f|falso|false|falsch|faux|onwaar|falskt|falso)$/i;
@@ -147,11 +182,15 @@
         openDialog(`<form method="dialog" class="qz-editor">
             <h2>${escape(t('qz_edit_title'))}</h2>
             <label class="campo apilado"><span>${escape(t('qz_set_name'))}</span><input type="text" id="qz-name" maxlength="60" value="${escape(set.name)}"></label>
-            <ol class="qz-lista">${set.questions.map((x, i) => `<li><span>${escape(x.q)}</span>`
+            <ol class="qz-lista">${set.questions.map((x, i) => `<li><span>${x.img ? `<i class="qz-con-img" title="${escape(t('qz_img'))}">${core.icon('imagen')}</i>` : ''}${escape(x.q)}</span>`
                 + `<button type="button" class="redondo suave" data-edit="${i}" aria-label="${escape(t('qz_edit_q'))}" title="${escape(t('qz_edit_q'))}">${core.icon('editar')}</button>`
                 + `<button type="button" class="redondo suave" data-del="${i}" aria-label="${escape(t('qz_del_q'))}" title="${escape(t('qz_del_q'))}">${core.icon('borrar')}</button></li>`).join('')}</ol>
             <fieldset class="qz-campo"><legend>${escape(editing >= 0 ? t('qz_edit_q') : t('qz_add_q'))}</legend>
                 <textarea id="qz-q" rows="2" maxlength="300" placeholder="${escape(t('qz_q_ph'))}">${escape(q ? q.q : '')}</textarea>
+                <div class="qz-imagen"><img id="qz-img-ver" alt="" hidden>
+                    <button type="button" class="boton suave" id="qz-img-add"><span data-icono="imagen"></span><span id="qz-img-add-t"></span></button>
+                    <button type="button" class="boton suave" id="qz-img-del" hidden><span data-icono="borrar"></span><span>${escape(t('qz_img_del'))}</span></button>
+                    <input type="file" id="qz-img-file" accept="image/*" hidden><span class="nota">${escape(t('qz_img_hint'))}</span></div>
                 <div class="segmentos" id="qz-kind"><button type="button" role="radio" data-v="choice" aria-checked="${!tf}">${escape(t('qz_kind_choice'))}</button><button type="button" role="radio" data-v="tf" aria-checked="${tf}">${escape(t('qz_kind_tf'))}</button></div>
                 <div class="qz-respuestas" id="qz-answers" ${tf ? 'hidden' : ''}>${[0, 1, 2, 3].map((i) => `<label class="qz-respuesta" style="--c:${COLOURS[i][0]}"><input type="radio" name="qz-right" value="${i}" ${q && !tf && q.c === i ? 'checked' : (!q && i === 0 ? 'checked' : '')} aria-label="${escape(t('qz_right'))}">`
                     + `<b>${LETTERS[i]}</b><input type="text" maxlength="120" data-o="${i}" value="${escape(q && !tf ? q.o[i] || '' : '')}" placeholder="${escape(i < 2 ? t('qz_answer') : t('qz_answer_optional'))}"></label>`).join('')}</div>
@@ -168,6 +207,28 @@
         </form>`, (d) => {
             const $ = (s) => d.querySelector(s);
             $('#qz-qsecs').value = String(q && q.secs ? q.secs : 0);
+            // The picture: chosen from a file or pasted (Ctrl+V); kept before the question is saved.
+            let img = q && q.img ? q.img : '';
+            const showImg = () => {
+                const src = imgSrc(img);
+                $('#qz-img-ver').hidden = !src; if (src) { $('#qz-img-ver').src = src; }
+                $('#qz-img-del').hidden = !img;
+                $('#qz-img-add-t').textContent = t(img ? 'qz_img_change' : 'qz_img_add');
+            };
+            const takeImg = (file) => {
+                $('#qz-msg').textContent = t('qz_img_sending'); $('#qz-img-add').disabled = true;
+                putImage(file).then((name) => { img = name; $('#qz-msg').textContent = ''; showImg(); })
+                    .catch(() => { $('#qz-msg').textContent = t('qz_img_error'); })
+                    .finally(() => { $('#qz-img-add').disabled = false; });
+            };
+            $('#qz-img-add').addEventListener('click', () => $('#qz-img-file').click());
+            $('#qz-img-file').addEventListener('change', () => { const f = $('#qz-img-file').files[0]; $('#qz-img-file').value = ''; if (f) { takeImg(f); } });
+            $('#qz-img-del').addEventListener('click', () => { img = ''; showImg(); });
+            d.querySelector('.qz-editor').addEventListener('paste', (e) => {
+                const f = [...((e.clipboardData && e.clipboardData.files) || [])].find((x) => /^image\//.test(x.type));
+                if (f) { e.preventDefault(); takeImg(f); }
+            });
+            showImg();
             const kind = () => (d.querySelector('#qz-kind [aria-checked="true"]') || {}).dataset;
             d.querySelector('#qz-kind').addEventListener('click', (e) => {
                 const b = e.target.closest('[data-v]'); if (!b) { return; }
@@ -194,6 +255,7 @@
                     item = { q: text, o: kept2.map((x) => x.o), c, secs: Number($('#qz-qsecs').value) };
                 }
                 if (!item.q || item.o.length < 2 || item.c < 0) { $('#qz-msg').textContent = t('qz_need'); return; }
+                if (img) { item.img = img; }
                 if (editing >= 0) { set.questions[editing] = item; } else { set.questions.push(item); }
                 keep(); play('tic'); editor(set);
             });
@@ -233,7 +295,7 @@
                 bank('questions', { categoryid: id }).then((j) => {
                     found = j.questions || [];
                     $('#qz-b-msg').textContent = found.length ? (j.skipped ? t('qz_bank_skipped', j.skipped) : '') : t('qz_bank_none');
-                    $('#qz-b-list').innerHTML = found.map((q, i) => `<li><label class="qz-b-item"><input type="checkbox" checked data-i="${i}"><span><strong>${escape(q.text)}</strong>`
+                    $('#qz-b-list').innerHTML = found.map((q, i) => `<li><label class="qz-b-item"><input type="checkbox" checked data-i="${i}">${q.img && imgSrc(q.img) ? `<img src="${escape(imgSrc(q.img))}" alt="">` : ''}<span><strong>${escape(q.text)}</strong>`
                         + `<small>${q.options.map((o, k) => (k === q.correct ? `<b>${escape(o)}</b>` : escape(o))).join(' · ')}</small></span></label></li>`).join('');
                     $('#qz-b-add').disabled = !found.length;
                 }).catch(() => { $('#qz-b-msg').textContent = t('qz_bank_error'); });
@@ -250,7 +312,9 @@
                 const set = current() || (() => { const x = { id: 'q' + Date.now().toString(36), name: t('qz_new_name', 1), questions: [] }; data.sets.push(x); opt.set = x.id; return x; })();
                 d.querySelectorAll('#qz-b-list input:checked').forEach((cb) => {
                     const q = found[Number(cb.dataset.i)];
-                    set.questions.push({ q: clean(q.text, 300), o: q.options.slice(0, 4).map((o) => clean(o, 120)), c: q.correct, secs: 0 });
+                    const item = { q: clean(q.text, 300), o: q.options.slice(0, 4).map((o) => clean(o, 120)), c: q.correct, secs: 0 };
+                    if (q.img && IMG_NAME.test(q.img)) { item.img = q.img; }
+                    set.questions.push(item);
                 });
                 keep(); keepOpt(); play('card'); closeDialog();
             });
@@ -303,6 +367,8 @@
     }
     const head = (v) => `<p class="lv-ronda">${escape(t('qz_q_n', { n: v.round, of: total() }))}</p>`;
     function lobby(v) {
+        // The pictures come now, so each question shows at once.
+        (run.set.questions || []).forEach((q) => { const src = imgSrc(q.img); if (src && !src.startsWith('data:')) { new Image().src = src; } });
         const teams = v.teams && v.teams.length ? `<div class="lv-equipos">${v.teams.map((name, i) => `<span class="lv-equipo" style="--c:${TEAM_COLOURS[i % TEAM_COLOURS.length]}">${escape(name)} <small>${v.devices.filter((d) => d.team === i + 1).length}</small></span>`).join('')}</div>` : '';
         return `<div class="lv-centro"><p class="qz-titulo">${escape(run.set.name || '')}</p><p class="lv-grande">${escape(t('qz_lobby', { n: total(), m: v.devices.length }))}</p>
             <p class="nota">${escape(t('qz_mode_hint_' + v.mode))}</p>${teams}</div>
@@ -310,19 +376,24 @@
     }
     const tiles = (q, v, revealed) => {
         const most = Math.max(1, ...(v.counts || [0]));
-        return `<div class="qz-respuestas-grandes n${q.o.length}">${q.o.map((o, i) => {
+        return `<div class="qz-respuestas-grandes n${q.o.length}${imgSrc(q.img) ? ' columna' : ''}">${q.o.map((o, i) => {
             const [c, light] = COLOURS[i];
             const right = revealed && i === q.c, wrong = revealed && i !== q.c;
             return `<div class="qz-tile${light ? ' claro' : ''}${right ? ' bien' : ''}${wrong ? ' apagada' : ''}" style="--c:${c}"><b>${LETTERS[i]}</b><span>${escape(o)}</span>`
                 + (revealed ? `<i class="qz-cuantos" style="width:${(100 * (v.counts[i] || 0) / most).toFixed(1)}%"></i><strong>${v.counts[i] || 0}</strong>` : '') + '</div>';
         }).join('')}</div>`;
     };
+    // The picture, if the question has one: on the left, the answers on the right.
+    const withPicture = (q, answers) => {
+        const src = imgSrc(q.img);
+        return src ? `<div class="qz-cuerpo"><div class="qz-foto"><img src="${escape(src)}" alt=""></div>${answers}</div>` : answers;
+    };
     function showQuestion(v) {
         const q = question(v.round - 1);
         if (!q) { return '<p class="lv-grande">…</p>'; }
         return `${head(v)}<p class="qz-pregunta">${escape(q.q)}</p>
             <div class="lv-reloj" id="qz-clock"><span class="lv-reloj-pista"><i id="qz-clock-bar"></i></span><strong id="qz-clock-text"></strong></div>
-            ${tiles(q, v, false)}
+            ${withPicture(q, tiles(q, v, false))}
             <div class="botonera centro lv-mandos"><p class="lv-grande qz-contestado">${escape(t('lv_answered', { n: v.answered, of: v.devices.length }))}</p>
                 <button type="button" class="boton amarillo" id="qz-reveal"><span data-icono="hecho"></span><span>${escape(t('qz_reveal'))}</span></button></div>`;
     }
@@ -330,7 +401,7 @@
         const q = question(v.round - 1);
         const last = v.round >= total();
         const next = run.after ? t('qz_to_ranking') : (last ? (run.end ? t('qz_to_podium') : t('qz_to_results')) : t('qz_next'));
-        return `${head(v)}<p class="qz-pregunta">${escape(q ? q.q : '')}</p>${q ? tiles(q, v, true) : ''}
+        return `${head(v)}<p class="qz-pregunta">${escape(q ? q.q : '')}</p>${q ? withPicture(q, tiles(q, v, true)) : ''}
             <div class="botonera centro lv-mandos"><button type="button" class="boton grande" id="qz-next"><span data-icono="seguir"></span><span>${escape(next)}</span></button></div>`;
     }
     // The places, shared on a tie (1, 1, 3), as the devices get them.

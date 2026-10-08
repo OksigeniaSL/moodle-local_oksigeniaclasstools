@@ -45,7 +45,7 @@ const LOCAL_OKSIGENIACLASSTOOLS_GAMES = [
 /** The materials, with the string of their name. */
 const LOCAL_OKSIGENIACLASSTOOLS_MATERIALS = [
     'rods' => 'app_mt_rods', 'tangram' => 'app_mt_tangram', 'line' => 'app_mt_line', 'fractions' => 'app_mt_fractions',
-    'geoboard' => 'app_mt_geoboard', 'base10' => 'app_mt_base10',
+    'geoboard' => 'app_mt_geoboard', 'base10' => 'app_mt_base10', 'calc' => 'app_mt_calc',
 ];
 
 /** Tools a student sees when the site opens the board to students (none uses data of the class). */
@@ -288,6 +288,9 @@ function local_oksigeniaclasstools_data(stdClass $course, context_course $contex
             ? (new moodle_url('/local/oksigeniaclasstools/livehost.php'))->out(false) : null,
         // Questions of the Moodle question bank for a quiz (multiple choice with one answer, true/false).
         'bankurl' => (new moodle_url('/local/oksigeniaclasstools/quizbank.php'))->out(false),
+        // The pictures of the quiz questions: where they are sent, and where the teacher's are served from.
+        'quizimgurl' => (new moodle_url('/local/oksigeniaclasstools/quizimage.php'))->out(false),
+        'quizimg' => \local_oksigeniaclasstools\local\quizimages::base($context, (int) $USER->id),
     ];
 }
 
@@ -447,4 +450,33 @@ function local_oksigeniaclasstools_join_output(?stdClass $live, string $code): v
     header('Cache-Control: no-store');
     header('X-Frame-Options: SAMEORIGIN');
     echo $html;
+}
+
+/**
+ * Serves the pictures of the quiz questions, to those who can use the tools in the course.
+ *
+ * @param stdClass $course
+ * @param stdClass|null $cm
+ * @param context $context
+ * @param string $filearea
+ * @param array $args
+ * @param bool $forcedownload
+ * @param array $options
+ * @return bool False if there is no such file.
+ */
+function local_oksigeniaclasstools_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options = []) {
+    $area = \local_oksigeniaclasstools\local\quizimages::AREA;
+    if ($context->contextlevel != CONTEXT_COURSE || $filearea !== $area || count($args) < 2) {
+        return false;
+    }
+    require_login($course, false);
+    require_capability('local/oksigeniaclasstools:use', $context);
+    $itemid = (int) array_shift($args);
+    $name = array_pop($args);
+    $file = get_file_storage()->get_file($context->id, 'local_oksigeniaclasstools', $filearea, $itemid, '/', $name);
+    if (!$file || $file->is_directory()) {
+        return false;
+    }
+    // A picture never changes under its name: it can be kept for a long time.
+    send_stored_file($file, YEARSECS, 0, $forcedownload, $options);
 }

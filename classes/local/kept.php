@@ -53,6 +53,7 @@ class kept {
             try {
                 $record = (object) ($where + ['data' => $data, 'timemodified' => time()]);
                 $DB->insert_record('local_oksigeniaclasstools_state', $record);
+                self::after($courseid, $userid, $tool, $data);
                 return;
             } catch (\dml_write_exception $e) {
                 // Another save got there first (two tabs, or the save on leaving the page): update that one.
@@ -63,6 +64,21 @@ class kept {
             }
         }
         $DB->update_record('local_oksigeniaclasstools_state', (object) ['id' => $id, 'data' => $data, 'timemodified' => time()]);
+        self::after($courseid, $userid, $tool, $data);
+    }
+
+    /**
+     * After keeping something: the pictures of the quiz sets that are no longer used go away.
+     *
+     * @param int $courseid
+     * @param int $userid
+     * @param string $tool
+     * @param string $data
+     */
+    private static function after(int $courseid, int $userid, string $tool, string $data): void {
+        if ($tool === 'quizzes') {
+            quizimages::tidy(\context_course::instance($courseid), $userid, $data);
+        }
     }
 
     /**

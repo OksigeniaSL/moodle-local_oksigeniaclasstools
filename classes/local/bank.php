@@ -19,8 +19,9 @@ namespace local_oksigeniaclasstools\local;
 /**
  * Questions of the Moodle question bank for a quiz on the board: the multiple choice ones with a single right answer
  * (up to four answers) and the true/false ones, from the banks the teacher can use in the course — the course's own
- * (Moodle 4.x), its question bank activities (Moodle 5) and its quizzes. Only text: what has only images or formulas
- * comes as it is written, and questions that would not fit are left out and counted.
+ * (Moodle 4.x), its question bank activities (Moodle 5) and its quizzes. The text as plain text (formulas come as they
+ * are written) and the first picture in it, copied for the teacher (see quizimages); questions that would not fit are
+ * left out and counted.
  *
  * @package    local_oksigeniaclasstools
  * @copyright  2026 Oksigenia <dev@oksigenia.cc>
@@ -104,10 +105,11 @@ class bank {
      *
      * @param \stdClass $course
      * @param int $categoryid
-     * @return array [questions => [[text, options, correct]], skipped]
+     * @param int $userid Who takes them (their pictures are copied for them; none, no pictures).
+     * @return array [questions => [[text, options, correct, img]], skipped]
      * @throws \moodle_exception If the category is not in a bank the teacher can use.
      */
-    public static function questions(\stdClass $course, int $categoryid): array {
+    public static function questions(\stdClass $course, int $categoryid, int $userid = 0): array {
         global $DB;
         $category = $DB->get_record('question_categories', ['id' => $categoryid], 'id, contextid', MUST_EXIST);
         if (!isset(self::contexts($course)[$category->contextid])) {
@@ -124,9 +126,14 @@ class bank {
         );
         $questions = [];
         $skipped = 0;
+        $here = \context_course::instance($course->id);
         foreach ($rows as $row) {
             $question = self::question($row);
             if ($question) {
+                $img = $userid ? quizimages::from_question($here, $userid, (int) $category->contextid, (int) $row->id) : '';
+                if ($img !== '') {
+                    $question['img'] = $img;
+                }
                 $questions[] = $question;
             } else {
                 $skipped++;

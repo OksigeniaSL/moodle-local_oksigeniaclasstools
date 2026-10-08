@@ -15,8 +15,7 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * The board asks for the questions of the Moodle question bank it can use for a quiz: the categories, and the
- * questions of one of them.
+ * Keeps the picture of a quiz question for the teacher in the course; the board sends it already made smaller.
  *
  * @package    local_oksigeniaclasstools
  * @copyright  2026 Oksigenia <dev@oksigenia.cc>
@@ -26,19 +25,15 @@
 define('AJAX_SCRIPT', true);
 require(__DIR__ . '/../../config.php');
 
-use local_oksigeniaclasstools\local\bank;
+use local_oksigeniaclasstools\local\quizimages;
 
 $courseid = required_param('courseid', PARAM_INT);
-$action = required_param('action', PARAM_ALPHA);
+$image = required_param('image', PARAM_RAW);
 require_sesskey();
 $course = get_course($courseid);
 require_login($course, false, null, false, true);
-require_capability('local/oksigeniaclasstools:use', context_course::instance($course->id));
-
-if ($action === 'categories') {
-    echo json_encode(['categories' => bank::categories($course)]);
-} else if ($action === 'questions') {
-    echo json_encode(bank::questions($course, required_param('categoryid', PARAM_INT), (int) $USER->id));
-} else {
-    throw new moodle_exception('invalidparameter', 'debug');
-}
+$context = context_course::instance($course->id);
+require_capability('local/oksigeniaclasstools:use', $context);
+$bytes = preg_match('#^data:image/[a-z]+;base64,(.+)$#s', $image, $m) ? base64_decode($m[1], true) : false;
+$name = quizimages::save($context, (int) $USER->id, $bytes === false ? '' : $bytes);
+echo json_encode(['ok' => true, 'name' => $name]);

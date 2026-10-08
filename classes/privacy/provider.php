@@ -31,9 +31,11 @@ use core_privacy\local\request\contextlist;
 use core_privacy\local\request\transform;
 use core_privacy\local\request\userlist;
 use core_privacy\local\request\writer;
+use local_oksigeniaclasstools\local\quizimages;
 
 /**
- * Stores the picks (who was picked and when) and what each teacher keeps of each tool in each course.
+ * Stores the picks (who was picked and when), what each teacher keeps of each tool in each course, the live sessions
+ * and the pictures of the quiz questions.
  */
 class provider implements
     \core_privacy\local\metadata\provider,
@@ -72,6 +74,8 @@ class provider implements
         ], 'privacy:metadata:livein');
         // Boards shared with a class are course content (a folder); its students get a Moodle notification.
         $collection->add_subsystem_link('core_message', [], 'privacy:metadata:core_message');
+        // The pictures of the quiz questions, kept for the teacher who put them.
+        $collection->add_subsystem_link('core_files', [], 'privacy:metadata:core_files');
         return $collection;
     }
 
@@ -107,6 +111,13 @@ class provider implements
                                  LEFT JOIN {local_oksigeniaclasstools_livein} li ON li.liveid = l.id AND li.userid = :student
                                      WHERE l.userid = :teacher OR li.id IS NOT NULL',
             ['level' => CONTEXT_COURSE, 'student' => $userid, 'teacher' => $userid]
+        );
+        $contextlist->add_from_sql(
+            "SELECT DISTINCT f.contextid
+               FROM {files} f
+              WHERE f.component = 'local_oksigeniaclasstools' AND f.filearea = :area AND f.itemid = :userid
+                    AND f.filename <> '.'",
+            ['area' => quizimages::AREA, 'userid' => $userid]
         );
         return $contextlist;
     }
@@ -149,6 +160,12 @@ class provider implements
                JOIN {local_oksigeniaclasstools_live} l ON l.id = li.liveid
               WHERE l.courseid = :courseid AND li.userid > 0',
             $params
+        );
+        $userlist->add_from_sql(
+            'itemid',
+            "SELECT itemid FROM {files}
+              WHERE contextid = :contextid AND component = 'local_oksigeniaclasstools' AND filearea = :area AND filename <> '.'",
+            ['contextid' => $context->id, 'area' => quizimages::AREA]
         );
     }
 
@@ -197,6 +214,12 @@ class provider implements
                   WHERE l.courseid = ? AND li.userid = ? AND li.round > 0
                ORDER BY li.timecreated',
                 [$context->instanceid, $userid]
+            );
+            writer::with_context($context)->export_area_files(
+                [get_string('pluginname', 'local_oksigeniaclasstools'), quizimages::AREA],
+                'local_oksigeniaclasstools',
+                quizimages::AREA,
+                $userid
             );
             if ($opened || $answers) {
                 writer::with_context($context)->export_data(
@@ -262,6 +285,7 @@ class provider implements
             $DB->delete_records('local_oksigeniaclasstools_picks', ['courseid' => $context->instanceid]);
             $DB->delete_records('local_oksigeniaclasstools_state', ['courseid' => $context->instanceid]);
             self::delete_live((int) $context->instanceid, null);
+            get_file_storage()->delete_area_files($context->id, 'local_oksigeniaclasstools', quizimages::AREA);
         }
     }
 
@@ -286,6 +310,7 @@ class provider implements
             );
             $DB->delete_records('local_oksigeniaclasstools_state', ['courseid' => $context->instanceid, 'userid' => $userid]);
             self::delete_live((int) $context->instanceid, [$userid]);
+            get_file_storage()->delete_area_files($context->id, 'local_oksigeniaclasstools', quizimages::AREA, $userid);
         }
     }
 
@@ -309,5 +334,8 @@ class provider implements
         );
         $DB->delete_records_select('local_oksigeniaclasstools_state', "courseid = :courseid AND userid $insql", $params);
         self::delete_live((int) $context->instanceid, $userlist->get_userids());
+        foreach ($userlist->get_userids() as $userid) {
+            get_file_storage()->delete_area_files($context->id, 'local_oksigeniaclasstools', quizimages::AREA, $userid);
+        }
     }
 }

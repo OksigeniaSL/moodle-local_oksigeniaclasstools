@@ -224,6 +224,9 @@
     // 1. Temporizador
     // ===================================================================================================
     const tm = { total: 300000, resta: 300000, fin: 0, marcha: false, acabado: false, reloj: 0 };
+    // Por bloques (pomodoro): en qué parte va (trabajo o descanso) y qué bloque es (desde 0).
+    const bq = { on: false, fase: 'trabajo', i: 0 };
+    let bqEstado = () => '';
     const tmCifras = $('#tm-cifras'), tmAnillo = $('#tm-anillo'), tmProgreso = $('#tm-progreso');
     const fmtSeg = (s) => { const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), x = s % 60; return h ? `${h}:${pad(m)}:${pad(x)}` : `${m}:${pad(x)}`; };
     const MAX_TM = (99 * 60 + 59) * 1000;
@@ -239,7 +242,9 @@
         tmAnillo.classList.toggle('aviso', tocado && tm.resta > 10000 && frac <= 0.25);
         tmAnillo.classList.toggle('en-marcha', tm.marcha);
         pintaAspecto(frac);
-        $('#tm-estado').textContent = tm.acabado ? t('fin_time') : tm.marcha ? t('tm_running') : tm.resta < tm.total ? t('tm_paused') : t('tm_ready');
+        $('#tm-estado').textContent = tm.acabado ? t('fin_time') : (bq.on ? bqEstado()
+            : (tm.marcha ? t('tm_running') : tm.resta < tm.total ? t('tm_paused') : t('tm_ready')));
+        tmAnillo.classList.toggle('descanso', bq.on && bq.fase === 'descanso' && !tm.acabado);
         insignias();
         tmMini();
     };
@@ -543,9 +548,13 @@
         tmBotones(); tmPinta();
         anuncia(t('tm_paused_sr'));
     };
-    const tmReinicia = () => { clearInterval(tm.reloj); Object.assign(tm, { marcha: false, acabado: false, avisado: false, resta: tm.total }); tmBotones(); tmPinta(); };
+    const tmReinicia = () => {
+        if (bq.on) { bqDeCero(); return; }
+        clearInterval(tm.reloj); Object.assign(tm, { marcha: false, acabado: false, avisado: false, resta: tm.total }); tmBotones(); tmPinta();
+    };
     const tmAlterna = () => { if (tm.marcha) { tmPausa(); } else { tmEmpieza(); } };
     const tmTermina = () => {
+        if (bq.on && bqSigue()) { return; }
         clearInterval(tm.reloj);
         Object.assign(tm, { marcha: false, acabado: true, resta: 0 });
         tmBotones(); tmPinta();
@@ -597,6 +606,73 @@
         $(s).addEventListener('keydown', (e) => { if (e.key === 'Enter') { leeCampos(); } });
         $(s).addEventListener('focus', (e) => e.target.select());
     });
+
+    // Por bloques de trabajo y descanso (un pomodoro para la clase): unos bloques de trabajo con un descanso entre
+    // cada dos. Al acabar cada parte suena, sale un aviso (en el descanso, un consejo: mirar lejos, estirarse, beber
+    // agua) y empieza la siguiente sola; al acabar el último bloque, el final de siempre. Cada modo empieza con los
+    // suyos (más cortos para los pequeños) y recuerda lo que ponga el profesor.
+    const bqModo = porModo('tm-bloques', {
+        early: { on: false, trabajo: 10, descanso: 3, n: 3 }, primary: { on: false, trabajo: 15, descanso: 5, n: 3 },
+        secondary: { on: false, trabajo: 25, descanso: 5, n: 2 }, advanced: { on: false, trabajo: 25, descanso: 5, n: 4 },
+    });
+    const BQ_LIMITES = { trabajo: [5, 60], descanso: [1, 20], n: [2, 8] };
+    const bqConf = () => {
+        const c = bqModo.get();
+        return Object.fromEntries(Object.entries(BQ_LIMITES).map(([k, [a, b]]) => [k, Math.max(a, Math.min(b, Math.round(Number(c[k]) || a)))]));
+    };
+    bqEstado = () => {
+        const c = bqConf();
+        return bq.fase === 'descanso' ? t('bq_rest_now') : t('bq_work_n', { n: bq.i + 1, of: c.n });
+    };
+    const bqPinta = () => {
+        const c = bqConf();
+        $$('#tm-tipo button').forEach((b) => b.setAttribute('aria-checked', String((b.dataset.v === 'bloques') === bq.on)));
+        $('#tm-bloques-caja').hidden = !bq.on;
+        $('#tm-rapidos-caja').hidden = bq.on; $('#tm-medida-caja').hidden = bq.on;
+        $('#bq-trabajo').textContent = t('tm_min_short', c.trabajo);
+        $('#bq-descanso').textContent = t('tm_min_short', c.descanso);
+        $('#bq-n').textContent = c.n;
+        $('#bq-resumen').textContent = t('bq_summary', { n: c.n, work: c.trabajo, rest: c.descanso, total: c.n * c.trabajo + (c.n - 1) * c.descanso });
+        $$('[data-bq]').forEach((b) => { const [a, z] = BQ_LIMITES[b.dataset.bq], v = c[b.dataset.bq]; b.disabled = Number(b.dataset.paso) < 0 ? v <= a : v >= z; });
+    };
+    // Al primer bloque de trabajo, parado.
+    const bqDeCero = () => { Object.assign(bq, { fase: 'trabajo', i: 0 }); tmPon(bqConf().trabajo * 60000); };
+    // Acaba una parte: si queda otra, empieza sola (y devuelve true).
+    const bqSigue = () => {
+        const c = bqConf();
+        if (bq.fase === 'trabajo' && bq.i >= c.n - 1) { return false; }
+        if (bq.fase === 'trabajo') { bq.fase = 'descanso'; } else { bq.fase = 'trabajo'; bq.i++; }
+        const descanso = bq.fase === 'descanso';
+        tmPon((descanso ? c.descanso : c.trabajo) * 60000);
+        tmEmpieza();
+        suena(descanso ? 'fin' : 'aviso');
+        const aviso = descanso ? t('bq_tip_' + (1 + Math.floor(Math.random() * 6))) : t('bq_back', { n: bq.i + 1, of: c.n });
+        const p = $('#tm-poco');
+        p.textContent = aviso; p.hidden = false;
+        clearTimeout(pocoTimer); pocoTimer = setTimeout(() => { p.hidden = true; }, 9000);
+        anuncia(aviso);
+        return true;
+    };
+    let bqAntes = tm.total;
+    const bqPon = (on) => {
+        if (on === bq.on) { return; }
+        bq.on = on; bqModo.set({ on });
+        if (on) { bqAntes = tm.total; bqDeCero(); } else { tmPon(bqAntes); }
+        bqPinta();
+    };
+    $('#tm-tipo').addEventListener('click', (e) => { const b = e.target.closest('[data-v]'); if (b) { bqPon(b.dataset.v === 'bloques'); } });
+    $$('[data-bq]').forEach((b) => b.addEventListener('click', () => {
+        const k = b.dataset.bq, c = bqConf(), [a, z] = BQ_LIMITES[k];
+        bqModo.set({ [k]: Math.max(a, Math.min(z, c[k] + Number(b.dataset.paso) * (k === 'trabajo' ? 5 : 1))) });
+        // Parado y sin empezar, se ve ya; en marcha, vale para las partes que vienen.
+        if (!tm.marcha && tm.resta === tm.total) { bqDeCero(); } else { tmPinta(); }
+        bqPinta();
+    }));
+    document.addEventListener('classtools:mode', () => {
+        const on = !!bqModo.get().on;
+        if (on !== bq.on) { bq.on = !on; bqPon(on); } else { bqPinta(); }
+    });
+    if (bqModo.get().on) { bqPon(true); } else { bqPinta(); }
 
     // ===================================================================================================
     // 2. Cronómetro

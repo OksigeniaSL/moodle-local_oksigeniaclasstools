@@ -414,5 +414,33 @@
  "lv_quiz_yours": {
   "en": "Your answer",
   "es": "Tu respuesta"
+ },
+ "qz_img": {
+  "en": "This question has a picture",
+  "es": "Esta pregunta tiene imagen"
+ },
+ "qz_img_add": {
+  "en": "Add a picture",
+  "es": "Añadir imagen"
+ },
+ "qz_img_change": {
+  "en": "Another picture",
+  "es": "Cambiar la imagen"
+ },
+ "qz_img_del": {
+  "en": "Remove the picture",
+  "es": "Quitar la imagen"
+ },
+ "qz_img_hint": {
+  "en": "Or paste it (Ctrl+V). It shows on the board, beside the answers.",
+  "es": "O pégala (Ctrl+V). Sale en la pizarra, junto a las respuestas."
+ },
+ "qz_img_sending": {
+  "en": "Keeping the picture…",
+  "es": "Guardando la imagen…"
+ },
+ "qz_img_error": {
+  "en": "That picture could not be kept: try another one (PNG or JPG).",
+  "es": "No se pudo guardar la imagen: prueba con otra (PNG o JPG)."
  }
 }

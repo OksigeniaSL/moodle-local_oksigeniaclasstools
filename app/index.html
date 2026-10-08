@@ -46,7 +46,20 @@
       <p class="tm-poco" id="tm-poco" role="status" hidden></p>
     </div>
     <div class="mandos">
-      <div class="tarjeta">
+      <div class="segmentos tm-tipo" role="radiogroup" aria-label="Cómo cuenta" data-t-aria="bq_kind" id="tm-tipo">
+        <button type="button" role="radio" aria-checked="true" data-v="una" data-t="bq_one">Una cuenta</button>
+        <button type="button" role="radio" aria-checked="false" data-v="bloques" data-t="bq_blocks">Por bloques</button>
+      </div>
+      <div class="tarjeta tm-bloques" id="tm-bloques-caja" hidden>
+        <p class="ante" data-t="bq_title">Trabajo y descanso</p>
+        <div class="tm-bloques-giros">
+          <div class="giro"><span data-t="bq_work">Trabajo</span><button type="button" class="redondo suave" data-bq="trabajo" data-paso="-1" aria-label="Menos" data-t-aria="g_less"><span data-icono="menos"></span></button><output id="bq-trabajo"></output><button type="button" class="redondo suave" data-bq="trabajo" data-paso="1" aria-label="Más" data-t-aria="g_more"><span data-icono="mas"></span></button></div>
+          <div class="giro"><span data-t="bq_rest">Descanso</span><button type="button" class="redondo suave" data-bq="descanso" data-paso="-1" aria-label="Menos" data-t-aria="g_less"><span data-icono="menos"></span></button><output id="bq-descanso"></output><button type="button" class="redondo suave" data-bq="descanso" data-paso="1" aria-label="Más" data-t-aria="g_more"><span data-icono="mas"></span></button></div>
+          <div class="giro"><span data-t="bq_count">Bloques</span><button type="button" class="redondo suave" data-bq="n" data-paso="-1" aria-label="Menos" data-t-aria="g_less"><span data-icono="menos"></span></button><output id="bq-n"></output><button type="button" class="redondo suave" data-bq="n" data-paso="1" aria-label="Más" data-t-aria="g_more"><span data-icono="mas"></span></button></div>
+        </div>
+        <p class="nota" id="bq-resumen"></p>
+      </div>
+      <div class="tarjeta" id="tm-rapidos-caja">
         <div class="tm-rapidos-cab"><p class="ante" id="l-rapidos" data-t="tm_quick">Tiempos rápidos</p>
           <button type="button" class="chip chip-guardar" id="tm-fav-add" hidden></button></div>
         <div class="rapidos" role="group" aria-labelledby="l-rapidos">
@@ -58,7 +71,7 @@
           <span class="tm-favoritos" id="tm-favoritos"></span>
         </div>
       </div>
-      <div class="tarjeta">
+      <div class="tarjeta" id="tm-medida-caja">
         <p class="ante" data-t="tm_custom">A tu medida</p>
         <div class="medida">
           <div class="giro">
@@ -342,6 +355,8 @@
 <script src="fractionwall.js"></script>
 <script src="geoboard.js"></script>
 <script src="base10.js"></script>
+<script src="calculator.js"></script>
+<script src="formula.js"></script>
 <script src="whiteboard.js"></script>
 <script src="instruments.js"></script>
 <script src="clocklearn.js"></script>

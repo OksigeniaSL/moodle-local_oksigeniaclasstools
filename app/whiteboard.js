@@ -41,7 +41,7 @@
         zoomIn: t('wb_zoom_in'), zoomOut: t('wb_zoom_out'), zoomReset: t('wb_zoom_reset'), fit: t('wb_fit'),
         pages: t('wb_pages'), pageOf: (a) => t('wb_page_of', a), prev: t('wb_prev'), next: t('wb_next'), newPage: t('wb_new_page'),
         dupPage: t('wb_dup_page'), delPage: t('wb_del_page'), delPageSure: t('wb_del_page_sure'), tooBig: t('wb_too_big'),
-        selCopy: t('wb_sel_copy'), selDelete: t('wb_sel_delete'),
+        selCopy: t('wb_sel_copy'), selDelete: t('wb_sel_delete'), magic: t('wb_magic'),
     };
     // Inside a course, a teacher who can add content can share the board with a class (saved in the course, and its
     // students get a notification).
@@ -56,11 +56,12 @@
     const LETTERS = { s: 0.022, m: 0.032, l: 0.05 };   // the height of the text
     const ERASER = 0.03;
     // What draws: the pen by hand, the highlighter, shapes from where the finger goes down to where it lifts, and text.
-    const TOOLS = [['pen', 'lapiz'], ['hl', 'fluor'], ['line', 'linea'], ['arrow', 'flecha'], ['rect', 'rect'], ['ellipse', 'elipse'], ['text', 'texto']];
+    const TOOLS = [['pen', 'lapiz'], ['hl', 'fluor'], ['line', 'linea'], ['arrow', 'flecha'], ['rect', 'rect'], ['ellipse', 'elipse'], ['text', 'texto'], ['formula', 'formula']];
     // And in the full board: select (and move, resize…), move around the page, and the laser pointer.
     const MORE = [['select', 'seleccion'], ['hand', 'mano'], ['laser', 'laser']];
     const SHAPES = ['line', 'arrow', 'rect', 'ellipse'];
-    const KINDS = ['hl', 'text', ...SHAPES];
+    const KINDS = ['hl', 'text', 'math', 'poly', ...SHAPES];
+    const FORMULA = 1.25;   // a formula, a little bigger than text of the same size
     // How big the background is: smaller squares and lines for the older ones, bigger for the youngest. Each screen
     // mode starts with its own and remembers what the teacher chose in it.
     const ZOOMS = [0.6, 0.8, 1, 1.25, 1.6, 2, 2.5];
@@ -74,7 +75,7 @@
     }) : { get: () => ({ on: false }), set: () => {} };
     const MAX_PAGES = 60, MAX_ZOOM = 6, MIN_ZOOM = 0.25;
 
-    const opt = Object.assign({ colour: COLOURS[1][1], size: 'm', bg: 'blank', tool: 'pen', margin: false, surface: 'white' }, load('pizarra-dibujo', {}));
+    const opt = Object.assign({ colour: COLOURS[1][1], size: 'm', bg: 'blank', tool: 'pen', margin: false, surface: 'white', magic: true }, load('pizarra-dibujo', {}));
     if (!COLOURS.some(([, c]) => c === opt.colour)) { opt.colour = COLOURS[1][1]; }
     if (!SIZES[opt.size]) { opt.size = 'm'; }
     if (!STR.backgrounds[opt.bg]) { opt.bg = 'blank'; }
@@ -95,8 +96,9 @@
     const writeStroke = (s) => {
         const o = { c: s.c, w: +num(s.w).toFixed(5), p: s.p.flatMap(([x, y]) => [Math.round(x * 1e4), Math.round(y * 1e4)]) };
         if (s.e) { o.e = 1; }
+        if (s.m) { o.m = 1; }
         if (s.k) { o.k = s.k; }
-        if (s.k === 'text') { o.t = s.t; o.f = +num(s.f).toFixed(5); }
+        if (s.k === 'text' || s.k === 'math') { o.t = s.t; o.f = +num(s.f).toFixed(5); }
         return o;
     };
     const readStroke = (o) => {
@@ -104,10 +106,11 @@
         const s = { c: COLOURS.some(([, c]) => c === o.c) ? o.c : COLOURS[0][1], w: Math.min(0.1, Math.abs(num(o.w))) || SIZES.m, p: [] };
         for (let i = 0; i + 1 < o.p.length; i += 2) { s.p.push([num(o.p[i]) / 1e4, num(o.p[i + 1]) / 1e4]); }
         if (o.e) { s.e = true; }
+        if (o.m) { s.m = 1; }
         if (KINDS.includes(o.k)) { s.k = o.k; }
         if (SHAPES.includes(s.k) && s.p.length < 2) { return null; }
-        if (s.k === 'text') {
-            s.t = String(o.t || '').slice(0, 120); s.f = Math.min(0.5, Math.abs(num(o.f))) || LETTERS.m;
+        if (s.k === 'text' || s.k === 'math') {
+            s.t = String(o.t || '').slice(0, s.k === 'math' ? 300 : 120); s.f = Math.min(0.5, Math.abs(num(o.f))) || LETTERS.m;
             if (!s.t) { return null; }
         }
         return s;
@@ -197,6 +200,7 @@
         </div>
         <div class="barra-herr ct-wb-bar2" id="wb-bar2" role="toolbar" aria-label="${escape(STR.more)}" hidden>
             ${seg('wb-more', STR.tool, MORE)}
+            <button type="button" class="boton suave ct-wb-redo" id="wb-magic" aria-pressed="false" aria-label="${escape(STR.magic)}" title="${escape(STR.magic)}"><span data-icono="magia"></span></button>
             <span class="ct-wb-kit" id="wb-kit"></span>
             ${iconButton('wb-import', 'imagen', STR.image)}
             <span class="ct-wb-zoomer ct-push">
@@ -350,10 +354,12 @@
 
     // --- Ink ------------------------------------------------------------------------------------------------
     const colourOf = (c) => (painting && isDark(painting) && CHALK[c]) || c;
-    // The highlighter goes see-through and multiplied, like a real one: what is under it still shows.
+    // The highlighter goes see-through and multiplied, like a real one: what is under it still shows (also a shape
+    // made with it, m).
     const pen = (ctx, s) => {
-        ctx.globalCompositeOperation = s.e ? 'destination-out' : (s.k === 'hl' ? 'multiply' : 'source-over');
-        ctx.globalAlpha = s.k === 'hl' ? 0.4 : 1;
+        const marker = s.k === 'hl' || s.m;
+        ctx.globalCompositeOperation = s.e ? 'destination-out' : (marker ? 'multiply' : 'source-over');
+        ctx.globalAlpha = marker ? 0.4 : 1;
         ctx.strokeStyle = colourOf(s.c); ctx.fillStyle = colourOf(s.c);
         ctx.lineWidth = s.w * W; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
     };
@@ -392,6 +398,17 @@
             ctx.stroke();
         }
     };
+    // A shape with corners (a triangle, a quadrilateral): straight sides.
+    const drawPoly = (ctx, s) => {
+        pen(ctx, s);
+        ctx.beginPath();
+        s.p.forEach(([x, y], i) => (i ? ctx.lineTo(x * W, y * W) : ctx.moveTo(x * W, y * W)));
+        ctx.stroke();
+    };
+    const drawMath = (ctx, s) => {
+        pen(ctx, s);
+        if (window.ClasstoolsFormula) { window.ClasstoolsFormula.draw(ctx, s.t, s.p[0][0] * W, s.p[0][1] * W, s.f * W, colourOf(s.c)); }
+    };
     const drawText = (ctx, s) => {
         pen(ctx, s);
         ctx.font = `800 ${s.f * W}px Nunito, system-ui, sans-serif`;
@@ -400,7 +417,7 @@
     };
     const drawStroke = (ctx, s) => {
         // (The highlighter is drawn whole, so it does not darken where it crosses itself.)
-        if (s.k === 'text') { drawText(ctx, s); } else if (SHAPES.includes(s.k)) { drawShape(ctx, s); } else { drawSegment(ctx, s, 1); }
+        if (s.k === 'text') { drawText(ctx, s); } else if (s.k === 'math') { drawMath(ctx, s); } else if (s.k === 'poly') { drawPoly(ctx, s); } else if (SHAPES.includes(s.k)) { drawShape(ctx, s); } else { drawSegment(ctx, s, 1); }
         ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1;
     };
     const ictx = () => { const c = ink.getContext('2d'); place(c); return c; };
@@ -483,6 +500,7 @@
         const at = point(e);
         const tool = erasing ? 'eraser' : opt.tool;
         if (tool === 'text') { writeAt(at); return; }
+        if (tool === 'formula') { formulaAt(at); return; }
         finishText();
         try { ink.setPointerCapture(e.pointerId); } catch (err) { /* a pointer that cannot be captured still draws */ }
         if (tool === 'hand') { pans.set(e.pointerId, [e.clientX, e.clientY]); live.set(e.pointerId, { pan: true }); return; }
@@ -499,7 +517,7 @@
         const snap = full && ['pen', 'hl', 'line', 'arrow'].includes(tool) ? snappers.map((f) => f(at, s.w)).find(Boolean) : null;
         if (snap) { s.p = s.p.map(snap); }
         const op = add(s);
-        live.set(e.pointerId, { s, snap, op });
+        live.set(e.pointerId, { s, snap, op, magic: opt.magic && !snap && (tool === 'pen' || tool === 'hl') ? 'wait' : '' });
         if (s.k) { preview(); } else { drawSegment(ictx(), s, 1); ictx().globalCompositeOperation = 'source-over'; }
     });
     ink.addEventListener('pointermove', (e) => {
@@ -509,7 +527,12 @@
         if (g.pan) { panMove(e); return; }
         if (g.sel) { selectMove(g, point(e)); return; }
         const s = g.s;
-        if (!s) { return; }
+        if (!s || g.magic === 'done') { return; }
+        // Kept still for a moment at the end: the stroke becomes the shape it looks like.
+        if (g.magic === 'wait' && (!g.still || Math.hypot(e.clientX - g.still[0], e.clientY - g.still[1]) > 5)) {
+            g.still = [e.clientX, e.clientY];
+            clearTimeout(g.hold); g.hold = setTimeout(() => magic(e.pointerId), 600);
+        }
         const fix = g.snap || ((q) => q);
         if (SHAPES.includes(s.k)) { s.p[1] = fix(point(e)); preview(); return; }
         const before = s.p.length;
@@ -526,6 +549,7 @@
         if (!g) { return; }
         if (g.pan) { pans.delete(e.pointerId); return; }
         if (g.sel) { selectUp(g); return; }
+        clearTimeout(g.hold);
         const s = g.s;
         if (!s) { return; }
         if (SHAPES.includes(s.k) && Math.hypot(s.p[1][0] - s.p[0][0], s.p[1][1] - s.p[0][1]) < 0.004) {
@@ -534,12 +558,85 @@
             const l = log(), i = l.done.lastIndexOf(g.op);
             if (i >= 0) { l.done.splice(i, 1); }
         } else {
-            if (!SHAPES.includes(s.k)) { s.p = simplify(s.p, 0.00035); }
+            if (!SHAPES.includes(s.k) && s.k !== 'poly') { s.p = simplify(s.p, 0.00035); }
             if (s.k) { drawStroke(ictx(), s); }
         }
         changed();
         preview();
     };
+    // --- Magic shapes --------------------------------------------------------------------------------------
+    // What a stroke by hand looks like: a straight line (level or upright if it nearly is), a circle or an ellipse, a
+    // triangle, a rectangle or another quadrilateral; or nothing (then it stays as it was drawn).
+    const recognise = (pts) => {
+        if (pts.length < 5) { return null; }
+        let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity, len = 0;
+        pts.forEach(([x, y], i) => {
+            x0 = Math.min(x0, x); y0 = Math.min(y0, y); x1 = Math.max(x1, x); y1 = Math.max(y1, y);
+            if (i) { len += Math.hypot(x - pts[i - 1][0], y - pts[i - 1][1]); }
+        });
+        const size = Math.hypot(x1 - x0, y1 - y0), first = pts[0], last = pts[pts.length - 1];
+        if (size < 0.015) { return null; }
+        const gap = Math.hypot(last[0] - first[0], last[1] - first[1]);
+        if (gap > 0.22 * size || len < 1.8 * size) {
+            // Open: a line if every point is near the one from the start to the end.
+            const far = Math.max(...pts.map((q) => segDist(q, first, last)));
+            if (far > 0.07 * gap) { return null; }
+            let [a, b] = [first.slice(), last.slice()];
+            const ang = Math.abs(Math.atan2(b[1] - a[1], b[0] - a[0]) * 180 / Math.PI);
+            if (ang < 6 || ang > 174) { const y = (a[1] + b[1]) / 2; a[1] = y; b[1] = y; }
+            if (Math.abs(ang - 90) < 6) { const x = (a[0] + b[0]) / 2; a[0] = x; b[0] = x; }
+            return { k: 'line', p: [a, b] };
+        }
+        // Closed: its corners (the points the outline turns at), then what it is.
+        const loop = simplify(pts.concat([first]), 0.07 * size).slice(0, -1);
+        const turn = (p, a, b) => {
+            const u = [a[0] - p[0], a[1] - p[1]], v = [b[0] - p[0], b[1] - p[1]];
+            return Math.acos(Math.max(-1, Math.min(1, (u[0] * v[0] + u[1] * v[1]) / ((Math.hypot(...u) * Math.hypot(...v)) || 1)))) * 180 / Math.PI;
+        };
+        let corners = loop.filter((p, i) => turn(p, loop[(i + loop.length - 1) % loop.length], loop[(i + 1) % loop.length]) < 150);
+        // Two corners almost on top of each other (where the stroke started and ended) are one.
+        corners = corners.filter((p, i) => Math.hypot(p[0] - corners[(i + 1) % corners.length][0], p[1] - corners[(i + 1) % corners.length][1]) > 0.08 * size);
+        // A side that is nearly level (or upright) is made so.
+        const square = (vs) => {
+            vs = vs.map((q) => q.slice());
+            vs.forEach((p, i) => {
+                const q = vs[(i + 1) % vs.length], a = Math.abs(Math.atan2(q[1] - p[1], q[0] - p[0]) * 180 / Math.PI);
+                if (a < 6 || a > 174) { const y = (p[1] + q[1]) / 2; p[1] = y; q[1] = y; }
+                if (Math.abs(a - 90) < 6) { const x = (p[0] + q[0]) / 2; p[0] = x; q[0] = x; }
+            });
+            return [...vs, vs[0]];
+        };
+        if (corners.length === 3) { return { k: 'poly', p: square(corners) }; }
+        if (corners.length === 4) {
+            const level = corners.every((p, i) => {
+                const q = corners[(i + 1) % 4], a = Math.abs(Math.atan2(q[1] - p[1], q[0] - p[0]) * 180 / Math.PI) % 90;
+                return a < 12 || a > 78;
+            });
+            if (level) { return { k: 'rect', p: [[x0, y0], [x1, y1]] }; }
+            return { k: 'poly', p: square(corners) };
+        }
+        const cx = (x0 + x1) / 2, cy = (y0 + y1) / 2, rx = (x1 - x0) / 2, ry = (y1 - y0) / 2;
+        const off = pts.reduce((t, [x, y]) => t + Math.abs(Math.hypot((x - cx) / (rx || 1e-6), (y - cy) / (ry || 1e-6)) - 1), 0) / pts.length;
+        if (off > 0.11) { return null; }
+        // Nearly round: a circle.
+        if (Math.abs(rx - ry) / Math.max(rx, ry) < 0.14) { const r = (rx + ry) / 2; return { k: 'ellipse', p: [[cx - r, cy - r], [cx + r, cy + r]] }; }
+        return { k: 'ellipse', p: [[x0, y0], [x1, y1]] };
+    };
+    function magic(id) {
+        const g = live.get(id);
+        if (!g || g.magic !== 'wait' || !g.s) { return; }
+        const shape = recognise(g.s.p);
+        if (!shape) { return; }
+        const pg = page(), old = g.s, i = pg.s.indexOf(old);
+        if (i < 0) { return; }
+        const made = Object.assign({ c: old.c, w: old.w }, shape, old.k === 'hl' ? { m: 1 } : {});
+        pg.s[i] = made;
+        record({ undo: () => { const j = pg.s.indexOf(made); if (j >= 0) { pg.s[j] = old; } }, redo: () => { const j = pg.s.indexOf(old); if (j >= 0) { pg.s[j] = made; } } }, pg);
+        g.s = made; g.magic = 'done';
+        redraw();
+        core.play('tic');
+    }
+
     ink.addEventListener('pointerup', end);
     ink.addEventListener('pointercancel', end);
     ink.addEventListener('pointerleave', (e) => { if (opt.tool === 'laser') { laser.release(e, true); } });
@@ -636,6 +733,10 @@
     let sel = [];
     const measure = document.createElement('canvas').getContext('2d');
     const bbox = (s) => {
+        if (s.k === 'math' && window.ClasstoolsFormula) {
+            const m = window.ClasstoolsFormula.measure(s.t, s.f * 1000);
+            return [s.p[0][0], s.p[0][1], s.p[0][0] + m.w / 1000, s.p[0][1] + m.h / 1000];
+        }
         if (s.k === 'text') {
             measure.font = `800 ${s.f * 1000}px Nunito, system-ui, sans-serif`;
             return [s.p[0][0], s.p[0][1], s.p[0][0] + measure.measureText(s.t).width / 1000, s.p[0][1] + s.f * 1.15];
@@ -657,7 +758,7 @@
     };
     const hits = (s, q, tol) => {
         if (s.e) { return false; }
-        if (s.k === 'text') { const [x0, y0, x1, y1] = bbox(s); return q[0] >= x0 - tol && q[0] <= x1 + tol && q[1] >= y0 - tol && q[1] <= y1 + tol; }
+        if (s.k === 'text' || s.k === 'math') { const [x0, y0, x1, y1] = bbox(s); return q[0] >= x0 - tol && q[0] <= x1 + tol && q[1] >= y0 - tol && q[1] <= y1 + tol; }
         const pts = outline(s), r = tol + (s.w || 0) / 2;
         if (pts.length === 1) { return Math.hypot(q[0] - pts[0][0], q[1] - pts[0][1]) <= r; }
         for (let i = 1; i < pts.length; i++) { if (segDist(q, pts[i - 1], pts[i]) <= r) { return true; } }
@@ -730,7 +831,7 @@
             sel.forEach((s) => {
                 const b = g.before.get(s);
                 s.p = b.p.map(([x, y]) => [ax + (x - ax) * k, ay + (y - ay) * k]);
-                if (s.k === 'text') { s.f = b.f * k; }
+                if (s.k === 'text' || s.k === 'math') { s.f = b.f * k; }
             });
         }
         g.moved = true;
@@ -801,6 +902,39 @@
         input.remove();
         if (text) { const s = { k: 'text', c, f, p: [at], t: text }; add(s); drawStroke(ictx(), s); }
     }
+
+    // --- Formulas ------------------------------------------------------------------------------------------
+    // A tap opens the editor where the finger went down; on a formula already there, to change it (or delete it).
+    const formulaAt = (at) => {
+        if (!window.ClasstoolsFormula) { return; }
+        finishText(); unselect();
+        const pg = page(), tol = 8 / (W * view().z);
+        const there = [...pg.s].reverse().find((s) => s.k === 'math' && hits(s, at, tol));
+        const mode = core.mode ? core.mode() : 'primary';
+        if (there) {
+            window.ClasstoolsFormula.edit({
+                src: there.t, mode,
+                onDone: (src) => {
+                    const before = there.t;
+                    there.t = src;
+                    record({ undo: () => { there.t = before; }, redo: () => { there.t = src; } }, pg);
+                    redraw(); changed();
+                },
+                onDelete: () => {
+                    const i = pg.s.indexOf(there);
+                    if (i < 0) { return; }
+                    pg.s.splice(i, 1);
+                    record({ undo: () => pg.s.splice(i, 0, there), redo: () => drop(pg.s, there) }, pg);
+                    redraw(); changed();
+                },
+            });
+            return;
+        }
+        window.ClasstoolsFormula.edit({
+            mode,
+            onDone: (src) => { add({ k: 'math', c: opt.colour, f: LETTERS[opt.size] * FORMULA, p: [at], t: src }); redraw(); },
+        });
+    };
 
     // --- Pages: going from one to another, and the strip of thumbnails ---------------------------------------
     const go = (i) => {
@@ -1030,6 +1164,8 @@
         $('#wb-zoom-more').disabled = zoom >= ZOOMS[ZOOMS.length - 1];
         $('#wb-margin').checked = !!pg.margin;
         $('#wb-img-del').hidden = !pg.img;
+        $('#wb-magic').setAttribute('aria-pressed', String(!!opt.magic));
+        $('#wb-magic').classList.toggle('activo', !!opt.magic);
         $('#wb-full').setAttribute('aria-pressed', String(full));
         $('#wb-full').classList.toggle('activo', full);
         $('#wb-page-n').textContent = `${cur + 1} / ${pages.length}`;
@@ -1065,9 +1201,10 @@
         const b = e.target.closest('[data-v]');
         if (!b) { return; }
         opt.size = b.dataset.v; keepOpt(); paintControls();
-        restyle((s) => { if (s.k === 'text') { s.f = LETTERS[opt.size]; } else { s.w = (s.k === 'hl' ? MARKER : SIZES)[opt.size]; } });
+        restyle((s) => { if (s.k === 'text') { s.f = LETTERS[opt.size]; } else if (s.k === 'math') { s.f = LETTERS[opt.size] * FORMULA; } else { s.w = (s.k === 'hl' ? MARKER : SIZES)[opt.size]; } });
     });
     $('#wb-eraser').addEventListener('click', () => { erasing = !erasing; unselect(); paintControls(); });
+    $('#wb-magic').addEventListener('click', () => { opt.magic = !opt.magic; keepOpt(); paintControls(); });
     const undo = () => { finishText(); unselect(); const op = log().done.pop(); if (op) { op.undo(); log().undone.push(op); } redraw(); changed(); };
     const redo = () => { finishText(); unselect(); const op = log().undone.pop(); if (op) { op.redo(); log().done.push(op); } redraw(); changed(); };
     $('#wb-undo').addEventListener('click', undo);

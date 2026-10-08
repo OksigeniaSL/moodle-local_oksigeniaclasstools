@@ -1,5 +1,31 @@
 # Changelog
 
+## 0.19.0 (2026-10-21)
+
+- **Timer in blocks** (a pomodoro for the class): work blocks with a rest between each two; each part starts by
+  itself, with a sound and a notice (in the rest, a tip: look far away, stand up and stretch, drink water…). The ring
+  turns green in the rests. Shorter blocks for the youngest; each mode remembers the teacher's choice.
+- **Magic shapes** on the board: keep the finger still for a moment at the end of a stroke and it becomes a clean
+  straight line (level or upright if it nearly is), circle, ellipse, triangle, rectangle or quadrilateral; undo brings
+  back the hand-drawn one. Also with the highlighter. A button turns it off.
+- **Formulas** on the board: written in one line (3/4, x^2, raíz(2), {2x + y = 5; x − y = 1}) and drawn as in a book,
+  with a live preview and buttons of the level of the screen: fractions and mixed numbers, powers, roots and boxes to
+  fill in (3 + □ = 5) in Primary; indices, roots of index n, absolute values, systems and Greek letters in Secondary;
+  sums, integrals, limits and vectors in Superior. A tap on a formula changes it; they move, grow and change colour
+  like the rest.
+- **Calculator**, among the materials (not in the Infantil mode): basic with big keys in Primary, following the order
+  of operations; scientific in Secondary and Superior (powers, roots, π, trigonometry in degrees or radians,
+  logarithms, factorial). Every result stays in a strip beside it and can be used again; the keyboard works too.
+
+## 0.18.0 (2026-10-20)
+
+- **Pictures in the quiz**: a question can have a picture (chosen from a file or pasted with Ctrl+V), shown on the
+  board on the left with the answers one under another on the right. Inside Moodle they are kept in the course for
+  the teacher who put them (made smaller before sending them; the same picture is kept once), so they are there on
+  any computer; the pictures that no set uses go away a day later. Questions of the question bank bring the first
+  picture of their text. Outside Moodle, the picture stays in the browser with the set. The devices keep the text and
+  the letters.
+
 ## 0.17.1 (2026-10-19)
 
 - **The course on top**: opened from a course, the bar shows its name under «Class tools», so a teacher who moves

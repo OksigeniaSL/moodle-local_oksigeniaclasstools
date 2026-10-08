@@ -23,6 +23,7 @@ use core_privacy\local\request\writer;
 use core_privacy\tests\provider_testcase;
 use local_oksigeniaclasstools\local\kept;
 use local_oksigeniaclasstools\local\picks;
+use local_oksigeniaclasstools\local\quizimages;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -60,6 +61,7 @@ final class provider_test extends provider_testcase {
         $this->assertContains('local_oksigeniaclasstools_picks', $tables);
         $this->assertContains('local_oksigeniaclasstools_state', $tables);
         $this->assertContains('core_message', $tables);
+        $this->assertContains('core_files', $tables);
     }
 
     public function test_contexts_and_users(): void {
@@ -89,6 +91,33 @@ final class provider_test extends provider_testcase {
         $path = [get_string('pluginname', 'local_oksigeniaclasstools'), 'scoreboard'];
         $kept = writer::with_context($context)->get_data($path);
         $this->assertNotEmpty($kept);
+    }
+
+    public function test_the_pictures_of_the_quiz_questions(): void {
+        $this->resetAfterTest();
+        [$course, $teacher] = $this->make_class(0);
+        $other = $this->getDataGenerator()->create_and_enrol($course, 'editingteacher');
+        $context = \context_course::instance($course->id);
+        $im = imagecreatetruecolor(4, 4);
+        ob_start();
+        imagepng($im);
+        $png = ob_get_clean();
+        quizimages::save($context, $teacher->id, $png);
+        quizimages::save($context, $other->id, $png);
+        $this->assertEquals([$context->id], provider::get_contexts_for_userid($teacher->id)->get_contextids());
+        $userlist = new userlist($context, 'local_oksigeniaclasstools');
+        provider::get_users_in_context($userlist);
+        $this->assertContains((int) $other->id, array_map('intval', $userlist->get_userids()));
+        $this->export_context_data_for_user($teacher->id, $context, 'local_oksigeniaclasstools');
+        $path = [get_string('pluginname', 'local_oksigeniaclasstools'), quizimages::AREA];
+        $files = writer::with_context($context)->get_files($path);
+        $this->assertCount(1, $files);
+        $fs = get_file_storage();
+        provider::delete_data_for_user(new approved_contextlist($teacher, 'local_oksigeniaclasstools', [$context->id]));
+        $this->assertTrue($fs->is_area_empty($context->id, 'local_oksigeniaclasstools', quizimages::AREA, $teacher->id));
+        $this->assertFalse($fs->is_area_empty($context->id, 'local_oksigeniaclasstools', quizimages::AREA, $other->id));
+        provider::delete_data_for_all_users_in_context($context);
+        $this->assertTrue($fs->is_area_empty($context->id, 'local_oksigeniaclasstools', quizimages::AREA, false));
     }
 
     public function test_delete_for_everyone_in_a_course(): void {

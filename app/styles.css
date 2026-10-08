@@ -124,6 +124,8 @@ input[type="range"]:focus-visible { outline: 3px solid var(--azul-osc); outline-
 .anillo .progreso { fill: none; stroke: var(--azul); stroke-width: 12; stroke-linecap: round; stroke-dasharray: 1000; transition: stroke .3s; }
 .anillo.aviso .progreso { stroke: var(--amarillo); }
 .anillo.ultimo .progreso { stroke: var(--rojo); }
+.anillo.descanso .progreso { stroke: var(--verde); }
+.anillo.descanso .estado { fill: var(--verde); }
 .anillo .cifras { fill: var(--azul-osc); font-size: 56px; font-weight: 900; font-variant-numeric: tabular-nums; letter-spacing: -1px; }
 .anillo .cifras.larga { font-size: 40px; }
 .anillo.ultimo .cifras { fill: var(--rojo); }
@@ -139,6 +141,12 @@ input[type="range"]:focus-visible { outline: 3px solid var(--azul-osc); outline-
 .chip:hover { border-color: var(--azul); }
 .chip.activo { border-color: var(--azul); background: var(--azul); color: #fff; }
 .medida { display: flex; flex-direction: column; gap: .5rem; }
+/* Por bloques: una cuenta o bloques de trabajo y descanso, arriba de la columna. */
+.tm-tipo { display: flex; }
+.tm-tipo button { flex: 1; }
+.tm-bloques-giros { display: flex; flex-direction: column; gap: .5rem; }
+.tm-bloques-giros output { min-width: 4.5rem; font-size: 1.15rem; font-weight: 900; text-align: center; font-variant-numeric: tabular-nums; }
+.tm-bloques .nota { margin: 0; }
 .temporizador .botonera .boton:not(.ancho) { flex: 1; }
 
 /* ---------- Cronómetro ---------- */
@@ -949,7 +957,8 @@ a.redondo { text-decoration: none; }
 /* Text on the board: a box where it will be written, in the size and colour chosen. */
 #wb-stage .ct-wb-text { position: absolute; z-index: 5; min-width: 8em; min-height: 0; margin: 0; padding: 0 .1em; border: 1px dashed var(--azul); border-radius: 4px; background: rgba(255, 255, 255, .75); box-shadow: none; font-family: "Nunito", system-ui, sans-serif; font-weight: 800; line-height: 1; }
 /* The tools as icons; undo and redo together; the background in a small panel. */
-.ct-wb-tools button { min-width: 2.6rem; padding-inline: .4rem; }
+.ct-wb-tools button { min-width: 2.35rem; padding-inline: .3rem; }
+.ct-wb-bar .ct-swatch { width: 2.2rem; height: 2.2rem; }
 .ct-wb-tools .ico { font-size: 1.05rem; }
 .ct-wb-hist { display: inline-flex; gap: .3rem; }
 .ct-wb-redo { padding-inline: .85rem; }
@@ -971,7 +980,7 @@ a.redondo { text-decoration: none; }
 .ct-wb-surfaces button { display: inline-flex; align-items: center; gap: .4rem; }
 .ct-wb-sf { display: inline-block; width: 1rem; height: 1rem; border: 1px solid var(--borde); border-radius: 4px; background: var(--c); }
 #wb-stage .ct-wb-text.oscura { background: rgba(0, 0, 0, .35); border-color: rgba(255, 255, 255, .6); }
-#wb-full.activo { background: var(--azul); color: #fff; }
+#wb-full.activo, #wb-magic.activo { background: var(--azul); color: #fff; }
 /* The full board: a second row of tools, the selection, the laser, the strip of pages. */
 .ct-wb-bar2 { padding-block: .1rem; }
 .ct-wb-kit, .ct-wb-zoomer, .ct-wb-pager { display: inline-flex; align-items: center; gap: .3rem; }
@@ -1599,6 +1608,12 @@ button.id-revisar { padding-right: .8rem; cursor: pointer; }
 .qz-titulo { margin: 0; color: var(--azul-osc); font-size: clamp(1.4rem, 3.4vw, 2.4rem); font-weight: 900; text-align: center; }
 .qz-pregunta { margin: 0; color: var(--azul-osc); font-size: clamp(1.4rem, 3.6vw, 2.8rem); font-weight: 900; line-height: 1.15; text-align: center; text-wrap: balance; }
 .qz-respuestas-grandes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .7rem; flex: 1; min-height: 0; }
+/* A question with a picture: the picture on the left, the answers one under another on the right. */
+.qz-cuerpo { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 1rem; flex: 1; min-height: 0; }
+.qz-foto { display: flex; align-items: center; justify-content: center; min-height: 0; padding: .4rem; overflow: hidden; border-radius: var(--radio); background: var(--fondo); }
+.qz-foto img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 10px; }
+.qz-respuestas-grandes.columna { grid-template-columns: minmax(0, 1fr); }
+@media (max-width: 760px) { .qz-cuerpo { grid-template-columns: minmax(0, 1fr); } }
 .qz-tile { position: relative; display: flex; align-items: center; gap: .8rem; min-height: 4.5rem; padding: .7rem 1rem; overflow: hidden; border-radius: var(--radio); background: var(--c); color: #fff; font-size: clamp(1.1rem, 2.6vw, 1.9rem); font-weight: 900; }
 .qz-tile.claro { color: var(--tinta); }
 .qz-tile b { display: inline-grid; flex: none; place-items: center; width: 1.8em; height: 1.8em; border-radius: 50%; background: rgba(255, 255, 255, .25); }
@@ -1645,6 +1660,11 @@ button.id-revisar { padding-right: .8rem; cursor: pointer; }
 .qz-lista .redondo { width: 36px; height: 36px; }
 .qz-editor fieldset { display: flex; flex-direction: column; gap: .55rem; padding: .7rem; border: 1px solid var(--borde); border-radius: var(--radio); }
 .qz-editor textarea { width: 100%; }
+.qz-imagen { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; }
+.qz-imagen img { max-width: 9rem; max-height: 5rem; border: 1px solid var(--borde); border-radius: 8px; }
+.qz-imagen .nota { flex: 1 1 12rem; margin: 0; }
+.qz-con-img { display: inline-flex; margin-right: .35rem; color: var(--azul); vertical-align: -2px; }
+.qz-b-item img { flex: none; width: 3.5rem; height: 3.5rem; border-radius: 6px; object-fit: cover; }
 .qz-respuestas { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .45rem; }
 .qz-respuesta { display: flex; align-items: center; gap: .4rem; padding: .3rem; border-left: 6px solid var(--c); border-radius: 10px; background: var(--fondo); }
 .qz-respuesta b { color: var(--c); font-weight: 1000; }
@@ -1657,3 +1677,40 @@ button.id-revisar { padding-right: .8rem; cursor: pointer; }
 .qz-b-item small { color: var(--tinta-3); overflow-wrap: anywhere; }
 .qz-b-item small b { color: var(--verde); }
 @media (max-width: 760px) { .qz-respuestas-grandes, .qz-respuestas { grid-template-columns: minmax(0, 1fr); } }
+
+/* Calculator: the expression and the result on top, big keys below; the results in the column beside it. */
+.ct-calc { display: flex; flex-direction: column; align-items: stretch; gap: .8rem; min-height: 0; }
+.ct-calc > * { width: min(100%, 40rem); align-self: center; }
+.ct-calc:has(.cientifica) > * { width: min(100%, 64rem); }
+.ct-calc-display { display: flex; flex-direction: column; align-items: flex-end; justify-content: flex-end; min-height: 6.5rem; padding: .6rem 1rem; border-radius: var(--radio); background: #12233d; color: #fff; font-variant-numeric: tabular-nums; }
+.ct-calc-expr { min-height: 1.4em; margin: 0; color: #a9bddb; font-size: clamp(1rem, 2.2vh, 1.4rem); font-weight: 700; overflow-wrap: anywhere; text-align: right; }
+.ct-calc-result { margin: 0; font-size: clamp(2rem, 7vh, 4rem); font-weight: 900; line-height: 1.1; overflow-wrap: anywhere; text-align: right; }
+.ct-calc-result.larga { font-size: clamp(1.4rem, 4.5vh, 2.6rem); }
+.ct-calc-keys { display: grid; flex: 1; gap: .8rem; min-height: 0; }
+.ct-calc-keys.cientifica { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); }
+.ct-calc-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: minmax(0, 1fr); gap: .5rem; min-height: 0; }
+.ct-calc-grid.sci { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.ct-calc-key { min-height: 0; padding: 0; border: 0; border-radius: 16px; background: var(--superficie); box-shadow: inset 0 0 0 1px var(--borde), 0 2px 0 var(--borde); color: var(--tinta); font: inherit; font-size: clamp(1.2rem, 3.4vh, 2rem); font-weight: 900; cursor: pointer; touch-action: manipulation; }
+.ct-calc-key:active { transform: translateY(1px); box-shadow: inset 0 0 0 1px var(--borde); }
+.ct-calc-key.op { background: var(--azul-suave); color: var(--azul); }
+.ct-calc-key.fn { background: var(--fondo); color: var(--azul-osc); font-size: clamp(1rem, 2.6vh, 1.5rem); }
+.ct-calc-key.borra { background: var(--rojo-suave); color: var(--rojo); }
+.ct-calc-key.igual { background: var(--verde); box-shadow: none; color: #fff; }
+.ct-calc-key.doble { grid-column: span 2; }
+.ct-calc-key[aria-pressed="true"] { background: var(--azul); color: #fff; }
+.ct-calc-tape { display: flex; flex-direction: column; gap: .3rem; max-height: 50vh; margin: 0; padding: 0; overflow-y: auto; list-style: none; }
+.ct-calc-tape button { display: flex; flex-direction: column; align-items: flex-end; width: 100%; min-height: 0; padding: .35rem .6rem; border: 0; border-radius: 10px; background: var(--fondo); color: var(--tinta-2); font: inherit; text-align: right; cursor: pointer; font-variant-numeric: tabular-nums; }
+.ct-calc-tape strong { color: var(--azul-osc); font-size: 1.25rem; }
+.ct-calc-side .nota { margin: 0; }
+
+/* The formula editor: the preview, the line to write it, and the buttons of the level. */
+dialog.ct-fx-dialogo { width: min(44rem, 94vw); max-width: none; }
+.ct-fx { display: flex; flex-direction: column; gap: .6rem; width: 100%; min-width: 0; }
+.ct-fx-ver { width: 100%; height: 8.5rem; border: 1px solid var(--borde); border-radius: var(--radio); background: var(--superficie); }
+.ct-fx input[type="text"] { width: 100%; font-size: 1.3rem; font-variant-numeric: tabular-nums; }
+.ct-fx .nota { margin: 0; }
+.ct-fx-botones { display: flex; flex-wrap: wrap; gap: .35rem; max-height: 14rem; overflow-y: auto; }
+.ct-fx-boton { display: grid; place-items: center; min-width: 3rem; min-height: 3rem; padding: .2rem .45rem; border: 1px solid var(--borde); border-radius: 10px; background: var(--fondo); color: var(--tinta); cursor: pointer; }
+.ct-fx-boton:hover { border-color: var(--azul); }
+.ct-fx-boton canvas { display: block; pointer-events: none; }
+

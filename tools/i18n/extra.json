@@ -982,5 +982,117 @@
  "nl_p_negquarters": {
   "en": "Quarters, from −2 to 2",
   "es": "Cuartos, del −2 al 2"
+ },
+ "bq_kind": {
+  "en": "How it counts",
+  "es": "Cómo cuenta"
+ },
+ "bq_one": {
+  "en": "One count",
+  "es": "Una cuenta"
+ },
+ "bq_blocks": {
+  "en": "In blocks",
+  "es": "Por bloques"
+ },
+ "bq_title": {
+  "en": "Work and rest",
+  "es": "Trabajo y descanso"
+ },
+ "bq_work": {
+  "en": "Work",
+  "es": "Trabajo"
+ },
+ "bq_rest": {
+  "en": "Rest",
+  "es": "Descanso"
+ },
+ "bq_count": {
+  "en": "Blocks",
+  "es": "Bloques"
+ },
+ "bq_summary": {
+  "en": "{$a->n} blocks of {$a->work} min with rests of {$a->rest}: {$a->total} min in all. Each part starts by itself.",
+  "es": "{$a->n} bloques de {$a->work} min con descansos de {$a->rest}: {$a->total} min en total. Cada parte empieza sola."
+ },
+ "bq_work_n": {
+  "en": "Work {$a->n} of {$a->of}",
+  "es": "Trabajo {$a->n} de {$a->of}"
+ },
+ "bq_rest_now": {
+  "en": "Rest",
+  "es": "Descanso"
+ },
+ "bq_back": {
+  "en": "Back to work: block {$a->n} of {$a->of}",
+  "es": "A trabajar: bloque {$a->n} de {$a->of}"
+ },
+ "bq_tip_1": {
+  "en": "Rest: look out of the window, far away, for a while.",
+  "es": "Descanso: mirar por la ventana, a lo lejos, un rato."
+ },
+ "bq_tip_2": {
+  "en": "Rest: stand up and stretch.",
+  "es": "Descanso: levantarse y estirarse."
+ },
+ "bq_tip_3": {
+  "en": "Rest: a drink of water.",
+  "es": "Descanso: beber un poco de agua."
+ },
+ "bq_tip_4": {
+  "en": "Rest: three deep breaths, slowly.",
+  "es": "Descanso: tres respiraciones hondas, despacio."
+ },
+ "bq_tip_5": {
+  "en": "Rest: roll the shoulders and move the neck gently.",
+  "es": "Descanso: mover los hombros y el cuello con suavidad."
+ },
+ "bq_tip_6": {
+  "en": "Rest: close the eyes for a moment.",
+  "es": "Descanso: cerrar los ojos un momento."
+ },
+ "mt_calc": {
+  "en": "Calculator",
+  "es": "Calculadora"
+ },
+ "ca_kind": {
+  "en": "Kind of calculator",
+  "es": "Tipo de calculadora"
+ },
+ "ca_basic": {
+  "en": "Basic",
+  "es": "Básica"
+ },
+ "ca_sci": {
+  "en": "Scientific",
+  "es": "Científica"
+ },
+ "ca_tape": {
+  "en": "Results",
+  "es": "Resultados"
+ },
+ "ca_tape_empty": {
+  "en": "Each result stays here; a tap uses it again.",
+  "es": "Cada resultado se queda aquí; tocándolo se vuelve a usar."
+ },
+ "ca_tape_clear": {
+  "en": "Clear the results",
+  "es": "Borrar los resultados"
+ },
+ "ca_error": {
+  "en": "It cannot be worked out",
+  "es": "No se puede calcular"
+ },
+ "ca_undefined": {
+  "en": "Not defined",
+  "es": "No está definido"
+ },
+ "ca_ans": {
+  "en": "Ans",
+  "es": "Ans"
+ },
+ "ca_use": {
+  "en": "Use this result",
+  "es": "Usar este resultado"
  }
 }

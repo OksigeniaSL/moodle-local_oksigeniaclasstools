@@ -218,5 +218,101 @@
  "in_close": {
   "en": "Remove",
   "es": "Quitar"
+ },
+ "wb_magic": {
+  "en": "Magic shapes: keep the finger still at the end of a stroke and it becomes a line, a circle, a triangle or a rectangle",
+  "es": "Formas mágicas: deja el dedo quieto al final de un trazo y se convierte en línea, círculo, triángulo o rectángulo"
+ },
+ "wb_t_formula": {
+  "en": "Formula: fractions, powers, roots…",
+  "es": "Fórmula: fracciones, potencias, raíces…"
+ },
+ "fx_title": {
+  "en": "Formula",
+  "es": "Fórmula"
+ },
+ "fx_ph": {
+  "en": "For example: 3/4 + 1/2 = □",
+  "es": "Por ejemplo: 3/4 + 1/2 = □"
+ },
+ "fx_hint": {
+  "en": "Write it in one line: 3/4, x^2, raíz(2), {x + y = 3; x − y = 1}. Tab goes to the next box □.",
+  "es": "Escríbela en una línea: 3/4, x^2, raíz(2), {x + y = 3; x − y = 1}. Tab salta al siguiente hueco □."
+ },
+ "fx_all": {
+  "en": "All the symbols",
+  "es": "Todos los símbolos"
+ },
+ "fx_put": {
+  "en": "Put it on the board",
+  "es": "Ponerla en la pizarra"
+ },
+ "fx_save": {
+  "en": "Save the changes",
+  "es": "Guardar los cambios"
+ },
+ "fx_delete": {
+  "en": "Delete",
+  "es": "Borrar"
+ },
+ "fx_p_frac": {
+  "en": "Fraction",
+  "es": "Fracción"
+ },
+ "fx_p_mixed": {
+  "en": "Mixed number",
+  "es": "Número mixto"
+ },
+ "fx_p_paren": {
+  "en": "Brackets",
+  "es": "Paréntesis"
+ },
+ "fx_p_square": {
+  "en": "Squared",
+  "es": "Al cuadrado"
+ },
+ "fx_p_power": {
+  "en": "Power",
+  "es": "Potencia"
+ },
+ "fx_p_sqrt": {
+  "en": "Square root",
+  "es": "Raíz cuadrada"
+ },
+ "fx_p_box": {
+  "en": "A box to fill in",
+  "es": "Hueco para rellenar"
+ },
+ "fx_p_index": {
+  "en": "Index",
+  "es": "Subíndice"
+ },
+ "fx_p_root": {
+  "en": "Root of index n",
+  "es": "Raíz de índice n"
+ },
+ "fx_p_abs": {
+  "en": "Absolute value",
+  "es": "Valor absoluto"
+ },
+ "fx_p_sys": {
+  "en": "System of equations",
+  "es": "Sistema de ecuaciones"
+ },
+ "fx_p_sum": {
+  "en": "Sum",
+  "es": "Sumatorio"
+ },
+ "fx_p_int": {
+  "en": "Integral",
+  "es": "Integral"
+ },
+ "fx_p_lim": {
+  "en": "Limit",
+  "es": "Límite"
+ },
+ "fx_p_vec": {
+  "en": "Vector",
+  "es": "Vector"
  }
 }
