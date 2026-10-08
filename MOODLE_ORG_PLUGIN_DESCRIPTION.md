@@ -7,22 +7,23 @@
 <li><strong>Scoreboard</strong> for 2 to 8 teams, taking the groups just made, kept in Moodle so the contest goes on from any computer.</li>
 <li><strong>Chance</strong>: configurable wheel, dice (4 to 20 faces, operations, directions, colours, letters, custom faces), coins with motifs and cards.</li>
 <li><strong>Games</strong>: rosco, Simon, hangman (with balloons), word (like Wordle), pairs (built-in sets by school level, from animal shadows and clocks to chemical elements and graphs of functions, plus faces and names) and secret code (an escape-room lock with clues).</li>
-<li><strong>Materials</strong> for touch boards: Cuisenaire rods and a tangram with silhouettes that snap into place.</li>
+<li><strong>Materials</strong> for touch boards: Cuisenaire rods, tangram, number line, fraction wall, geoboard, base-10 blocks, a calculator (basic or scientific) and a score with a glockenspiel: notes written with a tap, played with sounds made in the browser, «play with me», a note game, traditional songs of many countries, and songs brought in as text or ABC.</li>
+<li><strong>Live sessions</strong>: the class joins from tablets or phones with a QR code or a code (no account needed) or with their Moodle account, by name or anonymous. Vote, team buzzers, the teacher's phone as a remote, a brainstorm that becomes a live word cloud or is sorted into templates, and a quiz with teams, pictures and questions from the course question bank.</li>
 <li><strong>Noise meter</strong> (microphone level only; nothing is recorded or sent) with a light that breathes with the noise, a calm streak and a patience reserve.</li>
-<li><strong>Drawing board</strong> with backgrounds for each lesson (squared paper, handwriting lines, music staves), several fingers at once.</li>
-<li><strong>Learning to tell the time</strong>: hands dragged with a finger, digits and words, five levels and two class games.</li>
-<li>Timer, stopwatch, work symbols, clock and a QR code with styles, the site logo and PNG/SVG download.</li>
+<li><strong>Drawing board</strong>, simple or full: backgrounds for each lesson (squared paper, handwriting lines, music staves, chalkboards), several fingers at once, pages kept in the course, a picture or a PDF as background, magic shapes, formulas, ruler, set squares, protractor and compass, curtain and spotlight. Shared with a class as a file in the course.</li>
+<li><strong>Clock</strong>: learning to tell the time (five levels and two class games) and a countdown to an event.</li>
+<li>Timer (also in work and rest blocks), stopwatch, class goal, work symbols and a QR code with styles, the site logo and PNG/SVG download.</li>
 </ul>
 <h3>Lists from the course</h3>
 <p>One list per group and per cohort enrolled with cohort sync (a course with cohorts 5A to 5F gives six lists), and the whole course. Separate groups mode is respected.</p>
 <h3>Configuration</h3>
 <p>Under <em>Site administration → Plugins → Local plugins → Class tools (Oksigenia Classtools)</em>: how names are shown on the board, the days counted for fair picking, the school levels whose built-in sets are offered, whether students get a limited board (only tools without data of the class: no names, photos, picks or groups), and the link in the main menu. A user tour shows teachers where the tools are. Access is gated by the capability <code>local/oksigeniaclasstools:use</code> (teacher, non-editing teacher and manager by default); saving groups also needs <code>moodle/course:managegroups</code>.</p>
 <h3>Privacy</h3>
-<p>Two tables, both covered by the privacy provider: the picks (course, student, teacher, time; deleted once older than the days counted for fair picking) and what each teacher keeps of each tool in each course. Nothing is stored for students. No external services, no tracking.</p>
+<p>Four tables and one file area, all covered by the privacy provider: the picks (deleted once older than the days counted for fair picking), what each teacher keeps of each tool in each course, live sessions and their answers (deleted after a day; with the code only or anonymous, no user id is kept) and the pictures of quiz questions. No external services, no CDN, no tracking.</p>
 <h3>Requirements</h3>
 <ul>
 <li>Moodle 4.3 or later (the main-menu link from 4.4).</li>
 <li>Any theme and any modern browser.</li>
 </ul>
 <h3>License</h3>
-<p>GPL v3 or later. Bundled QR generator (MIT), Nunito font (SIL OFL 1.1) and Font Awesome Free icons (CC BY 4.0).</p>
+<p>GPL v3 or later. Bundled QR generator (MIT), Nunito font (SIL OFL 1.1), Font Awesome Free icons (CC BY 4.0) and PDF.js (Apache 2.0).</p>

@@ -417,7 +417,7 @@
                 + '<rect class="tm-madera" x="26" y="174" width="72" height="11" rx="4"/><rect class="tm-madera" x="26" y="15" width="72" height="11" rx="4"/>'
                 + '<rect class="tm-madera" x="29" y="24" width="5" height="152" rx="2"/><rect class="tm-madera" x="90" y="24" width="5" height="152" rx="2"/>';
         } else if (aspecto === 'pulsar') {
-            // Un púlsar, como el de MiNuryana: estrella de neutrones con dos haces que giran (una vuelta cada 5 s),
+            // Un púlsar: estrella de neutrones con dos haces que giran (una vuelta cada 5 s),
             // anillos que se expanden y un campo de estrellas; el arco fino del borde es el tiempo que queda. Se dibuja
             // una vez y luego solo giran los haces y avanza el arco (así las ondas no vuelven a empezar).
             if (g.dataset.hecho !== 'pulsar') {

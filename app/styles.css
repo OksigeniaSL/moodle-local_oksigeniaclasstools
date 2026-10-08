@@ -1389,7 +1389,7 @@ a.redondo { text-decoration: none; }
 .tm-brillo { fill: none; stroke: #fff; stroke-width: 2.5; stroke-linecap: round; opacity: .7; }
 .tm-madera { fill: #8b5a2b; stroke: #6b4320; stroke-width: 1; }
 .anillo[data-aspecto="arena"] .tm-chorro { stroke: #d79a31; stroke-width: 2; }
-/* Pulsar, like MiNuryana's: a neutron star with two turning beams, expanding rings and stars; the thin arc is the time left. */
+/* Pulsar: a neutron star with two turning beams, expanding rings and stars; the thin arc is the time left. */
 .tm-pulsar-onda { fill: none; stroke: rgba(34, 211, 238, .45); stroke-width: 1.2; transform-box: view-box; transform-origin: 100px 100px; animation: tm-pulsar 3.5s ease-out infinite; }
 @keyframes tm-pulsar { from { opacity: .9; transform: scale(.13); } to { opacity: 0; transform: scale(1); } }
 .tm-pulsar-arco { fill: none; stroke: #22d3ee; stroke-width: 2.5; stroke-linecap: round; stroke-dasharray: 1000; opacity: .8; }

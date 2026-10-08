@@ -38,7 +38,7 @@ come from Moodle language packs instead, so a German or English site gets its ow
 - No behaviour changes: same ids, classes, structure, logic. `node --check` must pass for every file you edit.
 
 ## Output
-Write `/tmp/claude-1000/-home-eraorahan-Downloads-Nuryana/d3d0199c-a443-427c-b1c3-ea422947c319/scratchpad/i18n/<your-name>.json`:
+Write `i18n/<your-name>.json` in your working folder (outside the repository):
 ```json
 { "ro_start": { "en": "Start", "es": "Empezar" }, ... }
 ```
