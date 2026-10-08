@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.20.0 (2026-10-22)
+
+- **Score**, among the materials: treble or bass clef, 2/4, 3/4, 4/4 or 6/8 and a tempo; notes written with a tap on
+  the staff or on the glockenspiel (whole to sixteenth notes, rests, and in Secondary and up dots, sharps and flats),
+  moved up and down by dragging, with undo. It plays with sounds made in the browser (piano, glockenspiel, recorder,
+  and a cat and a dog that sing the notes), with a metronome and claps if wanted; the note that sounds lights up.
+  For the youngest: the colours of the glockenspiel, the names under the notes, the rhythm in syllables (ta, ti-ti)
+  and a little quaver that jumps from note to note.
+- **Play with me**: the next bar of the glockenspiel lights up and waits for the right note; **Which note is it?**:
+  a game with a streak. **Whose turn?** from the score.
+- **Songs**: traditional ones in the titles of each language, those of the teacher's country first and each with
+  where it is from (Twinkle, Frère Jacques, Au clair de la lune, Ode to Joy, Alle meine Entchen, Hänschen klein,
+  Silent Night, Mary Had a Little Lamb, Old MacDonald, Jingle Bells, Happy Birthday). The teacher's own songs are kept
+  in the course; they can be brought in as text (a simple format, do re mi or C D E, or ABC from abcnotation.com),
+  made with the prompt for an AI that the score gives, and downloaded.
+- **Whose turn?** on the board too: someone of the class to the board, as in «Whose turn?» (those who came, the fair
+  turns of the course), from a button in its corner.
+
 ## 0.19.0 (2026-10-21)
 
 - **Timer in blocks** (a pomodoro for the class): work blocks with a rest between each two; each part starts by

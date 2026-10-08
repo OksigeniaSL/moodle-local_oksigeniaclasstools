@@ -1868,6 +1868,27 @@
         esperas[tool] = setTimeout(() => envia(tool), 1200);
     };
     addEventListener('pagehide', () => Object.keys(pendientes).forEach((t) => envia(t, true)));
+    // Alguien de la clase para otra herramienta (salir a la pizarra, tocar en la partitura…): de la lista elegida en
+    // «¿A quién le toca?», de los que han venido, con el sorteo justo de los turnos (cuenta como uno más) y sin repetir
+    // al último. null si no hay lista o no queda nadie.
+    let ultimoFuera = null;
+    const eligeFuera = () => {
+        const l = listaQ();
+        if (!l) { return null; }
+        let bolsa = presentes(l);
+        if (bolsa.length > 1 && ultimoFuera) { bolsa = bolsa.filter((n) => n !== ultimoFuera); }
+        if (!bolsa.length) { return null; }
+        const justo = conTurnos(l) && qJusto;
+        const minimo = justo ? Math.min(...bolsa.map((n) => l.veces[n] || 0)) : 0;
+        const candidatos = justo ? bolsa.filter((n) => (l.veces[n] || 0) === minimo) : bolsa;
+        const elegido = candidatos[azar(candidatos.length)];
+        ultimoFuera = elegido;
+        if (conTurnos(l) && l.ids[elegido]) {
+            sumaTurno(l.ids[elegido]);
+            alAula(AULA.pickurl, { userid: l.ids[elegido] }).catch(() => { /* sin conexión: ese turno no cuenta */ });
+        }
+        return { name: elegido, list: l };
+    };
     // API para las herramientas que van en ficheros aparte (chance.js, scoreboard.js…): lo común de la pantalla.
     window.ClasstoolsCore = {
         $, $$, t, translate: traduce, random: azar, shuffle: baraja, escape: escapa, reducedMotion: reducido, save: guarda, load: lee,
@@ -1881,6 +1902,7 @@
         mode: () => modo,   // early, primary, secondary or advanced; «classtools:mode» when it changes
         byMode: porModo,    // byMode(key, { early: {…}, primary: {…}, … }) → { get(), set(changes) }: values that start differently in each mode
         tabs: () => pestanas.map((b) => b.dataset.h), current: () => actual,
+        pick: eligeFuera,   // pick() → { name, list } o null: alguien de la clase, como en «¿A quién le toca?»
     };
     // Abierta desde un curso del aula: título con el curso y botón para volver a él.
     // La vuelta: al curso si se abrió desde uno; si no (dentro de Moodle, sin curso), al inicio de cada usuario.

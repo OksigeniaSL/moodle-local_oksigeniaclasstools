@@ -703,6 +703,7 @@ $string['app_mt_reset'] = 'Colocar de nuevo';
 $string['app_mt_rod'] = 'Regleta del {$a}';
 $string['app_mt_rods'] = 'Regletas';
 $string['app_mt_rods_help'] = 'Arrastra regletas de la escalera a la mesa. Para girar una, tócala dos veces. Para quitarla, devuélvela a la escalera.';
+$string['app_mt_score'] = 'Partitura';
 $string['app_mt_size'] = 'Tamaño de la mesa';
 $string['app_mt_tangram'] = 'Tangram';
 $string['app_mt_tangram_help'] = 'Arrastra las piezas. Para girar una, tócala dos veces o pulsa «Girar». El paralelogramo se voltea con «Voltear». Las piezas se imantan al acercarlas.';
@@ -954,21 +955,129 @@ $string['app_rs_reveal'] = 'Destapar';
 $string['app_rs_scratch'] = 'Rasca';
 $string['app_rs_toggle'] = 'Rasca y gana';
 $string['app_sc_add_team'] = 'Añadir equipo';
+$string['app_sc_again'] = 'Desde el principio';
+$string['app_sc_clear'] = 'Borrar todo';
+$string['app_sc_clear_sure'] = '¿Seguro? Pulsa otra vez';
+$string['app_sc_clef'] = 'Clave';
+$string['app_sc_clef_fa'] = 'Fa';
+$string['app_sc_clef_sol'] = 'Sol';
 $string['app_sc_colour'] = 'Cambiar el color';
+$string['app_sc_colours'] = 'Colores del carillón';
+$string['app_sc_copied'] = 'Copiado: pégalo en tu IA.';
+$string['app_sc_copy'] = 'Copiar';
+$string['app_sc_copy_of'] = '{$a} (copia)';
+$string['app_sc_delete'] = 'Borrar la nota';
+$string['app_sc_dot'] = 'Puntillo';
+$string['app_sc_err_empty'] = 'No hay notas que tocar.';
+$string['app_sc_err_note'] = '«{$a}» no es una nota: como do, re4, sol:b, fa#:c, o - para un silencio.';
+$string['app_sc_err_tempo'] = 'El tempo «{$a}» no se entiende: un número de 30 a 240.';
+$string['app_sc_err_time'] = 'El compás «{$a}» no se entiende: usa 2/4, 3/4, 4/4 o 6/8.';
+$string['app_sc_export'] = 'Descargar';
+$string['app_sc_f_b'] = 'Blanca';
+$string['app_sc_f_c'] = 'Corchea';
+$string['app_sc_f_n'] = 'Negra';
+$string['app_sc_f_r'] = 'Redonda';
+$string['app_sc_f_s'] = 'Semicorchea';
+$string['app_sc_fast'] = 'rápido';
+$string['app_sc_figure'] = 'Figura';
+$string['app_sc_flat'] = 'Bemol';
 $string['app_sc_from_groups'] = 'Usar los equipos de «Grupos»';
+$string['app_sc_from_home'] = 'De {$a}';
+$string['app_sc_from_world'] = 'De otros países';
+$string['app_sc_game'] = '¿Qué nota es?';
+$string['app_sc_game_next'] = 'Otra nota';
+$string['app_sc_game_right'] = '¡{$a->name}! Racha: {$a->n}';
+$string['app_sc_game_wrong'] = 'Era {$a}';
 $string['app_sc_group'] = 'Grupo {$a}';
+$string['app_sc_h_clef'] = 'Clave';
+$string['app_sc_h_from'] = 'Origen';
+$string['app_sc_h_lyrics'] = 'Letra';
+$string['app_sc_h_pickup'] = 'Anacrusa';
+$string['app_sc_h_tempo'] = 'Tempo';
+$string['app_sc_h_time'] = 'Compás';
+$string['app_sc_h_title'] = 'Título';
+$string['app_sc_import'] = 'Abrir';
+$string['app_sc_import_file'] = 'Abrir un archivo';
+$string['app_sc_import_go'] = 'Traerla';
+$string['app_sc_import_hint'] = 'Pega el texto de una canción o abre un archivo .txt o .abc: escrito a mano, hecho con el prompt para tu IA o en formato ABC (abcnotation.com).';
+$string['app_sc_import_ph'] = 'Título: Estrellita
+Compás: 4/4
+Tempo: 100
+do:n do sol sol | la la sol:b';
+$string['app_sc_import_title'] = 'Traer una canción';
 $string['app_sc_leads'] = 'Va primero: {$a}';
+$string['app_sc_listen'] = 'Escuchar';
+$string['app_sc_lyrics'] = 'Letra';
+$string['app_sc_medium'] = 'andante';
+$string['app_sc_metro'] = 'Metrónomo';
+$string['app_sc_mine'] = 'Mis canciones';
+$string['app_sc_mine_note'] = 'Una de tus canciones, guardada en este curso.';
+$string['app_sc_mode'] = 'Qué hacemos';
+$string['app_sc_muted'] = 'El sonido está apagado: actívalo con el altavoz de arriba.';
 $string['app_sc_name'] = 'Nombre del equipo';
+$string['app_sc_names'] = 'Nombres de las notas';
+$string['app_sc_new'] = 'Nueva';
+$string['app_sc_new_name'] = 'Canción {$a}';
 $string['app_sc_no_groups'] = 'Haz antes los equipos en la pestaña «Grupos».';
+$string['app_sc_origin'] = 'Procedencia: {$a}';
+$string['app_sc_playalong'] = 'Toca conmigo';
 $string['app_sc_points_many'] = '{$a} puntos';
 $string['app_sc_points_one'] = '{$a} punto';
+$string['app_sc_prompt'] = 'Prompt para tu IA';
+$string['app_sc_prompt_any'] = 'la canción que quieras';
+$string['app_sc_prompt_hint'] = 'Escribe el nombre de la canción, copia el texto, pégalo en tu IA y trae lo que conteste con «Abrir».';
+$string['app_sc_prompt_song'] = 'Canción';
+$string['app_sc_prompt_text'] = 'Escribe la melodía de «{$a}» en el formato de texto de Class tools, para que suene en el carillón del colegio.
+
+Reglas:
+1. Empieza con estas líneas (las que hagan falta):
+Título: el nombre de la canción
+Origen: el país o el autor
+Clave: sol (o fa, si es grave)
+Compás: 2/4, 3/4, 4/4 o 6/8
+Tempo: negras por minuto (por ejemplo, 100)
+Anacrusa: lo que duran las notas antes del primer compás, solo si las hay (n, c…)
+2. Después, solo la melodía, a una voz, con las notas separadas por espacios y | entre compases.
+3. Notas: do re mi fa sol la si. El do central es do4: do5 es una octava más arriba y sol3 una más abajo; sin número, la octava 4. Sostenido con # (fa#), bemol con b (sib).
+4. La duración, después de dos puntos: r redonda, b blanca, n negra, c corchea, s semicorchea; con un punto detrás, con puntillo (sol:n.). Si no se pone, vale la de la nota anterior.
+5. Un silencio es - con su duración (-:n).
+6. Sin acordes, tresillos, ligaduras ni repeticiones: todo seguido.
+
+Ejemplo:
+Título: Estrellita
+Origen: Francia
+Clave: sol
+Compás: 4/4
+Tempo: 100
+do:n do sol sol | la la sol:b | fa:n fa mi mi | re re do:b
+
+Responde solo con el texto, sin explicaciones.';
+$string['app_sc_prompt_title'] = 'Una canción con tu IA';
 $string['app_sc_remove'] = 'Quitar este equipo';
 $string['app_sc_reset'] = 'Poner a cero';
 $string['app_sc_reset_sure'] = '¿Seguro? Pulsa otra vez';
+$string['app_sc_rest'] = 'Silencio';
+$string['app_sc_rhythm'] = 'Ritmo en sílabas (ta, ti-ti) y palmas';
+$string['app_sc_sharp'] = 'Sostenido';
+$string['app_sc_slow'] = 'lento';
+$string['app_sc_song'] = 'Canción';
+$string['app_sc_songs'] = 'Canciones';
+$string['app_sc_stop'] = 'Parar';
 $string['app_sc_team'] = 'Equipo {$a}';
 $string['app_sc_teams_many'] = '{$a} equipos';
 $string['app_sc_teams_one'] = '{$a} equipo';
+$string['app_sc_tempo'] = 'Tempo';
 $string['app_sc_tie'] = 'Empate';
+$string['app_sc_time'] = 'Compás';
+$string['app_sc_untitled'] = 'Sin título';
+$string['app_sc_v_bells'] = 'Carillón';
+$string['app_sc_v_cat'] = 'Gato cantor';
+$string['app_sc_v_dog'] = 'Perro cantor';
+$string['app_sc_v_flute'] = 'Flauta dulce';
+$string['app_sc_v_piano'] = 'Piano';
+$string['app_sc_voice'] = 'Sonido';
+$string['app_sc_well_done'] = '¡Muy bien!';
+$string['app_sc_write'] = 'Escribir';
 $string['app_si_again'] = 'Otra vez';
 $string['app_si_blue'] = 'Azul';
 $string['app_si_fail'] = '¡Uy! Fallo';
@@ -1092,6 +1201,14 @@ $string['app_tm_v_cohete'] = 'Cohete';
 $string['app_tm_v_ninguno'] = 'Solo la barra';
 $string['app_tm_v_pixel'] = 'Píxeles';
 $string['app_tm_warn'] = 'Avisar cuando quede 1 minuto';
+$string['app_turn_button'] = '¿A quién le toca?';
+$string['app_turn_none'] = 'Elige antes una lista en «¿A quién le toca?».';
+$string['app_turn_ok'] = 'Vale';
+$string['app_turn_other'] = 'Otro';
+$string['app_turn_task_board'] = '¡A la pizarra!';
+$string['app_turn_task_note'] = '¿Qué nota es?';
+$string['app_turn_task_play'] = '¡Al carillón!';
+$string['app_turn_title'] = 'Le toca a…';
 $string['app_wb_background'] = 'Fondo';
 $string['app_wb_bg_bigger'] = 'Más grande';
 $string['app_wb_bg_blank'] = 'Blanco';

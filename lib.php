@@ -46,6 +46,7 @@ const LOCAL_OKSIGENIACLASSTOOLS_GAMES = [
 const LOCAL_OKSIGENIACLASSTOOLS_MATERIALS = [
     'rods' => 'app_mt_rods', 'tangram' => 'app_mt_tangram', 'line' => 'app_mt_line', 'fractions' => 'app_mt_fractions',
     'geoboard' => 'app_mt_geoboard', 'base10' => 'app_mt_base10', 'calc' => 'app_mt_calc',
+    'score' => 'app_mt_score',
 ];
 
 /** Tools a student sees when the site opens the board to students (none uses data of the class). */

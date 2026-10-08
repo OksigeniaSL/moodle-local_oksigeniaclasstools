@@ -1094,5 +1094,365 @@
  "ca_use": {
   "en": "Use this result",
   "es": "Usar este resultado"
+ },
+ "mt_score": {
+  "en": "Score",
+  "es": "Partitura"
+ },
+ "sc_song": {
+  "en": "Song",
+  "es": "Canción"
+ },
+ "sc_new": {
+  "en": "New",
+  "es": "Nueva"
+ },
+ "sc_import": {
+  "en": "Open",
+  "es": "Abrir"
+ },
+ "sc_prompt": {
+  "en": "Prompt for your AI",
+  "es": "Prompt para tu IA"
+ },
+ "sc_export": {
+  "en": "Download",
+  "es": "Descargar"
+ },
+ "sc_clef": {
+  "en": "Clef",
+  "es": "Clave"
+ },
+ "sc_clef_sol": {
+  "en": "Treble (G)",
+  "es": "Sol"
+ },
+ "sc_clef_fa": {
+  "en": "Bass (F)",
+  "es": "Fa"
+ },
+ "sc_time": {
+  "en": "Time",
+  "es": "Compás"
+ },
+ "sc_tempo": {
+  "en": "Tempo",
+  "es": "Tempo"
+ },
+ "sc_voice": {
+  "en": "Sound",
+  "es": "Sonido"
+ },
+ "sc_v_piano": {
+  "en": "Piano",
+  "es": "Piano"
+ },
+ "sc_v_bells": {
+  "en": "Glockenspiel",
+  "es": "Carillón"
+ },
+ "sc_v_flute": {
+  "en": "Recorder",
+  "es": "Flauta dulce"
+ },
+ "sc_v_cat": {
+  "en": "Singing cat",
+  "es": "Gato cantor"
+ },
+ "sc_v_dog": {
+  "en": "Singing dog",
+  "es": "Perro cantor"
+ },
+ "sc_names": {
+  "en": "Names of the notes",
+  "es": "Nombres de las notas"
+ },
+ "sc_colours": {
+  "en": "Colours of the glockenspiel",
+  "es": "Colores del carillón"
+ },
+ "sc_rhythm": {
+  "en": "Rhythm in syllables (ta, ti-ti) and claps",
+  "es": "Ritmo en sílabas (ta, ti-ti) y palmas"
+ },
+ "sc_lyrics": {
+  "en": "Lyrics",
+  "es": "Letra"
+ },
+ "sc_metro": {
+  "en": "Metronome",
+  "es": "Metrónomo"
+ },
+ "sc_mode": {
+  "en": "What to do",
+  "es": "Qué hacemos"
+ },
+ "sc_write": {
+  "en": "Write",
+  "es": "Escribir"
+ },
+ "sc_playalong": {
+  "en": "Play with me",
+  "es": "Toca conmigo"
+ },
+ "sc_game": {
+  "en": "Which note is it?",
+  "es": "¿Qué nota es?"
+ },
+ "sc_figure": {
+  "en": "Figure",
+  "es": "Figura"
+ },
+ "sc_listen": {
+  "en": "Listen",
+  "es": "Escuchar"
+ },
+ "sc_stop": {
+  "en": "Stop",
+  "es": "Parar"
+ },
+ "sc_muted": {
+  "en": "The sound is off: turn it on with the speaker at the top.",
+  "es": "El sonido está apagado: actívalo con el altavoz de arriba."
+ },
+ "sc_well_done": {
+  "en": "Well done!",
+  "es": "¡Muy bien!"
+ },
+ "sc_game_right": {
+  "en": "{$a->name}! Streak: {$a->n}",
+  "es": "¡{$a->name}! Racha: {$a->n}"
+ },
+ "sc_game_wrong": {
+  "en": "It was {$a}",
+  "es": "Era {$a}"
+ },
+ "sc_game_next": {
+  "en": "Another note",
+  "es": "Otra nota"
+ },
+ "sc_again": {
+  "en": "From the start",
+  "es": "Desde el principio"
+ },
+ "sc_rest": {
+  "en": "Rest",
+  "es": "Silencio"
+ },
+ "sc_dot": {
+  "en": "Dot",
+  "es": "Puntillo"
+ },
+ "sc_sharp": {
+  "en": "Sharp",
+  "es": "Sostenido"
+ },
+ "sc_flat": {
+  "en": "Flat",
+  "es": "Bemol"
+ },
+ "sc_delete": {
+  "en": "Delete the note",
+  "es": "Borrar la nota"
+ },
+ "sc_clear": {
+  "en": "Clear",
+  "es": "Borrar todo"
+ },
+ "sc_clear_sure": {
+  "en": "Sure? Press again",
+  "es": "¿Seguro? Pulsa otra vez"
+ },
+ "sc_f_r": {
+  "en": "Whole note",
+  "es": "Redonda"
+ },
+ "sc_f_b": {
+  "en": "Half note",
+  "es": "Blanca"
+ },
+ "sc_f_n": {
+  "en": "Quarter note",
+  "es": "Negra"
+ },
+ "sc_f_c": {
+  "en": "Eighth note",
+  "es": "Corchea"
+ },
+ "sc_f_s": {
+  "en": "Sixteenth note",
+  "es": "Semicorchea"
+ },
+ "sc_slow": {
+  "en": "slow",
+  "es": "lento"
+ },
+ "sc_medium": {
+  "en": "moderate",
+  "es": "andante"
+ },
+ "sc_fast": {
+  "en": "fast",
+  "es": "rápido"
+ },
+ "sc_mine": {
+  "en": "My songs",
+  "es": "Mis canciones"
+ },
+ "sc_from_home": {
+  "en": "From {$a}",
+  "es": "De {$a}"
+ },
+ "sc_from_world": {
+  "en": "From other countries",
+  "es": "De otros países"
+ },
+ "sc_songs": {
+  "en": "Songs",
+  "es": "Canciones"
+ },
+ "sc_origin": {
+  "en": "From: {$a}",
+  "es": "Procedencia: {$a}"
+ },
+ "sc_mine_note": {
+  "en": "One of your songs, kept in this course.",
+  "es": "Una de tus canciones, guardada en este curso."
+ },
+ "sc_untitled": {
+  "en": "Untitled",
+  "es": "Sin título"
+ },
+ "sc_copy_of": {
+  "en": "{$a} (copy)",
+  "es": "{$a} (copia)"
+ },
+ "sc_new_name": {
+  "en": "Song {$a}",
+  "es": "Canción {$a}"
+ },
+ "sc_import_title": {
+  "en": "Bring in a song",
+  "es": "Traer una canción"
+ },
+ "sc_import_hint": {
+  "en": "Paste the text of a song or open a .txt or .abc file: written by hand, made with the prompt for your AI, or in ABC (abcnotation.com).",
+  "es": "Pega el texto de una canción o abre un archivo .txt o .abc: escrito a mano, hecho con el prompt para tu IA o en formato ABC (abcnotation.com)."
+ },
+ "sc_import_ph": {
+  "en": "Title: Twinkle, Twinkle\nTime: 4/4\nTempo: 100\nC:q C G G | A A G:h",
+  "es": "Título: Estrellita\nCompás: 4/4\nTempo: 100\ndo:n do sol sol | la la sol:b"
+ },
+ "sc_import_file": {
+  "en": "Open a file",
+  "es": "Abrir un archivo"
+ },
+ "sc_import_go": {
+  "en": "Bring it in",
+  "es": "Traerla"
+ },
+ "sc_err_time": {
+  "en": "The time «{$a}» is not known: use 2/4, 3/4, 4/4 or 6/8.",
+  "es": "El compás «{$a}» no se entiende: usa 2/4, 3/4, 4/4 o 6/8."
+ },
+ "sc_err_tempo": {
+  "en": "The tempo «{$a}» is not known: a number from 30 to 240.",
+  "es": "El tempo «{$a}» no se entiende: un número de 30 a 240."
+ },
+ "sc_err_note": {
+  "en": "«{$a}» is not a note: like C, D4, G:h, F#:e, or - for a rest.",
+  "es": "«{$a}» no es una nota: como do, re4, sol:b, fa#:c, o - para un silencio."
+ },
+ "sc_err_empty": {
+  "en": "There are no notes to play.",
+  "es": "No hay notas que tocar."
+ },
+ "sc_h_title": {
+  "en": "Title",
+  "es": "Título"
+ },
+ "sc_h_from": {
+  "en": "Origin",
+  "es": "Origen"
+ },
+ "sc_h_clef": {
+  "en": "Clef",
+  "es": "Clave"
+ },
+ "sc_h_time": {
+  "en": "Time",
+  "es": "Compás"
+ },
+ "sc_h_tempo": {
+  "en": "Tempo",
+  "es": "Tempo"
+ },
+ "sc_h_pickup": {
+  "en": "Pickup",
+  "es": "Anacrusa"
+ },
+ "sc_h_lyrics": {
+  "en": "Lyrics",
+  "es": "Letra"
+ },
+ "sc_prompt_title": {
+  "en": "A song with your AI",
+  "es": "Una canción con tu IA"
+ },
+ "sc_prompt_hint": {
+  "en": "Write the name of the song, copy the text, paste it in your AI and bring back what it answers with «Open».",
+  "es": "Escribe el nombre de la canción, copia el texto, pégalo en tu IA y trae lo que conteste con «Abrir»."
+ },
+ "sc_prompt_song": {
+  "en": "Song",
+  "es": "Canción"
+ },
+ "sc_prompt_any": {
+  "en": "the song you want",
+  "es": "la canción que quieras"
+ },
+ "sc_prompt_text": {
+  "en": "Write the melody of \"{$a}\" in the text format of Class tools, so that it plays on the school glockenspiel.\n\nRules:\n1. Start with these lines (those that are needed):\nTitle: the name of the song\nOrigin: the country or the composer\nClef: treble (or bass, if it is low)\nTime: 2/4, 3/4, 4/4 or 6/8\nTempo: quarter notes per minute (for example, 100)\nPickup: how long the notes before the first bar last, only if there are any (q, e…)\n2. Then only the melody, one voice, with the notes separated by spaces and | between bars.\n3. Notes: C D E F G A B (or do re mi fa sol la si). Middle C is C4: C5 is an octave higher and G3 one lower; with no number, octave 4. Sharp with # (F#), flat with b (Bb).\n4. The length, after a colon: w whole, h half, q quarter, e eighth, s sixteenth; with a dot after it, dotted (G:q.). If there is none, the same as the note before.\n5. A rest is - with its length (-:q).\n6. No chords, triplets, ties or repeats: all written out.\n\nExample:\nTitle: Twinkle, Twinkle, Little Star\nOrigin: France\nClef: treble\nTime: 4/4\nTempo: 100\nC:q C G G | A A G:h | F:q F E E | D D C:h\n\nAnswer only with the text, without explanations.",
+  "es": "Escribe la melodía de «{$a}» en el formato de texto de Class tools, para que suene en el carillón del colegio.\n\nReglas:\n1. Empieza con estas líneas (las que hagan falta):\nTítulo: el nombre de la canción\nOrigen: el país o el autor\nClave: sol (o fa, si es grave)\nCompás: 2/4, 3/4, 4/4 o 6/8\nTempo: negras por minuto (por ejemplo, 100)\nAnacrusa: lo que duran las notas antes del primer compás, solo si las hay (n, c…)\n2. Después, solo la melodía, a una voz, con las notas separadas por espacios y | entre compases.\n3. Notas: do re mi fa sol la si. El do central es do4: do5 es una octava más arriba y sol3 una más abajo; sin número, la octava 4. Sostenido con # (fa#), bemol con b (sib).\n4. La duración, después de dos puntos: r redonda, b blanca, n negra, c corchea, s semicorchea; con un punto detrás, con puntillo (sol:n.). Si no se pone, vale la de la nota anterior.\n5. Un silencio es - con su duración (-:n).\n6. Sin acordes, tresillos, ligaduras ni repeticiones: todo seguido.\n\nEjemplo:\nTítulo: Estrellita\nOrigen: Francia\nClave: sol\nCompás: 4/4\nTempo: 100\ndo:n do sol sol | la la sol:b | fa:n fa mi mi | re re do:b\n\nResponde solo con el texto, sin explicaciones."
+ },
+ "sc_copy": {
+  "en": "Copy",
+  "es": "Copiar"
+ },
+ "sc_copied": {
+  "en": "Copied: paste it in your AI.",
+  "es": "Copiado: pégalo en tu IA."
+ },
+ "turn_button": {
+  "en": "Whose turn?",
+  "es": "¿A quién le toca?"
+ },
+ "turn_title": {
+  "en": "It's the turn of…",
+  "es": "Le toca a…"
+ },
+ "turn_other": {
+  "en": "Another",
+  "es": "Otro"
+ },
+ "turn_ok": {
+  "en": "OK",
+  "es": "Vale"
+ },
+ "turn_none": {
+  "en": "Choose a list in «Whose turn?» first.",
+  "es": "Elige antes una lista en «¿A quién le toca?»."
+ },
+ "turn_task_board": {
+  "en": "To the board!",
+  "es": "¡A la pizarra!"
+ },
+ "turn_task_play": {
+  "en": "To the glockenspiel!",
+  "es": "¡Al carillón!"
+ },
+ "turn_task_note": {
+  "en": "Which note is it?",
+  "es": "¿Qué nota es?"
  }
 }

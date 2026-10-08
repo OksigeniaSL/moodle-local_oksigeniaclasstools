@@ -703,6 +703,7 @@ $string['app_mt_reset'] = 'Start again';
 $string['app_mt_rod'] = 'Rod {$a}';
 $string['app_mt_rods'] = 'Rods';
 $string['app_mt_rods_help'] = 'Drag rods from the staircase to the table. To rotate one, tap it twice. To remove it, put it back on the staircase.';
+$string['app_mt_score'] = 'Score';
 $string['app_mt_size'] = 'Table size';
 $string['app_mt_tangram'] = 'Tangram';
 $string['app_mt_tangram_help'] = 'Drag the pieces. To rotate one, tap it twice or press “Rotate”. The parallelogram flips with “Flip”. Pieces snap together when they get close.';
@@ -954,21 +955,129 @@ $string['app_rs_reveal'] = 'Reveal';
 $string['app_rs_scratch'] = 'Scratch';
 $string['app_rs_toggle'] = 'Scratch to reveal';
 $string['app_sc_add_team'] = 'Add team';
+$string['app_sc_again'] = 'From the start';
+$string['app_sc_clear'] = 'Clear';
+$string['app_sc_clear_sure'] = 'Sure? Press again';
+$string['app_sc_clef'] = 'Clef';
+$string['app_sc_clef_fa'] = 'Bass (F)';
+$string['app_sc_clef_sol'] = 'Treble (G)';
 $string['app_sc_colour'] = 'Change the colour';
+$string['app_sc_colours'] = 'Colours of the glockenspiel';
+$string['app_sc_copied'] = 'Copied: paste it in your AI.';
+$string['app_sc_copy'] = 'Copy';
+$string['app_sc_copy_of'] = '{$a} (copy)';
+$string['app_sc_delete'] = 'Delete the note';
+$string['app_sc_dot'] = 'Dot';
+$string['app_sc_err_empty'] = 'There are no notes to play.';
+$string['app_sc_err_note'] = '«{$a}» is not a note: like C, D4, G:h, F#:e, or - for a rest.';
+$string['app_sc_err_tempo'] = 'The tempo «{$a}» is not known: a number from 30 to 240.';
+$string['app_sc_err_time'] = 'The time «{$a}» is not known: use 2/4, 3/4, 4/4 or 6/8.';
+$string['app_sc_export'] = 'Download';
+$string['app_sc_f_b'] = 'Half note';
+$string['app_sc_f_c'] = 'Eighth note';
+$string['app_sc_f_n'] = 'Quarter note';
+$string['app_sc_f_r'] = 'Whole note';
+$string['app_sc_f_s'] = 'Sixteenth note';
+$string['app_sc_fast'] = 'fast';
+$string['app_sc_figure'] = 'Figure';
+$string['app_sc_flat'] = 'Flat';
 $string['app_sc_from_groups'] = 'Use the teams from “Groups”';
+$string['app_sc_from_home'] = 'From {$a}';
+$string['app_sc_from_world'] = 'From other countries';
+$string['app_sc_game'] = 'Which note is it?';
+$string['app_sc_game_next'] = 'Another note';
+$string['app_sc_game_right'] = '{$a->name}! Streak: {$a->n}';
+$string['app_sc_game_wrong'] = 'It was {$a}';
 $string['app_sc_group'] = 'Group {$a}';
+$string['app_sc_h_clef'] = 'Clef';
+$string['app_sc_h_from'] = 'Origin';
+$string['app_sc_h_lyrics'] = 'Lyrics';
+$string['app_sc_h_pickup'] = 'Pickup';
+$string['app_sc_h_tempo'] = 'Tempo';
+$string['app_sc_h_time'] = 'Time';
+$string['app_sc_h_title'] = 'Title';
+$string['app_sc_import'] = 'Open';
+$string['app_sc_import_file'] = 'Open a file';
+$string['app_sc_import_go'] = 'Bring it in';
+$string['app_sc_import_hint'] = 'Paste the text of a song or open a .txt or .abc file: written by hand, made with the prompt for your AI, or in ABC (abcnotation.com).';
+$string['app_sc_import_ph'] = 'Title: Twinkle, Twinkle
+Time: 4/4
+Tempo: 100
+C:q C G G | A A G:h';
+$string['app_sc_import_title'] = 'Bring in a song';
 $string['app_sc_leads'] = 'In the lead: {$a}';
+$string['app_sc_listen'] = 'Listen';
+$string['app_sc_lyrics'] = 'Lyrics';
+$string['app_sc_medium'] = 'moderate';
+$string['app_sc_metro'] = 'Metronome';
+$string['app_sc_mine'] = 'My songs';
+$string['app_sc_mine_note'] = 'One of your songs, kept in this course.';
+$string['app_sc_mode'] = 'What to do';
+$string['app_sc_muted'] = 'The sound is off: turn it on with the speaker at the top.';
 $string['app_sc_name'] = 'Team name';
+$string['app_sc_names'] = 'Names of the notes';
+$string['app_sc_new'] = 'New';
+$string['app_sc_new_name'] = 'Song {$a}';
 $string['app_sc_no_groups'] = 'Make the teams first in the “Groups” tab.';
+$string['app_sc_origin'] = 'From: {$a}';
+$string['app_sc_playalong'] = 'Play with me';
 $string['app_sc_points_many'] = '{$a} points';
 $string['app_sc_points_one'] = '{$a} point';
+$string['app_sc_prompt'] = 'Prompt for your AI';
+$string['app_sc_prompt_any'] = 'the song you want';
+$string['app_sc_prompt_hint'] = 'Write the name of the song, copy the text, paste it in your AI and bring back what it answers with «Open».';
+$string['app_sc_prompt_song'] = 'Song';
+$string['app_sc_prompt_text'] = 'Write the melody of "{$a}" in the text format of Class tools, so that it plays on the school glockenspiel.
+
+Rules:
+1. Start with these lines (those that are needed):
+Title: the name of the song
+Origin: the country or the composer
+Clef: treble (or bass, if it is low)
+Time: 2/4, 3/4, 4/4 or 6/8
+Tempo: quarter notes per minute (for example, 100)
+Pickup: how long the notes before the first bar last, only if there are any (q, e…)
+2. Then only the melody, one voice, with the notes separated by spaces and | between bars.
+3. Notes: C D E F G A B (or do re mi fa sol la si). Middle C is C4: C5 is an octave higher and G3 one lower; with no number, octave 4. Sharp with # (F#), flat with b (Bb).
+4. The length, after a colon: w whole, h half, q quarter, e eighth, s sixteenth; with a dot after it, dotted (G:q.). If there is none, the same as the note before.
+5. A rest is - with its length (-:q).
+6. No chords, triplets, ties or repeats: all written out.
+
+Example:
+Title: Twinkle, Twinkle, Little Star
+Origin: France
+Clef: treble
+Time: 4/4
+Tempo: 100
+C:q C G G | A A G:h | F:q F E E | D D C:h
+
+Answer only with the text, without explanations.';
+$string['app_sc_prompt_title'] = 'A song with your AI';
 $string['app_sc_remove'] = 'Remove this team';
 $string['app_sc_reset'] = 'Reset to zero';
 $string['app_sc_reset_sure'] = 'Sure? Press again';
+$string['app_sc_rest'] = 'Rest';
+$string['app_sc_rhythm'] = 'Rhythm in syllables (ta, ti-ti) and claps';
+$string['app_sc_sharp'] = 'Sharp';
+$string['app_sc_slow'] = 'slow';
+$string['app_sc_song'] = 'Song';
+$string['app_sc_songs'] = 'Songs';
+$string['app_sc_stop'] = 'Stop';
 $string['app_sc_team'] = 'Team {$a}';
 $string['app_sc_teams_many'] = '{$a} teams';
 $string['app_sc_teams_one'] = '{$a} team';
+$string['app_sc_tempo'] = 'Tempo';
 $string['app_sc_tie'] = 'Draw';
+$string['app_sc_time'] = 'Time';
+$string['app_sc_untitled'] = 'Untitled';
+$string['app_sc_v_bells'] = 'Glockenspiel';
+$string['app_sc_v_cat'] = 'Singing cat';
+$string['app_sc_v_dog'] = 'Singing dog';
+$string['app_sc_v_flute'] = 'Recorder';
+$string['app_sc_v_piano'] = 'Piano';
+$string['app_sc_voice'] = 'Sound';
+$string['app_sc_well_done'] = 'Well done!';
+$string['app_sc_write'] = 'Write';
 $string['app_si_again'] = 'Again';
 $string['app_si_blue'] = 'Blue';
 $string['app_si_fail'] = 'Oops! Wrong';
@@ -1092,6 +1201,14 @@ $string['app_tm_v_cohete'] = 'Rocket';
 $string['app_tm_v_ninguno'] = 'Just the bar';
 $string['app_tm_v_pixel'] = 'Pixels';
 $string['app_tm_warn'] = 'Warn when 1 minute is left';
+$string['app_turn_button'] = 'Whose turn?';
+$string['app_turn_none'] = 'Choose a list in «Whose turn?» first.';
+$string['app_turn_ok'] = 'OK';
+$string['app_turn_other'] = 'Another';
+$string['app_turn_task_board'] = 'To the board!';
+$string['app_turn_task_note'] = 'Which note is it?';
+$string['app_turn_task_play'] = 'To the glockenspiel!';
+$string['app_turn_title'] = 'It\'s the turn of…';
 $string['app_wb_background'] = 'Background';
 $string['app_wb_bg_bigger'] = 'Bigger';
 $string['app_wb_bg_blank'] = 'Blank';

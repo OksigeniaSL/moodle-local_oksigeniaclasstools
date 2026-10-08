@@ -1714,3 +1714,72 @@ dialog.ct-fx-dialogo { width: min(44rem, 94vw); max-width: none; }
 .ct-fx-boton:hover { border-color: var(--azul); }
 .ct-fx-boton canvas { display: block; pointer-events: none; }
 
+/* Score: the bar of what to do, the sheet (it scrolls if the song is long) and the glockenspiel below. */
+.ct-sc { display: flex; flex-direction: column; align-items: stretch; gap: .6rem; min-height: 0; }
+.ct-sc > * { width: 100%; }
+.ct-sc-barra { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem .6rem; }
+.ct-sc-figuras button { min-width: 2.6rem; padding-inline: .35rem; }
+.ct-sc-mas { display: inline-flex; flex-wrap: wrap; align-items: center; gap: .3rem; }
+.ct-sc-mas .boton { min-height: 2.6rem; padding-inline: .7rem; }
+.ct-sc-mas .boton.activo { background: var(--azul); color: #fff; }
+.ct-sc-aviso { min-height: 1.3em; margin: 0; color: var(--azul-osc); font-weight: 800; }
+.ct-sc-hoja { flex: 1; min-height: 8rem; overflow-x: hidden; overflow-y: auto; border-radius: var(--radio); background: #fff; }
+.ct-sc-svg { display: block; touch-action: none; }
+.sc-linea { stroke: #6b7a90; stroke-width: 1.2; }
+.sc-barra { stroke: #1c2a3d; stroke-width: 1.6; }
+.sc-fin, .sc-clave, .sc-tinta, .sc-compas { fill: #1c2a3d; }
+.sc-compas { font-family: Nunito, system-ui, sans-serif; font-weight: 900; text-anchor: middle; dominant-baseline: auto; }
+.sc-clave-trazo, .sc-trazo { fill: none; stroke: #1c2a3d; stroke-linecap: round; stroke-linejoin: round; }
+.sc-cabeza { fill: #1c2a3d; stroke: #1c2a3d; }
+.sc-cabeza.hueca { fill: #fff; stroke: #1c2a3d; }
+.sc-plica { stroke: #1c2a3d; }
+.sc-nota { cursor: pointer; }
+.sc-nota.sonando .sc-cabeza { stroke: #ff7a00; stroke-width: 3px; filter: drop-shadow(0 0 6px rgba(255, 122, 0, .8)); }
+.sc-sel { fill: rgba(29, 111, 216, .1); stroke: rgba(29, 111, 216, .5); stroke-dasharray: 5 4; }
+.sc-nombre { fill: #34465e; font: 800 15px Nunito, system-ui, sans-serif; text-anchor: middle; }
+.sc-silaba { fill: #8a5a00; font: 800 13px Nunito, system-ui, sans-serif; text-anchor: middle; }
+.sc-letra { fill: #164281; font: 700 14px Nunito, system-ui, sans-serif; text-anchor: middle; }
+.ct-sc.pequenos .sc-nombre { font-size: 18px; }
+.sc-mascota { animation: sc-salta .35s ease-out; pointer-events: none; }
+@keyframes sc-salta { 0% { opacity: .2; translate: 0 -10px; } 60% { translate: 0 3px; } 100% { opacity: 1; translate: 0 0; } }
+.ct-sc-carillon { display: flex; flex: none; flex-direction: column; gap: .3rem; }
+.ct-sc-naturales { display: flex; align-items: center; gap: .35rem; height: clamp(5rem, 15vh, 8.5rem); padding: .4rem; border-radius: 16px; background: #5b3a1e; background-image: linear-gradient(#6b4626, #4a2e16); }
+.ct-sc-tecla { position: relative; display: flex; flex: 1; align-items: flex-end; justify-content: center; height: var(--h, 100%); min-width: 0; min-height: 0; padding: 0 0 .4rem; border: 0; border-radius: 8px; background: var(--c); box-shadow: inset 0 -5px 0 rgba(0, 0, 0, .18), inset 0 3px 0 rgba(255, 255, 255, .35); color: #fff; font: 900 clamp(.85rem, 1.6vw, 1.15rem) Nunito, system-ui, sans-serif; text-shadow: 0 1px 2px rgba(0, 0, 0, .5); cursor: pointer; touch-action: manipulation; }
+.ct-sc-tecla::before, .ct-sc-tecla::after { content: ""; position: absolute; left: 50%; width: .5rem; height: .5rem; border-radius: 50%; background: rgba(0, 0, 0, .35); transform: translateX(-50%); }
+.ct-sc-tecla::before { top: .4rem; }
+.ct-sc-tecla::after { bottom: 1.9rem; }
+.ct-sc-tecla.toca { animation: sc-toca .25s ease-out; }
+.ct-sc-tecla.mal { animation: sc-mal .35s ease-in-out; }
+.ct-sc-tecla.siguiente { outline: 4px solid #fff; outline-offset: 2px; animation: sc-brilla 1s ease-in-out infinite; }
+@keyframes sc-toca { 50% { transform: translateY(4px) scale(.97); filter: brightness(1.25); } }
+@keyframes sc-mal { 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+@keyframes sc-brilla { 50% { box-shadow: 0 0 0 6px rgba(255, 255, 255, .55), inset 0 -5px 0 rgba(0, 0, 0, .18); } }
+.ct-sc-cromaticas { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: .35rem; padding: 0 calc(.4rem + 50% / var(--n)); }
+.ct-sc-tecla.negra { height: 2.4rem; padding: 0; align-items: center; background: #2b2f36; font-size: .8rem; }
+.ct-sc-tecla.negra::before, .ct-sc-tecla.negra::after { display: none; }
+.ct-sc-hueco { display: block; }
+.ct-sc-side .ct-row { display: flex; flex-wrap: wrap; gap: .4rem; }
+.ct-sc-side .ct-row .boton { flex: 1 1 8rem; }
+.ct-sc-ajustes { display: flex; flex-direction: column; gap: .45rem; }
+.ct-sc-side .nota { margin: 0; }
+.ct-sc-form { display: flex; flex-direction: column; gap: .6rem; }
+.ct-sc-form textarea { width: 100%; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: .95rem; }
+.ct-sc-archivo { align-self: flex-start; cursor: pointer; }
+dialog.ct-sc-dialogo { width: min(40rem, 94vw); }
+@media (prefers-reduced-motion: reduce) { .sc-mascota, .ct-sc-tecla.toca, .ct-sc-tecla.mal, .ct-sc-tecla.siguiente { animation: none; } }
+
+/* «Whose turn?» over another tool: a card with the photo and the name. */
+.ct-turno { position: absolute; inset: 0; z-index: 40; display: grid; place-items: center; padding: 1rem; border-radius: inherit; background: rgba(15, 30, 55, .45); animation: ct-aparece .2s ease-out; }
+.ct-turno-tarjeta { display: flex; flex-direction: column; align-items: center; gap: .6rem; min-width: min(22rem, 90%); padding: 1.4rem 2rem; border-radius: 28px; background: var(--superficie); box-shadow: 0 24px 60px rgba(15, 47, 94, .35); text-align: center; }
+.ct-turno-tarjeta .ante { margin: 0; }
+.ct-turno-cara { display: grid; place-items: center; min-height: 0; }
+.ct-turno-foto { width: clamp(6rem, 18vh, 10rem); height: clamp(6rem, 18vh, 10rem); border-radius: 50%; object-fit: cover; box-shadow: 0 6px 18px rgba(15, 47, 94, .25); }
+.ct-turno-foto.iniciales { display: grid; place-items: center; background: var(--azul-suave); color: var(--azul); font-size: 2.6rem; font-weight: 900; }
+.ct-turno-nombre { margin: 0; color: var(--azul-osc); font-size: clamp(1.8rem, 6vh, 3.4rem); font-weight: 1000; line-height: 1.1; }
+.ct-turno.barajando .ct-turno-nombre { color: var(--tinta-3); }
+.ct-turno-tarea { margin: 0; color: var(--verde); font-size: clamp(1.1rem, 3vh, 1.6rem); font-weight: 900; }
+.ct-turno-tarea:empty { display: none; }
+.ct-wb-turno { position: absolute; left: .7rem; bottom: .7rem; z-index: 6; display: grid; place-items: center; width: 3rem; height: 3rem; min-height: 0; padding: 0; border: 0; border-radius: 50%; background: var(--superficie); color: var(--azul); box-shadow: 0 4px 14px rgba(15, 47, 94, .25); cursor: pointer; opacity: .85; }
+.ct-wb-turno:hover { opacity: 1; }
+.ct-wb-turno .ico { font-size: 1.3rem; }
+

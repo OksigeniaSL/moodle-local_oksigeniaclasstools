@@ -222,6 +222,7 @@
             <canvas class="ct-wb-pre" id="wb-pre" aria-hidden="true"></canvas>
             <canvas class="ct-wb-fx" id="wb-fx" aria-hidden="true"></canvas>
             <p class="ct-wb-status" id="wb-status" role="status" hidden></p>
+            <button type="button" class="ct-wb-turno" id="wb-turn" hidden aria-label="${escape(t('turn_button'))}" title="${escape(t('turn_button'))}"><span data-icono="quien"></span></button>
             <div class="ct-wb-selbar" id="wb-selbar" hidden>
                 ${iconButton('wb-sel-copy', 'duplicar', STR.selCopy)}${iconButton('wb-sel-del', 'borrar', STR.selDelete, 'rojo-suave')}
             </div>
@@ -870,6 +871,10 @@
         return true;
     };
     $('#wb-sel-del').addEventListener('click', deleteSelection);
+    // Someone of the class to the board (when there are lists of students).
+    $('#wb-turn').hidden = !(core.turn && core.lists && core.lists().length);
+    $('#wb-turn').addEventListener('click', () => core.turn(stage, { task: t('turn_task_board') }));
+    document.addEventListener('classtools:lists', () => { $('#wb-turn').hidden = !(core.turn && core.lists && core.lists().length); });
     $('#wb-sel-copy').addEventListener('click', copySelection);
 
     // --- Text -----------------------------------------------------------------------------------------------
