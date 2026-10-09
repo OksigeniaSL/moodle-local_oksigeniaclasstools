@@ -1,19 +1,29 @@
 # Changelog
 
-## 0.20.2 (2026-10-24)
+## 0.20.3 (2026-10-09)
+
+- **Install** on a new site: the column of live answers had an empty default that Moodle replaces at install and
+  warns about; it now has none, as every insert already set it. Installed sites do not change.
+- **Moodle 4.3**: the hook callbacks are declared as `class::method` strings, the only form 4.3 takes (4.4 and later
+  take both), so 4.3 no longer warns on every page.
+- **Formulas**: the palette writes the names of the functions in the language of the screen (`sqrt`, `root` and
+  `sin` in English; `raíz` and `sen` in Spanish), and the English hint shows `sqrt(2)`. The parser takes all of them.
+- Stylesheet tidied for the stylelint rules of Moodle.
+
+## 0.20.2 (2026-10-08)
 
 - **Score**: the names of the notes can be chosen: as the language (do re mi in Spanish, French, Italian or
   Portuguese; C D E in English; C D E … H in German, Dutch or Swedish, where H is our B), do re mi, C D E, or
   C D E … H. On the notes, the glockenspiel and the songs downloaded as text.
 
-## 0.20.1 (2026-10-23)
+## 0.20.1 (2026-10-08)
 
 - The **calculator** and the **score** were missing where the administrator's choice of materials had been saved
   before they existed (with the defaults of the time): the upgrade adds them to it. From now on, each new tool, game
   or material is added the same way; those left out on purpose stay out.
 - «Whose turn?»: its switches go together on the right, instead of each one pushing the next to another line.
 
-## 0.20.0 (2026-10-22)
+## 0.20.0 (2026-10-08)
 
 - **Score**, among the materials: treble or bass clef, 2/4, 3/4, 4/4 or 6/8 and a tempo; notes written with a tap on
   the staff or on the glockenspiel (whole to sixteenth notes, rests, and in Secondary and up dots, sharps and flats),
@@ -31,7 +41,7 @@
 - **Whose turn?** on the board too: someone of the class to the board, as in «Whose turn?» (those who came, the fair
   turns of the course), from a button in its corner.
 
-## 0.19.0 (2026-10-21)
+## 0.19.0 (2026-10-08)
 
 - **Timer in blocks** (a pomodoro for the class): work blocks with a rest between each two; each part starts by
   itself, with a sound and a notice (in the rest, a tip: look far away, stand up and stretch, drink water…). The ring
@@ -48,7 +58,7 @@
   of operations; scientific in Secondary and Superior (powers, roots, π, trigonometry in degrees or radians,
   logarithms, factorial). Every result stays in a strip beside it and can be used again; the keyboard works too.
 
-## 0.18.0 (2026-10-20)
+## 0.18.0 (2026-10-08)
 
 - **Pictures in the quiz**: a question can have a picture (chosen from a file or pasted with Ctrl+V), shown on the
   board on the left with the answers one under another on the right. Inside Moodle they are kept in the course for
@@ -57,14 +67,14 @@
   picture of their text. Outside Moodle, the picture stays in the browser with the set. The devices keep the text and
   the letters.
 
-## 0.17.1 (2026-10-19)
+## 0.17.1 (2026-10-08)
 
 - **The course on top**: opened from a course, the bar shows its name under «Class tools», so a teacher who moves
   from class to class (or comes back to an open laptop) sees which one it is.
 - **More room at the sides** of the screen and of the bar, for projectors that are not quite lined up and cut the
   edge of the picture.
 
-## 0.17.0 (2026-10-18)
+## 0.17.0 (2026-10-08)
 
 - **Quiz**, a new kind of live session (a light Kahoot): questions with one right answer (two to four) or true or
   false, on the board in big coloured tiles with A, B, C, D; the devices answer with the same tiles (and the text,
@@ -90,7 +100,7 @@
 - **Chalkboard**: green or black boards, for any background; the inks turn to chalk on them.
 - Ideas from OpenBoard (GPL 3), written anew for the web. PDF.js 6.3 (Apache 2.0), only loaded to bring in a PDF.
 
-## 0.16.0 (2026-10-17)
+## 0.16.0 (2026-10-08)
 
 - **Live sessions, easier to join**: students enrolled in the course see a small notice with «Join» on the course
   pages while a session is open (setting «Notice for students», on), so they need not type the code or scan the QR.
@@ -107,7 +117,7 @@
 - **Cuisenaire rods**: table size from 12 to 40 columns, and «Compare: two tables» side by side, each with its own
   numbers on or off.
 
-## 0.15.0 (2026-10-16)
+## 0.15.0 (2026-10-08)
 
 - **Anonymous with their account**, a third way of joining a live session: only the course's students get in, once
   each, but no user id is kept with the answers and the board shows no names. The device says clearly that the
@@ -128,7 +138,7 @@
 - **Site settings**: the administrator chooses which tools, games and materials the board shows.
 - The board's texts are written from JSON fragments in `tools/i18n/` (`python3 tools/i18n/merge.py`).
 
-## 0.14.0 (2026-10-15)
+## 0.14.0 (2026-10-08)
 
 - **Brainstorm**, a new kind of live session: everyone sends a word or two from their device (1, 2 or 3 answers
   each, which they can take back while it is open), with the question on their screen. On the board the answers
@@ -147,7 +157,7 @@
   like in the notebooks. Eraser, undo, download and send are icons now, so the bar fits in one row.
 - «Send to the class» takes a picture from another tool too (`ClasstoolsWhiteboard.share`).
 
-## 0.13.0 (2026-10-14)
+## 0.13.0 (2026-10-07)
 
 - **Screen modes that show**: each mode has a look of its own, so the class sees at once which one is on.
   - Early years: a toy — bigger and rounder, sunny ground, chunky buttons that press in, each tab with its colour,
@@ -166,7 +176,7 @@
     every row with the ruler, decimals. Base 10 blocks up to the tens (new), the hundreds or the thousands.
 - Settings that were saved before the modes (timer look and the last-10-seconds count) go to the mode in use.
 
-## 0.12.0 (2026-10-13)
+## 0.12.0 (2026-10-07)
 
 - **Content in the user's language**: the games and materials take their content from a pack per language
   (`app/content/`): alphabet and letters that count as another, on-screen keyboard (QWERTY, QWERTZ, AZERTY, with Ñ,
@@ -182,13 +192,13 @@
 - Word: the squares size themselves to the space left by the keyboard, so the last row no longer covers the message
   on short screens.
 
-## 0.11.1 (2026-10-12)
+## 0.11.1 (2026-10-07)
 
 - Live vote: it can close by itself after 10, 20 or 30 seconds, 1 or 2 minutes (or not at all, as before). The
   board and the devices show the time left, the last five seconds tick, and Moodle closes it at the second even if
   the board is late: no answer gets in after the time.
 
-## 0.11.0 (2026-10-12)
+## 0.11.0 (2026-10-07)
 
 - Materials, four new ones (each in a file of its own, added to the Materials bar):
   - **Number line**: 0–10, 0–20, 0–100, 0–1000 in tens, −10 to 10, tenths, halves, thirds, quarters or your own;
@@ -204,7 +214,7 @@
 - Groups: **a role for each one** (spokesperson, secretary, materials manager, timekeeper, or your own, up to six),
   handed out fairly: each student gets first the role they have had least; «Other roles» hands them out again.
 
-## 0.10.0 (2026-10-11)
+## 0.10.0 (2026-10-07)
 
 - **Live sessions** (new tab «Live», inside a Moodle course):
   - A vote (A–D, yes or no, a traffic light of «I get it», 1 to 5) answered from tablets, Chromebooks or phones;
@@ -229,7 +239,7 @@
 - Present also goes full screen, and leaving it leaves full screen; the pill to bring the tools back has a strip of
   its own and no longer covers the tool's switches.
 
-## 0.9.2 (2026-10-10)
+## 0.9.2 (2026-10-07)
 
 - Timer: the «Pulsar» look is now a neutron star (two turning beams, expanding rings, stars, the time
   in a capsule and a thin arc for the time left); it no longer shakes. The five looks wrap onto a second row instead
@@ -237,13 +247,13 @@
 - The board shows the site's icon in the browser tab (the theme's, or the one set in Appearance), like the rest of
   Moodle.
 
-## 0.9.1 (2026-10-10)
+## 0.9.1 (2026-10-07)
 
 - Timer: a believable hourglass (wooden frame, glass bulbs, sand that falls and piles up) and a new «Pulsar» look (a
   core that shrinks with the time and sends out a wave every second). The «1 minute left» switch only shows for
   timers longer than two minutes, where it applies.
 
-## 0.9.0 (2026-10-10)
+## 0.9.0 (2026-10-07)
 
 - **Screen modes**: Early years, Primary, Secondary and Advanced (upper secondary and university).
   - One at a time, remembered for each course (also in Moodle, so it follows the teacher), changed from a button in
@@ -266,7 +276,7 @@
 - **Phones**: the tabs go to the bottom, within reach of the thumb.
 
 
-## 0.8.1 (2026-10-09)
+## 0.8.1 (2026-10-07)
 
 - **Share the drawing board with a class**, for teachers who can add content to the course:
   - The board is saved in the course, in the section «Class boards», in one folder per class. If the class is a
@@ -281,7 +291,7 @@
   page.
 
 
-## 0.8.0 (2026-10-09)
+## 0.8.0 (2026-10-07)
 
 - **Languages**:
   - The board's texts come from the language packs: about 570 strings, in English and Spanish. Each teacher sees the
@@ -301,7 +311,7 @@
 - Continuous integration from Moodle 4.3.
 
 
-## 0.7.0 (2026-10-08)
+## 0.7.0 (2026-10-07)
 
 - **Drawing board** (new tab): pens in six colours and three thicknesses, an eraser, undo (also Ctrl+Z), clearing
   with confirmation, and backgrounds: plain, squared paper, handwriting lines and music staves. Several fingers can draw

@@ -400,11 +400,13 @@
     // Tab goes to the next box □.
     const core = window.ClasstoolsCore;
     const t = core ? core.t : (k) => k, escape = core ? core.escape : (s) => s;
+    // The names of the functions the palette writes, in the language of the screen (the parser takes all of them).
+    const SQRT = t('fx_n_sqrt'), ROOT = t('fx_n_root'), SIN = t('fx_n_sin');
     const PALETTE = [
         ['primary', [['□/□', 'a/b', 'fx_p_frac'], ['□ □/□', '1 a/b', 'fx_p_mixed'], ['×'], [':'], ['÷'], ['='], ['≠'], ['<'], ['>'],
-            ['(□)', '(a)', 'fx_p_paren'], ['□^2', 'a^2', 'fx_p_square'], ['□^□', 'a^b', 'fx_p_power'], ['raíz(□)', '√a', 'fx_p_sqrt'], ['%'], ['°'], ['π'], ['□', '□', 'fx_p_box']]],
-        ['secondary', [['□_□', 'a_b', 'fx_p_index'], ['raíz(□, □)', 'raíz(n, a)', 'fx_p_root'], ['±'], ['≤'], ['≥'], ['≈'], ['|□|', '|a|', 'fx_p_abs'],
-            ['{□; □}', '{a; b}', 'fx_p_sys'], ['∞'], ['α'], ['β'], ['Δ'], ['→'], ['sen(□)', 'sen'], ['cos(□)', 'cos'], ['log(□)', 'log']]],
+            ['(□)', '(a)', 'fx_p_paren'], ['□^2', 'a^2', 'fx_p_square'], ['□^□', 'a^b', 'fx_p_power'], [`${SQRT}(□)`, '√a', 'fx_p_sqrt'], ['%'], ['°'], ['π'], ['□', '□', 'fx_p_box']]],
+        ['secondary', [['□_□', 'a_b', 'fx_p_index'], [`${ROOT}(□, □)`, `${ROOT}(n, a)`, 'fx_p_root'], ['±'], ['≤'], ['≥'], ['≈'], ['|□|', '|a|', 'fx_p_abs'],
+            ['{□; □}', '{a; b}', 'fx_p_sys'], ['∞'], ['α'], ['β'], ['Δ'], ['→'], [`${SIN}(□)`, SIN], ['cos(□)', 'cos'], ['log(□)', 'log']]],
         ['advanced', [['sum(i=1, n, □)', 'sum(i=1, n, a)', 'fx_p_sum'], ['int(a, b, □)', 'int(a, b, f)', 'fx_p_int'], ['lim(x->0, □)', 'lim(x->0, f)', 'fx_p_lim'],
             ['vec(□)', 'vec(v)', 'fx_p_vec'], ['∈'], ['ℝ'], ['⇒'], ['⇔'], ['∀'], ['∃'], ['∂']]],
     ];

@@ -236,7 +236,7 @@
   "es": "Por ejemplo: 3/4 + 1/2 = □"
  },
  "fx_hint": {
-  "en": "Write it in one line: 3/4, x^2, raíz(2), {x + y = 3; x − y = 1}. Tab goes to the next box □.",
+  "en": "Write it in one line: 3/4, x^2, sqrt(2), {x + y = 3; x − y = 1}. Tab goes to the next box □.",
   "es": "Escríbela en una línea: 3/4, x^2, raíz(2), {x + y = 3; x − y = 1}. Tab salta al siguiente hueco □."
  },
  "fx_all": {
@@ -314,5 +314,17 @@
  "fx_p_vec": {
   "en": "Vector",
   "es": "Vector"
+ },
+ "fx_n_sqrt": {
+  "en": "sqrt",
+  "es": "raíz"
+ },
+ "fx_n_root": {
+  "en": "root",
+  "es": "raíz"
+ },
+ "fx_n_sin": {
+  "en": "sin",
+  "es": "sen"
  }
 }

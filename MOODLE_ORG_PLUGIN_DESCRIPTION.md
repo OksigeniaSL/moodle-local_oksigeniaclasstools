@@ -14,15 +14,22 @@
 <li><strong>Clock</strong>: learning to tell the time (five levels and two class games) and a countdown to an event.</li>
 <li>Timer (also in work and rest blocks), stopwatch, class goal, work symbols and a QR code with styles, the site logo and PNG/SVG download.</li>
 </ul>
+<h3>From early years to university</h3>
+<p>Each course picks one of four screen modes: Early years, Primary, Secondary or Advanced (upper secondary and university). The mode changes the look and how the tools start (bigger buttons and colours for the youngest, the full board and sober screens for the older ones), never which tools there are.</p>
 <h3>Lists from the course</h3>
 <p>One list per group and per cohort enrolled with cohort sync (a course with cohorts 5A to 5F gives six lists), and the whole course. Separate groups mode is respected.</p>
 <h3>Configuration</h3>
 <p>Under <em>Site administration → Plugins → Local plugins → Class tools (Oksigenia Classtools)</em>: how names are shown on the board, the days counted for fair picking, the school levels whose built-in sets are offered, whether students get a limited board (only tools without data of the class: no names, photos, picks or groups), and the link in the main menu. A user tour shows teachers where the tools are. Access is gated by the capability <code>local/oksigeniaclasstools:use</code> (teacher, non-editing teacher and manager by default); saving groups also needs <code>moodle/course:managegroups</code>.</p>
 <h3>Privacy</h3>
 <p>Four tables and one file area, all covered by the privacy provider: the picks (deleted once older than the days counted for fair picking), what each teacher keeps of each tool in each course, live sessions and their answers (deleted after a day; with the code only or anonymous, no user id is kept) and the pictures of quiz questions. No external services, no CDN, no tracking.</p>
+<h3>Sponsorship</h3>
+<p>The plugin is FOSS and stays FOSS. If your school depends on it, sponsor its development at <a href="https://oksigenia.com/en/open-source#sponsor">oksigenia.com/en/open-source</a>. Sponsorship gets you logo placement, priority issue triage and weight in the public roadmap.</p>
+<h3>Installation and support</h3>
+<p>Optional service for schools that want it installed, configured and kept up to date on their Moodle, with training for teachers. Details at <a href="https://oksigenia.com/en/services/moodle">oksigenia.com/en/services/moodle</a>.</p>
 <h3>Requirements</h3>
 <ul>
 <li>Moodle 4.3 or later (the main-menu link from 4.4).</li>
+<li>Tested on Moodle 4.3 to 5.3 and on the development branch: PHPUnit and Behat tests run on every branch in CI.</li>
 <li>Any theme and any modern browser.</li>
 </ul>
 <h3>License</h3>
