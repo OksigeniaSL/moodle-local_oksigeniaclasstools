@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.20.4 (2026-10-09)
+
+- The supported range ends at Moodle 5.3, the latest release: the Moodle Marketplace only takes released branches.
+  The plugin is still tested on the development branch.
+
 ## 0.20.3 (2026-10-09)
 
 - **Install** on a new site: the column of live answers had an empty default that Moodle replaces at install and
