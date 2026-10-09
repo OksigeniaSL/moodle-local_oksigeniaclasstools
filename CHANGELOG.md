@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.21.0 (2026-10-09)
+
+- **Names in capitals**, a switch in the screen-mode menu for those who are learning to read: on by default in Early
+  years, off from Primary on, and each course keeps what its teacher chooses. Only how the names look on the board
+  (the picker, groups, who is missing, whose turn, the wheel, cards, Simon, the scoreboard and the quiz ranking):
+  the profiles in Moodle do not change.
+
 ## 0.20.4 (2026-10-09)
 
 - The supported range ends at Moodle 5.3, the latest release: the Moodle Marketplace only takes released branches.

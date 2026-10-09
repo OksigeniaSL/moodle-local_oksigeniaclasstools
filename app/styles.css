@@ -1785,3 +1785,21 @@ dialog.ct-sc-dialogo { width: min(40rem, 94vw); }
 .ct-wb-turno:hover { opacity: 1; }
 .ct-wb-turno .ico { font-size: 1.3rem; }
 
+/* Names in capitals (the switch in the screen-mode menu): only how the names of the students look. */
+.nombres-mayus :is(.nombre-grande, #q-salidos li span, .p-nombre, .alumno-f span, #g-rejilla li span, .g-bombo-nombre,
+    .ct-turno-nombre, .ct-members span, #si-who span, .qz-nombre) {
+    text-transform: uppercase;
+}
+.menu-modo-mayus {
+    display: flex;
+    gap: .6rem;
+    align-items: flex-start;
+    margin-top: .5rem;
+    padding: .6rem .5rem .2rem;
+    border-top: 1px solid var(--borde);
+}
+.menu-modo-mayus small {
+    display: block;
+    font-weight: 500;
+    opacity: .75;
+}

@@ -76,7 +76,7 @@ Las capturas están en inglés. Los alumnos que aparecen no existen: los nombres
 | Reloj | La hora actual, **aprender la hora** (agujas que se mueven con el dedo, cifras y palabras, cinco niveles y dos juegos de clase) y una **cuenta atrás** para un acontecimiento con los días lectivos que faltan. |
 | Semáforo | Solo el nivel del micrófono (no se graba ni se envía nada). Una luz que respira con el ruido, una racha de calma, una reserva de paciencia que solo gasta el ruido sostenido y «Ajustar a esta clase». |
 | Además | Símbolos de trabajo («Así trabajamos») y un código QR con estilos, el logo del sitio en el centro y descarga en PNG o SVG. |
-| Modos de la pantalla | Infantil, Primaria, Secundaria o Superior: uno cada vez, por curso. Cambian el aspecto y los valores de partida (notas y colores más grandes para los pequeños, la pizarra completa para los mayores…), nunca qué herramientas hay. |
+| Modos de la pantalla | Infantil, Primaria, Secundaria o Superior: uno cada vez, por curso. Cambian el aspecto y los valores de partida (notas y colores más grandes para los pequeños, la pizarra completa para los mayores…), nunca qué herramientas hay. «Nombres en mayúsculas», en el mismo menú, pone en mayúsculas los nombres de los alumnos (encendido de serie en Infantil). |
 
 Las listas salen del curso: una por grupo, una por cohorte matriculada con sincronización de cohortes, y el curso
 entero. Un grupo y una cohorte con los mismos alumnos aparecen una sola vez. Se respeta el modo de grupos separados.

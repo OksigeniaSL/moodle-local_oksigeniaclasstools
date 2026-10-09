@@ -74,7 +74,7 @@ The students in these screenshots do not exist: their names are made up and thei
 | Clock | The time now, **learning to tell the time** (hands dragged with a finger, digits and words, five levels and two class games) and a **countdown** to an event with the school days left. |
 | Noise meter | Microphone level only (nothing is recorded or sent). A light that breathes with the noise, a calm streak, a patience reserve that only sustained noise uses up, and «adjust to this class». |
 | Also | Work symbols and a QR code with styles, the site logo in the middle and PNG/SVG download. |
-| Screen modes | Early years, Primary, Secondary or Advanced: one at a time, per course. They change the look and the defaults (bigger notes and colours for the youngest, the full board for the older ones…), never which tools there are. |
+| Screen modes | Early years, Primary, Secondary or Advanced: one at a time, per course. They change the look and the defaults (bigger notes and colours for the youngest, the full board for the older ones…), never which tools there are. «Names in capitals», in the same menu, shows the students' names in capitals (on by default in Early years). |
 
 Lists come from the course: one per group and one per cohort enrolled with cohort sync, and the whole course. A
 group and a cohort with the same students appear once. Separate groups mode is respected.

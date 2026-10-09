@@ -64,6 +64,18 @@
         };
     };
 
+    // Nombres en mayúsculas (para quien aprende a leer): de partida, encendido en Infantil y apagado en los demás modos;
+    // lo que cambie el profesor se queda en ese curso. Solo cambia cómo se ven: los nombres guardados no se tocan.
+    const mayus = porModo('nombres-mayus:' + ((window.CLASSTOOLS && window.CLASSTOOLS.courseid) || 0),
+        { early: { on: true }, primary: { on: false }, secondary: { on: false }, advanced: { on: false } });
+    const aplicaMayus = () => {
+        document.documentElement.classList.toggle('nombres-mayus', !!mayus.get().on);
+        document.dispatchEvent(new CustomEvent('classtools:names'));
+    };
+    aplicaMayus();
+    const enMayus = (s) => (document.documentElement.classList.contains('nombres-mayus')
+        ? String(s).toLocaleUpperCase(document.documentElement.lang || undefined) : s);
+
     // --- Iconos y avisos para lectores de pantalla ---
     const ponIcono = (el, n) => { el.dataset.icono = n; el.innerHTML = icono(n); };
     $$('[data-icono]').forEach((el) => ponIcono(el, el.dataset.icono));
@@ -1821,12 +1833,15 @@
         const menu = document.createElement('div');
         menu.className = 'menu-modo'; menu.id = 'menu-modo'; menu.hidden = true; menu.setAttribute('role', 'menu');
         menu.innerHTML = `<p class="ante">${escapa(t('bar_mode_title'))}</p>` + PANTALLAS.map((m) => `<button type="button" role="menuitemradio" data-modo="${m}">`
-            + `<span class="modo-disco" data-m="${m}">${icono('modo-' + m)}</span><span><strong>${escapa(t('mode_' + m))}</strong><small>${escapa(t('mode_' + m + '_hint'))}</small></span></button>`).join('');
+            + `<span class="modo-disco" data-m="${m}">${icono('modo-' + m)}</span><span><strong>${escapa(t('mode_' + m))}</strong><small>${escapa(t('mode_' + m + '_hint'))}</small></span></button>`).join('')
+            + `<label class="interruptor menu-modo-mayus"><input type="checkbox" id="mm-mayus"><span><strong>${escapa(t('bar_names_upper'))}</strong>`
+            + `<small>${escapa(t('bar_names_upper_hint'))}</small></span></label>`;
         document.body.append(menu);
         const cierra = () => { menu.hidden = true; b.setAttribute('aria-expanded', 'false'); };
         b.addEventListener('click', () => {
             if (!menu.hidden) { cierra(); return; }
             $$('button', menu).forEach((x) => x.setAttribute('aria-checked', String(x.dataset.modo === modo)));
+            $('#mm-mayus').checked = !!mayus.get().on;
             const r = b.getBoundingClientRect();
             menu.style.top = `${r.bottom + 8}px`;
             menu.style.right = `${Math.max(8, innerWidth - r.right)}px`;
@@ -1839,10 +1854,11 @@
             document.documentElement.dataset.modo = modo;
             guarda(claveModo, modo);
             guardaAjustes({ mode: modo });
-            pinta(); cierra(); ajustaBarra();
+            pinta(); cierra(); ajustaBarra(); aplicaMayus();
             anuncia(`${t('bar_mode')}: ${t('mode_' + modo)}`);
             document.dispatchEvent(new CustomEvent('classtools:mode', { detail: modo }));
         });
+        $('#mm-mayus').addEventListener('change', (e) => { mayus.set({ on: e.target.checked }); aplicaMayus(); });
         document.addEventListener('pointerdown', (e) => { if (!menu.hidden && !menu.contains(e.target) && !b.contains(e.target)) { cierra(); } });
         document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !menu.hidden) { e.stopPropagation(); cierra(); b.focus(); } }, true);
         pinta();
@@ -1900,6 +1916,7 @@
         kept: (tool) => (AULA && AULA.state && AULA.state[tool]) || null, keep: guardaEnAula,
         audioContext: () => audio(), soundOn: () => sonido, output: () => maestro,
         mode: () => modo,   // early, primary, secondary or advanced; «classtools:mode» when it changes
+        nameCase: enMayus,  // nameCase(name) → the name as the board shows it (in capitals when «Names in capitals» is on)
         byMode: porModo,    // byMode(key, { early: {…}, primary: {…}, … }) → { get(), set(changes) }: values that start differently in each mode
         tabs: () => pestanas.map((b) => b.dataset.h), current: () => actual,
         pick: eligeFuera,   // pick() → { name, list } o null: alguien de la clase, como en «¿A quién le toca?»

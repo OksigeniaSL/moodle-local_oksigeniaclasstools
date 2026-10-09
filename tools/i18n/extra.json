@@ -1474,5 +1474,13 @@
  "sc_naming_german": {
   "en": "C D E … H (German)",
   "es": "C D E … H (alemana)"
+ },
+ "bar_names_upper": {
+  "en": "Names in capitals",
+  "es": "Nombres en mayúsculas"
+ },
+ "bar_names_upper_hint": {
+  "en": "For those who are learning to read: on by default in Early years. Only on this screen; the profiles do not change.",
+  "es": "Para quien aprende a leer: viene encendido en Infantil. Solo en esta pantalla; las fichas no cambian."
  }
 }

@@ -46,6 +46,8 @@ window.CLASSTOOLS_STR = {
 "bar_home": "Back to home",
 "bar_mode": "Mode",
 "bar_mode_title": "Screen mode (one at a time)",
+"bar_names_upper": "Names in capitals",
+"bar_names_upper_hint": "For those who are learning to read: on by default in Early years. Only on this screen; the profiles do not change.",
 "bar_present": "Present",
 "bar_present_exit": "Show the tools",
 "bar_session_login": "Log in again",

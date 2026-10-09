@@ -242,7 +242,7 @@
             ctx.font = `800 ${fontSize}px Nunito, system-ui, sans-serif`;
             ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
             const room = textEnd - r * 0.24;
-            let text = it.short || it.label;
+            let text = it.list && core.nameCase ? core.nameCase(it.short || it.label) : (it.short || it.label);
             if (ctx.measureText(text).width > room) {
                 while (text.length > 1 && ctx.measureText(text + '…').width > room) { text = text.slice(0, -1); }
                 text += '…';
@@ -285,7 +285,7 @@
             wh.spinning = false;
             const it = items[winner];
             $('#wh-result').className = 'total';
-            $('#wh-result').textContent = it.label;
+            $('#wh-result').textContent = it.list && core.nameCase ? core.nameCase(it.label) : it.label;
             play('elegido'); announce(STR.result(it.label));
             if ($('#wh-remove').checked) {
                 const k = whKey();
@@ -318,6 +318,7 @@
     };
     $('#wh-spin').addEventListener('click', spin);
     $('#wh-source').addEventListener('change', () => { save('ruleta-fuente', $('#wh-source').value); whRefresh(); });
+    document.addEventListener('classtools:names', whRefresh);   // «Names in capitals» switched on or off
     ['#wh-from', '#wh-to'].forEach((s) => $(s).addEventListener('input', whRefresh));
     $('#wh-remove').addEventListener('change', () => save('ruleta-quitar', $('#wh-remove').checked));
     $('#wh-reset').addEventListener('click', () => { delete wh.removed[whKey()]; whRefresh(); });
@@ -582,7 +583,7 @@
     const cardFront = (it) => {
         const face = it.list ? core.face(it.list, it.label, 'cara-grande') : '';
         const long = it.label.length > 3;
-        return `${face ? `<div class="ct-card-photo">${face}</div>` : ''}<span class="ct-card-text${long ? ' ct-long' : ''}${face ? ' ct-with-photo' : ''}">${escape(it.label)}</span>`;
+        return `${face ? `<div class="ct-card-photo">${face}</div>` : ''}<span class="ct-card-text${long ? ' ct-long' : ''}${face ? ' ct-with-photo' : ''}">${escape(it.list && core.nameCase ? core.nameCase(it.label) : it.label)}</span>`;
     };
     const drawCard = () => {
         if (ca.flipping) { return; }
