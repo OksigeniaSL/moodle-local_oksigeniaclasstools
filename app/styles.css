@@ -1787,7 +1787,9 @@ dialog.ct-sc-dialogo { width: min(40rem, 94vw); }
 .ct-turno.barajando .ct-turno-nombre { color: var(--tinta-3); }
 .ct-turno-tarea { margin: 0; color: var(--verde); font-size: clamp(1.1rem, 3vh, 1.6rem); font-weight: 900; }
 .ct-turno-tarea:empty { display: none; }
-.ct-wb-turno { position: absolute; left: .7rem; bottom: .7rem; z-index: 6; display: grid; place-items: center; width: 3rem; height: 3rem; min-height: 0; padding: 0; border: 0; border-radius: 50%; background: var(--superficie); color: var(--azul); box-shadow: 0 4px 14px rgba(15, 47, 94, .25); cursor: pointer; opacity: .85; }
+.ct-wb-turno { position: absolute; left: .7rem; bottom: .7rem; z-index: 6; display: inline-flex; align-items: center; gap: .45rem; min-height: 0;
+    padding: .55rem 1rem .55rem .8rem; border: 0; border-radius: 999px; background: var(--superficie); color: var(--azul); font: inherit; font-weight: 800;
+    box-shadow: 0 4px 14px rgba(15, 47, 94, .25); cursor: pointer; opacity: .92; }
 .ct-wb-turno:hover { opacity: 1; }
 .ct-wb-turno .ico { font-size: 1.3rem; }
 

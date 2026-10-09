@@ -236,8 +236,8 @@
   "es": "Por ejemplo: 3/4 + 1/2 = □"
  },
  "fx_hint": {
-  "en": "Write it in one line: 3/4, x^2, sqrt(2), {x + y = 3; x − y = 1}. Tab goes to the next box □.",
-  "es": "Escríbela en una línea: 3/4, x^2, raíz(2), {x + y = 3; x − y = 1}. Tab salta al siguiente hueco □."
+  "en": "Write it in one line: 3/4, x^2, sqrt(2), {x + y = 3; x − y = 1}; chemistry with ce(2H2 + O2 -> 2H2O). Tab goes to the next box □.",
+  "es": "Escríbela en una línea: 3/4, x^2, raíz(2), {x + y = 3; x − y = 1}; química con ce(2H2 + O2 -> 2H2O). Tab salta al siguiente hueco □."
  },
  "fx_all": {
   "en": "All the symbols",
@@ -326,5 +326,25 @@
  "fx_n_sin": {
   "en": "sin",
   "es": "sen"
+ },
+ "fx_n_unit": {
+  "en": "unit",
+  "es": "ud"
+ },
+ "fx_p_chem": {
+  "en": "Molecule or ion: ce(H2SO4), ce(Fe^3+)",
+  "es": "Molécula o ion: ce(H2SO4), ce(Fe^3+)"
+ },
+ "fx_p_reaction": {
+  "en": "Reaction: ce(2H2 + O2 -> 2H2O)",
+  "es": "Reacción: ce(2H2 + O2 -> 2H2O)"
+ },
+ "fx_p_equilibrium": {
+  "en": "Equilibrium: ce(N2 + 3H2 <=> 2NH3)",
+  "es": "Equilibrio: ce(N2 + 3H2 <=> 2NH3)"
+ },
+ "fx_p_units": {
+  "en": "Units, upright: unit(m/s^2)",
+  "es": "Unidades, en letra recta: ud(m/s^2)"
  }
 }

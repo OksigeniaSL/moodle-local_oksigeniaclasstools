@@ -222,7 +222,7 @@
             <canvas class="ct-wb-pre" id="wb-pre" aria-hidden="true"></canvas>
             <canvas class="ct-wb-fx" id="wb-fx" aria-hidden="true"></canvas>
             <p class="ct-wb-status" id="wb-status" role="status" hidden></p>
-            <button type="button" class="ct-wb-turno" id="wb-turn" hidden aria-label="${escape(t('turn_button'))}" title="${escape(t('turn_button'))}"><span data-icono="quien"></span></button>
+            <button type="button" class="ct-wb-turno" id="wb-turn" hidden title="${escape(t('turn_button'))}"><span data-icono="quien"></span><span>${escape(t('turn_button'))}</span></button>
             <div class="ct-wb-selbar" id="wb-selbar" hidden>
                 ${iconButton('wb-sel-copy', 'duplicar', STR.selCopy)}${iconButton('wb-sel-del', 'borrar', STR.selDelete, 'rojo-suave')}
             </div>

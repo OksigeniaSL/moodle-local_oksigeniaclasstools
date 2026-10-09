@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.23.0 (2026-10-09)
+
+- **Formulas for science**: chemistry with `ce(…)`, as in mhchem (`ce(H2SO4)`, `ce(Fe^3+)`, `ce(2H2 + O2 -> 2H2O)`,
+  `ce(N2 + 3H2 <=> 2NH3)`, states and hydrates), upright with subscripts and charges; units upright with
+  `unit(…)` (`ud(…)` in Spanish). A «science» row in the palette from Secondary on: molecule, reaction, equilibrium,
+  units and the Greek letters of physics.
+- **Board**: «Whose turn?» is a labelled button, not just an icon, so it is found at a glance.
+- **Score**: «Done» in the prompt for an AI goes back to bringing the song in.
+
 ## 0.22.0 (2026-10-09)
 
 - **Live sessions**: the steps to join show the address with its code already in it, and a tap copies it.

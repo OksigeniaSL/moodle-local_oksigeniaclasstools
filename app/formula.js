@@ -28,7 +28,7 @@
     // Symbols written with more than one sign, longest first.
     const MULTI = [['<=>', '⇔'], ['=>', '⇒'], ['->', '→'], ['<=', '≤'], ['>=', '≥'], ['!=', '≠'], ['+-', '±'], ['~=', '≈']];
     const ONE = { '*': '×', '-': '−' };
-    const BINARY = '+−=<>≤≥≠±×÷·:→⇒⇔≈∈∉⊂∪∩';
+    const BINARY = '+−=<>≤≥≠±×÷·:→⇌⇒⇔≈∈∉⊂∪∩';
     const SETS = { R: 'ℝ', N: 'ℕ', Z: 'ℤ', Q: 'ℚ', C: 'ℂ' };
 
     // --- Reading it ------------------------------------------------------------------------------------------
@@ -61,8 +61,57 @@
     // A tree: {k: 'row', items}, {k: 'num'|'var'|'txt'|'op'|'fn', v}, {k: 'frac', a, b}, {k: 'sup'|'sub', a, b}, {k: 'subsup',
     // a, b, c}, {k: 'root', a, n}, {k: 'fence', l, r, a}, {k: 'vec', a}, {k: 'sys', rows}, {k: 'big', v, lo, hi, a},
     // {k: 'lim', lo, a}, {k: 'box'}.
+    // Chemistry, ce(…), as in mhchem: elements upright, the digits after them as subscripts, coefficients as they are,
+    // charges with ^ (Fe^3+, SO4^2-), states (aq) (s) (l) (g), -> and <=>, and · or * for hydrates. Units, unit(…) or
+    // ud(…): the same reading, upright (m/s^2, kg·m^-3).
+    const chem = (s) => {
+        const items = [];
+        let i = 0, start = true;
+        while (i < s.length) {
+            const c = s[i];
+            if (/\s/.test(c)) { i++; continue; }
+            if (s.startsWith('<=>', i) || s.startsWith('<->', i)) { items.push({ k: 'op', v: '⇌' }); i += 3; start = true; continue; }
+            if (s.startsWith('->', i)) { items.push({ k: 'op', v: '→' }); i += 2; start = true; continue; }
+            if (c === '+' || c === '=') { items.push({ k: 'op', v: c }); i++; start = true; continue; }
+            if (c === '*' || c === '·' || c === '/') { items.push({ k: 'txt', v: c === '/' ? '/' : '·' }); i++; start = c !== '/'; continue; }
+            if (/[0-9]/.test(c) && start) {
+                let j = i; while (/[0-9.,]/.test(s[j] || '')) { j++; }
+                items.push({ k: 'num', v: s.slice(i, j) }); i = j; start = false; continue;
+            }
+            let base;
+            if (/[A-Z]/.test(c)) { let j = i + 1; while (/[a-z]/.test(s[j] || '')) { j++; } base = { k: 'txt', v: s.slice(i, j) }; i = j; }
+            else if ('([{'.includes(c)) {
+                const close = { '(': ')', '[': ']', '{': '}' }[c], j = s.indexOf(close, i), inside = j > i ? s.slice(i + 1, j) : s.slice(i + 1);
+                base = /^(aq|s|l|g)$/.test(inside.trim()) ? { k: 'txt', v: `(${inside.trim()})` }
+                    : { k: 'row', items: [{ k: 'txt', v: c }, chem(inside), { k: 'txt', v: close }] };
+                i = j > i ? j + 1 : s.length;
+            } else { base = { k: 'txt', v: c }; i++; }
+            let sub = null, sup = null;
+            if (/[0-9]/.test(s[i] || '')) { let j = i; while (/[0-9]/.test(s[j] || '')) { j++; } sub = { k: 'num', v: s.slice(i, j) }; i = j; }
+            if (s[i] === '^') { let j = i + 1; while (/[0-9+\-−]/.test(s[j] || '')) { j++; } sup = { k: 'txt', v: s.slice(i + 1, j).replace(/-/g, '−') }; i = j; }
+            items.push(sub && sup ? { k: 'subsup', a: base, b: sub, c: sup } : sub ? { k: 'sub', a: base, b: sub } : sup ? { k: 'sup', a: base, b: sup } : base);
+            start = false;
+        }
+        return { k: 'row', items };
+    };
     const parse = (src) => {
-        const tk = tokenize(String(src || ''));
+        // ce(…) and the units go first: each becomes one piece (a private character) that the reading takes as it is.
+        const ready = [];
+        src = String(src || '').replace(/\b(ce|unit|ud)\(/g, (m) => `\u0000${m}`);
+        let out = '', at = 0;
+        for (;;) {
+            const k = src.indexOf('\u0000', at);
+            if (k < 0) { out += src.slice(at); break; }
+            out += src.slice(at, k);
+            const open = src.indexOf('(', k);
+            let depth = 0, j = open;
+            for (; j < src.length; j++) { if (src[j] === '(') { depth++; } else if (src[j] === ')' && --depth === 0) { break; } }
+            ready.push(chem(src.slice(open + 1, j)));
+            out += String.fromCharCode(0xE000 + ready.length - 1);
+            at = j + 1;
+        }
+        const tk = tokenize(out).map((x) => (x.t === 'op' && x.v.length === 1 && x.v.charCodeAt(0) >= 0xE000 && x.v.charCodeAt(0) < 0xE100
+            ? { t: 'ready', n: ready[x.v.charCodeAt(0) - 0xE000] } : x));
         let p = 0;
         const peek = (o = 0) => tk[p + o], next = () => tk[p++];
         const skip = () => { while (peek() && peek().t === 'sp') { p++; } };
@@ -85,6 +134,7 @@
             const tk1 = peek();
             if (!tk1) { return null; }
             if (tk1.t === 'num') { next(); return { k: 'num', v: tk1.v }; }
+            if (tk1.t === 'ready') { next(); return tk1.n; }
             if (tk1.t === 'box') { next(); return { k: 'box' }; }
             if (tk1.t === '(' || tk1.t === '[') {
                 next();
@@ -401,12 +451,14 @@
     const core = window.ClasstoolsCore;
     const t = core ? core.t : (k) => k, escape = core ? core.escape : (s) => s;
     // The names of the functions the palette writes, in the language of the screen (the parser takes all of them).
-    const SQRT = t('fx_n_sqrt'), ROOT = t('fx_n_root'), SIN = t('fx_n_sin');
+    const SQRT = t('fx_n_sqrt'), ROOT = t('fx_n_root'), SIN = t('fx_n_sin'), UNIT = t('fx_n_unit');
     const PALETTE = [
         ['primary', [['□/□', 'a/b', 'fx_p_frac'], ['□ □/□', '1 a/b', 'fx_p_mixed'], ['×'], [':'], ['÷'], ['='], ['≠'], ['<'], ['>'],
             ['(□)', '(a)', 'fx_p_paren'], ['□^2', 'a^2', 'fx_p_square'], ['□^□', 'a^b', 'fx_p_power'], [`${SQRT}(□)`, '√a', 'fx_p_sqrt'], ['%'], ['°'], ['π'], ['□', '□', 'fx_p_box']]],
         ['secondary', [['□_□', 'a_b', 'fx_p_index'], [`${ROOT}(□, □)`, `${ROOT}(n, a)`, 'fx_p_root'], ['±'], ['≤'], ['≥'], ['≈'], ['|□|', '|a|', 'fx_p_abs'],
             ['{□; □}', '{a; b}', 'fx_p_sys'], ['∞'], ['α'], ['β'], ['Δ'], ['→'], [`${SIN}(□)`, SIN], ['cos(□)', 'cos'], ['log(□)', 'log']]],
+        ['science', [['ce(□)', 'H₂O', 'fx_p_chem'], ['ce(□ -> □)', 'A → B', 'fx_p_reaction'], ['ce(□ <=> □)', 'A ⇌ B', 'fx_p_equilibrium'],
+            [`${UNIT}(□)`, 'm/s²', 'fx_p_units'], ['λ'], ['μ'], ['ρ'], ['θ'], ['ω'], ['Ω'], ['∇'], ['°C'], ['↑'], ['↓']]],
         ['advanced', [['sum(i=1, n, □)', 'sum(i=1, n, a)', 'fx_p_sum'], ['int(a, b, □)', 'int(a, b, f)', 'fx_p_int'], ['lim(x->0, □)', 'lim(x->0, f)', 'fx_p_lim'],
             ['vec(□)', 'vec(v)', 'fx_p_vec'], ['∈'], ['ℝ'], ['⇒'], ['⇔'], ['∀'], ['∃'], ['∂']]],
     ];
@@ -483,7 +535,8 @@
     const palette = (level) => {
         const pal = dialog.querySelector('#fx-pal');
         pal.innerHTML = '';
-        PALETTE.slice(0, level).forEach(([, list]) => list.forEach(([put, show, tip]) => {
+        const FROM = { primary: 1, secondary: 2, science: 2, advanced: 3 };
+        PALETTE.filter(([group]) => (FROM[group] || 3) <= level).forEach(([, list]) => list.forEach(([put, show, tip]) => {
             const b = document.createElement('button');
             b.type = 'button'; b.className = 'ct-fx-boton'; b.dataset.put = put;
             const name = tip ? t(tip) : (show || put).replace(/\(□\)$/, '');

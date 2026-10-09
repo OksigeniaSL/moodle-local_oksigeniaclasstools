@@ -886,7 +886,8 @@
         paint();
         return s;
     };
-    $('#sc-import').addEventListener('click', () => openDialog(`<form method="dialog" class="ct-sc-form"><h2>${escape(t('sc_import_title'))}</h2>
+    $('#sc-import').addEventListener('click', () => openImport());
+    function openImport() { openDialog(`<form method="dialog" class="ct-sc-form"><h2>${escape(t('sc_import_title'))}</h2>
         <p class="nota">${escape(t('sc_import_hint'))}</p>
         <textarea id="sc-text" rows="9" spellcheck="false" placeholder="${escape(t('sc_import_ph'))}"></textarea>
         <div class="ct-row"><label class="boton suave ct-sc-archivo"><span data-icono="descargar"></span><span>${escape(t('sc_import_file'))}</span><input type="file" id="sc-file" accept=".txt,.abc,text/plain" hidden></label>
@@ -910,7 +911,7 @@
                 d.querySelector('#sc-err').textContent = err.mine ? err.message : t('sc_err_empty');
             }
         });
-    }));
+    }); }
     // The prompt for an AI: the format, an example, and the song asked for.
     const promptFor = (title) => t('sc_prompt_text', title || t('sc_prompt_any'));
     function openPrompt() { openDialog(`<form method="dialog" class="ct-sc-form"><h2>${escape(t('sc_prompt_title'))}</h2>
@@ -923,7 +924,7 @@
         const fill = () => { area.value = promptFor(ask.value.trim()); };
         fill();
         ask.addEventListener('input', fill);
-        d.querySelector('#sc-done').addEventListener('click', closeDialog);
+        d.querySelector('#sc-done').addEventListener('click', () => openImport());   // back to bringing the song in
         d.querySelector('#sc-copy').addEventListener('click', () => {
             const ok = () => { d.querySelector('#sc-copied').textContent = t('sc_copied'); };
             if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(area.value).then(ok, () => { area.select(); document.execCommand('copy'); ok(); }); } else { area.select(); document.execCommand('copy'); ok(); }
