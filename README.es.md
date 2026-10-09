@@ -10,6 +10,8 @@ cualquier curso, se proyectan en la pantalla del aula y juega toda la clase: un 
 de las semanas, grupos al azar que pueden pasar a ser grupos del curso, un marcador, herramientas de azar y juegos
 para toda la clase.
 
+https://github.com/user-attachments/assets/e6534d17-944f-4d81-a77c-73291a06ca21
+
 Plugin local (`local_oksigeniaclasstools`). Funciona con cualquier tema y no necesita servicios externos: sin CDN,
 sin seguimiento y sin paso de compilación.
 

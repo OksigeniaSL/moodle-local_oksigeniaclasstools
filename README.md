@@ -9,6 +9,8 @@ Board tools for the classroom, **with the course students already loaded and the
 course, put them on the classroom screen and the whole class plays along: a name picker that is fair over the
 weeks, random groups that can become course groups, a scoreboard, chance tools and whole-class games.
 
+https://github.com/user-attachments/assets/eb6fe1a4-66fb-4d34-bb6d-4b03407691c2
+
 Local plugin (`local_oksigeniaclasstools`). It works with any theme and needs no external service: no CDN, no
 tracking, no build step.
 
