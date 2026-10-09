@@ -56,8 +56,8 @@
   "es": "O escanean el QR con la tableta."
  },
  "lv_step_url": {
-  "en": "Or they go to {$a} and type the code.",
-  "es": "O van a {$a} y escriben el código."
+  "en": "Or they open {$a} (the code is already in it; tap to copy it).",
+  "es": "O abren {$a} (ya lleva el código; tócalo para copiarlo)."
  },
  "lv_step_anon": {
   "en": "They need no account.",
@@ -66,5 +66,13 @@
  "lv_step_login": {
   "en": "They log in with their account if asked.",
   "es": "Si les pide entrar, con su usuario del aula."
+ },
+ "lv_copy": {
+  "en": "Copy the address",
+  "es": "Copiar la dirección"
+ },
+ "lv_copied": {
+  "en": "Copied",
+  "es": "Copiado"
  }
 }

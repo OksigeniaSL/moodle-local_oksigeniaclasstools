@@ -338,12 +338,7 @@
         if (v === 'coche') {
             return '<rect class="tm-carretera" x="12" y="118" width="170" height="32" rx="6"/><line class="tm-raya" x1="16" y1="134" x2="180" y2="134"/>' + meta
                 + '<g class="tm-viajero tm-coche"><g class="tm-velocidad"><line x1="-34" y1="-4" x2="-26" y2="-4"/><line x1="-37" y1="1" x2="-26" y2="1"/></g>'
-                + '<path class="tm-f1-aleron" d="M-25 -12 H-15 V-8.5 H-25 Z M-20 -8.5 V-3"/>'
-                + '<path class="tm-f1-cuerpo" d="M-21 3.5 V-2.5 L-13 -3.5 L-7 -7 L1 -7 L4 -4 L13 -2 L21 1 L23 3.5 Z"/>'
-                + '<path class="tm-f1-franja" d="M-12 0 H10"/><circle class="tm-f1-casco" cx="-2.5" cy="-7.6" r="2.7"/><path class="tm-f1-visera" d="M-1.6 -8.6 H0.6"/>'
-                + '<path class="tm-f1-halo" d="M-6 -8.5 Q-1 -12 4 -6.5"/><path class="tm-f1-aleron" d="M14 3.8 H25.5 V6 H14 Z"/>'
-                + '<circle class="tm-rueda" cx="-14" cy="4.2" r="5"/><circle class="tm-rueda" cx="13.5" cy="4.6" r="4.2"/>'
-                + '<circle class="tm-llanta" cx="-14" cy="4.2" r="1.8"/><circle class="tm-llanta" cx="13.5" cy="4.6" r="1.5"/></g>' + dato;
+                + '<image class="tm-f1" href="img/coche-f1.webp" x="-28" y="-14.5" width="56" height="23.7"/></g>' + dato;
         }
         if (v === 'caracol') {
             return estela + '<rect class="tm-suelo" x="10" y="141" width="180" height="9" rx="4.5"/>'
@@ -925,6 +920,7 @@
     // 3. ¿A quién le toca?
     // ===================================================================================================
     const qNombre = $('#q-nombre'), qCaja = $('#q-caja'), qFoto = $('#q-foto');
+    $('#q-salidos').dataset.vacio = t('q_none_yet');   // lo que dice la lista mientras no ha salido nadie
     let qSinRepetir = lee('sin-repetir', true) !== false, qBarajando = false, qUltimo = null, qTimer = 0;
     // Rasca y gana: el nombre elegido sale tapado (y en la columna de los que ya salieron, borroso hasta destaparlo).
     let qRasca = lee('quien-rasca', false) === true, qTapado = null;

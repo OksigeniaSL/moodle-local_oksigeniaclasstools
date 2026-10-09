@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.22.0 (2026-10-09)
+
+- **Live sessions**: the steps to join show the address with its code already in it, and a tap copies it.
+- **Quiz**: «Mode» instead of «Points» over the calm and fast scoring.
+- **Score**: a teacher's song can be deleted, also when it is empty («Delete this song», two taps). The prompt for an
+  AI moves into «Open», next to bringing in a file, as it is how a song is written to bring it in. The cat and the dog
+  give way to a marimba (a choice already saved goes back to the piano).
+- **Rods**: with two tables, each has its border and a dashed line parts them.
+- **Timer**: a new racing car runs along the bar.
+- «Whose turn?»: the empty list of those already picked said «Todavía nadie.» in every language, because the text sat
+  in the stylesheet; it now comes from the language pack («Nobody yet.» in English).
+
 ## 0.21.0 (2026-10-09)
 
 - **Names in capitals**, a switch in the screen-mode menu for those who are learning to read: on by default in Early

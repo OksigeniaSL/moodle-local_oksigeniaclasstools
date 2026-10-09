@@ -222,6 +222,15 @@
     // ---------------------------------------------------------------------------------------------------
     // What the board shows
     // ---------------------------------------------------------------------------------------------------
+    // The address with its code: a tap copies it (to paste it in a message or in the course).
+    $('#lv-pasos').addEventListener('click', (e) => {
+        const b = e.target.closest('.lv-url');
+        if (!b || !navigator.clipboard || !navigator.clipboard.writeText) { return; }
+        navigator.clipboard.writeText(b.dataset.url).then(() => {
+            b.dataset.copiado = t('lv_copied'); b.classList.add('copiado'); announce(t('lv_copied'));
+            setTimeout(() => b.classList.remove('copiado'), 1600);
+        }, () => { /* the browser said no */ });
+    });
     function apply(v) {
         failures = 0;
         const first = !S || S.id !== v.id;
@@ -238,11 +247,11 @@
             $('#lv-code').textContent = v.code;
             // How they get in, step by step: the notice in the course (inside Moodle), the QR, or the address and the
             // code (the address with breaks allowed after each «/»).
-            const url = escape(v.url.replace(/^https?:\/\//, '').replace(/\?.*$/, '')).split('/').join('/<wbr>');
+            const url = escape(v.url.replace(/^https?:\/\//, '')).split('/').join('/<wbr>').replace('?', '<wbr>?');
             const steps = [];
             if (v.kind !== 'remote' && v.notice) { steps.push(escape(t('lv_step_notice'))); }
             steps.push(escape(t('lv_step_qr')));
-            steps.push(t('lv_step_url', `<span class="lv-url">${url}</span>`));
+            steps.push(t('lv_step_url', `<button type="button" class="lv-url" data-url="${escape(v.url)}" title="${escape(t('lv_copy'))}">${url}</button>`));
             steps.push(escape(t(v.identity === 'anon' ? 'lv_step_anon' : 'lv_step_login')));
             $('#lv-pasos').innerHTML = steps.map((x) => `<li>${x}</li>`).join('');
         }

@@ -1155,14 +1155,6 @@
   "en": "Recorder",
   "es": "Flauta dulce"
  },
- "sc_v_cat": {
-  "en": "Singing cat",
-  "es": "Gato cantor"
- },
- "sc_v_dog": {
-  "en": "Singing dog",
-  "es": "Perro cantor"
- },
  "sc_names": {
   "en": "Names of the notes",
   "es": "Nombres de las notas"
@@ -1252,8 +1244,8 @@
   "es": "Bemol"
  },
  "sc_delete": {
-  "en": "Delete the note",
-  "es": "Borrar la nota"
+  "en": "Delete this song",
+  "es": "Borrar esta canción"
  },
  "sc_clear": {
   "en": "Clear",
@@ -1482,5 +1474,13 @@
  "bar_names_upper_hint": {
   "en": "For those who are learning to read: on by default in Early years. Only on this screen; the profiles do not change.",
   "es": "Para quien aprende a leer: viene encendido en Infantil. Solo en esta pantalla; las fichas no cambian."
+ },
+ "sc_v_marimba": {
+  "en": "Marimba",
+  "es": "Marimba"
+ },
+ "sc_delete_confirm": {
+  "en": "Tap again to delete it",
+  "es": "Toca otra vez para borrarla"
  }
 }

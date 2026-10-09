@@ -124,6 +124,7 @@
             el('rect', { x: origin(t), y: 0, width: rd.cols, height: RH, fill: 'url(#rd-grid)', class: 'ct-rd-table' }, svg);
             if (rd.two) { el('text', { x: origin(t) + 0.3, y: 0.55, class: 'ct-rd-mesa' }, svg).textContent = t ? 'B' : 'A'; }
         });
+        if (rd.two) { el('line', { x1: origin(1) - GAP / 2, y1: 0.2, x2: origin(1) - GAP / 2, y2: RH - 0.2, class: 'ct-rd-division' }, svg); }
         const tray = el('g', { class: 'ct-rd-trayzone' }, svg);
         el('rect', { x: 0, y: 0, width: TRAY, height: RH, rx: 0.4, class: 'ct-rd-traybg' }, tray);
         for (let n = 1; n <= 10; n++) {

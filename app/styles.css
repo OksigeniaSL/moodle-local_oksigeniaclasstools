@@ -191,7 +191,7 @@ input[type="range"]:focus-visible { outline: 3px solid var(--azul-osc); outline-
 .lista-salidos { display: flex; flex-direction: column; gap: .3rem; flex: 1; min-height: 0; margin: 0; padding: 0; overflow-y: auto; list-style: none; }
 .lista-salidos li { padding: .4rem .75rem; border-radius: 10px; background: var(--fondo); font-size: 1.05rem; font-weight: 800; }
 .lista-salidos li:first-child { background: var(--azul-suave); color: var(--azul); }
-.lista-salidos:empty::before { content: "Todavía nadie."; color: var(--tinta-3); font-size: .9rem; }
+.lista-salidos:empty::before { content: attr(data-vacio); color: var(--tinta-3); font-size: .9rem; }
 
 /* ---------- Hacer grupos ---------- */
 .grupos { display: grid; grid-template-columns: minmax(17rem, 22rem) minmax(0, 1fr); align-items: start; gap: 1rem; }
@@ -873,6 +873,8 @@ a.redondo { text-decoration: none; }
 .ct-rd-num { display: none; font: 900 .56px Nunito, system-ui, sans-serif; text-anchor: middle; dominant-baseline: central; pointer-events: none; }
 .ct-rd-numbers .ct-rd-tray .ct-rd-num, .ct-rd-con-num .ct-rd-num { display: inline; }
 .ct-rd-mesa { fill: var(--tinta-3); font: 900 .6px Nunito, system-ui, sans-serif; pointer-events: none; }
+.ct-rd-table { stroke: var(--borde); stroke-width: .05; }
+.ct-rd-division { stroke: var(--tinta-3); stroke-width: .08; stroke-dasharray: .3 .25; stroke-linecap: round; }
 .ct-rd-traybg { fill: var(--fondo); }
 .ct-rd.ct-sel .ct-rd-body { stroke: var(--azul); stroke-width: .1; }
 .ct-rd:focus, .ct-tg-piece:focus { outline: none; }
@@ -1597,7 +1599,11 @@ button.id-revisar { padding-right: .8rem; cursor: pointer; }
 .lv-opcion-texto strong { font-weight: 900; line-height: 1.2; }
 .lv-opcion-texto small { color: var(--tinta-3); font-size: .8rem; font-weight: 700; line-height: 1.25; }
 .lv-pasos { display: flex; flex-direction: column; gap: .3rem; margin: 0; padding-left: 1.3rem; color: var(--tinta-2); font-size: .88rem; font-weight: 700; }
-.lv-pasos .lv-url { color: var(--azul-osc); font-weight: 900; overflow-wrap: anywhere; }
+.lv-pasos .lv-url { position: relative; font: inherit; color: var(--azul-osc); font-weight: 900; overflow-wrap: anywhere; text-align: left;
+    background: none; border: 0; border-bottom: 2px dashed currentColor; padding: 0; cursor: copy; }
+.lv-pasos .lv-url:hover, .lv-pasos .lv-url:focus-visible { background: rgba(22, 66, 129, .08); }
+.lv-pasos .lv-url.copiado::after { content: attr(data-copiado); position: absolute; left: 0; top: calc(100% + 4px); padding: 2px 10px;
+    border-radius: 999px; background: var(--verde, #067e36); color: #fff; font-size: .8rem; white-space: nowrap; }
 
 /* ---------- Quiz (quiz.js): setting it up, the question, the reveal, the ranking, the podium ---------- */
 .qz-setup { display: flex; flex-direction: column; gap: 1rem; overflow-y: auto; }

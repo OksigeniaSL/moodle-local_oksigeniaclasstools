@@ -77,6 +77,7 @@
   "q_already": { "en": "Already picked", "es": "Ya han salido" },
   "q_restart": { "en": "Start again", "es": "Empezar de nuevo" },
   "q_no_lists": { "en": "(no lists yet)", "es": "(todavía no hay listas)" },
+  "q_none_yet": { "en": "Nobody yet.", "es": "Todavía nadie." },
   "q_this_course": { "en": "This course", "es": "Este curso" },
   "q_your_lists": { "en": "Your lists", "es": "Tus listas" },
   "q_empty": { "en": "Paste your class list to begin", "es": "Pega la lista de tu clase para empezar" },

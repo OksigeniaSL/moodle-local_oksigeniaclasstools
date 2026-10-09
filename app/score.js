@@ -297,21 +297,14 @@
             lfo.connect(depth); depth.connect(o.frequency); lfo.start(at + 0.2); lfo.stop(at + d + 0.1);
             if (noise) { const n = a.createBufferSource(), bp = a.createBiquadFilter(), ng = a.createGain(); n.buffer = noise; bp.type = 'bandpass'; bp.frequency.value = f * 2; bp.Q.value = 2; ng.gain.value = 0.05; n.connect(bp); bp.connect(ng); ng.connect(g); n.start(at); n.stop(at + d + 0.1); }
         },
-        cat: (a, f, at, d) => {
-            const len = Math.min(0.55, Math.max(0.25, d)), g = a.createGain(), bp = a.createBiquadFilter();
-            bp.type = 'bandpass'; bp.Q.value = 3; bp.frequency.setValueAtTime(900, at); bp.frequency.linearRampToValueAtTime(1700, at + len * 0.4); bp.frequency.linearRampToValueAtTime(700, at + len);
-            bp.connect(g); g.connect(dest());
-            g.gain.setValueAtTime(0.0001, at); g.gain.exponentialRampToValueAtTime(0.5, at + 0.05); g.gain.exponentialRampToValueAtTime(0.0001, at + len);
-            const o = osc(a, 'sawtooth', f * 2, at, at + len + 0.05, bp, 1);
-            o.frequency.setValueAtTime(f * 1.8, at); o.frequency.linearRampToValueAtTime(f * 2.1, at + len * 0.35); o.frequency.linearRampToValueAtTime(f * 1.7, at + len);
-        },
-        dog: (a, f, at) => {
-            const len = 0.22, g = a.createGain(), lp = a.createBiquadFilter();
-            lp.type = 'lowpass'; lp.frequency.value = 1100; lp.connect(g); g.connect(dest());
-            g.gain.setValueAtTime(0.0001, at); g.gain.exponentialRampToValueAtTime(0.6, at + 0.015); g.gain.exponentialRampToValueAtTime(0.0001, at + len);
-            const o = osc(a, 'square', f, at, at + len + 0.05, lp, 1);
-            o.frequency.setValueAtTime(f * 1.25, at); o.frequency.exponentialRampToValueAtTime(f * 0.8, at + len);
-            if (noise) { const n = a.createBufferSource(), ng = a.createGain(); n.buffer = noise; ng.gain.setValueAtTime(0.25, at); ng.gain.exponentialRampToValueAtTime(0.0001, at + 0.08); n.connect(ng); ng.connect(lp); n.start(at); n.stop(at + 0.1); }
+        // A marimba: a round note that fades soon, with a quick bright overtone at the start.
+        marimba: (a, f, at) => {
+            const len = 0.9, g = a.createGain(), g2 = a.createGain();
+            g.connect(dest()); g2.connect(dest());
+            g.gain.setValueAtTime(0.0001, at); g.gain.exponentialRampToValueAtTime(0.55, at + 0.006); g.gain.exponentialRampToValueAtTime(0.0001, at + len);
+            g2.gain.setValueAtTime(0.0001, at); g2.gain.exponentialRampToValueAtTime(0.16, at + 0.004); g2.gain.exponentialRampToValueAtTime(0.0001, at + 0.16);
+            osc(a, 'sine', f, at, at + len + 0.05, g, 1);
+            osc(a, 'sine', f * 4, at, at + 0.22, g2, 1);
         },
     };
     const tick = (a, at, strong) => { const g = a.createGain(); g.connect(dest()); env(a, g, at, strong ? 0.35 : 0.2, 0.005, 0.02); osc(a, 'square', strong ? 1800 : 1200, at, at + 0.06, g, 1); };
@@ -339,7 +332,8 @@
     };
 
     // --- The screen ----------------------------------------------------------------------------------------
-    const VOICE_KEYS = ['piano', 'bells', 'flute', 'cat', 'dog'];
+    const VOICE_KEYS = ['piano', 'bells', 'flute', 'marimba'];
+    if (!VOICE_KEYS.includes(opt.voice)) { opt.voice = 'piano'; }   // the cat and the dog are gone
     const panel = core.material.add('score', t('mt_score'), `
         <aside class="tarjeta ct-side ct-sc-side">
             <label class="campo apilado"><span>${escape(t('sc_song'))}</span><select id="sc-song"></select></label>
@@ -349,7 +343,7 @@
                 <button type="button" class="boton suave" id="sc-import"><span data-icono="descargar"></span><span>${escape(t('sc_import'))}</span></button>
             </div>
             <div class="ct-row">
-                <button type="button" class="boton suave" id="sc-prompt"><span data-icono="nube"></span><span>${escape(t('sc_prompt'))}</span></button>
+                <button type="button" class="boton rojo-suave" id="sc-delete" hidden><span data-icono="borrar"></span><span>${escape(t('sc_delete'))}</span></button>
                 <button type="button" class="boton suave" id="sc-export"><span data-icono="guardar"></span><span>${escape(t('sc_export'))}</span></button>
             </div>
             <div class="ct-sc-ajustes">
@@ -788,6 +782,7 @@
         return `<svg viewBox="0 0 22 30" width="20" height="26" aria-hidden="true"><ellipse cx="8" cy="23" rx="6" ry="4.2" transform="rotate(-20 8 23)" fill="${hollow ? 'none' : 'currentColor'}" stroke="currentColor" stroke-width="2"/>${stem ? '<line x1="13.4" y1="22" x2="13.4" y2="3" stroke="currentColor" stroke-width="2"/>' : ''}${[0, 1].slice(0, flags).map((k) => `<path d="M13.4 ${3 + k * 6} C14 ${8 + k * 6} 20 ${9 + k * 6} 18 ${15 + k * 6}" stroke="currentColor" stroke-width="2.4" fill="none"/>`).join('')}</svg>`;
     };
     function paint() {
+        $('#sc-delete').hidden = !song.mine;
         paintSongs(); paintTools(); paintKeys(); paintPlay();
         if (mode === 'game') { const real = song; song = Object.assign(quizSong(), { id: real.id }); render(); song = real; } else { render(); }
         lightNext();
@@ -839,6 +834,22 @@
         opt.current = song.id; keepOpt(); sel = -1; cursor = -1; next = 0; undo.length = 0; $('#sc-msg').textContent = '';
         paint();
     });
+    // Delete one of the teacher's songs: two taps, like «End the session».
+    let sureDelete = 0;
+    $('#sc-delete').addEventListener('click', () => {
+        const b = $('#sc-delete');
+        if (!song.mine) { return; }
+        if (!sureDelete) {
+            core.relabel(b, t('sc_delete_confirm'), 'borrar');
+            sureDelete = setTimeout(() => { sureDelete = 0; core.relabel(b, t('sc_delete'), 'borrar'); }, 3000);
+            return;
+        }
+        clearTimeout(sureDelete); sureDelete = 0; core.relabel(b, t('sc_delete'), 'borrar');
+        stop();
+        const i = mine.indexOf(song); if (i >= 0) { mine.splice(i, 1); }
+        song = mine[0] || builtIn[0]; opt.current = song.id; keepOpt(); persist(); sel = -1; undo.length = 0;
+        paint();
+    });
     $('#sc-new').addEventListener('click', () => {
         stop();
         const s = clean({ id: 'm' + Date.now().toString(36), title: t('sc_new_name', mine.length + 1), clef: song.clef, time: song.time, tempo: song.tempo, notes: [] });
@@ -878,10 +889,13 @@
     $('#sc-import').addEventListener('click', () => openDialog(`<form method="dialog" class="ct-sc-form"><h2>${escape(t('sc_import_title'))}</h2>
         <p class="nota">${escape(t('sc_import_hint'))}</p>
         <textarea id="sc-text" rows="9" spellcheck="false" placeholder="${escape(t('sc_import_ph'))}"></textarea>
-        <label class="boton suave ct-sc-archivo"><span data-icono="descargar"></span><span>${escape(t('sc_import_file'))}</span><input type="file" id="sc-file" accept=".txt,.abc,text/plain" hidden></label>
+        <div class="ct-row"><label class="boton suave ct-sc-archivo"><span data-icono="descargar"></span><span>${escape(t('sc_import_file'))}</span><input type="file" id="sc-file" accept=".txt,.abc,text/plain" hidden></label>
+        <button type="button" class="boton suave" id="sc-to-prompt"><span data-icono="nube"></span><span>${escape(t('sc_prompt'))}</span></button></div>
         <p class="nota" id="sc-err" aria-live="polite"></p>
         <div class="botonera"><button type="submit" class="boton" id="sc-take">${escape(t('sc_import_go'))}</button><button type="button" class="boton suave" id="sc-cancel">${escape(t('wb_cancel'))}</button></div></form>`, (d) => {
         d.querySelectorAll('[data-icono]').forEach((el) => core.setIcon(el, el.dataset.icono));
+        // The prompt for an AI, from here: it is how a song is written to bring it in.
+        d.querySelector('#sc-to-prompt').addEventListener('click', () => openPrompt());
         let fileName = '';
         d.querySelector('#sc-cancel').addEventListener('click', closeDialog);
         d.querySelector('#sc-file').addEventListener('change', (e) => {
@@ -899,7 +913,7 @@
     }));
     // The prompt for an AI: the format, an example, and the song asked for.
     const promptFor = (title) => t('sc_prompt_text', title || t('sc_prompt_any'));
-    $('#sc-prompt').addEventListener('click', () => openDialog(`<form method="dialog" class="ct-sc-form"><h2>${escape(t('sc_prompt_title'))}</h2>
+    function openPrompt() { openDialog(`<form method="dialog" class="ct-sc-form"><h2>${escape(t('sc_prompt_title'))}</h2>
         <p class="nota">${escape(t('sc_prompt_hint'))}</p>
         <label class="campo apilado"><span>${escape(t('sc_prompt_song'))}</span><input type="text" id="sc-ask" maxlength="80"></label>
         <textarea id="sc-prompt-text" rows="12" readonly></textarea>
@@ -914,7 +928,7 @@
             const ok = () => { d.querySelector('#sc-copied').textContent = t('sc_copied'); };
             if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(area.value).then(ok, () => { area.select(); document.execCommand('copy'); ok(); }); } else { area.select(); document.execCommand('copy'); ok(); }
         });
-    }));
+    }); }
     $('#sc-export').addEventListener('click', () => {
         const blob = new Blob([writeText(song)], { type: 'text/plain;charset=utf-8' }), a = document.createElement('a');
         a.href = URL.createObjectURL(blob); a.download = `${(song.title || 'partitura').replace(/[\\/:*?"<>|]+/g, '').slice(0, 60)}.txt`;
