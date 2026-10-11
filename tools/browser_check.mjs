@@ -18,9 +18,12 @@ const APP = join(dirname(fileURLToPath(import.meta.url)), '..', 'app');
 // (start, state, open, close, end) for a vote, keeping what the board sent.
 const FAKE = `
 window.CLASSTOOLS = { lists: [{ id: 1, name: 'Class 1', key: 'c1', students: Array.from({ length: 8 }, (_, i) => ({ id: i + 1, n: 'Student ' + (i + 1) })) }],
-    courseid: 1, mode: 'teacher', sesskey: 'x', days: {}, state: {}, liveurl: 'fake://live', glossaryurl: 'fake://glossary',
+    courseid: 1, mode: 'teacher', sesskey: 'x', days: {}, state: {}, liveurl: 'fake://live', glossaryurl: 'fake://glossary', bankurl: 'fake://bank',
     me: { id: 99, name: 'Teacher' } };
 window.FAKE = { calls: [], polls: 0 };
+const BANK_PAIRS = [['frog', 'amphibian'], ['cat', 'mammal'], ['bee', 'insect']];
+const GLOSSARY = [{ w: 'Photosynthesis', c: 'How plants make their food with light.' }, { w: 'Cell', c: 'The smallest unit of life.' },
+    { w: 'Atom', c: 'The smallest part of an element.' }];
 // A picture of the screen, when the checks run with SHOTS.
 window.shot = (name) => new Promise((done) => { if (!window.checkShot) { done(); return; } window.shotDone = done; window.checkShot(name); });
 (() => {
@@ -35,10 +38,15 @@ window.shot = (name) => new Promise((done) => { if (!window.checkShot) { done();
         const p = new URLSearchParams(opts && opts.body), a = p.get('action');
         FAKE.calls.push(Object.fromEntries(p));
         const json = (x) => Promise.resolve(new Response(JSON.stringify(x), { headers: { 'Content-Type': 'application/json' } }));
+        // The question bank, as quizbank.php gives it: one category with a matching question.
+        if (String(url).startsWith('fake://bank')) {
+            return json(a === 'categories' ? { categories: p.get('kind') === 'pairs' ? [{ id: 9, name: 'Course · Animals', count: 1 }] : [] }
+                : { pairs: BANK_PAIRS, skipped: 0 });
+        }
         // A glossary of the course, as glossary.php gives it.
         if (String(url).startsWith('fake://glossary')) {
-            return json(a === 'list' ? { ok: true, glossaries: [{ id: 5, name: 'Science words', count: 1 }] }
-                : { ok: true, words: [{ w: 'Photosynthesis', c: 'How plants make their food with light.' }] });
+            return json(a === 'list' ? { ok: true, glossaries: [{ id: 5, name: 'Science words', count: 3 }] }
+                : { ok: true, words: GLOSSARY });
         }
         if (a === 'start') { S = { vote: VOTES[p.get('vote')] ? p.get('vote') : 'abcd', round: 0, open: false, ended: false }; }
         else if (a === 'state') { FAKE.polls++; }
@@ -279,8 +287,44 @@ const CHECKS = {
         document.querySelector('#ah-start').click();
         await sleep(300);
         const slots = document.querySelectorAll('#ah-slots .ct-slot').length, clue = document.querySelector('#ah-clue').textContent;
-        if (slots !== 'Photosynthesis'.length) { return `the word has ${slots} letters`; }
-        return clue.includes('How plants make their food with light.') ? '' : `the clue is «${clue}»`;
+        const entry = GLOSSARY.find((x) => clue.includes(x.c));
+        if (!entry) { return `the clue is «${clue}»`; }
+        return slots === entry.w.length ? '' : `the word has ${slots} letters for «${entry.w}»`;
+    },
+    // Pairs with the matching questions of the question bank.
+    'bank-pairs': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        document.querySelector('#t-juegos').click();
+        await sleep(200);
+        document.querySelector('#ga-mode [data-game="parejas"]').click();
+        await sleep(300);
+        const src = document.querySelector('#me-src');
+        if (![...src.options].some((o) => o.value === 'bank:9')) { return 'the question bank is not among the sets of pairs'; }
+        src.value = 'bank:9';
+        src.dispatchEvent(new Event('change', { bubbles: true }));
+        await sleep(300);
+        document.querySelector('#me-start').click();
+        await sleep(400);
+        const texts = [...document.querySelectorAll('#me-grid .ct-mfront')].map((x) => x.textContent.trim()).sort();
+        return texts.join('|') === BANK_PAIRS.flat().sort().join('|') ? '' : `the cards are ${texts.join(', ')}`;
+    },
+    // Pairs with a glossary of the course: each concept with its definition.
+    'glossary-pairs': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        document.querySelector('#t-juegos').click();
+        await sleep(200);
+        document.querySelector('#ga-mode [data-game="parejas"]').click();
+        await sleep(300);
+        const src = document.querySelector('#me-src');
+        if (![...src.options].some((o) => o.value === 'glos:5')) { return 'the glossary is not among the sets of pairs'; }
+        src.value = 'glos:5';
+        src.dispatchEvent(new Event('change', { bubbles: true }));
+        await sleep(300);
+        document.querySelector('#me-start').click();
+        await sleep(400);
+        const texts = [...document.querySelectorAll('#me-grid .ct-mfront')].map((x) => x.textContent.trim()).sort();
+        const want = GLOSSARY.flatMap((x) => [x.w, x.c]).sort();
+        return texts.join('|') === want.join('|') ? '' : `the cards are ${texts.join(', ')}`;
     },
     // QR: the colours of the corners line up as the colours above them, with «Same» on a line of its own.
     'qr-swatches': async () => {

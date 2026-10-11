@@ -612,6 +612,7 @@ window.CLASSTOOLS_STR = {
 "me_faces": "Faces and names: {$a}",
 "me_few": "At least two pairs are needed.",
 "me_found": "{$a->a} of {$a->b} pairs",
+"me_from_bank": "Question bank (matching)",
 "me_level": "Level",
 "me_level_early": "Early years",
 "me_level_higher": "Higher education",

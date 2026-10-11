@@ -31,6 +31,12 @@ class bank {
     /** Question types that make a quiz question. */
     const TYPES = ['multichoice', 'truefalse'];
 
+    /** Question types whose parts make pairs for the Pairs game: each subquestion and its answer. */
+    const PAIR_TYPES = ['match'];
+
+    /** Longest half of a pair, in characters: it has to fit on a card. */
+    const PAIR_MAX = 70;
+
     /** Capabilities that let the teacher use the questions of a bank. */
     const USE = ['moodle/question:useall', 'moodle/question:viewall', 'moodle/question:usemine'];
 
@@ -57,12 +63,13 @@ class bank {
     }
 
     /**
-     * SQL for the questions that can be used: the last version, ready, of the types above.
+     * SQL for the questions that can be used: the last version, ready, of some types (those of a quiz by default).
      *
+     * @param string[] $types One of the lists above (never from the request).
      * @return string
      */
-    private static function usable(): string {
-        return "q.qtype IN ('multichoice', 'truefalse') AND q.parent = 0 AND qv.status = 'ready'
+    private static function usable(array $types = self::TYPES): string {
+        return "q.qtype IN ('" . implode("', '", $types) . "') AND q.parent = 0 AND qv.status = 'ready'
                 AND qv.version = (SELECT MAX(v.version) FROM {question_versions} v WHERE v.questionbankentryid = qbe.id)";
     }
 
@@ -70,9 +77,10 @@ class bank {
      * The categories with usable questions, named with their bank («Quiz on fractions · Default»).
      *
      * @param \stdClass $course
+     * @param string $kind quiz (questions for a quiz) or pairs (matching questions for Pairs).
      * @return array [id, name, count]
      */
-    public static function categories(\stdClass $course): array {
+    public static function categories(\stdClass $course, string $kind = 'quiz'): array {
         global $DB;
         $contexts = self::contexts($course);
         if (!$contexts) {
@@ -85,7 +93,7 @@ class bank {
                JOIN {question_bank_entries} qbe ON qbe.questioncategoryid = qc.id
                JOIN {question_versions} qv ON qv.questionbankentryid = qbe.id
                JOIN {question} q ON q.id = qv.questionid
-              WHERE qc.contextid $in AND " . self::usable() . "
+              WHERE qc.contextid $in AND " . self::usable($kind === 'pairs' ? self::PAIR_TYPES : self::TYPES) . "
            GROUP BY qc.id, qc.name, qc.contextid
            ORDER BY qc.name",
             $params
@@ -140,6 +148,56 @@ class bank {
             }
         }
         return ['questions' => $questions, 'skipped' => $skipped];
+    }
+
+    /**
+     * The pairs of the matching questions of a category, for Pairs: each subquestion and its answer, as plain text.
+     * Halves that are empty or too long for a card are left out.
+     *
+     * @param \stdClass $course
+     * @param int $categoryid
+     * @return array [pairs => [[a, b]], skipped]
+     * @throws \moodle_exception If the category is not in a bank the teacher can use.
+     */
+    public static function pairs(\stdClass $course, int $categoryid): array {
+        global $DB;
+        $category = $DB->get_record('question_categories', ['id' => $categoryid], 'id, contextid', MUST_EXIST);
+        if (!isset(self::contexts($course)[$category->contextid])) {
+            throw new \moodle_exception('nopermissions', 'error', '', 'question bank');
+        }
+        $rows = $DB->get_records_sql(
+            "SELECT s.id, s.questiontext, s.answertext
+               FROM {question_bank_entries} qbe
+               JOIN {question_versions} qv ON qv.questionbankentryid = qbe.id
+               JOIN {question} q ON q.id = qv.questionid
+               JOIN {qtype_match_subquestions} s ON s.questionid = q.id
+              WHERE qbe.questioncategoryid = :cat AND " . self::usable(self::PAIR_TYPES) . "
+           ORDER BY q.id, s.id",
+            ['cat' => $categoryid]
+        );
+        $pairs = [];
+        $seen = [];
+        $skipped = 0;
+        foreach ($rows as $row) {
+            $a = self::plain($row->questiontext, self::PAIR_MAX + 1);
+            $b = self::plain($row->answertext, self::PAIR_MAX + 1);
+            // A subquestion without text is a distractor answer: it makes no pair.
+            if ($a === '' || $b === '') {
+                continue;
+            }
+            // Too long for a card, or a half already used (frog → amphibian, newt → amphibian): two equal cards that
+            // do not make a pair would only confuse.
+            $keya = \core_text::strtolower($a);
+            $keyb = \core_text::strtolower($b);
+            $long = \core_text::strlen($a) > self::PAIR_MAX || \core_text::strlen($b) > self::PAIR_MAX;
+            if ($long || isset($seen[$keya]) || isset($seen[$keyb])) {
+                $skipped++;
+                continue;
+            }
+            $seen[$keya] = $seen[$keyb] = true;
+            $pairs[] = [$a, $b];
+        }
+        return ['pairs' => $pairs, 'skipped' => $skipped];
     }
 
     /**

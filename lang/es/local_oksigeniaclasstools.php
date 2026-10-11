@@ -636,6 +636,7 @@ $string['app_me_done'] = '¡Todas! En {$a} intentos';
 $string['app_me_faces'] = 'Caras y nombres: {$a}';
 $string['app_me_few'] = 'Hacen falta al menos dos parejas.';
 $string['app_me_found'] = '{$a->a} de {$a->b} parejas';
+$string['app_me_from_bank'] = 'Banco de preguntas (emparejamiento)';
 $string['app_me_level'] = 'Nivel';
 $string['app_me_level_early'] = 'Infantil';
 $string['app_me_level_higher'] = 'Universidad y superior';

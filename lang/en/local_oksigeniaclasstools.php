@@ -636,6 +636,7 @@ $string['app_me_done'] = 'All of them! In {$a} tries';
 $string['app_me_faces'] = 'Faces and names: {$a}';
 $string['app_me_few'] = 'At least two pairs are needed.';
 $string['app_me_found'] = '{$a->a} of {$a->b} pairs';
+$string['app_me_from_bank'] = 'Question bank (matching)';
 $string['app_me_level'] = 'Level';
 $string['app_me_level_early'] = 'Early years';
 $string['app_me_level_higher'] = 'Higher education';

@@ -15,8 +15,8 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * The board asks for the questions of the Moodle question bank it can use for a quiz: the categories, and the
- * questions of one of them.
+ * The board asks for the questions of the Moodle question bank it can use for a quiz (the categories, and the
+ * questions of one of them) or for Pairs (the categories with matching questions, and their pairs).
  *
  * @package    local_oksigeniaclasstools
  * @copyright  2026 Oksigenia <dev@oksigenia.cc>
@@ -36,7 +36,10 @@ require_login($course, false, null, false, true);
 require_capability('local/oksigeniaclasstools:use', context_course::instance($course->id));
 
 if ($action === 'categories') {
-    echo json_encode(['categories' => bank::categories($course)]);
+    $kind = optional_param('kind', 'quiz', PARAM_ALPHA) === 'pairs' ? 'pairs' : 'quiz';
+    echo json_encode(['categories' => bank::categories($course, $kind)]);
+} else if ($action === 'pairs') {
+    echo json_encode(bank::pairs($course, required_param('categoryid', PARAM_INT)));
 } else if ($action === 'questions') {
     echo json_encode(bank::questions($course, required_param('categoryid', PARAM_INT), (int) $USER->id));
 } else {

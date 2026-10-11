@@ -15,6 +15,7 @@
         name: t('me_pairs'), what: t('me_what'), pairs: t('me_pairs'), who: t('me_who'), wholeClass: t('me_whole_class'),
         twoTeams: t('me_two_teams'), start: t('me_start'), shapes: t('me_set_shapes'), colors: t('me_set_colours'),
         numbers: t('me_set_numbers'), faces: (n) => t('me_faces', n), own: t('me_own'), students: t('me_students'),
+        glossary: t('ga_from_glossary'), bank: t('me_from_bank'),
         level: t('me_level'), allLevels: t('me_all_levels'),
         team: (n) => t('me_team', n), moves: (n) => t(n === 1 ? 'me_moves_one' : 'me_moves_many', n), found: (a, b) => t('me_found', { a, b }),
         done: (n) => t('me_done', n), winner: (n) => t('me_winner', n), tie: t('me_tie'), few: t('me_few'),
@@ -161,7 +162,14 @@
             $$('#me-n button').forEach((x) => x.setAttribute('aria-checked', String(Number(x.dataset.n) === modePairs())));
             if (!load(courseKey, null)) { $('#me-level').value = ''; fill(); }
         });
-        $('#me-src').addEventListener('change', () => save('parejas-fuente', $('#me-src').value));
+        $('#me-src').addEventListener('change', () => {
+            save('parejas-fuente', $('#me-src').value);
+            if ($('#me-src').value.startsWith('glos:')) { glossary.load($('#me-src').value.slice(5)); }
+            if ($('#me-src').value.startsWith('bank:')) { loadBank($('#me-src').value.slice(5)); }
+        });
+        document.addEventListener('classtools:glossaries', fill);
+        glossary.ask();
+        askBank();
         $('#me-level').addEventListener('change', () => { save(courseKey, $('#me-level').value); fill(); });
         $('#me-start').addEventListener('click', start);
         $('#me-grid').addEventListener('click', (e) => { const c = e.target.closest('.ct-mcard'); if (c) { flip(Number(c.dataset.i)); } });
@@ -179,10 +187,37 @@
         sel.innerHTML = levels.filter(([k]) => lv.value === 'all' || lv.value === k)
             .map(([k, name]) => `<optgroup label="${escape(name)}">${PRESETS[k].map((pr) => `<option value="${pr.id}">${escape(pr.name)}</option>`).join('')}</optgroup>`).join('')
             + (moodle.length ? `<optgroup label="${escape(STR.students)}">${moodle.map((l) => `<option value="faces:${escape(l.id)}">${escape(STR.faces(l.nombre))}</option>`).join('')}</optgroup>` : '')
-            + (own.length ? `<optgroup label="${escape(STR.own)}">${own.map((l) => `<option value="list:${escape(l.id)}">${escape(l.nombre)}</option>`).join('')}</optgroup>` : '');
+            + (own.length ? `<optgroup label="${escape(STR.own)}">${own.map((l) => `<option value="list:${escape(l.id)}">${escape(l.nombre)}</option>`).join('')}</optgroup>` : '')
+            + (glossary.list().length ? `<optgroup label="${escape(STR.glossary)}">${glossary.list().map((g) => `<option value="glos:${g.id}">${escape(g.name)}</option>`).join('')}</optgroup>` : '')
+            + (bankCats && bankCats.length ? `<optgroup label="${escape(STR.bank)}">${bankCats.map((c) => `<option value="bank:${c.id}">${escape(c.name)}</option>`).join('')}</optgroup>` : '');
         const values = [...sel.options].map((o) => o.value);
         sel.value = values.includes(before) ? before : (values[0] || '');
+        if (sel.value.startsWith('glos:')) { glossary.load(sel.value.slice(5)); }
+        if (sel.value.startsWith('bank:')) { loadBank(sel.value.slice(5)); }
     };
+    // The matching questions of the course's question bank (inside Moodle): each subquestion and its answer, a pair.
+    const AULA = core.moodle;
+    const bankCall = (action, extra = {}) => fetch(AULA.bankurl, { method: 'POST', credentials: 'same-origin',
+        body: new URLSearchParams({ courseid: AULA.courseid, sesskey: AULA.sesskey, action, ...extra }) })
+        .then((r) => r.json()).then((j) => { if (!j || j.error || j.errorcode) { throw new Error((j && (j.errorcode || j.error)) || 'error'); } return j; });
+    let bankCats = null;
+    const bankPairs = {};
+    const askBank = () => {
+        if (bankCats || !AULA || !AULA.bankurl) { return; }
+        bankCats = [];
+        bankCall('categories', { kind: 'pairs' }).then((j) => { bankCats = j.categories || []; if (bankCats.length) { fill(); } })
+            .catch(() => { /* No bank: the other sets stay. */ });
+    };
+    const loadBank = (id) => {
+        if (!bankPairs[id]) {
+            bankPairs[id] = bankCall('pairs', { categoryid: id }).then((j) => { bankPairs[id] = j.pairs || []; })
+                .catch(() => { delete bankPairs[id]; });
+        }
+    };
+    // A glossary of the course: each concept and its definition, cut to fit a card (the shortest ones first).
+    const glossary = games.util && games.util.glossaries ? games.util.glossaries : { list: () => [], ask: () => {}, load: () => Promise.resolve([]), words: () => [] };
+    const CARD_TEXT = 70;
+    const cut = (text) => (text.length > CARD_TEXT ? text.slice(0, CARD_TEXT - 1).trimEnd() + '…' : text);
     // The two halves of each pair for the chosen set.
     const pairsFor = (value, n) => {
         if (value === 'shapes') {
@@ -198,6 +233,15 @@
         if (value.startsWith('faces:')) {
             const l = core.lists().find((x) => x.id === value.slice(6));
             return l ? shuffle(core.present(l).slice()).slice(0, n).map((name) => [{ face: { list: l, name } }, { text: name }]) : [];
+        }
+        if (value.startsWith('bank:')) {
+            const pairs = Array.isArray(bankPairs[value.slice(5)]) ? bankPairs[value.slice(5)] : [];
+            return shuffle(pairs.slice()).slice(0, n).map(([a, b]) => [{ text: a }, { text: b }]);
+        }
+        if (value.startsWith('glos:')) {
+            const words = glossary.words(value.slice(5)).filter((x) => x.c);
+            const short = shuffle(words.filter((x) => x.c.length <= CARD_TEXT)), long = shuffle(words.filter((x) => x.c.length > CARD_TEXT));
+            return short.concat(long).slice(0, n).map((x) => [{ text: x.w }, { text: cut(x.c) }]);
         }
         if (value.startsWith('list:')) {
             const l = core.lists().find((x) => x.id === value.slice(5));

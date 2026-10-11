@@ -66,6 +66,37 @@ final class bank_test extends \advanced_testcase {
         $this->assertCount(2, $tf['options']);
     }
 
+    public function test_matching_questions_make_pairs(): void {
+        global $CFG;
+        $this->resetAfterTest();
+        $this->setAdminUser();
+        $course = $this->getDataGenerator()->create_course();
+        if (file_exists($CFG->dirroot . '/mod/qbank/version.php')) {
+            $qbank = $this->getDataGenerator()->create_module('qbank', ['course' => $course->id]);
+            $context = \context_module::instance($qbank->cmid);
+        } else {
+            $context = \context_course::instance($course->id);
+        }
+        $qgen = $this->getDataGenerator()->get_plugin_generator('core_question');
+        $category = $qgen->create_question_category(['contextid' => $context->id, 'name' => 'Animals']);
+        $qgen->create_question('match', null, ['category' => $category->id, 'name' => 'Animal classes']);
+        $qgen->create_question('truefalse', null, ['category' => $category->id, 'name' => 'Not a pair']);
+
+        $mine = array_values(array_filter(bank::categories($course, 'pairs'), fn($c) => $c['id'] == $category->id));
+        $this->assertCount(1, $mine);
+        $this->assertSame(1, $mine[0]['count']);
+
+        $pairs = bank::pairs($course, (int) $category->id)['pairs'];
+        $this->assertNotEmpty($pairs);
+        $halves = array_map('core_text::strtolower', array_merge(...$pairs));
+        $this->assertSame(count($halves), count(array_unique($halves)), 'No half is repeated.');
+        foreach ($pairs as $pair) {
+            $this->assertCount(2, $pair);
+            $this->assertNotSame('', $pair[0]);
+            $this->assertNotSame('', $pair[1]);
+        }
+    }
+
     public function test_a_category_of_another_course_is_refused(): void {
         $this->resetAfterTest();
         $this->setAdminUser();

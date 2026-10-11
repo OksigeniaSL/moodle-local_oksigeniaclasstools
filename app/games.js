@@ -245,7 +245,9 @@
 
     window.ClasstoolsGames = {
         // words: the same helpers for the language of the words (Hangman, Word); «classtools:wordlang» when it changes.
-        util: { norm, isLetter, keyboard, keys, wordSource, listOf, mode, words },
+        // glossaries: the glossaries of the course (list(), ask(), load(id) → promise, words(id) once loaded).
+        util: { norm, isLetter, keyboard, keys, wordSource, listOf, mode, words,
+            glossaries: { list: () => glossaries || [], ask: askGlossaries, load: loadGlossary, words: glossaryOf } },
         add(game) {
             // Only the games the site wants (the administrator chooses them; none chosen: all).
             const site = window.CLASSTOOLS_SITE && Array.isArray(window.CLASSTOOLS_SITE.games) && window.CLASSTOOLS_SITE.games.length ? window.CLASSTOOLS_SITE.games : null;
