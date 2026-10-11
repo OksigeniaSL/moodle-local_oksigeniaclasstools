@@ -9,7 +9,9 @@
     const core = window.ClasstoolsCore, games = window.ClasstoolsGames;
     if (!core || !games || !games.util) { return; }
     const { $, $$, escape, play, setIcon, announce, t } = core;
-    const { norm, isLetter, keyboard, keys, wordSource, listOf } = games.util;
+    // The words, their letters and the keyboard come in the language of the words (the board's, or another one).
+    const { wordSource } = games.util;
+    const { norm, isLetter, keyboard, keys, listOf } = games.util.words;
 
     const STR = {
         name: t('wo_name'), start: t('ga_new_word'), tries: t('wo_tries'),
@@ -42,6 +44,13 @@
         source.wire();
         kb = keyboard($('#wo-keys'), type, { enter: true });
         keys(() => visible, type);
+        // Another language of the words: its keyboard, and the word under way is left (its letters were of the other).
+        document.addEventListener('classtools:wordlang', () => {
+            kb = keyboard($('#wo-keys'), type, { enter: true });
+            if (!s.over) { s.over = true; games.playing('palabra', false); }
+            s.rows = []; s.current = ''; paint(); $('#wo-clue').textContent = '';
+            const m = $('#wo-msg'); m.className = 'total espera'; m.textContent = STR.pressStart;
+        });
         $('#wo-start').addEventListener('click', start);
     };
     // Colours of a try, with repeated letters counted as in the real game.

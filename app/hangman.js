@@ -8,7 +8,9 @@
     const core = window.ClasstoolsCore, games = window.ClasstoolsGames;
     if (!core || !games || !games.util) { return; }
     const { $, $$, escape, play, setIcon, announce, t } = core;
-    const { norm, isLetter, keyboard, keys, wordSource, listOf, mode } = games.util;
+    // The words, their letters and the keyboard come in the language of the words (the board's, or another one).
+    const { wordSource, mode } = games.util;
+    const { norm, isLetter, keyboard, keys, listOf } = games.util.words;
 
     const STR = {
         name: t('ah_name'), start: t('ga_new_word'), needWord: t('ah_need_word'),
@@ -43,6 +45,13 @@
         source.wire();
         kb = keyboard($('#ah-keys'), guess);
         keys(() => visible, (k) => { if (isLetter(k)) { guess(k); } });
+        // Another language of the words: its keyboard, and the word under way is left (its letters were of the other).
+        document.addEventListener('classtools:wordlang', () => {
+            kb = keyboard($('#ah-keys'), guess);
+            if (!s.over) { s.over = true; games.playing('ahorcado', false); $('#ah-reveal').hidden = true; }
+            $('#ah-slots').innerHTML = ''; $('#ah-clue').textContent = '';
+            const m = $('#ah-msg'); m.className = 'total espera'; m.textContent = STR.pressStart;
+        });
         $('#ah-start').addEventListener('click', start);
         $('#ah-reveal').addEventListener('click', () => end(false));
         paintBalloons();

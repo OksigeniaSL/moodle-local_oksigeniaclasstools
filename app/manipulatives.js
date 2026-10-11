@@ -530,6 +530,9 @@
     });
     const wanted = load('material-modo', 'rods');
     let mode = LAYOUT[wanted] ? wanted : (Object.keys(LAYOUT)[0] || 'rods');
+    // The materials of other school levels wait in a menu after the bar.
+    const levels = () => { if (core.otherLevels) { core.otherLevels($('#mt-mode'), 'mode'); } };
+    document.addEventListener('classtools:mode', levels);
     // «Whose turn?» for every material, with a class list; the score has its own, with its own task.
     const paintTurn = () => { $('#mt-turn').hidden = !(core.turn && core.lists && core.lists().length) || mode === 'score'; };
     $('#mt-turn').addEventListener('click', () => core.turn(root.querySelector('.ct-body'), { task: t('turn_task_board') }));
@@ -538,6 +541,7 @@
         if (!LAYOUT[m]) { return; }
         mode = m; save('material-modo', m); paintTurn();
         $$('#mt-mode button').forEach((b) => b.setAttribute('aria-checked', String(b.dataset.mode === m)));
+        levels();
         $$('.ct-panel', root).forEach((p) => { p.hidden = p.dataset.panel !== m; });
         requestAnimationFrame(LAYOUT[m]);
     };
@@ -571,7 +575,7 @@
             $$('[data-icono]', panel).forEach((e) => setIcon(e, e.dataset.icono));
             root.querySelector('.ct-body').append(panel);
             LAYOUT[key] = layout || (() => {});
-            if (key === wanted || !LAYOUT[mode]) { showMode(key); }
+            if (key === wanted || !LAYOUT[mode]) { showMode(key); } else { levels(); }
             return panel;
         },
     };

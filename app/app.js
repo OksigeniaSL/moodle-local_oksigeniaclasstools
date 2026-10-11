@@ -1919,6 +1919,65 @@
         }
         return { name: elegido, list: l };
     };
+    // ---------------------------------------------------------------------------------------------------
+    // Games and materials by school level: in each screen mode the bar shows first what suits it, and the rest waits
+    // in «Other levels» (a course for future teachers may want the rods in Advanced). Nothing is taken away, and what
+    // is open always shows (decision of 11 October 2026).
+    // ---------------------------------------------------------------------------------------------------
+    const LEVELS_OF = {
+        // Games.
+        rosco: ['primary', 'secondary', 'advanced'], simon: ['early', 'primary', 'secondary'],
+        ahorcado: ['primary', 'secondary', 'advanced'], palabra: ['primary', 'secondary', 'advanced'],
+        parejas: ['early', 'primary', 'secondary', 'advanced'], codigo: ['primary', 'secondary', 'advanced'],
+        // Materials.
+        rods: ['early', 'primary'], tangram: ['early', 'primary', 'secondary'], line: ['primary', 'secondary', 'advanced'],
+        fractions: ['primary', 'secondary'], geoboard: ['early', 'primary', 'secondary'], base10: ['primary'],
+        calc: ['primary', 'secondary', 'advanced'], score: ['early', 'primary', 'secondary', 'advanced'],
+    };
+    const ofLevel = (id) => !LEVELS_OF[id] || LEVELS_OF[id].includes(modo);
+    /**
+     * Hides the buttons of other levels in a bar (a radio group whose buttons carry data-<attr>) and offers them in a
+     * menu right after it. Called again whenever the bar is painted or the mode changes.
+     *
+     * @param {HTMLElement} bar
+     * @param {string} attr «game» or «mode».
+     */
+    const otherLevels = (bar, attr) => {
+        let more = bar.nextElementSibling && bar.nextElementSibling.classList.contains('ct-otros') ? bar.nextElementSibling : null;
+        if (!more) {
+            more = document.createElement('div');
+            more.className = 'ct-otros';
+            more.innerHTML = `<button type="button" class="ct-otros-boton" aria-haspopup="true" aria-expanded="false">`
+                + `<span>${escapa(t('levels_other'))}</span><span aria-hidden="true">▾</span></button>`
+                + '<div class="ct-otros-menu" role="menu" hidden></div>';
+            bar.after(more);
+            const open = more.querySelector('.ct-otros-boton'), menu = more.querySelector('.ct-otros-menu');
+            const close = () => { menu.hidden = true; open.setAttribute('aria-expanded', 'false'); };
+            open.addEventListener('click', () => {
+                const show = menu.hidden;
+                menu.hidden = !show; open.setAttribute('aria-expanded', String(show));
+                if (show && menu.querySelector('button')) { menu.querySelector('button').focus(); }
+            });
+            menu.addEventListener('click', (e) => {
+                const x = e.target.closest('[data-pick]');
+                if (!x) { return; }
+                close();
+                const b = bar.querySelector(`button[data-${attr}="${x.dataset.pick}"]`);
+                if (b) { b.hidden = false; b.click(); b.focus(); }
+            });
+            document.addEventListener('pointerdown', (e) => { if (!menu.hidden && !more.contains(e.target)) { close(); } });
+            document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !menu.hidden) { close(); open.focus(); } });
+        }
+        const buttons = [...bar.querySelectorAll(`button[data-${attr}]`)];
+        const away = buttons.filter((b) => !ofLevel(b.dataset[attr]) && b.getAttribute('aria-checked') !== 'true');
+        buttons.forEach((b) => { b.hidden = away.includes(b); });
+        more.hidden = !away.length;
+        more.querySelector('.ct-otros-menu').innerHTML = away.map((b) => {
+            const id = b.dataset[attr], levels = (LEVELS_OF[id] || []).map((m) => t('mode_' + m)).join(' · ');
+            return `<button type="button" role="menuitem" data-pick="${escapa(id)}"><strong>${escapa(b.textContent)}</strong>`
+                + `<small>${escapa(levels)}</small></button>`;
+        }).join('');
+    };
     // API para las herramientas que van en ficheros aparte (chance.js, scoreboard.js…): lo común de la pantalla.
     window.ClasstoolsCore = {
         $, $$, t, translate: traduce, random: azar, shuffle: baraja, escape: escapa, reducedMotion: reducido, save: guarda, load: lee,
@@ -1930,6 +1989,7 @@
         kept: (tool) => (AULA && AULA.state && AULA.state[tool]) || null, keep: guardaEnAula,
         audioContext: () => audio(), soundOn: () => sonido, output: () => maestro,
         mode: () => modo,   // early, primary, secondary or advanced; «classtools:mode» when it changes
+        otherLevels,        // otherLevels(bar, attr): the games or materials of other levels, in a menu after the bar
         nameCase: enMayus,  // nameCase(name) → the name as the board shows it (in capitals when «Names in capitals» is on)
         byMode: porModo,    // byMode(key, { early: {…}, primary: {…}, … }) → { get(), set(changes) }: values that start differently in each mode
         tabs: () => pestanas.map((b) => b.dataset.h), current: () => actual,

@@ -15,6 +15,10 @@
   "en": "Delete",
   "es": "Borrar"
  },
+ "ga_words_lang": {
+  "en": "Language of the words",
+  "es": "Idioma de las palabras"
+ },
  "ga_word": {
   "en": "Word",
   "es": "Palabra"

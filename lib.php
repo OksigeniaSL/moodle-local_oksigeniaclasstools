@@ -152,6 +152,43 @@ function local_oksigeniaclasstools_before_standard_top_of_body_html(): string {
 }
 
 /**
+ * The surnames in a last name, each with its initial: «de la Rosa Báez» is «de la Rosa» (R) and «Báez» (B).
+ *
+ * Particles (de, del, la, van, von, da, san…) go with the word after them, a hyphen joins (García-Pelayo is one), and
+ * «y» or «i» between two surnames only separates them (Ortega y Gasset: Ortega and Gasset).
+ *
+ * @param string $lastname
+ * @return array[] Each one with name and initial.
+ */
+function local_oksigeniaclasstools_surnames(string $lastname): array {
+    $particles = ['de', 'del', 'la', 'las', 'los', 'lo', 'el', 'da', 'das', 'do', 'dos', 'di', 'du', 'van', 'von', 'der',
+        'den', 'ter', 'le', 'les', 'della', 'dei', 'degli', 'dalla', 'al', 'bin', 'ben', 'mac', 'san', 'santa', 'st'];
+    $separators = ['y', 'i', 'e'];
+    $surnames = [];
+    $pending = [];
+    foreach (preg_split('/\s+/u', trim($lastname), -1, PREG_SPLIT_NO_EMPTY) as $word) {
+        $lower = core_text::strtolower($word);
+        if (in_array($lower, $separators, true) && $surnames && !$pending) {
+            continue;
+        }
+        if (in_array($lower, $particles, true)) {
+            $pending[] = $word;
+            continue;
+        }
+        $surnames[] = [
+            'name' => implode(' ', array_merge($pending, [$word])),
+            'initial' => core_text::strtoupper(core_text::substr($word, 0, 1)),
+        ];
+        $pending = [];
+    }
+    // Only particles at the end (a surname such as «Le» or «Van»): they are the surname.
+    if ($pending) {
+        $surnames[] = ['name' => implode(' ', $pending), 'initial' => core_text::strtoupper(core_text::substr($pending[0], 0, 1))];
+    }
+    return $surnames;
+}
+
+/**
  * Screen data for a course: its name, the way back and the lists with each student's name and photo.
  *
  * One list per group and per cohort enrolled with cohort sync (a course with cohorts 5A to 5F gives six lists),
@@ -171,8 +208,14 @@ function local_oksigeniaclasstools_data(stdClass $course, context_course $contex
         if ($namestyle === 'full') {
             return fullname($user);
         }
-        $surname = preg_split('/\s+/', trim($user->lastname))[0] ?? '';
-        return $namestyle === 'first' ? trim($user->firstname) : trim($user->firstname . ' ' . $surname);
+        if ($namestyle === 'first') {
+            return trim($user->firstname);
+        }
+        $surnames = local_oksigeniaclasstools_surnames($user->lastname);
+        if ($namestyle === 'initials') {
+            return trim($user->firstname . ' ' . implode('', array_column($surnames, 'initial')));
+        }
+        return trim($user->firstname . ' ' . ($surnames[0]['name'] ?? ''));
     };
 
     // Picks in this course during the last days (fair picking and participation).

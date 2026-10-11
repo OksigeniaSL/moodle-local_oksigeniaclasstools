@@ -184,6 +184,79 @@ const CHECKS = {
         if (!(await waitTurn(2))) { return `after a mistake in round 2 the board says «${msg()}»`; }
         return shown.length === 2 && shown.join() === second.join() ? '' : `the sequence played again was ${shown.join()} instead of ${second.join()}`;
     },
+    // Levels: in Advanced, the materials and games of other levels wait in «Other levels», and one picked there opens.
+    'levels-filter': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const setMode = async (m) => {
+            document.querySelector('#b-modo').click();
+            await sleep(200);
+            document.querySelector(`#menu-modo [data-modo="${m}"]`).click();
+            await sleep(300);
+        };
+        const hiddenIn = (bar, attr) => [...document.querySelectorAll(`${bar} button[data-${attr}]`)].filter((b) => b.hidden).map((b) => b.dataset[attr]);
+        try {
+            await setMode('advanced');
+            document.querySelector('#t-material').click();
+            await sleep(300);
+            const current = document.querySelector('#mt-mode [aria-checked="true"]').dataset.mode;
+            const away = hiddenIn('#mt-mode', 'mode');
+            for (const id of ['base10', 'fractions', 'geoboard']) {
+                if (id !== current && !away.includes(id)) { return `«${id}» is not among the other levels in Advanced (hidden: ${away.join(', ')})`; }
+            }
+            if (away.includes('calc') || away.includes('score')) { return `a material of Advanced is hidden: ${away.join(', ')}`; }
+            const more = document.querySelector('#h-material .ct-otros');
+            if (!more || more.hidden) { return 'no «Other levels» in the materials'; }
+            more.querySelector('.ct-otros-boton').click();
+            await sleep(200);
+            await window.shot('levels-menu');
+            more.querySelector('[data-pick="base10"]').click();
+            await sleep(400);
+            const picked = document.querySelector('#mt-mode [data-mode="base10"]');
+            if (picked.hidden || picked.getAttribute('aria-checked') !== 'true') { return 'base 10 blocks did not open from «Other levels»'; }
+            if (!document.querySelector('.ct-panel[data-panel="base10"]').offsetParent) { return 'the panel of the base 10 blocks is not shown'; }
+            document.querySelector('#t-juegos').click();
+            await sleep(300);
+            const games = hiddenIn('#ga-mode', 'game'), currentGame = document.querySelector('#ga-mode [aria-checked="true"]').dataset.game;
+            if (currentGame !== 'simon' && !games.includes('simon')) { return `Simon is not among the other levels in Advanced (hidden: ${games.join(', ')})`; }
+            await setMode('primary');
+            const back = hiddenIn('#ga-mode', 'game');
+            return back.length ? `in Primary some games are still hidden: ${back.join(', ')}` : '';
+        } finally {
+            if (document.documentElement.dataset.modo !== 'primary') { await setMode('primary'); }
+        }
+    },
+    // Words in another language: Hangman in French gets the French keyboard, Word follows, the board keeps its own.
+    'words-language': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        document.querySelector('#t-juegos').click();
+        await sleep(200);
+        document.querySelector('#ga-mode [data-game="ahorcado"]').click();
+        await sleep(200);
+        const own = window.CLASSTOOLS_CONTENT.lang;
+        const lang = document.querySelector('#ah-lang');
+        if (!lang) { return 'no «Language of the words» in Hangman'; }
+        try {
+            lang.value = 'fr';
+            lang.dispatchEvent(new Event('change', { bubbles: true }));
+            for (let i = 0; i < 40 && !document.querySelector('#ah-keys .ct-key[data-k="A"]:first-child'); i++) { await sleep(100); }
+            await sleep(300);
+            const row = [...document.querySelectorAll('#ah-keys .ct-krow:first-child .ct-key')].map((b) => b.dataset.k).join('');
+            if (row !== 'AZERTYUIOP') { return `the first row of the keyboard is «${row}» in French`; }
+            if (window.CLASSTOOLS_CONTENT.lang !== own) { return `the board's own content became «${window.CLASSTOOLS_CONTENT.lang}»`; }
+            const wo = document.querySelector('#wo-lang');
+            if (wo && wo.value !== 'fr') { return `Word did not follow: «${wo.value}»`; }
+            document.querySelector('#ah-src').value = 'builtin';
+            document.querySelector('#ah-src').dispatchEvent(new Event('change', { bubbles: true }));
+            document.querySelector('#ah-start').click();
+            await sleep(300);
+            await window.shot('words-language');
+            return '';
+        } finally {
+            lang.value = own;
+            lang.dispatchEvent(new Event('change', { bubbles: true }));
+            await sleep(300);
+        }
+    },
     // QR: the colours of the corners line up as the colours above them, with «Same» on a line of its own.
     'qr-swatches': async () => {
         const sleep = (ms) => new Promise((r) => setTimeout(r, ms));

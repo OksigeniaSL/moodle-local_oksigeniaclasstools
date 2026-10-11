@@ -147,6 +147,10 @@
   "en": "Advanced",
   "es": "Superior"
  },
+ "levels_other": {
+  "en": "Other levels",
+  "es": "Otros niveles"
+ },
  "mode_early_hint": {
   "en": "Ages 3 to 6: bigger, with more help",
   "es": "De 3 a 6 años: más grande y con más ayudas"

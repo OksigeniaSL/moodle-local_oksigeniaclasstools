@@ -30,8 +30,10 @@ require_once(__DIR__ . '/generator_trait.php');
  * @copyright  2026 Oksigenia <dev@oksigenia.cc>
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @covers     ::local_oksigeniaclasstools_data
+ * @covers     ::local_oksigeniaclasstools_surnames
  */
 #[\PHPUnit\Framework\Attributes\CoversFunction('local_oksigeniaclasstools_data')]
+#[\PHPUnit\Framework\Attributes\CoversFunction('local_oksigeniaclasstools_surnames')]
 final class lib_test extends \advanced_testcase {
     use generator_trait;
 
@@ -190,12 +192,48 @@ final class lib_test extends \advanced_testcase {
         $this->setUser($teacher);
         $this->set_page($course);
         $context = \context_course::instance($course->id);
-        $expected = ['firstsurname' => 'Student0 Surname0', 'first' => 'Student0', 'full' => 'Student0 Surname0 Second'];
+        $expected = ['firstsurname' => 'Student0 Surname0', 'first' => 'Student0', 'full' => 'Student0 Surname0 Second',
+            'initials' => 'Student0 SS'];
         foreach ($expected as $style => $name) {
             set_config('namestyle', $style, 'local_oksigeniaclasstools');
             $data = local_oksigeniaclasstools_data($course, $context);
             $this->assertSame($name, $data['lists'][0]['students'][0]['n'], $style);
         }
+    }
+
+    /**
+     * Surnames with particles, hyphens and «y».
+     *
+     * @dataProvider surnames_provider
+     * @param string $lastname
+     * @param string[] $names
+     * @param string $initials
+     */
+    #[\PHPUnit\Framework\Attributes\DataProvider('surnames_provider')]
+    public function test_surnames(string $lastname, array $names, string $initials): void {
+        $surnames = local_oksigeniaclasstools_surnames($lastname);
+        $this->assertSame($names, array_column($surnames, 'name'));
+        $this->assertSame($initials, implode('', array_column($surnames, 'initial')));
+    }
+
+    /**
+     * Last names and their surnames.
+     *
+     * @return array
+     */
+    public static function surnames_provider(): array {
+        return [
+            'particles' => ['de la Rosa Báez', ['de la Rosa', 'Báez'], 'RB'],
+            'two plain' => ['García López', ['García', 'López'], 'GL'],
+            'hyphen' => ['García-Pelayo Ruiz', ['García-Pelayo', 'Ruiz'], 'GR'],
+            'with y' => ['Ortega y Gasset', ['Ortega', 'Gasset'], 'OG'],
+            'del' => ['del Río', ['del Río'], 'R'],
+            'capital particle' => ['De Los Santos Ávila', ['De Los Santos', 'Ávila'], 'SÁ'],
+            'san' => ['San Martín Pérez', ['San Martín', 'Pérez'], 'MP'],
+            'dutch' => ['van der Berg', ['van der Berg'], 'B'],
+            'only a particle' => ['Le', ['Le'], 'L'],
+            'empty' => ['', [], ''],
+        ];
     }
 
     public function test_picks_and_kept_tools_reach_the_screen(): void {

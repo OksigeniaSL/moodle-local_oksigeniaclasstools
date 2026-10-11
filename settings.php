@@ -35,6 +35,7 @@ if ($hassiteconfig) {
             'firstsurname',
             [
                 'firstsurname' => get_string('namestyle_firstsurname', 'local_oksigeniaclasstools'),
+                'initials' => get_string('namestyle_initials', 'local_oksigeniaclasstools'),
                 'first' => get_string('namestyle_first', 'local_oksigeniaclasstools'),
                 'full' => get_string('namestyle_full', 'local_oksigeniaclasstools'),
             ]
