@@ -277,6 +277,25 @@ $string['app_er_found'] = '{$a->n} of {$a->of} mistakes found';
 $string['app_er_name'] = 'Spot the mistakes';
 $string['app_er_show'] = 'Show the rest';
 $string['app_er_tap'] = 'Tap the mistakes';
+$string['app_ex_ai'] = 'Prompt for your AI';
+$string['app_ex_ai_any'] = 'a topic of your choice';
+$string['app_ex_ai_copied'] = 'Copied: paste it in your AI.';
+$string['app_ex_ai_copy'] = 'Copy';
+$string['app_ex_ai_count'] = 'How many';
+$string['app_ex_ai_for_advanced'] = 'students of 16 and over (upper secondary or higher)';
+$string['app_ex_ai_for_primary'] = 'Primary pupils (6 to 12 years old)';
+$string['app_ex_ai_for_secondary'] = 'Secondary students (12 to 16 years old)';
+$string['app_ex_ai_hint'] = 'Write the topic, copy the text, paste it in your AI and paste what it answers in the box below.';
+$string['app_ex_ai_level'] = 'Level';
+$string['app_ex_ai_prompt'] = 'Write {$a->n} exercises for the game «{$a->game}» for {$a->level}, on «{$a->topic}».
+
+Format (plain text, nothing else): {$a->rules} Separate one exercise from the next with a blank line, and start each one with its title on a line beginning with #.
+
+Example:
+{$a->example}
+
+Answer only with the exercises, in the language of this text, without explanations or Markdown. Check that everything you write is correct.';
+$string['app_ex_ai_topic'] = 'Topic';
 $string['app_ex_cancel'] = 'Cancel';
 $string['app_ex_check'] = 'Check';
 $string['app_ex_count'] = '{$a} exercises ready';
@@ -284,26 +303,374 @@ $string['app_ex_count_none'] = 'No exercise yet: check the format';
 $string['app_ex_count_one'] = '1 exercise ready';
 $string['app_ex_edit_title'] = '{$a}: my exercises';
 $string['app_ex_example'] = 'Example: {$a}';
-$string['app_ex_example_classify'] = '# Vertebrates
+$string['app_ex_example_classify_advanced'] = '# Biomolecules
+Carbohydrates: glucose, starch, cellulose, glycogen
+Lipids: cholesterol, triglycerides, phospholipids, waxes
+Proteins: haemoglobin, collagen, insulin, keratin
+Nucleic acids: DNA, messenger RNA, transfer RNA, ribosomal RNA
+? cholesterol: it is a lipid, even if it has no fatty acids
+
+# Chemical bonds
+Ionic: NaCl, KBr, CaO, MgCl₂
+Covalent: H₂O, CO₂, CH₄, NH₃
+Metallic: Fe, Cu, Al, Au
+
+# Even and odd functions
+Even: x², cos x, |x|
+Odd: x³, sin x, 1/x
+Neither: eˣ, ln x, x + 1
+? |x|: f(−x) = f(x), as in x²
+
+# Conditionals
+Zero: If you heat ice, it melts; If it rains, the grass gets wet; If you mix red and yellow, you get orange
+First: If it rains tomorrow, we will stay at home; If you study, you will pass; If you don\'t hurry, you will miss the bus
+Second: If I had more time, I would learn Chinese; If she lived nearer, she would visit us more; If I were you, I would apologise
+Third: If we had left earlier, we would have caught the train; If he had studied, he would have passed; If you had told me, I would have helped you
+
+# Functions (for Venn)
+Increasing on all of ℝ: x³, eˣ, 2x + 1
+Odd: x³, sin x, 1/x
+? x³: it is odd and it always increases';
+$string['app_ex_example_classify_primary'] = '# Vertebrates
 Mammals: dog, whale, bat, horse
 Birds: penguin, hen, ostrich, eagle
 Reptiles: turtle, snake, lizard
 ? bat: it flies, but it has fur and its young drink milk
-? penguin: it does not fly, but it has feathers and lays eggs';
-$string['app_ex_example_errors'] = '# Columbus
-Columbus reached America in [1942|1492|in 1492, not in 1942] with three [boats|caravels/ships]: the Pinta, the Niña and the [Santa Lucía|Santa María].';
-$string['app_ex_example_order'] = '# The water cycle
+? penguin: it does not fly, but it has feathers and lays eggs
+
+# Kinds of words
+Nouns: table, dog, joy, city
+Adjectives: tall, green, happy, quick
+Verbs: run, think, write, jump
+
+# States of matter
+Solid: ice, stone, wood
+Liquid: water, oil, milk
+Gas: water vapour, air, oxygen
+
+# Numbers (for Venn)
+Even numbers: 2, 4, 6, 8, 10, 12
+Multiples of 3: 3, 6, 9, 12, 15
+? 6: it is even and a multiple of 3
+
+# Angles
+Acute: 30°, 45°, 60°, 89°
+Right: 90°
+Obtuse: 100°, 120°, 150°';
+$string['app_ex_example_classify_secondary'] = '# Rocks
+Igneous: granite, basalt, pumice, obsidian
+Sedimentary: limestone, sandstone, conglomerate, coal
+Metamorphic: marble, slate, quartzite, gneiss
+? marble: it is limestone changed by pressure and heat
+
+# The five kingdoms
+Animals: jellyfish, sponge, earthworm, octopus
+Plants: fern, moss, pine, wheat
+Fungi: mushroom, yeast, bread mould
+Protists: amoeba, paramecium, green alga
+Monera: bacterium, cyanobacterium, lactobacillus
+? sponge: it is an animal, even if it lives fixed to the sea floor
+? yeast: it is a fungus with only one cell
+
+# Physical and chemical changes
+Physical: melting ice, breaking a glass, dissolving sugar in water, boiling water
+Chemical: burning paper, a nail rusting, cooking an egg, milk turning sour
+? dissolving sugar in water: the sugar is still sugar; when the water evaporates, it appears again
+
+# Countable or uncountable
+Countable: apple, chair, idea, coin
+Uncountable: water, information, advice, furniture
+
+# Numbers (the smallest set)
+Natural: 3, 17, 100
+Negative integers: −4, −12, −1
+Rational, not integers: 1/2, 0.75, −2.5
+Irrational: √2, π, √5
+? 0.75: it is 3/4, a fraction
+
+# Divisibility (for Venn)
+Multiples of 4: 4, 8, 12, 16, 20, 24
+Multiples of 6: 6, 12, 18, 24, 30
+? 12: it is a multiple of 4 and of 6, like every multiple of 12';
+$string['app_ex_example_errors_advanced'] = '# DNA
+DNA is a double helix whose bases pair like this: adenine with [cytosine|thymine] and guanine with [uracil|cytosine|uracil is only found in RNA]. Watson and Crick published its structure in [1963|1953].
+
+# pH
+At 25 °C, a neutral solution has a pH of [0|7], and a solution with a pH of 3 is [basic|acidic].
+
+# Novels
+Frankenstein was written by [Bram Stoker|Mary Shelley], and Dracula by [Mary Shelley|Bram Stoker].
+
+# Derivatives
+The derivative of sin x is [−cos x|cos x], and the derivative of eˣ is [x·eˣ⁻¹|eˣ|the exponential is its own derivative].
+
+# The Berlin Wall
+The Berlin Wall fell in [1991|1989], and Germany was reunified in [1989|1990].
+
+# Newton
+According to Newton\'s second law, force is equal to mass times [velocity|acceleration], and it is measured in [joules|newtons|the joule measures energy and work].';
+$string['app_ex_example_errors_primary'] = '# Columbus
+Columbus reached America in [1942|1492|in 1492, not in 1942] with three [boats|caravels/ships]: the Pinta, the Niña and the [Santa Lucía|Santa María].
+
+# Spelling
+Yesterday [their|there] was a dog in [are|our] garden, and it [eated|ate] my sandwich.
+
+# Shapes
+A triangle has [four|three] sides and its angles add up to [360|180|the angles of a triangle add up to 180 degrees] degrees.
+
+# Plants
+Plants make their food with [moonlight|sunlight] in a process called [respiration|photosynthesis].
+
+# Capitals
+Paris is the capital of [Italy|France], and the river that crosses it is the [Thames|Seine].';
+$string['app_ex_example_errors_secondary'] = '# The cell
+In the cell, the DNA is kept in the [ribosome|nucleus], energy is released in the [vacuoles|mitochondria] and, in plants, photosynthesis happens in the [lysosomes|chloroplasts].
+
+# Spelling
+[Its|It\'s] too late: the shop has closed [it\'s|its] doors, and [their|they\'re] not opening again [untill|until] Monday.
+
+# Pythagoras
+In [an equilateral|a right-angled] triangle, the square of the hypotenuse is equal to the [difference|sum] of the squares of the other two sides: if they are 3 and 4, the hypotenuse is [7|5|√(9 + 16) = 5].
+
+# The French Revolution
+The French Revolution began in [1798|1789] with the storming of the [Tower of London|Bastille], and it ended when [Louis XIV|Napoleon Bonaparte] took power.
+
+# Light and sound
+Light travels in a vacuum at about [300,000 km/h|300,000 km/s|300,000 kilometres per second, not per hour], but sound cannot travel through [air|a vacuum|sound needs a medium, such as air or water].
+
+# Rivers
+The longest river in the United Kingdom is the [Thames|Severn], and it flows into the [North Sea|Bristol Channel|the Thames flows into the North Sea].';
+$string['app_ex_example_order_advanced'] = '# Protein synthesis (eukaryotes)
+Transcription of DNA into messenger RNA
+Processing of the messenger RNA
+Export of the messenger RNA to the cytoplasm
+Translation in the ribosome
+Folding of the protein
+
+# Cellular respiration
+Glycolysis
+Oxidative decarboxylation of pyruvate
+Krebs cycle
+Electron transport chain and oxidative phosphorylation
+
+# Electromagnetic waves, from lower to higher frequency
+Radio waves
+Microwaves
+Infrared
+Visible light
+Ultraviolet
+X-rays
+Gamma rays
+
+# Art movements
+Renaissance
+Baroque
+Neoclassicism
+Romanticism
+Realism
+Impressionism
+Cubism
+
+# The First World War
+Assassination of Archduke Franz Ferdinand
+Austria-Hungary declares war on Serbia
+Germany invades Belgium
+The United States enters the war
+Armistice';
+$string['app_ex_example_order_primary'] = '# The water cycle
 Evaporation
 Condensation
 Precipitation
 Collection
-? Condensation: the water vapour cools down and turns into drops';
-$string['app_ex_example_whoami'] = '# A scientist
+? Condensation: the water vapour cools down and turns into drops
+
+# The phases of the Moon
+New moon
+First quarter
+Full moon
+Last quarter
+
+# From seed to plant
+Seed
+Germination
+Seedling
+Adult plant
+Flower
+Fruit
+
+# The planets from the Sun
+Mercury
+Venus
+Earth
+Mars
+Jupiter
+Saturn
+Uranus
+Neptune
+
+# The ages of history
+Prehistory
+Ancient history
+Middle Ages
+Early modern period
+Late modern period
+
+# Solving a problem
+Read the problem
+Write down the data
+Think which operation
+Calculate
+Check the result';
+$string['app_ex_example_order_secondary'] = '# Layers of the Earth, from the outside in
+Crust
+Mantle
+Outer core
+Inner core
+
+# Levels of organisation of living things
+Atom
+Molecule
+Cell
+Tissue
+Organ
+Organ system
+Organism
+
+# Mitosis
+Prophase
+Metaphase
+Anaphase
+Telophase
+? Metaphase: the chromosomes line up in the middle of the cell
+
+# The French Revolution (1789-1799)
+Storming of the Bastille
+Declaration of the Rights of Man and of the Citizen
+Proclamation of the Republic
+Execution of Louis XVI
+Napoleon\'s coup
+
+# Order of operations
+Brackets
+Powers and roots
+Multiplication and division
+Addition and subtraction';
+$string['app_ex_example_whoami_advanced'] = '# Biology
+= The ribosome / ribosome
+I have no membrane.
+I am made of RNA and proteins.
+I am free in the cytoplasm or attached to the rough endoplasmic reticulum.
+I translate messenger RNA into proteins.
+
+# Physics
+= Albert Einstein / Einstein
+I was born in Ulm in 1879.
+I worked at the patent office in Bern.
+I was awarded the Nobel Prize for explaining the photoelectric effect.
+I formulated the theory of relativity.
+
+# History
+= Napoleon Bonaparte / Napoleon / Bonaparte
+I was born in Corsica in 1769.
+I staged a coup in 1799.
+My troops occupied Spain and in 1808 the Peninsular War began.
+I crowned myself Emperor of the French and lost at Waterloo.
+
+# Philosophy
+= Plato
+I founded the Academy in Athens.
+Aristotle was my student.
+I was a disciple of Socrates.
+I wrote The Republic, with the allegory of the cave.
+
+# Economics
+= Adam Smith / Smith
+I was born in Scotland in 1723.
+I explained the division of labour with a pin factory.
+I wrote about the invisible hand of the market.
+I wrote The Wealth of Nations.
+
+# Literature
+= George Orwell / Orwell
+I fought in the Spanish Civil War.
+I wrote Homage to Catalonia.
+My real name was Eric Arthur Blair.
+I wrote Animal Farm and Nineteen Eighty-Four.';
+$string['app_ex_example_whoami_primary'] = '# Science
 = Marie Curie / Curie
 I was born in Warsaw in 1867.
 I won two Nobel prizes, in two different sciences.
 I discovered polonium and radium.
-I studied radioactivity with Pierre, my husband.';
+I studied radioactivity with Pierre, my husband.
+
+# Animals
+= The dolphin / dolphin
+I live in the sea, but I am not a fish.
+I breathe air and have to come up to the surface.
+I find my way with echoes.
+I am a very clever and playful mammal.
+
+# Geography
+= Everest / Mount Everest
+I am in Asia, between two countries.
+I am in the Himalayas.
+I am more than 8,800 metres high.
+I am the highest mountain in the world.
+
+# Art
+= Leonardo da Vinci / Leonardo
+I was born in Italy in 1452.
+I drew flying machines centuries before aeroplanes.
+I painted The Last Supper.
+I painted the Mona Lisa.
+
+# Literature
+= William Shakespeare / Shakespeare
+I was born in Stratford-upon-Avon.
+My plays were performed at the Globe theatre in London.
+I wrote Romeo and Juliet.
+I wrote Hamlet.';
+$string['app_ex_example_whoami_secondary'] = '# History
+= Charles V / Charles I / Charles
+I was born in Ghent in the year 1500.
+I retired to the monastery of Yuste.
+I was Holy Roman Emperor.
+I was the grandson of Ferdinand and Isabella, and King of Spain.
+
+# Science
+= Isaac Newton / Newton
+I was born in England in the 17th century.
+I was a professor at Cambridge and President of the Royal Society.
+I split white light with a prism.
+I formulated the law of universal gravitation and three laws of motion.
+
+# Chemistry
+= Oxygen / O
+My atomic number is 8.
+I am almost half of the mass of the Earth\'s crust.
+I am about 21% of the air.
+Without me there is no burning, and living things breathe me.
+
+# Geography
+= The Nile / Nile
+I flow into the Mediterranean Sea through a delta.
+One of my sources is in the African Great Lakes region.
+I flow through Sudan and Egypt.
+The pyramids of Giza were built near me.
+
+# Art
+= Vincent van Gogh / Van Gogh
+I was born in the Netherlands in 1853.
+I sold very few paintings in my lifetime.
+I lived and painted in Arles, in the south of France.
+I painted The Starry Night and Sunflowers.
+
+# Mathematics
+= Pythagoras
+I was born on the island of Samos.
+I founded a school in Croton, in the south of Italy.
+For my school, everything was number.
+A theorem about right-angled triangles bears my name.';
 $string['app_ex_exercise'] = 'Exercise';
 $string['app_ex_format'] = 'A line starting with # is the title, and one starting with ? explains an item: «? item: why».';
 $string['app_ex_help_classify'] = '«Group: item, item, item», one group per line (with ; instead of , if the items carry commas). An item in two groups goes in their intersection (Venn).';

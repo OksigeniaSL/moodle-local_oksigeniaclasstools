@@ -1953,3 +1953,7 @@ dialog.ct-sc-dialogo { width: min(40rem, 94vw); }
 .ct-freq-exp { position: absolute; right: 0; left: 0; height: 0; border-top: 3px dashed var(--rojo); }
 .ct-freq-k { color: var(--azul-osc); font-weight: 1000; }
 .ct-freq figcaption { margin-top: .4rem; color: var(--tinta-3); font-size: .9rem; font-weight: 700; text-align: center; }
+.ct-ex-ai { margin: .4rem 0 .8rem; padding: .6rem .8rem; border-radius: 14px; background: var(--fondo); }
+.ct-ex-ai summary { margin-bottom: .3rem; color: var(--azul); font-weight: 900; cursor: pointer; }
+.ct-ex-ai-fields { display: grid; grid-template-columns: 2fr 1fr .7fr; gap: .5rem; }
+.ct-ex-ai textarea { width: 100%; margin-top: .4rem; color: var(--tinta-3); font-size: .85rem; }

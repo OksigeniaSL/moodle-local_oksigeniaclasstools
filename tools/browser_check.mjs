@@ -487,6 +487,53 @@ const CHECKS = {
         await window.shot('order-game');
         return g.over && /order/i.test(document.querySelector('#ordenar-msg').textContent) ? '' : `not finished: «${document.querySelector('#ordenar-msg').textContent}»`;
     },
+    // My exercises: the prompt for the teacher's AI carries the game, the topic, the level, the format and an example.
+    'exercises-prompt': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        document.querySelector('#t-juegos').click();
+        await sleep(200);
+        document.querySelector('#ga-mode [data-game="quiensoy"]').click();
+        await sleep(200);
+        document.querySelector('#quiensoy-edit').click();
+        await sleep(200);
+        document.querySelector('#ex-ed-ai').open = true;
+        const topic = document.querySelector('#ex-ai-topic');
+        topic.value = 'Volcanoes';
+        topic.dispatchEvent(new Event('input'));
+        const level = document.querySelector('#ex-ai-level');
+        level.value = 'secondary';
+        level.dispatchEvent(new Event('change'));
+        const text = document.querySelector('#ex-ai-text').value;
+        const missing = ['Volcanoes', 'Secondary students', 'Write 5 exercises', '= ', '#'].filter((x) => !text.includes(x));
+        if (missing.length) { return `the prompt lacks ${missing.join(', ')}: «${text}»`; }
+        // Headless Chrome has no clipboard: a fake one, to see what the button copies.
+        let clip = '';
+        Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: (x) => { clip = x; return Promise.resolve(); } } });
+        document.querySelector('#ex-ai-copy').click();
+        await sleep(300);
+        if (clip !== text) { return 'the copy is not the prompt'; }
+        await window.shot('exercises-prompt');
+        const copied = document.querySelector('#ex-ai-copied').textContent;
+        document.querySelector('.ct-ex-editor').close();
+        if (!copied) { return 'no message after copying'; }
+        // The examples follow the level of the board.
+        const titles = () => [...document.querySelectorAll('#quiensoy-ex option')].map((o) => o.textContent).join(' ');
+        const setMode = async (m) => {
+            document.querySelector('#b-modo').click();
+            await sleep(200);
+            document.querySelector(`#menu-modo [data-modo="${m}"]`).click();
+            await sleep(300);
+        };
+        const before = titles();
+        try {
+            await setMode('advanced');
+            const after = titles();
+            if (after === before || !/Physics/.test(after)) { return `the examples did not change with the level: «${after}»`; }
+        } finally {
+            await setMode('primary');
+        }
+        return '';
+    },
     // Sort: every card into its box; then Venn with its zones; then the odd one out.
     'sort-game': async () => {
         const sleep = (ms) => new Promise((r) => setTimeout(r, ms));

@@ -277,6 +277,25 @@ $string['app_er_found'] = '{$a->n} de {$a->of} errores encontrados';
 $string['app_er_name'] = 'Caza de errores';
 $string['app_er_show'] = 'Ver los que faltan';
 $string['app_er_tap'] = 'Toca los errores';
+$string['app_ex_ai'] = 'Prompt para tu IA';
+$string['app_ex_ai_any'] = 'un tema que elijas tú';
+$string['app_ex_ai_copied'] = 'Copiado: pégalo en tu IA.';
+$string['app_ex_ai_copy'] = 'Copiar';
+$string['app_ex_ai_count'] = 'Cuántos';
+$string['app_ex_ai_for_advanced'] = 'alumnos de Bachillerato o etapas superiores (desde los 16 años)';
+$string['app_ex_ai_for_primary'] = 'alumnos de Primaria (de 6 a 12 años)';
+$string['app_ex_ai_for_secondary'] = 'alumnos de Secundaria (de 12 a 16 años)';
+$string['app_ex_ai_hint'] = 'Escribe el tema, copia el texto, pégalo en tu IA y pega lo que conteste en el cuadro de abajo.';
+$string['app_ex_ai_level'] = 'Etapa';
+$string['app_ex_ai_prompt'] = 'Escribe {$a->n} ejercicios del juego «{$a->game}» para {$a->level}, sobre «{$a->topic}».
+
+Formato (texto plano, sin nada más): {$a->rules} Separa un ejercicio de otro con una línea en blanco, y empieza cada uno con su título en una línea que comience por #.
+
+Ejemplo:
+{$a->example}
+
+Contesta solo con los ejercicios, en el idioma de este texto, sin explicaciones ni formato Markdown. Comprueba que todo lo que escribas sea correcto.';
+$string['app_ex_ai_topic'] = 'Tema';
 $string['app_ex_cancel'] = 'Cancelar';
 $string['app_ex_check'] = 'Comprobar';
 $string['app_ex_count'] = '{$a} ejercicios listos';
@@ -284,26 +303,376 @@ $string['app_ex_count_none'] = 'Aún ningún ejercicio: revisa el formato';
 $string['app_ex_count_one'] = '1 ejercicio listo';
 $string['app_ex_edit_title'] = '{$a}: mis ejercicios';
 $string['app_ex_example'] = 'Ejemplo: {$a}';
-$string['app_ex_example_classify'] = '# Vertebrados
+$string['app_ex_example_classify_advanced'] = '# Biomoléculas
+Glúcidos: glucosa, almidón, celulosa, glucógeno
+Lípidos: colesterol, triglicéridos, fosfolípidos, ceras
+Proteínas: hemoglobina, colágeno, insulina, queratina
+Ácidos nucleicos: ADN, ARN mensajero, ARN de transferencia, ARN ribosómico
+? colesterol: es un lípido, aunque no tenga ácidos grasos
+
+# Enlace químico
+Iónico: NaCl, KBr, CaO, MgCl₂
+Covalente: H₂O, CO₂, CH₄, NH₃
+Metálico: Fe, Cu, Al, Au
+
+# Funciones pares e impares
+Pares: x², cos x, |x|
+Impares: x³, sen x, 1/x
+Ni pares ni impares: eˣ, ln x, x + 1
+? |x|: f(−x) = f(x), como en x²
+
+# Oraciones compuestas
+Coordinadas: Estudia y trabaja; Quería ir, pero llovía; ¿Vienes o te quedas?
+Subordinadas sustantivas: Me dijo que vendría; Es necesario que estudies; No sé si vendrá
+Subordinadas de relativo: El libro que me prestaste es bueno; Esa es la casa donde nací; Los alumnos que aprobaron salieron antes
+Subordinadas adverbiales: Si llueve, no saldremos; Cuando llegues, avísame; Lo hizo para que aprendieras
+
+# Funciones (para Venn)
+Crecientes en todo ℝ: x³, eˣ, 2x + 1
+Impares: x³, sen x, 1/x
+? x³: es impar y crece siempre';
+$string['app_ex_example_classify_primary'] = '# Vertebrados
 Mamíferos: perro, ballena, murciélago, caballo
 Aves: pingüino, gallina, avestruz, águila
 Reptiles: tortuga, serpiente, lagarto
 ? murciélago: vuela, pero tiene pelo y sus crías toman leche
-? pingüino: no vuela, pero tiene plumas y pone huevos';
-$string['app_ex_example_errors'] = '# Colón
-Colón llegó a América en [1942|1492|en 1492, no en 1942] con tres [barcos|carabelas/naves]: la Pinta, la Niña y la [Santa Lucía|Santa María].';
-$string['app_ex_example_order'] = '# El ciclo del agua
+? pingüino: no vuela, pero tiene plumas y pone huevos
+
+# Clases de palabras
+Sustantivos: mesa, perro, alegría, ciudad
+Adjetivos: alto, verde, feliz, rápido
+Verbos: correr, pensar, escribir, saltar
+
+# Estados de la materia
+Sólido: hielo, piedra, madera
+Líquido: agua, aceite, leche
+Gas: vapor de agua, aire, oxígeno
+
+# Números (para Venn)
+Pares: 2, 4, 6, 8, 10, 12
+Múltiplos de 3: 3, 6, 9, 12, 15
+? 6: es par y múltiplo de 3
+
+# Ángulos
+Agudos: 30°, 45°, 60°, 89°
+Rectos: 90°
+Obtusos: 100°, 120°, 150°';
+$string['app_ex_example_classify_secondary'] = '# Rocas
+Ígneas: granito, basalto, piedra pómez, obsidiana
+Sedimentarias: caliza, arenisca, conglomerado, carbón
+Metamórficas: mármol, pizarra, cuarcita, gneis
+? mármol: es caliza transformada por la presión y el calor
+
+# Los cinco reinos
+Animales: medusa, esponja, lombriz, pulpo
+Plantas: helecho, musgo, pino, trigo
+Hongos: champiñón, levadura, moho del pan
+Protoctistas: ameba, paramecio, alga verde
+Moneras: bacteria, cianobacteria, lactobacilo
+? esponja: es un animal, aunque viva fija en el fondo
+? levadura: es un hongo de una sola célula
+
+# Cambios físicos y químicos
+Físicos: fundir hielo, romper un vaso, disolver azúcar en agua, evaporar agua
+Químicos: quemar papel, oxidarse un clavo, cocinar un huevo, agriarse la leche
+? disolver azúcar en agua: el azúcar sigue siendo azúcar; si se evapora el agua, vuelve a aparecer
+
+# Palabras según su sílaba tónica
+Agudas: canción, reloj, café, papel
+Llanas: árbol, mesa, lápiz, cárcel
+Esdrújulas: música, pájaro, teléfono, último
+Sobresdrújulas: dígamelo, cuéntaselo, explícaselo
+
+# Números (el conjunto más pequeño)
+Naturales: 3; 17; 100
+Enteros negativos: −4; −12; −1
+Racionales no enteros: 1/2; 0,75; −2,5
+Irracionales: √2; π; √5
+? 0,75: es 3/4, una fracción
+
+# Divisibilidad (para Venn)
+Múltiplos de 4: 4, 8, 12, 16, 20, 24
+Múltiplos de 6: 6, 12, 18, 24, 30
+? 12: es múltiplo de 4 y de 6, como todos los múltiplos de 12';
+$string['app_ex_example_errors_advanced'] = '# El ADN
+El ADN es una doble hélice cuyas bases se emparejan así: la adenina con la [citosina|timina] y la guanina con [el uracilo|la citosina|el uracilo solo aparece en el ARN]. Watson y Crick publicaron su estructura en [1963|1953].
+
+# El pH
+A 25 °C, una disolución neutra tiene un pH de [0|7], y una disolución con pH 3 es [básica|ácida].
+
+# Literatura española
+[La Celestina|El Lazarillo de Tormes] es la primera novela picaresca, y Garcilaso de la Vega escribió en el [Barroco|Renacimiento].
+
+# Derivadas
+La derivada de sen x es [−cos x|cos x], y la derivada de eˣ es [x·eˣ⁻¹|eˣ|la exponencial es su propia derivada].
+
+# La Constitución
+La Constitución española vigente es de [1987|1978], y se aprobó en referéndum el 6 de [noviembre|diciembre].
+
+# Newton
+Según la segunda ley de Newton, la fuerza es igual a la masa por la [velocidad|aceleración], y se mide en [julios|newtons|el julio mide la energía y el trabajo].';
+$string['app_ex_example_errors_primary'] = '# Colón
+Colón llegó a América en [1942|1492|en 1492, no en 1942] con tres [barcos|carabelas/naves]: la Pinta, la Niña y la [Santa Lucía|Santa María].
+
+# Ortografía
+Ayer [hiba|iba] al colegio cuando [bi|vi] un pájaro [echo|hecho|«hecho», con h, es del verbo hacer] de papel.
+
+# Figuras
+Un triángulo tiene [cuatro|tres] lados y sus ángulos suman [360|180|los ángulos de un triángulo suman 180 grados] grados.
+
+# Las plantas
+Las plantas fabrican su alimento con la luz de la [luna|sol] en un proceso llamado [respiración|fotosíntesis].
+
+# Capitales
+Madrid es la capital de [Portugal|España] y está en el centro de la [isla|península] ibérica.';
+$string['app_ex_example_errors_secondary'] = '# La célula
+En la célula, el ADN se guarda en el [ribosoma|núcleo], la energía se obtiene en las [vacuolas|mitocondrias] y, en las plantas, la fotosíntesis se hace en los [lisosomas|cloroplastos].
+
+# Ortografía
+Me [haz|has] dicho que no [valla|vaya|«vaya» es del verbo ir; «valla» es una cerca] a la fiesta, pero [haber|a ver] quién me lo impide.
+
+# Pitágoras
+En un triángulo [equilátero|rectángulo], la hipotenusa al cuadrado es igual a la [resta|suma] de los catetos al cuadrado: si los catetos miden 3 y 4, la hipotenusa mide [7|5|√(9 + 16) = 5].
+
+# La Revolución francesa
+La Revolución francesa empezó en [1798|1789] con la toma de la [Moncloa|Bastilla], y terminó con la llegada al poder de [Luis XIV|Napoleón Bonaparte].
+
+# Luz y sonido
+La luz viaja en el vacío a unos [300 000 km/h|300 000 km/s|300 000 kilómetros por segundo, no por hora], y el sonido, en cambio, no puede viajar por el [aire|vacío|el sonido necesita un medio, como el aire o el agua].
+
+# Ríos
+El río más largo de la península ibérica es el [Ebro|Tajo], que desemboca en el océano Atlántico en [Oporto|Lisboa|en Oporto desemboca el Duero].';
+$string['app_ex_example_order_advanced'] = '# La síntesis de proteínas (eucariotas)
+Transcripción del ADN a ARN mensajero
+Maduración del ARN mensajero
+Salida del ARN mensajero al citoplasma
+Traducción en el ribosoma
+Plegamiento de la proteína
+
+# La respiración celular
+Glucólisis
+Descarboxilación oxidativa del piruvato
+Ciclo de Krebs
+Cadena respiratoria y fosforilación oxidativa
+
+# Ondas electromagnéticas, de menor a mayor frecuencia
+Ondas de radio
+Microondas
+Infrarrojo
+Luz visible
+Ultravioleta
+Rayos X
+Rayos gamma
+
+# Movimientos artísticos
+Renacimiento
+Barroco
+Neoclasicismo
+Romanticismo
+Realismo
+Impresionismo
+Cubismo
+
+# La Segunda República y la Guerra Civil
+Proclamación de la Segunda República
+Bienio reformista
+Bienio radical-cedista
+Victoria del Frente Popular
+Golpe de Estado y comienzo de la Guerra Civil';
+$string['app_ex_example_order_primary'] = '# El ciclo del agua
 Evaporación
 Condensación
 Precipitación
 Acumulación
-? Condensación: el vapor de agua se enfría y forma gotas';
-$string['app_ex_example_whoami'] = '# Una científica
+? Condensación: el vapor de agua se enfría y forma gotas
+
+# Las fases de la Luna
+Luna nueva
+Cuarto creciente
+Luna llena
+Cuarto menguante
+
+# De la semilla a la planta
+Semilla
+Germinación
+Plántula
+Planta adulta
+Flor
+Fruto
+
+# Los planetas desde el Sol
+Mercurio
+Venus
+Tierra
+Marte
+Júpiter
+Saturno
+Urano
+Neptuno
+
+# Las edades de la Historia
+Prehistoria
+Edad Antigua
+Edad Media
+Edad Moderna
+Edad Contemporánea
+
+# Resolver un problema
+Leer el enunciado
+Anotar los datos
+Pensar qué operación hacer
+Calcular
+Comprobar el resultado';
+$string['app_ex_example_order_secondary'] = '# Capas de la Tierra, de fuera hacia dentro
+Corteza
+Manto
+Núcleo externo
+Núcleo interno
+
+# Niveles de organización de los seres vivos
+Átomo
+Molécula
+Célula
+Tejido
+Órgano
+Aparato o sistema
+Organismo
+
+# La mitosis
+Profase
+Metafase
+Anafase
+Telofase
+? Metafase: los cromosomas se colocan en el centro de la célula
+
+# La Revolución francesa (1789-1799)
+Toma de la Bastilla
+Declaración de los Derechos del Hombre y del Ciudadano
+Proclamación de la República
+Ejecución de Luis XVI
+Golpe de Estado de Napoleón
+
+# Prioridad de las operaciones
+Paréntesis
+Potencias y raíces
+Multiplicaciones y divisiones
+Sumas y restas';
+$string['app_ex_example_whoami_advanced'] = '# Biología
+= El ribosoma / ribosoma
+No tengo membrana.
+Estoy formado por ARN y proteínas.
+Estoy libre en el citoplasma o pegado al retículo endoplasmático rugoso.
+Traduzco el ARN mensajero en proteínas.
+
+# Física
+= Albert Einstein / Einstein
+Nací en Ulm en 1879.
+Trabajé en la oficina de patentes de Berna.
+Me dieron el premio Nobel por explicar el efecto fotoeléctrico.
+Formulé la teoría de la relatividad.
+
+# Historia
+= Napoleón Bonaparte / Napoleón / Bonaparte
+Nací en Córcega en 1769.
+Di un golpe de Estado en 1799.
+Mis tropas ocuparon España y en 1808 empezó la guerra de la Independencia.
+Me coroné emperador de los franceses y perdí en Waterloo.
+
+# Filosofía
+= Platón
+Fundé la Academia en Atenas.
+Aristóteles fue mi alumno.
+Fui discípulo de Sócrates.
+Escribí La República, con el mito de la caverna.
+
+# Economía
+= Adam Smith / Smith
+Nací en Escocia en 1723.
+Expliqué la división del trabajo con una fábrica de alfileres.
+Hablé de la mano invisible del mercado.
+Escribí La riqueza de las naciones.
+
+# Literatura
+= Federico García Lorca / García Lorca / Lorca
+Nací en Fuente Vaqueros, en Granada, en 1898.
+Dirigí la compañía de teatro La Barraca.
+Formé parte de la Generación del 27.
+Escribí Romancero gitano y La casa de Bernarda Alba.';
+$string['app_ex_example_whoami_primary'] = '# Ciencia
 = Marie Curie / Curie
 Nací en Varsovia en 1867.
 Gané dos premios Nobel, en dos ciencias distintas.
 Descubrí el polonio y el radio.
-Estudié la radiactividad con Pierre, mi marido.';
+Estudié la radiactividad con Pierre, mi marido.
+
+# Animales
+= El delfín / delfín
+Vivo en el mar, pero no soy un pez.
+Respiro aire y tengo que subir a la superficie.
+Me oriento con ecos.
+Soy un mamífero muy listo y juguetón.
+
+# Geografía
+= El Everest / Everest
+Estoy en Asia, entre dos países.
+Estoy en el Himalaya.
+Mido más de 8800 metros.
+Soy la montaña más alta del mundo.
+
+# Arte
+= Leonardo da Vinci / Leonardo
+Nací en Italia en 1452.
+Dibujé máquinas voladoras siglos antes que los aviones.
+Pinté La última cena.
+Pinté la Gioconda.
+
+# Literatura
+= Miguel de Cervantes / Cervantes
+Fui soldado y en una batalla perdí el movimiento de una mano.
+Estuve cinco años cautivo en Argel.
+Escribí novelas, teatro y poesía en el Siglo de Oro.
+Escribí Don Quijote de la Mancha.';
+$string['app_ex_example_whoami_secondary'] = '# Historia
+= Carlos I / Carlos V / Carlos
+Nací en Gante en el año 1500.
+Me retiré al monasterio de Yuste.
+Fui emperador del Sacro Imperio Romano Germánico.
+Fui nieto de los Reyes Católicos y rey de España.
+
+# Ciencia
+= Isaac Newton / Newton
+Nací en Inglaterra en el siglo XVII.
+Fui profesor en Cambridge y presidente de la Royal Society.
+Descompuse la luz blanca con un prisma.
+Formulé la ley de la gravitación universal y tres leyes del movimiento.
+
+# Química
+= El oxígeno / oxígeno / O
+Mi número atómico es 8.
+Soy casi la mitad de la masa de la corteza terrestre.
+Soy cerca del 21 % del aire.
+Sin mí no hay combustión, y los seres vivos me respiran.
+
+# Geografía
+= El Nilo / Nilo
+Desemboco en el mar Mediterráneo formando un delta.
+Una de mis fuentes está en la región de los Grandes Lagos de África.
+Paso por Sudán y por Egipto.
+Cerca de mí se construyeron las pirámides de Guiza.
+
+# Arte
+= Diego Velázquez / Velázquez
+Nací en Sevilla en 1599.
+Fui pintor de la corte de Felipe IV.
+Pinté La rendición de Breda.
+Pinté Las Meninas.
+
+# Matemáticas
+= Pitágoras
+Nací en la isla de Samos.
+Fundé una escuela en Crotona, en el sur de Italia.
+Para mi escuela, todo era número.
+Un teorema sobre triángulos rectángulos lleva mi nombre.';
 $string['app_ex_exercise'] = 'Ejercicio';
 $string['app_ex_format'] = 'Una línea que empieza por # es el título, y una que empieza por ? explica un elemento: «? elemento: porqué».';
 $string['app_ex_help_classify'] = '«Grupo: elemento, elemento, elemento», un grupo por línea (con ; en lugar de , si los elementos llevan comas). Un elemento en dos grupos va en su intersección (Venn).';

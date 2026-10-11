@@ -19,14 +19,23 @@
     if (kept && typeof kept === 'object' && (!store || (kept.updated || 0) > (store.updated || 0))) { store = kept; }
     if (!store || typeof store !== 'object') { store = {}; }
     const persist = () => { store.updated = Date.now(); save(storeKey, store); if (core.keep) { core.keep('ejercicios', store); } };
-    // The example of the game (in the language of the board) first, then the teacher's.
-    const exercisesOf = (type, mode) => X.parse(t('ex_example_' + type), type, mode).map((e) => Object.assign(e, { example: true }))
+    // The examples of the game for the level of the board (in its language) first, then the teacher's. These games
+    // start in Primary: Early years gets Primary's.
+    const exampleText = (type, level) => {
+        const l = level || (core.mode ? core.mode() : 'primary');
+        return t(`ex_example_${type}_${['secondary', 'advanced'].includes(l) ? l : 'primary'}`);
+    };
+    const exercisesOf = (type, mode) => X.parse(exampleText(type), type, mode).map((e) => Object.assign(e, { example: true }))
         .concat(X.parse(store[type] || '', type, mode));
     const labelOf = (e, i) => {
         const name = e.title || t('ex_untitled', i + 1);
         return e.example ? t('ex_example', name) : name;
     };
     const why = (e, item) => (e.why && e.why[item]) || '';
+    // Boxes on the board for Sort: more do not fit with the cards.
+    const MAX_GROUPS = 6;
+    // The levels of these games, for the prompt of the teacher's AI.
+    const AI_LEVELS = ['primary', 'secondary', 'advanced'];
 
     // «My exercises»: one dialog for the four games, with the format of the game on screen.
     const dialog = document.createElement('dialog');
@@ -35,6 +44,17 @@
     dialog.innerHTML = `<form method="dialog">
         <h2 id="ex-ed-title"></h2>
         <p class="nota" id="ex-ed-help"></p>
+        <details class="ct-ex-ai" id="ex-ed-ai"><summary>${escape(t('ex_ai'))}</summary>
+            <p class="nota">${escape(t('ex_ai_hint'))}</p>
+            <div class="ct-ex-ai-fields">
+                <label class="campo apilado"><span>${escape(t('ex_ai_topic'))}</span><input type="text" id="ex-ai-topic" maxlength="120"></label>
+                <label class="campo apilado"><span>${escape(t('ex_ai_level'))}</span><select id="ex-ai-level">${AI_LEVELS.map((m) => `<option value="${m}">${escape(t('mode_' + m))}</option>`).join('')}</select></label>
+                <label class="campo apilado"><span>${escape(t('ex_ai_count'))}</span><select id="ex-ai-n">${[3, 5, 8, 10].map((n) => `<option value="${n}"${n === 5 ? ' selected' : ''}>${n}</option>`).join('')}</select></label>
+            </div>
+            <textarea id="ex-ai-text" rows="7" readonly></textarea>
+            <div class="botonera"><button type="button" class="boton suave" id="ex-ai-copy"><span data-icono="duplicar"></span><span>${escape(t('ex_ai_copy'))}</span></button>
+                <span class="nota" id="ex-ai-copied" aria-live="polite"></span></div>
+        </details>
         <label class="campo apilado"><span>${escape(t('ex_text'))}</span><textarea id="ex-ed-text" rows="12" spellcheck="true"></textarea></label>
         <p class="nota" id="ex-ed-count" aria-live="polite"></p>
         <div class="botonera"><button type="submit" class="boton" value="save"><span data-icono="guardar"></span>${escape(t('ex_save'))}</button>
@@ -48,6 +68,26 @@
         $('#ex-ed-count').textContent = n === 0 ? t('ex_count_none') : (n === 1 ? t('ex_count_one') : t('ex_count', n));
     };
     $('#ex-ed-text').addEventListener('input', countText);
+    // The prompt for the teacher's AI: the game, the topic, the level, the rules of the format and the first example;
+    // what the AI answers is pasted in the box of the exercises.
+    const prompt = () => {
+        const type = editing.type, example = X.parse(exampleText(type, $('#ex-ai-level').value), type)[0];
+        return t('ex_ai_prompt', {
+            n: $('#ex-ai-n').value, game: editing.name, topic: $('#ex-ai-topic').value.trim() || t('ex_ai_any'),
+            level: t('ex_ai_for_' + $('#ex-ai-level').value), rules: `${t('ex_help_' + type)} ${t('ex_format')}`,
+            example: example ? X.toText(example) : '',
+        });
+    };
+    const fillPrompt = () => { $('#ex-ai-text').value = prompt(); $('#ex-ai-copied').textContent = ''; };
+    ['#ex-ai-topic', '#ex-ai-level', '#ex-ai-n'].forEach((sel) => $(sel).addEventListener('input', fillPrompt));
+    $('#ex-ai-level').addEventListener('change', fillPrompt);
+    $('#ex-ai-n').addEventListener('change', fillPrompt);
+    $('#ex-ai-copy').addEventListener('click', () => {
+        const area = $('#ex-ai-text'), ok = () => { $('#ex-ai-copied').textContent = t('ex_ai_copied'); };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(area.value).then(ok, () => { area.select(); document.execCommand('copy'); ok(); });
+        } else { area.select(); document.execCommand('copy'); ok(); }
+    });
     dialog.querySelector('[data-a="cancel"]').addEventListener('click', () => dialog.close());
     dialog.addEventListener('close', () => {
         if (dialog.returnValue === 'save' && editing) {
@@ -58,10 +98,12 @@
         dialog.returnValue = '';
     });
     const edit = (type, name, done) => {
-        editing = { type, done };
+        editing = { type, done, name };
         $('#ex-ed-title').textContent = t('ex_edit_title', name);
         $('#ex-ed-help').textContent = `${t('ex_help_' + type)} ${t('ex_format')}`;
-        $('#ex-ed-text').value = store[type] || t('ex_example_' + type);
+        $('#ex-ed-text').value = store[type] || exampleText(type);
+        $('#ex-ai-level').value = AI_LEVELS.includes(core.mode ? core.mode() : '') ? core.mode() : 'primary';
+        fillPrompt();
         countText();
         dialog.showModal();
     };
@@ -128,6 +170,7 @@
                 $(`#${p}-start`).addEventListener('click', start);
                 $(`#${p}-edit`).addEventListener('click', () => edit(def.type, t(def.name), fill));
                 $(`#${p}-ex`).addEventListener('change', () => save(p + '-ejercicio', $(`#${p}-ex`).value));
+                document.addEventListener('classtools:mode', fill);
                 if (def.modes) {
                     const saved = load(p + '-modo', def.modes[0]);
                     $$(`#${p}-mode button`).forEach((b) => b.setAttribute('aria-checked', String(b.dataset.v === saved)));
@@ -261,7 +304,7 @@
                 so.items = so.round.items;
                 sort.api.msg(t('so_odd_ask'));
             } else {
-                const groups = mode === 'venn' ? ex.groups.slice(0, 2) : ex.groups.slice(0, 4);
+                const groups = mode === 'venn' ? ex.groups.slice(0, 2) : ex.groups.slice(0, MAX_GROUPS);
                 so.items = shuffle([...new Set(groups.flatMap((g) => g.items))]);
                 sort.api.msg(t('so_pick'));
             }
@@ -277,7 +320,7 @@
             const a = g[0].items.includes(item), b = g[1].items.includes(item);
             return [a && b ? 'ab' : (a ? 'a' : 'b')];
         }
-        return g.slice(0, 4).map((x, i) => (x.items.includes(item) ? String(i) : null)).filter((x) => x !== null);
+        return g.slice(0, MAX_GROUPS).map((x, i) => (x.items.includes(item) ? String(i) : null)).filter((x) => x !== null);
     };
     function paintSort() {
         const card = (item) => `<button type="button" class="ct-ex-card${so.sel === item ? ' ct-sel' : ''}${so.fixed[item] ? ' ct-right' : ''}" data-item="${escape(item)}">${escape(item)}</button>`;
@@ -292,7 +335,7 @@
                 + `<div class="ct-venn-zone ct-venn-b" data-zone="b"><p class="ante">${escape(b.name)}</p>${inZone('b')}</div></div>`;
             $('#clasificar-pool').innerHTML = so.items.filter((x) => !so.place[x]).map(card).join('');
         } else {
-            $('#clasificar-boxes').innerHTML = so.ex.groups.slice(0, 4).map((g, i) => `<div class="ct-so-box" data-zone="${i}"><p class="ante">${escape(g.name)}</p>${inZone(String(i))}</div>`).join('');
+            $('#clasificar-boxes').innerHTML = so.ex.groups.slice(0, MAX_GROUPS).map((g, i) => `<div class="ct-so-box" data-zone="${i}"><p class="ante">${escape(g.name)}</p>${inZone(String(i))}</div>`).join('');
             $('#clasificar-pool').innerHTML = so.items.filter((x) => !so.place[x]).map(card).join('');
         }
         $('#clasificar-boxes').classList.toggle('ct-picking', !!so.sel);
