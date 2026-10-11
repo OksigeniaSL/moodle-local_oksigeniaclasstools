@@ -494,5 +494,221 @@
  "ah_builtin_advanced": {
   "en": "At random: upper secondary and university words",
   "es": "Al azar: palabras de Bachillerato y universidad"
+ },
+ "ex_exercise": {
+  "en": "Exercise",
+  "es": "Ejercicio"
+ },
+ "ex_mine": {
+  "en": "My exercises",
+  "es": "Mis ejercicios"
+ },
+ "ex_example": {
+  "en": "Example: {$a}",
+  "es": "Ejemplo: {$a}"
+ },
+ "ex_untitled": {
+  "en": "Exercise {$a}",
+  "es": "Ejercicio {$a}"
+ },
+ "ex_check": {
+  "en": "Check",
+  "es": "Comprobar"
+ },
+ "ex_why": {
+  "en": "Why",
+  "es": "Por qué"
+ },
+ "ex_edit_title": {
+  "en": "{$a}: my exercises",
+  "es": "{$a}: mis ejercicios"
+ },
+ "ex_text": {
+  "en": "Your exercises, a blank line between them",
+  "es": "Tus ejercicios, con una línea en blanco entre uno y otro"
+ },
+ "ex_count": {
+  "en": "{$a} exercises ready",
+  "es": "{$a} ejercicios listos"
+ },
+ "ex_count_one": {
+  "en": "1 exercise ready",
+  "es": "1 ejercicio listo"
+ },
+ "ex_count_none": {
+  "en": "No exercise yet: check the format",
+  "es": "Aún ningún ejercicio: revisa el formato"
+ },
+ "ex_save": {
+  "en": "Save",
+  "es": "Guardar"
+ },
+ "ex_cancel": {
+  "en": "Cancel",
+  "es": "Cancelar"
+ },
+ "ex_format": {
+  "en": "A line starting with # is the title, and one starting with ? explains an item: «? item: why».",
+  "es": "Una línea que empieza por # es el título, y una que empieza por ? explica un elemento: «? elemento: porqué»."
+ },
+ "ex_help_order": {
+  "en": "The items in their right order, one per line.",
+  "es": "Los elementos en su orden correcto, uno por línea."
+ },
+ "ex_help_classify": {
+  "en": "«Group: item, item, item», one group per line (with ; instead of , if the items carry commas). An item in two groups goes in their intersection (Venn).",
+  "es": "«Grupo: elemento, elemento, elemento», un grupo por línea (con ; en lugar de , si los elementos llevan comas). Un elemento en dos grupos va en su intersección (Venn)."
+ },
+ "ex_help_errors": {
+  "en": "The text, with each mistake as [what it says|right], several right answers with /, and the why as a third part: [1942|1492|not in 1942].",
+  "es": "El texto, con cada error así: [lo que pone|lo correcto], varias correcciones con /, y el porqué como tercera parte: [1942|1492|no en 1942]."
+ },
+ "ex_help_whoami": {
+  "en": "«= answer» on the first line (other accepted answers after /), then the clues, from the hardest to the easiest.",
+  "es": "«= respuesta» en la primera línea (otras respuestas válidas tras /) y debajo las pistas, de la más difícil a la más fácil."
+ },
+ "ex_example_order": {
+  "en": "# The water cycle\nEvaporation\nCondensation\nPrecipitation\nCollection\n? Condensation: the water vapour cools down and turns into drops",
+  "es": "# El ciclo del agua\nEvaporación\nCondensación\nPrecipitación\nAcumulación\n? Condensación: el vapor de agua se enfría y forma gotas"
+ },
+ "ex_example_classify": {
+  "en": "# Vertebrates\nMammals: dog, whale, bat, horse\nBirds: penguin, hen, ostrich, eagle\nReptiles: turtle, snake, lizard\n? bat: it flies, but it has fur and its young drink milk\n? penguin: it does not fly, but it has feathers and lays eggs",
+  "es": "# Vertebrados\nMamíferos: perro, ballena, murciélago, caballo\nAves: pingüino, gallina, avestruz, águila\nReptiles: tortuga, serpiente, lagarto\n? murciélago: vuela, pero tiene pelo y sus crías toman leche\n? pingüino: no vuela, pero tiene plumas y pone huevos"
+ },
+ "ex_example_errors": {
+  "en": "# Columbus\nColumbus reached America in [1942|1492|in 1492, not in 1942] with three [boats|caravels/ships]: the Pinta, the Niña and the [Santa Lucía|Santa María].",
+  "es": "# Colón\nColón llegó a América en [1942|1492|en 1492, no en 1942] con tres [barcos|carabelas/naves]: la Pinta, la Niña y la [Santa Lucía|Santa María]."
+ },
+ "ex_example_whoami": {
+  "en": "# A scientist\n= Marie Curie / Curie\nI was born in Warsaw in 1867.\nI won two Nobel prizes, in two different sciences.\nI discovered polonium and radium.\nI studied radioactivity with Pierre, my husband.",
+  "es": "# Una científica\n= Marie Curie / Curie\nNací en Varsovia en 1867.\nGané dos premios Nobel, en dos ciencias distintas.\nDescubrí el polonio y el radio.\nEstudié la radiactividad con Pierre, mi marido."
+ },
+ "ord_name": {
+  "en": "Order",
+  "es": "Ordenar"
+ },
+ "ord_place": {
+  "en": "Tap the cards in their order",
+  "es": "Toca las tarjetas en su orden"
+ },
+ "ord_right": {
+  "en": "{$a->n} of {$a->of} in their place",
+  "es": "{$a->n} de {$a->of} en su sitio"
+ },
+ "ord_done": {
+  "en": "All in order!",
+  "es": "¡Todo en orden!"
+ },
+ "so_name": {
+  "en": "Sort",
+  "es": "Clasificar"
+ },
+ "so_mode": {
+  "en": "Play",
+  "es": "Jugar a"
+ },
+ "so_sort": {
+  "en": "Sort",
+  "es": "Clasificar"
+ },
+ "so_odd": {
+  "en": "Odd one out",
+  "es": "El intruso"
+ },
+ "so_venn": {
+  "en": "Venn",
+  "es": "Venn"
+ },
+ "so_pick": {
+  "en": "Tap a card and then its box",
+  "es": "Toca una tarjeta y luego su caja"
+ },
+ "so_both": {
+  "en": "In both",
+  "es": "En los dos"
+ },
+ "so_right": {
+  "en": "{$a->n} of {$a->of} in their place",
+  "es": "{$a->n} de {$a->of} en su sitio"
+ },
+ "so_done": {
+  "en": "All sorted!",
+  "es": "¡Todo clasificado!"
+ },
+ "so_odd_ask": {
+  "en": "Which is the odd one out?",
+  "es": "¿Cuál es el intruso?"
+ },
+ "so_odd_right": {
+  "en": "«{$a->odd}» is from «{$a->oddgroup}»; the others are from «{$a->group}».",
+  "es": "«{$a->odd}» es de «{$a->oddgroup}»; los demás son de «{$a->group}»."
+ },
+ "so_another": {
+  "en": "Another round",
+  "es": "Otra ronda"
+ },
+ "so_need_groups": {
+  "en": "This exercise needs two groups, one of them with three items or more.",
+  "es": "Este ejercicio necesita dos grupos, uno de ellos con tres elementos o más."
+ },
+ "er_name": {
+  "en": "Spot the mistakes",
+  "es": "Caza de errores"
+ },
+ "er_tap": {
+  "en": "Tap the mistakes",
+  "es": "Toca los errores"
+ },
+ "er_found": {
+  "en": "{$a->n} of {$a->of} mistakes found",
+  "es": "{$a->n} de {$a->of} errores encontrados"
+ },
+ "er_again": {
+  "en": "Tap it again to see the correction",
+  "es": "Vuelve a tocarlo para ver la corrección"
+ },
+ "er_show": {
+  "en": "Show the rest",
+  "es": "Ver los que faltan"
+ },
+ "er_done": {
+  "en": "All mistakes found!",
+  "es": "¡Todos los errores encontrados!"
+ },
+ "wa_name": {
+  "en": "Who am I?",
+  "es": "¿Quién soy?"
+ },
+ "wa_clue": {
+  "en": "Another clue",
+  "es": "Otra pista"
+ },
+ "wa_no_more": {
+  "en": "No more clues",
+  "es": "No hay más pistas"
+ },
+ "wa_right": {
+  "en": "Got it!",
+  "es": "¡Acertado!"
+ },
+ "wa_show": {
+  "en": "Show the answer",
+  "es": "Ver la respuesta"
+ },
+ "wa_worth": {
+  "en": "Worth {$a} points",
+  "es": "Vale {$a} puntos"
+ },
+ "wa_points": {
+  "en": "{$a} points!",
+  "es": "¡{$a} puntos!"
+ },
+ "wa_was": {
+  "en": "It was {$a}",
+  "es": "Era {$a}"
+ },
+ "wa_next": {
+  "en": "Another one",
+  "es": "Otro"
  }
 }

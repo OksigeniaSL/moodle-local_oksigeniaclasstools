@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.26.0 (2026-10-11)
+
+- **Four new games**, played with taps on the board, each with an example and the teacher's own exercises («My
+  exercises»), kept in the browser and, inside Moodle, in the course:
+  - **Order**: cards tapped into their order; «Check» keeps the right ones and sends the others back.
+  - **Sort**: a card and then its box; also as **Odd one out** (three of a group and one of another) and **Venn**
+    (one group, the other, or both).
+  - **Spot the mistakes**: a text where any word can be tapped; a mistake tapped once is marked, and again shows its
+    correction.
+  - **Who am I?**: clues one by one, the hardest first; the answer is worth less with each clue.
+  A wrong answer brings its «why», when the exercise has one. The exercises are plain text in a format shared with
+  Oksigenia Tesapé (docs/exercise-format.md), so that one written for a game works in the other.
+- New games appear on sites that had already chosen which games to show.
+
 ## 0.25.0 (2026-10-11)
 
 - **Teacher's guide**: a button in the top bar opens a sheet with the guide of what is on screen: what it is for,

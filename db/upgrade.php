@@ -104,5 +104,10 @@ function xmldb_local_oksigeniaclasstools_upgrade($oldversion) {
         local_oksigeniaclasstools_show_new('materials', ['calc', 'score']);
         upgrade_plugin_savepoint(true, 2026102300, 'local', 'oksigeniaclasstools');
     }
+    if ($oldversion < 2026110500) {
+        // Four games on the shared exercise format: shown on sites that already chose their games.
+        local_oksigeniaclasstools_show_new('games', ['ordenar', 'clasificar', 'errores', 'quiensoy']);
+        upgrade_plugin_savepoint(true, 2026110500, 'local', 'oksigeniaclasstools');
+    }
     return true;
 }

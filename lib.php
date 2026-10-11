@@ -39,7 +39,8 @@ const LOCAL_OKSIGENIACLASSTOOLS_TOOLS = [
 /** The games, with the string of their name. */
 const LOCAL_OKSIGENIACLASSTOOLS_GAMES = [
     'rosco' => 'app_ro_name', 'simon' => 'app_si_name', 'ahorcado' => 'app_ah_name', 'palabra' => 'app_wo_name',
-    'parejas' => 'app_me_pairs', 'codigo' => 'app_lock_name',
+    'parejas' => 'app_me_pairs', 'codigo' => 'app_lock_name', 'ordenar' => 'app_ord_name', 'clasificar' => 'app_so_name',
+    'errores' => 'app_er_name', 'quiensoy' => 'app_wa_name',
 ];
 
 /** The materials, with the string of their name. */

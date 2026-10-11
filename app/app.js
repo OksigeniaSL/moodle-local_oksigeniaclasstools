@@ -1929,6 +1929,8 @@
         rosco: ['primary', 'secondary', 'advanced'], simon: ['early', 'primary', 'secondary'],
         ahorcado: ['early', 'primary', 'secondary', 'advanced'], palabra: ['primary', 'secondary', 'advanced'],
         parejas: ['early', 'primary', 'secondary', 'advanced'], codigo: ['primary', 'secondary', 'advanced'],
+        ordenar: ['primary', 'secondary', 'advanced'], clasificar: ['primary', 'secondary', 'advanced'],
+        errores: ['primary', 'secondary', 'advanced'], quiensoy: ['primary', 'secondary', 'advanced'],
         // Materials.
         rods: ['early', 'primary'], tangram: ['early', 'primary', 'secondary'], line: ['primary', 'secondary', 'advanced'],
         fractions: ['primary', 'secondary'], geoboard: ['early', 'primary', 'secondary'], base10: ['primary'],

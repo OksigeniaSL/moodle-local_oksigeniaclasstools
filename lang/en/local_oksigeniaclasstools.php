@@ -260,6 +260,50 @@ $string['app_ed_paste_placeholder'] = 'Paste your class list here
 (you can copy it from a spreadsheet)';
 $string['app_ed_saved'] = 'List “{$a->name}” saved with {$a->n} students';
 $string['app_ed_students'] = 'Students (or words, questions…), one per line';
+$string['app_er_again'] = 'Tap it again to see the correction';
+$string['app_er_done'] = 'All mistakes found!';
+$string['app_er_found'] = '{$a->n} of {$a->of} mistakes found';
+$string['app_er_name'] = 'Spot the mistakes';
+$string['app_er_show'] = 'Show the rest';
+$string['app_er_tap'] = 'Tap the mistakes';
+$string['app_ex_cancel'] = 'Cancel';
+$string['app_ex_check'] = 'Check';
+$string['app_ex_count'] = '{$a} exercises ready';
+$string['app_ex_count_none'] = 'No exercise yet: check the format';
+$string['app_ex_count_one'] = '1 exercise ready';
+$string['app_ex_edit_title'] = '{$a}: my exercises';
+$string['app_ex_example'] = 'Example: {$a}';
+$string['app_ex_example_classify'] = '# Vertebrates
+Mammals: dog, whale, bat, horse
+Birds: penguin, hen, ostrich, eagle
+Reptiles: turtle, snake, lizard
+? bat: it flies, but it has fur and its young drink milk
+? penguin: it does not fly, but it has feathers and lays eggs';
+$string['app_ex_example_errors'] = '# Columbus
+Columbus reached America in [1942|1492|in 1492, not in 1942] with three [boats|caravels/ships]: the Pinta, the Niña and the [Santa Lucía|Santa María].';
+$string['app_ex_example_order'] = '# The water cycle
+Evaporation
+Condensation
+Precipitation
+Collection
+? Condensation: the water vapour cools down and turns into drops';
+$string['app_ex_example_whoami'] = '# A scientist
+= Marie Curie / Curie
+I was born in Warsaw in 1867.
+I won two Nobel prizes, in two different sciences.
+I discovered polonium and radium.
+I studied radioactivity with Pierre, my husband.';
+$string['app_ex_exercise'] = 'Exercise';
+$string['app_ex_format'] = 'A line starting with # is the title, and one starting with ? explains an item: «? item: why».';
+$string['app_ex_help_classify'] = '«Group: item, item, item», one group per line (with ; instead of , if the items carry commas). An item in two groups goes in their intersection (Venn).';
+$string['app_ex_help_errors'] = 'The text, with each mistake as [what it says|right], several right answers with /, and the why as a third part: [1942|1492|not in 1942].';
+$string['app_ex_help_order'] = 'The items in their right order, one per line.';
+$string['app_ex_help_whoami'] = '«= answer» on the first line (other accepted answers after /), then the clues, from the hardest to the easiest.';
+$string['app_ex_mine'] = 'My exercises';
+$string['app_ex_save'] = 'Save';
+$string['app_ex_text'] = 'Your exercises, a blank line between them';
+$string['app_ex_untitled'] = 'Exercise {$a}';
+$string['app_ex_why'] = 'Why';
 $string['app_fin_ok'] = 'OK';
 $string['app_fin_time'] = 'Time\'s up!';
 $string['app_fw_compare'] = 'Colour the same amount in another row';
@@ -1103,6 +1147,10 @@ $string['app_nl_start'] = 'Tap the line where we start';
 $string['app_nl_starts'] = 'We start at {$a}';
 $string['app_nl_step'] = 'In steps of';
 $string['app_nl_undo'] = 'Undo';
+$string['app_ord_done'] = 'All in order!';
+$string['app_ord_name'] = 'Order';
+$string['app_ord_place'] = 'Tap the cards in their order';
+$string['app_ord_right'] = '{$a->n} of {$a->of} in their place';
 $string['app_q_absent'] = 'Who\'s missing today?';
 $string['app_q_absent_n'] = 'Missing today: {$a}';
 $string['app_q_absent_n_sr'] = 'Missing today {$a}';
@@ -1540,6 +1588,19 @@ $string['app_sm_stop'] = 'Turn off the traffic light';
 $string['app_sm_streak'] = 'Calm streak';
 $string['app_sm_trail'] = 'The last minute';
 $string['app_sm_waves'] = 'Waves when it gets loud';
+$string['app_so_another'] = 'Another round';
+$string['app_so_both'] = 'In both';
+$string['app_so_done'] = 'All sorted!';
+$string['app_so_mode'] = 'Play';
+$string['app_so_name'] = 'Sort';
+$string['app_so_need_groups'] = 'This exercise needs two groups, one of them with three items or more.';
+$string['app_so_odd'] = 'Odd one out';
+$string['app_so_odd_ask'] = 'Which is the odd one out?';
+$string['app_so_odd_right'] = '«{$a->odd}» is from «{$a->oddgroup}»; the others are from «{$a->group}».';
+$string['app_so_pick'] = 'Tap a card and then its box';
+$string['app_so_right'] = '{$a->n} of {$a->of} in their place';
+$string['app_so_sort'] = 'Sort';
+$string['app_so_venn'] = 'Venn';
 $string['app_tab_board'] = 'Whiteboard';
 $string['app_tab_chance'] = 'Chance';
 $string['app_tab_clock'] = 'Clock';
@@ -1609,6 +1670,15 @@ $string['app_turn_task_board'] = 'To the board!';
 $string['app_turn_task_note'] = 'Which note is it?';
 $string['app_turn_task_play'] = 'To the glockenspiel!';
 $string['app_turn_title'] = 'It\'s the turn of…';
+$string['app_wa_clue'] = 'Another clue';
+$string['app_wa_name'] = 'Who am I?';
+$string['app_wa_next'] = 'Another one';
+$string['app_wa_no_more'] = 'No more clues';
+$string['app_wa_points'] = '{$a} points!';
+$string['app_wa_right'] = 'Got it!';
+$string['app_wa_show'] = 'Show the answer';
+$string['app_wa_was'] = 'It was {$a}';
+$string['app_wa_worth'] = 'Worth {$a} points';
 $string['app_wb_background'] = 'Background';
 $string['app_wb_bg_bigger'] = 'Bigger';
 $string['app_wb_bg_blank'] = 'Blank';

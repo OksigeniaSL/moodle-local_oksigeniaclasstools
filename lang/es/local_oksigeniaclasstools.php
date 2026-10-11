@@ -260,6 +260,50 @@ $string['app_ed_paste_placeholder'] = 'Pega aquí la lista de tu clase
 (se puede copiar de una hoja de cálculo)';
 $string['app_ed_saved'] = 'Lista «{$a->name}» guardada con {$a->n} alumnos';
 $string['app_ed_students'] = 'Alumnos (o palabras, preguntas…), uno por línea';
+$string['app_er_again'] = 'Vuelve a tocarlo para ver la corrección';
+$string['app_er_done'] = '¡Todos los errores encontrados!';
+$string['app_er_found'] = '{$a->n} de {$a->of} errores encontrados';
+$string['app_er_name'] = 'Caza de errores';
+$string['app_er_show'] = 'Ver los que faltan';
+$string['app_er_tap'] = 'Toca los errores';
+$string['app_ex_cancel'] = 'Cancelar';
+$string['app_ex_check'] = 'Comprobar';
+$string['app_ex_count'] = '{$a} ejercicios listos';
+$string['app_ex_count_none'] = 'Aún ningún ejercicio: revisa el formato';
+$string['app_ex_count_one'] = '1 ejercicio listo';
+$string['app_ex_edit_title'] = '{$a}: mis ejercicios';
+$string['app_ex_example'] = 'Ejemplo: {$a}';
+$string['app_ex_example_classify'] = '# Vertebrados
+Mamíferos: perro, ballena, murciélago, caballo
+Aves: pingüino, gallina, avestruz, águila
+Reptiles: tortuga, serpiente, lagarto
+? murciélago: vuela, pero tiene pelo y sus crías toman leche
+? pingüino: no vuela, pero tiene plumas y pone huevos';
+$string['app_ex_example_errors'] = '# Colón
+Colón llegó a América en [1942|1492|en 1492, no en 1942] con tres [barcos|carabelas/naves]: la Pinta, la Niña y la [Santa Lucía|Santa María].';
+$string['app_ex_example_order'] = '# El ciclo del agua
+Evaporación
+Condensación
+Precipitación
+Acumulación
+? Condensación: el vapor de agua se enfría y forma gotas';
+$string['app_ex_example_whoami'] = '# Una científica
+= Marie Curie / Curie
+Nací en Varsovia en 1867.
+Gané dos premios Nobel, en dos ciencias distintas.
+Descubrí el polonio y el radio.
+Estudié la radiactividad con Pierre, mi marido.';
+$string['app_ex_exercise'] = 'Ejercicio';
+$string['app_ex_format'] = 'Una línea que empieza por # es el título, y una que empieza por ? explica un elemento: «? elemento: porqué».';
+$string['app_ex_help_classify'] = '«Grupo: elemento, elemento, elemento», un grupo por línea (con ; en lugar de , si los elementos llevan comas). Un elemento en dos grupos va en su intersección (Venn).';
+$string['app_ex_help_errors'] = 'El texto, con cada error así: [lo que pone|lo correcto], varias correcciones con /, y el porqué como tercera parte: [1942|1492|no en 1942].';
+$string['app_ex_help_order'] = 'Los elementos en su orden correcto, uno por línea.';
+$string['app_ex_help_whoami'] = '«= respuesta» en la primera línea (otras respuestas válidas tras /) y debajo las pistas, de la más difícil a la más fácil.';
+$string['app_ex_mine'] = 'Mis ejercicios';
+$string['app_ex_save'] = 'Guardar';
+$string['app_ex_text'] = 'Tus ejercicios, con una línea en blanco entre uno y otro';
+$string['app_ex_untitled'] = 'Ejercicio {$a}';
+$string['app_ex_why'] = 'Por qué';
 $string['app_fin_ok'] = 'Vale';
 $string['app_fin_time'] = '¡Tiempo!';
 $string['app_fw_compare'] = 'Colorea lo mismo en otra fila';
@@ -1103,6 +1147,10 @@ $string['app_nl_start'] = 'Toca la recta donde empezamos';
 $string['app_nl_starts'] = 'Empezamos en el {$a}';
 $string['app_nl_step'] = 'De … en …';
 $string['app_nl_undo'] = 'Deshacer';
+$string['app_ord_done'] = '¡Todo en orden!';
+$string['app_ord_name'] = 'Ordenar';
+$string['app_ord_place'] = 'Toca las tarjetas en su orden';
+$string['app_ord_right'] = '{$a->n} de {$a->of} en su sitio';
 $string['app_q_absent'] = '¿Quién falta hoy?';
 $string['app_q_absent_n'] = 'Faltan hoy: {$a}';
 $string['app_q_absent_n_sr'] = 'Faltan hoy {$a}';
@@ -1540,6 +1588,19 @@ $string['app_sm_stop'] = 'Apagar el semáforo';
 $string['app_sm_streak'] = 'Racha en calma';
 $string['app_sm_trail'] = 'El último minuto';
 $string['app_sm_waves'] = 'Ondas cuando sube';
+$string['app_so_another'] = 'Otra ronda';
+$string['app_so_both'] = 'En los dos';
+$string['app_so_done'] = '¡Todo clasificado!';
+$string['app_so_mode'] = 'Jugar a';
+$string['app_so_name'] = 'Clasificar';
+$string['app_so_need_groups'] = 'Este ejercicio necesita dos grupos, uno de ellos con tres elementos o más.';
+$string['app_so_odd'] = 'El intruso';
+$string['app_so_odd_ask'] = '¿Cuál es el intruso?';
+$string['app_so_odd_right'] = '«{$a->odd}» es de «{$a->oddgroup}»; los demás son de «{$a->group}».';
+$string['app_so_pick'] = 'Toca una tarjeta y luego su caja';
+$string['app_so_right'] = '{$a->n} de {$a->of} en su sitio';
+$string['app_so_sort'] = 'Clasificar';
+$string['app_so_venn'] = 'Venn';
 $string['app_tab_board'] = 'Pizarra';
 $string['app_tab_chance'] = 'Azar';
 $string['app_tab_clock'] = 'Reloj';
@@ -1609,6 +1670,15 @@ $string['app_turn_task_board'] = '¡A la pizarra!';
 $string['app_turn_task_note'] = '¿Qué nota es?';
 $string['app_turn_task_play'] = '¡Al carillón!';
 $string['app_turn_title'] = 'Le toca a…';
+$string['app_wa_clue'] = 'Otra pista';
+$string['app_wa_name'] = '¿Quién soy?';
+$string['app_wa_next'] = 'Otro';
+$string['app_wa_no_more'] = 'No hay más pistas';
+$string['app_wa_points'] = '¡{$a} puntos!';
+$string['app_wa_right'] = '¡Acertado!';
+$string['app_wa_show'] = 'Ver la respuesta';
+$string['app_wa_was'] = 'Era {$a}';
+$string['app_wa_worth'] = 'Vale {$a} puntos';
 $string['app_wb_background'] = 'Fondo';
 $string['app_wb_bg_bigger'] = 'Más grande';
 $string['app_wb_bg_blank'] = 'Blanco';

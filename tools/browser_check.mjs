@@ -462,6 +462,115 @@ const CHECKS = {
         if (ids.length < 19) { bad.push(`only ${ids.length} guides`); }
         return bad.length ? bad.join('; ') : '';
     },
+    // Order: a wrong try sends cards back, then the right order wins.
+    'order-game': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        document.querySelector('#t-juegos').click();
+        await sleep(200);
+        document.querySelector('#ga-mode [data-game="ordenar"]').click();
+        await sleep(200);
+        document.querySelector('#ordenar-start').click();
+        await sleep(200);
+        const g = window.ClasstoolsExGames.order, items = g.ex.items;
+        const tap = (text) => [...document.querySelectorAll('#ordenar-pool [data-i]')].find((b) => b.textContent === text).click();
+        [...items].reverse().forEach(tap);
+        await sleep(100);
+        document.querySelector('#ordenar-check').click();
+        await sleep(200);
+        if (g.over) { return 'a reversed order was taken as right'; }
+        const back = document.querySelectorAll('#ordenar-pool [data-i]').length;
+        if (!back) { return 'no card went back after a wrong try'; }
+        items.filter((x, k) => !g.fixed[k]).forEach(tap);
+        await sleep(100);
+        document.querySelector('#ordenar-check').click();
+        await sleep(300);
+        await window.shot('order-game');
+        return g.over && /order/i.test(document.querySelector('#ordenar-msg').textContent) ? '' : `not finished: «${document.querySelector('#ordenar-msg').textContent}»`;
+    },
+    // Sort: every card into its box; then Venn with its zones; then the odd one out.
+    'sort-game': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        document.querySelector('#t-juegos').click();
+        await sleep(200);
+        document.querySelector('#ga-mode [data-game="clasificar"]').click();
+        await sleep(200);
+        const g = window.ClasstoolsExGames.sort;
+        const play = async (mode) => {
+            document.querySelector(`#clasificar-mode [data-v="${mode}"]`).click();
+            await sleep(100);
+            document.querySelector('#clasificar-start').click();
+            await sleep(200);
+        };
+        const zoneOf = (item) => {
+            const groups = g.ex.groups;
+            if (g.mode === 'venn') { const a = groups[0].items.includes(item), b = groups[1].items.includes(item); return a && b ? 'ab' : (a ? 'a' : 'b'); }
+            return String(groups.findIndex((x) => x.items.includes(item)));
+        };
+        for (const mode of ['sort', 'venn']) {
+            await play(mode);
+            for (const item of g.items.slice()) {
+                [...document.querySelectorAll('#clasificar-pool [data-item]')].find((b) => b.dataset.item === item).click();
+                document.querySelector(`#clasificar-boxes [data-zone="${zoneOf(item)}"]`).click();
+            }
+            await sleep(100);
+            if (mode === 'venn') { await window.shot('sort-venn'); }
+            document.querySelector('#clasificar-check').click();
+            await sleep(300);
+            if (!g.over) { return `${mode}: not finished («${document.querySelector('#clasificar-msg').textContent}»)`; }
+        }
+        await play('odd');
+        const cards = [...document.querySelectorAll('#clasificar-pool [data-item]')];
+        if (cards.length !== 4) { return `${cards.length} cards in the odd one out`; }
+        cards.find((b) => b.dataset.item !== g.round.odd).click();
+        if (g.over) { return 'a wrong odd one out ended the round'; }
+        cards.find((b) => b.dataset.item === g.round.odd).click();
+        await sleep(200);
+        await window.shot('sort-odd');
+        return g.over ? '' : 'the odd one out did not end the round';
+    },
+    // Spot the mistakes: a right word shakes; each mistake, found and then corrected.
+    'errors-game': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        document.querySelector('#t-juegos').click();
+        await sleep(200);
+        document.querySelector('#ga-mode [data-game="errores"]').click();
+        await sleep(200);
+        document.querySelector('#errores-start').click();
+        await sleep(200);
+        const g = window.ClasstoolsExGames.errors;
+        document.querySelector('#errores-text [data-w]:not([data-mark])').click();
+        if (g.found.some(Boolean)) { return 'a right word counted as a mistake'; }
+        for (let n = 0; n < g.ex.marks.length; n++) {
+            document.querySelector(`#errores-text [data-mark="${n}"]`).click();
+            await sleep(50);
+            if (n === 0) { await window.shot('errors-found'); }
+            document.querySelector(`#errores-text [data-mark="${n}"]`).click();
+            await sleep(50);
+        }
+        await sleep(200);
+        await window.shot('errors-game');
+        return g.over ? '' : `not finished: «${document.querySelector('#errores-msg').textContent}»`;
+    },
+    // Who am I?: each clue lowers the points; «Got it!» gives what it is worth.
+    'whoami-game': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        document.querySelector('#t-juegos').click();
+        await sleep(200);
+        document.querySelector('#ga-mode [data-game="quiensoy"]').click();
+        await sleep(200);
+        document.querySelector('#quiensoy-start').click();
+        await sleep(200);
+        document.querySelector('#quiensoy-clue').click();
+        document.querySelector('#quiensoy-clue').click();
+        await sleep(100);
+        if (document.querySelectorAll('#quiensoy-clues li').length !== 3) { return 'the clues do not come out one by one'; }
+        if (!/60/.test(document.querySelector('#quiensoy-msg').textContent)) { return `three clues are worth «${document.querySelector('#quiensoy-msg').textContent}»`; }
+        await window.shot('whoami-clues');
+        document.querySelector('#quiensoy-right').click();
+        await sleep(300);
+        const card = document.querySelector('#quiensoy-card').textContent, msg = document.querySelector('#quiensoy-msg').textContent;
+        return card === 'Marie Curie' && /60/.test(msg) ? '' : `the end says «${card}» and «${msg}»`;
+    },
     // QR: the colours of the corners line up as the colours above them, with «Same» on a line of its own.
     'qr-swatches': async () => {
         const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
