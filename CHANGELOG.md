@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.27.0 (2026-10-11)
+
+- **Dice, many throws**: 10, 100 or 1000 throws at once, with a chart of how often each number (or sum) came out next
+  to how often it should, to see chance settle as the throws add up.
+- **Base blocks in other bases**: 2, 3, 4, 5, 8, 10 and 16. The blocks take the size of the base, grouping and
+  breaking follow it, and the total reads both ways («2 × 25 + 3 × 5 + 4 = 69 · 234 in base 5»).
+- **Examples for each level** in Order, Sort, Spot the mistakes and Who am I?: five or six for Primary, Secondary and
+  Advanced, following the level of the board. Sort takes up to six groups.
+- **Prompt for your AI** in «My exercises»: the topic, the level and how many; it copies a text with the rules of the
+  format and an example, to paste in any AI and bring its answer back to the box.
+
 ## 0.26.0 (2026-10-11)
 
 - **Four new games**, played with taps on the board, each with an example and the teacher's own exercises («My
