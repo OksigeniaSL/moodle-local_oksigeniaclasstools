@@ -376,10 +376,195 @@ $string['app_gb_next'] = 'Tap the next peg';
 $string['app_gb_size'] = 'Pegs';
 $string['app_gb_squares'] = 'Show the little squares';
 $string['app_gb_start'] = 'Tap a peg to start a band';
+$string['app_gd_ahorcado_how'] = 'Type the word yourself (it is typed hidden), use the board\'s words, or take a glossary of the course.
+A clue helps the youngest and makes the older ones think.
+«Uncover a letter» costs a balloon: use it when they get stuck.
+With «Language of the words», in English or French, with its keyboard.
+In Early years, «First letter of a name» needs a class list.';
+$string['app_gd_ahorcado_scene'] = 'In Early years circle time, Pablo\'s photo appears and under it «_ABLO». Three big letters: P, M and S. Pablo shouts his before anyone else; next comes María, and the class is already looking for the M.';
+$string['app_gd_ahorcado_sources'] = 'Ferreiro, E. and Teberosky, A. (1979). Los sistemas de escritura en el desarrollo del niño. Siglo XXI.';
+$string['app_gd_ahorcado_stages'] = 'early|The first letter of a classmate\'s name, with their photo.
+primary|Words of the topic and spelling; balloons that go.
+secondary|Words of the subject from the glossary; balloons that stay.
+advanced|Terms of the subject and foreign languages, with the language of the words.';
+$string['app_gd_ahorcado_what'] = 'Guess a word letter by letter before the balloons run out; in Early years, the first letter of a classmate\'s name.';
+$string['app_gd_ahorcado_why'] = 'In Early years the game uses the names of the class, because a child\'s own name is the first stable written form with meaning for them (Ferreiro and Teberosky, 1979).
+Balloons that go, instead of a hanged figure, take the punishment out of the classic picture.';
+$string['app_gd_ahorcado_works'] = 'Spelling and vocabulary: which letters a word has, and in what order.
+Thinking which letters are more likely (vowels first, then the common ones).
+In Early years, recognising the first letter of the names of the class.
+With a glossary of the course, the words of the subject with their definition as the clue.';
+$string['app_gd_asi_how'] = 'Teach them at the start of the year, one by one, explaining what is done with each.
+Put the sign up before each activity starts, not when there is already noise.
+Praise aloud when the class follows it.';
+$string['app_gd_asi_scene'] = 'After the group work, the teacher taps «Listen» and the sign fills the screen. The groups turn to the board before she says a word: they practised it in the first week.';
+$string['app_gd_asi_sources'] = 'Simonsen, B., Fairbanks, S., Briesch, A., Myers, D. and Sugai, G. (2008). Evidence-based practices in classroom management: Considerations for research to practice. Education and Treatment of Children, 31(3), 351–380.|https://doi.org/10.1353/etc.0.0007';
+$string['app_gd_asi_stages'] = 'early|Few signs, always the same, each with its gesture.
+primary|For every change of activity.
+secondary|When group or individual work begins.
+advanced|In workshops and labs.';
+$string['app_gd_asi_what'] = 'Full-screen signs with the way of working of the moment: silence, quiet voices, in pairs, in groups, hands up, listen.';
+$string['app_gd_asi_why'] = 'A review of classroom management practices with empirical support points to posting, teaching, reviewing and reinforcing the expectations of the class, and to giving structure with clearly defined routines (Simonsen and others, 2008). The sign keeps the expectation of the moment in sight.';
+$string['app_gd_asi_works'] = 'The class knowing what is expected at each moment.
+Quicker changes between activities.
+Fewer orders given aloud.';
+$string['app_gd_base10_how'] = '«Build a number»: they make it with blocks and read it as the sum of its parts.
+With ten in one column, «Swap 10 for 1» groups them; «Break into 10» does the opposite.
+«Hide the number» and «What number is it?» to read it from the blocks alone.
+To subtract with borrowing, they break a ten before taking away: the same as on paper.';
+$string['app_gd_base10_scene'] = 'In Year 3, the teacher asks for 52 minus 17. A student says 7 cannot be taken from 2. He breaks a ten into ten ones with a tap, takes seven away, and the class sees what borrowing one means before writing it down.';
+$string['app_gd_base10_sources'] = 'Dienes, Z. P. (1960). Building Up Mathematics. Hutchinson Educational.';
+$string['app_gd_base10_stages'] = 'early|Now and then: counting ones and seeing that ten make a rod.
+primary|Place value, carrying in additions and borrowing in subtractions.
+secondary|For those who still struggle with place value.
+advanced|In teacher training, to teach the decimal number system.';
+$string['app_gd_base10_what'] = 'Ones, tens, hundreds and thousands on a place-value mat: the number they make, part by part.';
+$string['app_gd_base10_why'] = 'Swapping ten for one (grouping) and one for ten (breaking) is what lies behind carrying and borrowing in written sums: with the blocks it is done in sight before it is done on paper.
+Zoltan Dienes, who set out his theory of how mathematics is learnt in Building Up Mathematics (1960), made multibase blocks known for teaching place value.';
+$string['app_gd_base10_works'] = 'Place value: the 3 in 30 is not worth the same as the 3 in 300.
+Grouping ten of one kind into one of the next, and breaking one into ten.
+Adding and subtracting with carrying and borrowing, knowing why at each step.
+Reading and writing numbers as the sum of their parts («100 + 30 + 12 = 142»).';
 $string['app_gd_button'] = 'Teacher\'s guide';
 $string['app_gd_close'] = 'Close the guide';
+$string['app_gd_codigo_how'] = 'Write the code (2 to 8 numbers or letters) and one clue per line; they are shown one by one.
+A countdown adds excitement; without it, more calm to think.
+In groups, each group solves one clue and brings its digit.
+When it opens, a final message (the next step, the homework).';
+$string['app_gd_codigo_scene'] = 'Last class of the term in Year 8: four clues, one per group, each with a proportion problem. When the fourth group calls out its digit and the lock opens, the message says where the review sheet for the test is.';
+$string['app_gd_codigo_sources'] = 'Veldkamp, A., van de Grint, L., Knippels, M.-C. P. J. and van Joolingen, W. R. (2020). Escape education: A systematic review on escape rooms in education. Educational Research Review, 31, 100364.|https://doi.org/10.1016/j.edurev.2020.100364';
+$string['app_gd_codigo_stages'] = 'primary|Clues of arithmetic and reading; the example lock to start with.
+secondary|Problems of the subject in a chain, in groups.
+advanced|Case studies, and review before a test.';
+$string['app_gd_codigo_what'] = 'A lock with a code that opens by solving clues, as in an escape room, with a countdown if wanted.';
+$string['app_gd_codigo_why'] = 'A review of 39 escape rooms in education found that the great majority of students enjoyed them and that teachers saw them as highly engaged, and that they serve to practise teamwork. On the other hand, there is hardly any evidence that new content is learnt with them (Veldkamp and others, 2020). Better to use it to review and apply what has already been worked on.';
+$string['app_gd_codigo_works'] = 'Solving problems in a chain: each clue gives a digit.
+Working as a team and talking to each other.
+Reviewing any subject as a challenge.';
+$string['app_gd_envivo_how'] = 'Open the session: they join with the QR or the code, with their course account or without one.
+Vote: ask the question, open it, wait, close it and the bars appear; «Another question» for a second round.
+For Peer Instruction: they vote, discuss in pairs for a couple of minutes and vote again.
+Brainstorm: a word or two each; check them before showing them if needed.
+Without tablets: «Hands up», and you count with + and −.';
+$string['app_gd_envivo_scene'] = 'Before the experiment, Year 5 vote whether an egg floats in salty water: nearly everyone says no. They do the experiment and repeat the question with «Another question»; the bars change, and the best part begins: explaining why.';
+$string['app_gd_envivo_sources'] = 'Crouch, C. H. and Mazur, E. (2001). Peer Instruction: Ten years of experience and results. American Journal of Physics, 69(9), 970–977.|https://doi.org/10.1119/1.1374249
+White, R. T. and Gunstone, R. F. (1992). Probing Understanding. Falmer Press.';
+$string['app_gd_envivo_stages'] = 'early|A show of hands in circle time, to choose together.
+primary|Votes from A to D, yes or no, or the traffic light to see who has understood.
+secondary|Peer Instruction, brainstorms and quizzes in teams.
+advanced|Conceptual votes in large classes, and brainstorms in seminars.';
+$string['app_gd_envivo_what'] = 'Sessions with the class\'s phones or tablets: a vote, a brainstorm, a quiz, buzzers, the teacher\'s phone as a remote and, without tablets, hands up.';
+$string['app_gd_envivo_why'] = 'In Peer Instruction, students answer a conceptual question, discuss it with a classmate and answer again; ten years of it in introductory physics at Harvard University showed better mastery of conceptual reasoning and of problem solving (Crouch and Mazur, 2001).
+Voting before and after an experiment follows the predict-observe-explain technique, as described by White and Gunstone (1992).';
+$string['app_gd_envivo_works'] = 'Everyone answers at once, not just one.
+Seeing at a glance what the class has understood.
+Giving an opinion without being swayed by the others: a vote hides the bars while it is open.
+Taking part with their name or without it.';
+$string['app_gd_fractions_how'] = 'They colour pieces in one row and look for the same amount in another: the wall says which parts are equal («1/2 = 2/4 = 3/6»).
+The ruler for comparing slides across the wall and lines the rows up.
+On the pieces: fractions, decimals, percentages, or nothing, so that they reason with the size alone.
+Ask first and check afterwards: «Which is more, two thirds or three quarters?».';
+$string['app_gd_fractions_scene'] = 'In Year 7, the teacher asks which is more, two thirds or three quarters. The class splits in two. One student colours two thirds, another three quarters, and the ruler settles it: three quarters reaches a little further.';
+$string['app_gd_fractions_sources'] = 'Siegler, R. and others (2010). Developing effective fractions instruction for kindergarten through 8th grade (NCEE 2010-4039). Institute of Education Sciences.|https://ies.ed.gov/ncee/wwc/PracticeGuide/15';
+$string['app_gd_fractions_stages'] = 'early|Halves and wholes with coloured pieces, without numbers.
+primary|Simple fractions, equivalent fractions and comparing them.
+secondary|Equivalents, decimals and percentages; adding fractions while seeing them.
+advanced|In teacher training, to show the measurement model of fractions.';
+$string['app_gd_fractions_what'] = 'One whole on top and, under it, the same whole in halves, thirds, quarters…: fractions are compared at a glance.';
+$string['app_gd_fractions_why'] = 'The practice guide of the US Institute of Education Sciences on fractions recommends helping students see that fractions are numbers, with measurement activities and number lines (Siegler and others, 2010). On the wall each piece is a length: what it measures is compared by putting one row against another, as on a number line.';
+$string['app_gd_fractions_works'] = 'What a fraction is: equal parts of the same whole.
+Comparing: a third is less than a half, although 3 is more than 2.
+Equivalent fractions: 1/2 = 2/4 = 3/6.
+Fraction, decimal and percentage of the same amount.';
+$string['app_gd_geoboard_how'] = 'Tap pegs to stretch a band; tap the first one to close the figure.
+Drag a corner to another peg to change the figure.
+«Area and perimeter» gives the measures, and the little squares help to count them.
+Challenges: «Make a rectangle of area 6», «How many different triangles of area 2 are there?».
+More pegs for big figures; fewer for the youngest.';
+$string['app_gd_geoboard_scene'] = 'In Year 8, the teacher asks for figures of area 4. Squares, rectangles and an odd triangle come out. For each one they count the pegs inside and on the edge, and the class finds the rule before anyone says its name: Pick.';
+$string['app_gd_geoboard_sources'] = 'Gattegno, C. (1954). The Gattegno geoboards. Bulletin of the Association for Teaching Aids in Mathematics, 3.|https://roslyn-young.fr/biblios/bibliography-of-gattegno-s-work
+Pick, G. (1899). Geometrisches zur Zahlenlehre. Lotos, 47, 311–319.|https://mathshistory.st-andrews.ac.uk/Biographies/Pick/';
+$string['app_gd_geoboard_stages'] = 'early|Stretching bands, making figures and naming them.
+primary|Polygons, area by counting squares, and perimeter.
+secondary|Areas of triangles and irregular polygons; Pick\'s theorem.
+advanced|In teacher training, to teach geometry with hands-on materials.';
+$string['app_gd_geoboard_what'] = 'A board of pegs on which rubber bands are stretched: figures, areas and perimeters that are seen and counted.';
+$string['app_gd_geoboard_why'] = 'The geoboard was introduced and made known by the mathematics educator Caleb Gattegno, who described it in 1954.
+For a polygon with its corners on the pegs and no holes, the area is the number of pegs inside plus half of those on the edge, minus one: Pick\'s theorem (Pick, 1899). On the geoboard it is checked against the area the board gives.';
+$string['app_gd_geoboard_works'] = 'Building and recognising polygons.
+Area by counting little squares, and perimeter.
+Symmetry and congruent figures.
+In secondary school, Pick\'s theorem.';
+$string['app_gd_grupos_how'] = '«Who\'s missing today?» before making the groups.
+Number of groups, or students per group.
+«A role for each one» and, in «Change the roles», the set of roles: group tasks, music, science, reading or your own.
+«Other roles» hands them out again; the sharing takes into account the roles each one has already had.
+«Save as course groups» leaves them in the course for assignments and forums.';
+$string['app_gd_grupos_scene'] = 'In the Year 8 lab two students are missing. The teacher marks who is absent, asks for groups of four and the science roles: measure, write down, set up, photograph. Nobody chooses who they go with, and nobody is left without a task.';
+$string['app_gd_grupos_sources'] = 'Johnson, D. W. and Johnson, R. T. (2009). An educational psychology success story: Social interdependence theory and cooperative learning. Educational Researcher, 38(5), 365–379.|https://doi.org/10.3102/0013189X09339057
+Palincsar, A. S. and Brown, A. L. (1984). Reciprocal teaching of comprehension-fostering and comprehension-monitoring activities. Cognition and Instruction, 1(2), 117–175.|https://doi.org/10.1207/s1532690xci0102_1';
+$string['app_gd_grupos_stages'] = 'early|Pairs and small groups; simple roles such as handing out the materials.
+primary|Work teams with roles that change every week.
+secondary|Project groups with roles for the subject, saved in the course.
+advanced|Seminars and group work, saved as course groups.';
+$string['app_gd_grupos_what'] = 'Random groups from the class list, without those absent, with a role for each one if wanted.';
+$string['app_gd_grupos_why'] = 'In their review of cooperative learning, David and Roger Johnson say that cooperation works when there is positive interdependence (the group needs everyone) and individual accountability (each one\'s work counts and is given back to them), along with interaction, social skills and the group reflecting on how it has worked (Johnson and Johnson, 2009). Roles help with both: each member has a task the group needs.
+The Reading set uses the four roles of reciprocal teaching: predicting, questioning, clarifying and summarising. Palincsar and Brown (1984) studied it with 12- and 13-year-olds who struggled with reading comprehension, with good results in small samples.';
+$string['app_gd_grupos_works'] = 'Working with different classmates, not always the same ones.
+Sharing out responsibilities with roles.
+Fair, quick groups, with no arguing about who goes with whom.';
 $string['app_gd_how'] = 'How to take it to class';
+$string['app_gd_line_how'] = 'Choose the stretch: «From 0 to 10», «From −10 to 10», quarters, thirds, tenths… or your own.
+A tap on the line starts at a point; each tap after it is a jump, drawn with its arc and its sum.
+Hide the numbers and ask where one falls before uncovering it.
+To subtract, jumps backwards; for negatives, crossing zero.';
+$string['app_gd_line_scene'] = 'In Year 6, the teacher chooses quarters from 0 to 2, hides the numbers and asks where three quarters goes. Some put it after 1, because three and four seem big numbers to them. When it is uncovered, the line shows them that three quarters does not even reach 1.';
+$string['app_gd_line_sources'] = 'Siegler, R. S. and Ramani, G. B. (2008). Playing linear numerical board games promotes low-income children\'s numerical development. Developmental Science, 11(5), 655–661.|https://doi.org/10.1111/j.1467-7687.2008.00714.x
+Siegler, R. and others (2010). Developing effective fractions instruction for kindergarten through 8th grade (NCEE 2010-4039). Institute of Education Sciences.|https://ies.ed.gov/ncee/wwc/PracticeGuide/15';
+$string['app_gd_line_stages'] = 'early|From 0 to 10: counting jumps one by one and seeing which number is further.
+primary|Adding and subtracting as jumps, decimals and simple fractions.
+secondary|Negative numbers, equivalent fractions and operations with fractions.
+advanced|In teacher training, to teach how to use the line in primary school.';
+$string['app_gd_line_what'] = 'A line with the numbers in order, on which jumps are drawn: whole numbers, negatives, decimals or fractions.';
+$string['app_gd_line_why'] = 'In a study with low-income preschoolers, four 15-minute sessions of a board game with the numbers 1 to 10 in a line closed their gap in placing numbers on a number line; the same game with colours instead of numbers had no effect (Siegler and Ramani, 2008).
+For fractions, the practice guide of the US Institute of Education Sciences recommends using number lines as a central tool from the early grades, so that fractions are seen as numbers (Siegler and others, 2010).';
+$string['app_gd_line_works'] = 'The order of numbers and the distance between them: which is bigger, and by how much.
+Adding and subtracting as jumps («2 + 3 + 4 = 9»).
+Negative numbers, to the left of zero.
+Fractions and decimals as numbers with their own place on the line.
+Estimating where a number falls before checking it.';
 $string['app_gd_none'] = 'This tool has no guide yet.';
+$string['app_gd_palabra_how'] = 'The class proposes and the teacher types: one try, one discussion.
+Before each try, they say which letters they already know and which they have ruled out.
+Choose the number of tries (from 5 to 8) for their age.
+There is no dictionary: any word with the right number of letters counts.';
+$string['app_gd_palabra_scene'] = 'In a Year 9 English class the word is in English and the clue is «a planet». At the third try they have _A_S; someone proposes MARS and the row turns green.';
+$string['app_gd_palabra_sources'] = 'Wordle (Wikipedia).|https://en.wikipedia.org/wiki/Wordle';
+$string['app_gd_palabra_stages'] = 'primary|Five-letter words, with a clue.
+secondary|Six letters, words of the subject.
+advanced|Seven letters, or another language with its keyboard.';
+$string['app_gd_palabra_what'] = 'Guess a word in six tries: green if the letter is in its place, yellow if it is somewhere else, grey if it is not there.';
+$string['app_gd_palabra_why'] = 'The game was created by Josh Wardle and spread widely after its release in October 2021. Each try gives information that has to be combined with that of the earlier ones: a deduction exercise with words.';
+$string['app_gd_palabra_works'] = 'Spelling: which words exist with those letters.
+Reasoning with clues: ruling out letters and places.
+Words of the subject, from a glossary of the course or in another language.
+Discussing as a group before each try.';
+$string['app_gd_parejas_how'] = 'Choose a set by level, or the faces and names of the class, your lists («dog = perro»), a glossary or the matching questions of the course.
+The whole class, or two teams: finding a pair gives another turn.
+Before turning the second card, the class says what it expects to find.
+Few pairs to start; more when they know the content.';
+$string['app_gd_parejas_scene'] = 'First day of the year in Year 6: the teacher opens Pairs with the faces and names of the class. Each pair matches a photo with its name, and by the end of the game everyone knows what the two new students are called.';
+$string['app_gd_parejas_sources'] = 'Roediger, H. L. and Karpicke, J. D. (2006). Test-enhanced learning: Taking memory tests improves long-term retention. Psychological Science, 17(3), 249–255.|https://doi.org/10.1111/j.1467-9280.2006.01693.x';
+$string['app_gd_parejas_stages'] = 'early|Shapes, colours, animal shadows and numbers, with few pairs.
+primary|Word and picture, sums and results, faces and names of the class.
+secondary|Concept and definition, formulas and names, languages.
+advanced|Derivatives, chemical elements, authors and works: what is reviewed from the question bank.';
+$string['app_gd_parejas_what'] = 'Cards face down, turned two at a time, to find the pairs: the same, or related.';
+$string['app_gd_parejas_why'] = 'When the pairs are related rather than equal (concept and definition, word and translation), the content has to be remembered to recognise the pair: a form of retrieval practice, and remembering what has been learnt, rather than rereading it, helps to keep it (Roediger and Karpicke, 2006).';
+$string['app_gd_parejas_works'] = 'Visual memory and attention: where each card was.
+Relating ideas: word and picture, concept and definition, number and amount.
+Words of the subject, from the glossary or the question bank of the course.
+Turns and teams.';
 $string['app_gd_quien_how'] = 'Ask the question to the whole class before choosing: that way everyone thinks about it.
 Count to three or four in silence, then press.
 If the one chosen does not know, they choose a classmate to help and then say it in their own words.
@@ -400,6 +585,24 @@ $string['app_gd_quien_works'] = 'The whole class thinks: anyone may be chosen.
 Fair turns: «Fewest turns first» chooses first whoever has had fewest turns in the course.
 Seeing what each one has understood, not only those who put their hand up.
 Speaking in front of the others little by little, with questions within their reach.';
+$string['app_gd_reloj_how'] = 'Choose the level: o\'clock, half past, quarter past and to, every five minutes or minute by minute.
+«What time is it?»: a time appears on the clock and the class reads it.
+«Set the time»: the class moves the hands to the time asked for.
+Hide the time in digits or in words so that they read the hands alone.
+«Roman numerals», for clocks like those on buildings.';
+$string['app_gd_reloj_scene'] = 'In Year 3, the teacher turns on Roman numerals and sets a quarter past four. «It\'s like the town hall clock», someone says. The class reads the time without digits and, along the way, learns that IV is four.';
+$string['app_gd_reloj_sources'] = 'Real Decreto 157/2022, de 1 de marzo, por el que se establecen la ordenación y las enseñanzas mínimas de la Educación Primaria. BOE-A-2022-3296.|https://www.boe.es/buscar/act.php?id=BOE-A-2022-3296
+Department for Education (2013). National curriculum in England: mathematics programmes of study.|https://www.gov.uk/government/publications/national-curriculum-in-england-mathematics-programmes-of-study';
+$string['app_gd_reloj_stages'] = 'early|O\'clock, with the hour hand: when we eat, when we go home.
+primary|From half past to minute by minute, and Roman numerals.
+secondary|The 24-hour clock and working out how long things last.
+advanced|Rarely; in teacher training, to teach how to tell the time.';
+$string['app_gd_reloj_what'] = 'A clock whose hands move with a finger, with the time in digits and in words, to learn to tell the time.';
+$string['app_gd_reloj_why'] = 'Telling the time is part of primary school: the Spanish curriculum includes measuring time with the analogue and digital clock (Real Decreto 157/2022, Mathematics). In England, pupils tell the time to five minutes in Year 2 and, in Year 3, from an analogue clock with Roman numerals from I to XII (Department for Education, 2013).';
+$string['app_gd_reloj_works'] = 'Reading the time on a clock with hands: o\'clock, half past, quarter past and to, five minutes, minute by minute.
+Relating the clock with hands to the digital time and to the time in words.
+Roman numerals on the dial.
+12 and 24 hours.';
 $string['app_gd_rods_how'] = 'Start with free play: staircases, trains and «carpets» of rods of the same length.
 Ask for every way of making a number with two rods: the carpet of ten gathers all its splits.
 Hide the numbers («Show the numbers» off) so that they reason with the lengths.
@@ -420,7 +623,55 @@ Making and breaking a number («which two rods make the orange one?»).
 Relations between numbers: double, half, one more.
 Adding, subtracting, multiplying and dividing with their hands.
 Fractions and ratios: the two is half of the four.';
+$string['app_gd_rosco_how'] = 'Write your rosco with the words of the topic, or copy the example one and adapt it.
+The whole class against the clock, or two teams, each with its rosco and its time.
+You mark right, wrong or «Pass».
+Use it to review at the end of a topic, not to introduce it.';
+$string['app_gd_rosco_scene'] = 'Friday review in Year 7: two teams, a science rosco each. The «P» of photosynthesis falls at the first try; the «X» of xylem stays on «Pass» to the very end, and on Monday it is the word everyone remembers.';
+$string['app_gd_rosco_sources'] = 'Roediger, H. L. and Karpicke, J. D. (2006). Test-enhanced learning: Taking memory tests improves long-term retention. Psychological Science, 17(3), 249–255.|https://doi.org/10.1111/j.1467-9280.2006.01693.x';
+$string['app_gd_rosco_stages'] = 'primary|Vocabulary of the topic and spelling, with simple clues.
+secondary|Reviewing the concepts of any subject before a test.
+advanced|The terms of the subject, also in other languages.';
+$string['app_gd_rosco_what'] = 'A ring of letters with a clue for each one, as in the TV quiz: the class guesses words.';
+$string['app_gd_rosco_why'] = 'Trying to remember something helps to keep it better than studying it again: in an experiment with university students, those who took a recall test remembered more a week later than those who reread the text, although the latter felt surer (Roediger and Karpicke, 2006). The rosco turns that retrieval practice into a game.';
+$string['app_gd_rosco_works'] = 'Vocabulary of any subject, with its definition.
+Remembering without looking: each clue makes them bring the word back from memory.
+Spelling: the word starts with that letter, or contains it.
+Teamwork, with two teams and their clocks.';
 $string['app_gd_scene'] = 'In class';
+$string['app_gd_score_how'] = 'Choose a song, or write one with taps on the staff.
+«Play with me»: a student comes to the glockenspiel and the screen lights the note to play.
+«Which note is it?»: a note sounds and the class looks for it; the streak is counted.
+With «Whose turn?», each student plays one note of the song, in relay.';
+$string['app_gd_score_scene'] = 'In Year 2, the relay song: each student comes to the glockenspiel and plays one note of «Are You Sleeping, Brother John?» with «Play with me». When the whole song sounds, played by all of them, they ask to play it again.';
+$string['app_gd_score_sources'] = 'Orff Schulwerk (Wikipedia).|https://en.wikipedia.org/wiki/Orff_Schulwerk';
+$string['app_gd_score_stages'] = 'early|Listening, playing the glockenspiel freely, high and low.
+primary|Reading notes and their lengths, and playing simple songs.
+secondary|Time signatures, sharps and flats, and note dictation.
+advanced|In music teacher training, to prepare songs for the classroom.';
+$string['app_gd_score_what'] = 'A staff on which notes are written with a tap and played, with a glockenspiel under it to play along.';
+$string['app_gd_score_why'] = 'The glockenspiel is one of the barred instruments that the Orff Schulwerk of Carl Orff and Gunild Keetman adapted for school music, with xylophones and metallophones. On the screen, the written note, its sound and its bar are seen at the same time.';
+$string['app_gd_score_works'] = 'Reading notes on the staff, and how long they last.
+Hearing and recognising notes («Which note is it?»).
+Playing a melody with «Play with me», which lights the next note.
+Rhythm and time signatures: 2/4, 3/4, 4/4, 6/8.';
+$string['app_gd_semaforo_how'] = '«Adjust to this class» with the class working at a volume that seems right to you: that will be green.
+Explain beforehand what each colour means and what happens on red.
+«A face in the light» for the youngest.
+Use it for group work, not when speaking aloud is the point.';
+$string['app_gd_semaforo_scene'] = 'During play in corners in Early years, the light turns amber and the face stops smiling. Nobody says anything: a girl puts her finger to her lips, the light goes back to green, and the class celebrates in a whisper.';
+$string['app_gd_semaforo_sources'] = 'Berglund, B., Lindvall, T. and Schwela, D. H. (Eds.) (1999). Guidelines for Community Noise. World Health Organization.|https://www.who.int/publications/i/item/a68672
+Shield, B. M. and Dockrell, J. E. (2008). The effects of environmental and classroom noise on the academic attainments of primary school children. Journal of the Acoustical Society of America, 123(1), 133–144.|https://doi.org/10.1121/1.2812596';
+$string['app_gd_semaforo_stages'] = 'early|With the face in the light, during play in corners.
+primary|Work in pairs and in groups.
+secondary|Group work and the lab.
+advanced|Rarely; in open-plan rooms or study areas.';
+$string['app_gd_semaforo_what'] = 'A traffic light that listens to the noise of the class and turns green, amber or red: the volume is seen without raising the voice.';
+$string['app_gd_semaforo_why'] = 'The World Health Organization recommends that the background sound in a classroom should not exceed 35 dB during lessons, so that speech is understood well (Berglund, Lindvall and Schwela, 1999). In London primary schools, classroom noise was related to lower results in national tests, also after taking social factors into account (Shield and Dockrell, 2008).
+The light does not measure exact decibels: it compares with the usual noise of your class, set with «Adjust to this class». It records nothing and sends nothing; it only measures the volume.';
+$string['app_gd_semaforo_works'] = 'Being aware of the volume when working in groups.
+The class regulating itself, without the teacher having to ask for silence.
+Comparing the noise of different activities.';
 $string['app_gd_simon_how'] = 'With the class list a different student comes out every round; the others may say the colours quietly while they sound.
 After a mistake the same sequence plays again for the next one: nobody starts from scratch. «From the start» keeps the classic game.
 Six colours and the fast speed are more of a challenge for the older ones.
@@ -440,6 +691,25 @@ Waiting for their turn and listening to the others.
 Playing as a team: the class helps whoever comes out.';
 $string['app_gd_sources'] = 'Sources';
 $string['app_gd_stages'] = 'By school level';
+$string['app_gd_tangram_how'] = 'Start with the easy silhouettes (House, Boat) and leave the polygons for later.
+A piece turns with a double tap; before moving it, they say which piece they are looking for and why.
+If they get stuck, the hint shows where a piece goes.
+For fractions: «Which part of the square is this triangle?», and they check it by laying pieces on top.
+With «Whose turn?», a different student places each piece.';
+$string['app_gd_tangram_scene'] = 'In Year 5, the teacher puts up the cat and asks which takes more room, the cat or the boat. Half the class says the cat. They build it with the seven pieces, then the boat with the same seven, and the room goes quiet: they are the same size.';
+$string['app_gd_tangram_sources'] = 'Slocum, J. and others (2003). The Tangram Book: The Story of the Chinese Puzzle with over 2000 Puzzles to Solve. Sterling.';
+$string['app_gd_tangram_stages'] = 'early|Easy silhouettes, naming triangle and square.
+primary|Harder figures, polygons, symmetry and the fraction of each piece.
+secondary|Areas and fractions of the square; showing that every figure has the same area.
+advanced|In teacher training, to design geometry activities with hands-on materials.';
+$string['app_gd_tangram_what'] = 'Seven pieces that together make a square: figures and silhouettes are built with them.';
+$string['app_gd_tangram_why'] = 'The tangram is a Chinese puzzle known since about 1800; the oldest surviving books about it date from 1813 (Slocum, 2003).
+All its figures are made with the same seven pieces, so they all have the same area: a way of seeing that area is kept when the shape changes.';
+$string['app_gd_tangram_works'] = 'Seeing and turning shapes in the mind: spatial reasoning.
+Naming figures: triangles, square, parallelogram.
+Area without formulas: made with the same seven pieces, every figure has the same area.
+Fractions of the square: each small triangle is a sixteenth of it.
+Persevering: trying, turning and trying again.';
 $string['app_gd_why'] = 'Why';
 $string['app_gd_works'] = 'What it works on';
 $string['app_gen_again'] = 'Again';

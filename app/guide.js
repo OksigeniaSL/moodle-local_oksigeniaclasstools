@@ -15,7 +15,15 @@
     const { t, escape, icon } = core;
 
     // The guides there are, with the string of their name.
-    const GUIDES = { quien: 'tab_picker', simon: 'si_name', rods: 'mt_rods' };
+    const GUIDES = {
+        // Tools.
+        quien: 'tab_picker', grupos: 'tab_groups', semaforo: 'tab_noise', asi: 'tab_rules', reloj: 'tab_clock', envivo: 'tab_live',
+        // Games.
+        rosco: 'ro_name', simon: 'si_name', ahorcado: 'ah_name', palabra: 'wo_name', parejas: 'me_pairs', codigo: 'lock_name',
+        // Materials.
+        rods: 'mt_rods', tangram: 'mt_tangram', line: 'mt_line', fractions: 'mt_fractions', geoboard: 'mt_geoboard',
+        base10: 'mt_base10', score: 'mt_score',
+    };
     const MODES = ['early', 'primary', 'secondary', 'advanced'];
     // Which guide: the tool on screen, or the game or material open in it.
     const which = () => {

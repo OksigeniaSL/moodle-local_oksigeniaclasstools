@@ -118,5 +118,453 @@
  "gd_rods_sources": {
   "en": "Cuisenaire, G. (1952). Les nombres en couleurs. Thuin.\nCuisenaire, G. and Gattegno, C. (1971). Initiation aux nombres en couleurs. Delachaux et Niestlé.",
   "es": "Cuisenaire, G. (1952). Les nombres en couleurs. Thuin.\nCuisenaire, G. y Gattegno, C. (1971). Initiation aux nombres en couleurs. Delachaux et Niestlé."
+ },
+ "gd_tangram_what": {
+  "en": "Seven pieces that together make a square: figures and silhouettes are built with them.",
+  "es": "Siete piezas que, juntas, forman un cuadrado: con ellas se construyen figuras y siluetas."
+ },
+ "gd_tangram_works": {
+  "en": "Seeing and turning shapes in the mind: spatial reasoning.\nNaming figures: triangles, square, parallelogram.\nArea without formulas: made with the same seven pieces, every figure has the same area.\nFractions of the square: each small triangle is a sixteenth of it.\nPersevering: trying, turning and trying again.",
+  "es": "Ver y girar formas en la cabeza: la orientación espacial.\nNombrar figuras: triángulos, cuadrado, romboide.\nÁreas sin fórmulas: con las mismas siete piezas, todas las figuras miden lo mismo.\nFracciones del cuadrado: cada triángulo pequeño es su dieciseisava parte.\nPerseverar: probar, girar y volver a probar."
+ },
+ "gd_tangram_why": {
+  "en": "The tangram is a Chinese puzzle known since about 1800; the oldest surviving books about it date from 1813 (Slocum, 2003).\nAll its figures are made with the same seven pieces, so they all have the same area: a way of seeing that area is kept when the shape changes.",
+  "es": "El tangram es un rompecabezas chino conocido desde hacia 1800; los libros más antiguos que se conservan son de 1813 (Slocum, 2003).\nTodas sus figuras se hacen con las mismas siete piezas, así que todas tienen la misma área: una forma de ver que el área se conserva aunque cambie la figura."
+ },
+ "gd_tangram_how": {
+  "en": "Start with the easy silhouettes (House, Boat) and leave the polygons for later.\nA piece turns with a double tap; before moving it, they say which piece they are looking for and why.\nIf they get stuck, the hint shows where a piece goes.\nFor fractions: «Which part of the square is this triangle?», and they check it by laying pieces on top.\nWith «Whose turn?», a different student places each piece.",
+  "es": "Empieza con las siluetas sencillas (Casa, Barco) y deja los polígonos para después.\nUna pieza se gira con dos toques; antes de moverla, que digan qué pieza buscan y por qué.\nSi se atascan, la pista enseña dónde va una pieza.\nPara fracciones: «¿Qué parte del cuadrado es este triángulo?», y que lo comprueben poniendo piezas encima.\nCon «¿A quién le toca?», sale un alumno distinto para cada pieza."
+ },
+ "gd_tangram_stages": {
+  "en": "early|Easy silhouettes, naming triangle and square.\nprimary|Harder figures, polygons, symmetry and the fraction of each piece.\nsecondary|Areas and fractions of the square; showing that every figure has the same area.\nadvanced|In teacher training, to design geometry activities with hands-on materials.",
+  "es": "early|Siluetas sencillas, nombrando el triángulo y el cuadrado.\nprimary|Figuras más difíciles, polígonos, simetrías y la fracción de cada pieza.\nsecondary|Áreas y fracciones del cuadrado; demostrar que todas las figuras miden lo mismo.\nadvanced|En Magisterio, para diseñar actividades de geometría con material manipulativo."
+ },
+ "gd_tangram_scene": {
+  "en": "In Year 5, the teacher puts up the cat and asks which takes more room, the cat or the boat. Half the class says the cat. They build it with the seven pieces, then the boat with the same seven, and the room goes quiet: they are the same size.",
+  "es": "En cuarto, la maestra pone la silueta del gato y pregunta qué ocupa más sitio, el gato o el barco. La mitad de la clase dice que el gato. Lo construyen con las siete piezas, luego el barco con las mismas siete, y se hace el silencio: miden lo mismo."
+ },
+ "gd_tangram_sources": {
+  "en": "Slocum, J. and others (2003). The Tangram Book: The Story of the Chinese Puzzle with over 2000 Puzzles to Solve. Sterling.",
+  "es": "Slocum, J. y otros (2003). The Tangram Book: The Story of the Chinese Puzzle with over 2000 Puzzles to Solve. Sterling."
+ },
+ "gd_line_what": {
+  "en": "A line with the numbers in order, on which jumps are drawn: whole numbers, negatives, decimals or fractions.",
+  "es": "Una recta con los números en orden, donde se marcan saltos: enteros, negativos, decimales o fracciones."
+ },
+ "gd_line_works": {
+  "en": "The order of numbers and the distance between them: which is bigger, and by how much.\nAdding and subtracting as jumps («2 + 3 + 4 = 9»).\nNegative numbers, to the left of zero.\nFractions and decimals as numbers with their own place on the line.\nEstimating where a number falls before checking it.",
+  "es": "El orden de los números y la distancia entre ellos: cuál es mayor y por cuánto.\nSumar y restar como saltos («2 + 3 + 4 = 9»).\nLos negativos, a la izquierda del cero.\nFracciones y decimales como números con su sitio en la recta.\nEstimar dónde cae un número antes de comprobarlo."
+ },
+ "gd_line_why": {
+  "en": "In a study with low-income preschoolers, four 15-minute sessions of a board game with the numbers 1 to 10 in a line closed their gap in placing numbers on a number line; the same game with colours instead of numbers had no effect (Siegler and Ramani, 2008).\nFor fractions, the practice guide of the US Institute of Education Sciences recommends using number lines as a central tool from the early grades, so that fractions are seen as numbers (Siegler and others, 2010).",
+  "es": "En un estudio con niños de preescolar de familias con pocos recursos, cuatro sesiones de quince minutos con un juego de tablero de números del 1 al 10 en línea igualaron su forma de situar números en una recta con la de sus compañeros; el mismo juego con colores en lugar de números no tuvo efecto (Siegler y Ramani, 2008).\nPara las fracciones, la guía práctica del Institute of Education Sciences de Estados Unidos recomienda la recta numérica como herramienta central desde los primeros cursos, para que se vea que las fracciones son números (Siegler y otros, 2010)."
+ },
+ "gd_line_how": {
+  "en": "Choose the stretch: «From 0 to 10», «From −10 to 10», quarters, thirds, tenths… or your own.\nA tap on the line starts at a point; each tap after it is a jump, drawn with its arc and its sum.\nHide the numbers and ask where one falls before uncovering it.\nTo subtract, jumps backwards; for negatives, crossing zero.",
+  "es": "Elige el tramo: «Del 0 al 10», «Del −10 al 10», cuartos, tercios, décimas… o «A mi manera».\nUn toque en la recta empieza en un punto; cada toque después es un salto, dibujado con su arco y su cuenta.\nEsconde los números y pregunta dónde cae uno antes de descubrirlo.\nPara restar, saltos hacia atrás; para los negativos, cruzar el cero."
+ },
+ "gd_line_stages": {
+  "en": "early|From 0 to 10: counting jumps one by one and seeing which number is further.\nprimary|Adding and subtracting as jumps, decimals and simple fractions.\nsecondary|Negative numbers, equivalent fractions and operations with fractions.\nadvanced|In teacher training, to teach how to use the line in primary school.",
+  "es": "early|Del 0 al 10: contar saltos de uno en uno y ver qué número está más lejos.\nprimary|Sumas y restas como saltos, decimales y fracciones sencillas.\nsecondary|Negativos, fracciones equivalentes y operaciones con fracciones.\nadvanced|En Magisterio, para enseñar el uso de la recta en Primaria."
+ },
+ "gd_line_scene": {
+  "en": "In Year 6, the teacher chooses quarters from 0 to 2, hides the numbers and asks where three quarters goes. Some put it after 1, because three and four seem big numbers to them. When it is uncovered, the line shows them that three quarters does not even reach 1.",
+  "es": "En quinto, el maestro elige «Cuartos, del 0 al 2», esconde los números y pregunta dónde va tres cuartos. Algunos lo ponen después del 1, porque tres y cuatro les parecen números grandes. Al descubrirlo, la recta les enseña que tres cuartos ni siquiera llega a 1."
+ },
+ "gd_line_sources": {
+  "en": "Siegler, R. S. and Ramani, G. B. (2008). Playing linear numerical board games promotes low-income children's numerical development. Developmental Science, 11(5), 655–661.|https://doi.org/10.1111/j.1467-7687.2008.00714.x\nSiegler, R. and others (2010). Developing effective fractions instruction for kindergarten through 8th grade (NCEE 2010-4039). Institute of Education Sciences.|https://ies.ed.gov/ncee/wwc/PracticeGuide/15",
+  "es": "Siegler, R. S. y Ramani, G. B. (2008). Playing linear numerical board games promotes low-income children's numerical development. Developmental Science, 11(5), 655–661.|https://doi.org/10.1111/j.1467-7687.2008.00714.x\nSiegler, R. y otros (2010). Developing effective fractions instruction for kindergarten through 8th grade (NCEE 2010-4039). Institute of Education Sciences.|https://ies.ed.gov/ncee/wwc/PracticeGuide/15"
+ },
+ "gd_fractions_what": {
+  "en": "One whole on top and, under it, the same whole in halves, thirds, quarters…: fractions are compared at a glance.",
+  "es": "Una barra entera y, debajo, la misma barra en medios, tercios, cuartos…: las fracciones se comparan de un vistazo."
+ },
+ "gd_fractions_works": {
+  "en": "What a fraction is: equal parts of the same whole.\nComparing: a third is less than a half, although 3 is more than 2.\nEquivalent fractions: 1/2 = 2/4 = 3/6.\nFraction, decimal and percentage of the same amount.",
+  "es": "Qué es una fracción: partes iguales de un mismo entero.\nComparar: un tercio es menos que un medio, aunque 3 sea más que 2.\nFracciones equivalentes: 1/2 = 2/4 = 3/6.\nFracción, decimal y porcentaje de una misma cantidad."
+ },
+ "gd_fractions_why": {
+  "en": "The practice guide of the US Institute of Education Sciences on fractions recommends helping students see that fractions are numbers, with measurement activities and number lines (Siegler and others, 2010). On the wall each piece is a length: what it measures is compared by putting one row against another, as on a number line.",
+  "es": "La guía práctica del Institute of Education Sciences de Estados Unidos sobre las fracciones recomienda ayudar a ver que las fracciones son números, con actividades de medida y con la recta numérica (Siegler y otros, 2010). En el muro, cada pieza es una longitud: lo que mide se compara poniendo una fila junto a otra, como en la recta."
+ },
+ "gd_fractions_how": {
+  "en": "They colour pieces in one row and look for the same amount in another: the wall says which parts are equal («1/2 = 2/4 = 3/6»).\nThe ruler for comparing slides across the wall and lines the rows up.\nOn the pieces: fractions, decimals, percentages, or nothing, so that they reason with the size alone.\nAsk first and check afterwards: «Which is more, two thirds or three quarters?».",
+  "es": "Que coloreen piezas de una fila y busquen lo mismo en otra: el muro dice qué partes son iguales («1/2 = 2/4 = 3/6»).\nLa regla para comparar recorre el muro y alinea las filas.\nEn las piezas: fracciones, decimales, porcentajes o nada, para que razonen solo con el tamaño.\nPregunta primero y comprueba después: «¿Qué es más, dos tercios o tres cuartos?»."
+ },
+ "gd_fractions_stages": {
+  "en": "early|Halves and wholes with coloured pieces, without numbers.\nprimary|Simple fractions, equivalent fractions and comparing them.\nsecondary|Equivalents, decimals and percentages; adding fractions while seeing them.\nadvanced|In teacher training, to show the measurement model of fractions.",
+  "es": "early|Mitades y enteros con piezas de colores, sin números.\nprimary|Fracciones sencillas, equivalentes y su comparación.\nsecondary|Equivalentes, decimales y porcentajes; sumar fracciones viéndolas.\nadvanced|En Magisterio, para mostrar el modelo de medida de las fracciones."
+ },
+ "gd_fractions_scene": {
+  "en": "In Year 7, the teacher asks which is more, two thirds or three quarters. The class splits in two. One student colours two thirds, another three quarters, and the ruler settles it: three quarters reaches a little further.",
+  "es": "En sexto, la profesora pregunta qué es más, dos tercios o tres cuartos. La clase se divide. Una alumna colorea dos tercios, otra tres cuartos, y la regla para comparar zanja el debate: tres cuartos llega un poco más lejos."
+ },
+ "gd_fractions_sources": {
+  "en": "Siegler, R. and others (2010). Developing effective fractions instruction for kindergarten through 8th grade (NCEE 2010-4039). Institute of Education Sciences.|https://ies.ed.gov/ncee/wwc/PracticeGuide/15",
+  "es": "Siegler, R. y otros (2010). Developing effective fractions instruction for kindergarten through 8th grade (NCEE 2010-4039). Institute of Education Sciences.|https://ies.ed.gov/ncee/wwc/PracticeGuide/15"
+ },
+ "gd_geoboard_what": {
+  "en": "A board of pegs on which rubber bands are stretched: figures, areas and perimeters that are seen and counted.",
+  "es": "Un tablero de clavos donde se estiran gomas: figuras, áreas y perímetros que se ven y se cuentan."
+ },
+ "gd_geoboard_works": {
+  "en": "Building and recognising polygons.\nArea by counting little squares, and perimeter.\nSymmetry and congruent figures.\nIn secondary school, Pick's theorem.",
+  "es": "Construir y reconocer polígonos.\nEl área contando cuadraditos, y el perímetro.\nSimetrías y figuras iguales.\nEn Secundaria, el teorema de Pick."
+ },
+ "gd_geoboard_why": {
+  "en": "The geoboard was introduced and made known by the mathematics educator Caleb Gattegno, who described it in 1954.\nFor a polygon with its corners on the pegs and no holes, the area is the number of pegs inside plus half of those on the edge, minus one: Pick's theorem (Pick, 1899). On the geoboard it is checked against the area the board gives.",
+  "es": "El geoplano lo dio a conocer el educador matemático Caleb Gattegno, que lo describió en 1954.\nEn un polígono con las esquinas en los clavos y sin agujeros, el área es el número de clavos de dentro más la mitad de los del borde, menos uno: es el teorema de Pick (Pick, 1899). En el geoplano se comprueba con el área que da el tablero."
+ },
+ "gd_geoboard_how": {
+  "en": "Tap pegs to stretch a band; tap the first one to close the figure.\nDrag a corner to another peg to change the figure.\n«Area and perimeter» gives the measures, and the little squares help to count them.\nChallenges: «Make a rectangle of area 6», «How many different triangles of area 2 are there?».\nMore pegs for big figures; fewer for the youngest.",
+  "es": "Toca clavos para estirar una goma; toca el primero para cerrar la figura.\nArrastra una esquina a otro clavo para cambiar la figura.\n«Área y perímetro» da las medidas, y «Ver los cuadraditos» ayuda a contarlas.\nRetos: «Haz un rectángulo de área 6», «¿Cuántos triángulos distintos de área 2 hay?».\nMás clavos para figuras grandes; menos para los pequeños."
+ },
+ "gd_geoboard_stages": {
+  "en": "early|Stretching bands, making figures and naming them.\nprimary|Polygons, area by counting squares, and perimeter.\nsecondary|Areas of triangles and irregular polygons; Pick's theorem.\nadvanced|In teacher training, to teach geometry with hands-on materials.",
+  "es": "early|Estirar gomas, hacer figuras y nombrarlas.\nprimary|Polígonos, área contando cuadraditos y perímetro.\nsecondary|Áreas de triángulos y polígonos irregulares; el teorema de Pick.\nadvanced|En Magisterio, para enseñar geometría con material manipulativo."
+ },
+ "gd_geoboard_scene": {
+  "en": "In Year 8, the teacher asks for figures of area 4. Squares, rectangles and an odd triangle come out. For each one they count the pegs inside and on the edge, and the class finds the rule before anyone says its name: Pick.",
+  "es": "En segundo de ESO, el profesor pide figuras de área 4. Salen cuadrados, rectángulos y un triángulo raro. En cada una cuentan los clavos de dentro y los del borde, y la clase descubre la regla antes de que nadie diga su nombre: Pick."
+ },
+ "gd_geoboard_sources": {
+  "en": "Gattegno, C. (1954). The Gattegno geoboards. Bulletin of the Association for Teaching Aids in Mathematics, 3.|https://roslyn-young.fr/biblios/bibliography-of-gattegno-s-work\nPick, G. (1899). Geometrisches zur Zahlenlehre. Lotos, 47, 311–319.|https://mathshistory.st-andrews.ac.uk/Biographies/Pick/",
+  "es": "Gattegno, C. (1954). The Gattegno geoboards. Bulletin of the Association for Teaching Aids in Mathematics, 3.|https://roslyn-young.fr/biblios/bibliography-of-gattegno-s-work\nPick, G. (1899). Geometrisches zur Zahlenlehre. Lotos, 47, 311–319.|https://mathshistory.st-andrews.ac.uk/Biographies/Pick/"
+ },
+ "gd_base10_what": {
+  "en": "Ones, tens, hundreds and thousands on a place-value mat: the number they make, part by part.",
+  "es": "Unidades, decenas, centenas y millares en una tabla de valores: el número que forman, por partes."
+ },
+ "gd_base10_works": {
+  "en": "Place value: the 3 in 30 is not worth the same as the 3 in 300.\nGrouping ten of one kind into one of the next, and breaking one into ten.\nAdding and subtracting with carrying and borrowing, knowing why at each step.\nReading and writing numbers as the sum of their parts («100 + 30 + 12 = 142»).",
+  "es": "El valor de posición: el 3 de 30 no vale lo mismo que el de 300.\nAgrupar diez de una clase en una de la siguiente, y romper una en diez.\nSumar y restar llevando, sabiendo el porqué de cada paso.\nLeer y escribir números como suma de sus partes («100 + 30 + 12 = 142»)."
+ },
+ "gd_base10_why": {
+  "en": "Swapping ten for one (grouping) and one for ten (breaking) is what lies behind carrying and borrowing in written sums: with the blocks it is done in sight before it is done on paper.\nZoltan Dienes, who set out his theory of how mathematics is learnt in Building Up Mathematics (1960), made multibase blocks known for teaching place value.",
+  "es": "Cambiar diez por uno (agrupar) y uno por diez (romper) es lo que hay detrás de «llevarse una» en las cuentas: con los bloques se hace a la vista antes de hacerlo en el papel.\nZoltan Dienes, que expuso su teoría de cómo se aprenden las matemáticas en Building Up Mathematics (1960), dio a conocer los bloques multibase para enseñar el valor de posición."
+ },
+ "gd_base10_how": {
+  "en": "«Build a number»: they make it with blocks and read it as the sum of its parts.\nWith ten in one column, «Swap 10 for 1» groups them; «Break into 10» does the opposite.\n«Hide the number» and «What number is it?» to read it from the blocks alone.\nTo subtract with borrowing, they break a ten before taking away: the same as on paper.",
+  "es": "«Construir un número»: que lo formen con bloques y lo lean como suma de sus partes.\nCon diez en una columna, «Cambiar 10 por 1» los agrupa; «Romper en 10» hace lo contrario.\n«Esconder el número» y «¿Qué número es?» para leerlo solo con los bloques.\nPara restar llevando, que rompan una decena antes de quitar: lo mismo que en el papel."
+ },
+ "gd_base10_stages": {
+  "en": "early|Now and then: counting ones and seeing that ten make a rod.\nprimary|Place value, carrying in additions and borrowing in subtractions.\nsecondary|For those who still struggle with place value.\nadvanced|In teacher training, to teach the decimal number system.",
+  "es": "early|De vez en cuando: contar unidades y ver que diez forman una barra.\nprimary|Valor de posición, sumas y restas llevando.\nsecondary|Para quien aún no domina el valor de posición.\nadvanced|En Magisterio, para enseñar el sistema de numeración decimal."
+ },
+ "gd_base10_scene": {
+  "en": "In Year 3, the teacher asks for 52 minus 17. A student says 7 cannot be taken from 2. He breaks a ten into ten ones with a tap, takes seven away, and the class sees what borrowing one means before writing it down.",
+  "es": "En tercero, el maestro pide 52 menos 17. Un alumno dice que no se puede quitar 7 de 2. Rompe una decena en diez unidades con un toque, quita siete, y la clase ve qué significa «llevarse una» en la resta antes de escribirla."
+ },
+ "gd_base10_sources": {
+  "en": "Dienes, Z. P. (1960). Building Up Mathematics. Hutchinson Educational.",
+  "es": "Dienes, Z. P. (1960). Building Up Mathematics. Hutchinson Educational."
+ },
+ "gd_score_what": {
+  "en": "A staff on which notes are written with a tap and played, with a glockenspiel under it to play along.",
+  "es": "Un pentagrama donde se escriben notas con un toque y suenan, con un carillón debajo para tocar."
+ },
+ "gd_score_works": {
+  "en": "Reading notes on the staff, and how long they last.\nHearing and recognising notes («Which note is it?»).\nPlaying a melody with «Play with me», which lights the next note.\nRhythm and time signatures: 2/4, 3/4, 4/4, 6/8.",
+  "es": "Leer notas en el pentagrama y su duración.\nEscuchar y reconocer notas («¿Qué nota es?»).\nTocar una melodía con «Toca conmigo», que enciende la nota siguiente.\nRitmo y compás: 2/4, 3/4, 4/4, 6/8."
+ },
+ "gd_score_why": {
+  "en": "The glockenspiel is one of the barred instruments that the Orff Schulwerk of Carl Orff and Gunild Keetman adapted for school music, with xylophones and metallophones. On the screen, the written note, its sound and its bar are seen at the same time.",
+  "es": "El carillón es uno de los instrumentos de láminas que el Orff-Schulwerk, de Carl Orff y Gunild Keetman, adaptó para la música escolar, junto a xilófonos y metalófonos. En la pantalla, la nota escrita, su sonido y su lámina se ven a la vez."
+ },
+ "gd_score_how": {
+  "en": "Choose a song, or write one with taps on the staff.\n«Play with me»: a student comes to the glockenspiel and the screen lights the note to play.\n«Which note is it?»: a note sounds and the class looks for it; the streak is counted.\nWith «Whose turn?», each student plays one note of the song, in relay.",
+  "es": "Elige una canción o escribe una con toques en el pentagrama.\n«Toca conmigo»: sale un alumno al carillón y la pantalla enciende la nota que toca.\n«¿Qué nota es?»: suena una nota y la clase la busca; se cuenta la racha.\nCon «¿A quién le toca?», cada alumno toca una nota de la canción, a relevos."
+ },
+ "gd_score_stages": {
+  "en": "early|Listening, playing the glockenspiel freely, high and low.\nprimary|Reading notes and their lengths, and playing simple songs.\nsecondary|Time signatures, sharps and flats, and note dictation.\nadvanced|In music teacher training, to prepare songs for the classroom.",
+  "es": "early|Escuchar, tocar el carillón libremente, agudo y grave.\nprimary|Leer notas y figuras, y tocar canciones sencillas.\nsecondary|Compases, alteraciones y dictados de notas.\nadvanced|En Magisterio musical, para preparar canciones para el aula."
+ },
+ "gd_score_scene": {
+  "en": "In Year 2, the relay song: each student comes to the glockenspiel and plays one note of «Are You Sleeping, Brother John?» with «Play with me». When the whole song sounds, played by all of them, they ask to play it again.",
+  "es": "En segundo, la canción a relevos: cada alumno sale al carillón y toca una nota de «Martinillo» con «Toca conmigo». Cuando la canción suena entera, tocada entre todos, piden repetirla."
+ },
+ "gd_score_sources": {
+  "en": "Orff Schulwerk (Wikipedia).|https://en.wikipedia.org/wiki/Orff_Schulwerk",
+  "es": "Orff Schulwerk (Wikipedia, en inglés).|https://en.wikipedia.org/wiki/Orff_Schulwerk"
+ },
+ "gd_rosco_what": {
+  "en": "A ring of letters with a clue for each one, as in the TV quiz: the class guesses words.",
+  "es": "Una rueda de letras con una pista para cada una, como en el concurso de televisión: la clase adivina palabras."
+ },
+ "gd_rosco_works": {
+  "en": "Vocabulary of any subject, with its definition.\nRemembering without looking: each clue makes them bring the word back from memory.\nSpelling: the word starts with that letter, or contains it.\nTeamwork, with two teams and their clocks.",
+  "es": "Vocabulario de cualquier materia, con su definición.\nRecordar sin mirar: cada pista obliga a sacar la palabra de la memoria.\nOrtografía: la palabra empieza por esa letra o la contiene.\nTrabajo en equipo, con dos equipos y su reloj."
+ },
+ "gd_rosco_why": {
+  "en": "Trying to remember something helps to keep it better than studying it again: in an experiment with university students, those who took a recall test remembered more a week later than those who reread the text, although the latter felt surer (Roediger and Karpicke, 2006). The rosco turns that retrieval practice into a game.",
+  "es": "Intentar recordar algo ayuda a retenerlo mejor que volver a estudiarlo: en un experimento con estudiantes universitarios, quienes hicieron una prueba de recuerdo recordaban más una semana después que quienes releyeron el texto, aunque estos se sentían más seguros (Roediger y Karpicke, 2006). El rosco convierte esa práctica de recuperación en un juego."
+ },
+ "gd_rosco_how": {
+  "en": "Write your rosco with the words of the topic, or copy the example one and adapt it.\nThe whole class against the clock, or two teams, each with its rosco and its time.\nYou mark right, wrong or «Pass».\nUse it to review at the end of a topic, not to introduce it.",
+  "es": "Escribe tu rosco con las palabras del tema, o copia el de ejemplo y adáptalo.\nToda la clase contra el reloj, o dos equipos, cada uno con su rosco y su tiempo.\nTú marcas acierto, fallo o «Pasapalabra».\nÚsalo para repasar al acabar un tema, no para presentarlo."
+ },
+ "gd_rosco_stages": {
+  "en": "primary|Vocabulary of the topic and spelling, with simple clues.\nsecondary|Reviewing the concepts of any subject before a test.\nadvanced|The terms of the subject, also in other languages.",
+  "es": "primary|Vocabulario del tema y ortografía, con pistas sencillas.\nsecondary|Repaso de conceptos de cualquier materia antes del examen.\nadvanced|La terminología de la asignatura, también en otros idiomas."
+ },
+ "gd_rosco_scene": {
+  "en": "Friday review in Year 7: two teams, a science rosco each. The «P» of photosynthesis falls at the first try; the «X» of xylem stays on «Pass» to the very end, and on Monday it is the word everyone remembers.",
+  "es": "Viernes de repaso en primero de ESO: dos equipos, un rosco de Ciencias cada uno. La «F» de fotosíntesis cae al primer intento; la «X» de xilema se queda en pasapalabra hasta el final, y el lunes es la palabra que todos recuerdan."
+ },
+ "gd_rosco_sources": {
+  "en": "Roediger, H. L. and Karpicke, J. D. (2006). Test-enhanced learning: Taking memory tests improves long-term retention. Psychological Science, 17(3), 249–255.|https://doi.org/10.1111/j.1467-9280.2006.01693.x",
+  "es": "Roediger, H. L. y Karpicke, J. D. (2006). Test-enhanced learning: Taking memory tests improves long-term retention. Psychological Science, 17(3), 249–255.|https://doi.org/10.1111/j.1467-9280.2006.01693.x"
+ },
+ "gd_ahorcado_what": {
+  "en": "Guess a word letter by letter before the balloons run out; in Early years, the first letter of a classmate's name.",
+  "es": "Adivinar una palabra letra a letra antes de que se gasten los globos; en Infantil, la primera letra del nombre de un compañero."
+ },
+ "gd_ahorcado_works": {
+  "en": "Spelling and vocabulary: which letters a word has, and in what order.\nThinking which letters are more likely (vowels first, then the common ones).\nIn Early years, recognising the first letter of the names of the class.\nWith a glossary of the course, the words of the subject with their definition as the clue.",
+  "es": "Ortografía y vocabulario: qué letras tiene una palabra y en qué orden.\nPensar qué letras son más probables (primero las vocales, luego las más frecuentes).\nEn Infantil, reconocer la primera letra de los nombres de la clase.\nCon un glosario del curso, el vocabulario de la materia con su definición como pista."
+ },
+ "gd_ahorcado_why": {
+  "en": "In Early years the game uses the names of the class, because a child's own name is the first stable written form with meaning for them (Ferreiro and Teberosky, 1979).\nBalloons that go, instead of a hanged figure, take the punishment out of the classic picture.",
+  "es": "En Infantil, el juego usa los nombres de la clase porque el nombre propio es, para el niño, la primera forma escrita estable y con significado (Ferreiro y Teberosky, 1979).\nLos globos que se van, en lugar de una figura ahorcada, le quitan el castigo a la imagen clásica."
+ },
+ "gd_ahorcado_how": {
+  "en": "Type the word yourself (it is typed hidden), use the board's words, or take a glossary of the course.\nA clue helps the youngest and makes the older ones think.\n«Uncover a letter» costs a balloon: use it when they get stuck.\nWith «Language of the words», in English or French, with its keyboard.\nIn Early years, «First letter of a name» needs a class list.",
+  "es": "Escribe la palabra tú (se escribe oculta), usa las de la pizarra o toma un glosario del curso.\nUna pista ayuda a los pequeños y hace pensar a los mayores.\n«Destapar una letra» cuesta un globo: úsalo cuando se atasquen.\nCon «Idioma de las palabras», en inglés o en francés, con su teclado.\nEn Infantil, «Primera letra de un nombre» necesita una lista de la clase."
+ },
+ "gd_ahorcado_stages": {
+  "en": "early|The first letter of a classmate's name, with their photo.\nprimary|Words of the topic and spelling; balloons that go.\nsecondary|Words of the subject from the glossary; balloons that stay.\nadvanced|Terms of the subject and foreign languages, with the language of the words.",
+  "es": "early|La primera letra del nombre de un compañero, con su foto.\nprimary|Palabras del tema y ortografía; globos que se van.\nsecondary|Vocabulario de la materia desde el glosario; globos que se quedan.\nadvanced|Terminología y lenguas extranjeras, con el idioma de las palabras."
+ },
+ "gd_ahorcado_scene": {
+  "en": "In Early years circle time, Pablo's photo appears and under it «_ABLO». Three big letters: P, M and S. Pablo shouts his before anyone else; next comes María, and the class is already looking for the M.",
+  "es": "En la asamblea de Infantil sale la foto de Pablo y debajo «_ABLO». Tres letras grandes: P, M y S. Pablo grita la suya antes que nadie; la siguiente es María, y la clase ya busca la M."
+ },
+ "gd_ahorcado_sources": {
+  "en": "Ferreiro, E. and Teberosky, A. (1979). Los sistemas de escritura en el desarrollo del niño. Siglo XXI.",
+  "es": "Ferreiro, E. y Teberosky, A. (1979). Los sistemas de escritura en el desarrollo del niño. Siglo XXI."
+ },
+ "gd_palabra_what": {
+  "en": "Guess a word in six tries: green if the letter is in its place, yellow if it is somewhere else, grey if it is not there.",
+  "es": "Adivinar una palabra en seis intentos: verde si la letra está en su sitio, amarillo si está en otro, gris si no está."
+ },
+ "gd_palabra_works": {
+  "en": "Spelling: which words exist with those letters.\nReasoning with clues: ruling out letters and places.\nWords of the subject, from a glossary of the course or in another language.\nDiscussing as a group before each try.",
+  "es": "Ortografía: qué palabras existen con esas letras.\nRazonar con pistas: descartar letras y posiciones.\nVocabulario de la materia, de un glosario del curso o en otro idioma.\nDebatir en grupo antes de cada intento."
+ },
+ "gd_palabra_why": {
+  "en": "The game was created by Josh Wardle and spread widely after its release in October 2021. Each try gives information that has to be combined with that of the earlier ones: a deduction exercise with words.",
+  "es": "El juego lo creó Josh Wardle y se hizo muy popular desde su publicación en octubre de 2021. Cada intento da información que hay que combinar con la de los anteriores: un ejercicio de deducción con palabras."
+ },
+ "gd_palabra_how": {
+  "en": "The class proposes and the teacher types: one try, one discussion.\nBefore each try, they say which letters they already know and which they have ruled out.\nChoose the number of tries (from 5 to 8) for their age.\nThere is no dictionary: any word with the right number of letters counts.",
+  "es": "La clase propone y el docente escribe: un intento, un debate.\nAntes de cada intento, que digan qué letras ya saben y cuáles han descartado.\nElige el número de intentos (de 5 a 8) según la edad.\nNo hay diccionario: vale cualquier palabra con el número justo de letras."
+ },
+ "gd_palabra_stages": {
+  "en": "primary|Five-letter words, with a clue.\nsecondary|Six letters, words of the subject.\nadvanced|Seven letters, or another language with its keyboard.",
+  "es": "primary|Palabras de cinco letras, con pista.\nsecondary|Seis letras, vocabulario de la materia.\nadvanced|Siete letras, o en otro idioma con su teclado."
+ },
+ "gd_palabra_scene": {
+  "en": "In a Year 9 English class the word is in English and the clue is «a planet». At the third try they have _A_S; someone proposes MARS and the row turns green.",
+  "es": "En una clase de Inglés de tercero de ESO, la palabra está en inglés y la pista es «a planet». Al tercer intento tienen _A_S; alguien propone MARS y la fila se pone verde."
+ },
+ "gd_palabra_sources": {
+  "en": "Wordle (Wikipedia).|https://en.wikipedia.org/wiki/Wordle",
+  "es": "Wordle (Wikipedia, en inglés).|https://en.wikipedia.org/wiki/Wordle"
+ },
+ "gd_parejas_what": {
+  "en": "Cards face down, turned two at a time, to find the pairs: the same, or related.",
+  "es": "Cartas boca abajo que se levantan de dos en dos para encontrar las parejas: iguales o relacionadas."
+ },
+ "gd_parejas_works": {
+  "en": "Visual memory and attention: where each card was.\nRelating ideas: word and picture, concept and definition, number and amount.\nWords of the subject, from the glossary or the question bank of the course.\nTurns and teams.",
+  "es": "Memoria visual y atención: dónde estaba cada carta.\nRelacionar ideas: palabra y dibujo, concepto y definición, número y cantidad.\nVocabulario de la materia, del glosario o del banco de preguntas del curso.\nTurnos y equipos."
+ },
+ "gd_parejas_why": {
+  "en": "When the pairs are related rather than equal (concept and definition, word and translation), the content has to be remembered to recognise the pair: a form of retrieval practice, and remembering what has been learnt, rather than rereading it, helps to keep it (Roediger and Karpicke, 2006).",
+  "es": "Cuando las parejas no son iguales sino relacionadas (concepto y definición, palabra y traducción), hay que recordar el contenido para reconocerlas: es una forma de práctica de recuperación, y recordar lo aprendido, en lugar de releerlo, ayuda a retenerlo (Roediger y Karpicke, 2006)."
+ },
+ "gd_parejas_how": {
+  "en": "Choose a set by level, or the faces and names of the class, your lists («dog = perro»), a glossary or the matching questions of the course.\nThe whole class, or two teams: finding a pair gives another turn.\nBefore turning the second card, the class says what it expects to find.\nFew pairs to start; more when they know the content.",
+  "es": "Elige un juego por nivel, o las caras y nombres de la clase, tus listas («dog = perro»), un glosario o las preguntas de emparejamiento del curso.\nToda la clase o dos equipos: encontrar una pareja da otro turno.\nAntes de girar la segunda carta, que la clase diga qué espera encontrar.\nPocas parejas para empezar; más cuando dominen el contenido."
+ },
+ "gd_parejas_stages": {
+  "en": "early|Shapes, colours, animal shadows and numbers, with few pairs.\nprimary|Word and picture, sums and results, faces and names of the class.\nsecondary|Concept and definition, formulas and names, languages.\nadvanced|Derivatives, chemical elements, authors and works: what is reviewed from the question bank.",
+  "es": "early|Formas, colores, sombras de animales y números, con pocas parejas.\nprimary|Palabra y dibujo, operaciones y resultados, caras y nombres de la clase.\nsecondary|Concepto y definición, fórmulas y nombres, idiomas.\nadvanced|Derivadas, elementos químicos, autores y obras: lo que se repasa del banco de preguntas."
+ },
+ "gd_parejas_scene": {
+  "en": "First day of the year in Year 6: the teacher opens Pairs with the faces and names of the class. Each pair matches a photo with its name, and by the end of the game everyone knows what the two new students are called.",
+  "es": "Primer día de curso en quinto: el maestro abre Parejas con las caras y los nombres de la clase. Cada acierto empareja una foto con su nombre, y al acabar la partida todos saben cómo se llaman los dos nuevos."
+ },
+ "gd_parejas_sources": {
+  "en": "Roediger, H. L. and Karpicke, J. D. (2006). Test-enhanced learning: Taking memory tests improves long-term retention. Psychological Science, 17(3), 249–255.|https://doi.org/10.1111/j.1467-9280.2006.01693.x",
+  "es": "Roediger, H. L. y Karpicke, J. D. (2006). Test-enhanced learning: Taking memory tests improves long-term retention. Psychological Science, 17(3), 249–255.|https://doi.org/10.1111/j.1467-9280.2006.01693.x"
+ },
+ "gd_codigo_what": {
+  "en": "A lock with a code that opens by solving clues, as in an escape room, with a countdown if wanted.",
+  "es": "Un candado con un código que se abre resolviendo pistas, como en un escape room, con cuenta atrás si se quiere."
+ },
+ "gd_codigo_works": {
+  "en": "Solving problems in a chain: each clue gives a digit.\nWorking as a team and talking to each other.\nReviewing any subject as a challenge.",
+  "es": "Resolver problemas en cadena: cada pista da una cifra.\nTrabajar en equipo y comunicarse.\nRepasar cualquier materia en forma de reto."
+ },
+ "gd_codigo_why": {
+  "en": "A review of 39 escape rooms in education found that the great majority of students enjoyed them and that teachers saw them as highly engaged, and that they serve to practise teamwork. On the other hand, there is hardly any evidence that new content is learnt with them (Veldkamp and others, 2020). Better to use it to review and apply what has already been worked on.",
+  "es": "Una revisión de 39 experiencias de escape room en educación encontró que a la gran mayoría de los estudiantes les gustaron, que los docentes los vieron muy implicados y que sirven para practicar el trabajo en equipo. En cambio, casi no hay pruebas de que con ellos se aprendan contenidos nuevos (Veldkamp y otros, 2020). Mejor usarlo para repasar y aplicar lo ya trabajado."
+ },
+ "gd_codigo_how": {
+  "en": "Write the code (2 to 8 numbers or letters) and one clue per line; they are shown one by one.\nA countdown adds excitement; without it, more calm to think.\nIn groups, each group solves one clue and brings its digit.\nWhen it opens, a final message (the next step, the homework).",
+  "es": "Escribe el código (de 2 a 8 números o letras) y una pista por línea; se enseñan una a una.\nUna cuenta atrás añade emoción; sin ella, hay más calma para pensar.\nEn grupos, cada grupo resuelve una pista y aporta su cifra.\nAl abrirlo, un mensaje final (el siguiente paso, la tarea)."
+ },
+ "gd_codigo_stages": {
+  "en": "primary|Clues of arithmetic and reading; the example lock to start with.\nsecondary|Problems of the subject in a chain, in groups.\nadvanced|Case studies, and review before a test.",
+  "es": "primary|Pistas de cálculo y de lectura; el candado de ejemplo para empezar.\nsecondary|Problemas de la materia en cadena, por grupos.\nadvanced|Casos prácticos y repaso antes de un examen."
+ },
+ "gd_codigo_scene": {
+  "en": "Last class of the term in Year 8: four clues, one per group, each with a proportion problem. When the fourth group calls out its digit and the lock opens, the message says where the review sheet for the test is.",
+  "es": "Última clase del trimestre en segundo de ESO: cuatro pistas, una por grupo, cada una con un problema de proporcionalidad. Cuando el cuarto grupo dicta su cifra y el candado se abre, el mensaje dice dónde está la ficha de repaso del examen."
+ },
+ "gd_codigo_sources": {
+  "en": "Veldkamp, A., van de Grint, L., Knippels, M.-C. P. J. and van Joolingen, W. R. (2020). Escape education: A systematic review on escape rooms in education. Educational Research Review, 31, 100364.|https://doi.org/10.1016/j.edurev.2020.100364",
+  "es": "Veldkamp, A., van de Grint, L., Knippels, M.-C. P. J. y van Joolingen, W. R. (2020). Escape education: A systematic review on escape rooms in education. Educational Research Review, 31, 100364.|https://doi.org/10.1016/j.edurev.2020.100364"
+ },
+ "gd_grupos_what": {
+  "en": "Random groups from the class list, without those absent, with a role for each one if wanted.",
+  "es": "Grupos al azar con la lista de la clase, sin los que faltan, con un rol para cada uno si se quiere."
+ },
+ "gd_grupos_works": {
+  "en": "Working with different classmates, not always the same ones.\nSharing out responsibilities with roles.\nFair, quick groups, with no arguing about who goes with whom.",
+  "es": "Trabajar con compañeros distintos, no siempre los mismos.\nRepartir responsabilidades con roles.\nGrupos justos y rápidos, sin discutir quién va con quién."
+ },
+ "gd_grupos_why": {
+  "en": "In their review of cooperative learning, David and Roger Johnson say that cooperation works when there is positive interdependence (the group needs everyone) and individual accountability (each one's work counts and is given back to them), along with interaction, social skills and the group reflecting on how it has worked (Johnson and Johnson, 2009). Roles help with both: each member has a task the group needs.\nThe Reading set uses the four roles of reciprocal teaching: predicting, questioning, clarifying and summarising. Palincsar and Brown (1984) studied it with 12- and 13-year-olds who struggled with reading comprehension, with good results in small samples.",
+  "es": "Según la revisión de David y Roger Johnson sobre el aprendizaje cooperativo, la cooperación funciona cuando hay interdependencia positiva (el grupo necesita a todos) y responsabilidad individual (el trabajo de cada uno cuenta y se le devuelve), además de interacción, habilidades sociales y reflexión del grupo sobre cómo ha trabajado (Johnson y Johnson, 2009). Los roles ayudan a las dos cosas: cada uno tiene una tarea que el grupo necesita.\nEl juego de roles de Lectura usa los cuatro papeles de la enseñanza recíproca: predecir, preguntar, aclarar y resumir. Palincsar y Brown (1984) la estudiaron con alumnos de 12 y 13 años con dificultades de comprensión lectora, con buenos resultados en muestras pequeñas."
+ },
+ "gd_grupos_how": {
+  "en": "«Who's missing today?» before making the groups.\nNumber of groups, or students per group.\n«A role for each one» and, in «Change the roles», the set of roles: group tasks, music, science, reading or your own.\n«Other roles» hands them out again; the sharing takes into account the roles each one has already had.\n«Save as course groups» leaves them in the course for assignments and forums.",
+  "es": "«¿Quién falta hoy?» antes de hacer los grupos.\nNúmero de grupos, o alumnos por grupo.\n«Un rol para cada uno» y, en «Cambiar los roles», el juego de roles: tareas del grupo, Música, Ciencias, Lectura o los tuyos.\n«Otros roles» los vuelve a repartir; el reparto tiene en cuenta los roles que ya tuvo cada uno.\n«Guardar como grupos del curso» los deja en el Aula virtual para tareas y foros."
+ },
+ "gd_grupos_stages": {
+  "en": "early|Pairs and small groups; simple roles such as handing out the materials.\nprimary|Work teams with roles that change every week.\nsecondary|Project groups with roles for the subject, saved in the course.\nadvanced|Seminars and group work, saved as course groups.",
+  "es": "early|Parejas y grupos pequeños; roles sencillos como repartir el material.\nprimary|Equipos de trabajo con roles que cambian cada semana.\nsecondary|Grupos de proyecto con roles de la materia, guardados en el curso.\nadvanced|Seminarios y trabajos en grupo, guardados como grupos del curso."
+ },
+ "gd_grupos_scene": {
+  "en": "In the Year 8 lab two students are missing. The teacher marks who is absent, asks for groups of four and the science roles: measure, write down, set up, photograph. Nobody chooses who they go with, and nobody is left without a task.",
+  "es": "En el laboratorio de segundo de ESO faltan dos alumnos. El profesor marca quién falta, pide grupos de cuatro y el juego de roles de Ciencias: medir, anotar, montar, fotografiar. Nadie elige con quién va, y nadie se queda sin tarea."
+ },
+ "gd_grupos_sources": {
+  "en": "Johnson, D. W. and Johnson, R. T. (2009). An educational psychology success story: Social interdependence theory and cooperative learning. Educational Researcher, 38(5), 365–379.|https://doi.org/10.3102/0013189X09339057\nPalincsar, A. S. and Brown, A. L. (1984). Reciprocal teaching of comprehension-fostering and comprehension-monitoring activities. Cognition and Instruction, 1(2), 117–175.|https://doi.org/10.1207/s1532690xci0102_1",
+  "es": "Johnson, D. W. y Johnson, R. T. (2009). An educational psychology success story: Social interdependence theory and cooperative learning. Educational Researcher, 38(5), 365–379.|https://doi.org/10.3102/0013189X09339057\nPalincsar, A. S. y Brown, A. L. (1984). Reciprocal teaching of comprehension-fostering and comprehension-monitoring activities. Cognition and Instruction, 1(2), 117–175.|https://doi.org/10.1207/s1532690xci0102_1"
+ },
+ "gd_envivo_what": {
+  "en": "Sessions with the class's phones or tablets: a vote, a brainstorm, a quiz, buzzers, the teacher's phone as a remote and, without tablets, hands up.",
+  "es": "Sesiones con los móviles o tabletas de la clase: votación, lluvia de ideas, concurso, pulsadores, el móvil del docente como mando y, sin tabletas, a mano alzada."
+ },
+ "gd_envivo_works": {
+  "en": "Everyone answers at once, not just one.\nSeeing at a glance what the class has understood.\nGiving an opinion without being swayed by the others: a vote hides the bars while it is open.\nTaking part with their name or without it.",
+  "es": "Que contesten todos a la vez, no solo uno.\nVer de un vistazo qué ha entendido la clase.\nOpinar sin dejarse llevar por los demás: la votación oculta las barras mientras está abierta.\nParticipar con su nombre o sin él."
+ },
+ "gd_envivo_why": {
+  "en": "In Peer Instruction, students answer a conceptual question, discuss it with a classmate and answer again; ten years of it in introductory physics at Harvard University showed better mastery of conceptual reasoning and of problem solving (Crouch and Mazur, 2001).\nVoting before and after an experiment follows the predict-observe-explain technique, as described by White and Gunstone (1992).",
+  "es": "En la instrucción entre iguales (Peer Instruction), los estudiantes contestan una pregunta de concepto, la discuten con un compañero y vuelven a contestar; diez años de experiencia en cursos de Física de la Universidad de Harvard mostraron mejor dominio del razonamiento conceptual y de la resolución de problemas (Crouch y Mazur, 2001).\nVotar antes y después de un experimento sigue la técnica predecir, observar, explicar, tal como la describen White y Gunstone (1992)."
+ },
+ "gd_envivo_how": {
+  "en": "Open the session: they join with the QR or the code, with their course account or without one.\nVote: ask the question, open it, wait, close it and the bars appear; «Another question» for a second round.\nFor Peer Instruction: they vote, discuss in pairs for a couple of minutes and vote again.\nBrainstorm: a word or two each; check them before showing them if needed.\nWithout tablets: «Hands up», and you count with + and −.",
+  "es": "Abre la sesión: entran con el QR o el código, con su usuario del Aula virtual o sin él.\nVotación: haz la pregunta, abre, espera, cierra y salen las barras; «Otra pregunta» para la segunda ronda.\nPara la instrucción entre iguales: votan, lo discuten en parejas un par de minutos y vuelven a votar.\nLluvia de ideas: una o dos palabras cada uno; revísalas antes de mostrarlas si hace falta.\nSin tabletas: «A mano alzada», y cuentas tú con + y −."
+ },
+ "gd_envivo_stages": {
+  "en": "early|A show of hands in circle time, to choose together.\nprimary|Votes from A to D, yes or no, or the traffic light to see who has understood.\nsecondary|Peer Instruction, brainstorms and quizzes in teams.\nadvanced|Conceptual votes in large classes, and brainstorms in seminars.",
+  "es": "early|A mano alzada en la asamblea, para decidir juntos.\nprimary|Votaciones de A a D, sí o no, o el semáforo para ver quién lo ha entendido.\nsecondary|Instrucción entre iguales, lluvia de ideas y concurso por equipos.\nadvanced|Votaciones de concepto en clases grandes, y lluvia de ideas en seminarios."
+ },
+ "gd_envivo_scene": {
+  "en": "Before the experiment, Year 5 vote whether an egg floats in salty water: nearly everyone says no. They do the experiment and repeat the question with «Another question»; the bars change, and the best part begins: explaining why.",
+  "es": "Antes del experimento, la clase de cuarto vota si el huevo flota en agua con sal: casi todos dicen que no. Hacen el experimento y repiten la pregunta con «Otra pregunta»; las barras cambian, y empieza la mejor parte: explicar por qué."
+ },
+ "gd_envivo_sources": {
+  "en": "Crouch, C. H. and Mazur, E. (2001). Peer Instruction: Ten years of experience and results. American Journal of Physics, 69(9), 970–977.|https://doi.org/10.1119/1.1374249\nWhite, R. T. and Gunstone, R. F. (1992). Probing Understanding. Falmer Press.",
+  "es": "Crouch, C. H. y Mazur, E. (2001). Peer Instruction: Ten years of experience and results. American Journal of Physics, 69(9), 970–977.|https://doi.org/10.1119/1.1374249\nWhite, R. T. y Gunstone, R. F. (1992). Probing Understanding. Falmer Press."
+ },
+ "gd_semaforo_what": {
+  "en": "A traffic light that listens to the noise of the class and turns green, amber or red: the volume is seen without raising the voice.",
+  "es": "Un semáforo que escucha el ruido de la clase y se pone verde, amarillo o rojo: el volumen se ve sin tener que levantar la voz."
+ },
+ "gd_semaforo_works": {
+  "en": "Being aware of the volume when working in groups.\nThe class regulating itself, without the teacher having to ask for silence.\nComparing the noise of different activities.",
+  "es": "Ser conscientes del volumen al trabajar en grupo.\nQue la clase se regule sola, sin que el docente tenga que pedir silencio.\nComparar el ruido de distintas actividades."
+ },
+ "gd_semaforo_why": {
+  "en": "The World Health Organization recommends that the background sound in a classroom should not exceed 35 dB during lessons, so that speech is understood well (Berglund, Lindvall and Schwela, 1999). In London primary schools, classroom noise was related to lower results in national tests, also after taking social factors into account (Shield and Dockrell, 2008).\nThe light does not measure exact decibels: it compares with the usual noise of your class, set with «Adjust to this class». It records nothing and sends nothing; it only measures the volume.",
+  "es": "La Organización Mundial de la Salud recomienda que el ruido de fondo de un aula no supere los 35 dB durante las clases, para que se entienda bien lo que se dice (Berglund, Lindvall y Schwela, 1999). En escuelas de Primaria de Londres, el ruido del aula se relacionó con peores resultados en las pruebas nacionales, también descontando factores sociales (Shield y Dockrell, 2008).\nEl semáforo no mide decibelios exactos: compara con el ruido normal de tu clase, que se ajusta con «Ajustar a esta clase». No graba ni envía nada; solo mide el volumen."
+ },
+ "gd_semaforo_how": {
+  "en": "«Adjust to this class» with the class working at a volume that seems right to you: that will be green.\nExplain beforehand what each colour means and what happens on red.\n«A face in the light» for the youngest.\nUse it for group work, not when speaking aloud is the point.",
+  "es": "«Ajustar a esta clase» con la clase trabajando a un volumen que te parezca bien: ese será el verde.\nExplica antes qué significa cada color y qué se hace en rojo.\n«Una cara en la luz» para los pequeños.\nÚsalo en el trabajo en grupo, no cuando lo que toca es hablar en voz alta."
+ },
+ "gd_semaforo_stages": {
+  "en": "early|With the face in the light, during play in corners.\nprimary|Work in pairs and in groups.\nsecondary|Group work and the lab.\nadvanced|Rarely; in open-plan rooms or study areas.",
+  "es": "early|Con la cara en la luz, en el rato de rincones.\nprimary|Trabajo en parejas y en grupo.\nsecondary|Trabajo en grupo y en el laboratorio.\nadvanced|Pocas veces; en aulas abiertas o espacios de estudio."
+ },
+ "gd_semaforo_scene": {
+  "en": "During play in corners in Early years, the light turns amber and the face stops smiling. Nobody says anything: a girl puts her finger to her lips, the light goes back to green, and the class celebrates in a whisper.",
+  "es": "En el rato de rincones de Infantil, la luz se pone amarilla y la cara deja de sonreír. Nadie dice nada: una niña se lleva el dedo a los labios, la luz vuelve al verde y la clase lo celebra en voz baja."
+ },
+ "gd_semaforo_sources": {
+  "en": "Berglund, B., Lindvall, T. and Schwela, D. H. (Eds.) (1999). Guidelines for Community Noise. World Health Organization.|https://www.who.int/publications/i/item/a68672\nShield, B. M. and Dockrell, J. E. (2008). The effects of environmental and classroom noise on the academic attainments of primary school children. Journal of the Acoustical Society of America, 123(1), 133–144.|https://doi.org/10.1121/1.2812596",
+  "es": "Berglund, B., Lindvall, T. y Schwela, D. H. (Eds.) (1999). Guidelines for Community Noise. Organización Mundial de la Salud.|https://www.who.int/publications/i/item/a68672\nShield, B. M. y Dockrell, J. E. (2008). The effects of environmental and classroom noise on the academic attainments of primary school children. Journal of the Acoustical Society of America, 123(1), 133–144.|https://doi.org/10.1121/1.2812596"
+ },
+ "gd_asi_what": {
+  "en": "Full-screen signs with the way of working of the moment: silence, quiet voices, in pairs, in groups, hands up, listen.",
+  "es": "Carteles a pantalla completa con la forma de trabajar del momento: silencio, en voz baja, por parejas, en grupo, levanta la mano, escucha."
+ },
+ "gd_asi_works": {
+  "en": "The class knowing what is expected at each moment.\nQuicker changes between activities.\nFewer orders given aloud.",
+  "es": "Que la clase sepa qué se espera en cada momento.\nCambios más rápidos entre actividades.\nMenos órdenes de viva voz."
+ },
+ "gd_asi_why": {
+  "en": "A review of classroom management practices with empirical support points to posting, teaching, reviewing and reinforcing the expectations of the class, and to giving structure with clearly defined routines (Simonsen and others, 2008). The sign keeps the expectation of the moment in sight.",
+  "es": "Una revisión de prácticas de gestión del aula con apoyo empírico señala como clave exponer, enseñar, repasar y reforzar las expectativas de la clase, y dar estructura con rutinas bien definidas (Simonsen y otros, 2008). El cartel deja a la vista la expectativa del momento."
+ },
+ "gd_asi_how": {
+  "en": "Teach them at the start of the year, one by one, explaining what is done with each.\nPut the sign up before each activity starts, not when there is already noise.\nPraise aloud when the class follows it.",
+  "es": "Enséñalos al principio de curso, uno a uno, explicando qué se hace con cada uno.\nPon el cartel antes de empezar cada actividad, no cuando ya hay ruido.\nReconoce en voz alta cuando la clase lo cumple."
+ },
+ "gd_asi_stages": {
+  "en": "early|Few signs, always the same, each with its gesture.\nprimary|For every change of activity.\nsecondary|When group or individual work begins.\nadvanced|In workshops and labs.",
+  "es": "early|Pocos carteles y siempre los mismos, cada uno con su gesto.\nprimary|En cada cambio de actividad.\nsecondary|Al empezar el trabajo en grupo o individual.\nadvanced|En talleres y laboratorios."
+ },
+ "gd_asi_scene": {
+  "en": "After the group work, the teacher taps «Listen» and the sign fills the screen. The groups turn to the board before she says a word: they practised it in the first week.",
+  "es": "Después del trabajo en grupo, la maestra toca «Escucha» y el cartel llena la pantalla. Los grupos se giran hacia la pizarra antes de que ella diga nada: lo practicaron la primera semana."
+ },
+ "gd_asi_sources": {
+  "en": "Simonsen, B., Fairbanks, S., Briesch, A., Myers, D. and Sugai, G. (2008). Evidence-based practices in classroom management: Considerations for research to practice. Education and Treatment of Children, 31(3), 351–380.|https://doi.org/10.1353/etc.0.0007",
+  "es": "Simonsen, B., Fairbanks, S., Briesch, A., Myers, D. y Sugai, G. (2008). Evidence-based practices in classroom management: Considerations for research to practice. Education and Treatment of Children, 31(3), 351–380.|https://doi.org/10.1353/etc.0.0007"
+ },
+ "gd_reloj_what": {
+  "en": "A clock whose hands move with a finger, with the time in digits and in words, to learn to tell the time.",
+  "es": "Un reloj de agujas que se mueven con el dedo, con la hora en cifras y en palabras, para aprender a leer la hora."
+ },
+ "gd_reloj_works": {
+  "en": "Reading the time on a clock with hands: o'clock, half past, quarter past and to, five minutes, minute by minute.\nRelating the clock with hands to the digital time and to the time in words.\nRoman numerals on the dial.\n12 and 24 hours.",
+  "es": "Leer la hora en un reloj de agujas: en punto, y media, y cuarto y menos cuarto, de cinco en cinco, minuto a minuto.\nRelacionar el reloj de agujas con la hora digital y con la hora dicha en palabras.\nNúmeros romanos en la esfera.\n12 y 24 horas."
+ },
+ "gd_reloj_why": {
+  "en": "Telling the time is part of primary school: the Spanish curriculum includes measuring time with the analogue and digital clock (Real Decreto 157/2022, Mathematics). In England, pupils tell the time to five minutes in Year 2 and, in Year 3, from an analogue clock with Roman numerals from I to XII (Department for Education, 2013).",
+  "es": "Leer la hora es un contenido de Primaria: el currículo español incluye la medida del tiempo con el reloj analógico y el digital (Real Decreto 157/2022, Matemáticas). En Inglaterra se lee la hora de cinco en cinco minutos en el segundo curso y, en el tercero, en un reloj de agujas con números romanos del I al XII (Department for Education, 2013)."
+ },
+ "gd_reloj_how": {
+  "en": "Choose the level: o'clock, half past, quarter past and to, every five minutes or minute by minute.\n«What time is it?»: a time appears on the clock and the class reads it.\n«Set the time»: the class moves the hands to the time asked for.\nHide the time in digits or in words so that they read the hands alone.\n«Roman numerals», for clocks like those on buildings.",
+  "es": "Elige el nivel: en punto, y media, y cuarto y menos cuarto, de 5 en 5 minutos o minuto a minuto.\n«¿Qué hora es?»: aparece una hora en el reloj y la clase la lee.\n«Pon la hora»: la clase mueve las agujas hasta la hora que se pide.\nEsconde la hora en cifras o en palabras para que lean solo las agujas.\n«Números romanos», para relojes como los de los edificios."
+ },
+ "gd_reloj_stages": {
+  "en": "early|O'clock, with the hour hand: when we eat, when we go home.\nprimary|From half past to minute by minute, and Roman numerals.\nsecondary|The 24-hour clock and working out how long things last.\nadvanced|Rarely; in teacher training, to teach how to tell the time.",
+  "es": "early|En punto, con la aguja de las horas: cuándo comemos, cuándo salimos.\nprimary|De la media hora al minuto, y los números romanos.\nsecondary|El reloj de 24 horas y calcular cuánto dura algo.\nadvanced|Pocas veces; en Magisterio, para enseñar a leer la hora."
+ },
+ "gd_reloj_scene": {
+  "en": "In Year 3, the teacher turns on Roman numerals and sets a quarter past four. «It's like the town hall clock», someone says. The class reads the time without digits and, along the way, learns that IV is four.",
+  "es": "En segundo, el maestro activa los números romanos y pone las cuatro y cuarto. «Es como el reloj del ayuntamiento», dice alguien. La clase lee la hora sin cifras y, de paso, aprende que IV es cuatro."
+ },
+ "gd_reloj_sources": {
+  "en": "Real Decreto 157/2022, de 1 de marzo, por el que se establecen la ordenación y las enseñanzas mínimas de la Educación Primaria. BOE-A-2022-3296.|https://www.boe.es/buscar/act.php?id=BOE-A-2022-3296\nDepartment for Education (2013). National curriculum in England: mathematics programmes of study.|https://www.gov.uk/government/publications/national-curriculum-in-england-mathematics-programmes-of-study",
+  "es": "Real Decreto 157/2022, de 1 de marzo, por el que se establecen la ordenación y las enseñanzas mínimas de la Educación Primaria. BOE-A-2022-3296.|https://www.boe.es/buscar/act.php?id=BOE-A-2022-3296\nDepartment for Education (2013). National curriculum in England: mathematics programmes of study.|https://www.gov.uk/government/publications/national-curriculum-in-england-mathematics-programmes-of-study"
  }
 }

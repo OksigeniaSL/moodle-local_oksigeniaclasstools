@@ -376,10 +376,195 @@ $string['app_gb_next'] = 'Toca el siguiente clavo';
 $string['app_gb_size'] = 'Clavos';
 $string['app_gb_squares'] = 'Ver los cuadraditos';
 $string['app_gb_start'] = 'Toca un clavo para empezar una goma';
+$string['app_gd_ahorcado_how'] = 'Escribe la palabra tú (se escribe oculta), usa las de la pizarra o toma un glosario del curso.
+Una pista ayuda a los pequeños y hace pensar a los mayores.
+«Destapar una letra» cuesta un globo: úsalo cuando se atasquen.
+Con «Idioma de las palabras», en inglés o en francés, con su teclado.
+En Infantil, «Primera letra de un nombre» necesita una lista de la clase.';
+$string['app_gd_ahorcado_scene'] = 'En la asamblea de Infantil sale la foto de Pablo y debajo «_ABLO». Tres letras grandes: P, M y S. Pablo grita la suya antes que nadie; la siguiente es María, y la clase ya busca la M.';
+$string['app_gd_ahorcado_sources'] = 'Ferreiro, E. y Teberosky, A. (1979). Los sistemas de escritura en el desarrollo del niño. Siglo XXI.';
+$string['app_gd_ahorcado_stages'] = 'early|La primera letra del nombre de un compañero, con su foto.
+primary|Palabras del tema y ortografía; globos que se van.
+secondary|Vocabulario de la materia desde el glosario; globos que se quedan.
+advanced|Terminología y lenguas extranjeras, con el idioma de las palabras.';
+$string['app_gd_ahorcado_what'] = 'Adivinar una palabra letra a letra antes de que se gasten los globos; en Infantil, la primera letra del nombre de un compañero.';
+$string['app_gd_ahorcado_why'] = 'En Infantil, el juego usa los nombres de la clase porque el nombre propio es, para el niño, la primera forma escrita estable y con significado (Ferreiro y Teberosky, 1979).
+Los globos que se van, en lugar de una figura ahorcada, le quitan el castigo a la imagen clásica.';
+$string['app_gd_ahorcado_works'] = 'Ortografía y vocabulario: qué letras tiene una palabra y en qué orden.
+Pensar qué letras son más probables (primero las vocales, luego las más frecuentes).
+En Infantil, reconocer la primera letra de los nombres de la clase.
+Con un glosario del curso, el vocabulario de la materia con su definición como pista.';
+$string['app_gd_asi_how'] = 'Enséñalos al principio de curso, uno a uno, explicando qué se hace con cada uno.
+Pon el cartel antes de empezar cada actividad, no cuando ya hay ruido.
+Reconoce en voz alta cuando la clase lo cumple.';
+$string['app_gd_asi_scene'] = 'Después del trabajo en grupo, la maestra toca «Escucha» y el cartel llena la pantalla. Los grupos se giran hacia la pizarra antes de que ella diga nada: lo practicaron la primera semana.';
+$string['app_gd_asi_sources'] = 'Simonsen, B., Fairbanks, S., Briesch, A., Myers, D. y Sugai, G. (2008). Evidence-based practices in classroom management: Considerations for research to practice. Education and Treatment of Children, 31(3), 351–380.|https://doi.org/10.1353/etc.0.0007';
+$string['app_gd_asi_stages'] = 'early|Pocos carteles y siempre los mismos, cada uno con su gesto.
+primary|En cada cambio de actividad.
+secondary|Al empezar el trabajo en grupo o individual.
+advanced|En talleres y laboratorios.';
+$string['app_gd_asi_what'] = 'Carteles a pantalla completa con la forma de trabajar del momento: silencio, en voz baja, por parejas, en grupo, levanta la mano, escucha.';
+$string['app_gd_asi_why'] = 'Una revisión de prácticas de gestión del aula con apoyo empírico señala como clave exponer, enseñar, repasar y reforzar las expectativas de la clase, y dar estructura con rutinas bien definidas (Simonsen y otros, 2008). El cartel deja a la vista la expectativa del momento.';
+$string['app_gd_asi_works'] = 'Que la clase sepa qué se espera en cada momento.
+Cambios más rápidos entre actividades.
+Menos órdenes de viva voz.';
+$string['app_gd_base10_how'] = '«Construir un número»: que lo formen con bloques y lo lean como suma de sus partes.
+Con diez en una columna, «Cambiar 10 por 1» los agrupa; «Romper en 10» hace lo contrario.
+«Esconder el número» y «¿Qué número es?» para leerlo solo con los bloques.
+Para restar llevando, que rompan una decena antes de quitar: lo mismo que en el papel.';
+$string['app_gd_base10_scene'] = 'En tercero, el maestro pide 52 menos 17. Un alumno dice que no se puede quitar 7 de 2. Rompe una decena en diez unidades con un toque, quita siete, y la clase ve qué significa «llevarse una» en la resta antes de escribirla.';
+$string['app_gd_base10_sources'] = 'Dienes, Z. P. (1960). Building Up Mathematics. Hutchinson Educational.';
+$string['app_gd_base10_stages'] = 'early|De vez en cuando: contar unidades y ver que diez forman una barra.
+primary|Valor de posición, sumas y restas llevando.
+secondary|Para quien aún no domina el valor de posición.
+advanced|En Magisterio, para enseñar el sistema de numeración decimal.';
+$string['app_gd_base10_what'] = 'Unidades, decenas, centenas y millares en una tabla de valores: el número que forman, por partes.';
+$string['app_gd_base10_why'] = 'Cambiar diez por uno (agrupar) y uno por diez (romper) es lo que hay detrás de «llevarse una» en las cuentas: con los bloques se hace a la vista antes de hacerlo en el papel.
+Zoltan Dienes, que expuso su teoría de cómo se aprenden las matemáticas en Building Up Mathematics (1960), dio a conocer los bloques multibase para enseñar el valor de posición.';
+$string['app_gd_base10_works'] = 'El valor de posición: el 3 de 30 no vale lo mismo que el de 300.
+Agrupar diez de una clase en una de la siguiente, y romper una en diez.
+Sumar y restar llevando, sabiendo el porqué de cada paso.
+Leer y escribir números como suma de sus partes («100 + 30 + 12 = 142»).';
 $string['app_gd_button'] = 'Guía docente';
 $string['app_gd_close'] = 'Cerrar la guía';
+$string['app_gd_codigo_how'] = 'Escribe el código (de 2 a 8 números o letras) y una pista por línea; se enseñan una a una.
+Una cuenta atrás añade emoción; sin ella, hay más calma para pensar.
+En grupos, cada grupo resuelve una pista y aporta su cifra.
+Al abrirlo, un mensaje final (el siguiente paso, la tarea).';
+$string['app_gd_codigo_scene'] = 'Última clase del trimestre en segundo de ESO: cuatro pistas, una por grupo, cada una con un problema de proporcionalidad. Cuando el cuarto grupo dicta su cifra y el candado se abre, el mensaje dice dónde está la ficha de repaso del examen.';
+$string['app_gd_codigo_sources'] = 'Veldkamp, A., van de Grint, L., Knippels, M.-C. P. J. y van Joolingen, W. R. (2020). Escape education: A systematic review on escape rooms in education. Educational Research Review, 31, 100364.|https://doi.org/10.1016/j.edurev.2020.100364';
+$string['app_gd_codigo_stages'] = 'primary|Pistas de cálculo y de lectura; el candado de ejemplo para empezar.
+secondary|Problemas de la materia en cadena, por grupos.
+advanced|Casos prácticos y repaso antes de un examen.';
+$string['app_gd_codigo_what'] = 'Un candado con un código que se abre resolviendo pistas, como en un escape room, con cuenta atrás si se quiere.';
+$string['app_gd_codigo_why'] = 'Una revisión de 39 experiencias de escape room en educación encontró que a la gran mayoría de los estudiantes les gustaron, que los docentes los vieron muy implicados y que sirven para practicar el trabajo en equipo. En cambio, casi no hay pruebas de que con ellos se aprendan contenidos nuevos (Veldkamp y otros, 2020). Mejor usarlo para repasar y aplicar lo ya trabajado.';
+$string['app_gd_codigo_works'] = 'Resolver problemas en cadena: cada pista da una cifra.
+Trabajar en equipo y comunicarse.
+Repasar cualquier materia en forma de reto.';
+$string['app_gd_envivo_how'] = 'Abre la sesión: entran con el QR o el código, con su usuario del Aula virtual o sin él.
+Votación: haz la pregunta, abre, espera, cierra y salen las barras; «Otra pregunta» para la segunda ronda.
+Para la instrucción entre iguales: votan, lo discuten en parejas un par de minutos y vuelven a votar.
+Lluvia de ideas: una o dos palabras cada uno; revísalas antes de mostrarlas si hace falta.
+Sin tabletas: «A mano alzada», y cuentas tú con + y −.';
+$string['app_gd_envivo_scene'] = 'Antes del experimento, la clase de cuarto vota si el huevo flota en agua con sal: casi todos dicen que no. Hacen el experimento y repiten la pregunta con «Otra pregunta»; las barras cambian, y empieza la mejor parte: explicar por qué.';
+$string['app_gd_envivo_sources'] = 'Crouch, C. H. y Mazur, E. (2001). Peer Instruction: Ten years of experience and results. American Journal of Physics, 69(9), 970–977.|https://doi.org/10.1119/1.1374249
+White, R. T. y Gunstone, R. F. (1992). Probing Understanding. Falmer Press.';
+$string['app_gd_envivo_stages'] = 'early|A mano alzada en la asamblea, para decidir juntos.
+primary|Votaciones de A a D, sí o no, o el semáforo para ver quién lo ha entendido.
+secondary|Instrucción entre iguales, lluvia de ideas y concurso por equipos.
+advanced|Votaciones de concepto en clases grandes, y lluvia de ideas en seminarios.';
+$string['app_gd_envivo_what'] = 'Sesiones con los móviles o tabletas de la clase: votación, lluvia de ideas, concurso, pulsadores, el móvil del docente como mando y, sin tabletas, a mano alzada.';
+$string['app_gd_envivo_why'] = 'En la instrucción entre iguales (Peer Instruction), los estudiantes contestan una pregunta de concepto, la discuten con un compañero y vuelven a contestar; diez años de experiencia en cursos de Física de la Universidad de Harvard mostraron mejor dominio del razonamiento conceptual y de la resolución de problemas (Crouch y Mazur, 2001).
+Votar antes y después de un experimento sigue la técnica predecir, observar, explicar, tal como la describen White y Gunstone (1992).';
+$string['app_gd_envivo_works'] = 'Que contesten todos a la vez, no solo uno.
+Ver de un vistazo qué ha entendido la clase.
+Opinar sin dejarse llevar por los demás: la votación oculta las barras mientras está abierta.
+Participar con su nombre o sin él.';
+$string['app_gd_fractions_how'] = 'Que coloreen piezas de una fila y busquen lo mismo en otra: el muro dice qué partes son iguales («1/2 = 2/4 = 3/6»).
+La regla para comparar recorre el muro y alinea las filas.
+En las piezas: fracciones, decimales, porcentajes o nada, para que razonen solo con el tamaño.
+Pregunta primero y comprueba después: «¿Qué es más, dos tercios o tres cuartos?».';
+$string['app_gd_fractions_scene'] = 'En sexto, la profesora pregunta qué es más, dos tercios o tres cuartos. La clase se divide. Una alumna colorea dos tercios, otra tres cuartos, y la regla para comparar zanja el debate: tres cuartos llega un poco más lejos.';
+$string['app_gd_fractions_sources'] = 'Siegler, R. y otros (2010). Developing effective fractions instruction for kindergarten through 8th grade (NCEE 2010-4039). Institute of Education Sciences.|https://ies.ed.gov/ncee/wwc/PracticeGuide/15';
+$string['app_gd_fractions_stages'] = 'early|Mitades y enteros con piezas de colores, sin números.
+primary|Fracciones sencillas, equivalentes y su comparación.
+secondary|Equivalentes, decimales y porcentajes; sumar fracciones viéndolas.
+advanced|En Magisterio, para mostrar el modelo de medida de las fracciones.';
+$string['app_gd_fractions_what'] = 'Una barra entera y, debajo, la misma barra en medios, tercios, cuartos…: las fracciones se comparan de un vistazo.';
+$string['app_gd_fractions_why'] = 'La guía práctica del Institute of Education Sciences de Estados Unidos sobre las fracciones recomienda ayudar a ver que las fracciones son números, con actividades de medida y con la recta numérica (Siegler y otros, 2010). En el muro, cada pieza es una longitud: lo que mide se compara poniendo una fila junto a otra, como en la recta.';
+$string['app_gd_fractions_works'] = 'Qué es una fracción: partes iguales de un mismo entero.
+Comparar: un tercio es menos que un medio, aunque 3 sea más que 2.
+Fracciones equivalentes: 1/2 = 2/4 = 3/6.
+Fracción, decimal y porcentaje de una misma cantidad.';
+$string['app_gd_geoboard_how'] = 'Toca clavos para estirar una goma; toca el primero para cerrar la figura.
+Arrastra una esquina a otro clavo para cambiar la figura.
+«Área y perímetro» da las medidas, y «Ver los cuadraditos» ayuda a contarlas.
+Retos: «Haz un rectángulo de área 6», «¿Cuántos triángulos distintos de área 2 hay?».
+Más clavos para figuras grandes; menos para los pequeños.';
+$string['app_gd_geoboard_scene'] = 'En segundo de ESO, el profesor pide figuras de área 4. Salen cuadrados, rectángulos y un triángulo raro. En cada una cuentan los clavos de dentro y los del borde, y la clase descubre la regla antes de que nadie diga su nombre: Pick.';
+$string['app_gd_geoboard_sources'] = 'Gattegno, C. (1954). The Gattegno geoboards. Bulletin of the Association for Teaching Aids in Mathematics, 3.|https://roslyn-young.fr/biblios/bibliography-of-gattegno-s-work
+Pick, G. (1899). Geometrisches zur Zahlenlehre. Lotos, 47, 311–319.|https://mathshistory.st-andrews.ac.uk/Biographies/Pick/';
+$string['app_gd_geoboard_stages'] = 'early|Estirar gomas, hacer figuras y nombrarlas.
+primary|Polígonos, área contando cuadraditos y perímetro.
+secondary|Áreas de triángulos y polígonos irregulares; el teorema de Pick.
+advanced|En Magisterio, para enseñar geometría con material manipulativo.';
+$string['app_gd_geoboard_what'] = 'Un tablero de clavos donde se estiran gomas: figuras, áreas y perímetros que se ven y se cuentan.';
+$string['app_gd_geoboard_why'] = 'El geoplano lo dio a conocer el educador matemático Caleb Gattegno, que lo describió en 1954.
+En un polígono con las esquinas en los clavos y sin agujeros, el área es el número de clavos de dentro más la mitad de los del borde, menos uno: es el teorema de Pick (Pick, 1899). En el geoplano se comprueba con el área que da el tablero.';
+$string['app_gd_geoboard_works'] = 'Construir y reconocer polígonos.
+El área contando cuadraditos, y el perímetro.
+Simetrías y figuras iguales.
+En Secundaria, el teorema de Pick.';
+$string['app_gd_grupos_how'] = '«¿Quién falta hoy?» antes de hacer los grupos.
+Número de grupos, o alumnos por grupo.
+«Un rol para cada uno» y, en «Cambiar los roles», el juego de roles: tareas del grupo, Música, Ciencias, Lectura o los tuyos.
+«Otros roles» los vuelve a repartir; el reparto tiene en cuenta los roles que ya tuvo cada uno.
+«Guardar como grupos del curso» los deja en el Aula virtual para tareas y foros.';
+$string['app_gd_grupos_scene'] = 'En el laboratorio de segundo de ESO faltan dos alumnos. El profesor marca quién falta, pide grupos de cuatro y el juego de roles de Ciencias: medir, anotar, montar, fotografiar. Nadie elige con quién va, y nadie se queda sin tarea.';
+$string['app_gd_grupos_sources'] = 'Johnson, D. W. y Johnson, R. T. (2009). An educational psychology success story: Social interdependence theory and cooperative learning. Educational Researcher, 38(5), 365–379.|https://doi.org/10.3102/0013189X09339057
+Palincsar, A. S. y Brown, A. L. (1984). Reciprocal teaching of comprehension-fostering and comprehension-monitoring activities. Cognition and Instruction, 1(2), 117–175.|https://doi.org/10.1207/s1532690xci0102_1';
+$string['app_gd_grupos_stages'] = 'early|Parejas y grupos pequeños; roles sencillos como repartir el material.
+primary|Equipos de trabajo con roles que cambian cada semana.
+secondary|Grupos de proyecto con roles de la materia, guardados en el curso.
+advanced|Seminarios y trabajos en grupo, guardados como grupos del curso.';
+$string['app_gd_grupos_what'] = 'Grupos al azar con la lista de la clase, sin los que faltan, con un rol para cada uno si se quiere.';
+$string['app_gd_grupos_why'] = 'Según la revisión de David y Roger Johnson sobre el aprendizaje cooperativo, la cooperación funciona cuando hay interdependencia positiva (el grupo necesita a todos) y responsabilidad individual (el trabajo de cada uno cuenta y se le devuelve), además de interacción, habilidades sociales y reflexión del grupo sobre cómo ha trabajado (Johnson y Johnson, 2009). Los roles ayudan a las dos cosas: cada uno tiene una tarea que el grupo necesita.
+El juego de roles de Lectura usa los cuatro papeles de la enseñanza recíproca: predecir, preguntar, aclarar y resumir. Palincsar y Brown (1984) la estudiaron con alumnos de 12 y 13 años con dificultades de comprensión lectora, con buenos resultados en muestras pequeñas.';
+$string['app_gd_grupos_works'] = 'Trabajar con compañeros distintos, no siempre los mismos.
+Repartir responsabilidades con roles.
+Grupos justos y rápidos, sin discutir quién va con quién.';
 $string['app_gd_how'] = 'Cómo llevarlo a clase';
+$string['app_gd_line_how'] = 'Elige el tramo: «Del 0 al 10», «Del −10 al 10», cuartos, tercios, décimas… o «A mi manera».
+Un toque en la recta empieza en un punto; cada toque después es un salto, dibujado con su arco y su cuenta.
+Esconde los números y pregunta dónde cae uno antes de descubrirlo.
+Para restar, saltos hacia atrás; para los negativos, cruzar el cero.';
+$string['app_gd_line_scene'] = 'En quinto, el maestro elige «Cuartos, del 0 al 2», esconde los números y pregunta dónde va tres cuartos. Algunos lo ponen después del 1, porque tres y cuatro les parecen números grandes. Al descubrirlo, la recta les enseña que tres cuartos ni siquiera llega a 1.';
+$string['app_gd_line_sources'] = 'Siegler, R. S. y Ramani, G. B. (2008). Playing linear numerical board games promotes low-income children\'s numerical development. Developmental Science, 11(5), 655–661.|https://doi.org/10.1111/j.1467-7687.2008.00714.x
+Siegler, R. y otros (2010). Developing effective fractions instruction for kindergarten through 8th grade (NCEE 2010-4039). Institute of Education Sciences.|https://ies.ed.gov/ncee/wwc/PracticeGuide/15';
+$string['app_gd_line_stages'] = 'early|Del 0 al 10: contar saltos de uno en uno y ver qué número está más lejos.
+primary|Sumas y restas como saltos, decimales y fracciones sencillas.
+secondary|Negativos, fracciones equivalentes y operaciones con fracciones.
+advanced|En Magisterio, para enseñar el uso de la recta en Primaria.';
+$string['app_gd_line_what'] = 'Una recta con los números en orden, donde se marcan saltos: enteros, negativos, decimales o fracciones.';
+$string['app_gd_line_why'] = 'En un estudio con niños de preescolar de familias con pocos recursos, cuatro sesiones de quince minutos con un juego de tablero de números del 1 al 10 en línea igualaron su forma de situar números en una recta con la de sus compañeros; el mismo juego con colores en lugar de números no tuvo efecto (Siegler y Ramani, 2008).
+Para las fracciones, la guía práctica del Institute of Education Sciences de Estados Unidos recomienda la recta numérica como herramienta central desde los primeros cursos, para que se vea que las fracciones son números (Siegler y otros, 2010).';
+$string['app_gd_line_works'] = 'El orden de los números y la distancia entre ellos: cuál es mayor y por cuánto.
+Sumar y restar como saltos («2 + 3 + 4 = 9»).
+Los negativos, a la izquierda del cero.
+Fracciones y decimales como números con su sitio en la recta.
+Estimar dónde cae un número antes de comprobarlo.';
 $string['app_gd_none'] = 'Esta herramienta aún no tiene guía.';
+$string['app_gd_palabra_how'] = 'La clase propone y el docente escribe: un intento, un debate.
+Antes de cada intento, que digan qué letras ya saben y cuáles han descartado.
+Elige el número de intentos (de 5 a 8) según la edad.
+No hay diccionario: vale cualquier palabra con el número justo de letras.';
+$string['app_gd_palabra_scene'] = 'En una clase de Inglés de tercero de ESO, la palabra está en inglés y la pista es «a planet». Al tercer intento tienen _A_S; alguien propone MARS y la fila se pone verde.';
+$string['app_gd_palabra_sources'] = 'Wordle (Wikipedia, en inglés).|https://en.wikipedia.org/wiki/Wordle';
+$string['app_gd_palabra_stages'] = 'primary|Palabras de cinco letras, con pista.
+secondary|Seis letras, vocabulario de la materia.
+advanced|Siete letras, o en otro idioma con su teclado.';
+$string['app_gd_palabra_what'] = 'Adivinar una palabra en seis intentos: verde si la letra está en su sitio, amarillo si está en otro, gris si no está.';
+$string['app_gd_palabra_why'] = 'El juego lo creó Josh Wardle y se hizo muy popular desde su publicación en octubre de 2021. Cada intento da información que hay que combinar con la de los anteriores: un ejercicio de deducción con palabras.';
+$string['app_gd_palabra_works'] = 'Ortografía: qué palabras existen con esas letras.
+Razonar con pistas: descartar letras y posiciones.
+Vocabulario de la materia, de un glosario del curso o en otro idioma.
+Debatir en grupo antes de cada intento.';
+$string['app_gd_parejas_how'] = 'Elige un juego por nivel, o las caras y nombres de la clase, tus listas («dog = perro»), un glosario o las preguntas de emparejamiento del curso.
+Toda la clase o dos equipos: encontrar una pareja da otro turno.
+Antes de girar la segunda carta, que la clase diga qué espera encontrar.
+Pocas parejas para empezar; más cuando dominen el contenido.';
+$string['app_gd_parejas_scene'] = 'Primer día de curso en quinto: el maestro abre Parejas con las caras y los nombres de la clase. Cada acierto empareja una foto con su nombre, y al acabar la partida todos saben cómo se llaman los dos nuevos.';
+$string['app_gd_parejas_sources'] = 'Roediger, H. L. y Karpicke, J. D. (2006). Test-enhanced learning: Taking memory tests improves long-term retention. Psychological Science, 17(3), 249–255.|https://doi.org/10.1111/j.1467-9280.2006.01693.x';
+$string['app_gd_parejas_stages'] = 'early|Formas, colores, sombras de animales y números, con pocas parejas.
+primary|Palabra y dibujo, operaciones y resultados, caras y nombres de la clase.
+secondary|Concepto y definición, fórmulas y nombres, idiomas.
+advanced|Derivadas, elementos químicos, autores y obras: lo que se repasa del banco de preguntas.';
+$string['app_gd_parejas_what'] = 'Cartas boca abajo que se levantan de dos en dos para encontrar las parejas: iguales o relacionadas.';
+$string['app_gd_parejas_why'] = 'Cuando las parejas no son iguales sino relacionadas (concepto y definición, palabra y traducción), hay que recordar el contenido para reconocerlas: es una forma de práctica de recuperación, y recordar lo aprendido, en lugar de releerlo, ayuda a retenerlo (Roediger y Karpicke, 2006).';
+$string['app_gd_parejas_works'] = 'Memoria visual y atención: dónde estaba cada carta.
+Relacionar ideas: palabra y dibujo, concepto y definición, número y cantidad.
+Vocabulario de la materia, del glosario o del banco de preguntas del curso.
+Turnos y equipos.';
 $string['app_gd_quien_how'] = 'Haz la pregunta a toda la clase antes de elegir: así la piensan todos.
 Cuenta hasta tres o cuatro en silencio y entonces pulsa.
 Si quien sale no lo sabe, elige a un compañero que le ayude y luego lo dice con sus palabras.
@@ -400,6 +585,24 @@ $string['app_gd_quien_works'] = 'Que piense toda la clase: cualquiera puede sali
 Turnos repartidos: «Primero los que menos» saca antes a quien menos ha salido en el curso.
 Ver qué ha entendido cada uno, no solo quien levanta la mano.
 Hablar delante de los demás poco a poco, con preguntas a su alcance.';
+$string['app_gd_reloj_how'] = 'Elige el nivel: en punto, y media, y cuarto y menos cuarto, de 5 en 5 minutos o minuto a minuto.
+«¿Qué hora es?»: aparece una hora en el reloj y la clase la lee.
+«Pon la hora»: la clase mueve las agujas hasta la hora que se pide.
+Esconde la hora en cifras o en palabras para que lean solo las agujas.
+«Números romanos», para relojes como los de los edificios.';
+$string['app_gd_reloj_scene'] = 'En segundo, el maestro activa los números romanos y pone las cuatro y cuarto. «Es como el reloj del ayuntamiento», dice alguien. La clase lee la hora sin cifras y, de paso, aprende que IV es cuatro.';
+$string['app_gd_reloj_sources'] = 'Real Decreto 157/2022, de 1 de marzo, por el que se establecen la ordenación y las enseñanzas mínimas de la Educación Primaria. BOE-A-2022-3296.|https://www.boe.es/buscar/act.php?id=BOE-A-2022-3296
+Department for Education (2013). National curriculum in England: mathematics programmes of study.|https://www.gov.uk/government/publications/national-curriculum-in-england-mathematics-programmes-of-study';
+$string['app_gd_reloj_stages'] = 'early|En punto, con la aguja de las horas: cuándo comemos, cuándo salimos.
+primary|De la media hora al minuto, y los números romanos.
+secondary|El reloj de 24 horas y calcular cuánto dura algo.
+advanced|Pocas veces; en Magisterio, para enseñar a leer la hora.';
+$string['app_gd_reloj_what'] = 'Un reloj de agujas que se mueven con el dedo, con la hora en cifras y en palabras, para aprender a leer la hora.';
+$string['app_gd_reloj_why'] = 'Leer la hora es un contenido de Primaria: el currículo español incluye la medida del tiempo con el reloj analógico y el digital (Real Decreto 157/2022, Matemáticas). En Inglaterra se lee la hora de cinco en cinco minutos en el segundo curso y, en el tercero, en un reloj de agujas con números romanos del I al XII (Department for Education, 2013).';
+$string['app_gd_reloj_works'] = 'Leer la hora en un reloj de agujas: en punto, y media, y cuarto y menos cuarto, de cinco en cinco, minuto a minuto.
+Relacionar el reloj de agujas con la hora digital y con la hora dicha en palabras.
+Números romanos en la esfera.
+12 y 24 horas.';
 $string['app_gd_rods_how'] = 'Empieza con juego libre: escaleras, trenes y «alfombras» de regletas del mismo largo.
 Pide todas las formas de hacer un número con dos regletas: la alfombra del diez reúne sus descomposiciones.
 Tapa los números («Ver los números» apagado) para que razonen con las longitudes.
@@ -420,7 +623,55 @@ Componer y descomponer un número («¿con qué dos regletas se hace la naranja?
 Relaciones entre números: el doble, la mitad, uno más.
 Sumar, restar, multiplicar y dividir con las manos.
 Fracciones y proporciones: la de dos es la mitad de la de cuatro.';
+$string['app_gd_rosco_how'] = 'Escribe tu rosco con las palabras del tema, o copia el de ejemplo y adáptalo.
+Toda la clase contra el reloj, o dos equipos, cada uno con su rosco y su tiempo.
+Tú marcas acierto, fallo o «Pasapalabra».
+Úsalo para repasar al acabar un tema, no para presentarlo.';
+$string['app_gd_rosco_scene'] = 'Viernes de repaso en primero de ESO: dos equipos, un rosco de Ciencias cada uno. La «F» de fotosíntesis cae al primer intento; la «X» de xilema se queda en pasapalabra hasta el final, y el lunes es la palabra que todos recuerdan.';
+$string['app_gd_rosco_sources'] = 'Roediger, H. L. y Karpicke, J. D. (2006). Test-enhanced learning: Taking memory tests improves long-term retention. Psychological Science, 17(3), 249–255.|https://doi.org/10.1111/j.1467-9280.2006.01693.x';
+$string['app_gd_rosco_stages'] = 'primary|Vocabulario del tema y ortografía, con pistas sencillas.
+secondary|Repaso de conceptos de cualquier materia antes del examen.
+advanced|La terminología de la asignatura, también en otros idiomas.';
+$string['app_gd_rosco_what'] = 'Una rueda de letras con una pista para cada una, como en el concurso de televisión: la clase adivina palabras.';
+$string['app_gd_rosco_why'] = 'Intentar recordar algo ayuda a retenerlo mejor que volver a estudiarlo: en un experimento con estudiantes universitarios, quienes hicieron una prueba de recuerdo recordaban más una semana después que quienes releyeron el texto, aunque estos se sentían más seguros (Roediger y Karpicke, 2006). El rosco convierte esa práctica de recuperación en un juego.';
+$string['app_gd_rosco_works'] = 'Vocabulario de cualquier materia, con su definición.
+Recordar sin mirar: cada pista obliga a sacar la palabra de la memoria.
+Ortografía: la palabra empieza por esa letra o la contiene.
+Trabajo en equipo, con dos equipos y su reloj.';
 $string['app_gd_scene'] = 'En clase';
+$string['app_gd_score_how'] = 'Elige una canción o escribe una con toques en el pentagrama.
+«Toca conmigo»: sale un alumno al carillón y la pantalla enciende la nota que toca.
+«¿Qué nota es?»: suena una nota y la clase la busca; se cuenta la racha.
+Con «¿A quién le toca?», cada alumno toca una nota de la canción, a relevos.';
+$string['app_gd_score_scene'] = 'En segundo, la canción a relevos: cada alumno sale al carillón y toca una nota de «Martinillo» con «Toca conmigo». Cuando la canción suena entera, tocada entre todos, piden repetirla.';
+$string['app_gd_score_sources'] = 'Orff Schulwerk (Wikipedia, en inglés).|https://en.wikipedia.org/wiki/Orff_Schulwerk';
+$string['app_gd_score_stages'] = 'early|Escuchar, tocar el carillón libremente, agudo y grave.
+primary|Leer notas y figuras, y tocar canciones sencillas.
+secondary|Compases, alteraciones y dictados de notas.
+advanced|En Magisterio musical, para preparar canciones para el aula.';
+$string['app_gd_score_what'] = 'Un pentagrama donde se escriben notas con un toque y suenan, con un carillón debajo para tocar.';
+$string['app_gd_score_why'] = 'El carillón es uno de los instrumentos de láminas que el Orff-Schulwerk, de Carl Orff y Gunild Keetman, adaptó para la música escolar, junto a xilófonos y metalófonos. En la pantalla, la nota escrita, su sonido y su lámina se ven a la vez.';
+$string['app_gd_score_works'] = 'Leer notas en el pentagrama y su duración.
+Escuchar y reconocer notas («¿Qué nota es?»).
+Tocar una melodía con «Toca conmigo», que enciende la nota siguiente.
+Ritmo y compás: 2/4, 3/4, 4/4, 6/8.';
+$string['app_gd_semaforo_how'] = '«Ajustar a esta clase» con la clase trabajando a un volumen que te parezca bien: ese será el verde.
+Explica antes qué significa cada color y qué se hace en rojo.
+«Una cara en la luz» para los pequeños.
+Úsalo en el trabajo en grupo, no cuando lo que toca es hablar en voz alta.';
+$string['app_gd_semaforo_scene'] = 'En el rato de rincones de Infantil, la luz se pone amarilla y la cara deja de sonreír. Nadie dice nada: una niña se lleva el dedo a los labios, la luz vuelve al verde y la clase lo celebra en voz baja.';
+$string['app_gd_semaforo_sources'] = 'Berglund, B., Lindvall, T. y Schwela, D. H. (Eds.) (1999). Guidelines for Community Noise. Organización Mundial de la Salud.|https://www.who.int/publications/i/item/a68672
+Shield, B. M. y Dockrell, J. E. (2008). The effects of environmental and classroom noise on the academic attainments of primary school children. Journal of the Acoustical Society of America, 123(1), 133–144.|https://doi.org/10.1121/1.2812596';
+$string['app_gd_semaforo_stages'] = 'early|Con la cara en la luz, en el rato de rincones.
+primary|Trabajo en parejas y en grupo.
+secondary|Trabajo en grupo y en el laboratorio.
+advanced|Pocas veces; en aulas abiertas o espacios de estudio.';
+$string['app_gd_semaforo_what'] = 'Un semáforo que escucha el ruido de la clase y se pone verde, amarillo o rojo: el volumen se ve sin tener que levantar la voz.';
+$string['app_gd_semaforo_why'] = 'La Organización Mundial de la Salud recomienda que el ruido de fondo de un aula no supere los 35 dB durante las clases, para que se entienda bien lo que se dice (Berglund, Lindvall y Schwela, 1999). En escuelas de Primaria de Londres, el ruido del aula se relacionó con peores resultados en las pruebas nacionales, también descontando factores sociales (Shield y Dockrell, 2008).
+El semáforo no mide decibelios exactos: compara con el ruido normal de tu clase, que se ajusta con «Ajustar a esta clase». No graba ni envía nada; solo mide el volumen.';
+$string['app_gd_semaforo_works'] = 'Ser conscientes del volumen al trabajar en grupo.
+Que la clase se regule sola, sin que el docente tenga que pedir silencio.
+Comparar el ruido de distintas actividades.';
 $string['app_gd_simon_how'] = 'Con la lista de la clase sale un alumno distinto en cada ronda; los demás pueden decir los colores en voz baja mientras suenan.
 Al fallar, la misma secuencia suena para el siguiente: nadie vuelve a empezar de cero. «Desde el principio» deja el juego clásico.
 Seis colores y la velocidad rápida son más reto para los mayores.
@@ -440,6 +691,25 @@ Esperar el turno y escuchar a los demás.
 Jugar en equipo: la clase ayuda a quien sale.';
 $string['app_gd_sources'] = 'Fuentes';
 $string['app_gd_stages'] = 'Por etapas';
+$string['app_gd_tangram_how'] = 'Empieza con las siluetas sencillas (Casa, Barco) y deja los polígonos para después.
+Una pieza se gira con dos toques; antes de moverla, que digan qué pieza buscan y por qué.
+Si se atascan, la pista enseña dónde va una pieza.
+Para fracciones: «¿Qué parte del cuadrado es este triángulo?», y que lo comprueben poniendo piezas encima.
+Con «¿A quién le toca?», sale un alumno distinto para cada pieza.';
+$string['app_gd_tangram_scene'] = 'En cuarto, la maestra pone la silueta del gato y pregunta qué ocupa más sitio, el gato o el barco. La mitad de la clase dice que el gato. Lo construyen con las siete piezas, luego el barco con las mismas siete, y se hace el silencio: miden lo mismo.';
+$string['app_gd_tangram_sources'] = 'Slocum, J. y otros (2003). The Tangram Book: The Story of the Chinese Puzzle with over 2000 Puzzles to Solve. Sterling.';
+$string['app_gd_tangram_stages'] = 'early|Siluetas sencillas, nombrando el triángulo y el cuadrado.
+primary|Figuras más difíciles, polígonos, simetrías y la fracción de cada pieza.
+secondary|Áreas y fracciones del cuadrado; demostrar que todas las figuras miden lo mismo.
+advanced|En Magisterio, para diseñar actividades de geometría con material manipulativo.';
+$string['app_gd_tangram_what'] = 'Siete piezas que, juntas, forman un cuadrado: con ellas se construyen figuras y siluetas.';
+$string['app_gd_tangram_why'] = 'El tangram es un rompecabezas chino conocido desde hacia 1800; los libros más antiguos que se conservan son de 1813 (Slocum, 2003).
+Todas sus figuras se hacen con las mismas siete piezas, así que todas tienen la misma área: una forma de ver que el área se conserva aunque cambie la figura.';
+$string['app_gd_tangram_works'] = 'Ver y girar formas en la cabeza: la orientación espacial.
+Nombrar figuras: triángulos, cuadrado, romboide.
+Áreas sin fórmulas: con las mismas siete piezas, todas las figuras miden lo mismo.
+Fracciones del cuadrado: cada triángulo pequeño es su dieciseisava parte.
+Perseverar: probar, girar y volver a probar.';
 $string['app_gd_why'] = 'Por qué';
 $string['app_gd_works'] = 'Qué trabaja';
 $string['app_gen_again'] = 'Otra vez';

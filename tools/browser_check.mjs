@@ -442,10 +442,25 @@ const CHECKS = {
         const link = sheet.querySelector('.ct-guia-fuentes a');
         if (!link || link.target !== '_blank') { return 'the links of the sources do not open in a new tab'; }
         await close();
-        document.querySelector('#t-reloj').click();
+        document.querySelector('#t-qr').click();
         await sleep(200);
         sheet = await open();
         return sheet.querySelector('.ct-guia-parte') ? 'a tool without a guide shows parts' : '';
+    },
+    // Every guide has all its parts, valid levels and sources, in the language of the board.
+    'guides-complete': async () => {
+        const { t } = window.ClasstoolsCore;
+        const ids = window.ClasstoolsGuide.ids(), bad = [];
+        for (const id of ids) {
+            for (const part of ['what', 'works', 'why', 'how', 'stages', 'scene', 'sources']) {
+                const key = `gd_${id}_${part}`;
+                if (t(key) === key) { bad.push(key); }
+            }
+            const levels = t(`gd_${id}_stages`).split('\n').map((x) => x.split('|')[0]);
+            if (!levels.every((m) => ['early', 'primary', 'secondary', 'advanced'].includes(m))) { bad.push(`${id}: levels ${levels.join(',')}`); }
+        }
+        if (ids.length < 19) { bad.push(`only ${ids.length} guides`); }
+        return bad.length ? bad.join('; ') : '';
     },
     // QR: the colours of the corners line up as the colours above them, with «Same» on a line of its own.
     'qr-swatches': async () => {
