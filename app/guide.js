@@ -22,6 +22,7 @@
         quien: 'tab_picker', grupos: 'tab_groups', semaforo: 'tab_noise', asi: 'tab_rules', reloj: 'tab_clock', envivo: 'tab_live',
         // Games.
         rosco: 'ro_name', simon: 'si_name', ahorcado: 'ah_name', palabra: 'wo_name', parejas: 'me_pairs', codigo: 'lock_name',
+        ordenar: 'ord_name', clasificar: 'so_name', errores: 'er_name', quiensoy: 'wa_name',
         // Materials.
         rods: 'mt_rods', tangram: 'mt_tangram', line: 'mt_line', fractions: 'mt_fractions', geoboard: 'mt_geoboard',
         base10: 'mt_base10', balanza: 'mt_balance', plano: 'mt_plane', score: 'mt_score',

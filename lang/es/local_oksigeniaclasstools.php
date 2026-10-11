@@ -907,6 +907,24 @@ Sumar y restar llevando, sabiendo el porqué de cada paso.
 Leer y escribir números como suma de sus partes («100 + 30 + 12 = 142»).
 Otras bases (2, 5, 16…): el valor de posición sin el diez, para Tecnología y para entender el sistema.';
 $string['app_gd_button'] = 'Guía docente';
+$string['app_gd_clasificar_how'] = '«Clasificar»: una tarjeta y después su caja; al comprobar, las mal puestas vuelven.
+«El intruso»: cuatro tarjetas, tres de un grupo y una de otro; que digan por qué sobra antes de tocarla.
+«Venn»: dos grupos que comparten elementos, como los múltiplos de 4 y los de 6.
+En «Mis ejercicios», un grupo por línea («Grupo: elemento, elemento»); los ejemplos de cada etapa sirven de modelo.';
+$string['app_gd_clasificar_scene'] = 'En segundo de ESO, el intruso enseña caliza, arenisca, mármol y carbón. Una alumna dice que sobra el carbón porque no es una piedra. Toca el mármol cuando la clase le recuerda cómo se forma: es una roca metamórfica, y las otras tres son sedimentarias.';
+$string['app_gd_clasificar_sources'] = 'Inhelder, B. y Piaget, J. (1964). The Early Growth of Logic in the Child: Classification and Seriation. London: Routledge & Kegan Paul.
+Metcalfe, J. (2017). Learning from errors. Annual Review of Psychology, 68, 465–489.|https://doi.org/10.1146/annurev-psych-010416-044022';
+$string['app_gd_clasificar_stages'] = 'primary|Animales, clases de palabras, estados de la materia, ángulos.
+secondary|Rocas, los cinco reinos, cambios físicos y químicos, conjuntos de números.
+advanced|Biomoléculas, enlaces químicos, funciones pares e impares, tipos de oraciones.';
+$string['app_gd_clasificar_what'] = 'Tarjetas que se reparten en grupos; también como «El intruso» (tres de un grupo y una de otro) y como diagrama de Venn (un grupo, el otro o los dos).';
+$string['app_gd_clasificar_why'] = 'Clasificar es agrupar por lo que las cosas tienen en común, y la inclusión de clases (todo perro es un mamífero, pero no al revés) es una de las bases del razonamiento lógico que estudiaron Inhelder y Piaget (1964).
+Cada error devuelve la tarjeta con su porqué, si lo tiene: los errores corregidos enseguida ayudan a aprender (Metcalfe, 2017).
+En el diagrama de Venn, la zona del medio obliga a mirar dos criterios a la vez.';
+$string['app_gd_clasificar_works'] = 'Clasificar según un criterio y decir cuál es.
+Los casos que engañan: el murciélago vuela, pero es un mamífero.
+En el intruso, encontrar lo que no encaja y por qué.
+En el diagrama de Venn, ver que un elemento puede ser de dos clases a la vez.';
 $string['app_gd_close'] = 'Cerrar la guía';
 $string['app_gd_codigo_how'] = 'Escribe el código (de 2 a 8 números o letras) y una pista por línea; se enseñan una a una.
 Una cuenta atrás añade emoción; sin ella, hay más calma para pensar.
@@ -941,6 +959,22 @@ $string['app_gd_envivo_works'] = 'Que contesten todos a la vez, no solo uno.
 Ver de un vistazo qué ha entendido la clase.
 Opinar sin dejarse llevar por los demás: la votación oculta las barras mientras está abierta.
 Participar con su nombre o sin él.';
+$string['app_gd_errores_how'] = 'Elige un ejemplo o escribe un texto en «Mis ejercicios» con cada error así: [lo que pone|lo correcto|porqué].
+Que la clase diga cuántos errores cree que hay antes de empezar.
+Un toque marca la palabra; el segundo, la corrección: así se puede discutir antes de verla.
+También sirven frases de redacciones de la clase, sin nombres.';
+$string['app_gd_errores_scene'] = 'En primero de Bachillerato, el texto dice que la derivada de sen x es −cos x. Un alumno la marca, pero duda de la corrección. Antes del segundo toque, la profesora pide que lo comprueben con la definición en la pizarra; cuando sale cos x, ya lo han deducido ellos.';
+$string['app_gd_errores_sources'] = 'Metcalfe, J. (2017). Learning from errors. Annual Review of Psychology, 68, 465–489.|https://doi.org/10.1146/annurev-psych-010416-044022';
+$string['app_gd_errores_stages'] = 'primary|Ortografía básica, datos de Ciencias y de Geografía.
+secondary|Ortografía (haber y a ver, vaya y valla), fechas de Historia, Física y Matemáticas.
+advanced|Conceptos de Biología, Química y Literatura, derivadas y fechas clave.';
+$string['app_gd_errores_what'] = 'Un texto con errores escondidos: se toca la palabra que está mal, se marca, y otro toque enseña la corrección y su porqué.';
+$string['app_gd_errores_why'] = 'Metcalfe (2017) revisa la investigación sobre aprender de los errores: equivocarse y recibir enseguida la corrección ayuda a aprender, en contra de la costumbre de evitar el error a toda costa. Aquí el error está en el texto, y la corrección llega con un toque, con su porqué.
+Buscar errores pide leer despacio y comparar con lo que se sabe, y cada hallazgo se puede discutir en clase antes de descubrir la corrección.';
+$string['app_gd_errores_works'] = 'Leer con atención y con espíritu crítico.
+Ortografía y gramática en contexto.
+Datos de cualquier materia: fechas, cifras, conceptos.
+Corregir explicando el porqué.';
 $string['app_gd_fractions_how'] = 'Que coloreen piezas de una fila y busquen lo mismo en otra: el muro dice qué partes son iguales («1/2 = 2/4 = 3/6»).
 La regla para comparar recorre el muro y alinea las filas.
 En las piezas: fracciones, decimales, porcentajes o nada, para que razonen solo con el tamaño.
@@ -1018,6 +1052,23 @@ Fracciones y decimales como números con su sitio en la recta.
 Estimar dónde cae un número antes de comprobarlo.
 Intervalos, desigualdades y valor absoluto: la misma parte de la recta escrita de tres maneras.';
 $string['app_gd_none'] = 'Esta herramienta aún no tiene guía.';
+$string['app_gd_ordenar_how'] = 'Elige un ejemplo de la etapa o escribe los tuyos en «Mis ejercicios»: un elemento por línea, en su orden.
+Una línea «? elemento: porqué» explica por qué va ahí; sale cuando alguien lo pone mal.
+Que un alumno toque las tarjetas mientras la clase dice en voz alta qué viene después.
+«Prompt para tu IA» prepara ejercicios de cualquier tema; revísalos antes de guardarlos.';
+$string['app_gd_ordenar_scene'] = 'En cuarto de Primaria, el ejercicio es el ciclo del agua. Un alumno pone la condensación antes que la evaporación. Al comprobar, la tarjeta vuelve y sale su porqué: el vapor se enfría y forma gotas. La clase discute qué tiene que pasar antes de que haya vapor, y él la coloca bien en el segundo intento.';
+$string['app_gd_ordenar_sources'] = 'Inhelder, B. y Piaget, J. (1964). The Early Growth of Logic in the Child: Classification and Seriation. London: Routledge & Kegan Paul.
+Metcalfe, J. (2017). Learning from errors. Annual Review of Psychology, 68, 465–489.|https://doi.org/10.1146/annurev-psych-010416-044022';
+$string['app_gd_ordenar_stages'] = 'primary|Ciclos de la naturaleza, los pasos para resolver un problema, las edades de la Historia.
+secondary|Procesos de Ciencias (la mitosis, las capas de la Tierra), cronologías y la prioridad de las operaciones.
+advanced|Procesos largos: la síntesis de proteínas, la respiración celular, los movimientos artísticos.';
+$string['app_gd_ordenar_what'] = 'Tarjetas que se ponen en su orden con toques: los pasos de un proceso, las fases de un ciclo, épocas, tamaños…';
+$string['app_gd_ordenar_why'] = 'Ordenar es seriar: colocar elementos según una relación, como antes y después o más y menos. Inhelder y Piaget estudiaron con más de dos mil niños cómo se construyen la seriación y la clasificación, dos bases del razonamiento lógico (Inhelder y Piaget, 1964).
+Al comprobar, las tarjetas bien puestas se quedan y las demás vuelven, con su porqué si el ejercicio lo tiene: equivocarse y recibir enseguida la corrección ayuda a aprender (Metcalfe, 2017).';
+$string['app_gd_ordenar_works'] = 'Secuenciar: qué va antes y qué después, y por qué.
+Los procesos de cualquier materia: el ciclo del agua, la mitosis, la síntesis de proteínas.
+La cronología: épocas y acontecimientos en su orden.
+Explicar un orden en voz alta, no solo acertarlo.';
 $string['app_gd_palabra_how'] = 'La clase propone y el docente escribe: un intento, un debate.
 Antes de cada intento, que digan qué letras ya saben y cuáles han descartado.
 Elige el número de intentos (de 5 a 8) según la edad.
@@ -1088,6 +1139,22 @@ $string['app_gd_quien_works'] = 'Que piense toda la clase: cualquiera puede sali
 Turnos repartidos: «Primero los que menos» saca antes a quien menos ha salido en el curso.
 Ver qué ha entendido cada uno, no solo quien levanta la mano.
 Hablar delante de los demás poco a poco, con preguntas a su alcance.';
+$string['app_gd_quiensoy_how'] = 'Elige un ejemplo de la etapa o escribe los tuyos en «Mis ejercicios»: «= respuesta» en la primera línea y debajo las pistas.
+Por equipos: quien acierta con menos pistas se lleva más puntos.
+Que sean los alumnos quienes escriban las pistas de un personaje o un concepto del tema: elegir qué pista va primero también es repasar.
+«Prompt para tu IA» prepara personajes y conceptos de cualquier tema.';
+$string['app_gd_quiensoy_scene'] = 'En tercero de ESO, al acabar el tema de la célula, cada equipo escribe en «Mis ejercicios» las pistas de un orgánulo para el otro equipo. El de las mitocondrias empieza por «Tengo mi propio ADN»; nadie acierta hasta la tercera pista, y la discusión sobre por qué tienen ADN repasa medio tema.';
+$string['app_gd_quiensoy_sources'] = 'Roediger, H. L. y Karpicke, J. D. (2006). Test-enhanced learning: Taking memory tests improves long-term retention. Psychological Science, 17(3), 249–255.|https://www.jstor.org/stable/40064526';
+$string['app_gd_quiensoy_stages'] = 'primary|Animales, lugares y personajes conocidos.
+secondary|Personajes de Historia, Ciencia y Arte, elementos químicos, lugares.
+advanced|Conceptos y autores: orgánulos, filósofos, economistas, escritores.';
+$string['app_gd_quiensoy_what'] = 'Pistas de una en una, de la más difícil a la más fácil, hasta que alguien adivina quién o qué es; cuantas menos pistas, más vale la respuesta.';
+$string['app_gd_quiensoy_why'] = 'Adivinar a partir de pistas obliga a recuperar de la memoria lo que se sabe. Roediger y Karpicke (2006) vieron que recordar lo estudiado lo fija más a largo plazo que volver a leerlo, aunque al principio volver a leer parezca dar mejor resultado.
+Las pistas van de la más difícil a la más fácil para que todos tengan su momento: quien sabe más acierta antes, y los demás llegan con las últimas.';
+$string['app_gd_quiensoy_works'] = 'Recordar lo aprendido a partir de pistas.
+Relacionar datos con una persona, un lugar, un animal o un concepto.
+Arriesgar una respuesta y razonarla.
+Repasar cualquier materia al final de un tema.';
 $string['app_gd_reloj_how'] = 'Elige el nivel: en punto, y media, y cuarto y menos cuarto, de 5 en 5 minutos o minuto a minuto.
 «¿Qué hora es?»: aparece una hora en el reloj y la clase la lee.
 «Pon la hora»: la clase mueve las agujas hasta la hora que se pide.

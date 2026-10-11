@@ -905,6 +905,24 @@ Adding and subtracting with carrying and borrowing, knowing why at each step.
 Reading and writing numbers as the sum of their parts («100 + 30 + 12 = 142»).
 Other bases (2, 5, 16…): place value without the ten, for technology and for understanding the system.';
 $string['app_gd_button'] = 'Teacher\'s guide';
+$string['app_gd_clasificar_how'] = '«Sort»: a card and then its box; on checking, the wrong ones go back.
+«Odd one out»: four cards, three of a group and one of another; they say why it does not fit before tapping it.
+«Venn»: two groups that share items, such as the multiples of 4 and those of 6.
+In «My exercises», one group per line («Group: item, item»); the examples of each level serve as a model.';
+$string['app_gd_clasificar_scene'] = 'In Year 8, the odd one out shows limestone, sandstone, marble and coal. A student says coal is the odd one because it is not a stone. She taps marble once the class reminds her how it forms: it is a metamorphic rock, and the other three are sedimentary.';
+$string['app_gd_clasificar_sources'] = 'Inhelder, B. and Piaget, J. (1964). The Early Growth of Logic in the Child: Classification and Seriation. London: Routledge & Kegan Paul.
+Metcalfe, J. (2017). Learning from errors. Annual Review of Psychology, 68, 465–489.|https://doi.org/10.1146/annurev-psych-010416-044022';
+$string['app_gd_clasificar_stages'] = 'primary|Animals, kinds of words, states of matter, angles.
+secondary|Rocks, the five kingdoms, physical and chemical changes, sets of numbers.
+advanced|Biomolecules, chemical bonds, even and odd functions, kinds of sentences.';
+$string['app_gd_clasificar_what'] = 'Cards shared out into groups; also as «Odd one out» (three of a group and one of another) and as a Venn diagram (one group, the other or both).';
+$string['app_gd_clasificar_why'] = 'Sorting is grouping things by what they have in common, and class inclusion (every dog is a mammal, but not the other way round) is one of the foundations of logical reasoning that Inhelder and Piaget studied (1964).
+Each mistake sends the card back with its why, if it has one: mistakes corrected straight away help learning (Metcalfe, 2017).
+In the Venn diagram, the zone in the middle makes them look at two criteria at once.';
+$string['app_gd_clasificar_works'] = 'Sorting by a criterion, and saying which one.
+The cases that mislead: a bat flies, but it is a mammal.
+In the odd one out, finding what does not fit and why.
+In the Venn diagram, seeing that an item can belong to two classes at once.';
 $string['app_gd_close'] = 'Close the guide';
 $string['app_gd_codigo_how'] = 'Write the code (2 to 8 numbers or letters) and one clue per line; they are shown one by one.
 A countdown adds excitement; without it, more calm to think.
@@ -939,6 +957,22 @@ $string['app_gd_envivo_works'] = 'Everyone answers at once, not just one.
 Seeing at a glance what the class has understood.
 Giving an opinion without being swayed by the others: a vote hides the bars while it is open.
 Taking part with their name or without it.';
+$string['app_gd_errores_how'] = 'Choose an example or write a text in «My exercises» with each mistake like this: [what it says|what is right|why].
+The class says how many mistakes they think there are before starting.
+One tap marks the word; the second shows the correction: so it can be talked over before it is seen.
+Sentences from the class\'s own writing (without names) also work.';
+$string['app_gd_errores_scene'] = 'In Year 12, the text says the derivative of sin x is −cos x. A student marks it, but is not sure of the correction. Before the second tap, the teacher asks them to check it with the definition on the board; when cos x comes out, they have worked it out themselves.';
+$string['app_gd_errores_sources'] = 'Metcalfe, J. (2017). Learning from errors. Annual Review of Psychology, 68, 465–489.|https://doi.org/10.1146/annurev-psych-010416-044022';
+$string['app_gd_errores_stages'] = 'primary|Basic spelling, facts of Science and Geography.
+secondary|Spelling, dates of History, Physics and Mathematics.
+advanced|Concepts of Biology, Chemistry and Literature, derivatives and key dates.';
+$string['app_gd_errores_what'] = 'A text with hidden mistakes: the wrong word is tapped and marked, and another tap shows the correction and its why.';
+$string['app_gd_errores_why'] = 'Metcalfe (2017) reviews the research on learning from errors: making a mistake and getting the correction straight away helps learning, against the habit of avoiding mistakes at all costs. Here the mistake is in the text, and the correction comes with a tap, with its why.
+Looking for mistakes means reading slowly and comparing with what is known, and each find can be talked over in class before the correction is shown.';
+$string['app_gd_errores_works'] = 'Reading carefully and critically.
+Spelling and grammar in context.
+Facts of any subject: dates, figures, concepts.
+Correcting, and explaining why.';
 $string['app_gd_fractions_how'] = 'They colour pieces in one row and look for the same amount in another: the wall says which parts are equal («1/2 = 2/4 = 3/6»).
 The ruler for comparing slides across the wall and lines the rows up.
 On the pieces: fractions, decimals, percentages, or nothing, so that they reason with the size alone.
@@ -1016,6 +1050,23 @@ Fractions and decimals as numbers with their own place on the line.
 Estimating where a number falls before checking it.
 Intervals, inequalities and absolute value: the same part of the line written three ways.';
 $string['app_gd_none'] = 'This tool has no guide yet.';
+$string['app_gd_ordenar_how'] = 'Choose an example of the level, or write your own in «My exercises»: one item per line, in its order.
+A line «? item: why» explains why it goes there; it comes up when someone puts it in the wrong place.
+One student taps the cards while the class says aloud what comes next.
+«Prompt for your AI» prepares exercises on any topic; check them before saving.';
+$string['app_gd_ordenar_scene'] = 'In Year 5, the exercise is the water cycle. A student puts condensation before evaporation. On checking, the card goes back and its why comes up: the vapour cools down and turns into drops. The class talks about what has to happen before there is any vapour, and he puts it right on the second try.';
+$string['app_gd_ordenar_sources'] = 'Inhelder, B. and Piaget, J. (1964). The Early Growth of Logic in the Child: Classification and Seriation. London: Routledge & Kegan Paul.
+Metcalfe, J. (2017). Learning from errors. Annual Review of Psychology, 68, 465–489.|https://doi.org/10.1146/annurev-psych-010416-044022';
+$string['app_gd_ordenar_stages'] = 'primary|Cycles of nature, the steps to solve a problem, the ages of history.
+secondary|Science processes (mitosis, the layers of the Earth), timelines and the order of operations.
+advanced|Long processes: protein synthesis, cellular respiration, art movements.';
+$string['app_gd_ordenar_what'] = 'Cards put in their order with taps: the steps of a process, the phases of a cycle, periods, sizes…';
+$string['app_gd_ordenar_why'] = 'Ordering is seriation: placing things by a relation, such as before and after or more and less. Inhelder and Piaget studied with more than two thousand children how seriation and classification are built, two foundations of logical reasoning (Inhelder and Piaget, 1964).
+When checking, the cards in the right place stay and the others go back, with their why if the exercise has one: making a mistake and getting the correction straight away helps learning (Metcalfe, 2017).';
+$string['app_gd_ordenar_works'] = 'Sequencing: what comes before and what after, and why.
+The processes of any subject: the water cycle, mitosis, protein synthesis.
+Chronology: periods and events in their order.
+Explaining an order aloud, not only getting it right.';
 $string['app_gd_palabra_how'] = 'The class proposes and the teacher types: one try, one discussion.
 Before each try, they say which letters they already know and which they have ruled out.
 Choose the number of tries (from 5 to 8) for their age.
@@ -1086,6 +1137,22 @@ $string['app_gd_quien_works'] = 'The whole class thinks: anyone may be chosen.
 Fair turns: «Fewest turns first» chooses first whoever has had fewest turns in the course.
 Seeing what each one has understood, not only those who put their hand up.
 Speaking in front of the others little by little, with questions within their reach.';
+$string['app_gd_quiensoy_how'] = 'Choose an example of the level, or write your own in «My exercises»: «= answer» on the first line and the clues below.
+In teams: whoever gets it with fewer clues takes more points.
+The students write the clues of a figure or a concept of the unit: choosing which clue goes first is also reviewing.
+«Prompt for your AI» prepares figures and concepts on any topic.';
+$string['app_gd_quiensoy_scene'] = 'In Year 9, at the end of the unit on the cell, each team writes in «My exercises» the clues of an organelle for the other team. The mitochondria one starts with «I have my own DNA»; nobody gets it until the third clue, and the talk about why they have DNA reviews half the unit.';
+$string['app_gd_quiensoy_sources'] = 'Roediger, H. L. and Karpicke, J. D. (2006). Test-enhanced learning: Taking memory tests improves long-term retention. Psychological Science, 17(3), 249–255.|https://www.jstor.org/stable/40064526';
+$string['app_gd_quiensoy_stages'] = 'primary|Animals, places and well-known figures.
+secondary|Figures of History, Science and Art, chemical elements, places.
+advanced|Concepts and authors: organelles, philosophers, economists, writers.';
+$string['app_gd_quiensoy_what'] = 'Clues one by one, from the hardest to the easiest, until someone guesses who or what it is; the fewer the clues, the more the answer is worth.';
+$string['app_gd_quiensoy_why'] = 'Guessing from clues means retrieving from memory what is known. Roediger and Karpicke (2006) found that recalling what has been studied makes it last longer than reading it again, even though reading it again seems to work better at first.
+The clues go from the hardest to the easiest so that everyone has their moment: those who know more get it sooner, and the rest arrive with the last ones.';
+$string['app_gd_quiensoy_works'] = 'Recalling what has been learnt from clues.
+Linking facts to a person, a place, an animal or a concept.
+Venturing an answer and giving reasons for it.
+Reviewing any subject at the end of a unit.';
 $string['app_gd_reloj_how'] = 'Choose the level: o\'clock, half past, quarter past and to, every five minutes or minute by minute.
 «What time is it?»: a time appears on the clock and the class reads it.
 «Set the time»: the class moves the hands to the time asked for.

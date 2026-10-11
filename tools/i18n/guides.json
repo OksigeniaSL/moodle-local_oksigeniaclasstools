@@ -622,5 +622,117 @@
  "gd_plano_sources": {
   "en": "Descartes, R. (1637). La Géométrie. Appendix to the Discours de la méthode. Leiden: Ian Maire.",
   "es": "Descartes, R. (1637). La Géométrie. Apéndice del Discours de la méthode. Leiden: Ian Maire."
+ },
+ "gd_ordenar_what": {
+  "en": "Cards put in their order with taps: the steps of a process, the phases of a cycle, periods, sizes…",
+  "es": "Tarjetas que se ponen en su orden con toques: los pasos de un proceso, las fases de un ciclo, épocas, tamaños…"
+ },
+ "gd_ordenar_works": {
+  "en": "Sequencing: what comes before and what after, and why.\nThe processes of any subject: the water cycle, mitosis, protein synthesis.\nChronology: periods and events in their order.\nExplaining an order aloud, not only getting it right.",
+  "es": "Secuenciar: qué va antes y qué después, y por qué.\nLos procesos de cualquier materia: el ciclo del agua, la mitosis, la síntesis de proteínas.\nLa cronología: épocas y acontecimientos en su orden.\nExplicar un orden en voz alta, no solo acertarlo."
+ },
+ "gd_ordenar_why": {
+  "en": "Ordering is seriation: placing things by a relation, such as before and after or more and less. Inhelder and Piaget studied with more than two thousand children how seriation and classification are built, two foundations of logical reasoning (Inhelder and Piaget, 1964).\nWhen checking, the cards in the right place stay and the others go back, with their why if the exercise has one: making a mistake and getting the correction straight away helps learning (Metcalfe, 2017).",
+  "es": "Ordenar es seriar: colocar elementos según una relación, como antes y después o más y menos. Inhelder y Piaget estudiaron con más de dos mil niños cómo se construyen la seriación y la clasificación, dos bases del razonamiento lógico (Inhelder y Piaget, 1964).\nAl comprobar, las tarjetas bien puestas se quedan y las demás vuelven, con su porqué si el ejercicio lo tiene: equivocarse y recibir enseguida la corrección ayuda a aprender (Metcalfe, 2017)."
+ },
+ "gd_ordenar_how": {
+  "en": "Choose an example of the level, or write your own in «My exercises»: one item per line, in its order.\nA line «? item: why» explains why it goes there; it comes up when someone puts it in the wrong place.\nOne student taps the cards while the class says aloud what comes next.\n«Prompt for your AI» prepares exercises on any topic; check them before saving.",
+  "es": "Elige un ejemplo de la etapa o escribe los tuyos en «Mis ejercicios»: un elemento por línea, en su orden.\nUna línea «? elemento: porqué» explica por qué va ahí; sale cuando alguien lo pone mal.\nQue un alumno toque las tarjetas mientras la clase dice en voz alta qué viene después.\n«Prompt para tu IA» prepara ejercicios de cualquier tema; revísalos antes de guardarlos."
+ },
+ "gd_ordenar_stages": {
+  "en": "primary|Cycles of nature, the steps to solve a problem, the ages of history.\nsecondary|Science processes (mitosis, the layers of the Earth), timelines and the order of operations.\nadvanced|Long processes: protein synthesis, cellular respiration, art movements.",
+  "es": "primary|Ciclos de la naturaleza, los pasos para resolver un problema, las edades de la Historia.\nsecondary|Procesos de Ciencias (la mitosis, las capas de la Tierra), cronologías y la prioridad de las operaciones.\nadvanced|Procesos largos: la síntesis de proteínas, la respiración celular, los movimientos artísticos."
+ },
+ "gd_ordenar_scene": {
+  "en": "In Year 5, the exercise is the water cycle. A student puts condensation before evaporation. On checking, the card goes back and its why comes up: the vapour cools down and turns into drops. The class talks about what has to happen before there is any vapour, and he puts it right on the second try.",
+  "es": "En cuarto de Primaria, el ejercicio es el ciclo del agua. Un alumno pone la condensación antes que la evaporación. Al comprobar, la tarjeta vuelve y sale su porqué: el vapor se enfría y forma gotas. La clase discute qué tiene que pasar antes de que haya vapor, y él la coloca bien en el segundo intento."
+ },
+ "gd_ordenar_sources": {
+  "en": "Inhelder, B. and Piaget, J. (1964). The Early Growth of Logic in the Child: Classification and Seriation. London: Routledge & Kegan Paul.\nMetcalfe, J. (2017). Learning from errors. Annual Review of Psychology, 68, 465–489.|https://doi.org/10.1146/annurev-psych-010416-044022",
+  "es": "Inhelder, B. y Piaget, J. (1964). The Early Growth of Logic in the Child: Classification and Seriation. London: Routledge & Kegan Paul.\nMetcalfe, J. (2017). Learning from errors. Annual Review of Psychology, 68, 465–489.|https://doi.org/10.1146/annurev-psych-010416-044022"
+ },
+ "gd_clasificar_what": {
+  "en": "Cards shared out into groups; also as «Odd one out» (three of a group and one of another) and as a Venn diagram (one group, the other or both).",
+  "es": "Tarjetas que se reparten en grupos; también como «El intruso» (tres de un grupo y una de otro) y como diagrama de Venn (un grupo, el otro o los dos)."
+ },
+ "gd_clasificar_works": {
+  "en": "Sorting by a criterion, and saying which one.\nThe cases that mislead: a bat flies, but it is a mammal.\nIn the odd one out, finding what does not fit and why.\nIn the Venn diagram, seeing that an item can belong to two classes at once.",
+  "es": "Clasificar según un criterio y decir cuál es.\nLos casos que engañan: el murciélago vuela, pero es un mamífero.\nEn el intruso, encontrar lo que no encaja y por qué.\nEn el diagrama de Venn, ver que un elemento puede ser de dos clases a la vez."
+ },
+ "gd_clasificar_why": {
+  "en": "Sorting is grouping things by what they have in common, and class inclusion (every dog is a mammal, but not the other way round) is one of the foundations of logical reasoning that Inhelder and Piaget studied (1964).\nEach mistake sends the card back with its why, if it has one: mistakes corrected straight away help learning (Metcalfe, 2017).\nIn the Venn diagram, the zone in the middle makes them look at two criteria at once.",
+  "es": "Clasificar es agrupar por lo que las cosas tienen en común, y la inclusión de clases (todo perro es un mamífero, pero no al revés) es una de las bases del razonamiento lógico que estudiaron Inhelder y Piaget (1964).\nCada error devuelve la tarjeta con su porqué, si lo tiene: los errores corregidos enseguida ayudan a aprender (Metcalfe, 2017).\nEn el diagrama de Venn, la zona del medio obliga a mirar dos criterios a la vez."
+ },
+ "gd_clasificar_how": {
+  "en": "«Sort»: a card and then its box; on checking, the wrong ones go back.\n«Odd one out»: four cards, three of a group and one of another; they say why it does not fit before tapping it.\n«Venn»: two groups that share items, such as the multiples of 4 and those of 6.\nIn «My exercises», one group per line («Group: item, item»); the examples of each level serve as a model.",
+  "es": "«Clasificar»: una tarjeta y después su caja; al comprobar, las mal puestas vuelven.\n«El intruso»: cuatro tarjetas, tres de un grupo y una de otro; que digan por qué sobra antes de tocarla.\n«Venn»: dos grupos que comparten elementos, como los múltiplos de 4 y los de 6.\nEn «Mis ejercicios», un grupo por línea («Grupo: elemento, elemento»); los ejemplos de cada etapa sirven de modelo."
+ },
+ "gd_clasificar_stages": {
+  "en": "primary|Animals, kinds of words, states of matter, angles.\nsecondary|Rocks, the five kingdoms, physical and chemical changes, sets of numbers.\nadvanced|Biomolecules, chemical bonds, even and odd functions, kinds of sentences.",
+  "es": "primary|Animales, clases de palabras, estados de la materia, ángulos.\nsecondary|Rocas, los cinco reinos, cambios físicos y químicos, conjuntos de números.\nadvanced|Biomoléculas, enlaces químicos, funciones pares e impares, tipos de oraciones."
+ },
+ "gd_clasificar_scene": {
+  "en": "In Year 8, the odd one out shows limestone, sandstone, marble and coal. A student says coal is the odd one because it is not a stone. She taps marble once the class reminds her how it forms: it is a metamorphic rock, and the other three are sedimentary.",
+  "es": "En segundo de ESO, el intruso enseña caliza, arenisca, mármol y carbón. Una alumna dice que sobra el carbón porque no es una piedra. Toca el mármol cuando la clase le recuerda cómo se forma: es una roca metamórfica, y las otras tres son sedimentarias."
+ },
+ "gd_clasificar_sources": {
+  "en": "Inhelder, B. and Piaget, J. (1964). The Early Growth of Logic in the Child: Classification and Seriation. London: Routledge & Kegan Paul.\nMetcalfe, J. (2017). Learning from errors. Annual Review of Psychology, 68, 465–489.|https://doi.org/10.1146/annurev-psych-010416-044022",
+  "es": "Inhelder, B. y Piaget, J. (1964). The Early Growth of Logic in the Child: Classification and Seriation. London: Routledge & Kegan Paul.\nMetcalfe, J. (2017). Learning from errors. Annual Review of Psychology, 68, 465–489.|https://doi.org/10.1146/annurev-psych-010416-044022"
+ },
+ "gd_errores_what": {
+  "en": "A text with hidden mistakes: the wrong word is tapped and marked, and another tap shows the correction and its why.",
+  "es": "Un texto con errores escondidos: se toca la palabra que está mal, se marca, y otro toque enseña la corrección y su porqué."
+ },
+ "gd_errores_works": {
+  "en": "Reading carefully and critically.\nSpelling and grammar in context.\nFacts of any subject: dates, figures, concepts.\nCorrecting, and explaining why.",
+  "es": "Leer con atención y con espíritu crítico.\nOrtografía y gramática en contexto.\nDatos de cualquier materia: fechas, cifras, conceptos.\nCorregir explicando el porqué."
+ },
+ "gd_errores_why": {
+  "en": "Metcalfe (2017) reviews the research on learning from errors: making a mistake and getting the correction straight away helps learning, against the habit of avoiding mistakes at all costs. Here the mistake is in the text, and the correction comes with a tap, with its why.\nLooking for mistakes means reading slowly and comparing with what is known, and each find can be talked over in class before the correction is shown.",
+  "es": "Metcalfe (2017) revisa la investigación sobre aprender de los errores: equivocarse y recibir enseguida la corrección ayuda a aprender, en contra de la costumbre de evitar el error a toda costa. Aquí el error está en el texto, y la corrección llega con un toque, con su porqué.\nBuscar errores pide leer despacio y comparar con lo que se sabe, y cada hallazgo se puede discutir en clase antes de descubrir la corrección."
+ },
+ "gd_errores_how": {
+  "en": "Choose an example or write a text in «My exercises» with each mistake like this: [what it says|what is right|why].\nThe class says how many mistakes they think there are before starting.\nOne tap marks the word; the second shows the correction: so it can be talked over before it is seen.\nSentences from the class's own writing (without names) also work.",
+  "es": "Elige un ejemplo o escribe un texto en «Mis ejercicios» con cada error así: [lo que pone|lo correcto|porqué].\nQue la clase diga cuántos errores cree que hay antes de empezar.\nUn toque marca la palabra; el segundo, la corrección: así se puede discutir antes de verla.\nTambién sirven frases de redacciones de la clase, sin nombres."
+ },
+ "gd_errores_stages": {
+  "en": "primary|Basic spelling, facts of Science and Geography.\nsecondary|Spelling, dates of History, Physics and Mathematics.\nadvanced|Concepts of Biology, Chemistry and Literature, derivatives and key dates.",
+  "es": "primary|Ortografía básica, datos de Ciencias y de Geografía.\nsecondary|Ortografía (haber y a ver, vaya y valla), fechas de Historia, Física y Matemáticas.\nadvanced|Conceptos de Biología, Química y Literatura, derivadas y fechas clave."
+ },
+ "gd_errores_scene": {
+  "en": "In Year 12, the text says the derivative of sin x is −cos x. A student marks it, but is not sure of the correction. Before the second tap, the teacher asks them to check it with the definition on the board; when cos x comes out, they have worked it out themselves.",
+  "es": "En primero de Bachillerato, el texto dice que la derivada de sen x es −cos x. Un alumno la marca, pero duda de la corrección. Antes del segundo toque, la profesora pide que lo comprueben con la definición en la pizarra; cuando sale cos x, ya lo han deducido ellos."
+ },
+ "gd_errores_sources": {
+  "en": "Metcalfe, J. (2017). Learning from errors. Annual Review of Psychology, 68, 465–489.|https://doi.org/10.1146/annurev-psych-010416-044022",
+  "es": "Metcalfe, J. (2017). Learning from errors. Annual Review of Psychology, 68, 465–489.|https://doi.org/10.1146/annurev-psych-010416-044022"
+ },
+ "gd_quiensoy_what": {
+  "en": "Clues one by one, from the hardest to the easiest, until someone guesses who or what it is; the fewer the clues, the more the answer is worth.",
+  "es": "Pistas de una en una, de la más difícil a la más fácil, hasta que alguien adivina quién o qué es; cuantas menos pistas, más vale la respuesta."
+ },
+ "gd_quiensoy_works": {
+  "en": "Recalling what has been learnt from clues.\nLinking facts to a person, a place, an animal or a concept.\nVenturing an answer and giving reasons for it.\nReviewing any subject at the end of a unit.",
+  "es": "Recordar lo aprendido a partir de pistas.\nRelacionar datos con una persona, un lugar, un animal o un concepto.\nArriesgar una respuesta y razonarla.\nRepasar cualquier materia al final de un tema."
+ },
+ "gd_quiensoy_why": {
+  "en": "Guessing from clues means retrieving from memory what is known. Roediger and Karpicke (2006) found that recalling what has been studied makes it last longer than reading it again, even though reading it again seems to work better at first.\nThe clues go from the hardest to the easiest so that everyone has their moment: those who know more get it sooner, and the rest arrive with the last ones.",
+  "es": "Adivinar a partir de pistas obliga a recuperar de la memoria lo que se sabe. Roediger y Karpicke (2006) vieron que recordar lo estudiado lo fija más a largo plazo que volver a leerlo, aunque al principio volver a leer parezca dar mejor resultado.\nLas pistas van de la más difícil a la más fácil para que todos tengan su momento: quien sabe más acierta antes, y los demás llegan con las últimas."
+ },
+ "gd_quiensoy_how": {
+  "en": "Choose an example of the level, or write your own in «My exercises»: «= answer» on the first line and the clues below.\nIn teams: whoever gets it with fewer clues takes more points.\nThe students write the clues of a figure or a concept of the unit: choosing which clue goes first is also reviewing.\n«Prompt for your AI» prepares figures and concepts on any topic.",
+  "es": "Elige un ejemplo de la etapa o escribe los tuyos en «Mis ejercicios»: «= respuesta» en la primera línea y debajo las pistas.\nPor equipos: quien acierta con menos pistas se lleva más puntos.\nQue sean los alumnos quienes escriban las pistas de un personaje o un concepto del tema: elegir qué pista va primero también es repasar.\n«Prompt para tu IA» prepara personajes y conceptos de cualquier tema."
+ },
+ "gd_quiensoy_stages": {
+  "en": "primary|Animals, places and well-known figures.\nsecondary|Figures of History, Science and Art, chemical elements, places.\nadvanced|Concepts and authors: organelles, philosophers, economists, writers.",
+  "es": "primary|Animales, lugares y personajes conocidos.\nsecondary|Personajes de Historia, Ciencia y Arte, elementos químicos, lugares.\nadvanced|Conceptos y autores: orgánulos, filósofos, economistas, escritores."
+ },
+ "gd_quiensoy_scene": {
+  "en": "In Year 9, at the end of the unit on the cell, each team writes in «My exercises» the clues of an organelle for the other team. The mitochondria one starts with «I have my own DNA»; nobody gets it until the third clue, and the talk about why they have DNA reviews half the unit.",
+  "es": "En tercero de ESO, al acabar el tema de la célula, cada equipo escribe en «Mis ejercicios» las pistas de un orgánulo para el otro equipo. El de las mitocondrias empieza por «Tengo mi propio ADN»; nadie acierta hasta la tercera pista, y la discusión sobre por qué tienen ADN repasa medio tema."
+ },
+ "gd_quiensoy_sources": {
+  "en": "Roediger, H. L. and Karpicke, J. D. (2006). Test-enhanced learning: Taking memory tests improves long-term retention. Psychological Science, 17(3), 249–255.|https://www.jstor.org/stable/40064526",
+  "es": "Roediger, H. L. y Karpicke, J. D. (2006). Test-enhanced learning: Taking memory tests improves long-term retention. Psychological Science, 17(3), 249–255.|https://www.jstor.org/stable/40064526"
  }
 }

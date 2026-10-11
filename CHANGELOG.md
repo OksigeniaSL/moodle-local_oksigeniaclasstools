@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.31.0 (2026-10-11)
+
+- **Simon variants**: the sequence repeated backwards; four, six or nine pads; and besides colours, pads with arrows
+  (all alike, in a cross), numbers with a rule (the number shown is transformed: add 1, take away 1, what it needs to
+  make 10, its double) or notes without colours (only heard, the pads named).
+- **Teacher's guides** for Order, Sort, Spot the mistakes and Who am I?, with their sources.
+
 ## 0.30.0 (2026-10-11)
 
 - **Coordinate plane**, a new material: the first quadrant (Primary) or all four (from Secondary). Points go on with a
