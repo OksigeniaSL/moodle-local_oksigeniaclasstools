@@ -852,6 +852,7 @@ $string['app_gd_ahorcado_works'] = 'Ortografía y vocabulario: qué letras tiene
 Pensar qué letras son más probables (primero las vocales, luego las más frecuentes).
 En Infantil, reconocer la primera letra de los nombres de la clase.
 Con un glosario del curso, el vocabulario de la materia con su definición como pista.';
+$string['app_gd_all'] = 'Todas las guías';
 $string['app_gd_asi_how'] = 'Enséñalos al principio de curso, uno a uno, explicando qué se hace con cada uno.
 Pon el cartel antes de empezar cada actividad, no cuando ya hay ruido.
 Reconoce en voz alta cuando la clase lo cumple.';
@@ -1029,6 +1030,10 @@ $string['app_gd_grupos_works'] = 'Trabajar con compañeros distintos, no siempre
 Repartir responsabilidades con roles.
 Grupos justos y rápidos, sin discutir quién va con quién.';
 $string['app_gd_how'] = 'Cómo llevarlo a clase';
+$string['app_gd_index_games'] = 'Juegos';
+$string['app_gd_index_lead'] = 'Cada guía cuenta para qué sirve la herramienta, cómo llevarla a clase y qué da en cada etapa, con sus fuentes.';
+$string['app_gd_index_materials'] = 'Material';
+$string['app_gd_index_tools'] = 'Herramientas';
 $string['app_gd_line_how'] = 'Elige el tramo: «Del 0 al 10», «Del −10 al 10», cuartos, tercios, décimas… o «A mi manera».
 Un toque en la recta empieza en un punto; cada toque después es un salto, dibujado con su arco y su cuenta.
 Esconde los números y pregunta dónde cae uno antes de descubrirlo.
@@ -1051,7 +1056,7 @@ Los negativos, a la izquierda del cero.
 Fracciones y decimales como números con su sitio en la recta.
 Estimar dónde cae un número antes de comprobarlo.
 Intervalos, desigualdades y valor absoluto: la misma parte de la recta escrita de tres maneras.';
-$string['app_gd_none'] = 'Esta herramienta aún no tiene guía.';
+$string['app_gd_none'] = 'Esta herramienta no tiene guía propia. Estas son las guías que hay:';
 $string['app_gd_ordenar_how'] = 'Elige un ejemplo de la etapa o escribe los tuyos en «Mis ejercicios»: un elemento por línea, en su orden.
 Una línea «? elemento: porqué» explica por qué va ahí; sale cuando alguien lo pone mal.
 Que un alumno toque las tarjetas mientras la clase dice en voz alta qué viene después.
@@ -2375,6 +2380,10 @@ $string['boardsection'] = 'Pizarras de clase';
 $string['boardshared_body'] = '{$a->teacher} ha compartido una pizarra con tu clase en {$a->course}: {$a->name}.';
 $string['boardshared_link'] = 'Ver la pizarra';
 $string['boardshared_subject'] = 'Nueva pizarra en {$a}';
+$string['categorymodes'] = 'Modo de pantalla por categoría';
+$string['categorymodes_desc'] = 'El modo con el que empieza un curso, según su categoría. Una subcategoría sin modo propio toma el de la categoría de arriba, y una categoría sin modo, el del sitio. El profesor puede seguir eligiendo otro en cada curso.';
+$string['categorymodes_parent'] = 'Como la categoría de arriba';
+$string['categorymodes_site'] = 'Como el sitio';
 $string['choose'] = '¿Con qué clase?';
 $string['choose_desc'] = 'Elige el curso y se abren las herramientas con sus alumnos ya cargados.';
 $string['days'] = 'Días que cuentan para el sorteo justo';

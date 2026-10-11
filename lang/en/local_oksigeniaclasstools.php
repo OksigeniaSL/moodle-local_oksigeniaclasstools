@@ -850,6 +850,7 @@ $string['app_gd_ahorcado_works'] = 'Spelling and vocabulary: which letters a wor
 Thinking which letters are more likely (vowels first, then the common ones).
 In Early years, recognising the first letter of the names of the class.
 With a glossary of the course, the words of the subject with their definition as the clue.';
+$string['app_gd_all'] = 'All the guides';
 $string['app_gd_asi_how'] = 'Teach them at the start of the year, one by one, explaining what is done with each.
 Put the sign up before each activity starts, not when there is already noise.
 Praise aloud when the class follows it.';
@@ -1027,6 +1028,10 @@ $string['app_gd_grupos_works'] = 'Working with different classmates, not always 
 Sharing out responsibilities with roles.
 Fair, quick groups, with no arguing about who goes with whom.';
 $string['app_gd_how'] = 'How to take it to class';
+$string['app_gd_index_games'] = 'Games';
+$string['app_gd_index_lead'] = 'Each guide says what the tool is for, how to take it to class and what it gives at each stage, with its sources.';
+$string['app_gd_index_materials'] = 'Materials';
+$string['app_gd_index_tools'] = 'Tools';
 $string['app_gd_line_how'] = 'Choose the stretch: «From 0 to 10», «From −10 to 10», quarters, thirds, tenths… or your own.
 A tap on the line starts at a point; each tap after it is a jump, drawn with its arc and its sum.
 Hide the numbers and ask where one falls before uncovering it.
@@ -1049,7 +1054,7 @@ Negative numbers, to the left of zero.
 Fractions and decimals as numbers with their own place on the line.
 Estimating where a number falls before checking it.
 Intervals, inequalities and absolute value: the same part of the line written three ways.';
-$string['app_gd_none'] = 'This tool has no guide yet.';
+$string['app_gd_none'] = 'This tool has no guide of its own. These are the guides there are:';
 $string['app_gd_ordenar_how'] = 'Choose an example of the level, or write your own in «My exercises»: one item per line, in its order.
 A line «? item: why» explains why it goes there; it comes up when someone puts it in the wrong place.
 One student taps the cards while the class says aloud what comes next.
@@ -2373,6 +2378,10 @@ $string['boardsection'] = 'Class boards';
 $string['boardshared_body'] = '{$a->teacher} has shared a board with your class in {$a->course}: {$a->name}.';
 $string['boardshared_link'] = 'See the board';
 $string['boardshared_subject'] = 'New board in {$a}';
+$string['categorymodes'] = 'Screen mode by category';
+$string['categorymodes_desc'] = 'The mode a course starts in, by its category. A subcategory without a mode of its own takes the one of the category above, and a category without one takes the mode of the site. The teacher can still choose another in each course.';
+$string['categorymodes_parent'] = 'Like the category above';
+$string['categorymodes_site'] = 'Like the site';
 $string['choose'] = 'Which class?';
 $string['choose_desc'] = 'Pick a course and the tools open with its students already loaded.';
 $string['days'] = 'Days counted for fair picking';

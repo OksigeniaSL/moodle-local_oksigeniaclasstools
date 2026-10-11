@@ -33,11 +33,15 @@ require_once(__DIR__ . '/generator_trait.php');
  * @covers     ::local_oksigeniaclasstools_student_data
  * @covers     ::local_oksigeniaclasstools_visible_userids
  * @covers     ::local_oksigeniaclasstools_site
+ * @covers     ::local_oksigeniaclasstools_default_mode
+ * @covers     \local_oksigeniaclasstools\admin\setting_categorymodes
  */
 #[\PHPUnit\Framework\Attributes\CoversFunction('local_oksigeniaclasstools_mode')]
 #[\PHPUnit\Framework\Attributes\CoversFunction('local_oksigeniaclasstools_student_data')]
 #[\PHPUnit\Framework\Attributes\CoversFunction('local_oksigeniaclasstools_visible_userids')]
 #[\PHPUnit\Framework\Attributes\CoversFunction('local_oksigeniaclasstools_site')]
+#[\PHPUnit\Framework\Attributes\CoversFunction('local_oksigeniaclasstools_default_mode')]
+#[\PHPUnit\Framework\Attributes\CoversClass(\local_oksigeniaclasstools\admin\setting_categorymodes::class)]
 final class modes_test extends \advanced_testcase {
     use generator_trait;
 
@@ -109,5 +113,34 @@ final class modes_test extends \advanced_testcase {
         $this->assertSame('advanced', local_oksigeniaclasstools_site()['mode']);
         set_config('defaultmode', 'nonsense', 'local_oksigeniaclasstools');
         $this->assertSame('primary', local_oksigeniaclasstools_site()['mode']);
+    }
+
+    public function test_a_category_chooses_the_mode_its_courses_start_in(): void {
+        global $CFG;
+        require_once($CFG->libdir . '/adminlib.php');
+        $this->resetAfterTest();
+        $gen = $this->getDataGenerator();
+        $early = $gen->create_category(['name' => 'Early years']);
+        $room = $gen->create_category(['name' => 'Room 1', 'parent' => $early->id]);
+        $primary = $gen->create_category(['name' => 'Primary']);
+        $other = $gen->create_category(['name' => 'Other']);
+        set_config('defaultmode', 'secondary', 'local_oksigeniaclasstools');
+        // Nothing by category: the site's mode.
+        $this->assertSame('secondary', local_oksigeniaclasstools_default_mode((int) $room->id));
+        $setting = new \local_oksigeniaclasstools\admin\setting_categorymodes();
+        $chosen = [$early->id => 'early', $primary->id => 'primary', $other->id => 'nonsense'];
+        $this->assertSame('', $setting->write_setting($chosen));
+        $this->assertSame([$early->id => 'early', $primary->id => 'primary'], json_decode($setting->get_setting(), true));
+        // A subcategory without its own takes the one above; one with its own keeps it; without any, the site's.
+        $this->assertSame('early', local_oksigeniaclasstools_default_mode((int) $room->id));
+        $this->assertSame('primary', local_oksigeniaclasstools_default_mode((int) $primary->id));
+        $this->assertSame('secondary', local_oksigeniaclasstools_default_mode((int) $other->id));
+        $this->assertSame('secondary', local_oksigeniaclasstools_default_mode());
+        $setting->write_setting([$early->id => 'early', $room->id => 'advanced']);
+        $this->assertSame('advanced', local_oksigeniaclasstools_default_mode((int) $room->id));
+        // The form lists every category, with «Like the category above» for a subcategory.
+        $html = $setting->output_html($setting->get_setting());
+        $this->assertStringContainsString('Early years / Room 1', $html);
+        $this->assertStringContainsString(get_string('categorymodes_parent', 'local_oksigeniaclasstools'), $html);
     }
 }

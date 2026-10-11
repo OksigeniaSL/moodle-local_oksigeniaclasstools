@@ -60,6 +60,8 @@ if ($hassiteconfig) {
             'primary',
             $modes
         ));
+        // And by category: a category (and the ones below it) can start in another mode.
+        $settings->add(new \local_oksigeniaclasstools\admin\setting_categorymodes());
         $levels = [];
         foreach (LOCAL_OKSIGENIACLASSTOOLS_LEVELS as $level) {
             $levels[$level] = get_string('level_' . $level, 'local_oksigeniaclasstools');

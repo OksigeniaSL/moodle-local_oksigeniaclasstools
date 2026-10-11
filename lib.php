@@ -360,9 +360,9 @@ function local_oksigeniaclasstools_site(): array {
     // Not saved yet (before the settings page is first stored): all levels.
     $levels = get_config('local_oksigeniaclasstools', 'levels');
     $levels = $levels === false ? LOCAL_OKSIGENIACLASSTOOLS_LEVELS : array_values(array_filter(explode(',', $levels)));
-    // The screen mode a course starts in, until the teacher chooses another.
-    $mode = get_config('local_oksigeniaclasstools', 'defaultmode');
-    $mode = in_array($mode, LOCAL_OKSIGENIACLASSTOOLS_MODES, true) ? $mode : 'primary';
+    // The screen mode a course starts in, until the teacher chooses another (the course's own, by its category, is
+    // set when the board opens in a course).
+    $mode = local_oksigeniaclasstools_default_mode();
     // The tools, games and materials the site shows (all until the administrator chooses).
     $chosen = function (string $name, array $all): array {
         $value = get_config('local_oksigeniaclasstools', $name);
@@ -440,6 +440,33 @@ function local_oksigeniaclasstools_content_file(string $lang): string {
 }
 
 /**
+ * The screen mode a course starts in: the one chosen for its category, or for the nearest category above it that has
+ * one, or else the site's. The teacher can still choose another in each course.
+ *
+ * @param int $categoryid The course's category (0 for none).
+ * @return string
+ */
+function local_oksigeniaclasstools_default_mode(int $categoryid = 0): string {
+    $site = get_config('local_oksigeniaclasstools', 'defaultmode');
+    $site = in_array($site, LOCAL_OKSIGENIACLASSTOOLS_MODES, true) ? $site : 'primary';
+    $map = json_decode((string) get_config('local_oksigeniaclasstools', 'categorymodes'), true);
+    if (!$categoryid || !is_array($map) || !$map) {
+        return $site;
+    }
+    $category = core_course_category::get($categoryid, IGNORE_MISSING, true);
+    if (!$category) {
+        return $site;
+    }
+    // The path is «/top/…/this»: from this one up.
+    foreach (array_reverse(array_filter(explode('/', $category->path))) as $id) {
+        if (isset($map[$id]) && in_array($map[$id], LOCAL_OKSIGENIACLASSTOOLS_MODES, true)) {
+            return $map[$id];
+        }
+    }
+    return $site;
+}
+
+/**
  * Outputs the classroom screen (the same one as the SCORM package), with the course data if there is any.
  *
  * @param array|null $data
@@ -460,6 +487,9 @@ function local_oksigeniaclasstools_output(?array $data): void {
     $html = preg_replace($assets, '$1?v=' . $version . '"', $html);
     $flags = JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES;
     $site = local_oksigeniaclasstools_site();
+    if ($data && !empty($data['courseid'])) {
+        $site['mode'] = local_oksigeniaclasstools_default_mode((int) get_course($data['courseid'])->category);
+    }
     // Whether the one who opens it teaches: what is only for teachers (the teacher's guide) shows only to them.
     $site['teacher'] = local_oksigeniaclasstools_teaches($data);
     $script = '<script>window.CLASSTOOLS_SITE = ' . json_encode($site, $flags) . ";</script>\n";
