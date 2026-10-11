@@ -1927,7 +1927,7 @@
     const LEVELS_OF = {
         // Games.
         rosco: ['primary', 'secondary', 'advanced'], simon: ['early', 'primary', 'secondary'],
-        ahorcado: ['primary', 'secondary', 'advanced'], palabra: ['primary', 'secondary', 'advanced'],
+        ahorcado: ['early', 'primary', 'secondary', 'advanced'], palabra: ['primary', 'secondary', 'advanced'],
         parejas: ['early', 'primary', 'secondary', 'advanced'], codigo: ['primary', 'secondary', 'advanced'],
         // Materials.
         rods: ['early', 'primary'], tangram: ['early', 'primary', 'secondary'], line: ['primary', 'secondary', 'advanced'],

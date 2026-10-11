@@ -668,6 +668,19 @@ a.redondo { text-decoration: none; }
 .ct-balloon:nth-child(2n) { animation-delay: -1.2s; }
 .ct-balloon:nth-child(3n) { animation-delay: -2.1s; }
 .ct-balloon::after { content: ""; position: absolute; top: 100%; left: 50%; width: 2px; height: clamp(1.4rem, 5vh, 3rem); background: #9aa7b8; }
+/* A spent balloon that stays (the teacher's choice; by default from Secondary on): grey and deflated. */
+.ct-balloon.ct-spent { filter: grayscale(1); opacity: .35; transform: scale(.8); animation: none; }
+/* Early years: the first letter of a classmate's name. Their photo, the name and three big letters. */
+.ct-ah-word { display: flex; flex-direction: column; align-items: center; gap: .7rem; width: 100%; }
+.ct-ah-initial { display: flex; flex-direction: column; align-items: center; gap: clamp(.8rem, 2.5vh, 1.6rem); margin: auto 0; }
+.ct-ah-face { width: clamp(8rem, 26vh, 14rem); height: clamp(8rem, 26vh, 14rem); container-type: size; }
+.ct-ah-face:empty { display: none; }
+.ct-ah-kind button { padding: .3rem .6rem; line-height: 1.1; white-space: normal; }
+.ct-ah-choices { display: flex; gap: clamp(1rem, 3vw, 2.5rem); }
+.ct-ah-choice { width: clamp(5rem, 14vh, 8rem); aspect-ratio: 1; border: 0; border-radius: 24px; background: var(--azul-suave); color: var(--azul-osc); font: inherit; font-size: clamp(3rem, 9vh, 5.5rem); font-weight: 1000; line-height: 1; cursor: pointer; box-shadow: 0 6px 0 rgba(15, 47, 94, .18); }
+.ct-ah-choice.ct-no { opacity: .3; animation: tiembla .4s; cursor: default; }
+.ct-ah-choice.ct-right { background: var(--verde); color: #fff; }
+.ct-ah-choice:disabled:not(.ct-right) { cursor: default; }
 /* A popped balloon is gone even without its animation (Advanced mode, reduced motion). */
 .ct-balloon.ct-popped { opacity: 0; transform: scale(0); animation: explota .35s ease-out forwards; }
 .ct-slots { display: flex; flex-wrap: wrap; justify-content: center; gap: clamp(.25rem, .8vw, .6rem); }
@@ -1236,6 +1249,10 @@ a.redondo { text-decoration: none; }
 :root[data-modo="advanced"] .grupo h3 { font-weight: 700; }
 :root[data-modo="advanced"] .grupo li, :root[data-modo="advanced"] .lista-salidos li { font-weight: 500; }
 :root[data-modo="advanced"] .ct-key { border-radius: 4px; background: var(--superficie); box-shadow: inset 0 0 0 1px var(--borde); color: var(--barra-osc); font-weight: 600; }
+/* The colours of a played key win over the sober keys of Secondary and Advanced (they were white on white). */
+:root[data-modo] .ct-key[data-state="correct"] { background: var(--verde); box-shadow: none; color: #fff; }
+:root[data-modo] .ct-key[data-state="present"] { background: var(--amarillo); box-shadow: none; color: var(--tinta); }
+:root[data-modo] .ct-key[data-state="absent"] { background: #6b7684; box-shadow: none; color: #fff; }
 :root[data-modo="advanced"] .ct-slot { border-bottom-width: 2px; border-bottom-color: var(--barra-osc); font-weight: 600; }
 :root[data-modo="advanced"] .ct-wcell { border-radius: 2px; border-width: 1px; border-color: #aab3bf; font-weight: 700; }
 :root[data-modo="advanced"] .ct-word-clue { font-weight: 500; }

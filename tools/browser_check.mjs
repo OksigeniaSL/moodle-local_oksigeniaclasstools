@@ -326,6 +326,79 @@ const CHECKS = {
         const want = GLOSSARY.flatMap((x) => [x.w, x.c]).sort();
         return texts.join('|') === want.join('|') ? '' : `the cards are ${texts.join(', ')}`;
     },
+    // Hangman in Early years: a classmate's photo, the name without its first letter and three letters to choose from.
+    'hangman-initial': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const setMode = async (m) => {
+            document.querySelector('#b-modo').click();
+            await sleep(200);
+            document.querySelector(`#menu-modo [data-modo="${m}"]`).click();
+            await sleep(300);
+        };
+        try {
+            await setMode('early');
+            document.querySelector('#t-juegos').click();
+            await sleep(200);
+            document.querySelector('#ga-mode [data-game="ahorcado"]').click();
+            await sleep(300);
+            if (document.querySelector('#ah-kind [aria-checked="true"]').dataset.v !== 'initial') { return 'Early years does not start with the first letter of a name'; }
+            document.querySelector('#ah-start').click();
+            await sleep(300);
+            const ini = window.ClasstoolsHangman.initial();
+            const choices = [...document.querySelectorAll('#ah-choices [data-k]')];
+            if (choices.length !== 3) { return `${choices.length} letters to choose from`; }
+            if (!choices.some((b) => b.dataset.k === ini.letter)) { return `the right letter «${ini.letter}» is not among them`; }
+            const first = document.querySelector('#ah-name .ct-slot');
+            if (first.textContent) { return 'the first letter is already shown'; }
+            if (!document.querySelector('#ah-face').innerHTML) { return 'no face of the classmate'; }
+            const wrong = choices.find((b) => b.dataset.k !== ini.letter);
+            wrong.click();
+            if (!wrong.disabled) { return 'a wrong letter is not put aside'; }
+            choices.find((b) => b.dataset.k === ini.letter).click();
+            await sleep(200);
+            await window.shot('hangman-initial');
+            if (!first.textContent) { return 'the right letter did not fill the name'; }
+            return /^Yes!/.test(document.querySelector('#ah-msg').textContent) ? '' : `the board says «${document.querySelector('#ah-msg').textContent}»`;
+        } finally {
+            await setMode('primary');
+        }
+    },
+    // Hangman in Secondary: spent balloons stay grey, and «Uncover a letter» costs one.
+    'hangman-uncover': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const setMode = async (m) => {
+            document.querySelector('#b-modo').click();
+            await sleep(200);
+            document.querySelector(`#menu-modo [data-modo="${m}"]`).click();
+            await sleep(300);
+        };
+        try {
+            await setMode('secondary');
+            document.querySelector('#t-juegos').click();
+            await sleep(200);
+            document.querySelector('#ga-mode [data-game="ahorcado"]').click();
+            await sleep(300);
+            if (document.querySelector('#ah-spent [aria-checked="true"]').dataset.v !== 'stay') { return 'in Secondary spent balloons do not stay by default'; }
+            document.querySelector('#ah-src').value = 'builtin';
+            document.querySelector('#ah-src').dispatchEvent(new Event('change', { bubbles: true }));
+            document.querySelector('#ah-start').click();
+            await sleep(300);
+            const uncover = document.querySelector('#ah-uncover');
+            if (uncover.hidden || uncover.disabled) { return 'no «Uncover a letter» while playing'; }
+            const before = document.querySelectorAll('#ah-slots .ct-slot.ct-shown').length;
+            uncover.click();
+            await sleep(200);
+            const after = document.querySelectorAll('#ah-slots .ct-slot.ct-shown').length;
+            if (after <= before) { return 'no letter was uncovered'; }
+            const key = document.querySelector('#ah-keys .ct-key[data-state="correct"]');
+            if (!key || getComputedStyle(key).backgroundColor !== 'rgb(6, 126, 54)') { return 'the uncovered letter is not green on the keyboard'; }
+            const spent = document.querySelectorAll('#ah-balloons .ct-spent').length, popped = document.querySelectorAll('#ah-balloons .ct-popped').length;
+            await window.shot('hangman-uncover');
+            return spent === 1 && popped === 0 ? '' : `${spent} grey balloons and ${popped} popped`;
+        } finally {
+            await setMode('primary');
+        }
+    },
     // QR: the colours of the corners line up as the colours above them, with «Same» on a line of its own.
     'qr-swatches': async () => {
         const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
