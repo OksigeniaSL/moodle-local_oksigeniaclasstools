@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.23.1 (2026-10-11)
+
+- **Live vote**: the type of answers chosen between two rounds (yes or no, traffic light, 1 to 5) no longer goes back
+  to the one before while the board waits to open the vote; the vote opens with the type the teacher picked.
+- **Brainstorm**: the count reads «22 answers · 22 of 22 devices».
+
 ## 0.23.0 (2026-10-09)
 
 - **Formulas for science**: chemistry with `ce(…)`, as in mhchem (`ce(H2SO4)`, `ce(Fe^3+)`, `ce(2H2 + O2 -> 2H2O)`,

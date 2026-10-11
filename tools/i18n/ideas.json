@@ -184,8 +184,8 @@
   "es": "mucho"
  },
  "id_count": {
-  "en": "{$a->n} answers from {$a->who} of {$a->of} devices",
-  "es": "{$a->n} respuestas de {$a->who} de {$a->of} dispositivos"
+  "en": "{$a->n} answers · {$a->who} of {$a->of} devices",
+  "es": "{$a->n} respuestas · {$a->who} de {$a->of} dispositivos"
  },
  "id_wait_open": {
   "en": "Write the question and open the answers.",

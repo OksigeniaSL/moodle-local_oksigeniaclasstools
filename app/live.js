@@ -297,8 +297,10 @@
 
     // A vote: the question (optional, only on the board), how many have answered while it is open, and the bars when
     // it closes. «Show on the devices» sends the bars to the tablets too.
+    let lastVote = '';
     const paintVote = (v, first) => {
-        if (first || !$('#lv-bars')) {
+        const fresh = first || !$('#lv-bars');
+        if (fresh) {
             stage.innerHTML = `<div class="lv-pregunta"><input type="text" id="lv-question" maxlength="140" placeholder="${escape(t('lv_question_ph'))}" aria-label="${escape(t('lv_question_ph'))}"></div>
                 <div class="lv-centro"><p class="lv-ronda" id="lv-round"></p><p class="lv-grande" id="lv-progress"></p>
                     <div class="lv-reloj" id="lv-clock" hidden><span class="lv-reloj-pista"><i id="lv-clock-bar"></i></span><strong id="lv-clock-text"></strong></div>
@@ -320,7 +322,11 @@
             $('#lv-limit').addEventListener('change', () => save('envivo-cierre', Number($('#lv-limit').value)));
             $('#lv-show').addEventListener('change', () => act('show', { show: $('#lv-show').checked ? 1 : 0 }));
         }
-        $('#lv-kind-vote').value = v.vote; $('#lv-kind-vote').disabled = v.open; $('#lv-limit').disabled = v.open;
+        // The type of answers only reaches the server when the vote opens: between rounds the teacher may be choosing
+        // another one, so the board follows the server only when it is open or when its type has changed there.
+        if (fresh || v.open || v.vote !== lastVote) { $('#lv-kind-vote').value = v.vote; }
+        lastVote = v.vote;
+        $('#lv-kind-vote').disabled = v.open; $('#lv-limit').disabled = v.open;
         clock(v);
         $('#lv-show').checked = v.show;
         relabel($('#lv-open'), v.open ? t('lv_close_vote') : (v.round ? t('lv_again') : t('lv_open_vote')), v.open ? 'pausa' : 'empezar');

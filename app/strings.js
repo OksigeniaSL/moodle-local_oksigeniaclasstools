@@ -359,7 +359,7 @@ window.CLASSTOOLS_STR = {
 "id_accept": "Show “{$a}”",
 "id_check_first": "There are answers waiting to be checked below.",
 "id_close": "Close the answers",
-"id_count": "{$a->n} answers from {$a->who} of {$a->of} devices",
+"id_count": "{$a->n} answers · {$a->who} of {$a->of} devices",
 "id_default_name": "Brainstorm {$a}",
 "id_empty": "No answers yet.",
 "id_file": "brainstorm",
