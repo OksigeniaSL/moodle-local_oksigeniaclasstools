@@ -1934,7 +1934,7 @@
         // Materials.
         rods: ['early', 'primary'], tangram: ['early', 'primary', 'secondary'], line: ['primary', 'secondary', 'advanced'],
         fractions: ['primary', 'secondary'], geoboard: ['early', 'primary', 'secondary'], base10: ['primary', 'secondary'],
-        calc: ['primary', 'secondary', 'advanced'], score: ['early', 'primary', 'secondary', 'advanced'],
+        balanza: ['early', 'primary', 'secondary'], calc: ['primary', 'secondary', 'advanced'], score: ['early', 'primary', 'secondary', 'advanced'],
     };
     const ofLevel = (id) => !LEVELS_OF[id] || LEVELS_OF[id].includes(modo);
     /**

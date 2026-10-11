@@ -106,8 +106,15 @@ function xmldb_local_oksigeniaclasstools_upgrade($oldversion) {
     }
     if ($oldversion < 2026110500) {
         // Four games on the shared exercise format: shown on sites that already chose their games.
+        require_once(__DIR__ . '/../lib.php');
         local_oksigeniaclasstools_show_new('games', ['ordenar', 'clasificar', 'errores', 'quiensoy']);
         upgrade_plugin_savepoint(true, 2026110500, 'local', 'oksigeniaclasstools');
+    }
+    if ($oldversion < 2026110800) {
+        // The balance scale: shown on sites that already chose their materials.
+        require_once(__DIR__ . '/../lib.php');
+        local_oksigeniaclasstools_show_new('materials', ['balanza']);
+        upgrade_plugin_savepoint(true, 2026110800, 'local', 'oksigeniaclasstools');
     }
     return true;
 }

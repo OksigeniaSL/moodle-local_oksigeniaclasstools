@@ -46,7 +46,7 @@ const LOCAL_OKSIGENIACLASSTOOLS_GAMES = [
 /** The materials, with the string of their name. */
 const LOCAL_OKSIGENIACLASSTOOLS_MATERIALS = [
     'rods' => 'app_mt_rods', 'tangram' => 'app_mt_tangram', 'line' => 'app_mt_line', 'fractions' => 'app_mt_fractions',
-    'geoboard' => 'app_mt_geoboard', 'base10' => 'app_mt_base10', 'calc' => 'app_mt_calc',
+    'geoboard' => 'app_mt_geoboard', 'base10' => 'app_mt_base10', 'balanza' => 'app_mt_balance', 'calc' => 'app_mt_calc',
     'score' => 'app_mt_score',
 ];
 

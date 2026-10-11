@@ -1598,5 +1598,105 @@
  "sc_delete_confirm": {
   "en": "Tap again to delete it",
   "es": "Toca otra vez para borrarla"
+ },
+ "mt_balance": {
+  "en": "Balance scale",
+  "es": "Balanza"
+ },
+ "ba_compare": {
+  "en": "Compare",
+  "es": "Comparar"
+ },
+ "ba_equation": {
+  "en": "Equations",
+  "es": "Ecuaciones"
+ },
+ "ba_numbers": {
+  "en": "Weights with numbers",
+  "es": "Pesas con números"
+ },
+ "ba_empty": {
+  "en": "Empty the pans",
+  "es": "Vaciar los platos"
+ },
+ "ba_help": {
+  "en": "Put weights on each pan with the buttons below and tap a weight to take it off. The scale leans to the heavier side.",
+  "es": "Pon pesas en cada plato con los botones de abajo y toca una pesa para quitarla. La balanza se inclina hacia el lado que pesa más."
+ },
+ "ba_add_left": {
+  "en": "Put {$a} on the left pan",
+  "es": "Poner {$a} en el plato izquierdo"
+ },
+ "ba_add_right": {
+  "en": "Put {$a} on the right pan",
+  "es": "Poner {$a} en el plato derecho"
+ },
+ "ba_take_weight": {
+  "en": "Take off the weight of {$a}",
+  "es": "Quitar la pesa de {$a}"
+ },
+ "ba_take_box": {
+  "en": "Take off a box",
+  "es": "Quitar una caja"
+ },
+ "ba_take_one": {
+  "en": "Take off a weight of 1",
+  "es": "Quitar una pesa de 1"
+ },
+ "ba_new": {
+  "en": "New equation",
+  "es": "Ecuación nueva"
+ },
+ "ba_write": {
+  "en": "Or write one",
+  "es": "O escribe una"
+ },
+ "ba_put": {
+  "en": "Put",
+  "es": "Poner"
+ },
+ "ba_bad": {
+  "en": "Write it like 2x + 3 = 11, with whole numbers and a solution the scale can show: a whole number above zero.",
+  "es": "Escríbela como 2x + 3 = 11, con números enteros y una solución que la balanza pueda enseñar: un número entero mayor que cero."
+ },
+ "ba_both_one": {
+  "en": "Take 1 off each pan",
+  "es": "Quitar 1 de cada plato"
+ },
+ "ba_both_x": {
+  "en": "Take a box off each pan",
+  "es": "Quitar una caja de cada plato"
+ },
+ "ba_share": {
+  "en": "Share both pans out by {$a}",
+  "es": "Repartir los dos platos entre {$a}"
+ },
+ "ba_share_any": {
+  "en": "Share both pans out",
+  "es": "Repartir los dos platos"
+ },
+ "ba_undo": {
+  "en": "Undo",
+  "es": "Deshacer"
+ },
+ "ba_reveal": {
+  "en": "Open the boxes",
+  "es": "Abrir las cajas"
+ },
+ "ba_hide": {
+  "en": "Close the boxes",
+  "es": "Cerrar las cajas"
+ },
+ "ba_help_eq": {
+  "en": "Each box weighs x. What comes off one pan has to come off the other, or the scale tips: take the same off both until a box is left on its own.",
+  "es": "Cada caja pesa x. Lo que se quita de un plato se quita del otro, o la balanza se inclina: quita lo mismo de los dos hasta que quede una caja sola."
+ },
+ "ba_unbalanced": {
+  "en": "Out of balance: do the same on the other pan.",
+  "es": "Desequilibrada: haz lo mismo en el otro plato."
+ },
+ "ba_solved": {
+  "en": "x = {$a}, without breaking the balance.",
+  "es": "x = {$a}, sin romper el equilibrio."
  }
 }

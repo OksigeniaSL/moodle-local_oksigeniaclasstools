@@ -666,6 +666,51 @@ const CHECKS = {
         return '';
     },
     // Base blocks in base 5: 69 is 2 × 25 + 3 × 5 + 4, «234 in base 5», and five ones swap for one block of 5.
+    // Balance scale: weights compared, then an equation worked out taking the same off both pans.
+    'balance-scale': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const q = (s) => document.querySelector(s);
+        q('#t-material').click();
+        await sleep(200);
+        q('#mt-mode [data-mode="balanza"]').click();
+        await sleep(200);
+        q('#ba-kind [data-v="compare"]').click();
+        if (!q('#ba-numbers').checked) { q('#ba-numbers').click(); }
+        q('#ba-empty').click();
+        q('#ba-add [data-side="l"] [data-add="5"]').click();
+        q('#ba-add [data-side="r"] [data-add="2"]').click();
+        q('#ba-add [data-side="r"] [data-add="2"]').click();
+        await sleep(100);
+        if (q('#ba-text').textContent !== '5 > 4') { return `compare: «${q('#ba-text').textContent}»`; }
+        if (!/^-/.test(q('#ba-beam').style.getPropertyValue('--a'))) { return `the beam does not lean left: ${q('#ba-beam').style.getPropertyValue('--a')}`; }
+        q('#ba-add [data-side="r"] [data-add="1"]').click();
+        await sleep(100);
+        if (q('#ba-text').textContent !== '5 = 5' || q('#ba-beam').style.getPropertyValue('--a') !== '0deg') { return 'equal weights do not balance'; }
+        await sleep(800);
+        await window.shot('balance-compare');
+        q('#ba-kind [data-v="equation"]').click();
+        q('#ba-eq').value = '2x + 3 = 11';
+        q('#ba-put').click();
+        await sleep(100);
+        if (q('#ba-text').textContent !== '2x + 3 = 11') { return `equation: «${q('#ba-text').textContent}»`; }
+        // A one off the left pan only: it tips; undone.
+        q('#ba-l .ct-ba-u').click();
+        await sleep(100);
+        if (q('#ba-text').textContent !== '2x + 2 < 11' || !q('#ba-note').textContent) { return `one pan only: «${q('#ba-text').textContent}»`; }
+        await sleep(800);
+        await window.shot('balance-tipped');
+        q('#ba-undo').click();
+        for (let i = 0; i < 3; i++) { q('#ba-one').click(); }
+        await sleep(100);
+        if (q('#ba-text').textContent !== '2x = 8') { return `after taking 3 off each: «${q('#ba-text').textContent}»`; }
+        q('#ba-share').click();
+        await sleep(900);
+        await window.shot('balance-equation');
+        const st = window.ClasstoolsBalance;
+        if (q('#ba-text').textContent !== 'x = 4' || !st.solved() || !/4/.test(q('#ba-note').textContent)) { return `not worked out: «${q('#ba-text').textContent}» «${q('#ba-note').textContent}»`; }
+        if (st.parse('3x = 7') || st.parse('x + 5 = 2') || !st.parse('4x + 1 = 2x + 9')) { return 'equations without a whole positive solution are taken, or good ones refused'; }
+        return '';
+    },
     'base-blocks': async () => {
         const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
         document.querySelector('#t-material').click();

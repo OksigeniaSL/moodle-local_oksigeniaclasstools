@@ -1958,3 +1958,33 @@ dialog.ct-sc-dialogo { width: min(40rem, 94vw); }
 .ct-ex-ai-fields { display: grid; grid-template-columns: 2fr 1fr .7fr; gap: .5rem; }
 .ct-ex-ai textarea { width: 100%; margin-top: .4rem; color: var(--tinta-3); font-size: .85rem; }
 .ct-ex-ai-policy { margin-top: .6rem; padding: .6rem .8rem; border: 2px solid var(--azul-suave); border-radius: 12px; background: var(--superficie); font-size: .9rem; }
+/* Balance scale: the beam turns by --a and the pans turn back by the same, so they hang level all the way. */
+.ct-ba-stage { display: flex; flex-direction: column; align-items: center; gap: .6rem; }
+.ct-ba-text { min-height: 1.4em; font-size: clamp(1.6rem, 4vw, 2.6rem); }
+.ct-ba { position: relative; width: 100%; max-width: 46rem; height: 25rem; }
+.ct-ba-beam { --a: 0deg; position: absolute; left: 18%; top: 3.5rem; width: 64%; height: 14px; border-radius: 7px; background: var(--tinta-2); transform: rotate(var(--a)); transition: transform .7s cubic-bezier(.3, 1.35, .5, 1); z-index: 1; }
+.ct-ba-beam::after { content: ''; position: absolute; left: 50%; top: 50%; width: 22px; height: 22px; margin: -11px; border-radius: 50%; background: var(--tinta); }
+.ct-ba-pan { position: absolute; top: 7px; width: 56%; height: 14rem; transform-origin: 50% 0; transform: rotate(calc(-1 * var(--a))); transition: transform .7s cubic-bezier(.3, 1.35, .5, 1); }
+.ct-ba-pan[data-side="l"] { left: -28%; }
+.ct-ba-pan[data-side="r"] { right: -28%; }
+.ct-ba-pan::before { content: ''; position: absolute; inset: 0 4% 14px; background: linear-gradient(to bottom right, transparent calc(50% - 1.5px), var(--tinta-3) 50%, transparent calc(50% + 1.5px)) left / 50% 100% no-repeat, linear-gradient(to bottom left, transparent calc(50% - 1.5px), var(--tinta-3) 50%, transparent calc(50% + 1.5px)) right / 50% 100% no-repeat; }
+.ct-ba-plate { position: absolute; left: 0; right: 0; bottom: 0; height: 14px; border-radius: 0 0 50% 50% / 0 0 100% 100%; background: var(--tinta-2); }
+.ct-ba-items { position: absolute; left: 10%; right: 10%; bottom: 14px; max-height: 70%; display: flex; flex-wrap: wrap-reverse; justify-content: center; align-content: flex-start; align-items: flex-end; gap: 3px; }
+.ct-ba-post { position: absolute; left: 50%; top: 3.5rem; bottom: 1.2rem; width: 14px; margin-left: -7px; background: var(--tinta-2); }
+.ct-ba-post::after { content: ''; position: absolute; left: 50%; bottom: -1.2rem; width: 9rem; height: 1.2rem; margin-left: -4.5rem; border-radius: 1rem 1rem 0 0; background: var(--tinta-2); }
+.ct-ba-w, .ct-ba-x, .ct-ba-u { display: inline-grid; place-items: center; padding: 0; border: 0; color: #fff; font-weight: 900; cursor: pointer; }
+.ct-ba-w { width: var(--s); height: var(--s); border-radius: 30% 30% 8% 8%; background: var(--c); font-size: calc(var(--s) * .45); }
+.ct-ba-w { --s: var(--s0); }
+.ct-ba-w.w1 { --s0: 32px; --c: #067e36; }
+.ct-ba-w.w2 { --s0: 40px; --c: #164281; }
+.ct-ba-w.w5 { --s0: 50px; --c: #ce1423; }
+.ct-ba-w.w10 { --s0: 62px; --c: #5b2fb8; }
+.ct-ba-x { width: 54px; height: 54px; border-radius: 9px; background: var(--amarillo); color: var(--amarillo-tinta); font-size: 1.4rem; font-style: italic; box-shadow: inset 0 -4px 0 rgba(0, 0, 0, .15); }
+.ct-ba-u { width: 30px; height: 30px; border-radius: 6px; background: #067e36; font-size: .95rem; }
+.ct-ba-add { display: flex; justify-content: space-between; gap: 1rem; width: 100%; max-width: 46rem; }
+.ct-ba-add .ct-row { flex-wrap: wrap; gap: .3rem; }
+.ct-ba-add .boton { gap: .2rem; padding: .25rem .5rem; }
+.ct-ba-add .ct-ba-w { --s: calc(var(--s0) * .8); cursor: inherit; }
+.ct-ba-ops { display: flex; flex-wrap: wrap; gap: .4rem; }
+.ct-ba-note { min-height: 1.4em; font-weight: 800; text-align: center; }
+@media (prefers-reduced-motion: reduce) { .ct-ba-beam, .ct-ba-pan { transition: none; } }
