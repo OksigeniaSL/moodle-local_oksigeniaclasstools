@@ -18,7 +18,8 @@ const APP = join(dirname(fileURLToPath(import.meta.url)), '..', 'app');
 // (start, state, open, close, end) for a vote, keeping what the board sent.
 const FAKE = `
 window.CLASSTOOLS = { lists: [{ id: 1, name: 'Class 1', key: 'c1', students: Array.from({ length: 8 }, (_, i) => ({ id: i + 1, n: 'Student ' + (i + 1) })) }],
-    courseid: 1, mode: 'teacher', sesskey: 'x', days: {}, state: {}, liveurl: 'fake://live', me: { id: 99, name: 'Teacher' } };
+    courseid: 1, mode: 'teacher', sesskey: 'x', days: {}, state: {}, liveurl: 'fake://live', glossaryurl: 'fake://glossary',
+    me: { id: 99, name: 'Teacher' } };
 window.FAKE = { calls: [], polls: 0 };
 // A picture of the screen, when the checks run with SHOTS.
 window.shot = (name) => new Promise((done) => { if (!window.checkShot) { done(); return; } window.shotDone = done; window.checkShot(name); });
@@ -33,6 +34,12 @@ window.shot = (name) => new Promise((done) => { if (!window.checkShot) { done();
         if (!String(url).startsWith('fake://')) { return real(url, opts); }
         const p = new URLSearchParams(opts && opts.body), a = p.get('action');
         FAKE.calls.push(Object.fromEntries(p));
+        const json = (x) => Promise.resolve(new Response(JSON.stringify(x), { headers: { 'Content-Type': 'application/json' } }));
+        // A glossary of the course, as glossary.php gives it.
+        if (String(url).startsWith('fake://glossary')) {
+            return json(a === 'list' ? { ok: true, glossaries: [{ id: 5, name: 'Science words', count: 1 }] }
+                : { ok: true, words: [{ w: 'Photosynthesis', c: 'How plants make their food with light.' }] });
+        }
         if (a === 'start') { S = { vote: VOTES[p.get('vote')] ? p.get('vote') : 'abcd', round: 0, open: false, ended: false }; }
         else if (a === 'state') { FAKE.polls++; }
         else if (a === 'open') { if (VOTES[p.get('vote')]) { S.vote = p.get('vote'); } S.open = true; S.round++; }
@@ -256,6 +263,24 @@ const CHECKS = {
             lang.dispatchEvent(new Event('change', { bubbles: true }));
             await sleep(300);
         }
+    },
+    // Hangman with a glossary of the course: its word, and its definition as the clue.
+    'glossary-words': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        document.querySelector('#t-juegos').click();
+        await sleep(200);
+        document.querySelector('#ga-mode [data-game="ahorcado"]').click();
+        await sleep(300);
+        const src = document.querySelector('#ah-src');
+        if (![...src.options].some((o) => o.value === 'glos:5')) { return 'the glossary is not among the sources'; }
+        src.value = 'glos:5';
+        src.dispatchEvent(new Event('change', { bubbles: true }));
+        await sleep(300);
+        document.querySelector('#ah-start').click();
+        await sleep(300);
+        const slots = document.querySelectorAll('#ah-slots .ct-slot').length, clue = document.querySelector('#ah-clue').textContent;
+        if (slots !== 'Photosynthesis'.length) { return `the word has ${slots} letters`; }
+        return clue.includes('How plants make their food with light.') ? '' : `the clue is «${clue}»`;
     },
     // QR: the colours of the corners line up as the colours above them, with «Same» on a line of its own.
     'qr-swatches': async () => {

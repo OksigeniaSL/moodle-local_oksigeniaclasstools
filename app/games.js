@@ -149,7 +149,34 @@
     const savedLang = load(WORDS_KEY, OWN.lang);
     if (savedLang !== OWN.lang && PACKS.includes(savedLang)) { useWordLang(savedLang); }
 
-    // The secret word: typed hidden («Escribirla yo») or at random from built-in words or the teacher's lists.
+    // The glossaries of the course (inside Moodle) as a source of words: the list is asked once, and the words of a
+    // glossary when it is chosen. Each word comes with a clue from its definition.
+    const AULA = core.moodle;
+    const glossaryCall = (action, extra = {}) => fetch(AULA.glossaryurl, { method: 'POST', credentials: 'same-origin',
+        body: new URLSearchParams({ courseid: AULA.courseid, sesskey: AULA.sesskey, action, ...extra }) })
+        .then((r) => r.json()).then((j) => { if (!j || !j.ok) { throw new Error((j && (j.errorcode || j.error)) || 'error'); } return j; });
+    let glossaries = null;
+    const glossaryWords = {};
+    const askGlossaries = () => {
+        if (glossaries || !AULA || !AULA.glossaryurl) { return; }
+        glossaries = [];
+        glossaryCall('list').then((j) => {
+            glossaries = j.glossaries || [];
+            if (glossaries.length) { document.dispatchEvent(new CustomEvent('classtools:glossaries')); }
+        }).catch(() => { /* No glossaries: the other sources stay. */ });
+    };
+    const loadGlossary = (id) => {
+        if (!glossaryWords[id]) {
+            glossaryWords[id] = glossaryCall('words', { glossaryid: id })
+                .then((j) => { glossaryWords[id] = j.words || []; return glossaryWords[id]; })
+                .catch(() => { delete glossaryWords[id]; return []; });
+        }
+        return Promise.resolve(glossaryWords[id]);
+    };
+    const glossaryOf = (id) => (Array.isArray(glossaryWords[id]) ? glossaryWords[id] : []);
+
+    // The secret word: typed hidden («Escribirla yo») or at random from built-in words, the teacher's lists or a
+    // glossary of the course.
     const wordSource = (prefix, builtin, { lengthHint } = {}) => {
         const html = `
             <label class="campo apilado"><span>${t('ga_words_lang')}</span><select id="${prefix}-lang">
@@ -162,16 +189,20 @@
             const sel = $(`#${prefix}-src`), before = sel.value || load(prefix + '-fuente', 'builtin');
             const own = core.lists().filter((l) => !l.aula);
             sel.innerHTML = `<option value="type">${t('ga_type_it')}</option><option value="builtin">${escape(builtin.label())}</option>`
-                + (own.length ? `<optgroup label="${escape(t('ga_from_lists'))}">${own.map((l) => `<option value="list:${core.escape(l.id)}">${core.escape(l.nombre)}</option>`).join('')}</optgroup>` : '');
+                + (own.length ? `<optgroup label="${escape(t('ga_from_lists'))}">${own.map((l) => `<option value="list:${core.escape(l.id)}">${core.escape(l.nombre)}</option>`).join('')}</optgroup>` : '')
+                + (glossaries && glossaries.length ? `<optgroup label="${escape(t('ga_from_glossary'))}">${glossaries.map((g) => `<option value="glos:${g.id}">${escape(g.name)} (${g.count})</option>`).join('')}</optgroup>` : '');
             sel.value = [...sel.options].some((o) => o.value === before) ? before : 'builtin';
             $(`#${prefix}-type-box`).hidden = sel.value !== 'type';
+            if (sel.value.startsWith('glos:')) { loadGlossary(sel.value.slice(5)); }
         };
         const pool = () => {
             const v = $(`#${prefix}-src`).value;
             if (v === 'builtin') { return builtin.words(); }
             if (v.startsWith('list:')) { const l = core.lists().find((x) => x.id === v.slice(5)); return l ? l.alumnos : []; }
+            if (v.startsWith('glos:')) { return glossaryOf(v.slice(5)).map((x) => x.w); }
             return [];
         };
+        let lastClue = '';   // the clue of a glossary word
         // Words already used come out again only when all have come out.
         const used = {};
         const next = (accept = () => true) => {
@@ -187,12 +218,19 @@
             const fresh = all.filter((w) => !used[v].includes(w));
             const w = fresh[core.random(fresh.length)];
             used[v].push(w);
+            lastClue = v.startsWith('glos:') ? (glossaryOf(v.slice(5)).find((x) => x.w === w) || {}).c || '' : '';
             return w;
         };
         return {
             html, fill, next,
             wire: () => {
-                $(`#${prefix}-src`).addEventListener('change', () => { save(prefix + '-fuente', $(`#${prefix}-src`).value); $(`#${prefix}-type-box`).hidden = $(`#${prefix}-src`).value !== 'type'; });
+                $(`#${prefix}-src`).addEventListener('change', () => {
+                    const v = $(`#${prefix}-src`).value;
+                    save(prefix + '-fuente', v); $(`#${prefix}-type-box`).hidden = v !== 'type';
+                    if (v.startsWith('glos:')) { loadGlossary(v.slice(5)); }
+                });
+                document.addEventListener('classtools:glossaries', fill);
+                askGlossaries();
                 $(`#${prefix}-lang`).value = wordPack.lang;
                 $(`#${prefix}-lang`).addEventListener('change', () => { save(WORDS_KEY, $(`#${prefix}-lang`).value); useWordLang($(`#${prefix}-lang`).value); });
                 document.addEventListener('classtools:wordlang', () => { $(`#${prefix}-lang`).value = wordPack.lang; fill(); });
@@ -200,7 +238,7 @@
                 document.addEventListener('classtools:mode', fill);
                 fill();
             },
-            clue: () => $(`#${prefix}-clue`).value.trim(),
+            clue: () => $(`#${prefix}-clue`).value.trim() || lastClue,
             clearTyped: () => { $(`#${prefix}-word`).value = ''; },
         };
     };

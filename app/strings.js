@@ -316,6 +316,7 @@ window.CLASSTOOLS_STR = {
 "ga_clue": "Clue: {$a}",
 "ga_clue_optional": "Clue (optional)",
 "ga_delete": "Delete",
+"ga_from_glossary": "Glossaries of the course",
 "ga_from_lists": "At random from your lists",
 "ga_game": "Game",
 "ga_lost": "Oops! It was “{$a}”",

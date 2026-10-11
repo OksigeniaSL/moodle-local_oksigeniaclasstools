@@ -332,6 +332,8 @@ function local_oksigeniaclasstools_data(stdClass $course, context_course $contex
             ? (new moodle_url('/local/oksigeniaclasstools/livehost.php'))->out(false) : null,
         // Questions of the Moodle question bank for a quiz (multiple choice with one answer, true/false).
         'bankurl' => (new moodle_url('/local/oksigeniaclasstools/quizbank.php'))->out(false),
+        // Words from the glossaries of the course for the word games (concept and a clue from its definition).
+        'glossaryurl' => (new moodle_url('/local/oksigeniaclasstools/glossary.php'))->out(false),
         // The pictures of the quiz questions: where they are sent, and where the teacher's are served from.
         'quizimgurl' => (new moodle_url('/local/oksigeniaclasstools/quizimage.php'))->out(false),
         'quizimg' => \local_oksigeniaclasstools\local\quizimages::base($context, (int) $USER->id),
