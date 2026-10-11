@@ -17,11 +17,11 @@
 namespace local_oksigeniaclasstools\local;
 
 /**
- * Exercises for the games of the shared format (Order, Sort, Spot the mistakes, Who am I?) written by the AI of the
- * site: only from Moodle 4.5, when the administrator has a provider that generates text and has not turned this off,
- * and the course has not turned its AI tools off (Moodle 5.1). The prompt is built here from the game, the topic, the
- * level and how many, so the board is not an open door to the AI. Moodle shows its AI policy before the first use and
- * keeps a record of each request.
+ * Content written by the AI of the site: exercises for the games of the shared format (Order, Sort, Spot the mistakes,
+ * Who am I?), quiz questions, a rosco, words or pairs. Only from Moodle 4.5, when the administrator has a provider that
+ * generates text and has not turned this off, and the course has not turned its AI tools off (Moodle 5.1). The prompt
+ * is built here from what is asked for, the topic, the level and how many, so the board is not an open door to the AI.
+ * Moodle shows its AI policy before the first use and keeps a record of each request.
  *
  * @package    local_oksigeniaclasstools
  * @copyright  2026 Oksigenia <dev@oksigenia.cc>
@@ -31,11 +31,14 @@ class ai {
     /** The games, with the string of their name. */
     const GAMES = ['order' => 'app_ord_name', 'classify' => 'app_so_name', 'errors' => 'app_er_name', 'whoami' => 'app_wa_name'];
 
-    /** The levels of these games (Early years has none of them). */
-    const LEVELS = ['primary', 'secondary', 'advanced'];
+    /** The other things that can be asked for, each with its «what», rules and example among the board's strings. */
+    const KINDS = ['quiz', 'rosco', 'words', 'pairs'];
 
-    /** How many exercises can be asked for at once. */
-    const COUNTS = [3, 5, 8, 10];
+    /** The levels (the exercises of Early years take the examples of Primary). */
+    const LEVELS = ['early', 'primary', 'secondary', 'advanced'];
+
+    /** Most that can be asked for at once. */
+    const COUNT_MAX = 30;
 
     /** Longest topic, in characters. */
     const TOPIC_MAX = 120;
@@ -104,23 +107,34 @@ class ai {
     }
 
     /**
-     * The prompt: the game, the topic, the level, the rules of the format and the first example of that level. The
-     * same text the teacher can copy for an AI of their own.
+     * The prompt: what is asked for, the topic, the level, the rules of the format and an example (for exercises, the
+     * first of that level). The same text the teacher can copy for an AI of their own.
      *
-     * @param string $type order, classify, errors or whoami.
-     * @param string $topic What the exercises are about (may be empty: then the AI chooses).
-     * @param string $level primary, secondary or advanced.
+     * @param string $type order, classify, errors or whoami; or quiz, rosco, words or pairs.
+     * @param string $topic What it is about (may be empty: then the AI chooses).
+     * @param string $level early, primary, secondary or advanced.
      * @param int $count How many.
+     * @param string $letters The letters of a rosco («A, B, C…»).
      * @return string
      */
-    public static function prompt(string $type, string $topic, string $level, int $count): string {
+    public static function prompt(string $type, string $topic, string $level, int $count, string $letters = ''): string {
         $component = 'local_oksigeniaclasstools';
-        $examples = get_string("app_ex_example_{$type}_{$level}", $component);
+        $topic = $topic !== '' ? $topic : get_string('app_ex_ai_any', $component);
+        if (!isset(self::GAMES[$type])) {
+            return get_string('app_ai_prompt', $component, (object) [
+                'what' => get_string('app_ai_what_' . $type, $component, $count),
+                'level' => get_string('app_ex_ai_for_' . $level, $component),
+                'topic' => $topic,
+                'rules' => get_string('app_ai_rules_' . $type, $component, $letters),
+                'example' => get_string('app_ai_example_' . $type, $component),
+            ]);
+        }
+        $examples = get_string('app_ex_example_' . $type . '_' . ($level === 'early' ? 'primary' : $level), $component);
         $example = trim(preg_split('/\R[ \t]*\R/u', str_replace("\r", '', $examples))[0]);
         return get_string('app_ex_ai_prompt', $component, (object) [
             'n' => $count,
             'game' => get_string(self::GAMES[$type], $component),
-            'topic' => $topic !== '' ? $topic : get_string('app_ex_ai_any', $component),
+            'topic' => $topic,
             'level' => get_string('app_ex_ai_for_' . $level, $component),
             'rules' => get_string('app_ex_help_' . $type, $component) . ' ' . get_string('app_ex_format', $component),
             'example' => $example,
@@ -128,14 +142,15 @@ class ai {
     }
 
     /**
-     * Asks the AI of the site for exercises.
+     * Asks the AI of the site for content.
      *
      * @param \context $context The course.
      * @param int $userid
-     * @param string $type order, classify, errors or whoami.
+     * @param string $type What is asked for (see prompt()).
      * @param string $topic
-     * @param string $level primary, secondary or advanced.
+     * @param string $level early, primary, secondary or advanced.
      * @param int $count
+     * @param string $letters The letters of a rosco.
      * @return array ok and text, or ok false and error.
      */
     public static function generate(
@@ -144,12 +159,13 @@ class ai {
         string $type,
         string $topic,
         string $level,
-        int $count
+        int $count,
+        string $letters = ''
     ): array {
         $action = new \core_ai\aiactions\generate_text(
             contextid: $context->id,
             userid: $userid,
-            prompttext: self::prompt($type, $topic, $level, $count),
+            prompttext: self::prompt($type, $topic, $level, $count, $letters),
         );
         $response = \core\di::get(\core_ai\manager::class)->process_action($action);
         if (!$response->get_success()) {

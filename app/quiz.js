@@ -265,6 +265,19 @@
                 if (!got.length) { $('#qz-msg').textContent = t('qz_paste_none'); return; }
                 set.questions.push(...got); keep(); play('card'); editor(set);
             });
+            // «Prompt for your AI»: what it writes goes to the box of pasted questions, to add them after a look.
+            if (window.ClasstoolsAI) {
+                const ai = window.ClasstoolsAI.box({
+                    kind: () => 'quiz', levels: ['early', 'primary', 'secondary', 'advanced'], counts: [5, 10, 15, 20], count: 10,
+                    add: (text) => {
+                        const n = parse(text).length;
+                        if (n) { const area = $('#qz-paste'), now = area.value.trim(); area.value = (now ? now + '\n' : '') + text.trim(); }
+                        return n;
+                    },
+                    done: (n) => t('ai_done_quiz', n),
+                });
+                $('#qz-paste').before(ai.el);
+            }
             $('#qz-done').addEventListener('click', (e) => { e.preventDefault(); closeDialog(); });
             if ($('#qz-del-set')) {
                 $('#qz-del-set').addEventListener('click', () => {

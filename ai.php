@@ -48,13 +48,19 @@ if (!ai::available($context)) {
     $type = required_param('type', PARAM_ALPHA);
     $level = required_param('level', PARAM_ALPHA);
     $count = required_param('n', PARAM_INT);
-    if (!isset(ai::GAMES[$type]) || !in_array($level, ai::LEVELS, true) || !in_array($count, ai::COUNTS, true)) {
+    $known = isset(ai::GAMES[$type]) || in_array($type, ai::KINDS, true);
+    if (!$known || !in_array($level, ai::LEVELS, true) || $count < 1 || $count > ai::COUNT_MAX) {
         throw new moodle_exception('invalidparameter', 'debug');
     }
     $topic = core_text::substr(trim(optional_param('topic', '', PARAM_TEXT)), 0, ai::TOPIC_MAX);
+    // The letters of a rosco: only capital letters, separated by commas.
+    $letters = optional_param('letters', '', PARAM_TEXT);
+    if (!preg_match('/^(\p{Lu}(, )?){0,40}$/u', $letters)) {
+        throw new moodle_exception('invalidparameter', 'debug');
+    }
     // The AI can take a while: the session is not kept locked meanwhile.
     \core\session\manager::write_close();
-    echo json_encode(ai::generate($context, (int) $USER->id, $type, $topic, $level, $count));
+    echo json_encode(ai::generate($context, (int) $USER->id, $type, $topic, $level, $count, $letters));
 } else {
     throw new moodle_exception('invalidparameter', 'debug');
 }

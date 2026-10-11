@@ -50,7 +50,14 @@ window.shot = (name) => new Promise((done) => { if (!window.checkShot) { done();
         if (String(url).startsWith('fake://ai')) {
             if (a === 'accept') { FAKE.aiAccepted = true; return json({ ok: true }); }
             if (!FAKE.aiAccepted) { return json({ ok: false, policy: '<p>The AI policy of the site.</p>' }); }
-            return json({ ok: true, text: '# Volcano\\n= Volcano\\nI have a crater.\\nI erupt lava.\\n\\n# Island\\n= Island\\nI have water all around.\\nI am land.' });
+            const TEXTS = {
+                whoami: '# Volcano\\n= Volcano\\nI have a crater.\\nI erupt lava.\\n\\n# Island\\n= Island\\nI have water all around.\\nI am land.',
+                quiz: 'Largest planet? | *Jupiter | Mars | Venus\\nThe sky is blue | T',
+                rosco: 'A | Fruit of Newton | apple\\nB | It makes honey | bee\\nC | Man\\'s best friend | dog\\nX | It pulls a plough | ox',
+                words: '1. volcano\\n- glacier\\nplateau',
+                pairs: 'France = Paris\\nItaly = Rome\\nnot a pair',
+            };
+            return json({ ok: true, text: TEXTS[p.get('type')] || '' });
         }
         if (String(url).startsWith('fake://glossary')) {
             return json(a === 'list' ? { ok: true, glossaries: [{ id: 5, name: 'Science words', count: 3 }] }
@@ -577,38 +584,39 @@ const CHECKS = {
         await sleep(200);
         document.querySelector('#quiensoy-edit').click();
         await sleep(200);
-        document.querySelector('#ex-ed-ai').open = true;
-        const topic = document.querySelector('#ex-ai-topic');
+        const box = (x) => document.querySelector('#ex-ed-ai ' + x);
+        box('details').open = true;
+        const topic = box('.ct-ai-topic');
         topic.value = 'Volcanoes';
         topic.dispatchEvent(new Event('input'));
-        const level = document.querySelector('#ex-ai-level');
+        const level = box('.ct-ai-level');
         level.value = 'secondary';
         level.dispatchEvent(new Event('change'));
-        const text = document.querySelector('#ex-ai-text').value;
+        const text = box('.ct-ai-text').value;
         const missing = ['Volcanoes', 'Secondary students', 'Write 5 exercises', '= ', '#'].filter((x) => !text.includes(x));
         if (missing.length) { return `the prompt lacks ${missing.join(', ')}: «${text}»`; }
         // Headless Chrome has no clipboard: a fake one, to see what the button copies.
         let clip = '';
         Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: (x) => { clip = x; return Promise.resolve(); } } });
-        document.querySelector('#ex-ai-copy').click();
+        box('.ct-ai-copy').click();
         await sleep(300);
         if (clip !== text) { return 'the copy is not the prompt'; }
         await window.shot('exercises-prompt');
-        const copied = document.querySelector('#ex-ai-copied').textContent;
+        const copied = box('.ct-ai-note').textContent;
         document.querySelector('.ct-ex-editor').close();
         if (!copied) { return 'no message after copying'; }
         // Generate with the AI of the site: the policy first, then the exercises in place of the examples.
         document.querySelector('#quiensoy-edit').click();
         await sleep(200);
-        document.querySelector('#ex-ed-ai').open = true;
-        document.querySelector('#ex-ai-go').click();
+        box('details').open = true;
+        box('.ct-ai-go').click();
         await sleep(300);
-        if (document.querySelector('#ex-ai-policy').hidden) { return 'no AI policy before the first use'; }
-        document.querySelector('#ex-ai-accept').click();
+        if (box('.ct-ai-policy').hidden) { return 'no AI policy before the first use'; }
+        box('.ct-ai-accept').click();
         await sleep(400);
-        const box = document.querySelector('#ex-ed-text').value;
-        if (!/^# Volcano/.test(box) || !box.includes('# Island')) { return `the exercises of the AI are not in the box: «${box.slice(0, 80)}»`; }
-        if (!/2/.test(document.querySelector('#ex-ai-copied').textContent)) { return `no count of what came: «${document.querySelector('#ex-ai-copied').textContent}»`; }
+        const area = document.querySelector('#ex-ed-text').value;
+        if (!/^# Volcano/.test(area) || !area.includes('# Island')) { return `the exercises of the AI are not in the box: «${area.slice(0, 80)}»`; }
+        if (!/2/.test(box('.ct-ai-note').textContent)) { return `no count of what came: «${box('.ct-ai-note').textContent}»`; }
         const sent = FAKE.calls.filter((c) => c.action === 'generate').pop();
         if (!sent || sent.type !== 'whoami' || sent.topic !== 'Volcanoes' || sent.n !== '5') { return `the request was ${JSON.stringify(sent)}`; }
         await window.shot('exercises-generate');
@@ -629,6 +637,60 @@ const CHECKS = {
         } finally {
             await setMode('primary');
         }
+        return '';
+    },
+    // The AI box elsewhere: a rosco filled in by letter, words and pairs added to a list, quiz questions to paste.
+    'ai-everywhere': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const q = (x) => document.querySelector(x);
+        // Generate; the first time, the AI policy is accepted.
+        const go = async (root) => {
+            root.querySelector('details.ct-ai').open = true;
+            root.querySelector('.ct-ai-go').click();
+            await sleep(300);
+            if (!root.querySelector('.ct-ai-policy').hidden) { root.querySelector('.ct-ai-accept').click(); await sleep(400); }
+        };
+        q('#t-juegos').click();
+        await sleep(200);
+        q('#ga-mode [data-game="rosco"]').click();
+        await sleep(200);
+        q('#ro-new').click();
+        await sleep(200);
+        const ro = q('#ro-editor');
+        if (!/these letters: A, B, C/.test(ro.querySelector('.ct-ai-text').value)) { return 'the rosco prompt has no letters'; }
+        await go(ro);
+        const row = (l) => ro.querySelector(`.ct-rosco-row[data-l="${l}"]`);
+        if (row('A').querySelector('.ct-answer').value !== 'apple' || row('X').querySelector('select').value !== 'c') { return 'the rosco lines did not go to their letters'; }
+        if (row('C').querySelector('.ct-answer').value) { return 'a line whose answer lacks its letter was taken'; }
+        if (!/3/.test(ro.querySelector('.ct-ai-note').textContent)) { return `rosco: «${ro.querySelector('.ct-ai-note').textContent}»`; }
+        ro.close();
+        // The lists editor: words without numbering, then pairs.
+        window.ClasstoolsCore.newList();
+        await sleep(200);
+        const ed = q('#editor');
+        await go(ed);
+        if (q('#ed-alumnos').value !== 'volcano\nglacier\nplateau') { return `words: «${q('#ed-alumnos').value}»`; }
+        const kind = ed.querySelector('.ct-ai-kind');
+        kind.value = 'pairs';
+        kind.dispatchEvent(new Event('change'));
+        if (!/pairs/.test(ed.querySelector('.ct-ai-text').value)) { return 'the pairs prompt is not asked for'; }
+        ed.querySelector('.ct-ai-go').click();
+        await sleep(300);
+        if (!q('#ed-alumnos').value.endsWith('France = Paris\nItaly = Rome')) { return `pairs: «${q('#ed-alumnos').value}»`; }
+        q('#ed-cancelar').click();
+        // The quiz: questions to the box of pasted ones.
+        q('#t-envivo').click();
+        await sleep(200);
+        q('#lv-kind [data-v="quiz"]').click();
+        await sleep(200);
+        q('#qz-edit').click();
+        await sleep(300);
+        const qz = q('.qz-editor');
+        qz.querySelector('details.qz-pegar').open = true;
+        await go(qz);
+        if (!/Largest planet/.test(qz.querySelector('#qz-paste').value) || !/2/.test(qz.querySelector('.ct-ai-note').textContent)) { return 'the quiz questions are not in the paste box'; }
+        await window.shot('ai-quiz');
+        qz.closest('dialog').close();
         return '';
     },
     // Sort: every card into its box; then Venn with its zones; then the odd one out.

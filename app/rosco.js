@@ -104,6 +104,7 @@
                 <h2 id="ro-ed-title"></h2>
                 <label class="campo apilado"><span>${STR.roscoName}</span><input type="text" id="ro-ed-name" maxlength="50" autocomplete="off"></label>
                 <p class="nota">${STR.editorNote}</p>
+                <div id="ro-ed-ai"></div>
                 <div class="ct-rosco-table" role="table">
                     <div class="ct-rosco-row ct-head" role="row"><span role="columnheader">${STR.letter}</span><span role="columnheader">${STR.kind}</span><span role="columnheader">${STR.clue}</span><span role="columnheader">${STR.answer}</span></div>
                     ${LETTERS.map((l) => `<div class="ct-rosco-row" role="row" data-l="${l}"><strong role="cell">${l}</strong>
@@ -121,6 +122,30 @@
         document.body.append(dialog);
         $$('[data-icono]', panel).forEach((el) => setIcon(el, el.dataset.icono));
         $$('[data-icono]', dialog).forEach((el) => setIcon(el, el.dataset.icono));
+        // «Prompt for your AI»: a line per letter («A | clue | answer») goes into its row. Whether the answer starts
+        // with the letter or only contains it is worked out here, whatever the AI says; a line that does neither is left out.
+        if (window.ClasstoolsAI) {
+            ai = window.ClasstoolsAI.box({
+                kind: () => 'rosco', levels: ['primary', 'secondary', 'advanced'], letters: () => LETTERS.join(', '),
+                add: (text) => {
+                    let n = 0;
+                    text.split(/\r?\n/).forEach((line) => {
+                        const p = line.split('|').map((x) => x.trim());
+                        if (p.length < 3) { return; }
+                        const l = base(p[0]).replace(/[^A-ZÑÇ]/g, '').charAt(0), clue = p[p.length - 2], answer = p[p.length - 1];
+                        const row = l && dialog.querySelector(`.ct-rosco-row[data-l="${l}"]`), a = base(answer);
+                        if (!row || !clue || !a.includes(l)) { return; }
+                        row.querySelector('select').value = a.startsWith(l) ? 's' : 'c';
+                        row.querySelector('.ct-clue').value = clue.slice(0, 160);
+                        row.querySelector('.ct-answer').value = answer.slice(0, 40);
+                        n++;
+                    });
+                    return n;
+                },
+                done: (n) => t('ai_done_rosco', n),
+            });
+            $('#ro-ed-ai').append(ai.el);
+        }
         wire();
         fillSets();
     };
@@ -141,7 +166,9 @@
     };
 
     // --- Editor ----------------------------------------------------------------------------------------
-    let editing = null, removeTimer = 0;
+    let editing = null, removeTimer = 0, ai = null;
+    // Letters compared without accents (but the Ñ stays a letter of its own).
+    const base = (x) => String(x).toUpperCase().replace(/Ñ/g, '\u0001').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\u0001/g, 'Ñ');
     const openEditor = (set) => {
         const d = $('#ro-editor');
         const isExample = set && set.id === 'ejemplo';
@@ -157,6 +184,7 @@
         $('#ro-ed-remove').hidden = !editing;
         $('#ro-ed-remove').classList.remove('confirma'); core.relabel($('#ro-ed-remove'), STR.remove);
         $('#ro-ed-note').textContent = ''; $('#ro-ed-note').classList.remove('error');
+        if (ai) { ai.refresh(); }
         if (d.showModal) { d.showModal(); } else { d.setAttribute('open', ''); }
         $('#ro-ed-name').focus();
     };

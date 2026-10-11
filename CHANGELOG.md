@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.33.0 (2026-10-11)
+
+- **Prompt for your AI, everywhere content is written**: quiz questions (in «Paste several questions»), a rosco (a line
+  per letter, each into its row; whether the answer starts with the letter or contains it is worked out on the board),
+  and words or pairs in the lists editor. The same box as «My exercises»: the topic, the level and how many, a text to
+  copy into any AI and, with the AI of the site (Moodle 4.5 and later), «Generate». What comes back goes into the
+  editor, to check before saving.
+
 ## 0.32.0 (2026-10-11)
 
 - **Screen mode by category**: in the settings, a choice for each category of the site, so that its courses start in

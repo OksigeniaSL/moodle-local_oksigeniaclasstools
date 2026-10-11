@@ -37,9 +37,6 @@
     // The levels of these games, for the prompt of the teacher's AI.
     const AI_LEVELS = ['primary', 'secondary', 'advanced'];
 
-    // The AI of the site (Moodle 4.5 and later), when the administrator has one and the teacher can use it.
-    const AI = core.moodle && core.moodle.aiurl ? core.moodle : null;
-
     // «My exercises»: one dialog for the four games, with the format of the game on screen.
     const dialog = document.createElement('dialog');
     dialog.className = 'editor ct-ex-editor';
@@ -47,20 +44,7 @@
     dialog.innerHTML = `<form method="dialog">
         <h2 id="ex-ed-title"></h2>
         <p class="nota" id="ex-ed-help"></p>
-        <details class="ct-ex-ai" id="ex-ed-ai"><summary>${escape(t('ex_ai'))}</summary>
-            <p class="nota">${escape(t(AI ? 'ex_ai_hint_site' : 'ex_ai_hint'))}</p>
-            <div class="ct-ex-ai-fields">
-                <label class="campo apilado"><span>${escape(t('ex_ai_topic'))}</span><input type="text" id="ex-ai-topic" maxlength="120"></label>
-                <label class="campo apilado"><span>${escape(t('ex_ai_level'))}</span><select id="ex-ai-level">${AI_LEVELS.map((m) => `<option value="${m}">${escape(t('mode_' + m))}</option>`).join('')}</select></label>
-                <label class="campo apilado"><span>${escape(t('ex_ai_count'))}</span><select id="ex-ai-n">${[3, 5, 8, 10].map((n) => `<option value="${n}"${n === 5 ? ' selected' : ''}>${n}</option>`).join('')}</select></label>
-            </div>
-            <textarea id="ex-ai-text" rows="7" readonly></textarea>
-            <div class="botonera">${AI ? `<button type="button" class="boton" id="ex-ai-go"><span data-icono="magia"></span><span>${escape(t('ex_ai_go'))}</span></button>` : ''}
-                <button type="button" class="boton suave" id="ex-ai-copy"><span data-icono="duplicar"></span><span>${escape(t('ex_ai_copy'))}</span></button>
-                <span class="nota" id="ex-ai-copied" aria-live="polite"></span></div>
-            ${AI ? `<div class="ct-ex-ai-policy" id="ex-ai-policy" hidden><div id="ex-ai-policy-text"></div>
-                <button type="button" class="boton" id="ex-ai-accept"><span data-icono="hecho"></span><span>${escape(t('ex_ai_accept'))}</span></button></div>` : ''}
-        </details>
+        <div id="ex-ed-ai"></div>
         <label class="campo apilado"><span>${escape(t('ex_text'))}</span><textarea id="ex-ed-text" rows="12" spellcheck="true"></textarea></label>
         <p class="nota" id="ex-ed-count" aria-live="polite"></p>
         <div class="botonera"><button type="submit" class="boton" value="save"><span data-icono="guardar"></span>${escape(t('ex_save'))}</button>
@@ -74,60 +58,30 @@
         $('#ex-ed-count').textContent = n === 0 ? t('ex_count_none') : (n === 1 ? t('ex_count_one') : t('ex_count', n));
     };
     $('#ex-ed-text').addEventListener('input', countText);
-    // The prompt for the teacher's AI: the game, the topic, the level, the rules of the format and the first example;
-    // what the AI answers is pasted in the box of the exercises.
-    const prompt = () => {
-        const type = editing.type, example = X.parse(exampleText(type, $('#ex-ai-level').value), type)[0];
-        return t('ex_ai_prompt', {
-            n: $('#ex-ai-n').value, game: editing.name, topic: $('#ex-ai-topic').value.trim() || t('ex_ai_any'),
-            level: t('ex_ai_for_' + $('#ex-ai-level').value), rules: `${t('ex_help_' + type)} ${t('ex_format')}`,
-            example: example ? X.toText(example) : '',
-        });
-    };
-    const fillPrompt = () => { $('#ex-ai-text').value = prompt(); $('#ex-ai-copied').textContent = ''; };
-    ['#ex-ai-topic', '#ex-ai-level', '#ex-ai-n'].forEach((sel) => $(sel).addEventListener('input', fillPrompt));
-    $('#ex-ai-level').addEventListener('change', fillPrompt);
-    $('#ex-ai-n').addEventListener('change', fillPrompt);
-    // «Generate»: the server builds the same prompt and asks the AI of the site. The first time, Moodle's AI policy;
-    // the answer is added to the box (in place of the examples, if that is what it had), to check before saving.
-    const aiNote = (text) => { $('#ex-ai-copied').textContent = text; };
-    const aiCall = (action, extra = {}) => fetch(AI.aiurl, { method: 'POST', credentials: 'same-origin',
-        body: new URLSearchParams({ courseid: AI.courseid, sesskey: AI.sesskey, action, ...extra }) }).then((r) => r.json());
-    const generate = () => {
-        const go = $('#ex-ai-go'), type = editing.type;
-        go.disabled = true;
-        aiNote(t('ex_ai_wait'));
-        aiCall('generate', { type, topic: $('#ex-ai-topic').value.trim(), level: $('#ex-ai-level').value, n: $('#ex-ai-n').value })
-            .then((j) => {
-                if (j && j.policy) {
-                    $('#ex-ai-policy-text').innerHTML = j.policy;
-                    $('#ex-ai-policy').hidden = false;
-                    aiNote('');
-                    return;
-                }
-                if (!j || !j.ok) { aiNote(t('ex_ai_error', (j && j.error) || '')); return; }
-                const found = X.parse(j.text, type).length;
-                if (!found) { aiNote(t('ex_ai_none')); return; }
-                const box = $('#ex-ed-text'), now = box.value.trim();
-                box.value = (now && now !== exampleText(type).trim() ? now + '\n\n' : '') + j.text;
-                countText();
-                aiNote(t('ex_ai_done', found));
-            })
-            .catch(() => aiNote(t('ex_ai_error', '')))
-            .finally(() => { go.disabled = false; });
-    };
-    if (AI) {
-        $('#ex-ai-go').addEventListener('click', generate);
-        $('#ex-ai-accept').addEventListener('click', () => {
-            aiCall('accept').then(() => { $('#ex-ai-policy').hidden = true; generate(); }).catch(() => aiNote(t('ex_ai_error', '')));
-        });
-    }
-    $('#ex-ai-copy').addEventListener('click', () => {
-        const area = $('#ex-ai-text'), ok = () => { $('#ex-ai-copied').textContent = t('ex_ai_copied'); };
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(area.value).then(ok, () => { area.select(); document.execCommand('copy'); ok(); });
-        } else { area.select(); document.execCommand('copy'); ok(); }
-    });
+    // The prompt for the teacher's AI: the game, the topic, the level, the rules of the format and the first example of
+    // that level. What the AI writes (pasted, or from «Generate») goes in the box, in place of the examples if that is
+    // what it had, to check before saving.
+    const ai = window.ClasstoolsAI ? window.ClasstoolsAI.box({
+        kind: () => editing.type, ready: () => !!editing,
+        levels: AI_LEVELS, counts: [3, 5, 8, 10], count: 5,
+        prompt: (p) => {
+            const type = editing.type, example = X.parse(exampleText(type, p.level), type)[0];
+            return t('ex_ai_prompt', {
+                n: p.n, game: editing.name, topic: p.topic || t('ex_ai_any'), level: t('ex_ai_for_' + p.level),
+                rules: `${t('ex_help_' + type)} ${t('ex_format')}`, example: example ? X.toText(example) : '',
+            });
+        },
+        add: (text) => {
+            const type = editing.type, found = X.parse(text, type).length;
+            if (!found) { return 0; }
+            const area = $('#ex-ed-text'), now = area.value.trim();
+            area.value = (now && now !== exampleText(type).trim() ? now + '\n\n' : '') + text;
+            countText();
+            return found;
+        },
+        done: (n) => t('ex_ai_done', n),
+    }) : null;
+    if (ai) { $('#ex-ed-ai').append(ai.el); }
     dialog.querySelector('[data-a="cancel"]').addEventListener('click', () => dialog.close());
     dialog.addEventListener('close', () => {
         if (dialog.returnValue === 'save' && editing) {
@@ -142,8 +96,7 @@
         $('#ex-ed-title').textContent = t('ex_edit_title', name);
         $('#ex-ed-help').textContent = `${t('ex_help_' + type)} ${t('ex_format')}`;
         $('#ex-ed-text').value = store[type] || exampleText(type);
-        $('#ex-ai-level').value = AI_LEVELS.includes(core.mode ? core.mode() : '') ? core.mode() : 'primary';
-        fillPrompt();
+        if (ai) { ai.refresh(); }
         countText();
         dialog.showModal();
     };

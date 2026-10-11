@@ -50,6 +50,40 @@ $string['app_ah_spent_stay'] = 'They stay';
 $string['app_ah_uncover'] = 'Uncover a letter';
 $string['app_ah_uncover_hint'] = 'It costs a balloon';
 $string['app_ah_won'] = 'Well done! You\'ve guessed it';
+$string['app_ai_done'] = 'Done: {$a} added. Check them before saving.';
+$string['app_ai_done_quiz'] = 'Done: {$a} questions in the box. Press «Add them» to put them in the quiz.';
+$string['app_ai_done_rosco'] = 'Done: {$a} letters filled in. Check them before saving.';
+$string['app_ai_example_pairs'] = 'France = Paris
+Italy = Rome
+Portugal = Lisbon';
+$string['app_ai_example_quiz'] = 'Which is the largest planet in the Solar System? | *Jupiter | Saturn | Neptune | Earth
+Pure water boils at 100 °C at sea level | T
+A whale is a fish | F';
+$string['app_ai_example_rosco'] = 'A | The fruit that fell on Newton\'s head, so the story goes | apple
+B | Insect that makes honey | bee
+X | Large farm animal that pulls a plough | ox';
+$string['app_ai_example_words'] = 'volcano
+glacier
+plateau';
+$string['app_ai_for'] = 'For';
+$string['app_ai_kind_pairs'] = 'Pairs «a = b» (Pairs)';
+$string['app_ai_kind_words'] = 'Words (hangman, word, secret code)';
+$string['app_ai_prompt'] = 'Write {$a->what} for {$a->level}, on «{$a->topic}».
+
+Format (plain text, nothing else): {$a->rules}
+
+Example:
+{$a->example}
+
+Answer only with that, in the language of this text, without explanations or Markdown. Check that everything you write is correct.';
+$string['app_ai_rules_pairs'] = 'One pair per line: the two halves separated by =, each of a few words.';
+$string['app_ai_rules_quiz'] = 'One question per line: the question, then two to four answers separated by |, with * before the only right one. For true or false, the statement, | and T or F.';
+$string['app_ai_rules_rosco'] = 'One line per letter, for these letters: {$a}. On each line, the letter, the clue and the answer, separated by |. The answer starts with that letter or, if no good word does, contains it.';
+$string['app_ai_rules_words'] = 'One word per line, without articles, numbers or explanations.';
+$string['app_ai_what_pairs'] = '{$a} pairs';
+$string['app_ai_what_quiz'] = '{$a} quiz questions';
+$string['app_ai_what_rosco'] = 'a letter wheel (rosco), with a clue for each letter';
+$string['app_ai_what_words'] = '{$a} words';
 $string['app_asi_group'] = 'In groups';
 $string['app_asi_hand'] = 'Raise your hand';
 $string['app_asi_hint'] = 'Tap one to show it full size. To go back, tap the screen again.';
@@ -313,6 +347,7 @@ $string['app_ex_ai_count'] = 'How many';
 $string['app_ex_ai_done'] = '{$a} exercises added below: check them before saving.';
 $string['app_ex_ai_error'] = 'The AI of the site could not answer. {$a}';
 $string['app_ex_ai_for_advanced'] = 'students of 16 and over (upper secondary or higher)';
+$string['app_ex_ai_for_early'] = 'Early years children (3 to 6 years old)';
 $string['app_ex_ai_for_primary'] = 'Primary pupils (6 to 12 years old)';
 $string['app_ex_ai_for_secondary'] = 'Secondary students (12 to 16 years old)';
 $string['app_ex_ai_go'] = 'Generate';
@@ -1849,7 +1884,7 @@ $string['app_qz_new'] = 'New set';
 $string['app_qz_new_name'] = 'Set {$a}';
 $string['app_qz_next'] = 'Next question';
 $string['app_qz_nteams'] = 'Teams';
-$string['app_qz_paste'] = 'Paste several questions';
+$string['app_qz_paste'] = 'Paste several questions, or ask an AI for them';
 $string['app_qz_paste_go'] = 'Add them';
 $string['app_qz_paste_hint'] = 'One per line: the question, then the answers separated by |, with * before the right one. For true/false, V or F after the question.';
 $string['app_qz_paste_none'] = 'No question could be read: check the | and the *.';

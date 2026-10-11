@@ -44,6 +44,18 @@ final class ai_test extends \advanced_testcase {
         $this->assertStringContainsString('«a topic of your choice»', ai::prompt('order', '', 'primary', 3));
     }
 
+    public function test_the_other_kinds_make_their_prompt(): void {
+        $quiz = ai::prompt('quiz', 'Rivers', 'secondary', 10);
+        $this->assertStringContainsString('Write 10 quiz questions for Secondary students', $quiz);
+        $this->assertStringContainsString('*Jupiter', $quiz);
+        $rosco = ai::prompt('rosco', 'Animals', 'primary', 1, 'A, B, C');
+        $this->assertStringContainsString('these letters: A, B, C.', $rosco);
+        $this->assertStringContainsString('Early years children', ai::prompt('pairs', 'Capitals', 'early', 6));
+        foreach (ai::KINDS as $type) {
+            $this->assertStringNotContainsString('{$a', ai::prompt($type, '', 'advanced', 20, 'A'), $type);
+        }
+    }
+
     public function test_every_game_and_level_makes_a_prompt(): void {
         foreach (array_keys(ai::GAMES) as $type) {
             foreach (ai::LEVELS as $level) {

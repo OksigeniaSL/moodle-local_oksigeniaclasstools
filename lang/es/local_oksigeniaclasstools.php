@@ -50,6 +50,40 @@ $string['app_ah_spent_stay'] = 'Se quedan';
 $string['app_ah_uncover'] = 'Destapar una letra';
 $string['app_ah_uncover_hint'] = 'Cuesta un globo';
 $string['app_ah_won'] = '¡Muy bien! La han adivinado';
+$string['app_ai_done'] = 'Listo: {$a} añadidos. Revísalos antes de guardar.';
+$string['app_ai_done_quiz'] = 'Listo: {$a} preguntas en el cuadro. Pulsa «Añadirlas» para ponerlas en el concurso.';
+$string['app_ai_done_rosco'] = 'Listo: {$a} letras rellenadas. Revísalas antes de guardar.';
+$string['app_ai_example_pairs'] = 'Francia = París
+Italia = Roma
+Portugal = Lisboa';
+$string['app_ai_example_quiz'] = '¿Cuál es el planeta más grande del sistema solar? | *Júpiter | Saturno | Neptuno | La Tierra
+El agua pura hierve a 100 °C al nivel del mar | V
+La ballena es un pez | F';
+$string['app_ai_example_rosco'] = 'A | Insecto que fabrica miel | abeja
+B | Embarcación que flota y navega | barco
+Ñ | Estación del año en la que caen las hojas | otoño';
+$string['app_ai_example_words'] = 'volcán
+glaciar
+meseta';
+$string['app_ai_for'] = 'Para';
+$string['app_ai_kind_pairs'] = 'Parejas «a = b» (Parejas)';
+$string['app_ai_kind_words'] = 'Palabras (ahorcado, palabra, código)';
+$string['app_ai_prompt'] = 'Escribe {$a->what} para {$a->level}, sobre «{$a->topic}».
+
+Formato (texto plano, sin nada más): {$a->rules}
+
+Ejemplo:
+{$a->example}
+
+Contesta solo con eso, en el idioma de este texto, sin explicaciones ni formato Markdown. Comprueba que todo lo que escribas sea correcto.';
+$string['app_ai_rules_pairs'] = 'Una pareja por línea: las dos partes separadas por =, cada una de pocas palabras.';
+$string['app_ai_rules_quiz'] = 'Una pregunta por línea: la pregunta y después de dos a cuatro respuestas separadas por |, con * delante de la única correcta. Para verdadero o falso, la afirmación, | y V o F.';
+$string['app_ai_rules_rosco'] = 'Una línea por letra, para estas letras: {$a}. En cada línea, la letra, la pista y la respuesta, separadas por |. La respuesta empieza por esa letra o, si no hay una palabra adecuada, la contiene.';
+$string['app_ai_rules_words'] = 'Una palabra por línea, sin artículos, números ni explicaciones.';
+$string['app_ai_what_pairs'] = '{$a} parejas';
+$string['app_ai_what_quiz'] = '{$a} preguntas de concurso';
+$string['app_ai_what_rosco'] = 'un rosco, con una pista para cada letra';
+$string['app_ai_what_words'] = '{$a} palabras';
 $string['app_asi_group'] = 'En grupo';
 $string['app_asi_hand'] = 'Levanta la mano';
 $string['app_asi_hint'] = 'Toca uno para mostrarlo en grande. Para volver, toca la pantalla otra vez.';
@@ -313,6 +347,7 @@ $string['app_ex_ai_count'] = 'Cuántos';
 $string['app_ex_ai_done'] = 'Añadidos {$a} ejercicios abajo: revísalos antes de guardar.';
 $string['app_ex_ai_error'] = 'La IA del aula virtual no ha podido contestar. {$a}';
 $string['app_ex_ai_for_advanced'] = 'alumnos de Bachillerato o etapas superiores (desde los 16 años)';
+$string['app_ex_ai_for_early'] = 'niños de Infantil (de 3 a 6 años)';
 $string['app_ex_ai_for_primary'] = 'alumnos de Primaria (de 6 a 12 años)';
 $string['app_ex_ai_for_secondary'] = 'alumnos de Secundaria (de 12 a 16 años)';
 $string['app_ex_ai_go'] = 'Generar';
@@ -1851,7 +1886,7 @@ $string['app_qz_new'] = 'Nuevo juego';
 $string['app_qz_new_name'] = 'Juego {$a}';
 $string['app_qz_next'] = 'Siguiente pregunta';
 $string['app_qz_nteams'] = 'Equipos';
-$string['app_qz_paste'] = 'Pegar varias preguntas';
+$string['app_qz_paste'] = 'Pegar varias preguntas o pedírselas a una IA';
 $string['app_qz_paste_go'] = 'Añadirlas';
 $string['app_qz_paste_hint'] = 'Una por línea: la pregunta y luego las respuestas separadas por |, con * delante de la buena. Para verdadero o falso, V o F después de la pregunta.';
 $string['app_qz_paste_none'] = 'No se ha podido leer ninguna pregunta: revisa las | y el *.';
