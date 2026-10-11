@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.24.0 (2026-10-11)
+
+- **By school level**: in each screen mode the Games and Materials bars show first what suits that level; the rest
+  waits in «Other levels», which says what each one is for. Nothing is taken away, and what is open always shows.
+- **Words from the course**: Hangman and Word can take their words from a glossary of the course (the concept is the
+  word and the start of its definition the clue, with the word itself hidden). Pairs can take a glossary (each
+  concept with its definition) or the matching questions of the question bank (each subquestion with its answer).
+- **Language of the words**: Hangman and Word can play in another language of the board (for a language class),
+  with its words, its alphabet and its keyboard; it is kept for each course.
+- **Hangman by level**: in Early years it plays «First letter of a name»: a classmate's photo, their name without its
+  first letter and three big letters to choose from. Spent balloons go, or stay grey and deflated (the default from
+  Secondary on), and «Uncover a letter» gives one away for a balloon.
+- **Names**: «First name and first surname» took the first word of the surname, so «de la Rosa Báez» showed «de»;
+  particles now go with the next word. A new style shows the first name and the initials of the surnames
+  («Pablo RB»).
+- In Secondary and Advanced, the coloured keys of Hangman and Word were white on white.
+- Saving two lists as course groups in the same second could fail now and then.
+
 ## 0.23.2 (2026-10-11)
 
 - **Whose turn? everywhere**: a «Whose turn?» button in the Materials bar (rods, tangram, number line…) and in the
