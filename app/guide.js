@@ -20,6 +20,7 @@
     const GROUPS = {
         gd_index_tools: {
             quien: 'tab_picker', grupos: 'tab_groups', semaforo: 'tab_noise', asi: 'tab_rules', reloj: 'tab_clock', envivo: 'tab_live',
+            azar: 'tab_chance', marcador: 'tab_scoreboard', pizarra: 'tab_board',
         },
         gd_index_games: {
             rosco: 'ro_name', simon: 'si_name', ahorcado: 'ah_name', palabra: 'wo_name', parejas: 'me_pairs', codigo: 'lock_name',
@@ -27,7 +28,7 @@
         },
         gd_index_materials: {
             rods: 'mt_rods', tangram: 'mt_tangram', line: 'mt_line', fractions: 'mt_fractions', geoboard: 'mt_geoboard',
-            base10: 'mt_base10', balanza: 'mt_balance', plano: 'mt_plane', score: 'mt_score',
+            base10: 'mt_base10', balanza: 'mt_balance', plano: 'mt_plane', calc: 'mt_calc', score: 'mt_score',
         },
     };
     const GUIDES = Object.assign({}, ...Object.values(GROUPS));

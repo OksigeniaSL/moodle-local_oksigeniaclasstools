@@ -13,6 +13,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
 /**
  * The board's side of the fixed remote: whether it is on and its address, turning it on or off, a new address, and
  * the board asking for its orders while it is open.

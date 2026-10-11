@@ -754,5 +754,117 @@
  "gd_index_materials": {
   "en": "Materials",
   "es": "Material"
+ },
+ "gd_azar_what": {
+  "en": "Wheel, dice, coins and cards to draw lots and to play, and many throws at once with their chart of frequencies.",
+  "es": "Ruleta, dados, monedas y cartas para sortear y para jugar, y muchas tiradas de golpe con su gráfica de frecuencias."
+ },
+ "gd_azar_works": {
+  "en": "Drawing lots fairly: turns, groups, who starts.\nOperations with dice: adding, subtracting, multiplying what comes up.\nProbability: what is more likely, and why.\nFrequencies: what comes up in many throws against what should.\nThe difference between what happens once and what happens in the long run.",
+  "es": "Sortear con justicia: turnos, grupos, quién empieza.\nOperaciones con dados: sumar, restar o multiplicar lo que sale.\nProbabilidad: qué es más probable y por qué.\nFrecuencias: lo que sale en muchas tiradas frente a lo que debería salir.\nLa diferencia entre lo que pasa una vez y lo que pasa a la larga."
+ },
+ "gd_azar_why": {
+  "en": "Faced with chance, many people try to guess what the next throw will bring, as if each one had a right answer: Konold (1989) called it the outcome approach. Probability speaks of what happens in the long run, not of one throw.\n«Many throws» shows it: with ten throws the bars jump about, and with a thousand they come close to what they should be; with two dice, a sum of 7 comes up more than 2 or 12.",
+  "es": "Ante el azar, mucha gente intenta adivinar qué saldrá en la próxima tirada, como si cada una tuviera una respuesta correcta: Konold (1989) lo llamó el enfoque del resultado. La probabilidad habla de lo que pasa a la larga, no de una tirada.\n«Muchas tiradas» lo enseña a la vista: con diez tiradas las barras van a saltos, y con mil se acercan a lo que deberían; con dos dados, la suma 7 sale más que el 2 o el 12."
+ },
+ "gd_azar_how": {
+  "en": "To draw lots, the wheel with the class list, with no repeats until everyone has come out.\nBefore throwing, they bet which sum will come up most with two dice, and why.\n«Many throws»: ten, then a hundred, then a thousand; they compare the chart with what is expected.\nThe dice with operations for mental arithmetic: throw and work it out.\nCards and coins for simple probability games (heads or tails, the suit of a card).",
+  "es": "Para sortear, la ruleta con la lista de la clase, sin repetir hasta que salgan todos.\nAntes de tirar, que apuesten qué suma saldrá más con dos dados y por qué.\n«Muchas tiradas»: diez, luego cien, luego mil; que comparen la gráfica con lo esperado.\nLos dados de operaciones para el cálculo mental: tirar y operar.\nLas cartas y las monedas para juegos de probabilidad sencillos (cara o cruz, el palo de una carta)."
+ },
+ "gd_azar_stages": {
+  "en": "early|Counting the dots of a die, and drawing lots for who starts.\nprimary|Sums with dice, mental arithmetic and what is more likely.\nsecondary|Frequencies and probability: the law of large numbers with many throws.\nadvanced|Probability distributions (the sum of two dice) and simulation.",
+  "es": "early|Contar los puntos del dado y sortear quién empieza.\nprimary|Sumas con dados, cálculo mental y qué es más probable.\nsecondary|Frecuencias y probabilidad: la ley de los grandes números con muchas tiradas.\nadvanced|Distribuciones de probabilidad (la suma de dos dados) y simulación."
+ },
+ "gd_azar_scene": {
+  "en": "In Year 8 the class bets: with two dice, will 7 or 12 come up more? There are votes for both. With ten throws 12 wins by chance and there are protests; with a thousand, the bar of 7 is about six times that of 12, as the chart of what is expected says.",
+  "es": "En segundo de ESO, la clase apuesta: con dos dados, ¿saldrá más el 7 o el 12? Hay votos para los dos. Con diez tiradas gana el 12 por casualidad y hay protestas; con mil, la barra del 7 es unas seis veces la del 12, como dice la gráfica de lo esperado."
+ },
+ "gd_azar_sources": {
+  "en": "Konold, C. (1989). Informal conceptions of probability. Cognition and Instruction, 6(1), 59–98.|https://srri.umass.edu/publications/konold-1989icp",
+  "es": "Konold, C. (1989). Informal conceptions of probability. Cognition and Instruction, 6(1), 59–98.|https://srri.umass.edu/publications/konold-1989icp"
+ },
+ "gd_marcador_what": {
+  "en": "A scoreboard for 2 to 8 teams with big buttons, or a jar that fills up towards a goal of the whole class.",
+  "es": "Un marcador de 2 a 8 equipos con botones grandes, o un bote que se llena hacia una meta de toda la clase."
+ },
+ "gd_marcador_works": {
+  "en": "Playing in teams and keeping the count in sight.\nAdding points and comparing: how far each team is from the others.\nA common goal: the whole class pushing towards the same thing.\nClass rules with a group consequence.",
+  "es": "Jugar en equipo y llevar la cuenta a la vista.\nSumar puntos y comparar: cuánto le falta a cada equipo.\nUna meta común: toda la clase empuja hacia lo mismo.\nNormas de clase con una consecuencia de grupo."
+ },
+ "gd_marcador_why": {
+  "en": "Splitting the class into teams with a scoreboard in sight has also been used for behaviour: in the Good Behavior Game (Barrish, Saunders and Wolf, 1969), a Year 5 class was split into two teams and each interruption added a mark to the team; disruptive behaviour went down a lot while the game was played.\nThe jar of the class is a common goal: everyone adds to the same thing, and nobody is singled out.",
+  "es": "Dividir la clase en equipos con un marcador a la vista se ha usado también para el comportamiento: en el Good Behavior Game (Barrish, Saunders y Wolf, 1969), una clase de cuarto se dividió en dos equipos y cada interrupción sumaba una marca a su equipo; las conductas disruptivas bajaron mucho mientras duró el juego.\nEl bote de la clase es una meta común: todos suman para lo mismo, y nadie queda señalado."
+ },
+ "gd_marcador_how": {
+  "en": "In teams: a tap adds, the other takes away; the crown marks the one in front.\nThe jar: marbles towards a goal of the class (a reward, an activity they choose).\nIt is kept in the course: it goes on the next day from any computer.\nWith the live quiz or the games, to keep the points of several rounds.",
+  "es": "Por equipos: un toque suma, el otro resta; la corona señala al que va primero.\nEl bote: canicas hacia una meta de la clase (un premio, una actividad que elijan).\nSe guarda en el curso: sigue al día siguiente desde cualquier ordenador.\nCon el concurso en vivo o con los juegos, para llevar los puntos de varias rondas."
+ },
+ "gd_marcador_stages": {
+  "en": "early|The jar with marbles, for a goal of the whole class.\nprimary|Teams in the games, and a goal for the week.\nsecondary|Quizzes by teams and long challenges.\nadvanced|Debates and team competitions.",
+  "es": "early|El bote con canicas, para una meta de toda la clase.\nprimary|Equipos en los juegos y una meta semanal.\nsecondary|Concursos por equipos y retos largos.\nadvanced|Debates y competiciones por equipos."
+ },
+ "gd_marcador_scene": {
+  "en": "In Year 4, the jar of the class has a goal: a games session on Friday. Each time the class goes quiet in less than ten seconds, a marble drops in. On Thursday three are missing, and it is the students themselves who ask each other for silence.",
+  "es": "En tercero de Primaria, el bote de la clase tiene una meta: una sesión de juegos el viernes. Cada vez que la clase se queda en silencio en menos de diez segundos, cae una canica. El jueves faltan tres, y son los propios alumnos los que se piden silencio."
+ },
+ "gd_marcador_sources": {
+  "en": "Barrish, H. H., Saunders, M. and Wolf, M. M. (1969). Good behavior game: effects of individual contingencies for group consequences on disruptive behavior in a classroom. Journal of Applied Behavior Analysis, 2(2), 119–124.|https://doi.org/10.1901/jaba.1969.2-119",
+  "es": "Barrish, H. H., Saunders, M. y Wolf, M. M. (1969). Good behavior game: effects of individual contingencies for group consequences on disruptive behavior in a classroom. Journal of Applied Behavior Analysis, 2(2), 119–124.|https://doi.org/10.1901/jaba.1969.2-119"
+ },
+ "gd_pizarra_what": {
+  "en": "A simple board to write and draw with a finger, and a full one with pages, backgrounds, formulas, ruler, compass and protractor.",
+  "es": "Una pizarra sencilla para escribir y dibujar con el dedo, y una completa con páginas, fondos, fórmulas, regla, compás y transportador."
+ },
+ "gd_pizarra_works": {
+  "en": "Explaining by drawing: outlines, diagrams, processes.\nWorking things out step by step, in sight.\nGeometry with instruments: measuring, drawing, constructing.\nStudents coming out to draw what they understand.",
+  "es": "Explicar dibujando: esquemas, diagramas, procesos.\nResolver a la vista, paso a paso.\nGeometría con instrumentos: medir, trazar, construir.\nQue los alumnos salgan a dibujar lo que entienden."
+ },
+ "gd_pizarra_why": {
+  "en": "Drawing what is learnt is one of the eight strategies of generative learning gathered by Fiorella and Mayer (2015): turning a text or an explanation into a drawing makes the learner select what matters and organise it.\nThe full board keeps its pages in the course, so a student's drawing can be taken up again another day.",
+  "es": "Dibujar lo que se aprende es una de las ocho estrategias de aprendizaje generativo que reúnen Fiorella y Mayer (2015): al convertir un texto o una explicación en un dibujo, el alumno tiene que seleccionar lo importante y organizarlo.\nLa pizarra completa guarda sus páginas en el curso, así que el dibujo de un alumno puede retomarse otro día."
+ },
+ "gd_pizarra_how": {
+  "en": "For an explanation, the simple board and its backgrounds (squared paper, handwriting lines, staves).\nA student comes out to draw what they have understood: an outline, a cycle, a map.\nFormulas are written in one line and drawn as in a book.\nGeometry: ruler, set squares, protractor and compass.\nThe curtain covers the board and uncovers it bit by bit; the spotlight lights up a part.",
+  "es": "Para una explicación, la pizarra sencilla y sus fondos (cuadrícula, pauta, pentagrama).\nQue un alumno salga a dibujar lo que ha entendido: un esquema, un ciclo, un mapa.\nLas fórmulas se escriben en una línea y se dibujan como en un libro.\nGeometría: regla, escuadra, cartabón, transportador y compás.\nEl telón tapa la pizarra y la descubre poco a poco; el foco ilumina una parte."
+ },
+ "gd_pizarra_stages": {
+  "en": "early|Drawing with a finger and tracing letters on handwriting lines.\nprimary|Outlines, problems step by step and geometry with a ruler.\nsecondary|Formulas, geometry with instruments and pages kept.\nadvanced|Formulas and diagrams, with the pages kept in the course.",
+  "es": "early|Dibujar con el dedo y trazar letras en la pauta.\nprimary|Esquemas, problemas paso a paso y geometría con regla.\nsecondary|Fórmulas, geometría con instrumentos y páginas guardadas.\nadvanced|Fórmulas y diagramas, con las páginas guardadas en el curso."
+ },
+ "gd_pizarra_scene": {
+  "en": "In Year 6, the teacher explains the water cycle and then asks a student to draw it without the book. The sun, the sea and the rain are there, but not the clouds; the class notices that condensation is missing, and he adds it with arrows.",
+  "es": "En quinto, la maestra explica el ciclo del agua y luego pide a un alumno que lo dibuje sin mirar el libro. Le salen el sol, el mar y la lluvia, pero no las nubes; la clase se da cuenta de que falta la condensación, y él la añade con flechas."
+ },
+ "gd_pizarra_sources": {
+  "en": "Fiorella, L. and Mayer, R. E. (2015). Learning as a Generative Activity: Eight Learning Strategies that Promote Understanding. Cambridge University Press.",
+  "es": "Fiorella, L. y Mayer, R. E. (2015). Learning as a Generative Activity: Eight Learning Strategies that Promote Understanding. Cambridge University Press."
+ },
+ "gd_calc_what": {
+  "en": "A big calculator on the board: basic in Primary and scientific from Secondary.",
+  "es": "Una calculadora grande en la pizarra: básica en Primaria y científica desde Secundaria."
+ },
+ "gd_calc_works": {
+  "en": "Checking the results of written or mental arithmetic.\nExploring patterns: what happens when multiplying by 10, by 0.1…\nFocusing on the problem when the sums are long.\nThe scientific one: powers, roots, functions.",
+  "es": "Comprobar los resultados del cálculo escrito o mental.\nExplorar patrones: qué pasa al multiplicar por 10, por 0,1…\nCentrarse en el problema cuando las cuentas son largas.\nLa científica: potencias, raíces, funciones."
+ },
+ "gd_calc_why": {
+  "en": "A meta-analysis of 54 studies (Ellington, 2003) found that, when the calculator was also used in the tests, the skills of operating and of solving problems got better, and so did the attitude towards mathematics.\nProjected, everyone sees the same keys and the same result, and they can think aloud about what to key in before doing it.",
+  "es": "Un metaanálisis de 54 estudios (Ellington, 2003) encontró que, cuando la calculadora se usaba también en los exámenes, mejoraban las destrezas de operar y de resolver problemas, y también la actitud hacia las matemáticas.\nProyectada, todos ven las mismas teclas y el mismo resultado, y se puede pensar en voz alta qué teclear antes de hacerlo."
+ },
+ "gd_calc_how": {
+  "en": "Before pressing «=», they estimate the result.\nTo check a sum done in the exercise book.\nPatterns: multiplying by 10 several times, dividing by 3, seeing the decimals that repeat.\nIn Secondary, the scientific one for powers, roots and trigonometry.",
+  "es": "Antes de pulsar «=», que estimen el resultado.\nPara comprobar una cuenta hecha en el cuaderno.\nPatrones: multiplicar varias veces por 10, dividir entre 3, ver los decimales que se repiten.\nEn Secundaria, la científica para potencias, raíces y trigonometría."
+ },
+ "gd_calc_stages": {
+  "en": "primary|Checking sums and exploring patterns with the basic one.\nsecondary|The scientific one: powers, roots, scientific notation.\nadvanced|Functions and trigonometry.",
+  "es": "primary|Comprobar cuentas y explorar patrones con la básica.\nsecondary|La científica: potencias, raíces, notación científica.\nadvanced|Funciones y trigonometría."
+ },
+ "gd_calc_scene": {
+  "en": "In Year 7, the teacher asks how much 1 divided by 3 is. Someone says 0.3. They key it in and threes fill the screen to the end: the class sees that the decimal does not finish, and from there comes the idea of a recurring decimal.",
+  "es": "En sexto, el maestro pregunta cuánto es 1 entre 3. Alguien dice 0,3. Lo teclean y salen treses hasta el final de la pantalla: la clase ve que el decimal no se acaba, y de ahí sale la idea de decimal periódico."
+ },
+ "gd_calc_sources": {
+  "en": "Ellington, A. J. (2003). A meta-analysis of the effects of calculators on students' achievement and attitude levels in precollege mathematics classes. Journal for Research in Mathematics Education, 34(5), 433–463.",
+  "es": "Ellington, A. J. (2003). A meta-analysis of the effects of calculators on students' achievement and attitude levels in precollege mathematics classes. Journal for Research in Mathematics Education, 34(5), 433–463."
  }
 }

@@ -13,6 +13,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
 /**
  * What the fixed remote on the phone does, with the key of its address (no login, no cookies): ask which of the
  * teacher's boards are open, and send an order to one of them.

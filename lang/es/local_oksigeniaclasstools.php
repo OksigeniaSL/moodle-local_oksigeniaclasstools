@@ -908,6 +908,25 @@ $string['app_gd_asi_why'] = 'Una revisión de prácticas de gestión del aula co
 $string['app_gd_asi_works'] = 'Que la clase sepa qué se espera en cada momento.
 Cambios más rápidos entre actividades.
 Menos órdenes de viva voz.';
+$string['app_gd_azar_how'] = 'Para sortear, la ruleta con la lista de la clase, sin repetir hasta que salgan todos.
+Antes de tirar, que apuesten qué suma saldrá más con dos dados y por qué.
+«Muchas tiradas»: diez, luego cien, luego mil; que comparen la gráfica con lo esperado.
+Los dados de operaciones para el cálculo mental: tirar y operar.
+Las cartas y las monedas para juegos de probabilidad sencillos (cara o cruz, el palo de una carta).';
+$string['app_gd_azar_scene'] = 'En segundo de ESO, la clase apuesta: con dos dados, ¿saldrá más el 7 o el 12? Hay votos para los dos. Con diez tiradas gana el 12 por casualidad y hay protestas; con mil, la barra del 7 es unas seis veces la del 12, como dice la gráfica de lo esperado.';
+$string['app_gd_azar_sources'] = 'Konold, C. (1989). Informal conceptions of probability. Cognition and Instruction, 6(1), 59–98.|https://srri.umass.edu/publications/konold-1989icp';
+$string['app_gd_azar_stages'] = 'early|Contar los puntos del dado y sortear quién empieza.
+primary|Sumas con dados, cálculo mental y qué es más probable.
+secondary|Frecuencias y probabilidad: la ley de los grandes números con muchas tiradas.
+advanced|Distribuciones de probabilidad (la suma de dos dados) y simulación.';
+$string['app_gd_azar_what'] = 'Ruleta, dados, monedas y cartas para sortear y para jugar, y muchas tiradas de golpe con su gráfica de frecuencias.';
+$string['app_gd_azar_why'] = 'Ante el azar, mucha gente intenta adivinar qué saldrá en la próxima tirada, como si cada una tuviera una respuesta correcta: Konold (1989) lo llamó el enfoque del resultado. La probabilidad habla de lo que pasa a la larga, no de una tirada.
+«Muchas tiradas» lo enseña a la vista: con diez tiradas las barras van a saltos, y con mil se acercan a lo que deberían; con dos dados, la suma 7 sale más que el 2 o el 12.';
+$string['app_gd_azar_works'] = 'Sortear con justicia: turnos, grupos, quién empieza.
+Operaciones con dados: sumar, restar o multiplicar lo que sale.
+Probabilidad: qué es más probable y por qué.
+Frecuencias: lo que sale en muchas tiradas frente a lo que debería salir.
+La diferencia entre lo que pasa una vez y lo que pasa a la larga.';
 $string['app_gd_balanza_how'] = '«Comparar»: que digan hacia dónde se inclinará antes de poner la pesa.
 Sin números (Infantil), solo cubos: qué plato pesa más y cuántos hay que añadir para igualarlos.
 Con números: varias formas de equilibrar 10 (5 + 5, 5 + 2 + 2 + 1…).
@@ -949,6 +968,22 @@ Sumar y restar llevando, sabiendo el porqué de cada paso.
 Leer y escribir números como suma de sus partes («100 + 30 + 12 = 142»).
 Otras bases (2, 5, 16…): el valor de posición sin el diez, para Tecnología y para entender el sistema.';
 $string['app_gd_button'] = 'Guía docente';
+$string['app_gd_calc_how'] = 'Antes de pulsar «=», que estimen el resultado.
+Para comprobar una cuenta hecha en el cuaderno.
+Patrones: multiplicar varias veces por 10, dividir entre 3, ver los decimales que se repiten.
+En Secundaria, la científica para potencias, raíces y trigonometría.';
+$string['app_gd_calc_scene'] = 'En sexto, el maestro pregunta cuánto es 1 entre 3. Alguien dice 0,3. Lo teclean y salen treses hasta el final de la pantalla: la clase ve que el decimal no se acaba, y de ahí sale la idea de decimal periódico.';
+$string['app_gd_calc_sources'] = 'Ellington, A. J. (2003). A meta-analysis of the effects of calculators on students\' achievement and attitude levels in precollege mathematics classes. Journal for Research in Mathematics Education, 34(5), 433–463.';
+$string['app_gd_calc_stages'] = 'primary|Comprobar cuentas y explorar patrones con la básica.
+secondary|La científica: potencias, raíces, notación científica.
+advanced|Funciones y trigonometría.';
+$string['app_gd_calc_what'] = 'Una calculadora grande en la pizarra: básica en Primaria y científica desde Secundaria.';
+$string['app_gd_calc_why'] = 'Un metaanálisis de 54 estudios (Ellington, 2003) encontró que, cuando la calculadora se usaba también en los exámenes, mejoraban las destrezas de operar y de resolver problemas, y también la actitud hacia las matemáticas.
+Proyectada, todos ven las mismas teclas y el mismo resultado, y se puede pensar en voz alta qué teclear antes de hacerlo.';
+$string['app_gd_calc_works'] = 'Comprobar los resultados del cálculo escrito o mental.
+Explorar patrones: qué pasa al multiplicar por 10, por 0,1…
+Centrarse en el problema cuando las cuentas son largas.
+La científica: potencias, raíces, funciones.';
 $string['app_gd_clasificar_how'] = '«Clasificar»: una tarjeta y después su caja; al comprobar, las mal puestas vuelven.
 «El intruso»: cuatro tarjetas, tres de un grupo y una de otro; que digan por qué sobra antes de tocarla.
 «Venn»: dos grupos que comparten elementos, como los múltiplos de 4 y los de 6.
@@ -1097,6 +1132,23 @@ Los negativos, a la izquierda del cero.
 Fracciones y decimales como números con su sitio en la recta.
 Estimar dónde cae un número antes de comprobarlo.
 Intervalos, desigualdades y valor absoluto: la misma parte de la recta escrita de tres maneras.';
+$string['app_gd_marcador_how'] = 'Por equipos: un toque suma, el otro resta; la corona señala al que va primero.
+El bote: canicas hacia una meta de la clase (un premio, una actividad que elijan).
+Se guarda en el curso: sigue al día siguiente desde cualquier ordenador.
+Con el concurso en vivo o con los juegos, para llevar los puntos de varias rondas.';
+$string['app_gd_marcador_scene'] = 'En tercero de Primaria, el bote de la clase tiene una meta: una sesión de juegos el viernes. Cada vez que la clase se queda en silencio en menos de diez segundos, cae una canica. El jueves faltan tres, y son los propios alumnos los que se piden silencio.';
+$string['app_gd_marcador_sources'] = 'Barrish, H. H., Saunders, M. y Wolf, M. M. (1969). Good behavior game: effects of individual contingencies for group consequences on disruptive behavior in a classroom. Journal of Applied Behavior Analysis, 2(2), 119–124.|https://doi.org/10.1901/jaba.1969.2-119';
+$string['app_gd_marcador_stages'] = 'early|El bote con canicas, para una meta de toda la clase.
+primary|Equipos en los juegos y una meta semanal.
+secondary|Concursos por equipos y retos largos.
+advanced|Debates y competiciones por equipos.';
+$string['app_gd_marcador_what'] = 'Un marcador de 2 a 8 equipos con botones grandes, o un bote que se llena hacia una meta de toda la clase.';
+$string['app_gd_marcador_why'] = 'Dividir la clase en equipos con un marcador a la vista se ha usado también para el comportamiento: en el Good Behavior Game (Barrish, Saunders y Wolf, 1969), una clase de cuarto se dividió en dos equipos y cada interrupción sumaba una marca a su equipo; las conductas disruptivas bajaron mucho mientras duró el juego.
+El bote de la clase es una meta común: todos suman para lo mismo, y nadie queda señalado.';
+$string['app_gd_marcador_works'] = 'Jugar en equipo y llevar la cuenta a la vista.
+Sumar puntos y comparar: cuánto le falta a cada equipo.
+Una meta común: toda la clase empuja hacia lo mismo.
+Normas de clase con una consecuencia de grupo.';
 $string['app_gd_none'] = 'Esta herramienta no tiene guía propia. Estas son las guías que hay:';
 $string['app_gd_ordenar_how'] = 'Elige un ejemplo de la etapa o escribe los tuyos en «Mis ejercicios»: un elemento por línea, en su orden.
 Una línea «? elemento: porqué» explica por qué va ahí; sale cuando alguien lo pone mal.
@@ -1146,6 +1198,24 @@ $string['app_gd_parejas_works'] = 'Memoria visual y atención: dónde estaba cad
 Relacionar ideas: palabra y dibujo, concepto y definición, número y cantidad.
 Vocabulario de la materia, del glosario o del banco de preguntas del curso.
 Turnos y equipos.';
+$string['app_gd_pizarra_how'] = 'Para una explicación, la pizarra sencilla y sus fondos (cuadrícula, pauta, pentagrama).
+Que un alumno salga a dibujar lo que ha entendido: un esquema, un ciclo, un mapa.
+Las fórmulas se escriben en una línea y se dibujan como en un libro.
+Geometría: regla, escuadra, cartabón, transportador y compás.
+El telón tapa la pizarra y la descubre poco a poco; el foco ilumina una parte.';
+$string['app_gd_pizarra_scene'] = 'En quinto, la maestra explica el ciclo del agua y luego pide a un alumno que lo dibuje sin mirar el libro. Le salen el sol, el mar y la lluvia, pero no las nubes; la clase se da cuenta de que falta la condensación, y él la añade con flechas.';
+$string['app_gd_pizarra_sources'] = 'Fiorella, L. y Mayer, R. E. (2015). Learning as a Generative Activity: Eight Learning Strategies that Promote Understanding. Cambridge University Press.';
+$string['app_gd_pizarra_stages'] = 'early|Dibujar con el dedo y trazar letras en la pauta.
+primary|Esquemas, problemas paso a paso y geometría con regla.
+secondary|Fórmulas, geometría con instrumentos y páginas guardadas.
+advanced|Fórmulas y diagramas, con las páginas guardadas en el curso.';
+$string['app_gd_pizarra_what'] = 'Una pizarra sencilla para escribir y dibujar con el dedo, y una completa con páginas, fondos, fórmulas, regla, compás y transportador.';
+$string['app_gd_pizarra_why'] = 'Dibujar lo que se aprende es una de las ocho estrategias de aprendizaje generativo que reúnen Fiorella y Mayer (2015): al convertir un texto o una explicación en un dibujo, el alumno tiene que seleccionar lo importante y organizarlo.
+La pizarra completa guarda sus páginas en el curso, así que el dibujo de un alumno puede retomarse otro día.';
+$string['app_gd_pizarra_works'] = 'Explicar dibujando: esquemas, diagramas, procesos.
+Resolver a la vista, paso a paso.
+Geometría con instrumentos: medir, trazar, construir.
+Que los alumnos salgan a dibujar lo que entienden.';
 $string['app_gd_plano_how'] = '«Puntos»: que dicten las coordenadas de un punto y se toque, o al revés: se pone un punto y dicen dónde está.
 «Esconder las coordenadas»: los puntos solo con su letra, para preguntar dónde está cada uno.
 «Formando una figura»: un polígono por sus vértices, y después moverlo sumando lo mismo a todas las x.

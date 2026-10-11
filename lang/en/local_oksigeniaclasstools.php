@@ -906,6 +906,25 @@ $string['app_gd_asi_why'] = 'A review of classroom management practices with emp
 $string['app_gd_asi_works'] = 'The class knowing what is expected at each moment.
 Quicker changes between activities.
 Fewer orders given aloud.';
+$string['app_gd_azar_how'] = 'To draw lots, the wheel with the class list, with no repeats until everyone has come out.
+Before throwing, they bet which sum will come up most with two dice, and why.
+«Many throws»: ten, then a hundred, then a thousand; they compare the chart with what is expected.
+The dice with operations for mental arithmetic: throw and work it out.
+Cards and coins for simple probability games (heads or tails, the suit of a card).';
+$string['app_gd_azar_scene'] = 'In Year 8 the class bets: with two dice, will 7 or 12 come up more? There are votes for both. With ten throws 12 wins by chance and there are protests; with a thousand, the bar of 7 is about six times that of 12, as the chart of what is expected says.';
+$string['app_gd_azar_sources'] = 'Konold, C. (1989). Informal conceptions of probability. Cognition and Instruction, 6(1), 59–98.|https://srri.umass.edu/publications/konold-1989icp';
+$string['app_gd_azar_stages'] = 'early|Counting the dots of a die, and drawing lots for who starts.
+primary|Sums with dice, mental arithmetic and what is more likely.
+secondary|Frequencies and probability: the law of large numbers with many throws.
+advanced|Probability distributions (the sum of two dice) and simulation.';
+$string['app_gd_azar_what'] = 'Wheel, dice, coins and cards to draw lots and to play, and many throws at once with their chart of frequencies.';
+$string['app_gd_azar_why'] = 'Faced with chance, many people try to guess what the next throw will bring, as if each one had a right answer: Konold (1989) called it the outcome approach. Probability speaks of what happens in the long run, not of one throw.
+«Many throws» shows it: with ten throws the bars jump about, and with a thousand they come close to what they should be; with two dice, a sum of 7 comes up more than 2 or 12.';
+$string['app_gd_azar_works'] = 'Drawing lots fairly: turns, groups, who starts.
+Operations with dice: adding, subtracting, multiplying what comes up.
+Probability: what is more likely, and why.
+Frequencies: what comes up in many throws against what should.
+The difference between what happens once and what happens in the long run.';
 $string['app_gd_balanza_how'] = '«Compare»: they predict which way it will lean before the weight goes on.
 Without numbers (Early years), only cubes: which pan weighs more, and how many to add to make them equal.
 With numbers: several ways to balance 10 (5 + 5, 5 + 2 + 2 + 1…).
@@ -947,6 +966,22 @@ Adding and subtracting with carrying and borrowing, knowing why at each step.
 Reading and writing numbers as the sum of their parts («100 + 30 + 12 = 142»).
 Other bases (2, 5, 16…): place value without the ten, for technology and for understanding the system.';
 $string['app_gd_button'] = 'Teacher\'s guide';
+$string['app_gd_calc_how'] = 'Before pressing «=», they estimate the result.
+To check a sum done in the exercise book.
+Patterns: multiplying by 10 several times, dividing by 3, seeing the decimals that repeat.
+In Secondary, the scientific one for powers, roots and trigonometry.';
+$string['app_gd_calc_scene'] = 'In Year 7, the teacher asks how much 1 divided by 3 is. Someone says 0.3. They key it in and threes fill the screen to the end: the class sees that the decimal does not finish, and from there comes the idea of a recurring decimal.';
+$string['app_gd_calc_sources'] = 'Ellington, A. J. (2003). A meta-analysis of the effects of calculators on students\' achievement and attitude levels in precollege mathematics classes. Journal for Research in Mathematics Education, 34(5), 433–463.';
+$string['app_gd_calc_stages'] = 'primary|Checking sums and exploring patterns with the basic one.
+secondary|The scientific one: powers, roots, scientific notation.
+advanced|Functions and trigonometry.';
+$string['app_gd_calc_what'] = 'A big calculator on the board: basic in Primary and scientific from Secondary.';
+$string['app_gd_calc_why'] = 'A meta-analysis of 54 studies (Ellington, 2003) found that, when the calculator was also used in the tests, the skills of operating and of solving problems got better, and so did the attitude towards mathematics.
+Projected, everyone sees the same keys and the same result, and they can think aloud about what to key in before doing it.';
+$string['app_gd_calc_works'] = 'Checking the results of written or mental arithmetic.
+Exploring patterns: what happens when multiplying by 10, by 0.1…
+Focusing on the problem when the sums are long.
+The scientific one: powers, roots, functions.';
 $string['app_gd_clasificar_how'] = '«Sort»: a card and then its box; on checking, the wrong ones go back.
 «Odd one out»: four cards, three of a group and one of another; they say why it does not fit before tapping it.
 «Venn»: two groups that share items, such as the multiples of 4 and those of 6.
@@ -1095,6 +1130,23 @@ Negative numbers, to the left of zero.
 Fractions and decimals as numbers with their own place on the line.
 Estimating where a number falls before checking it.
 Intervals, inequalities and absolute value: the same part of the line written three ways.';
+$string['app_gd_marcador_how'] = 'In teams: a tap adds, the other takes away; the crown marks the one in front.
+The jar: marbles towards a goal of the class (a reward, an activity they choose).
+It is kept in the course: it goes on the next day from any computer.
+With the live quiz or the games, to keep the points of several rounds.';
+$string['app_gd_marcador_scene'] = 'In Year 4, the jar of the class has a goal: a games session on Friday. Each time the class goes quiet in less than ten seconds, a marble drops in. On Thursday three are missing, and it is the students themselves who ask each other for silence.';
+$string['app_gd_marcador_sources'] = 'Barrish, H. H., Saunders, M. and Wolf, M. M. (1969). Good behavior game: effects of individual contingencies for group consequences on disruptive behavior in a classroom. Journal of Applied Behavior Analysis, 2(2), 119–124.|https://doi.org/10.1901/jaba.1969.2-119';
+$string['app_gd_marcador_stages'] = 'early|The jar with marbles, for a goal of the whole class.
+primary|Teams in the games, and a goal for the week.
+secondary|Quizzes by teams and long challenges.
+advanced|Debates and team competitions.';
+$string['app_gd_marcador_what'] = 'A scoreboard for 2 to 8 teams with big buttons, or a jar that fills up towards a goal of the whole class.';
+$string['app_gd_marcador_why'] = 'Splitting the class into teams with a scoreboard in sight has also been used for behaviour: in the Good Behavior Game (Barrish, Saunders and Wolf, 1969), a Year 5 class was split into two teams and each interruption added a mark to the team; disruptive behaviour went down a lot while the game was played.
+The jar of the class is a common goal: everyone adds to the same thing, and nobody is singled out.';
+$string['app_gd_marcador_works'] = 'Playing in teams and keeping the count in sight.
+Adding points and comparing: how far each team is from the others.
+A common goal: the whole class pushing towards the same thing.
+Class rules with a group consequence.';
 $string['app_gd_none'] = 'This tool has no guide of its own. These are the guides there are:';
 $string['app_gd_ordenar_how'] = 'Choose an example of the level, or write your own in «My exercises»: one item per line, in its order.
 A line «? item: why» explains why it goes there; it comes up when someone puts it in the wrong place.
@@ -1144,6 +1196,24 @@ $string['app_gd_parejas_works'] = 'Visual memory and attention: where each card 
 Relating ideas: word and picture, concept and definition, number and amount.
 Words of the subject, from the glossary or the question bank of the course.
 Turns and teams.';
+$string['app_gd_pizarra_how'] = 'For an explanation, the simple board and its backgrounds (squared paper, handwriting lines, staves).
+A student comes out to draw what they have understood: an outline, a cycle, a map.
+Formulas are written in one line and drawn as in a book.
+Geometry: ruler, set squares, protractor and compass.
+The curtain covers the board and uncovers it bit by bit; the spotlight lights up a part.';
+$string['app_gd_pizarra_scene'] = 'In Year 6, the teacher explains the water cycle and then asks a student to draw it without the book. The sun, the sea and the rain are there, but not the clouds; the class notices that condensation is missing, and he adds it with arrows.';
+$string['app_gd_pizarra_sources'] = 'Fiorella, L. and Mayer, R. E. (2015). Learning as a Generative Activity: Eight Learning Strategies that Promote Understanding. Cambridge University Press.';
+$string['app_gd_pizarra_stages'] = 'early|Drawing with a finger and tracing letters on handwriting lines.
+primary|Outlines, problems step by step and geometry with a ruler.
+secondary|Formulas, geometry with instruments and pages kept.
+advanced|Formulas and diagrams, with the pages kept in the course.';
+$string['app_gd_pizarra_what'] = 'A simple board to write and draw with a finger, and a full one with pages, backgrounds, formulas, ruler, compass and protractor.';
+$string['app_gd_pizarra_why'] = 'Drawing what is learnt is one of the eight strategies of generative learning gathered by Fiorella and Mayer (2015): turning a text or an explanation into a drawing makes the learner select what matters and organise it.
+The full board keeps its pages in the course, so a student\'s drawing can be taken up again another day.';
+$string['app_gd_pizarra_works'] = 'Explaining by drawing: outlines, diagrams, processes.
+Working things out step by step, in sight.
+Geometry with instruments: measuring, drawing, constructing.
+Students coming out to draw what they understand.';
 $string['app_gd_plano_how'] = '«Points»: they call the coordinates of a point and it is tapped, or the other way round: a point goes on and they say where it is.
 «Hide the coordinates»: the points only with their letter, to ask where each one is.
 «Making a shape»: a polygon by its vertices, then moved by adding the same to every x.

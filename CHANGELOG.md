@@ -9,6 +9,10 @@
 - **More orders for the remote** (fixed or with a code): going to any tool, «Pick someone here» in the game or
   material on screen, and the next question of a quiz.
 - New table for the fixed remote of each teacher, in the privacy provider (its key is not exported).
+- **Pairs**: a glance at the start (every card face up for 3, 5 or 10 seconds), the class against the tries (twice as
+  many as pairs; out of them, the rest shows), and **trios**, three cards that go together: the built-in dots (dots,
+  figure and word) and lists «a = b = c», which the «Prompt for your AI» of the lists editor can also write.
+- **Teacher's guides** for Chance, Scoreboard, Whiteboard and Calculator, with their sources.
 
 ## 0.33.0 (2026-10-11)
 
