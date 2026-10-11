@@ -138,7 +138,8 @@ final class modes_test extends \advanced_testcase {
         $this->assertSame('secondary', local_oksigeniaclasstools_default_mode());
         $setting->write_setting([$early->id => 'early', $room->id => 'advanced']);
         $this->assertSame('advanced', local_oksigeniaclasstools_default_mode((int) $room->id));
-        // The form lists every category, with «Like the category above» for a subcategory.
+        // The form (on the admin pages) lists every category, with «Like the category above» for a subcategory.
+        $this->setAdminUser();
         $html = $setting->output_html($setting->get_setting());
         $this->assertStringContainsString('Early years / Room 1', $html);
         $this->assertStringContainsString(get_string('categorymodes_parent', 'local_oksigeniaclasstools'), $html);
