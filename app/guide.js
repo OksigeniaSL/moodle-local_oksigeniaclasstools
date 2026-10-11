@@ -24,7 +24,7 @@
         rosco: 'ro_name', simon: 'si_name', ahorcado: 'ah_name', palabra: 'wo_name', parejas: 'me_pairs', codigo: 'lock_name',
         // Materials.
         rods: 'mt_rods', tangram: 'mt_tangram', line: 'mt_line', fractions: 'mt_fractions', geoboard: 'mt_geoboard',
-        base10: 'mt_base10', balanza: 'mt_balance', score: 'mt_score',
+        base10: 'mt_base10', balanza: 'mt_balance', plano: 'mt_plane', score: 'mt_score',
     };
     const MODES = ['early', 'primary', 'secondary', 'advanced'];
     // Which guide: the tool on screen, or the game or material open in it.

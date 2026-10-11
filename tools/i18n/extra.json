@@ -1698,5 +1698,129 @@
  "ba_solved": {
   "en": "x = {$a}, without breaking the balance.",
   "es": "x = {$a}, sin romper el equilibrio."
+ },
+ "mt_plane": {
+  "en": "Coordinate plane",
+  "es": "Plano de coordenadas"
+ },
+ "pl_points": {
+  "en": "Points",
+  "es": "Puntos"
+ },
+ "pl_fleet": {
+  "en": "Battleship",
+  "es": "Hundir la flota"
+ },
+ "pl_quadrants": {
+  "en": "Quadrants",
+  "es": "Cuadrantes"
+ },
+ "pl_quad_one": {
+  "en": "The first",
+  "es": "El primero"
+ },
+ "pl_quad_four": {
+  "en": "All four",
+  "es": "Los cuatro"
+ },
+ "pl_join": {
+  "en": "The points",
+  "es": "Los puntos"
+ },
+ "pl_join_none": {
+  "en": "Apart",
+  "es": "Sueltos"
+ },
+ "pl_join_line": {
+  "en": "Joined in a line",
+  "es": "Unidos en una línea"
+ },
+ "pl_join_shape": {
+  "en": "Making a shape",
+  "es": "Formando una figura"
+ },
+ "pl_join_vectors": {
+  "en": "As vectors, one after another",
+  "es": "Como vectores, uno tras otro"
+ },
+ "pl_type": {
+  "en": "Put a point",
+  "es": "Poner un punto"
+ },
+ "pl_add": {
+  "en": "Put",
+  "es": "Poner"
+ },
+ "pl_hide": {
+  "en": "Hide the coordinates",
+  "es": "Esconder las coordenadas"
+ },
+ "pl_empty": {
+  "en": "Clear the points",
+  "es": "Borrar los puntos"
+ },
+ "pl_help": {
+  "en": "Tap a crossing to put a point (A, B, C…) and tap it again to take it away, or type its coordinates: first x, across, then y, up.",
+  "es": "Toca un cruce para poner un punto (A, B, C…) y tócalo otra vez para quitarlo, o escribe sus coordenadas: primero la x, en horizontal, y después la y, en vertical."
+ },
+ "pl_teams": {
+  "en": "Teams",
+  "es": "Equipos"
+ },
+ "pl_call": {
+  "en": "The point they call",
+  "es": "El punto que dicen"
+ },
+ "pl_fire": {
+  "en": "Shoot",
+  "es": "Disparar"
+ },
+ "pl_new_fleet": {
+  "en": "New fleet",
+  "es": "Flota nueva"
+ },
+ "pl_show_fleet": {
+  "en": "Show the fleet",
+  "es": "Enseñar la flota"
+ },
+ "pl_fleet_help": {
+  "en": "A fleet of seven ships is hidden on the crossings. Each team in turn calls a point, and it is tapped or typed: water, hit or sunk. A hit shoots again.",
+  "es": "Hay una flota de siete barcos escondida en los cruces. Cada equipo, en su turno, dice un punto, y se toca o se escribe: agua, tocado o hundido. Quien toca vuelve a disparar."
+ },
+ "pl_turn": {
+  "en": "Team {$a} to shoot",
+  "es": "Turno del equipo {$a}"
+ },
+ "pl_team": {
+  "en": "Team {$a}",
+  "es": "Equipo {$a}"
+ },
+ "pl_left": {
+  "en": "Ships afloat: {$a}",
+  "es": "Barcos a flote: {$a}"
+ },
+ "pl_water": {
+  "en": "{$a}: water",
+  "es": "{$a}: agua"
+ },
+ "pl_hit": {
+  "en": "{$a}: hit! Shoot again",
+  "es": "{$a}: ¡tocado! Otro disparo"
+ },
+ "pl_sunk": {
+  "en": "{$a}: hit and sunk! Shoot again",
+  "es": "{$a}: ¡tocado y hundido! Otro disparo"
+ },
+ "pl_again": {
+  "en": "{$a} has already been called",
+  "es": "{$a} ya se había dicho"
+ },
+ "pl_all_sunk": {
+  "en": "The whole fleet is sunk",
+  "es": "Toda la flota hundida"
+ },
+ "pl_bad": {
+  "en": "Two whole numbers between {$a->a} and {$a->b}, like (3, 2)",
+  "es": "Dos números enteros entre {$a->a} y {$a->b}, como (3, 2)"
  }
 }

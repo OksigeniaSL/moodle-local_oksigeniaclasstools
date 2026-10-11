@@ -467,7 +467,7 @@ const CHECKS = {
             const levels = t(`gd_${id}_stages`).split('\n').map((x) => x.split('|')[0]);
             if (!levels.every((m) => ['early', 'primary', 'secondary', 'advanced'].includes(m))) { bad.push(`${id}: levels ${levels.join(',')}`); }
         }
-        if (ids.length < 20) { bad.push(`only ${ids.length} guides`); }
+        if (ids.length < 21) { bad.push(`only ${ids.length} guides`); }
         return bad.length ? bad.join('; ') : '';
     },
     // Order: a wrong try sends cards back, then the right order wins.
@@ -666,6 +666,51 @@ const CHECKS = {
         return '';
     },
     // Base blocks in base 5: 69 is 2 × 25 + 3 × 5 + 4, «234 in base 5», and five ones swap for one block of 5.
+    // Coordinate plane: points in four quadrants joined as vectors, then a whole game of battleship by two teams.
+    'coordinate-plane': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const q = (s) => document.querySelector(s);
+        q('#t-material').click();
+        await sleep(200);
+        q('#mt-mode [data-mode="plano"]').click();
+        await sleep(200);
+        q('#pl-kind [data-v="points"]').click();
+        q('#pl-quad [data-v="4"]').click();
+        q('#pl-empty').click();
+        for (const text of ['(3, 2)', '-2,4', '(−2, −3)']) { q('#pl-xy').value = text; q('#pl-add').click(); }
+        await sleep(100);
+        if (q('#pl-list').textContent.replace(/\s+/g, ' ') !== 'A(3, 2) B(−2, 4) C(−2, −3)') { return `points: «${q('#pl-list').textContent}»`; }
+        q('#pl-join').value = 'vectors';
+        q('#pl-join').dispatchEvent(new Event('change'));
+        await sleep(100);
+        const parts = [...document.querySelectorAll('#pl-svg .componentes')].map((x) => x.textContent);
+        if (parts.join(' ') !== '(−5, 2) (0, −7)') { return `vectors: ${parts.join(' ')}`; }
+        // Tapping a point takes it away.
+        q('#pl-svg circle[data-x="-2"][data-y="-3"]').dispatchEvent(new MouseEvent('click', { bubbles: true }));
+        await sleep(100);
+        if (window.ClasstoolsPlane.state().points.length !== 2) { return 'a tapped point did not go away'; }
+        await window.shot('plane-vectors');
+        q('#pl-kind [data-v="fleet"]').click();
+        q('#pl-teams [data-v="2"]').click();
+        q('#pl-new').click();
+        await sleep(100);
+        const P = window.ClasstoolsPlane, f = () => P.state().fleet;
+        const ships = f().ships, onShip = new Set(ships.flat().map(([x, y]) => `${x},${y}`));
+        let water = null;
+        for (let x = -6; x <= 6 && !water; x++) { for (let y = -6; y <= 6; y++) { if (!onShip.has(`${x},${y}`)) { water = [x, y]; break; } } }
+        P.fire(...water);
+        if (f().turn !== 1 || !/water/.test(q('#pl-msg').textContent)) { return `water: turn ${f().turn}, «${q('#pl-msg').textContent}»`; }
+        P.fire(...water);
+        if (!/already/.test(q('#pl-msg').textContent)) { return 'a point called twice is not noticed'; }
+        ships[0].forEach(([x, y]) => P.fire(x, y));
+        if (!P.isSunk(0) || f().hits[1] !== ships[0].length || f().turn !== 1) { return 'a hit does not keep the turn, or the ship is not sunk'; }
+        await sleep(100);
+        await window.shot('plane-fleet');
+        ships.slice(1).forEach((s) => s.forEach(([x, y]) => P.fire(x, y)));
+        if (!f().over || !/sunk/.test(q('#pl-msg').textContent)) { return `not over: «${q('#pl-msg').textContent}»`; }
+        if (ships.length !== 7) { return `${ships.length} ships`; }
+        return '';
+    },
     // Balance scale: weights compared, then an equation worked out taking the same off both pans.
     'balance-scale': async () => {
         const sleep = (ms) => new Promise((r) => setTimeout(r, ms));

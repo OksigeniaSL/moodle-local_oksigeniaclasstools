@@ -1046,6 +1046,25 @@ $string['app_gd_parejas_works'] = 'Memoria visual y atención: dónde estaba cad
 Relacionar ideas: palabra y dibujo, concepto y definición, número y cantidad.
 Vocabulario de la materia, del glosario o del banco de preguntas del curso.
 Turnos y equipos.';
+$string['app_gd_plano_how'] = '«Puntos»: que dicten las coordenadas de un punto y se toque, o al revés: se pone un punto y dicen dónde está.
+«Esconder las coordenadas»: los puntos solo con su letra, para preguntar dónde está cada uno.
+«Formando una figura»: un polígono por sus vértices, y después moverlo sumando lo mismo a todas las x.
+«Como vectores»: cada flecha con sus componentes, de A a B y de B a C.
+«Hundir la flota»: de uno a cuatro equipos, cada uno dice un punto en su turno; quien toca vuelve a disparar. «Enseñar la flota» al final.';
+$string['app_gd_plano_scene'] = 'En primero de ESO, dos equipos juegan a Hundir la flota en los cuatro cuadrantes. Uno grita «¡menos tres, dos!» y señala hacia arriba a la izquierda; el profesor lo toca: agua. El otro equipo, que ya tenía un tocado en (−3, 1), dispara a (−3, 0) y hunde el barco: en diez minutos han dicho cuarenta pares, en orden y con su signo.';
+$string['app_gd_plano_sources'] = 'Descartes, R. (1637). La Géométrie. Apéndice del Discours de la méthode. Leiden: Ian Maire.';
+$string['app_gd_plano_stages'] = 'primary|El primer cuadrante: situar puntos y jugar a Hundir la flota.
+secondary|Los cuatro cuadrantes, figuras, simetrías y traslaciones, y vectores.
+advanced|Vectores y sus componentes, como apoyo para la geometría analítica.';
+$string['app_gd_plano_what'] = 'Una cuadrícula con los ejes x e y: el primer cuadrante (de 0 a 10) o los cuatro (de −6 a 6). Puntos con sus coordenadas, figuras y vectores, y Hundir la flota por equipos.';
+$string['app_gd_plano_why'] = 'Con un par de números, cada punto del plano queda situado: es la idea de la geometría analítica, que nace con La Géométrie de Descartes (1637); por eso las coordenadas se llaman cartesianas.
+El orden del par importa: (3, 2) y (2, 3) son puntos distintos, y en Hundir la flota un par al revés es un disparo perdido, así que se nota enseguida.
+En los cuatro cuadrantes, el signo dice la dirección: a la izquierda del eje y, o por debajo del eje x.';
+$string['app_gd_plano_works'] = 'Situar y leer puntos por sus coordenadas: primero la x y después la y.
+Los números negativos, en los cuatro cuadrantes.
+Figuras a partir de sus vértices: polígonos, simetrías y traslaciones.
+Vectores y sus componentes: cuánto se avanza en x y cuánto en y.
+Hundir la flota: decir el par en orden y razonar dónde disparar después de un tocado.';
 $string['app_gd_quien_how'] = 'Haz la pregunta a toda la clase antes de elegir: así la piensan todos.
 Cuenta hasta tres o cuatro en silencio y entonces pulsa.
 Si quien sale no lo sabe, elige a un compañero que le ayude y luego lo dice con sus palabras.
@@ -1553,6 +1572,7 @@ $string['app_mt_numbers'] = 'Ver los números';
 $string['app_mt_numbers_a'] = 'Números en la mesa A';
 $string['app_mt_numbers_b'] = 'Números en la mesa B';
 $string['app_mt_piece'] = 'Pieza del tangram';
+$string['app_mt_plane'] = 'Plano de coordenadas';
 $string['app_mt_reset'] = 'Colocar de nuevo';
 $string['app_mt_rod'] = 'Regleta del {$a}';
 $string['app_mt_rods'] = 'Regletas';
@@ -1589,6 +1609,36 @@ $string['app_ord_done'] = '¡Todo en orden!';
 $string['app_ord_name'] = 'Ordenar';
 $string['app_ord_place'] = 'Toca las tarjetas en su orden';
 $string['app_ord_right'] = '{$a->n} de {$a->of} en su sitio';
+$string['app_pl_add'] = 'Poner';
+$string['app_pl_again'] = '{$a} ya se había dicho';
+$string['app_pl_all_sunk'] = 'Toda la flota hundida';
+$string['app_pl_bad'] = 'Dos números enteros entre {$a->a} y {$a->b}, como (3, 2)';
+$string['app_pl_call'] = 'El punto que dicen';
+$string['app_pl_empty'] = 'Borrar los puntos';
+$string['app_pl_fire'] = 'Disparar';
+$string['app_pl_fleet'] = 'Hundir la flota';
+$string['app_pl_fleet_help'] = 'Hay una flota de siete barcos escondida en los cruces. Cada equipo, en su turno, dice un punto, y se toca o se escribe: agua, tocado o hundido. Quien toca vuelve a disparar.';
+$string['app_pl_help'] = 'Toca un cruce para poner un punto (A, B, C…) y tócalo otra vez para quitarlo, o escribe sus coordenadas: primero la x, en horizontal, y después la y, en vertical.';
+$string['app_pl_hide'] = 'Esconder las coordenadas';
+$string['app_pl_hit'] = '{$a}: ¡tocado! Otro disparo';
+$string['app_pl_join'] = 'Los puntos';
+$string['app_pl_join_line'] = 'Unidos en una línea';
+$string['app_pl_join_none'] = 'Sueltos';
+$string['app_pl_join_shape'] = 'Formando una figura';
+$string['app_pl_join_vectors'] = 'Como vectores, uno tras otro';
+$string['app_pl_left'] = 'Barcos a flote: {$a}';
+$string['app_pl_new_fleet'] = 'Flota nueva';
+$string['app_pl_points'] = 'Puntos';
+$string['app_pl_quad_four'] = 'Los cuatro';
+$string['app_pl_quad_one'] = 'El primero';
+$string['app_pl_quadrants'] = 'Cuadrantes';
+$string['app_pl_show_fleet'] = 'Enseñar la flota';
+$string['app_pl_sunk'] = '{$a}: ¡tocado y hundido! Otro disparo';
+$string['app_pl_team'] = 'Equipo {$a}';
+$string['app_pl_teams'] = 'Equipos';
+$string['app_pl_turn'] = 'Turno del equipo {$a}';
+$string['app_pl_type'] = 'Poner un punto';
+$string['app_pl_water'] = '{$a}: agua';
 $string['app_q_absent'] = '¿Quién falta hoy?';
 $string['app_q_absent_n'] = 'Faltan hoy: {$a}';
 $string['app_q_absent_n_sr'] = 'Faltan hoy {$a}';

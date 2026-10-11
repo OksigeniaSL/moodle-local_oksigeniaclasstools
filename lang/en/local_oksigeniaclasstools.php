@@ -1044,6 +1044,25 @@ $string['app_gd_parejas_works'] = 'Visual memory and attention: where each card 
 Relating ideas: word and picture, concept and definition, number and amount.
 Words of the subject, from the glossary or the question bank of the course.
 Turns and teams.';
+$string['app_gd_plano_how'] = '«Points»: they call the coordinates of a point and it is tapped, or the other way round: a point goes on and they say where it is.
+«Hide the coordinates»: the points only with their letter, to ask where each one is.
+«Making a shape»: a polygon by its vertices, then moved by adding the same to every x.
+«As vectors»: each arrow with its components, from A to B and from B to C.
+«Battleship»: one to four teams, each calls a point in its turn; a hit shoots again. «Show the fleet» at the end.';
+$string['app_gd_plano_scene'] = 'In Year 7, two teams play Battleship in all four quadrants. One shouts «minus three, two!» and points up and to the left; the teacher taps it: water. The other team, which already had a hit at (−3, 1), shoots at (−3, 0) and sinks the ship: in ten minutes they have said forty pairs, in order and with their signs.';
+$string['app_gd_plano_sources'] = 'Descartes, R. (1637). La Géométrie. Appendix to the Discours de la méthode. Leiden: Ian Maire.';
+$string['app_gd_plano_stages'] = 'primary|The first quadrant: placing points and playing Battleship.
+secondary|All four quadrants, shapes, symmetries and translations, and vectors.
+advanced|Vectors and their components, as a support for analytic geometry.';
+$string['app_gd_plano_what'] = 'A grid with the x and y axes: the first quadrant (0 to 10) or all four (−6 to 6). Points with their coordinates, shapes and vectors, and Battleship by teams.';
+$string['app_gd_plano_why'] = 'With a pair of numbers every point of the plane is located: that is the idea of analytic geometry, which starts with Descartes\' La Géométrie (1637); that is why the coordinates are called Cartesian.
+The order of the pair matters: (3, 2) and (2, 3) are different points, and in Battleship a pair the wrong way round is a wasted shot, so it shows at once.
+In all four quadrants, the sign gives the direction: to the left of the y axis, or below the x axis.';
+$string['app_gd_plano_works'] = 'Placing and reading points by their coordinates: first x, then y.
+Negative numbers, in all four quadrants.
+Shapes from their vertices: polygons, symmetries and translations.
+Vectors and their components: how far along x and how far along y.
+Battleship: saying the pair in order, and working out where to shoot after a hit.';
 $string['app_gd_quien_how'] = 'Ask the question to the whole class before choosing: that way everyone thinks about it.
 Count to three or four in silence, then press.
 If the one chosen does not know, they choose a classmate to help and then say it in their own words.
@@ -1551,6 +1570,7 @@ $string['app_mt_numbers'] = 'Show the numbers';
 $string['app_mt_numbers_a'] = 'Numbers on table A';
 $string['app_mt_numbers_b'] = 'Numbers on table B';
 $string['app_mt_piece'] = 'Tangram piece';
+$string['app_mt_plane'] = 'Coordinate plane';
 $string['app_mt_reset'] = 'Start again';
 $string['app_mt_rod'] = 'Rod {$a}';
 $string['app_mt_rods'] = 'Rods';
@@ -1587,6 +1607,36 @@ $string['app_ord_done'] = 'All in order!';
 $string['app_ord_name'] = 'Order';
 $string['app_ord_place'] = 'Tap the cards in their order';
 $string['app_ord_right'] = '{$a->n} of {$a->of} in their place';
+$string['app_pl_add'] = 'Put';
+$string['app_pl_again'] = '{$a} has already been called';
+$string['app_pl_all_sunk'] = 'The whole fleet is sunk';
+$string['app_pl_bad'] = 'Two whole numbers between {$a->a} and {$a->b}, like (3, 2)';
+$string['app_pl_call'] = 'The point they call';
+$string['app_pl_empty'] = 'Clear the points';
+$string['app_pl_fire'] = 'Shoot';
+$string['app_pl_fleet'] = 'Battleship';
+$string['app_pl_fleet_help'] = 'A fleet of seven ships is hidden on the crossings. Each team in turn calls a point, and it is tapped or typed: water, hit or sunk. A hit shoots again.';
+$string['app_pl_help'] = 'Tap a crossing to put a point (A, B, C…) and tap it again to take it away, or type its coordinates: first x, across, then y, up.';
+$string['app_pl_hide'] = 'Hide the coordinates';
+$string['app_pl_hit'] = '{$a}: hit! Shoot again';
+$string['app_pl_join'] = 'The points';
+$string['app_pl_join_line'] = 'Joined in a line';
+$string['app_pl_join_none'] = 'Apart';
+$string['app_pl_join_shape'] = 'Making a shape';
+$string['app_pl_join_vectors'] = 'As vectors, one after another';
+$string['app_pl_left'] = 'Ships afloat: {$a}';
+$string['app_pl_new_fleet'] = 'New fleet';
+$string['app_pl_points'] = 'Points';
+$string['app_pl_quad_four'] = 'All four';
+$string['app_pl_quad_one'] = 'The first';
+$string['app_pl_quadrants'] = 'Quadrants';
+$string['app_pl_show_fleet'] = 'Show the fleet';
+$string['app_pl_sunk'] = '{$a}: hit and sunk! Shoot again';
+$string['app_pl_team'] = 'Team {$a}';
+$string['app_pl_teams'] = 'Teams';
+$string['app_pl_turn'] = 'Team {$a} to shoot';
+$string['app_pl_type'] = 'Put a point';
+$string['app_pl_water'] = '{$a}: water';
 $string['app_q_absent'] = 'Who\'s missing today?';
 $string['app_q_absent_n'] = 'Missing today: {$a}';
 $string['app_q_absent_n_sr'] = 'Missing today {$a}';

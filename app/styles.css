@@ -1988,3 +1988,31 @@ dialog.ct-sc-dialogo { width: min(40rem, 94vw); }
 .ct-ba-ops { display: flex; flex-wrap: wrap; gap: .4rem; }
 .ct-ba-note { min-height: 1.4em; font-weight: 800; text-align: center; }
 @media (prefers-reduced-motion: reduce) { .ct-ba-beam, .ct-ba-pan { transition: none; } }
+/* Coordinate plane: drawn in units of the plane, y upwards (at −y). */
+.ct-pl-stage { display: flex; flex-direction: column; align-items: center; gap: .4rem; }
+.ct-pl { width: 100%; max-width: 40rem; max-height: 68vh; aspect-ratio: 1; }
+.ct-pl-grid line { stroke: var(--borde); stroke-width: .04; }
+.ct-pl-grid line.eje { stroke: var(--tinta); stroke-width: .08; }
+.ct-pl-labels text { fill: var(--tinta-3); font-size: .42px; font-weight: 700; }
+.ct-pl-labels .eje-nombre { fill: var(--tinta); font-size: .6px; font-style: italic; font-weight: 900; }
+.ct-pl-targets circle { fill: transparent; cursor: pointer; }
+.ct-pl-targets circle:hover { fill: rgba(22, 66, 129, .15); }
+.ct-pl-points .punto { fill: var(--azul); }
+.ct-pl-points .nombre, .ct-pl-points .componentes { paint-order: stroke; stroke: #fff; stroke-width: .12px; font-weight: 900; }
+.ct-pl-points .nombre { fill: var(--azul-osc); font-size: .5px; }
+.ct-pl-points .componentes { fill: var(--rojo); font-size: .42px; }
+.ct-pl-points .linea { fill: none; stroke: var(--azul); stroke-width: .08; stroke-linejoin: round; }
+.ct-pl-points .figura { fill: rgba(22, 66, 129, .12); stroke: var(--azul); stroke-width: .08; stroke-linejoin: round; }
+.ct-pl-points .vector { stroke: var(--rojo); stroke-width: .08; }
+.ct-pl-points .punta { fill: var(--rojo); }
+.ct-pl-fleet .barco { fill: rgba(91, 47, 184, .15); stroke: #5b2fb8; stroke-width: .06; stroke-dasharray: .15 .1; }
+.ct-pl-fleet .barco.hundido { fill: rgba(206, 20, 35, .15); stroke: var(--rojo); stroke-dasharray: none; }
+.ct-pl-fleet .tocado { fill: var(--c); }
+.ct-pl-fleet .agua { fill: var(--azul-suave); stroke: var(--azul); stroke-width: .05; }
+.ct-pl-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: .5rem 1rem; width: 100%; }
+.ct-pl-msg { min-height: 1.4em; margin: 0; font-size: clamp(1.2rem, 3vw, 1.8rem); }
+.ct-pl-score { display: flex; flex-wrap: wrap; gap: .4rem; }
+.ct-pl-team { padding: .2rem .7rem; border: 2px solid var(--c); border-radius: 50rem; color: var(--c); font-weight: 900; }
+.ct-pl-team.activo { background: var(--c); color: #fff; }
+.ct-pl-left { padding: .2rem .4rem; color: var(--tinta-3); font-weight: 800; }
+.ct-pl-list { min-height: 1.4em; margin: 0; font-weight: 800; text-align: center; white-space: pre-wrap; }

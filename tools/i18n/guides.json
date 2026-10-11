@@ -594,5 +594,33 @@
  "gd_balanza_sources": {
   "en": "Otten, M., Van den Heuvel-Panhuizen, M. and Veldhuis, M. (2019). The balance model for teaching linear equations: a systematic literature review. International Journal of STEM Education, 6, 30.|https://doi.org/10.1186/s40594-019-0183-2\nVlassis, J. (2002). The balance model: Hindrance or support for the solving of linear equations with one unknown. Educational Studies in Mathematics, 49(3), 341–359.|https://doi.org/10.1023/A:1020229023965",
   "es": "Otten, M., Van den Heuvel-Panhuizen, M. y Veldhuis, M. (2019). The balance model for teaching linear equations: a systematic literature review. International Journal of STEM Education, 6, 30.|https://doi.org/10.1186/s40594-019-0183-2\nVlassis, J. (2002). The balance model: Hindrance or support for the solving of linear equations with one unknown. Educational Studies in Mathematics, 49(3), 341–359.|https://doi.org/10.1023/A:1020229023965"
+ },
+ "gd_plano_what": {
+  "en": "A grid with the x and y axes: the first quadrant (0 to 10) or all four (−6 to 6). Points with their coordinates, shapes and vectors, and Battleship by teams.",
+  "es": "Una cuadrícula con los ejes x e y: el primer cuadrante (de 0 a 10) o los cuatro (de −6 a 6). Puntos con sus coordenadas, figuras y vectores, y Hundir la flota por equipos."
+ },
+ "gd_plano_works": {
+  "en": "Placing and reading points by their coordinates: first x, then y.\nNegative numbers, in all four quadrants.\nShapes from their vertices: polygons, symmetries and translations.\nVectors and their components: how far along x and how far along y.\nBattleship: saying the pair in order, and working out where to shoot after a hit.",
+  "es": "Situar y leer puntos por sus coordenadas: primero la x y después la y.\nLos números negativos, en los cuatro cuadrantes.\nFiguras a partir de sus vértices: polígonos, simetrías y traslaciones.\nVectores y sus componentes: cuánto se avanza en x y cuánto en y.\nHundir la flota: decir el par en orden y razonar dónde disparar después de un tocado."
+ },
+ "gd_plano_why": {
+  "en": "With a pair of numbers every point of the plane is located: that is the idea of analytic geometry, which starts with Descartes' La Géométrie (1637); that is why the coordinates are called Cartesian.\nThe order of the pair matters: (3, 2) and (2, 3) are different points, and in Battleship a pair the wrong way round is a wasted shot, so it shows at once.\nIn all four quadrants, the sign gives the direction: to the left of the y axis, or below the x axis.",
+  "es": "Con un par de números, cada punto del plano queda situado: es la idea de la geometría analítica, que nace con La Géométrie de Descartes (1637); por eso las coordenadas se llaman cartesianas.\nEl orden del par importa: (3, 2) y (2, 3) son puntos distintos, y en Hundir la flota un par al revés es un disparo perdido, así que se nota enseguida.\nEn los cuatro cuadrantes, el signo dice la dirección: a la izquierda del eje y, o por debajo del eje x."
+ },
+ "gd_plano_how": {
+  "en": "«Points»: they call the coordinates of a point and it is tapped, or the other way round: a point goes on and they say where it is.\n«Hide the coordinates»: the points only with their letter, to ask where each one is.\n«Making a shape»: a polygon by its vertices, then moved by adding the same to every x.\n«As vectors»: each arrow with its components, from A to B and from B to C.\n«Battleship»: one to four teams, each calls a point in its turn; a hit shoots again. «Show the fleet» at the end.",
+  "es": "«Puntos»: que dicten las coordenadas de un punto y se toque, o al revés: se pone un punto y dicen dónde está.\n«Esconder las coordenadas»: los puntos solo con su letra, para preguntar dónde está cada uno.\n«Formando una figura»: un polígono por sus vértices, y después moverlo sumando lo mismo a todas las x.\n«Como vectores»: cada flecha con sus componentes, de A a B y de B a C.\n«Hundir la flota»: de uno a cuatro equipos, cada uno dice un punto en su turno; quien toca vuelve a disparar. «Enseñar la flota» al final."
+ },
+ "gd_plano_stages": {
+  "en": "primary|The first quadrant: placing points and playing Battleship.\nsecondary|All four quadrants, shapes, symmetries and translations, and vectors.\nadvanced|Vectors and their components, as a support for analytic geometry.",
+  "es": "primary|El primer cuadrante: situar puntos y jugar a Hundir la flota.\nsecondary|Los cuatro cuadrantes, figuras, simetrías y traslaciones, y vectores.\nadvanced|Vectores y sus componentes, como apoyo para la geometría analítica."
+ },
+ "gd_plano_scene": {
+  "en": "In Year 7, two teams play Battleship in all four quadrants. One shouts «minus three, two!» and points up and to the left; the teacher taps it: water. The other team, which already had a hit at (−3, 1), shoots at (−3, 0) and sinks the ship: in ten minutes they have said forty pairs, in order and with their signs.",
+  "es": "En primero de ESO, dos equipos juegan a Hundir la flota en los cuatro cuadrantes. Uno grita «¡menos tres, dos!» y señala hacia arriba a la izquierda; el profesor lo toca: agua. El otro equipo, que ya tenía un tocado en (−3, 1), dispara a (−3, 0) y hunde el barco: en diez minutos han dicho cuarenta pares, en orden y con su signo."
+ },
+ "gd_plano_sources": {
+  "en": "Descartes, R. (1637). La Géométrie. Appendix to the Discours de la méthode. Leiden: Ian Maire.",
+  "es": "Descartes, R. (1637). La Géométrie. Apéndice del Discours de la méthode. Leiden: Ian Maire."
  }
 }
