@@ -864,6 +864,27 @@ $string['app_gd_asi_why'] = 'A review of classroom management practices with emp
 $string['app_gd_asi_works'] = 'The class knowing what is expected at each moment.
 Quicker changes between activities.
 Fewer orders given aloud.';
+$string['app_gd_balanza_how'] = '«Compare»: they predict which way it will lean before the weight goes on.
+Without numbers (Early years), only cubes: which pan weighs more, and how many to add to make them equal.
+With numbers: several ways to balance 10 (5 + 5, 5 + 2 + 2 + 1…).
+«Equations»: a new one or one they write; they say what they would take off both pans before touching anything.
+Taking something off one pan only, on purpose: the scale tips and the equation becomes an inequality.
+«Open the boxes» at the end, to check the value of x.';
+$string['app_gd_balanza_scene'] = 'In Year 8, the teacher writes 3x + 1 = x + 9. A student wants to «move the 1 over and subtract». She takes a weight off one pan only and the scale tips; the class sees that it has to come off the other one too, and then a box from each side: «move it over» stops being a rule to learn by heart.';
+$string['app_gd_balanza_sources'] = 'Otten, M., Van den Heuvel-Panhuizen, M. and Veldhuis, M. (2019). The balance model for teaching linear equations: a systematic literature review. International Journal of STEM Education, 6, 30.|https://doi.org/10.1186/s40594-019-0183-2
+Vlassis, J. (2002). The balance model: Hindrance or support for the solving of linear equations with one unknown. Educational Studies in Mathematics, 49(3), 341–359.|https://doi.org/10.1023/A:1020229023965';
+$string['app_gd_balanza_stages'] = 'early|Comparing with cubes: more, less and the same.
+primary|The signs >, < and =, breaking numbers up and, at the end of the stage, simple equations such as x + 3 = 8.
+secondary|First-degree equations with the unknown on one side or on both (3x + 2 = x + 10).';
+$string['app_gd_balanza_what'] = 'A two-pan balance: it compares weights in Early years and Primary and, from Secondary, shows equations with boxes of an unknown weight.';
+$string['app_gd_balanza_why'] = 'In an equation, the equals sign says that both sides are worth the same; on a balance, that can be seen: take something off one pan and not the other, and it tips. That is why it is one of the most used models to teach how to solve equations.
+A review of 34 studies (Otten, Van den Heuvel-Panhuizen and Veldhuis, 2019) finds it widely used to support solving linear equations, but no clear pattern in its results: it is a more complex tool than it looks, and it is worth using with a purpose, not as a trick. Vlassis (2002) weighs up the arguments of those who defend it and those who reject it.
+It has a limit worth saying in class: there are no negative weights, so equations with negative numbers need another model.';
+$string['app_gd_balanza_works'] = 'Comparing amounts: more, less, the same, and the signs >, < and =.
+A sum as a weight: 5 weighs the same as 2 + 2 + 1.
+The equals sign as a balance between two sides, not as «the answer comes next».
+Solving first-degree equations doing the same on both sides: taking off and sharing out.
+Inequalities: what is seen when the scale tips (2x + 2 < 11).';
 $string['app_gd_base10_how'] = '«Build a number»: they make it with blocks and read it as the sum of its parts.
 With ten in one column, «Swap 10 for 1» groups them; «Break into 10» does the opposite.
 «Hide the number» and «What number is it?» to read it from the blocks alone.

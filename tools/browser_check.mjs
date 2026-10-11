@@ -467,7 +467,7 @@ const CHECKS = {
             const levels = t(`gd_${id}_stages`).split('\n').map((x) => x.split('|')[0]);
             if (!levels.every((m) => ['early', 'primary', 'secondary', 'advanced'].includes(m))) { bad.push(`${id}: levels ${levels.join(',')}`); }
         }
-        if (ids.length < 19) { bad.push(`only ${ids.length} guides`); }
+        if (ids.length < 20) { bad.push(`only ${ids.length} guides`); }
         return bad.length ? bad.join('; ') : '';
     },
     // Order: a wrong try sends cards back, then the right order wins.

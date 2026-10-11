@@ -566,5 +566,33 @@
  "gd_reloj_sources": {
   "en": "Real Decreto 157/2022, de 1 de marzo, por el que se establecen la ordenación y las enseñanzas mínimas de la Educación Primaria. BOE-A-2022-3296.|https://www.boe.es/buscar/act.php?id=BOE-A-2022-3296\nDepartment for Education (2013). National curriculum in England: mathematics programmes of study.|https://www.gov.uk/government/publications/national-curriculum-in-england-mathematics-programmes-of-study",
   "es": "Real Decreto 157/2022, de 1 de marzo, por el que se establecen la ordenación y las enseñanzas mínimas de la Educación Primaria. BOE-A-2022-3296.|https://www.boe.es/buscar/act.php?id=BOE-A-2022-3296\nDepartment for Education (2013). National curriculum in England: mathematics programmes of study.|https://www.gov.uk/government/publications/national-curriculum-in-england-mathematics-programmes-of-study"
+ },
+ "gd_balanza_what": {
+  "en": "A two-pan balance: it compares weights in Early years and Primary and, from Secondary, shows equations with boxes of an unknown weight.",
+  "es": "Una balanza de dos platos: compara pesos en Infantil y Primaria y, desde Secundaria, representa ecuaciones con cajas de peso desconocido."
+ },
+ "gd_balanza_works": {
+  "en": "Comparing amounts: more, less, the same, and the signs >, < and =.\nA sum as a weight: 5 weighs the same as 2 + 2 + 1.\nThe equals sign as a balance between two sides, not as «the answer comes next».\nSolving first-degree equations doing the same on both sides: taking off and sharing out.\nInequalities: what is seen when the scale tips (2x + 2 < 11).",
+  "es": "Comparar cantidades: más, menos, igual, y los signos >, < e =.\nLa suma como peso: 5 pesa lo mismo que 2 + 2 + 1.\nEl signo igual como equilibrio entre dos lados, no como «aquí va el resultado».\nResolver ecuaciones de primer grado haciendo lo mismo en los dos lados: quitar y repartir.\nLas desigualdades: lo que se ve cuando la balanza se inclina (2x + 2 < 11)."
+ },
+ "gd_balanza_why": {
+  "en": "In an equation, the equals sign says that both sides are worth the same; on a balance, that can be seen: take something off one pan and not the other, and it tips. That is why it is one of the most used models to teach how to solve equations.\nA review of 34 studies (Otten, Van den Heuvel-Panhuizen and Veldhuis, 2019) finds it widely used to support solving linear equations, but no clear pattern in its results: it is a more complex tool than it looks, and it is worth using with a purpose, not as a trick. Vlassis (2002) weighs up the arguments of those who defend it and those who reject it.\nIt has a limit worth saying in class: there are no negative weights, so equations with negative numbers need another model.",
+  "es": "En una ecuación, el igual dice que los dos lados valen lo mismo; en la balanza, eso se ve: si se quita algo de un plato y no del otro, se inclina. Por eso es uno de los modelos más usados para enseñar a resolver ecuaciones.\nUna revisión de 34 estudios (Otten, Van den Heuvel-Panhuizen y Veldhuis, 2019) lo encuentra muy extendido como apoyo para resolver ecuaciones, pero sin un patrón claro en sus resultados: es una herramienta más compleja de lo que parece, y conviene usarla con intención, no como truco. Vlassis (2002) analiza los argumentos de quienes la defienden y de quienes la rechazan.\nTiene un límite que conviene decir en clase: no hay pesas negativas, así que las ecuaciones con números negativos necesitan otro modelo."
+ },
+ "gd_balanza_how": {
+  "en": "«Compare»: they predict which way it will lean before the weight goes on.\nWithout numbers (Early years), only cubes: which pan weighs more, and how many to add to make them equal.\nWith numbers: several ways to balance 10 (5 + 5, 5 + 2 + 2 + 1…).\n«Equations»: a new one or one they write; they say what they would take off both pans before touching anything.\nTaking something off one pan only, on purpose: the scale tips and the equation becomes an inequality.\n«Open the boxes» at the end, to check the value of x.",
+  "es": "«Comparar»: que digan hacia dónde se inclinará antes de poner la pesa.\nSin números (Infantil), solo cubos: qué plato pesa más y cuántos hay que añadir para igualarlos.\nCon números: varias formas de equilibrar 10 (5 + 5, 5 + 2 + 2 + 1…).\n«Ecuaciones»: una nueva o la que escriban; que digan qué quitarían de los dos platos antes de tocar nada.\nQuitar algo de un solo plato, a propósito: la balanza se inclina y la ecuación pasa a ser una desigualdad.\n«Abrir las cajas» al final, para comprobar el valor de x."
+ },
+ "gd_balanza_stages": {
+  "en": "early|Comparing with cubes: more, less and the same.\nprimary|The signs >, < and =, breaking numbers up and, at the end of the stage, simple equations such as x + 3 = 8.\nsecondary|First-degree equations with the unknown on one side or on both (3x + 2 = x + 10).",
+  "es": "early|Comparar con cubos: más, menos e igual.\nprimary|Los signos >, < e =, descomponer números y, al final de la etapa, ecuaciones sencillas como x + 3 = 8.\nsecondary|Ecuaciones de primer grado con la incógnita en un lado o en los dos (3x + 2 = x + 10)."
+ },
+ "gd_balanza_scene": {
+  "en": "In Year 8, the teacher writes 3x + 1 = x + 9. A student wants to «move the 1 over and subtract». She takes a weight off one pan only and the scale tips; the class sees that it has to come off the other one too, and then a box from each side: «move it over» stops being a rule to learn by heart.",
+  "es": "En segundo de ESO, la profesora escribe 3x + 1 = x + 9. Una alumna quiere «pasar el 1 restando». Quita una pesa de un solo plato y la balanza se inclina; la clase ve que hay que quitarla también del otro, y después una caja de cada lado: «pasar restando» deja de ser una regla para aprender de memoria."
+ },
+ "gd_balanza_sources": {
+  "en": "Otten, M., Van den Heuvel-Panhuizen, M. and Veldhuis, M. (2019). The balance model for teaching linear equations: a systematic literature review. International Journal of STEM Education, 6, 30.|https://doi.org/10.1186/s40594-019-0183-2\nVlassis, J. (2002). The balance model: Hindrance or support for the solving of linear equations with one unknown. Educational Studies in Mathematics, 49(3), 341–359.|https://doi.org/10.1023/A:1020229023965",
+  "es": "Otten, M., Van den Heuvel-Panhuizen, M. y Veldhuis, M. (2019). The balance model for teaching linear equations: a systematic literature review. International Journal of STEM Education, 6, 30.|https://doi.org/10.1186/s40594-019-0183-2\nVlassis, J. (2002). The balance model: Hindrance or support for the solving of linear equations with one unknown. Educational Studies in Mathematics, 49(3), 341–359.|https://doi.org/10.1023/A:1020229023965"
  }
 }

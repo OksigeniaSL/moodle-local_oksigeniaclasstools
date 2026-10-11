@@ -866,6 +866,27 @@ $string['app_gd_asi_why'] = 'Una revisión de prácticas de gestión del aula co
 $string['app_gd_asi_works'] = 'Que la clase sepa qué se espera en cada momento.
 Cambios más rápidos entre actividades.
 Menos órdenes de viva voz.';
+$string['app_gd_balanza_how'] = '«Comparar»: que digan hacia dónde se inclinará antes de poner la pesa.
+Sin números (Infantil), solo cubos: qué plato pesa más y cuántos hay que añadir para igualarlos.
+Con números: varias formas de equilibrar 10 (5 + 5, 5 + 2 + 2 + 1…).
+«Ecuaciones»: una nueva o la que escriban; que digan qué quitarían de los dos platos antes de tocar nada.
+Quitar algo de un solo plato, a propósito: la balanza se inclina y la ecuación pasa a ser una desigualdad.
+«Abrir las cajas» al final, para comprobar el valor de x.';
+$string['app_gd_balanza_scene'] = 'En segundo de ESO, la profesora escribe 3x + 1 = x + 9. Una alumna quiere «pasar el 1 restando». Quita una pesa de un solo plato y la balanza se inclina; la clase ve que hay que quitarla también del otro, y después una caja de cada lado: «pasar restando» deja de ser una regla para aprender de memoria.';
+$string['app_gd_balanza_sources'] = 'Otten, M., Van den Heuvel-Panhuizen, M. y Veldhuis, M. (2019). The balance model for teaching linear equations: a systematic literature review. International Journal of STEM Education, 6, 30.|https://doi.org/10.1186/s40594-019-0183-2
+Vlassis, J. (2002). The balance model: Hindrance or support for the solving of linear equations with one unknown. Educational Studies in Mathematics, 49(3), 341–359.|https://doi.org/10.1023/A:1020229023965';
+$string['app_gd_balanza_stages'] = 'early|Comparar con cubos: más, menos e igual.
+primary|Los signos >, < e =, descomponer números y, al final de la etapa, ecuaciones sencillas como x + 3 = 8.
+secondary|Ecuaciones de primer grado con la incógnita en un lado o en los dos (3x + 2 = x + 10).';
+$string['app_gd_balanza_what'] = 'Una balanza de dos platos: compara pesos en Infantil y Primaria y, desde Secundaria, representa ecuaciones con cajas de peso desconocido.';
+$string['app_gd_balanza_why'] = 'En una ecuación, el igual dice que los dos lados valen lo mismo; en la balanza, eso se ve: si se quita algo de un plato y no del otro, se inclina. Por eso es uno de los modelos más usados para enseñar a resolver ecuaciones.
+Una revisión de 34 estudios (Otten, Van den Heuvel-Panhuizen y Veldhuis, 2019) lo encuentra muy extendido como apoyo para resolver ecuaciones, pero sin un patrón claro en sus resultados: es una herramienta más compleja de lo que parece, y conviene usarla con intención, no como truco. Vlassis (2002) analiza los argumentos de quienes la defienden y de quienes la rechazan.
+Tiene un límite que conviene decir en clase: no hay pesas negativas, así que las ecuaciones con números negativos necesitan otro modelo.';
+$string['app_gd_balanza_works'] = 'Comparar cantidades: más, menos, igual, y los signos >, < e =.
+La suma como peso: 5 pesa lo mismo que 2 + 2 + 1.
+El signo igual como equilibrio entre dos lados, no como «aquí va el resultado».
+Resolver ecuaciones de primer grado haciendo lo mismo en los dos lados: quitar y repartir.
+Las desigualdades: lo que se ve cuando la balanza se inclina (2x + 2 < 11).';
 $string['app_gd_base10_how'] = '«Construir un número»: que lo formen con bloques y lo lean como suma de sus partes.
 Con diez en una columna, «Cambiar 10 por 1» los agrupa; «Romper en 10» hace lo contrario.
 «Esconder el número» y «¿Qué número es?» para leerlo solo con los bloques.

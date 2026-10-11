@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.29.0 (2026-10-11)
+
+- **Balance scale**, a new material. To compare, in Early years (plain cubes) and Primary (weights of 1, 2, 5 and 10):
+  the beam leans to the heavier pan and the sign says it. For equations, from Secondary: boxes of weight x and ones in
+  balance, written as an equation («2x + 3 = 11»). What comes off one pan only tips the scale; taking the same off both
+  pans, or sharing both out, leaves x on its own. A new equation, or one written by the teacher, with a whole solution
+  above zero. With its teacher's guide.
+- The upgrade shows the balance scale on sites that had already chosen which materials to show.
+
 ## 0.28.0 (2026-10-11)
 
 - **Generate with the AI of the site** in «My exercises»: from Moodle 4.5, when the site has an AI provider that
