@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.32.0 (2026-10-11)
+
+- **Screen mode by category**: in the settings, a choice for each category of the site, so that its courses start in
+  Early years, Primary, Secondary or Advanced. A subcategory without one takes the one of the category above, and a
+  category without one the mode of the site. The teacher still chooses another in each course.
+- **Teacher's guide**: where a tool has no guide of its own, the sheet shows the index of all the guides, by group, a
+  tap away; each guide ends with a way back to the index.
+
 ## 0.31.0 (2026-10-11)
 
 - **Simon variants**: the sequence repeated backwards; four, six or nine pads; and besides colours, pads with arrows
