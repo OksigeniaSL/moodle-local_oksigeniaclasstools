@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.25.0 (2026-10-11)
+
+- **Teacher's guide**: a button in the top bar opens a sheet with the guide of what is on screen: what it is for,
+  what it works on, why (with its sources), how to take it to class, what it gives at each school level and a scene
+  from a class. Nineteen guides: «Whose turn?», groups, live sessions, the noise light, «How we work», the clock, the
+  rosco, Simon, hangman, word, pairs, the secret code, the rods, the tangram, the number line, the fraction wall, the
+  geoboard, the base-ten blocks and the score. Their texts are language strings, so they can be translated.
+
 ## 0.24.0 (2026-10-11)
 
 - **By school level**: in each screen mode the Games and Materials bars show first what suits that level; the rest
