@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.28.0 (2026-10-11)
+
+- **Generate with the AI of the site** in «My exercises»: from Moodle 4.5, when the site has an AI provider that
+  generates text (Moodle 5.3 brings Anthropic, Gemini, OpenAI and others), teachers get «Generate» next to the prompt.
+  The plugin builds the prompt from the game, the topic, the level and how many, Moodle shows its AI policy before the
+  first use and keeps a record of each request, and the exercises are added to the box to check before saving.
+  Administrators can turn it off in the plugin settings, and from Moodle 5.1 each course can turn its AI tools off.
+  New capability `local/oksigeniaclasstools:generate`, for teachers.
+
 ## 0.27.0 (2026-10-11)
 
 - **Dice, many throws**: 10, 100 or 1000 throws at once, with a chart of how often each number (or sum) came out next
