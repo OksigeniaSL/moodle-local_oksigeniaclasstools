@@ -24,6 +24,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['ai'] = 'Exercises with the AI of the site';
+$string['ai_desc'] = 'If the site has an AI provider that generates text (from Moodle 4.5), teachers can ask it for exercises for Order, Sort, Spot the mistakes and Who am I? from «My exercises». The plugin builds the prompt from the game, the topic and the level; Moodle shows its AI policy before the first use and keeps a record of each request. The exercises are added to the box, for the teacher to check before saving.';
+$string['ai_unavailable'] = 'The AI of the site is not available in this course.';
 $string['app_ah_builtin_advanced'] = 'At random: upper secondary and university words';
 $string['app_ah_builtin_early'] = 'At random: early years words';
 $string['app_ah_builtin_primary'] = 'At random: primary school words';
@@ -278,15 +281,21 @@ $string['app_er_name'] = 'Spot the mistakes';
 $string['app_er_show'] = 'Show the rest';
 $string['app_er_tap'] = 'Tap the mistakes';
 $string['app_ex_ai'] = 'Prompt for your AI';
+$string['app_ex_ai_accept'] = 'Accept and go on';
 $string['app_ex_ai_any'] = 'a topic of your choice';
 $string['app_ex_ai_copied'] = 'Copied: paste it in your AI.';
 $string['app_ex_ai_copy'] = 'Copy';
 $string['app_ex_ai_count'] = 'How many';
+$string['app_ex_ai_done'] = '{$a} exercises added below: check them before saving.';
+$string['app_ex_ai_error'] = 'The AI of the site could not answer. {$a}';
 $string['app_ex_ai_for_advanced'] = 'students of 16 and over (upper secondary or higher)';
 $string['app_ex_ai_for_primary'] = 'Primary pupils (6 to 12 years old)';
 $string['app_ex_ai_for_secondary'] = 'Secondary students (12 to 16 years old)';
+$string['app_ex_ai_go'] = 'Generate';
 $string['app_ex_ai_hint'] = 'Write the topic, copy the text, paste it in your AI and paste what it answers in the box below.';
+$string['app_ex_ai_hint_site'] = 'Write the topic and generate them here with the AI of the site, or copy the text for an AI of your own.';
 $string['app_ex_ai_level'] = 'Level';
+$string['app_ex_ai_none'] = 'The AI did not answer with exercises in the format. Try again or change the topic.';
 $string['app_ex_ai_prompt'] = 'Write {$a->n} exercises for the game «{$a->game}» for {$a->level}, on «{$a->topic}».
 
 Format (plain text, nothing else): {$a->rules} Separate one exercise from the next with a blank line, and start each one with its title on a line beginning with #.
@@ -296,6 +305,7 @@ Example:
 
 Answer only with the exercises, in the language of this text, without explanations or Markdown. Check that everything you write is correct.';
 $string['app_ex_ai_topic'] = 'Topic';
+$string['app_ex_ai_wait'] = 'The AI is writing them; it can take a minute.';
 $string['app_ex_cancel'] = 'Cancel';
 $string['app_ex_check'] = 'Check';
 $string['app_ex_count'] = '{$a} exercises ready';
@@ -2202,8 +2212,10 @@ $string['namestyle_full'] = 'Full name';
 $string['namestyle_initials'] = 'First name and the initials of the surnames';
 $string['navlabel'] = 'Class tools';
 $string['nocourses'] = 'You do not teach in any course. You can still use the tools and paste your own lists.';
+$string['oksigeniaclasstools:generate'] = 'Ask the AI of the site for exercises for the games of the class tools';
 $string['oksigeniaclasstools:use'] = 'Use the classroom tools with the course students';
 $string['pluginname'] = 'Class tools (Oksigenia Classtools)';
+$string['privacy:metadata:core_ai'] = 'Exercises asked from the AI of the site go through the AI subsystem of Moodle, which keeps the request and its answer.';
 $string['privacy:metadata:core_files'] = 'The pictures of the quiz questions are kept in the course, for the teacher who put them.';
 $string['privacy:metadata:core_message'] = 'Students get a notification when a teacher shares a drawing board with their class.';
 $string['privacy:metadata:live'] = 'Live sessions opened by teachers on the board.';

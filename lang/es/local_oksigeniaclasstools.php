@@ -24,6 +24,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['ai'] = 'Ejercicios con la IA del sitio';
+$string['ai_desc'] = 'Si el sitio tiene un proveedor de IA que genera texto (desde Moodle 4.5), los profesores pueden pedirle ejercicios para Ordenar, Clasificar, Caza de errores y ¿Quién soy? desde «Mis ejercicios». El plugin monta el prompt con el juego, el tema y la etapa; Moodle muestra su política de IA antes del primer uso y guarda un registro de cada petición. Los ejercicios se añaden al cuadro para que el profesor los revise antes de guardar.';
+$string['ai_unavailable'] = 'La IA del sitio no está disponible en este curso.';
 $string['app_ah_builtin_advanced'] = 'Al azar: palabras de Bachillerato y universidad';
 $string['app_ah_builtin_early'] = 'Al azar: palabras de Infantil';
 $string['app_ah_builtin_primary'] = 'Al azar: palabras de Primaria';
@@ -278,15 +281,21 @@ $string['app_er_name'] = 'Caza de errores';
 $string['app_er_show'] = 'Ver los que faltan';
 $string['app_er_tap'] = 'Toca los errores';
 $string['app_ex_ai'] = 'Prompt para tu IA';
+$string['app_ex_ai_accept'] = 'Aceptar y seguir';
 $string['app_ex_ai_any'] = 'un tema que elijas tú';
 $string['app_ex_ai_copied'] = 'Copiado: pégalo en tu IA.';
 $string['app_ex_ai_copy'] = 'Copiar';
 $string['app_ex_ai_count'] = 'Cuántos';
+$string['app_ex_ai_done'] = 'Añadidos {$a} ejercicios abajo: revísalos antes de guardar.';
+$string['app_ex_ai_error'] = 'La IA del aula virtual no ha podido contestar. {$a}';
 $string['app_ex_ai_for_advanced'] = 'alumnos de Bachillerato o etapas superiores (desde los 16 años)';
 $string['app_ex_ai_for_primary'] = 'alumnos de Primaria (de 6 a 12 años)';
 $string['app_ex_ai_for_secondary'] = 'alumnos de Secundaria (de 12 a 16 años)';
+$string['app_ex_ai_go'] = 'Generar';
 $string['app_ex_ai_hint'] = 'Escribe el tema, copia el texto, pégalo en tu IA y pega lo que conteste en el cuadro de abajo.';
+$string['app_ex_ai_hint_site'] = 'Escribe el tema y genéralos aquí con la IA del aula virtual, o copia el texto para tu propia IA.';
 $string['app_ex_ai_level'] = 'Etapa';
+$string['app_ex_ai_none'] = 'La IA no ha contestado con ejercicios en el formato. Prueba otra vez o cambia el tema.';
 $string['app_ex_ai_prompt'] = 'Escribe {$a->n} ejercicios del juego «{$a->game}» para {$a->level}, sobre «{$a->topic}».
 
 Formato (texto plano, sin nada más): {$a->rules} Separa un ejercicio de otro con una línea en blanco, y empieza cada uno con su título en una línea que comience por #.
@@ -296,6 +305,7 @@ Ejemplo:
 
 Contesta solo con los ejercicios, en el idioma de este texto, sin explicaciones ni formato Markdown. Comprueba que todo lo que escribas sea correcto.';
 $string['app_ex_ai_topic'] = 'Tema';
+$string['app_ex_ai_wait'] = 'La IA los está escribiendo; puede tardar un minuto.';
 $string['app_ex_cancel'] = 'Cancelar';
 $string['app_ex_check'] = 'Comprobar';
 $string['app_ex_count'] = '{$a} ejercicios listos';
@@ -2204,8 +2214,10 @@ $string['namestyle_full'] = 'Nombre completo';
 $string['namestyle_initials'] = 'Nombre e iniciales de los apellidos';
 $string['navlabel'] = 'Herramientas de clase';
 $string['nocourses'] = 'No das clase en ningún curso. Puedes usar las herramientas igualmente y pegar tus listas.';
+$string['oksigeniaclasstools:generate'] = 'Pedir ejercicios a la IA del sitio para los juegos de las herramientas de clase';
 $string['oksigeniaclasstools:use'] = 'Usar las herramientas de clase con los alumnos del curso';
 $string['pluginname'] = 'Herramientas de clase (Oksigenia Classtools)';
+$string['privacy:metadata:core_ai'] = 'Los ejercicios que se piden a la IA del sitio pasan por el subsistema de IA de Moodle, que guarda la petición y su respuesta.';
 $string['privacy:metadata:core_files'] = 'Las imágenes de las preguntas del concurso se guardan en el curso, para el profesor que las puso.';
 $string['privacy:metadata:core_message'] = 'Los alumnos reciben un aviso cuando un profesor comparte una pizarra con su clase.';
 $string['privacy:metadata:live'] = 'Sesiones en vivo que abren los profesores en la pizarra.';

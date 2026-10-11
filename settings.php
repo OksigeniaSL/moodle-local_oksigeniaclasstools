@@ -111,5 +111,14 @@ if ($hassiteconfig) {
             get_string('livenotice_desc', 'local_oksigeniaclasstools'),
             1
         ));
+        // Exercises written by the AI of the site, from Moodle 4.5.
+        if (class_exists('\\core_ai\\manager')) {
+            $settings->add(new admin_setting_configcheckbox(
+                'local_oksigeniaclasstools/ai',
+                get_string('ai', 'local_oksigeniaclasstools'),
+                get_string('ai_desc', 'local_oksigeniaclasstools'),
+                1
+            ));
+        }
     }
 }

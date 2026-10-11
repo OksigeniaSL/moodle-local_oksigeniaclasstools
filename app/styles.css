@@ -1957,3 +1957,4 @@ dialog.ct-sc-dialogo { width: min(40rem, 94vw); }
 .ct-ex-ai summary { margin-bottom: .3rem; color: var(--azul); font-weight: 900; cursor: pointer; }
 .ct-ex-ai-fields { display: grid; grid-template-columns: 2fr 1fr .7fr; gap: .5rem; }
 .ct-ex-ai textarea { width: 100%; margin-top: .4rem; color: var(--tinta-3); font-size: .85rem; }
+.ct-ex-ai-policy { margin-top: .6rem; padding: .6rem .8rem; border: 2px solid var(--azul-suave); border-radius: 12px; background: var(--superficie); font-size: .9rem; }

@@ -15,7 +15,8 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * Capabilities: whoever teaches a course can open the tools with its students (names and photos).
+ * Capabilities: whoever teaches a course can open the tools with its students (names and photos), and ask the AI
+ * of the site for exercises.
  *
  * @package    local_oksigeniaclasstools
  * @copyright  2026 Oksigenia <dev@oksigenia.cc>
@@ -27,6 +28,16 @@ defined('MOODLE_INTERNAL') || die();
 $capabilities = [
     'local/oksigeniaclasstools:use' => [
         'riskbitmask' => RISK_PERSONAL,
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_COURSE,
+        'archetypes' => [
+            'editingteacher' => CAP_ALLOW,
+            'teacher' => CAP_ALLOW,
+            'manager' => CAP_ALLOW,
+        ],
+    ],
+    // Asking the AI of the site for exercises (Moodle 4.5 and later, when the site has a provider).
+    'local/oksigeniaclasstools:generate' => [
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
         'archetypes' => [

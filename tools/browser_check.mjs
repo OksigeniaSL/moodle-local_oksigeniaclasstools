@@ -19,6 +19,7 @@ const APP = join(dirname(fileURLToPath(import.meta.url)), '..', 'app');
 const FAKE = `
 window.CLASSTOOLS = { lists: [{ id: 1, name: 'Class 1', key: 'c1', students: Array.from({ length: 8 }, (_, i) => ({ id: i + 1, n: 'Student ' + (i + 1) })) }],
     courseid: 1, mode: 'teacher', sesskey: 'x', days: {}, state: {}, liveurl: 'fake://live', glossaryurl: 'fake://glossary', bankurl: 'fake://bank',
+    aiurl: 'fake://ai',
     me: { id: 99, name: 'Teacher' } };
 window.FAKE = { calls: [], polls: 0 };
 const BANK_PAIRS = [['frog', 'amphibian'], ['cat', 'mammal'], ['bee', 'insect']];
@@ -44,6 +45,13 @@ window.shot = (name) => new Promise((done) => { if (!window.checkShot) { done();
                 : { pairs: BANK_PAIRS, skipped: 0 });
         }
         // A glossary of the course, as glossary.php gives it.
+        // The AI of the site, as ai.php gives it: the policy until it is accepted, then two exercises in a code fence
+        // (the server takes the fences away; here they never come).
+        if (String(url).startsWith('fake://ai')) {
+            if (a === 'accept') { FAKE.aiAccepted = true; return json({ ok: true }); }
+            if (!FAKE.aiAccepted) { return json({ ok: false, policy: '<p>The AI policy of the site.</p>' }); }
+            return json({ ok: true, text: '# Volcano\\n= Volcano\\nI have a crater.\\nI erupt lava.\\n\\n# Island\\n= Island\\nI have water all around.\\nI am land.' });
+        }
         if (String(url).startsWith('fake://glossary')) {
             return json(a === 'list' ? { ok: true, glossaries: [{ id: 5, name: 'Science words', count: 3 }] }
                 : { ok: true, words: GLOSSARY });
@@ -516,6 +524,22 @@ const CHECKS = {
         const copied = document.querySelector('#ex-ai-copied').textContent;
         document.querySelector('.ct-ex-editor').close();
         if (!copied) { return 'no message after copying'; }
+        // Generate with the AI of the site: the policy first, then the exercises in place of the examples.
+        document.querySelector('#quiensoy-edit').click();
+        await sleep(200);
+        document.querySelector('#ex-ed-ai').open = true;
+        document.querySelector('#ex-ai-go').click();
+        await sleep(300);
+        if (document.querySelector('#ex-ai-policy').hidden) { return 'no AI policy before the first use'; }
+        document.querySelector('#ex-ai-accept').click();
+        await sleep(400);
+        const box = document.querySelector('#ex-ed-text').value;
+        if (!/^# Volcano/.test(box) || !box.includes('# Island')) { return `the exercises of the AI are not in the box: «${box.slice(0, 80)}»`; }
+        if (!/2/.test(document.querySelector('#ex-ai-copied').textContent)) { return `no count of what came: «${document.querySelector('#ex-ai-copied').textContent}»`; }
+        const sent = FAKE.calls.filter((c) => c.action === 'generate').pop();
+        if (!sent || sent.type !== 'whoami' || sent.topic !== 'Volcanoes' || sent.n !== '5') { return `the request was ${JSON.stringify(sent)}`; }
+        await window.shot('exercises-generate');
+        document.querySelector('.ct-ex-editor').close();
         // The examples follow the level of the board.
         const titles = () => [...document.querySelectorAll('#quiensoy-ex option')].map((o) => o.textContent).join(' ');
         const setMode = async (m) => {

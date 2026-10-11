@@ -790,5 +790,33 @@
  "ex_ai_for_advanced": {
   "en": "students of 16 and over (upper secondary or higher)",
   "es": "alumnos de Bachillerato o etapas superiores (desde los 16 años)"
+ },
+ "ex_ai_hint_site": {
+  "en": "Write the topic and generate them here with the AI of the site, or copy the text for an AI of your own.",
+  "es": "Escribe el tema y genéralos aquí con la IA del aula virtual, o copia el texto para tu propia IA."
+ },
+ "ex_ai_go": {
+  "en": "Generate",
+  "es": "Generar"
+ },
+ "ex_ai_wait": {
+  "en": "The AI is writing them; it can take a minute.",
+  "es": "La IA los está escribiendo; puede tardar un minuto."
+ },
+ "ex_ai_done": {
+  "en": "{$a} exercises added below: check them before saving.",
+  "es": "Añadidos {$a} ejercicios abajo: revísalos antes de guardar."
+ },
+ "ex_ai_none": {
+  "en": "The AI did not answer with exercises in the format. Try again or change the topic.",
+  "es": "La IA no ha contestado con ejercicios en el formato. Prueba otra vez o cambia el tema."
+ },
+ "ex_ai_error": {
+  "en": "The AI of the site could not answer. {$a}",
+  "es": "La IA del aula virtual no ha podido contestar. {$a}"
+ },
+ "ex_ai_accept": {
+  "en": "Accept and go on",
+  "es": "Aceptar y seguir"
  }
 }

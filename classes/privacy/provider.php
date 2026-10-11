@@ -76,6 +76,9 @@ class provider implements
         $collection->add_subsystem_link('core_message', [], 'privacy:metadata:core_message');
         // The pictures of the quiz questions, kept for the teacher who put them.
         $collection->add_subsystem_link('core_files', [], 'privacy:metadata:core_files');
+        if (class_exists('\\core_ai\\manager')) {
+            $collection->add_subsystem_link('core_ai', [], 'privacy:metadata:core_ai');
+        }
         return $collection;
     }
 

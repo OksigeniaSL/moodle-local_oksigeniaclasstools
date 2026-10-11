@@ -335,6 +335,9 @@ function local_oksigeniaclasstools_data(stdClass $course, context_course $contex
         'bankurl' => (new moodle_url('/local/oksigeniaclasstools/quizbank.php'))->out(false),
         // Words from the glossaries of the course for the word games (concept and a clue from its definition).
         'glossaryurl' => (new moodle_url('/local/oksigeniaclasstools/glossary.php'))->out(false),
+        // The AI of the site writing exercises, when there is one and the teacher can use it.
+        'aiurl' => \local_oksigeniaclasstools\local\ai::available($context)
+            ? (new moodle_url('/local/oksigeniaclasstools/ai.php'))->out(false) : null,
         // The pictures of the quiz questions: where they are sent, and where the teacher's are served from.
         'quizimgurl' => (new moodle_url('/local/oksigeniaclasstools/quizimage.php'))->out(false),
         'quizimg' => \local_oksigeniaclasstools\local\quizimages::base($context, (int) $USER->id),
