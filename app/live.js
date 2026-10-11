@@ -108,7 +108,11 @@
         $('#lv-start').hidden = hands;
         $('#lv-n').textContent = teams;
         if (S) { return; }
-        if (hands) { paintHands(); } else if (kind === 'quiz' && window.ClasstoolsQuiz) { window.ClasstoolsQuiz.setup(stage); } else {
+        if (hands) { paintHands(); } else if (kind === 'quiz' && window.ClasstoolsQuiz) { window.ClasstoolsQuiz.setup(stage); } else if (kind === 'remote' && window.ClasstoolsRemote && window.ClasstoolsRemote.show) {
+            // The fixed remote, without a session; a session with its code is still there, in «Open the session».
+            stage.innerHTML = '<div class="lv-centro" id="lv-rm"></div>';
+            window.ClasstoolsRemote.show(stage.querySelector('#lv-rm'));
+        } else {
             stage.innerHTML = `<div class="vacio">${core.icon(kind === 'remote' ? 'mando' : 'mano')}<p>${escape(t('lv_intro_' + kind))}</p></div>`;
         }
     };
@@ -157,6 +161,8 @@
     });
     $('#lv-custom').addEventListener('input', () => { save('envivo-propias', $('#lv-custom').value); hd.counts = {}; keepHands(); if (kind === 'hands' && !S) { paintHandBars(); } });
     $('#lv-kind').addEventListener('click', (e) => { const b = e.target.closest('[data-v]'); if (b) { kind = b.dataset.v; save('envivo-tipo', kind); paintSetup(); } });
+    // The fixed remote comes after this file: its panel, once it is there.
+    document.addEventListener('classtools:remote', () => { if (!S && kind === 'remote') { paintSetup(); } });
     $('#lv-identity').addEventListener('click', (e) => { const b = e.target.closest('[data-v]'); if (b) { identity = b.dataset.v; save('envivo-entrada', identity); paintSetup(); } });
     $('#lv-vote').addEventListener('change', () => { save('envivo-voto', $('#lv-vote').value); hd.counts = {}; keepHands(); paintSetup(); });
     $('#lv-max').value = String([1, 2, 3].includes(Number(load('ideas-max', 1))) ? Number(load('ideas-max', 1)) : 1);
@@ -417,23 +423,12 @@
         }
     };
 
-    // The remote: whether the phone is in, and what it asked for last.
-    const RUN = {
-        tm_toggle: () => click('#tm-marcha'),
-        tm_reset: () => click('#tm-reiniciar'),
-        tm_plus: () => click('#tm-mas1'),
-        pick: () => { core.show('quien'); click('#q-elegir'); },
-        tab_next: () => step(1),
-        tab_prev: () => step(-1),
-        present: () => click(document.documentElement.classList.contains('presentando') ? '#b-salir-presentar' : '#b-presentar'),
-    };
-    const click = (sel) => { const b = document.querySelector(sel); if (b && !b.disabled && !b.hidden) { b.click(); } };
-    const step = (d) => { const tabs = core.tabs(), i = tabs.indexOf(core.current()); core.show(tabs[(i + d + tabs.length) % tabs.length]); };
+    // The remote: whether the phone is in, and what it asked for last (each order does what remote.js says).
     const runCommands = (v) => {
         (v.cmds || []).forEach((c) => {
             if (c.seq <= seq) { return; }
             seq = c.seq;
-            if (RUN[c.cmd]) { try { RUN[c.cmd](); } catch (e) { /* a tool that is not there */ } }
+            if (window.ClasstoolsRemote) { window.ClasstoolsRemote.run(c.cmd); }
         });
         seq = Math.max(seq, v.seq || 0);
     };

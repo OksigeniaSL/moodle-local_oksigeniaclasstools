@@ -1862,5 +1862,97 @@
  "iv_help": {
   "en": "Write it, or draw one at random. A tap on an end opens or closes it: a filled end is in, a hollow one is not.",
   "es": "Escríbelo o saca uno al azar. Un toque en un extremo lo abre o lo cierra: el extremo relleno entra y el hueco no."
+ },
+ "rm_title": {
+  "en": "Fixed remote",
+  "es": "Mando fijo"
+ },
+ "rm_off_title": {
+  "en": "This remote is not on",
+  "es": "Este mando no está encendido"
+ },
+ "rm_off_text": {
+  "en": "It has been turned off, or its address has changed. On the board, in «Live» and «Remote», there is the address of now.",
+  "es": "Se ha apagado o su dirección ha cambiado. En la pizarra, en «En vivo» y «Mando», está la dirección de ahora."
+ },
+ "rm_cmd_turn": {
+  "en": "Pick someone here",
+  "es": "Elegir a alguien aquí"
+ },
+ "rm_cmd_next": {
+  "en": "Next question",
+  "es": "Siguiente pregunta"
+ },
+ "rm_no_board_title": {
+  "en": "No board is open",
+  "es": "No hay ninguna pizarra abierta"
+ },
+ "rm_no_board_text": {
+  "en": "Open the board on the computer, in a course: it shows up here by itself.",
+  "es": "Abre la pizarra en el ordenador, en un curso: aparece aquí sola."
+ },
+ "rm_which": {
+  "en": "Which board",
+  "es": "Qué pizarra"
+ },
+ "rm_on_board": {
+  "en": "On the board: {$a}",
+  "es": "En la pizarra: {$a}"
+ },
+ "rm_tools": {
+  "en": "Go to a tool",
+  "es": "Ir a una herramienta"
+ },
+ "rm_closed": {
+  "en": "That board is not open any more.",
+  "es": "Esa pizarra ya no está abierta."
+ },
+ "rm_intro": {
+  "en": "An address for your phone that does not change and does not ask you to log in: open it, for instance, from the home screen of the phone, and it drives the board you have open.",
+  "es": "Una dirección para tu móvil que no cambia y no pide entrar en el aula virtual: ábrela, por ejemplo, desde la pantalla de inicio del móvil, y maneja la pizarra que tengas abierta."
+ },
+ "rm_turn_on": {
+  "en": "Turn the fixed remote on",
+  "es": "Encender el mando fijo"
+ },
+ "rm_or_session": {
+  "en": "There is also the remote with a code («Open the session»), which asks you to log in on the phone.",
+  "es": "También está el mando con código («Abrir la sesión»), que pide entrar con tu usuario en el móvil."
+ },
+ "rm_phone_in": {
+  "en": "phone connected",
+  "es": "móvil conectado"
+ },
+ "rm_phone_waiting": {
+  "en": "waiting for the phone",
+  "es": "esperando al móvil"
+ },
+ "rm_how": {
+  "en": "Scan the code with your phone and keep it on its home screen: the address is always the same.",
+  "es": "Escanea el código con el móvil y guárdalo en su pantalla de inicio: la dirección es siempre la misma."
+ },
+ "rm_copy": {
+  "en": "Copy the address",
+  "es": "Copiar la dirección"
+ },
+ "rm_copied": {
+  "en": "Address copied.",
+  "es": "Dirección copiada."
+ },
+ "rm_rotate": {
+  "en": "Change the address",
+  "es": "Cambiar la dirección"
+ },
+ "rm_rotate_sure": {
+  "en": "The old one will stop working. Tap again",
+  "es": "La anterior dejará de valer. Pulsa otra vez"
+ },
+ "rm_turn_off": {
+  "en": "Turn off",
+  "es": "Apagar"
+ },
+ "rm_warning": {
+  "en": "Whoever has this address can drive your board while it is open, although they see nothing of the students. If you have shared it by mistake, change it.",
+  "es": "Quien tenga esta dirección puede manejar tu pizarra mientras esté abierta, aunque no ve nada de los alumnos. Si la has compartido sin querer, cámbiala."
  }
 }

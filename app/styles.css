@@ -2052,3 +2052,9 @@ dialog.ct-sc-dialogo { width: min(40rem, 94vw); }
 .ct-guia-lista { display: flex; flex-wrap: wrap; gap: .4rem; }
 .ct-guia-pie { margin: 1rem 0 .5rem; text-align: center; }
 .ct-guia h2:focus { outline: none; }
+/* The fixed remote, in «Live»: its QR and its address. */
+.ct-rm { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 1.5rem; max-width: 52rem; }
+.ct-rm .lv-qr { width: min(16rem, 40vw); }
+.ct-rm-texto { flex: 1 1 18rem; }
+.ct-rm-url code { display: block; padding: .5rem .7rem; border-radius: 10px; background: var(--fondo); font-size: .85rem; word-break: break-all; }
+.ct-rm-ok { color: var(--verde); font-weight: 900; }

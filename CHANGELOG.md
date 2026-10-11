@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.34.0 (2026-10-11)
+
+- **Fixed remote**: an address for the teacher's phone that does not change and does not ask to log in, turned on in
+  «Live», «Remote», with its QR. The phone sees the teacher's boards that are open (one per course; nothing about the
+  students) and drives the chosen one. The address can be changed (the old one stops working) and the remote turned
+  off; it only works while a board is open. The remote with a code, which asks to log in on the phone, is still there.
+- **More orders for the remote** (fixed or with a code): going to any tool, «Pick someone here» in the game or
+  material on screen, and the next question of a quiz.
+- New table for the fixed remote of each teacher, in the privacy provider (its key is not exported).
+
 ## 0.33.0 (2026-10-11)
 
 - **Prompt for your AI, everywhere content is written**: quiz questions (in «Paste several questions»), a rosco (a line

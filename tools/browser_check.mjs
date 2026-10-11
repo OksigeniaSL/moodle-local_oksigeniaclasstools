@@ -19,7 +19,7 @@ const APP = join(dirname(fileURLToPath(import.meta.url)), '..', 'app');
 const FAKE = `
 window.CLASSTOOLS = { lists: [{ id: 1, name: 'Class 1', key: 'c1', students: Array.from({ length: 8 }, (_, i) => ({ id: i + 1, n: 'Student ' + (i + 1) })) }],
     courseid: 1, mode: 'teacher', sesskey: 'x', days: {}, state: {}, liveurl: 'fake://live', glossaryurl: 'fake://glossary', bankurl: 'fake://bank',
-    aiurl: 'fake://ai',
+    aiurl: 'fake://ai', remoteurl: 'fake://remote', remote: { on: false },
     me: { id: 99, name: 'Teacher' } };
 window.FAKE = { calls: [], polls: 0 };
 const BANK_PAIRS = [['frog', 'amphibian'], ['cat', 'mammal'], ['bee', 'insect']];
@@ -58,6 +58,26 @@ window.shot = (name) => new Promise((done) => { if (!window.checkShot) { done();
                 pairs: 'France = Paris\\nItaly = Rome\\nnot a pair',
             };
             return json({ ok: true, text: TEXTS[p.get('type')] || '' });
+        }
+        // The fixed remote, as remote.php gives it: on and off, a new address, and the orders queued in FAKE.remoteCmds.
+        if (String(url).startsWith('fake://remote')) {
+            const R = FAKE.remote || (FAKE.remote = { on: false, n: 1, seq: 0 });
+            const status = () => (R.on ? { on: true, url: 'https://example.org/local/oksigeniaclasstools/mando.php?k=key' + R.n } : { on: false });
+            if (a === 'on' || a === 'off') { R.on = a === 'on'; return json(status()); }
+            if (a === 'rotate') { R.n++; return json(status()); }
+            if (a === 'poll') {
+                if (!R.on) { return json({ on: false }); }
+                const since = Number(p.get('since')), cmds = (FAKE.remoteCmds || []).filter((c) => c.seq > since);
+                R.seq = Math.max(R.seq, ...cmds.map((c) => c.seq));
+                return json({ on: true, seq: R.seq, cmds, phone: !!FAKE.remoteCmds });
+            }
+            return json(status());
+        }
+        // The phone of the fixed remote, as mandoapi.php gives it: two open boards.
+        if (String(url).startsWith('fake://mando')) {
+            if (a === 'command') { return json({ ok: true }); }
+            return json({ boards: [{ course: 1, name: 'One', tool: 'quien', tools: [['quien', 'Whose turn?'], ['reloj', 'Clock']] },
+                { course: 2, name: 'Two', tool: 'reloj', tools: [['reloj', 'Clock']] }] });
         }
         if (String(url).startsWith('fake://glossary')) {
             return json(a === 'list' ? { ok: true, glossaries: [{ id: 5, name: 'Science words', count: 3 }] }
@@ -693,6 +713,64 @@ const CHECKS = {
         qz.closest('dialog').close();
         return '';
     },
+    // The fixed remote on the board: turned on (QR and address), a new address on the second tap, an order run.
+    'remote-fixed': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const q = (x) => document.querySelector(x);
+        q('#t-envivo').click();
+        await sleep(200);
+        q('#lv-kind [data-v="remote"]').click();
+        await sleep(200);
+        const on = q('#lv-rm [data-rm="on"]');
+        if (!on) { return 'no button to turn the fixed remote on'; }
+        on.click();
+        await sleep(300);
+        if (!/mando\.php\?k=key1/.test(q('#lv-rm .ct-rm-url').textContent) || !q('#lv-rm .lv-qr svg')) { return 'no address or QR when on'; }
+        q('#lv-rm [data-rm="rotate"]').click();
+        await sleep(200);
+        if (!/key1/.test(q('#lv-rm .ct-rm-url').textContent)) { return 'the address changed on the first tap'; }
+        q('#lv-rm [data-rm="rotate"]').click();
+        await sleep(300);
+        if (!/key2/.test(q('#lv-rm .ct-rm-url').textContent)) { return 'no new address on the second tap'; }
+        // An order from the phone: to the clock.
+        await sleep(1800);
+        FAKE.remoteCmds = [{ seq: 1, cmd: 'tool_reloj' }];
+        for (let i = 0; i < 40 && window.ClasstoolsCore.current() !== 'reloj'; i++) { await sleep(100); }
+        if (window.ClasstoolsCore.current() !== 'reloj') { return 'the order of the phone was not run'; }
+        const sent = FAKE.calls.filter((c) => c.action === 'poll').pop();
+        if (!/quien\|/.test(sent.tools || '')) { return `the board does not say its tools: ${sent.tools}`; }
+        q('#t-envivo').click();
+        await sleep(300);
+        if (!/connected/.test(q('#lv-rm').textContent)) { return 'the phone is not shown as connected'; }
+        await window.shot('remote-fixed');
+        q('#lv-rm [data-rm="off"]').click();
+        await sleep(300);
+        return q('#lv-rm [data-rm="on"]') ? '' : 'it did not turn off';
+    },
+    // The fixed remote on the phone: two open boards to choose from, the orders and the tools for the chosen one.
+    'remote-phone': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const q = (x) => document.querySelector(x);
+        for (let i = 0; i < 30 && !q('[data-course]'); i++) { await sleep(100); }
+        const boards = [...document.querySelectorAll('[data-course]')].map((b) => b.textContent);
+        if (boards.join(',') !== 'One,Two') { return `boards: ${boards}`; }
+        q('[data-course="2"]').click();
+        await sleep(100);
+        q('[data-cmd="pick"]').click();
+        await sleep(200);
+        let sent = FAKE.calls.filter((c) => c.action === 'command').pop();
+        if (!sent || sent.course !== '2' || sent.cmd !== 'pick' || sent.k !== 'key1') { return `sent ${JSON.stringify(sent)}`; }
+        q('[data-course="1"]').click();
+        await sleep(100);
+        q('.jn-herramientas').open = true;
+        q('[data-cmd="tool_reloj"]').click();
+        await sleep(200);
+        sent = FAKE.calls.filter((c) => c.action === 'command').pop();
+        if (sent.cmd !== 'tool_reloj' || sent.course !== '1') { return `tool sent ${JSON.stringify(sent)}`; }
+        if (!/sent/.test(q('#jn-hecho').textContent)) { return 'no word that it was sent'; }
+        await window.shot('remote-phone');
+        return '';
+    },
     // Sort: every card into its box; then Venn with its zones; then the odd one out.
     'sort-game': async () => {
         const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -994,6 +1072,9 @@ const CHECKS = {
     },
 };
 
+// Checks that run on another page than the board.
+const PAGES = { 'remote-phone': '/phone.html' };
+
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png',
     '.woff2': 'font/woff2', '.json': 'application/json', '.mp3': 'audio/mpeg' };
 const server = createServer((req, res) => {
@@ -1004,6 +1085,13 @@ const server = createServer((req, res) => {
         res.writeHead(200, { 'Content-Type': 'text/html' }); res.end(html); return;
     }
     if (path === '/fake.js') { res.writeHead(200, { 'Content-Type': 'text/javascript' }); res.end(FAKE); return; }
+    if (path === '/phone.html') {
+        // The phone of the fixed remote, with its key, its texts (from the English pack) and the pretend server.
+        const config = '<script src="/fake.js"></script>\n<script src="strings.js"></script>\n'
+            + '<script>window.CLASSTOOLS_REMOTE = { k: "key1", api: "fake://mando", site: "Site", str: window.CLASSTOOLS_STR };</script>\n';
+        const html = readFileSync(join(APP, 'mando.html'), 'utf8').replace('<script src="mando.js">', config + '<script src="mando.js">');
+        res.writeHead(200, { 'Content-Type': 'text/html' }); res.end(html); return;
+    }
     const file = normalize(join(APP, path));
     if (!file.startsWith(APP) || !existsSync(file)) { res.writeHead(404); res.end(); return; }
     res.writeHead(200, { 'Content-Type': TYPES[extname(file)] || 'application/octet-stream' }); res.end(readFileSync(file));
@@ -1055,7 +1143,7 @@ async function main() {
             await send('Emulation.setDeviceMetricsOverride', { width: 1280, height: 800, deviceScaleFactor: 1, mobile: false }, sessionId);
             await send('Page.enable', {}, sessionId);
             events.length = 0;
-            await send('Page.navigate', { url: `${base}/check.html` }, sessionId);
+            await send('Page.navigate', { url: `${base}${PAGES[name] || '/check.html'}` }, sessionId);
             for (let i = 0; i < 200 && !events.some((e) => e.method === 'Page.loadEventFired' && e.sessionId === sessionId); i++) { await new Promise((r) => setTimeout(r, 50)); }
             const r = await send('Runtime.evaluate', { expression: `(${CHECKS[name].toString()})()`, awaitPromise: true, returnByValue: true }, sessionId);
             const problem = r.exceptionDetails ? (r.exceptionDetails.exception?.description || r.exceptionDetails.text) : r.result.value;

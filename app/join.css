@@ -98,3 +98,16 @@ button { touch-action: manipulation; -webkit-user-select: none; user-select: non
 .jn-puntos.bien { color: var(--verde); }
 .jn-mini { display: inline-flex; flex-direction: row; gap: .6rem; min-height: 0; width: auto; max-width: 100%; padding: .5rem 1.1rem; font-size: 1rem; pointer-events: none; }
 .jn-mini > span { font-size: 1.4rem; }
+/* The fixed remote: which board, the tools, and the wait while no board is open. */
+.jn-tablas { display: flex; flex-wrap: wrap; gap: .4rem; justify-content: center; }
+.jn-tablas button { padding: .5rem .9rem; border: 2px solid var(--azul); border-radius: 50rem; background: var(--superficie); color: var(--azul); font-weight: 900; }
+.jn-tablas button[aria-checked="true"] { background: var(--azul); color: #fff; }
+.jn-herramientas { width: 100%; }
+.jn-herramientas summary { margin: .4rem 0 .8rem; color: var(--azul); font-weight: 900; cursor: pointer; }
+.jn-herramientas button[aria-current="true"] { outline: 3px solid var(--azul); }
+.jn-espera { display: flex; gap: .6rem; }
+.jn-espera i { width: 1rem; height: 1rem; border-radius: 50%; background: var(--azul); animation: jn-latido 1.2s ease-in-out infinite; }
+.jn-espera i:nth-child(2) { animation-delay: .2s; }
+.jn-espera i:nth-child(3) { animation-delay: .4s; }
+@keyframes jn-latido { 0%, 100% { opacity: .25; transform: scale(.8); } 50% { opacity: 1; transform: scale(1); } }
+@media (prefers-reduced-motion: reduce) { .jn-espera i { animation: none; opacity: .6; } }

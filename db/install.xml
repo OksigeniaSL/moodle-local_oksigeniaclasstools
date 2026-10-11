@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="local/oksigeniaclasstools/db" VERSION="20261011" COMMENT="XMLDB file for local_oksigeniaclasstools"
+<XMLDB PATH="local/oksigeniaclasstools/db" VERSION="20261012" COMMENT="XMLDB file for local_oksigeniaclasstools"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
@@ -81,6 +81,24 @@
       <INDEXES>
         <INDEX NAME="liveid-round-device" UNIQUE="true" FIELDS="liveid, round, device"/>
         <INDEX NAME="userid" UNIQUE="false" FIELDS="userid"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="local_oksigeniaclasstools_remote" COMMENT="The fixed remote of each teacher: the key of its address, whether it is on, and what is going on (open boards, orders)">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="The teacher"/>
+        <FIELD NAME="token" TYPE="char" LENGTH="40" NOTNULL="true" SEQUENCE="false" COMMENT="The key in the address of the remote"/>
+        <FIELD NAME="enabled" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="state" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="JSON: the open boards, the orders and when the phone was last seen"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="userid" TYPE="foreign-unique" FIELDS="userid" REFTABLE="user" REFFIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="token" UNIQUE="true" FIELDS="token"/>
       </INDEXES>
     </TABLE>
   </TABLES>

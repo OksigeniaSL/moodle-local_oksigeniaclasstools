@@ -122,5 +122,23 @@ function xmldb_local_oksigeniaclasstools_upgrade($oldversion) {
         local_oksigeniaclasstools_show_new('materials', ['plano']);
         upgrade_plugin_savepoint(true, 2026110900, 'local', 'oksigeniaclasstools');
     }
+    if ($oldversion < 2026111300) {
+        // The fixed remote of each teacher.
+        $table = new xmldb_table('local_oksigeniaclasstools_remote');
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('userid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('token', XMLDB_TYPE_CHAR, '40', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('enabled', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0');
+        $table->add_field('state', XMLDB_TYPE_TEXT, null, null, null, null, null);
+        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+        $table->add_key('userid', XMLDB_KEY_FOREIGN_UNIQUE, ['userid'], 'user', ['id']);
+        $table->add_index('token', XMLDB_INDEX_UNIQUE, ['token']);
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+        upgrade_plugin_savepoint(true, 2026111300, 'local', 'oksigeniaclasstools');
+    }
     return true;
 }

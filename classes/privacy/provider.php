@@ -32,10 +32,11 @@ use core_privacy\local\request\transform;
 use core_privacy\local\request\userlist;
 use core_privacy\local\request\writer;
 use local_oksigeniaclasstools\local\quizimages;
+use local_oksigeniaclasstools\local\remote;
 
 /**
- * Stores the picks (who was picked and when), what each teacher keeps of each tool in each course, the live sessions
- * and the pictures of the quiz questions.
+ * Stores the picks (who was picked and when), what each teacher keeps of each tool in each course, the live sessions,
+ * the pictures of the quiz questions and each teacher's fixed remote (in their user context).
  */
 class provider implements
     \core_privacy\local\metadata\provider,
@@ -76,6 +77,12 @@ class provider implements
         $collection->add_subsystem_link('core_message', [], 'privacy:metadata:core_message');
         // The pictures of the quiz questions, kept for the teacher who put them.
         $collection->add_subsystem_link('core_files', [], 'privacy:metadata:core_files');
+        $collection->add_database_table('local_oksigeniaclasstools_remote', [
+            'userid' => 'privacy:metadata:remote:userid',
+            'token' => 'privacy:metadata:remote:token',
+            'enabled' => 'privacy:metadata:remote:enabled',
+            'timecreated' => 'privacy:metadata:remote:timecreated',
+        ], 'privacy:metadata:remote');
         if (class_exists('\\core_ai\\manager')) {
             $collection->add_subsystem_link('core_ai', [], 'privacy:metadata:core_ai');
         }
@@ -122,6 +129,13 @@ class provider implements
                     AND f.filename <> '.'",
             ['area' => quizimages::AREA, 'userid' => $userid]
         );
+        $contextlist->add_from_sql(
+            'SELECT ctx.id
+               FROM {context} ctx
+               JOIN {local_oksigeniaclasstools_remote} r ON r.userid = ctx.instanceid AND ctx.contextlevel = :level
+              WHERE r.userid = :userid',
+            ['level' => CONTEXT_USER, 'userid' => $userid]
+        );
         return $contextlist;
     }
 
@@ -132,6 +146,14 @@ class provider implements
      */
     public static function get_users_in_context(userlist $userlist) {
         $context = $userlist->get_context();
+        if ($context->contextlevel == CONTEXT_USER) {
+            $userlist->add_from_sql(
+                'userid',
+                'SELECT userid FROM {local_oksigeniaclasstools_remote} WHERE userid = :userid',
+                ['userid' => $context->instanceid]
+            );
+            return;
+        }
         if ($context->contextlevel != CONTEXT_COURSE) {
             return;
         }
@@ -181,6 +203,20 @@ class provider implements
         global $DB;
         $userid = $contextlist->get_user()->id;
         foreach ($contextlist->get_contexts() as $context) {
+            // The fixed remote: whether there is one and since when (its key is not exported).
+            if ($context->contextlevel == CONTEXT_USER && (int) $context->instanceid === (int) $userid) {
+                $row = remote::get((int) $userid);
+                if ($row) {
+                    writer::with_context($context)->export_data(
+                        [get_string('privacy:remote', 'local_oksigeniaclasstools')],
+                        (object) [
+                            'enabled' => transform::yesno($row->enabled),
+                            'timecreated' => transform::datetime($row->timecreated),
+                        ]
+                    );
+                }
+                continue;
+            }
             if ($context->contextlevel != CONTEXT_COURSE) {
                 continue;
             }
@@ -284,6 +320,9 @@ class provider implements
      */
     public static function delete_data_for_all_users_in_context(\context $context) {
         global $DB;
+        if ($context->contextlevel == CONTEXT_USER) {
+            remote::delete((int) $context->instanceid);
+        }
         if ($context->contextlevel == CONTEXT_COURSE) {
             $DB->delete_records('local_oksigeniaclasstools_picks', ['courseid' => $context->instanceid]);
             $DB->delete_records('local_oksigeniaclasstools_state', ['courseid' => $context->instanceid]);
@@ -301,6 +340,10 @@ class provider implements
         global $DB;
         $userid = $contextlist->get_user()->id;
         foreach ($contextlist->get_contexts() as $context) {
+            if ($context->contextlevel == CONTEXT_USER && (int) $context->instanceid === (int) $userid) {
+                remote::delete((int) $userid);
+                continue;
+            }
             if ($context->contextlevel != CONTEXT_COURSE) {
                 continue;
             }
@@ -325,6 +368,10 @@ class provider implements
     public static function delete_data_for_users(approved_userlist $userlist) {
         global $DB;
         $context = $userlist->get_context();
+        if ($context->contextlevel == CONTEXT_USER && in_array($context->instanceid, $userlist->get_userids())) {
+            remote::delete((int) $context->instanceid);
+            return;
+        }
         if ($context->contextlevel != CONTEXT_COURSE || !$userlist->get_userids()) {
             return;
         }

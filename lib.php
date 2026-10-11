@@ -331,6 +331,10 @@ function local_oksigeniaclasstools_data(stdClass $course, context_course $contex
         // Live sessions (votes, buzzers, the phone as a remote), unless the site turns them off.
         'liveurl' => get_config('local_oksigeniaclasstools', 'live') !== '0'
             ? (new moodle_url('/local/oksigeniaclasstools/livehost.php'))->out(false) : null,
+        // The teacher's fixed remote (with live sessions): where the board asks for its orders, and whether it is on.
+        'remoteurl' => get_config('local_oksigeniaclasstools', 'live') !== '0'
+            ? (new moodle_url('/local/oksigeniaclasstools/remote.php'))->out(false) : null,
+        'remote' => \local_oksigeniaclasstools\local\remote::status((int) $USER->id),
         // Questions of the Moodle question bank for a quiz (multiple choice with one answer, true/false).
         'bankurl' => (new moodle_url('/local/oksigeniaclasstools/quizbank.php'))->out(false),
         // Words from the glossaries of the course for the word games (concept and a clue from its definition).
@@ -554,6 +558,46 @@ function local_oksigeniaclasstools_join_output(?stdClass $live, string $code): v
     header('Content-Type: text/html; charset=utf-8');
     header('Cache-Control: no-store');
     header('X-Frame-Options: SAMEORIGIN');
+    echo $html;
+}
+
+/**
+ * Outputs the fixed remote for the teacher's phone: its key (empty if it is off or the address changed), where to send
+ * the orders, and its texts.
+ *
+ * @param string $token
+ */
+function local_oksigeniaclasstools_remote_output(string $token): void {
+    global $OUTPUT, $SITE;
+    $html = file_get_contents(__DIR__ . '/app/mando.html');
+    $base = (new moodle_url('/local/oksigeniaclasstools/app/'))->out(false);
+    $icon = $OUTPUT->favicon()->out(false);
+    $html = str_replace('<head>', "<head>\n<base href=\"" . s($base) . "\">\n<link rel=\"icon\" href=\"" . s($icon) . '">', $html);
+    $html = str_replace('<html lang="en">', '<html lang="' . s(str_replace('_', '-', current_language())) . '">', $html);
+    $title = s(get_string('app_rm_title', 'local_oksigeniaclasstools'));
+    $html = str_replace('<title>Class tools</title>', '<title>' . $title . '</title>', $html);
+    $version = (int) get_config('local_oksigeniaclasstools', 'version');
+    $assets = '/(<script src="[a-z0-9\/_-]+\.js|<link rel="stylesheet" href="[a-z0-9\/_-]+\.css)"/i';
+    $html = preg_replace($assets, '$1?v=' . $version . '"', $html);
+    $str = [];
+    foreach (get_string_manager()->load_component_strings('local_oksigeniaclasstools', current_language()) as $key => $text) {
+        if (strpos($key, 'app_lv_') === 0 || strpos($key, 'app_rm_') === 0) {
+            $str[substr($key, 4)] = $text;
+        }
+    }
+    $config = [
+        'k' => $token,
+        'api' => (new moodle_url('/local/oksigeniaclasstools/mandoapi.php'))->out(false),
+        'site' => format_string($SITE->shortname, true, ['context' => context_system::instance(), 'escape' => false]),
+        'str' => (object) $str,
+    ];
+    $flags = JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES;
+    $script = '<script>window.CLASSTOOLS_REMOTE = ' . json_encode($config, $flags) . ";</script>\n";
+    $html = str_replace('<script src="mando.js', $script . '<script src="mando.js', $html);
+    header('Content-Type: text/html; charset=utf-8');
+    header('Cache-Control: no-store');
+    header('X-Frame-Options: SAMEORIGIN');
+    header('Referrer-Policy: no-referrer');
     echo $html;
 }
 
