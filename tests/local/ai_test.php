@@ -54,7 +54,7 @@ final class ai_test extends \advanced_testcase {
     }
 
     public function test_the_answer_loses_its_code_fences(): void {
-        $this->assertSame("# One\na\nb", ai::clean("```text\r\n# One\r\na\r\nb\r\n```\n"));
+        $this->assertSame("# One\na\nb", ai::clean("\x60\x60\x60text\r\n# One\r\na\r\nb\r\n\x60\x60\x60\n"));
         $this->assertSame("# One\na\nb", ai::clean("  # One\na\nb  "));
     }
 

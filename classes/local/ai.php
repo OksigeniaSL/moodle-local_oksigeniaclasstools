@@ -60,8 +60,8 @@ class ai {
      */
     public static function available(\context $context): bool {
         $action = self::action();
-        if (!$action || get_config('local_oksigeniaclasstools', 'ai') === '0'
-                || !has_capability('local/oksigeniaclasstools:generate', $context)) {
+        $off = get_config('local_oksigeniaclasstools', 'ai') === '0';
+        if (!$action || $off || !has_capability('local/oksigeniaclasstools:generate', $context)) {
             return false;
         }
         // A static method in Moodle 4.5 and one of the instance from 5.0: called on the instance, both work.
@@ -138,8 +138,14 @@ class ai {
      * @param int $count
      * @return array ok and text, or ok false and error.
      */
-    public static function generate(\context $context, int $userid, string $type, string $topic, string $level,
-            int $count): array {
+    public static function generate(
+        \context $context,
+        int $userid,
+        string $type,
+        string $topic,
+        string $level,
+        int $count
+    ): array {
         $action = new \core_ai\aiactions\generate_text(
             contextid: $context->id,
             userid: $userid,
@@ -161,7 +167,7 @@ class ai {
      */
     public static function clean(string $text): string {
         $text = str_replace(["\r\n", "\r"], "\n", $text);
-        $text = preg_replace('/^[ \t]*```[a-z]*[ \t]*$/mi', '', $text);
+        $text = preg_replace('/^[ \t]*\x60{3}[a-z]*[ \t]*$/mi', '', $text);
         return \core_text::substr(trim($text), 0, self::ANSWER_MAX);
     }
 }
