@@ -2048,3 +2048,7 @@ dialog.ct-sc-dialogo { width: min(40rem, 94vw); }
 .ct-simon-show { min-height: 1.1em; color: var(--azul); font-size: clamp(3rem, 10vw, 6.5rem); font-weight: 900; line-height: 1.1; text-align: center; transition: transform .1s; }
 .ct-simon-show[data-rule] { color: var(--tinta-3); font-size: clamp(1.2rem, 3vw, 2rem); }
 .ct-simon-show.ct-lit { color: var(--rojo); transform: scale(1.12); }
+/* The index of the guides: each group, its guides as buttons. */
+.ct-guia-lista { display: flex; flex-wrap: wrap; gap: .4rem; }
+.ct-guia-pie { margin: 1rem 0 .5rem; text-align: center; }
+.ct-guia h2:focus { outline: none; }

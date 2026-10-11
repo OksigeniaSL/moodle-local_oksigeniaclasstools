@@ -8,8 +8,8 @@
   "es": "Cerrar la guía"
  },
  "gd_none": {
-  "en": "This tool has no guide yet.",
-  "es": "Esta herramienta aún no tiene guía."
+  "en": "This tool has no guide of its own. These are the guides there are:",
+  "es": "Esta herramienta no tiene guía propia. Estas son las guías que hay:"
  },
  "gd_works": {
   "en": "What it works on",
@@ -734,5 +734,25 @@
  "gd_quiensoy_sources": {
   "en": "Roediger, H. L. and Karpicke, J. D. (2006). Test-enhanced learning: Taking memory tests improves long-term retention. Psychological Science, 17(3), 249–255.|https://www.jstor.org/stable/40064526",
   "es": "Roediger, H. L. y Karpicke, J. D. (2006). Test-enhanced learning: Taking memory tests improves long-term retention. Psychological Science, 17(3), 249–255.|https://www.jstor.org/stable/40064526"
+ },
+ "gd_all": {
+  "en": "All the guides",
+  "es": "Todas las guías"
+ },
+ "gd_index_lead": {
+  "en": "Each guide says what the tool is for, how to take it to class and what it gives at each stage, with its sources.",
+  "es": "Cada guía cuenta para qué sirve la herramienta, cómo llevarla a clase y qué da en cada etapa, con sus fuentes."
+ },
+ "gd_index_tools": {
+  "en": "Tools",
+  "es": "Herramientas"
+ },
+ "gd_index_games": {
+  "en": "Games",
+  "es": "Juegos"
+ },
+ "gd_index_materials": {
+  "en": "Materials",
+  "es": "Material"
  }
 }

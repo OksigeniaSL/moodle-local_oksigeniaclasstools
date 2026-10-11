@@ -516,7 +516,17 @@ const CHECKS = {
         document.querySelector('#t-qr').click();
         await sleep(200);
         sheet = await open();
-        return sheet.querySelector('.ct-guia-parte') ? 'a tool without a guide shows parts' : '';
+        // Without a guide of its own: the index, and a tap on one opens it; from a guide, back to the index.
+        const listed = sheet.querySelectorAll('.ct-guia-indice [data-guide]').length;
+        if (listed !== window.ClasstoolsGuide.ids().length) { return `the index lists ${listed} guides`; }
+        sheet.querySelector('[data-guide="balanza"]').click();
+        await sleep(100);
+        if (sheet.querySelector('#gd-title').textContent !== 'Balance scale' || !sheet.querySelector('.ct-guia-trabaja')) { return 'a guide of the index does not open'; }
+        sheet.querySelector('[data-a="index"]').click();
+        await sleep(100);
+        if (sheet.querySelector('#gd-title').textContent !== 'All the guides') { return 'no way back to the index'; }
+        await window.shot('guide-index');
+        return '';
     },
     // Every guide has all its parts, valid levels and sources, in the language of the board.
     'guides-complete': async () => {

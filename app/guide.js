@@ -16,17 +16,21 @@
     if ((site && site.teacher === false) || (window.CLASSTOOLS && window.CLASSTOOLS.mode === 'student')) { button.hidden = true; return; }
     const { t, escape, icon } = core;
 
-    // The guides there are, with the string of their name.
-    const GUIDES = {
-        // Tools.
-        quien: 'tab_picker', grupos: 'tab_groups', semaforo: 'tab_noise', asi: 'tab_rules', reloj: 'tab_clock', envivo: 'tab_live',
-        // Games.
-        rosco: 'ro_name', simon: 'si_name', ahorcado: 'ah_name', palabra: 'wo_name', parejas: 'me_pairs', codigo: 'lock_name',
-        ordenar: 'ord_name', clasificar: 'so_name', errores: 'er_name', quiensoy: 'wa_name',
-        // Materials.
-        rods: 'mt_rods', tangram: 'mt_tangram', line: 'mt_line', fractions: 'mt_fractions', geoboard: 'mt_geoboard',
-        base10: 'mt_base10', balanza: 'mt_balance', plano: 'mt_plane', score: 'mt_score',
+    // The guides there are, with the string of their name, in three groups for the index.
+    const GROUPS = {
+        gd_index_tools: {
+            quien: 'tab_picker', grupos: 'tab_groups', semaforo: 'tab_noise', asi: 'tab_rules', reloj: 'tab_clock', envivo: 'tab_live',
+        },
+        gd_index_games: {
+            rosco: 'ro_name', simon: 'si_name', ahorcado: 'ah_name', palabra: 'wo_name', parejas: 'me_pairs', codigo: 'lock_name',
+            ordenar: 'ord_name', clasificar: 'so_name', errores: 'er_name', quiensoy: 'wa_name',
+        },
+        gd_index_materials: {
+            rods: 'mt_rods', tangram: 'mt_tangram', line: 'mt_line', fractions: 'mt_fractions', geoboard: 'mt_geoboard',
+            base10: 'mt_base10', balanza: 'mt_balance', plano: 'mt_plane', score: 'mt_score',
+        },
     };
+    const GUIDES = Object.assign({}, ...Object.values(GROUPS));
     const MODES = ['early', 'primary', 'secondary', 'advanced'];
     // Which guide: the tool on screen, or the game or material open in it.
     const which = () => {
@@ -46,12 +50,15 @@
     let opener = null;
 
     const section = (cls, ico, title, body) => `<section class="ct-guia-parte ${cls}"><h3><span class="ct-guia-ico" aria-hidden="true">${icon(ico)}</span>${escape(title)}</h3>${body}</section>`;
-    const paint = () => {
-        const id = which(), title = GUIDES[id] ? t(GUIDES[id]) : '';
-        const head = `<header class="ct-guia-cabeza"><div><p class="ante">${escape(t('gd_button'))}</p><h2 id="gd-title">${escape(title || t('gd_button'))}</h2></div>
+    // A tool without a guide of its own (or «All the guides») shows the index: every guide, by group, a tap away.
+    const paint = (id = which()) => {
+        const title = GUIDES[id] ? t(GUIDES[id]) : t('gd_all');
+        const head = `<header class="ct-guia-cabeza"><div><p class="ante">${escape(t('gd_button'))}</p><h2 id="gd-title">${escape(title)}</h2></div>
             <button type="button" class="redondo" data-a="close" aria-label="${escape(t('gd_close'))}" title="${escape(t('gd_close'))}">${icon('cerrar')}</button></header>`;
         if (!GUIDES[id]) {
-            sheet.innerHTML = head + `<p class="ct-guia-lead">${escape(t('gd_none'))}</p>`;
+            sheet.innerHTML = head + `<p class="ct-guia-lead">${escape(t(id === 'index' ? 'gd_index_lead' : 'gd_none'))}</p>`
+                + Object.entries(GROUPS).map(([group, guides]) => `<section class="ct-guia-parte ct-guia-indice"><h3>${escape(t(group))}</h3>
+                    <div class="ct-guia-lista">${Object.entries(guides).map(([g, name]) => `<button type="button" class="boton suave" data-guide="${g}">${escape(t(name))}</button>`).join('')}</div></section>`).join('');
             return;
         }
         const k = (part) => `gd_${id}_${part}`;
@@ -70,7 +77,8 @@
             + section('ct-guia-como', 'lista', t('gd_how'), `<ol>${lines(k('how')).map((x) => `<li>${escape(x)}</li>`).join('')}</ol>`)
             + section('ct-guia-etapas', 'grupos', t('gd_stages'), `<dl>${stages}</dl>`)
             + section('ct-guia-escena', 'estrella', t('gd_scene'), lines(k('scene')).map((x) => `<p>${escape(x)}</p>`).join(''))
-            + section('ct-guia-fuentes', 'info', t('gd_sources'), `<ul>${sources}</ul>`);
+            + section('ct-guia-fuentes', 'info', t('gd_sources'), `<ul>${sources}</ul>`)
+            + `<p class="ct-guia-pie"><button type="button" class="boton suave" data-a="index"><span aria-hidden="true">${icon('lista')}</span><span>${escape(t('gd_all'))}</span></button></p>`;
     };
     const close = () => {
         sheet.hidden = true;
@@ -87,7 +95,15 @@
         if (c) { c.focus(); }
     };
     button.addEventListener('click', () => (sheet.hidden ? open() : close()));
-    sheet.addEventListener('click', (e) => { if (e.target.closest('[data-a="close"]')) { close(); } });
+    sheet.addEventListener('click', (e) => {
+        if (e.target.closest('[data-a="close"]')) { close(); return; }
+        const other = e.target.closest('[data-guide], [data-a="index"]');
+        if (!other) { return; }
+        paint(other.dataset.guide || 'index');
+        sheet.scrollTop = 0;
+        const h = sheet.querySelector('h2');
+        if (h) { h.setAttribute('tabindex', '-1'); h.focus(); }
+    });
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !sheet.hidden) { e.stopPropagation(); close(); } }, true);
     // A touch outside closes it (the board is the teacher's again).
     document.addEventListener('pointerdown', (e) => { if (!sheet.hidden && !sheet.contains(e.target) && !button.contains(e.target)) { close(); } });
