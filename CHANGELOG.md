@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.35.0 (2026-10-11)
+
+- **«Which class?», redesigned**: the teacher's courses as cards, by category (in the order of the site), each with its
+  picture (or the pattern Moodle makes for a course without one), its students and a tag with the screen mode it starts
+  in. A search when there are more than eight courses, and, for a teacher with classes in more than one stage, a
+  button for each stage. The board without a course, above, in a band that will also hold the teacher's achievements.
+
 ## 0.34.0 (2026-10-11)
 
 - **Fixed remote**: an address for the teacher's phone that does not change and does not ask to log in, turned on in

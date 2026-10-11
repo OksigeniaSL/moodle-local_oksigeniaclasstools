@@ -34,6 +34,7 @@ require_once(__DIR__ . '/generator_trait.php');
  * @covers     ::local_oksigeniaclasstools_visible_userids
  * @covers     ::local_oksigeniaclasstools_site
  * @covers     ::local_oksigeniaclasstools_default_mode
+ * @covers     ::local_oksigeniaclasstools_choose
  * @covers     \local_oksigeniaclasstools\admin\setting_categorymodes
  */
 #[\PHPUnit\Framework\Attributes\CoversFunction('local_oksigeniaclasstools_mode')]
@@ -41,6 +42,7 @@ require_once(__DIR__ . '/generator_trait.php');
 #[\PHPUnit\Framework\Attributes\CoversFunction('local_oksigeniaclasstools_visible_userids')]
 #[\PHPUnit\Framework\Attributes\CoversFunction('local_oksigeniaclasstools_site')]
 #[\PHPUnit\Framework\Attributes\CoversFunction('local_oksigeniaclasstools_default_mode')]
+#[\PHPUnit\Framework\Attributes\CoversFunction('local_oksigeniaclasstools_choose')]
 #[\PHPUnit\Framework\Attributes\CoversClass(\local_oksigeniaclasstools\admin\setting_categorymodes::class)]
 final class modes_test extends \advanced_testcase {
     use generator_trait;
@@ -143,5 +145,41 @@ final class modes_test extends \advanced_testcase {
         $html = $setting->output_html($setting->get_setting());
         $this->assertStringContainsString('Early years / Room 1', $html);
         $this->assertStringContainsString(get_string('categorymodes_parent', 'local_oksigeniaclasstools'), $html);
+    }
+
+    public function test_which_class_shows_cards_by_category_with_their_mode(): void {
+        $this->resetAfterTest();
+        $gen = $this->getDataGenerator();
+        $early = $gen->create_category(['name' => 'Early years']);
+        $primary = $gen->create_category(['name' => 'Primary']);
+        set_config('categorymodes', json_encode([$early->id => 'early']), 'local_oksigeniaclasstools');
+        $a = $gen->create_course(['category' => $early->id, 'fullname' => 'Room A']);
+        $b = $gen->create_course(['category' => $primary->id, 'fullname' => 'Science']);
+        $c = $gen->create_course(['category' => $primary->id, 'fullname' => 'Maths']);
+        $teacher = $gen->create_user();
+        foreach ([$a, $b, $c] as $course) {
+            $gen->enrol_user($teacher->id, $course->id, 'editingteacher');
+        }
+        $gen->create_and_enrol($a, 'student');
+        $gen->create_and_enrol($a, 'student');
+        $gen->create_and_enrol($b, 'student');
+        // In Maths the teacher chose Secondary on the board.
+        \local_oksigeniaclasstools\local\kept::save((int) $c->id, (int) $teacher->id, 'settings', '{"mode":"secondary"}');
+        $this->setUser($teacher);
+        $choose = local_oksigeniaclasstools_choose(enrol_get_my_courses(['id', 'fullname', 'shortname', 'category']));
+        $this->assertSame(['Early years', 'Primary'], array_column($choose['categories'], 'name'));
+        $cards = array_merge(...array_column($choose['categories'], 'courses'));
+        $byname = array_combine(array_column($cards, 'name'), $cards);
+        $this->assertSame('early', $byname['Room A']['mode']);
+        $this->assertSame('2 students', $byname['Room A']['students']);
+        $this->assertSame('primary', $byname['Science']['mode']);
+        $this->assertSame('1 student', $byname['Science']['students']);
+        $this->assertSame('secondary', $byname['Maths']['mode']);
+        $this->assertNotEmpty($byname['Maths']['image']);
+        // Classes in three stages: a button for each; and few courses, no search.
+        $this->assertSame(['early', 'primary', 'secondary'], array_column($choose['stages'], 'mode'));
+        $this->assertFalse($choose['search']);
+        $html = $GLOBALS['OUTPUT']->render_from_template('local_oksigeniaclasstools/choose', $choose);
+        $this->assertStringContainsString('data-mode="secondary"', $html);
     }
 }

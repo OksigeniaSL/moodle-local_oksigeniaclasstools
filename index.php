@@ -37,7 +37,7 @@ if (!$id) {
         exit;
     }
     $courses = array_filter(
-        enrol_get_my_courses(['id', 'fullname', 'shortname'], 'fullname ASC'),
+        enrol_get_my_courses(['id', 'fullname', 'shortname', 'category'], 'fullname ASC'),
         fn($c) => has_capability('local/oksigeniaclasstools:use', context_course::instance($c->id))
     );
     if (count($courses) === 1) {
@@ -47,28 +47,50 @@ if (!$id) {
     $PAGE->set_url(new moodle_url('/local/oksigeniaclasstools/index.php'));
     $PAGE->set_title(get_string('pluginname', 'local_oksigeniaclasstools'));
     $PAGE->set_heading(get_string('pluginname', 'local_oksigeniaclasstools'));
+    if ($courses) {
+        $choose = local_oksigeniaclasstools_choose($courses);
+        // The search and the stages: cards and categories that do not match go away (accents do not count).
+        if ($choose['search'] || $choose['stages']) {
+            $PAGE->requires->js_init_code("(function () {
+                var input = document.getElementById('ct-choose-search'), stage = '';
+                var plain = function (s) { return s.toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g, ''); };
+                var filter = function () {
+                    var q = input ? plain(input.value.trim()) : '', shown = 0;
+                    document.querySelectorAll('.ct-choose-cat').forEach(function (cat) {
+                        var any = false;
+                        cat.querySelectorAll('.ct-choose-card').forEach(function (card) {
+                            var ok = (!q || plain(card.getAttribute('data-name')).indexOf(q) >= 0)
+                                && (!stage || card.getAttribute('data-mode') === stage);
+                            card.hidden = !ok;
+                            if (ok) { any = true; shown++; }
+                        });
+                        cat.hidden = !any;
+                    });
+                    document.getElementById('ct-choose-none').hidden = shown > 0;
+                };
+                if (input) { input.addEventListener('input', filter); }
+                document.querySelectorAll('.ct-choose-stages button').forEach(function (b, i, all) {
+                    b.addEventListener('click', function () {
+                        stage = b.getAttribute('data-mode');
+                        all.forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+                        filter();
+                    });
+                });
+            })();");
+        }
+    }
     echo $OUTPUT->header();
     echo $OUTPUT->heading(get_string('choose', 'local_oksigeniaclasstools'));
     if ($courses) {
-        echo html_writer::tag('p', get_string('choose_desc', 'local_oksigeniaclasstools'));
-        $buttons = '';
-        foreach ($courses as $c) {
-            $buttons .= html_writer::link(
-                new moodle_url('/local/oksigeniaclasstools/index.php', ['id' => $c->id]),
-                format_string($c->fullname, true, ['context' => context_course::instance($c->id)]),
-                ['class' => 'btn btn-outline-primary btn-lg mb-2 text-left text-start']
-            );
-        }
-        // Classes from both Bootstrap 4 (Moodle up to 4.5) and 5.
-        echo html_writer::div($buttons, 'd-flex flex-column mb-4', ['style' => 'max-width: 40rem']);
+        echo $OUTPUT->render_from_template('local_oksigeniaclasstools/choose', $choose);
     } else {
         echo $OUTPUT->notification(get_string('nocourses', 'local_oksigeniaclasstools'), 'info');
+        echo html_writer::link(
+            new moodle_url('/local/oksigeniaclasstools/index.php', ['standalone' => 1]),
+            get_string('standalone', 'local_oksigeniaclasstools'),
+            ['class' => 'btn btn-secondary']
+        );
     }
-    echo html_writer::link(
-        new moodle_url('/local/oksigeniaclasstools/index.php', ['standalone' => 1]),
-        get_string('standalone', 'local_oksigeniaclasstools'),
-        ['class' => 'btn btn-secondary']
-    );
     echo $OUTPUT->footer();
     exit;
 }

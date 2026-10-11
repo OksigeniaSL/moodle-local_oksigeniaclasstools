@@ -1,0 +1,91 @@
+{{!
+    This file is part of Moodle - https://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+}}
+{{!
+    @template local_oksigeniaclasstools/choose
+
+    «Which class?»: the teacher's courses as cards (picture, name, students and the screen mode it starts in), by
+    category, with a search when there are many, and a band above for what is not a course (the board without one;
+    later, the teacher's achievements).
+
+    Context variables required for this template:
+    * search - whether to show the search box
+    * stages - when the courses are of more than one stage, each stage (mode, name) to show only its courses
+    * standalone - the address of the board without a course
+    * categories - each with its name and its courses (url, name, image, students, mode, modename)
+
+    Example context (json):
+    {
+        "search": true,
+        "stages": [{"mode": "early", "name": "Early years"}, {"mode": "primary", "name": "Primary"}],
+        "standalone": "https://example.org/local/oksigeniaclasstools/index.php?standalone=1",
+        "categories": [
+            {
+                "name": "Primary",
+                "courses": [
+                    {
+                        "url": "https://example.org/local/oksigeniaclasstools/index.php?id=2",
+                        "name": "Science, Year 5",
+                        "image": "https://example.org/pluginfile.php/1/course/overviewfiles/science.jpg",
+                        "students": "24 students",
+                        "mode": "primary",
+                        "modename": "Primary"
+                    }
+                ]
+            }
+        ]
+    }
+}}
+<div class="ct-choose">
+    <p class="ct-choose-lead">{{#str}} choose_desc, local_oksigeniaclasstools {{/str}}</p>
+    <div class="ct-choose-band">
+        <a class="ct-choose-alone" href="{{standalone}}">
+            <span class="ct-choose-alone-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 5h18v11H3z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 20h8M12 16v4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span><strong>{{#str}} standalone, local_oksigeniaclasstools {{/str}}</strong>
+                <span class="ct-choose-alone-text">{{#str}} choose_standalone_desc, local_oksigeniaclasstools {{/str}}</span></span>
+        </a>
+        {{#stages.0}}
+        <div class="ct-choose-stages" role="group" aria-label="{{#str}} choose_stage, local_oksigeniaclasstools {{/str}}">
+            <button type="button" aria-pressed="true" data-mode="">{{#str}} choose_all, local_oksigeniaclasstools {{/str}}</button>
+            {{#stages}}<button type="button" aria-pressed="false" data-mode="{{mode}}" class="ct-mode-{{mode}}">{{name}}</button>{{/stages}}
+        </div>
+        {{/stages.0}}
+        {{#search}}
+        <label class="ct-choose-search">
+            <span class="sr-only visually-hidden">{{#str}} choose_search, local_oksigeniaclasstools {{/str}}</span>
+            <input type="search" id="ct-choose-search" placeholder="{{#str}} choose_search, local_oksigeniaclasstools {{/str}}" autocomplete="off">
+        </label>
+        {{/search}}
+    </div>
+    {{#categories}}
+    <section class="ct-choose-cat">
+        <h3>{{name}}</h3>
+        <div class="ct-choose-grid">
+            {{#courses}}
+            <a class="ct-choose-card" href="{{url}}" data-name="{{name}}" data-mode="{{mode}}">
+                <span class="ct-choose-img"><img src="{{image}}" alt="" loading="lazy">
+                    <span class="ct-choose-mode ct-mode-{{mode}}">{{modename}}</span></span>
+                <span class="ct-choose-body">
+                    <span class="ct-choose-name">{{name}}</span>
+                    <span class="ct-choose-meta"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><circle cx="16.5" cy="9" r="2.6"/><path d="M3 19c.6-3.4 3-5.2 6-5.2s5.4 1.8 6 5.2zM14.6 14.2c.6-.2 1.2-.3 1.9-.3 2.6 0 4.5 1.6 5 4.6h-5.3"/></svg>{{students}}<span class="ct-choose-go" aria-hidden="true">→</span></span>
+                </span>
+            </a>
+            {{/courses}}
+        </div>
+    </section>
+    {{/categories}}
+    <p class="ct-choose-none" id="ct-choose-none" hidden>{{#str}} choose_none_found, local_oksigeniaclasstools {{/str}}</p>
+</div>
