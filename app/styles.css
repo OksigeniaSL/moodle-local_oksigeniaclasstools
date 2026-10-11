@@ -2058,3 +2058,20 @@ dialog.ct-sc-dialogo { width: min(40rem, 94vw); }
 .ct-rm-texto { flex: 1 1 18rem; }
 .ct-rm-url code { display: block; padding: .5rem .7rem; border-radius: 10px; background: var(--fondo); font-size: .85rem; word-break: break-all; }
 .ct-rm-ok { color: var(--verde); font-weight: 900; }
+/* The teacher's sticker that comes in and sticks (app/logros.js); a badge in the Advanced mode. */
+.ct-logro { position: fixed; inset: 0; z-index: 9000; display: grid; place-items: center; background: rgba(15, 47, 94, .45); cursor: pointer; animation: ct-logro-fondo .3s ease-out; }
+.ct-logro-in { display: flex; flex-direction: column; align-items: center; gap: .6rem; }
+.ct-logro-titulo { margin: 0; color: #fff; font-size: clamp(1.6rem, 4vw, 2.6rem); font-weight: 900; text-shadow: 0 3px 12px rgba(0, 0, 0, .35); }
+.ct-logro-nivel { margin: 0; padding: .25rem 1rem; border-radius: 50rem; background: #fff; color: var(--azul-osc); font-weight: 900; }
+.ct-logro-cromo { width: min(17rem, 60vw); filter: drop-shadow(0 18px 40px rgba(0, 0, 0, .35)); animation: ct-logro-pega .7s cubic-bezier(.2, 1.5, .4, 1) both; }
+.ct-logro-sobrio .ct-logro-cromo { width: min(13rem, 50vw); animation-name: ct-logro-sube; }
+.ct-logro-cromo svg { display: block; width: 100%; height: auto; }
+.ct-logro-fuera { opacity: 0; transition: opacity .35s ease; }
+@keyframes ct-logro-fondo { from { opacity: 0; } }
+@keyframes ct-logro-pega { from { opacity: 0; transform: scale(.35) rotate(-28deg); } 60% { transform: scale(1.06) rotate(3deg); } to { opacity: 1; transform: none; } }
+@keyframes ct-logro-sube { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .ct-logro, .ct-logro-cromo { animation: none; } }
+/* The shine of a level 5 sticker (cromos.js). */
+.cr-destello { animation: cr-brillo 3.2s ease-in-out infinite; }
+@keyframes cr-brillo { 0% { transform: skewX(-18deg) translateX(0); } 60%, 100% { transform: skewX(-18deg) translateX(520px); } }
+@media (prefers-reduced-motion: reduce) { .cr-destello { animation: none; display: none; } }

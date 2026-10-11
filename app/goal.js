@@ -101,6 +101,8 @@
         if (st.points === before) { return; }
         keep(); paint();
         if (st.points >= st.target && before < st.target) {
+            // The goal of the class reached, for the teacher's sticker.
+            if (core.logro) { core.logro('cumplemetas'); }
             play('lead');
             if (core.celebrate) { core.celebrate($('.ct-goal-stage'), { title: t('gl_done'), text: st.prize, glow: [$('#gl-jar')] }); }
             announce(t('gl_done'));

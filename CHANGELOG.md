@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.37.0 (2026-10-12)
+
+- **My stickers**: each tool has a sticker for the teacher (the critters of the board in costume, by the art director),
+  earned by using it for real with a class and raised a level with the days of use (1, 3, 8, 20 and 50 days). A use
+  is real with the thresholds of the site: a live session with 5 devices or more, a vote most of them answered, a
+  brainstorm with 5 answers, 3 quiz questions, 5 turns of «Whose turn?» in a class, groups from a course list of 8
+  students left on screen or kept, a timer of a minute that reaches zero, a song played to its end, a game finished,
+  the goal of the class reached, a magic shape, the curtain or an instrument on the board… At most one per sticker,
+  course and day. When a sticker goes up, it comes in and sticks on the board (a sober badge in the Advanced mode).
+- The album, on «Which class?»: the stickers got, with their level and days, the gaps with how to get them, and the
+  weeks of use. Each teacher sees only their own; there is never a ranking between teachers.
+- Settings: the stickers on or off, and the devices, turns and students that make a use real. A new table keeps one
+  use per sticker, course and day, with its privacy provider.
+
 ## 0.36.1 (2026-10-12)
 
 - «Which class?» starts higher: Moodle's page header, empty on that page, is left out.

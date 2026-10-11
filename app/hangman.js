@@ -186,6 +186,8 @@
     const end = (win) => {
         if (s.over) { return; }
         s.over = true; games.playing('ahorcado', false);
+        // A game played to its end, for the teacher's sticker.
+        if (core.logro) { core.logro('salvaglobos'); }
         paintSlots(true);
         const m = $('#ah-msg'); m.className = 'total ' + (win ? 'ct-win' : 'ct-lose');
         m.textContent = win ? STR.won : STR.lost(s.word.toUpperCase());

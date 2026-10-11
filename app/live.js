@@ -158,6 +158,9 @@
         const b = e.target.closest('[data-d]'); if (!b || kind !== 'hands' || S) { return; }
         hd.counts[b.dataset.o] = Math.max(0, (Number(hd.counts[b.dataset.o]) || 0) + Number(b.dataset.d));
         keepHands(); paintHandBars(); play('tic');
+        // Enough hands counted: a real show of hands, for the teacher's sticker.
+        const hands = Object.values(hd.counts).reduce((a, x) => a + (Number(x) || 0), 0);
+        if (core.logro && core.logros && hands >= core.logros.thr.devices) { core.logro('cuentamanos'); }
     });
     $('#lv-custom').addEventListener('input', () => { save('envivo-propias', $('#lv-custom').value); hd.counts = {}; keepHands(); if (kind === 'hands' && !S) { paintHandBars(); } });
     $('#lv-kind').addEventListener('click', (e) => { const b = e.target.closest('[data-v]'); if (b) { kind = b.dataset.v; save('envivo-tipo', kind); paintSetup(); } });
@@ -267,7 +270,22 @@
         } else if (v.kind === 'quiz') {
             if (window.ClasstoolsQuiz) { window.ClasstoolsQuiz.paint(stage, v, first, act); }
         } else { paintBuzz(v, first); }
+        realUse(v);
     }
+    // Real uses, for the teacher's stickers: a session the class joined, and each kind once it has really been played.
+    const realUse = (v) => {
+        if (!core.logro || !core.logros || !core.logros.on || v.kind === 'remote') { return; }
+        const n = (v.devices || []).length, need = core.logros.thr.devices;
+        if (n < need) { return; }
+        core.logro('domamoviles');
+        if (v.kind === 'vote' && v.round && !v.open) {
+            const answered = Object.values(v.results || {}).reduce((a, x) => a + (Number(x) || 0), 0);
+            if (answered * 2 >= n) { core.logro('cuentavotos'); }
+        }
+        if (v.kind === 'ideas' && (v.ideas || []).length >= need) { core.logro('atrapanubes'); }
+        if (v.kind === 'quiz' && v.revealed && v.round >= 3) { core.logro('lanzapreguntas'); }
+        if (v.kind === 'buzz' && v.round >= 3 && (v.presses || []).length) { core.logro('tocatimbres'); }
+    };
     const paintJoin = (v) => {
         const n = v.kind === 'remote' ? (v.joined ? 1 : 0) : v.devices.length;
         $('#lv-count').textContent = v.kind === 'remote' ? (v.joined ? t('lv_remote_ok') : t('lv_remote_waiting')) : t(n === 1 ? 'lv_in_one' : 'lv_in_many', n);

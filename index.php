@@ -51,44 +51,17 @@ if (!$id) {
     if ($courses) {
         $choose = local_oksigeniaclasstools_choose($courses);
         $PAGE->requires->css(new moodle_url('/local/oksigeniaclasstools/app/choose.css'));
+        // The page's own script (filters, the QR of the fixed remote, «My stickers») and what it draws with.
+        $app = '/local/oksigeniaclasstools/app/';
         if ($choose['remote'] && $choose['remote']['on']) {
-            $PAGE->requires->js(new moodle_url('/local/oksigeniaclasstools/app/lib/qrcode.js'));
+            $PAGE->requires->js(new moodle_url($app . 'lib/qrcode.js'));
         }
-        // The filters (category, stage and the search, together) and the QR of the fixed remote.
-        $PAGE->requires->js_init_code("(function () {
-            var input = document.getElementById('ct-ch-buscar'), cat = '', stage = '';
-            var plain = function (s) { return s.toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g, ''); };
-            var filter = function () {
-                var q = input ? plain(input.value.trim()) : '', shown = 0;
-                document.querySelectorAll('.ct-ch-curso').forEach(function (card) {
-                    var ok = (!q || plain(card.getAttribute('data-name')).indexOf(q) >= 0)
-                        && (!cat || card.getAttribute('data-cat') === cat)
-                        && (!stage || card.getAttribute('data-mode') === stage);
-                    card.hidden = !ok;
-                    if (ok) { shown++; }
-                });
-                document.getElementById('ct-ch-nada').hidden = shown > 0;
-            };
-            if (input) { input.addEventListener('input', filter); }
-            // A stage (or «All»), and a category from its list; both go together with the search.
-            var buttons = document.querySelectorAll('.ct-ch-filtros button');
-            buttons.forEach(function (b) {
-                b.addEventListener('click', function () {
-                    stage = b.dataset.mode;
-                    buttons.forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
-                    filter();
-                });
-            });
-            var select = document.getElementById('ct-ch-categoria');
-            if (select) { select.addEventListener('change', function () { cat = select.value; filter(); }); }
-            var qr = document.getElementById('ct-ch-qr');
-            if (qr && window.qrcode) {
-                var code = window.qrcode(0, 'M');
-                code.addData(qr.getAttribute('data-url'));
-                code.make();
-                qr.innerHTML = code.createSvgTag({cellSize: 4, margin: 0, scalable: true});
+        if ($choose['album']) {
+            foreach (['critter.js', 'cromos.js', 'logros.js'] as $file) {
+                $PAGE->requires->js(new moodle_url($app . $file));
             }
-        })();");
+        }
+        $PAGE->requires->js(new moodle_url($app . 'choose.js'));
     }
     echo $OUTPUT->header();
     if ($courses) {

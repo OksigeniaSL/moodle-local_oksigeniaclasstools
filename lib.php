@@ -335,6 +335,16 @@ function local_oksigeniaclasstools_data(stdClass $course, context_course $contex
         'remoteurl' => get_config('local_oksigeniaclasstools', 'live') !== '0'
             ? (new moodle_url('/local/oksigeniaclasstools/remote.php'))->out(false) : null,
         'remote' => \local_oksigeniaclasstools\local\remote::status((int) $USER->id),
+        // The teacher's stickers: where real uses go, what makes a use real, and the level of each sticker now.
+        'logrosurl' => \local_oksigeniaclasstools\local\logros::on()
+            ? (new moodle_url('/local/oksigeniaclasstools/logros.php'))->out(false) : null,
+        'logros' => \local_oksigeniaclasstools\local\logros::on() ? [
+            'thr' => \local_oksigeniaclasstools\local\logros::thresholds(),
+            'levels' => (object) array_map(
+                fn($days) => \local_oksigeniaclasstools\local\logros::level($days),
+                \local_oksigeniaclasstools\local\logros::days((int) $USER->id)
+            ),
+        ] : null,
         // Questions of the Moodle question bank for a quiz (multiple choice with one answer, true/false).
         'bankurl' => (new moodle_url('/local/oksigeniaclasstools/quizbank.php'))->out(false),
         // Words from the glossaries of the course for the word games (concept and a clue from its definition).
@@ -549,6 +559,7 @@ function local_oksigeniaclasstools_choose(array $courses): array {
         }
     }
     $filters = array_values(array_map(fn($c) => ['id' => $c['id'], 'name' => $c['name']], $categories));
+    $album = local_oksigeniaclasstools_album((int) $USER->id);
     $hour = (int) userdate(time(), '%H');
     $hello = $hour < 14 ? 'choose_hello_morning' : ($hour < 21 ? 'choose_hello_afternoon' : 'choose_hello_evening');
     $remote = get_config($component, 'live') !== '0' ? \local_oksigeniaclasstools\local\remote::status((int) $USER->id) : null;
@@ -565,6 +576,51 @@ function local_oksigeniaclasstools_choose(array $courses): array {
         'continue' => $last ? ['url' => $last['url'], 'name' => $last['name'], 'image' => $last['image']] : null,
         'standalone' => (new moodle_url('/local/oksigeniaclasstools/index.php', ['standalone' => 1]))->out(false),
         'remote' => $remote ? ['on' => $remote['on'], 'url' => $remote['url'] ?? ''] : null,
+        'album' => $album,
+    ];
+}
+
+/**
+ * «My stickers» for «Which class?»: how many, and what the page needs to draw the album (each sticker with its level,
+ * its days, the days for the next level and how to get it, with the thresholds of the site; the weeks of use; and the
+ * texts of the stickers).
+ *
+ * @param int $userid
+ * @return array|null got, json; null when the stickers are off.
+ */
+function local_oksigeniaclasstools_album(int $userid): ?array {
+    if (!\local_oksigeniaclasstools\local\logros::on()) {
+        return null;
+    }
+    $component = 'local_oksigeniaclasstools';
+    $data = \local_oksigeniaclasstools\local\logros::album($userid);
+    $thr = \local_oksigeniaclasstools\local\logros::thresholds();
+    $measure = ['sacanombres' => $thr['picks'], 'repartequipos' => $thr['students']];
+    $items = [];
+    foreach ($data['cromos'] as $c) {
+        $family = $c['family'];
+        $a = $measure[$c['cromo']] ?? ($family === 'live' ? $thr['devices'] : null);
+        $items[] = [
+            'cromo' => $c['cromo'],
+            'level' => $c['level'],
+            'days' => $c['days'] === 1 ? get_string('app_cr_day', $component) : get_string('app_cr_days', $component, $c['days']),
+            'next' => $c['next'] ? get_string('app_cr_next', $component, $c['next']) : get_string('app_cr_top', $component),
+            'how' => get_string('app_cr_' . $c['cromo'] . '_how', $component, $a),
+        ];
+    }
+    // The texts of the stickers and of the album, without the «app_» of the board's strings.
+    $str = [];
+    foreach (get_string_manager()->load_component_strings($component, current_language()) as $key => $text) {
+        if (strpos($key, 'app_cr_') === 0) {
+            $str[substr($key, 4)] = $text;
+        }
+    }
+    $weeks = $data['weeks'] >= $data['weeksneeded']
+        ? get_string('app_cr_weeks_done', $component, $data['weeks'])
+        : get_string('app_cr_weeks', $component, (object) ['n' => $data['weeks'], 'of' => $data['weeksneeded']]);
+    return [
+        'got' => get_string('app_cr_got', $component, (object) ['got' => $data['got'], 'all' => count($data['cromos'])]),
+        'json' => json_encode(['items' => $items, 'weeks' => $weeks, 'str' => $str], JSON_UNESCAPED_UNICODE),
     ];
 }
 

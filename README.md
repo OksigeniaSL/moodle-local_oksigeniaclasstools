@@ -76,6 +76,7 @@ The students in these screenshots do not exist: their names are made up and thei
 | Clock | The time now, **learning to tell the time** (hands dragged with a finger, digits and words, five levels and two class games) and a **countdown** to an event with the school days left. |
 | Noise meter | Microphone level only (nothing is recorded or sent). A light that breathes with the noise, a calm streak, a patience reserve that only sustained noise uses up, and «adjust to this class». |
 | Also | Work symbols and a QR code with styles, the site logo in the middle and PNG/SVG download. |
+| My stickers | Each tool has a sticker for the teacher, earned by using it for real with a class and raised a level with the days of use; the album is on «Which class?». Only each teacher sees theirs, with no rankings, and the administrator can turn it off. |
 | Teacher's guide | A button in the top bar opens the guide of what is on screen: what it is for, what it works on, why (with its sources), how to take it to class and what it gives at each school level. Only teachers see it. |
 | Screen modes | Early years, Primary, Secondary or Advanced: one at a time, per course. They change the look and the defaults (bigger notes and colours for the youngest, the full board for the older ones…) and put first what suits the level; the rest stays one tap away, in «Other levels». «Names in capitals», in the same menu, shows the students' names in capitals (on by default in Early years). |
 

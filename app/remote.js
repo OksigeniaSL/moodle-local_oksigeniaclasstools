@@ -29,7 +29,11 @@
         tab_prev: () => step(-1),
         present: () => click(document.documentElement.classList.contains('presentando') ? '#b-salir-presentar' : '#b-presentar'),
     };
+    // Five orders from the phone in a page: a real use of the remote, for the teacher's sticker.
+    let orders = 0;
     const run = (cmd) => {
+        orders++;
+        if (orders >= 5 && core.logro) { core.logro('mandamas'); }
         try {
             if (cmd.startsWith('tool_')) { const id = cmd.slice(5); if (core.tabs().includes(id)) { core.show(id); } return; }
             if (RUN[cmd]) { RUN[cmd](); }

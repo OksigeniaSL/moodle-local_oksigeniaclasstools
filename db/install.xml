@@ -101,5 +101,23 @@
         <INDEX NAME="token" UNIQUE="true" FIELDS="token"/>
       </INDEXES>
     </TABLE>
+    <TABLE NAME="local_oksigeniaclasstools_uses" COMMENT="Real uses of the tools with a class, for the teacher's stickers: one per sticker, course and day">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="The teacher"/>
+        <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="cromo" TYPE="char" LENGTH="20" NOTNULL="true" SEQUENCE="false" COMMENT="The sticker (one per tool)"/>
+        <FIELD NAME="day" TYPE="int" LENGTH="8" NOTNULL="true" SEQUENCE="false" COMMENT="YYYYMMDD in the teacher's time zone"/>
+        <FIELD NAME="week" TYPE="int" LENGTH="6" NOTNULL="true" SEQUENCE="false" COMMENT="ISO year and week, YYYYWW"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="userid-cromo-courseid-day" UNIQUE="true" FIELDS="userid, cromo, courseid, day"/>
+      </INDEXES>
+    </TABLE>
   </TABLES>
 </XMLDB>

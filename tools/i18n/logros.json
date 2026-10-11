@@ -1,0 +1,346 @@
+{
+ "cr_domamoviles_name": {
+  "en": "Phone Tamer",
+  "es": "Domamóviles"
+ },
+ "cr_domamoviles_text": {
+  "en": "No phone resists them.",
+  "es": "Ningún móvil se le resiste."
+ },
+ "cr_domamoviles_how": {
+  "en": "Have {$a} devices or more join a live session.",
+  "es": "Que entren {$a} dispositivos o más en una sesión «En vivo»."
+ },
+ "cr_cuentavotos_name": {
+  "en": "Vote Counter",
+  "es": "Cuentavotos"
+ },
+ "cr_cuentavotos_text": {
+  "en": "Counts votes faster than their shadow.",
+  "es": "Cuenta votos más rápido que su sombra."
+ },
+ "cr_cuentavotos_how": {
+  "en": "Close a vote with {$a} devices or more, most of them voting.",
+  "es": "Cierra una votación con {$a} dispositivos o más, y que vote la mayoría."
+ },
+ "cr_atrapanubes_name": {
+  "en": "Cloud Catcher",
+  "es": "Atrapanubes"
+ },
+ "cr_atrapanubes_text": {
+  "en": "Catches ideas before the wind takes them.",
+  "es": "Caza ideas antes de que se las lleve el viento."
+ },
+ "cr_atrapanubes_how": {
+  "en": "Close a brainstorm with {$a} answers or more.",
+  "es": "Cierra una lluvia de ideas con {$a} respuestas o más."
+ },
+ "cr_lanzapreguntas_name": {
+  "en": "Question Thrower",
+  "es": "Lanzapreguntas"
+ },
+ "cr_lanzapreguntas_text": {
+  "en": "Sharp aim: every doubt, on target.",
+  "es": "Puntería fina: cada duda, al blanco."
+ },
+ "cr_lanzapreguntas_how": {
+  "en": "Run 3 quiz questions with {$a} devices or more.",
+  "es": "Haz 3 preguntas de concurso con {$a} dispositivos o más."
+ },
+ "cr_tocatimbres_name": {
+  "en": "Buzzer Beater",
+  "es": "Tocatimbres"
+ },
+ "cr_tocatimbres_text": {
+  "en": "Nobody gets to the buzzer first.",
+  "es": "Nadie llega antes al timbre."
+ },
+ "cr_tocatimbres_how": {
+  "en": "Play 3 rounds of buzzers with {$a} devices or more.",
+  "es": "Juega 3 rondas de pulsadores con {$a} dispositivos o más."
+ },
+ "cr_mandamas_name": {
+  "en": "Remote Master",
+  "es": "Mandamás"
+ },
+ "cr_mandamas_text": {
+  "en": "Runs the board from any corner.",
+  "es": "Manda en la pizarra desde cualquier rincón."
+ },
+ "cr_mandamas_how": {
+  "en": "Drive the board from your phone: 5 orders in a day.",
+  "es": "Maneja la pizarra con el móvil: 5 órdenes en un día."
+ },
+ "cr_cuentamanos_name": {
+  "en": "Hand Counter",
+  "es": "Cuentamanos"
+ },
+ "cr_cuentamanos_text": {
+  "en": "Not a single hand gets away.",
+  "es": "No se le escapa ni una mano."
+ },
+ "cr_cuentamanos_how": {
+  "en": "Count {$a} hands or more in a show of hands.",
+  "es": "Cuenta {$a} manos o más en una pregunta a mano alzada."
+ },
+ "cr_repartequipos_name": {
+  "en": "Team Maker",
+  "es": "Repartequipos"
+ },
+ "cr_repartequipos_text": {
+  "en": "Makes teams with no complaints.",
+  "es": "Hace equipos sin que nadie proteste."
+ },
+ "cr_repartequipos_how": {
+  "en": "Make groups with a course list of {$a} students or more and leave them two minutes on screen, or keep them.",
+  "es": "Haz grupos con una lista del curso de {$a} alumnos o más y déjalos dos minutos en pantalla, o guárdalos."
+ },
+ "cr_sacanombres_name": {
+  "en": "Name Picker",
+  "es": "Sacanombres"
+ },
+ "cr_sacanombres_text": {
+  "en": "Pulls names out of the hat, no tricks.",
+  "es": "Saca nombres de la chistera, sin trampa ni cartón."
+ },
+ "cr_sacanombres_how": {
+  "en": "Pick {$a} students in the same class with «Whose turn?».",
+  "es": "Saca {$a} turnos en una misma clase con «¿A quién le toca?»."
+ },
+ "cr_guardatiempos_name": {
+  "en": "Time Keeper",
+  "es": "Guardatiempos"
+ },
+ "cr_guardatiempos_text": {
+  "en": "Time never gets away from them.",
+  "es": "El tiempo no se le escapa."
+ },
+ "cr_guardatiempos_how": {
+  "en": "Let a timer of a minute or more reach zero.",
+  "es": "Deja que un temporizador de un minuto o más llegue a cero."
+ },
+ "cr_tocanotas_name": {
+  "en": "Note Player",
+  "es": "Tocanotas"
+ },
+ "cr_tocanotas_text": {
+  "en": "Sings in tune and plays in time.",
+  "es": "Canta afinado y toca en su sitio."
+ },
+ "cr_tocanotas_how": {
+  "en": "Play a whole song on the score.",
+  "es": "Toca una canción entera en la partitura."
+ },
+ "cr_salvaglobos_name": {
+  "en": "Balloon Saver",
+  "es": "Salvaglobos"
+ },
+ "cr_salvaglobos_text": {
+  "en": "Not a balloon bursts in their hands.",
+  "es": "Ni un globo explota en sus manos."
+ },
+ "cr_salvaglobos_how": {
+  "en": "Finish a game of hangman.",
+  "es": "Termina una partida de ahorcado."
+ },
+ "cr_cazaletras_name": {
+  "en": "Letter Hunter",
+  "es": "Cazaletras"
+ },
+ "cr_cazaletras_text": {
+  "en": "From A to Z, without passing.",
+  "es": "De la A a la Z, sin pasar palabra."
+ },
+ "cr_cazaletras_how": {
+  "en": "Finish a letter wheel (rosco).",
+  "es": "Termina un rosco."
+ },
+ "cr_tiradados_name": {
+  "en": "Dice Roller",
+  "es": "Tiradados"
+ },
+ "cr_tiradados_text": {
+  "en": "Luck smiles on them.",
+  "es": "La suerte le sale de cara."
+ },
+ "cr_tiradados_how": {
+  "en": "Throw the dice 10 times, or use «Many throws».",
+  "es": "Tira los dados 10 veces o usa «Muchas tiradas»."
+ },
+ "cr_cumplemetas_name": {
+  "en": "Goal Getter",
+  "es": "Cumplemetas"
+ },
+ "cr_cumplemetas_text": {
+  "en": "With their class, reaches every goal.",
+  "es": "Con su clase, llega a todas las metas."
+ },
+ "cr_cumplemetas_how": {
+  "en": "Fill the jar of the class goal.",
+  "es": "Llena el bote de la meta de la clase."
+ },
+ "cr_pasalimpios_name": {
+  "en": "Clean Liner",
+  "es": "Pasalimpios"
+ },
+ "cr_pasalimpios_text": {
+  "en": "What they draw comes out right the first time.",
+  "es": "Lo que dibuja, sale a la primera."
+ },
+ "cr_pasalimpios_how": {
+  "en": "Let the board straighten a shape (magic shapes).",
+  "es": "Deja que la pizarra enderece una forma («formas mágicas»)."
+ },
+ "cr_quitatelones_name": {
+  "en": "Curtain Raiser",
+  "es": "Quitatelones"
+ },
+ "cr_quitatelones_text": {
+  "en": "Nobody sees the answer before its time.",
+  "es": "Nadie ve la respuesta antes de tiempo."
+ },
+ "cr_quitatelones_how": {
+  "en": "Use the curtain or the spotlight on the board.",
+  "es": "Usa el telón o el foco en la pizarra."
+ },
+ "cr_trazacirculos_name": {
+  "en": "Circle Drawer",
+  "es": "Trazacírculos"
+ },
+ "cr_trazacirculos_text": {
+  "en": "Their compass never goes astray.",
+  "es": "Su compás nunca se tuerce."
+ },
+ "cr_trazacirculos_how": {
+  "en": "Use the ruler, the set squares, the protractor or the compass.",
+  "es": "Usa la regla, la escuadra, el cartabón, el transportador o el compás."
+ },
+ "cr_fam_live": {
+  "en": "Live",
+  "es": "En vivo"
+ },
+ "cr_fam_groups": {
+  "en": "Groups",
+  "es": "Grupos"
+ },
+ "cr_fam_picker": {
+  "en": "Whose turn?",
+  "es": "¿A quién le toca?"
+ },
+ "cr_fam_timer": {
+  "en": "Timer",
+  "es": "Temporizador"
+ },
+ "cr_fam_score": {
+  "en": "Score",
+  "es": "Partitura"
+ },
+ "cr_fam_hangman": {
+  "en": "Hangman",
+  "es": "Ahorcado"
+ },
+ "cr_fam_rosco": {
+  "en": "Letter wheel",
+  "es": "Rosco"
+ },
+ "cr_fam_dice": {
+  "en": "Dice",
+  "es": "Dados"
+ },
+ "cr_fam_goal": {
+  "en": "Class goal",
+  "es": "Meta de la clase"
+ },
+ "cr_fam_board": {
+  "en": "Whiteboard",
+  "es": "Pizarra"
+ },
+ "cr_level_0": {
+  "en": "Learned",
+  "es": "Aprendido"
+ },
+ "cr_level_1": {
+  "en": "Level 1",
+  "es": "Nivel 1"
+ },
+ "cr_level_2": {
+  "en": "Level 2 · Bronze",
+  "es": "Nivel 2 · Bronce"
+ },
+ "cr_level_3": {
+  "en": "Level 3 · Silver",
+  "es": "Nivel 3 · Plata"
+ },
+ "cr_level_4": {
+  "en": "Level 4 · Gold",
+  "es": "Nivel 4 · Oro"
+ },
+ "cr_level_5": {
+  "en": "Level 5 · Shiny",
+  "es": "Nivel 5 · Brillo"
+ },
+ "cr_album": {
+  "en": "My stickers",
+  "es": "Mis logros"
+ },
+ "cr_intro": {
+  "en": "Each tool has its sticker: it is earned by using it for real with the class, and it goes up a level with the days of use.",
+  "es": "Cada herramienta tiene su cromo: se consigue usándola de verdad con la clase, y sube de nivel con los días de uso."
+ },
+ "cr_got": {
+  "en": "{$a->got} of {$a->all} stickers",
+  "es": "{$a->got} de {$a->all} cromos"
+ },
+ "cr_open": {
+  "en": "Open the album",
+  "es": "Ver el álbum"
+ },
+ "cr_close": {
+  "en": "Close",
+  "es": "Cerrar"
+ },
+ "cr_number": {
+  "en": "No. {$a->n} · {$a->family}",
+  "es": "Nº {$a->n} · {$a->family}"
+ },
+ "cr_days": {
+  "en": "{$a} days of use",
+  "es": "{$a} días de uso"
+ },
+ "cr_day": {
+  "en": "1 day of use",
+  "es": "1 día de uso"
+ },
+ "cr_next": {
+  "en": "Next level at {$a} days",
+  "es": "Siguiente nivel a los {$a} días"
+ },
+ "cr_top": {
+  "en": "Top level!",
+  "es": "¡Nivel máximo!"
+ },
+ "cr_missing": {
+  "en": "Still to get",
+  "es": "Por conseguir"
+ },
+ "cr_weeks": {
+  "en": "Weeks with the board: {$a->n} of {$a->of}",
+  "es": "Semanas con la pizarra: {$a->n} de {$a->of}"
+ },
+ "cr_weeks_done": {
+  "en": "{$a} weeks with the board: steady!",
+  "es": "{$a} semanas con la pizarra: ¡constancia!"
+ },
+ "cr_new": {
+  "en": "New sticker!",
+  "es": "¡Cromo nuevo!"
+ },
+ "cr_up": {
+  "en": "Up a level!",
+  "es": "¡Sube de nivel!"
+ },
+ "cr_none": {
+  "en": "No stickers yet: use any tool with your class and they start coming.",
+  "es": "Aún no hay cromos: usa cualquier herramienta con tu clase y empezarán a llegar."
+ }
+}

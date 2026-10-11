@@ -471,6 +471,9 @@
         const finals = diTypes.slice(0, diN).map((ty) => { const v = pickFrom(ty, taken); taken.push(v); return v; });
         const done = () => {
             diRolling = false; diValues = finals; diPaint(finals);
+            // Ten throws (or many at once): a real use, for the teacher's sticker.
+            diThrows++;
+            if (diThrows >= 10 && core.logro) { core.logro('tiradados'); }
             $('#di-roll').disabled = false;
             const finish = () => {
                 diSetTotal();
@@ -537,8 +540,11 @@
         if (freq.key !== key) { freq = { counts: {}, n: 0, key }; }
         paintFreq();
     };
+    // How many times the dice have been thrown in this page.
+    let diThrows = 0;
     $('#di-many-go').addEventListener('click', () => {
         if (!numeric()) { return; }
+        if (core.logro) { core.logro('tiradados'); }
         const times = Number($('#di-many').value) || 100, types = diTypes.slice(0, diN).map((ty) => facesOf(ty).map(Number));
         for (let i = 0; i < times; i++) {
             const sum = types.reduce((a, faces) => a + faces[random(faces.length)], 0);

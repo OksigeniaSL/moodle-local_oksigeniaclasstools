@@ -62,6 +62,13 @@ class provider implements
             'data' => 'privacy:metadata:state:data',
             'timemodified' => 'privacy:metadata:state:timemodified',
         ], 'privacy:metadata:state');
+        $collection->add_database_table('local_oksigeniaclasstools_uses', [
+            'userid' => 'privacy:metadata:uses:userid',
+            'courseid' => 'privacy:metadata:uses:courseid',
+            'cromo' => 'privacy:metadata:uses:cromo',
+            'day' => 'privacy:metadata:uses:day',
+            'timecreated' => 'privacy:metadata:uses:timecreated',
+        ], 'privacy:metadata:uses');
         $collection->add_database_table('local_oksigeniaclasstools_live', [
             'courseid' => 'privacy:metadata:live:courseid',
             'userid' => 'privacy:metadata:live:userid',
@@ -111,6 +118,13 @@ class provider implements
                                       JOIN {local_oksigeniaclasstools_state} s
                                            ON s.courseid = ctx.instanceid AND ctx.contextlevel = :level
                                      WHERE s.userid = :userid',
+            ['level' => CONTEXT_COURSE, 'userid' => $userid]
+        );
+        $contextlist->add_from_sql(
+            'SELECT ctx.id
+               FROM {context} ctx
+               JOIN {local_oksigeniaclasstools_uses} u ON u.courseid = ctx.instanceid AND ctx.contextlevel = :level
+              WHERE u.userid = :userid',
             ['level' => CONTEXT_COURSE, 'userid' => $userid]
         );
         $contextlist->add_from_sql(
@@ -171,6 +185,11 @@ class provider implements
         $userlist->add_from_sql(
             'userid',
             'SELECT userid FROM {local_oksigeniaclasstools_state} WHERE courseid = :courseid',
+            $params
+        );
+        $userlist->add_from_sql(
+            'userid',
+            'SELECT userid FROM {local_oksigeniaclasstools_uses} WHERE courseid = :courseid',
             $params
         );
         $userlist->add_from_sql(
@@ -238,6 +257,20 @@ class provider implements
                     [get_string('pluginname', 'local_oksigeniaclasstools'), $row->tool],
                     (object) ['data' => json_decode($row->data), 'timemodified' => transform::datetime($row->timemodified)]
                 );
+            }
+            // The real uses of the tools kept for their stickers: the days of each one.
+            $where = ['courseid' => $context->instanceid, 'userid' => $userid];
+            $uses = $DB->get_records('local_oksigeniaclasstools_uses', $where, 'day');
+            if ($uses) {
+                $bycromo = [];
+                foreach ($uses as $use) {
+                    $bycromo[$use->cromo][] = transform::date($use->timecreated);
+                }
+                $path = [
+                    get_string('pluginname', 'local_oksigeniaclasstools'),
+                    get_string('privacy:uses', 'local_oksigeniaclasstools'),
+                ];
+                writer::with_context($context)->export_data($path, (object) ['uses' => $bycromo]);
             }
             // Live sessions: the ones they opened, and what they answered in the others.
             $opened = $DB->get_records(
@@ -326,6 +359,7 @@ class provider implements
         if ($context->contextlevel == CONTEXT_COURSE) {
             $DB->delete_records('local_oksigeniaclasstools_picks', ['courseid' => $context->instanceid]);
             $DB->delete_records('local_oksigeniaclasstools_state', ['courseid' => $context->instanceid]);
+            $DB->delete_records('local_oksigeniaclasstools_uses', ['courseid' => $context->instanceid]);
             self::delete_live((int) $context->instanceid, null);
             get_file_storage()->delete_area_files($context->id, 'local_oksigeniaclasstools', quizimages::AREA);
         }
@@ -355,6 +389,7 @@ class provider implements
                 ['courseid' => $context->instanceid, 'teacherid' => $userid]
             );
             $DB->delete_records('local_oksigeniaclasstools_state', ['courseid' => $context->instanceid, 'userid' => $userid]);
+            $DB->delete_records('local_oksigeniaclasstools_uses', ['courseid' => $context->instanceid, 'userid' => $userid]);
             self::delete_live((int) $context->instanceid, [$userid]);
             get_file_storage()->delete_area_files($context->id, 'local_oksigeniaclasstools', quizimages::AREA, $userid);
         }
@@ -383,6 +418,7 @@ class provider implements
             $params
         );
         $DB->delete_records_select('local_oksigeniaclasstools_state', "courseid = :courseid AND userid $insql", $params);
+        $DB->delete_records_select('local_oksigeniaclasstools_uses', "courseid = :courseid AND userid $insql", $params);
         self::delete_live((int) $context->instanceid, $userlist->get_userids());
         foreach ($userlist->get_userids() as $userid) {
             get_file_storage()->delete_area_files($context->id, 'local_oksigeniaclasstools', quizimages::AREA, $userid);

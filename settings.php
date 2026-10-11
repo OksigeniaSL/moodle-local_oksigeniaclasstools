@@ -113,6 +113,23 @@ if ($hassiteconfig) {
             get_string('livenotice_desc', 'local_oksigeniaclasstools'),
             1
         ));
+        // The teacher's stickers: on or off, and what makes a use real.
+        $settings->add(new admin_setting_configcheckbox(
+            'local_oksigeniaclasstools/logros',
+            get_string('logros', 'local_oksigeniaclasstools'),
+            get_string('logros_desc', 'local_oksigeniaclasstools'),
+            1
+        ));
+        foreach (['logros_devices' => 5, 'logros_picks' => 5, 'logros_students' => 8] as $name => $default) {
+            $settings->add(new admin_setting_configtext(
+                'local_oksigeniaclasstools/' . $name,
+                get_string($name, 'local_oksigeniaclasstools'),
+                get_string($name . '_desc', 'local_oksigeniaclasstools'),
+                $default,
+                PARAM_INT,
+                4
+            ));
+        }
         // Exercises written by the AI of the site, from Moodle 4.5.
         if (class_exists('\\core_ai\\manager')) {
             $settings->add(new admin_setting_configcheckbox(

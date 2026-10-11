@@ -20,6 +20,7 @@ const FAKE = `
 window.CLASSTOOLS = { lists: [{ id: 1, name: 'Class 1', key: 'c1', students: Array.from({ length: 8 }, (_, i) => ({ id: i + 1, n: 'Student ' + (i + 1) })) }],
     courseid: 1, mode: 'teacher', sesskey: 'x', days: {}, state: {}, liveurl: 'fake://live', glossaryurl: 'fake://glossary', bankurl: 'fake://bank',
     aiurl: 'fake://ai', remoteurl: 'fake://remote', remote: { on: false },
+    logrosurl: 'fake://logros', logros: { thr: { devices: 5, picks: 5, students: 8 }, levels: {} },
     me: { id: 99, name: 'Teacher' } };
 window.FAKE = { calls: [], polls: 0 };
 const BANK_PAIRS = [['frog', 'amphibian'], ['cat', 'mammal'], ['bee', 'insect']];
@@ -72,6 +73,10 @@ window.shot = (name) => new Promise((done) => { if (!window.checkShot) { done();
                 return json({ on: true, seq: R.seq, cmds, phone: !!FAKE.remoteCmds });
             }
             return json(status());
+        }
+        // The teacher's stickers, as logros.php gives it: the first use of a sticker is its level 1.
+        if (String(url).startsWith('fake://logros')) {
+            return json({ cromo: p.get('cromo'), days: 1, level: 1, up: true });
         }
         // The phone of the fixed remote, as mandoapi.php gives it: two open boards.
         if (String(url).startsWith('fake://mando')) {
@@ -909,6 +914,33 @@ const CHECKS = {
         return card === 'Marie Curie' && /60/.test(msg) ? '' : `the end says «${card}» and «${msg}»`;
     },
     // Dice: a thousand throws of two dice give the eleven sums, with the line of what is expected.
+    // The teacher's stickers: «Many throws» is a real use of the dice; its sticker comes in, once a day.
+    'stickers': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const q = (x) => document.querySelector(x);
+        Object.keys(localStorage).filter((k) => k.includes('logro-')).forEach((k) => localStorage.removeItem(k));
+        q('#t-azar').click();
+        await sleep(200);
+        q('#ch-mode [data-mode="dice"]').click();
+        await sleep(200);
+        q('#di-many').value = '100';
+        q('#di-many-go').click();
+        await sleep(400);
+        const sent = FAKE.calls.filter((c) => c.cromo);
+        if (sent.length !== 1 || sent[0].cromo !== 'tiradados') { return `sent ${JSON.stringify(sent)}`; }
+        const layer = q('.ct-logro');
+        if (!layer || !layer.querySelector('svg.cr-cromo') || !/sticker/i.test(layer.textContent)) { return 'the sticker did not come in'; }
+        await sleep(700);
+        await window.shot('sticker');
+        layer.click();
+        await sleep(500);
+        q('#di-many-go').click();
+        await sleep(300);
+        if (FAKE.calls.filter((c) => c.cromo).length !== 1) { return 'the same sticker was sent twice in a day'; }
+        // A level up shows its sticker too.
+        window.ClasstoolsLogros.show('cumplemetas', 3);
+        return q('.ct-logro svg') ? '' : 'no drawing for a level up';
+    },
     'dice-frequencies': async () => {
         const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
         document.querySelector('#t-azar').click();

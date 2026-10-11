@@ -634,6 +634,8 @@
         pg.s[i] = made;
         record({ undo: () => { const j = pg.s.indexOf(made); if (j >= 0) { pg.s[j] = old; } }, redo: () => { const j = pg.s.indexOf(old); if (j >= 0) { pg.s[j] = made; } } }, pg);
         g.s = made; g.magic = 'done';
+        // A magic shape: a real use of the board, for the teacher's sticker.
+        if (core.logro) { core.logro('pasalimpios'); }
         redraw();
         core.play('tic');
     }

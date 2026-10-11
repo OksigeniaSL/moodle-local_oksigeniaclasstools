@@ -309,6 +309,8 @@
     };
     const finish = () => {
         g.running = false; stopClock();
+        // A rosco played to its end, for the teacher's sticker.
+        if (core.logro) { core.logro('cazaletras'); }
         const res = $('#ro-result');
         let headline = STR.finished;
         if (g.teams.length > 1) {

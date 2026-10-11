@@ -173,6 +173,8 @@
         });
     };
     const create = (kind) => {
+        // An instrument on the board, for the teacher's sticker.
+        if (core.logro) { core.logro('trazacirculos'); }
         // Each in a place of its own, around the middle of what is on screen.
         const [cx, cy] = kit.middle(), [ox, oy] = { ruler: [0, -0.1], square: [-0.24, 0.03], bevel: [-0.2, 0.06], protractor: [0.2, 0.04], compass: [0.3, 0.02] }[kind];
         const [mx, my] = [cx + ox, cy + oy];
@@ -418,6 +420,8 @@
             const there = items.find((o) => o.kind === k);
             if (there) { remove(there); } else { create(k); }
         }
+        // The curtain or the spotlight shown, for the teacher's sticker.
+        if (((k === 'curtain' && !curtain.hidden) || (k === 'spot' && !spot.hidden)) && core.logro) { core.logro('quitatelones'); }
         paintButtons();
     });
     kit.onView(() => { items.forEach(place); paintSpot(); });

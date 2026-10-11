@@ -563,6 +563,8 @@
     const tmTermina = () => {
         if (bq.on && bqSigue()) { return; }
         clearInterval(tm.reloj);
+        // El cromo del profe: un temporizador de un minuto o más que llega a cero.
+        if (tm.total >= 60000 && window.ClasstoolsCore.logro) { window.ClasstoolsCore.logro('guardatiempos'); }
         Object.assign(tm, { marcha: false, acabado: true, resta: 0 });
         tmBotones(); tmPinta();
         suena('fin');
@@ -1018,6 +1020,11 @@
             if (qSinRepetir) { const ya = salidos[l.id] || []; salidos[l.id] = ya.includes(elegido) ? ya : ya.concat(elegido); guarda('salidos', salidos); }
             if (conTurnos(l) && l.ids[elegido]) {
                 sumaTurno(l.ids[elegido]);
+                // El cromo del profe: unos cuantos turnos en la misma clase y el mismo día son un uso de verdad.
+                const C = window.ClasstoolsCore, clave = 'turnos-' + l.id + '-' + new Date().toDateString();
+                const turnos = (Number(lee(clave, 0)) || 0) + 1;
+                guarda(clave, turnos);
+                if (C.logro && C.logros && turnos >= C.logros.thr.picks) { C.logro('sacanombres'); }
                 alAula(AULA.pickurl, { userid: l.ids[elegido] }).catch(() => { /* sin conexión: ese turno no cuenta, el sorteo sigue */ });
             } else if (l.yo === elegido) { l.veces[elegido] = (l.veces[elegido] || 0) + 1; }   // el profe: solo aquí
             const destapa = () => {
@@ -1260,6 +1267,11 @@
             $('#g-resumen').textContent = t(k === 1 ? 'g_summary_one' : 'g_summary_many', { n: b.length, k, size: mn === mx ? mn : t('g_sizes', { a: mn, b: mx }) });
             rotula($('#g-hacer'), t('gen_again'), 'otra');
             gHechos = { lista: lg, grupos };
+            // El cromo del profe: grupos de una lista del curso que se quedan dos minutos en pantalla (o se guardan).
+            const C = window.ClasstoolsCore, hechos = gHechos;
+            if (C.logro && C.logros && lg && lg.aula && b.length >= C.logros.thr.students) {
+                setTimeout(() => { if (gHechos === hechos) { C.logro('repartequipos'); } }, 120000);
+            }
             // Guardarlos como grupos del curso: solo si se pulsa (por defecto no se crea nada).
             gUltimos = lg && lg.aula && AULA.groupsurl ? { lista: lg, grupos } : null;
             $('#g-moodle').hidden = !gUltimos; $('#g-moodle').disabled = false;
@@ -1453,6 +1465,7 @@
         alAula(AULA.groupsurl, { listname: lista.nombre, teams: JSON.stringify(grupos.map((g) => g.map((n) => lista.ids[n]).filter(Boolean))) })
             .then((j) => {
                 rotula(b, t('g_saved'), 'hecho');
+                if (window.ClasstoolsCore.logro) { window.ClasstoolsCore.logro('repartequipos'); }
                 $('#g-resumen').textContent += ' ' + t('g_saved_as', j.grouping);
                 anuncia(t('g_saved_announce', j.grouping));
             })

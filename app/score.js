@@ -600,7 +600,8 @@
             let i = -1;
             playing.times.forEach((x) => { if (x.at <= now) { i = x.index; } });
             if (i !== playing.index) { playing.index = i; render(); }
-            if (now >= playing.end + 1.5) { playing = null; bus = null; paintPlay(); render(); return; }
+            // A song played to its end: a real use, for the teacher's sticker.
+            if (now >= playing.end + 1.5) { if (core.logro) { core.logro('tocanotas'); } playing = null; bus = null; paintPlay(); render(); return; }
             if (now >= playing.end && playing.index !== -2) { playing.index = -2; render(); }
             playing.frame = requestAnimationFrame(follow);
         };
@@ -691,6 +692,7 @@
         if (sameNote(n, want)) {
             next++; skipRests();
             if (next >= song.notes.length) {
+                if (core.logro) { core.logro('tocanotas'); }
                 $('#sc-msg').textContent = t('sc_well_done');
                 if (core.celebrate) { core.celebrate($('.ct-sc'), { title: t('sc_well_done'), text: song.title }); }
                 announce(t('sc_well_done'));
