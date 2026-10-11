@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.36.0 (2026-10-12)
+
+- **«Which class?», with the look of the board**: its letter, colours and rounded shapes, and everything on one screen
+  (a compact layout for laptops). A greeting with the date; the courses in one grid, each with its picture, category,
+  some faces of the class and how many students, and a tag with its mode only when one was chosen; the stages as
+  buttons and the categories as a list, with the search; and a panel at the side: carry on with the last class, the
+  board without a course and the fixed remote with its QR. Its styles load only on that page.
+
 ## 0.35.0 (2026-10-11)
 
 - **«Which class?», redesigned**: the teacher's courses as cards, by category (in the order of the site), each with its

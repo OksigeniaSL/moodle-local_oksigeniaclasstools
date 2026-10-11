@@ -17,75 +17,116 @@
 {{!
     @template local_oksigeniaclasstools/choose
 
-    «Which class?»: the teacher's courses as cards (picture, name, students and the screen mode it starts in), by
-    category, with a search when there are many, and a band above for what is not a course (the board without one;
-    later, the teacher's achievements).
+    «Which class?»: the look of the board, not of Moodle, and everything on one screen. A greeting with the date, the
+    courses in one compact grid (picture, category, name and some faces of the class), filters by category and stage
+    and a search, and a panel at the side: carry on with the last class, the board without a course and the fixed
+    remote (with its QR when it is on). The panel has room for the teacher's achievements.
 
     Context variables required for this template:
+    * hello - the greeting, with the teacher's first name
+    * date - today, as the teacher's calendar says it
     * search - whether to show the search box
-    * stages - when the courses are of more than one stage, each stage (mode, name) to show only its courses
+    * categories - the categories to filter by (id, name), when there are more than one
+    * stages - when the courses are of more than one stage, each stage (mode, name)
+    * courses - url, name, category, categoryid, image, mode, modename (only when the mode was chosen), students, faces
+    * continue - the last class used (url, name, image), if any
     * standalone - the address of the board without a course
-    * categories - each with its name and its courses (url, name, image, students, mode, modename)
+    * remote - the fixed remote: on, url
 
     Example context (json):
     {
+        "hello": "Good afternoon, Ana",
+        "date": "Monday, 12 October 2026",
         "search": true,
-        "stages": [{"mode": "early", "name": "Early years"}, {"mode": "primary", "name": "Primary"}],
-        "standalone": "https://example.org/local/oksigeniaclasstools/index.php?standalone=1",
-        "categories": [
+        "categories": [{"id": 1, "name": "Primary"}, {"id": 2, "name": "Secondary"}],
+        "stages": [{"mode": "primary", "name": "Primary"}, {"mode": "secondary", "name": "Secondary"}],
+        "courses": [
             {
-                "name": "Primary",
-                "courses": [
-                    {
-                        "url": "https://example.org/local/oksigeniaclasstools/index.php?id=2",
-                        "name": "Science, Year 5",
-                        "image": "https://example.org/pluginfile.php/1/course/overviewfiles/science.jpg",
-                        "students": "24 students",
-                        "mode": "primary",
-                        "modename": "Primary"
-                    }
-                ]
+                "url": "https://example.org/local/oksigeniaclasstools/index.php?id=2",
+                "name": "Science, Year 5",
+                "category": "Primary",
+                "categoryid": 1,
+                "image": "https://example.org/pluginfile.php/1/course/overviewfiles/science.jpg",
+                "mode": "primary",
+                "modename": "Primary",
+                "students": "24 students",
+                "faces": [{"src": "https://example.org/user/pix.php/3/f2.jpg"}, {"initials": "LM"}]
             }
-        ]
+        ],
+        "continue": {"url": "https://example.org/local/oksigeniaclasstools/index.php?id=2", "name": "Science, Year 5",
+            "image": "https://example.org/pluginfile.php/1/course/overviewfiles/science.jpg"},
+        "standalone": "https://example.org/local/oksigeniaclasstools/index.php?standalone=1",
+        "remote": {"on": true, "url": "https://example.org/local/oksigeniaclasstools/mando.php?k=abc"}
     }
 }}
-<div class="ct-choose">
-    <p class="ct-choose-lead">{{#str}} choose_desc, local_oksigeniaclasstools {{/str}}</p>
-    <div class="ct-choose-band">
-        <a class="ct-choose-alone" href="{{standalone}}">
-            <span class="ct-choose-alone-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 5h18v11H3z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 20h8M12 16v4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
-            <span><strong>{{#str}} standalone, local_oksigeniaclasstools {{/str}}</strong>
-                <span class="ct-choose-alone-text">{{#str}} choose_standalone_desc, local_oksigeniaclasstools {{/str}}</span></span>
-        </a>
-        {{#stages.0}}
-        <div class="ct-choose-stages" role="group" aria-label="{{#str}} choose_stage, local_oksigeniaclasstools {{/str}}">
-            <button type="button" aria-pressed="true" data-mode="">{{#str}} choose_all, local_oksigeniaclasstools {{/str}}</button>
-            {{#stages}}<button type="button" aria-pressed="false" data-mode="{{mode}}" class="ct-mode-{{mode}}">{{name}}</button>{{/stages}}
+<div class="ct-ch">
+    <div class="ct-ch-franja" aria-hidden="true"></div>
+    <header class="ct-ch-cab">
+        <div>
+            <p class="ct-ch-hola">{{hello}}</p>
+            <h2 class="ct-ch-titulo">{{#str}} choose, local_oksigeniaclasstools {{/str}}</h2>
+            <p class="ct-ch-fecha">{{date}} · {{#str}} choose_desc, local_oksigeniaclasstools {{/str}}</p>
         </div>
-        {{/stages.0}}
-        {{#search}}
-        <label class="ct-choose-search">
-            <span class="sr-only visually-hidden">{{#str}} choose_search, local_oksigeniaclasstools {{/str}}</span>
-            <input type="search" id="ct-choose-search" placeholder="{{#str}} choose_search, local_oksigeniaclasstools {{/str}}" autocomplete="off">
-        </label>
-        {{/search}}
+        <div class="ct-ch-herr">
+            {{#categories.0}}
+            <label class="ct-ch-categoria">
+                <span class="sr-only visually-hidden">{{#str}} choose_category, local_oksigeniaclasstools {{/str}}</span>
+                <select id="ct-ch-categoria">
+                    <option value="">{{#str}} choose_all_categories, local_oksigeniaclasstools {{/str}}</option>
+                    {{#categories}}<option value="{{id}}">{{name}}</option>{{/categories}}
+                </select>
+            </label>
+            {{/categories.0}}
+            {{#search}}
+            <label class="ct-ch-buscar">
+                <span class="sr-only visually-hidden">{{#str}} choose_search, local_oksigeniaclasstools {{/str}}</span>
+                <input type="search" id="ct-ch-buscar" placeholder="{{#str}} choose_search, local_oksigeniaclasstools {{/str}}" autocomplete="off">
+            </label>
+            {{/search}}
+        </div>
+    </header>
+    {{#stages.0}}
+    <div class="ct-ch-filtros" role="group" aria-label="{{#str}} choose_filter, local_oksigeniaclasstools {{/str}}">
+        <button type="button" aria-pressed="true" data-mode="">{{#str}} choose_all, local_oksigeniaclasstools {{/str}}</button>
+        {{#stages}}<button type="button" aria-pressed="false" data-mode="{{mode}}" class="ct-mode-{{mode}}">{{name}}</button>{{/stages}}
     </div>
-    {{#categories}}
-    <section class="ct-choose-cat">
-        <h3>{{name}}</h3>
-        <div class="ct-choose-grid">
+    {{/stages.0}}
+    <div class="ct-ch-cuerpo">
+        <div class="ct-ch-rejilla">
             {{#courses}}
-            <a class="ct-choose-card" href="{{url}}" data-name="{{name}}" data-mode="{{mode}}">
-                <span class="ct-choose-img"><img src="{{image}}" alt="" loading="lazy">
-                    <span class="ct-choose-mode ct-mode-{{mode}}">{{modename}}</span></span>
-                <span class="ct-choose-body">
-                    <span class="ct-choose-name">{{name}}</span>
-                    <span class="ct-choose-meta"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><circle cx="16.5" cy="9" r="2.6"/><path d="M3 19c.6-3.4 3-5.2 6-5.2s5.4 1.8 6 5.2zM14.6 14.2c.6-.2 1.2-.3 1.9-.3 2.6 0 4.5 1.6 5 4.6h-5.3"/></svg>{{students}}<span class="ct-choose-go" aria-hidden="true">→</span></span>
+            <a class="ct-ch-curso ct-mode-{{mode}}" href="{{url}}" data-name="{{name}}" data-mode="{{mode}}" data-cat="{{categoryid}}">
+                <span class="ct-ch-img"><img src="{{image}}" alt="" loading="lazy">{{#modename}}<span class="ct-ch-modo">{{modename}}</span>{{/modename}}</span>
+                <span class="ct-ch-info">
+                    <span class="ct-ch-cat">{{category}}</span>
+                    <span class="ct-ch-nombre">{{name}}</span>
+                    <span class="ct-ch-clase">
+                        <span class="ct-ch-caras" aria-hidden="true">{{#faces}}{{#src}}<img src="{{src}}" alt="" loading="lazy">{{/src}}{{#initials}}<span>{{initials}}</span>{{/initials}}{{/faces}}</span>
+                        <span class="ct-ch-num">{{students}}</span>
+                    </span>
                 </span>
             </a>
             {{/courses}}
+            <p class="ct-ch-nada" id="ct-ch-nada" hidden>{{#str}} choose_none_found, local_oksigeniaclasstools {{/str}}</p>
         </div>
-    </section>
-    {{/categories}}
-    <p class="ct-choose-none" id="ct-choose-none" hidden>{{#str}} choose_none_found, local_oksigeniaclasstools {{/str}}</p>
+        <aside class="ct-ch-panel">
+            {{#continue}}
+            <a class="ct-ch-seguir" href="{{url}}">
+                <img src="{{image}}" alt="" loading="lazy">
+                <span><span class="ct-ch-ante">{{#str}} choose_continue, local_oksigeniaclasstools {{/str}}</span><strong>{{name}}</strong></span>
+            </a>
+            {{/continue}}
+            <a class="ct-ch-sin" href="{{standalone}}">
+                <span class="ct-ch-icono" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 5h18v11H3z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 20h8M12 16v4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+                <span><strong>{{#str}} standalone, local_oksigeniaclasstools {{/str}}</strong><span class="ct-ch-nota">{{#str}} choose_standalone_desc, local_oksigeniaclasstools {{/str}}</span></span>
+            </a>
+            {{#remote}}
+            <div class="ct-ch-mando">
+                <span class="ct-ch-ante">{{#str}} choose_remote, local_oksigeniaclasstools {{/str}}</span>
+                {{#on}}<div class="ct-ch-qr" id="ct-ch-qr" data-url="{{url}}"></div>
+                <p class="ct-ch-nota">{{#str}} choose_remote_on, local_oksigeniaclasstools {{/str}}</p>{{/on}}
+                {{^on}}<p class="ct-ch-nota">{{#str}} choose_remote_off, local_oksigeniaclasstools {{/str}}</p>{{/on}}
+            </div>
+            {{/remote}}
+        </aside>
+    </div>
 </div>

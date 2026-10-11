@@ -444,70 +444,127 @@ function local_oksigeniaclasstools_content_file(string $lang): string {
 }
 
 /**
- * «Which class?»: the teacher's courses as cards, by category (in the order of the site), each with its picture (or the
- * pattern Moodle makes for a course without one), its students and the screen mode it starts in (the one the teacher
- * chose there, or else the one of its category or the site).
+ * «Which class?»: a greeting, the teacher's courses in one grid (in the order of the categories of the site), each with
+ * its picture (or the pattern Moodle makes for a course without one), its category, some faces of the class and how
+ * many students, and the screen mode when one was chosen (by the teacher there, or for its category); filters by
+ * category and stage; the last class used; and the fixed remote.
  *
- * @param stdClass[] $courses The courses where the teacher can use the tools.
+ * @param stdClass[] $courses The courses where the teacher can use the tools (with id, fullname and category).
  * @return array The context of the template local_oksigeniaclasstools/choose.
  */
 function local_oksigeniaclasstools_choose(array $courses): array {
-    global $DB, $USER, $OUTPUT;
+    global $DB, $USER, $OUTPUT, $PAGE;
+    $component = 'local_oksigeniaclasstools';
     $chosen = [];
+    $used = [];
     if ($courses) {
         [$in, $params] = $DB->get_in_or_equal(array_keys($courses), SQL_PARAMS_NAMED);
-        $params += ['userid' => $USER->id, 'tool' => 'settings'];
+        $params += ['userid' => $USER->id];
+        // What the teacher keeps of the board in each course: the mode chosen, and when it was last used.
         $rows = $DB->get_records_select(
             'local_oksigeniaclasstools_state',
-            "courseid $in AND userid = :userid AND tool = :tool",
+            "courseid $in AND userid = :userid",
             $params,
             '',
-            'courseid, data'
+            'id, courseid, tool, data, timemodified'
         );
         foreach ($rows as $row) {
-            $data = json_decode((string) $row->data, true);
+            $used[$row->courseid] = max($used[$row->courseid] ?? 0, (int) $row->timemodified);
+            $data = $row->tool === 'settings' ? json_decode((string) $row->data, true) : null;
             if (is_array($data) && in_array($data['mode'] ?? '', LOCAL_OKSIGENIACLASSTOOLS_MODES, true)) {
                 $chosen[$row->courseid] = $data['mode'];
             }
         }
     }
+    $site = local_oksigeniaclasstools_default_mode();
     $categories = [];
+    $cards = [];
     foreach ($courses as $course) {
         $context = context_course::instance($course->id);
         $category = core_course_category::get((int) $course->category, IGNORE_MISSING, true);
-        $key = $category ? (int) $category->id : 0;
-        if (!isset($categories[$key])) {
-            $categories[$key] = ['name' => $category ? $category->get_formatted_name() : '',
-                'sort' => $category ? (int) $category->sortorder : 0, 'courses' => []];
+        $catid = $category ? (int) $category->id : 0;
+        if (!isset($categories[$catid])) {
+            $categories[$catid] = ['id' => $catid, 'name' => $category ? $category->get_formatted_name() : '',
+                'sort' => $category ? (int) $category->sortorder : 0];
         }
-        $image = \core_course\external\course_summary_exporter::get_course_image($course);
+        $bycategory = local_oksigeniaclasstools_default_mode((int) $course->category);
+        $mode = $chosen[$course->id] ?? $bycategory;
+        // Some faces of the class: those with a picture first; without one, their initials.
+        $faces = [];
+        $fields = 'u.id, u.picture, u.imagealt, u.email, u.firstname, u.lastname, u.firstnamephonetic, u.lastnamephonetic, '
+            . 'u.middlename, u.alternatename';
+        $some = get_enrolled_users(
+            $context,
+            'moodle/course:isincompletionreports',
+            0,
+            $fields,
+            'u.picture DESC, u.firstname ASC',
+            0,
+            4,
+            true
+        );
+        foreach ($some as $user) {
+            if ($user->picture) {
+                $picture = new user_picture($user);
+                $picture->size = 64;
+                $faces[] = ['src' => $picture->get_url($PAGE)->out(false)];
+            } else {
+                $initials = core_text::substr($user->firstname, 0, 1) . core_text::substr($user->lastname, 0, 1);
+                $faces[] = ['initials' => core_text::strtoupper($initials)];
+            }
+        }
         $students = count_enrolled_users($context, 'moodle/course:isincompletionreports', 0, true);
-        $mode = $chosen[$course->id] ?? local_oksigeniaclasstools_default_mode((int) $course->category);
         $label = $students === 1 ? 'choose_student' : 'choose_students';
-        $categories[$key]['courses'][] = [
+        $image = \core_course\external\course_summary_exporter::get_course_image($course);
+        $cards[] = [
             'url' => (new moodle_url('/local/oksigeniaclasstools/index.php', ['id' => $course->id]))->out(false),
             'name' => format_string($course->fullname, true, ['context' => $context]),
+            'category' => $categories[$catid]['name'],
+            'categoryid' => $catid,
             'image' => $image ?: $OUTPUT->get_generated_image_for_id($course->id),
-            'students' => get_string($label, 'local_oksigeniaclasstools', $students),
             'mode' => $mode,
-            'modename' => get_string('mode_' . $mode, 'local_oksigeniaclasstools'),
+            // The tag only when the mode was chosen (by the teacher, or for the category), not the site's for all.
+            'modename' => isset($chosen[$course->id]) || $bycategory !== $site ? get_string('mode_' . $mode, $component) : '',
+            'students' => get_string($label, $component, $students),
+            'faces' => $faces,
+            'sort' => [$categories[$catid]['sort'], core_text::strtolower($course->fullname)],
+            'used' => $used[$course->id] ?? 0,
         ];
     }
+    usort($cards, fn($a, $b) => $a['sort'] <=> $b['sort']);
     uasort($categories, fn($a, $b) => $a['sort'] <=> $b['sort']);
     // A teacher can have classes in more than one stage (Early years and Primary, Primary and Secondary): then one
     // button per stage to see only its courses.
-    $modes = array_unique(array_merge(...array_map(fn($c) => array_column($c['courses'], 'mode'), array_values($categories))));
+    $modes = array_unique(array_column($cards, 'mode'));
     $stages = [];
     foreach (LOCAL_OKSIGENIACLASSTOOLS_MODES as $mode) {
         if (in_array($mode, $modes, true)) {
-            $stages[] = ['mode' => $mode, 'name' => get_string('mode_' . $mode, 'local_oksigeniaclasstools')];
+            $stages[] = ['mode' => $mode, 'name' => get_string('mode_' . $mode, $component)];
         }
     }
+    $last = null;
+    foreach ($cards as $card) {
+        if ($card['used'] && (!$last || $card['used'] > $last['used'])) {
+            $last = $card;
+        }
+    }
+    $filters = array_values(array_map(fn($c) => ['id' => $c['id'], 'name' => $c['name']], $categories));
+    $hour = (int) userdate(time(), '%H');
+    $hello = $hour < 14 ? 'choose_hello_morning' : ($hour < 21 ? 'choose_hello_afternoon' : 'choose_hello_evening');
+    $remote = get_config($component, 'live') !== '0' ? \local_oksigeniaclasstools\local\remote::status((int) $USER->id) : null;
     return [
-        'search' => count($courses) > 8,
+        'hello' => get_string($hello, $component, format_string($USER->firstname)),
+        'date' => userdate(time(), get_string('strftimedaydate', 'langconfig')),
+        'search' => count($cards) > 8,
+        'categories' => count($categories) > 1 ? $filters : [],
         'stages' => count($stages) > 1 ? $stages : [],
+        'courses' => array_map(function ($card) {
+            unset($card['sort'], $card['used']);
+            return $card;
+        }, $cards),
+        'continue' => $last ? ['url' => $last['url'], 'name' => $last['name'], 'image' => $last['image']] : null,
         'standalone' => (new moodle_url('/local/oksigeniaclasstools/index.php', ['standalone' => 1]))->out(false),
-        'categories' => array_values(array_map(fn($c) => ['name' => $c['name'], 'courses' => $c['courses']], $categories)),
+        'remote' => $remote ? ['on' => $remote['on'], 'url' => $remote['url'] ?? ''] : null,
     ];
 }
 

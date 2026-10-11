@@ -168,17 +168,26 @@ final class modes_test extends \advanced_testcase {
         $this->setUser($teacher);
         $choose = local_oksigeniaclasstools_choose(enrol_get_my_courses(['id', 'fullname', 'shortname', 'category']));
         $this->assertSame(['Early years', 'Primary'], array_column($choose['categories'], 'name'));
-        $cards = array_merge(...array_column($choose['categories'], 'courses'));
-        $byname = array_combine(array_column($cards, 'name'), $cards);
+        $byname = array_combine(array_column($choose['courses'], 'name'), $choose['courses']);
+        // Room A: the mode of its category, with its tag; two students, two faces (initials, without pictures).
         $this->assertSame('early', $byname['Room A']['mode']);
+        $this->assertNotSame('', $byname['Room A']['modename']);
         $this->assertSame('2 students', $byname['Room A']['students']);
+        $this->assertCount(2, $byname['Room A']['faces']);
+        $this->assertArrayHasKey('initials', $byname['Room A']['faces'][0]);
+        // Science: the mode of the site for all, without a tag.
         $this->assertSame('primary', $byname['Science']['mode']);
+        $this->assertSame('', $byname['Science']['modename']);
         $this->assertSame('1 student', $byname['Science']['students']);
+        // Maths: the one chosen by the teacher, and the class used last.
         $this->assertSame('secondary', $byname['Maths']['mode']);
+        $this->assertSame('Maths', $choose['continue']['name']);
         $this->assertNotEmpty($byname['Maths']['image']);
-        // Classes in three stages: a button for each; and few courses, no search.
+        // Classes in three stages: a button for each; few courses, no search; the fixed remote, off.
         $this->assertSame(['early', 'primary', 'secondary'], array_column($choose['stages'], 'mode'));
         $this->assertFalse($choose['search']);
+        $this->assertFalse($choose['remote']['on']);
+        $this->assertStringContainsString($teacher->firstname, $choose['hello']);
         $html = $GLOBALS['OUTPUT']->render_from_template('local_oksigeniaclasstools/choose', $choose);
         $this->assertStringContainsString('data-mode="secondary"', $html);
     }
