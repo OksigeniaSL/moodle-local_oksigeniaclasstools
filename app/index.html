@@ -177,8 +177,17 @@
       <label class="interruptor"><input type="checkbox" id="g-rasca"><span data-t="rs_toggle">Rasca y gana</span></label>
       <label class="interruptor"><input type="checkbox" id="g-roles"><span data-t="g_roles">Un rol para cada uno</span></label>
       <details class="g-roles-caja" id="g-roles-caja" hidden><summary data-t="g_roles_edit">Cambiar los roles</summary>
-        <textarea id="g-roles-texto" rows="4" spellcheck="false" aria-label="Roles, uno por línea" data-t-aria="g_roles_list"></textarea>
-        <p class="nota" data-t="g_roles_hint">Uno por línea (hasta 6). Vacío: los de siempre.</p></details>
+        <label class="campo apilado"><span data-t="g_roles_set">Juego de roles</span><select id="g-roles-juego">
+          <option value="tasks" data-t="g_roles_set_tasks">Tareas del grupo</option>
+          <option value="music" data-t="g_roles_set_music">Música</option>
+          <option value="science" data-t="g_roles_set_science">Ciencias</option>
+          <option value="reading" data-t="g_roles_set_reading">Lectura</option>
+          <option value="own" data-t="g_roles_set_own">Los míos</option>
+        </select></label>
+        <div id="g-roles-propios" hidden>
+          <textarea id="g-roles-texto" rows="4" spellcheck="false" aria-label="Roles, uno por línea" data-t-aria="g_roles_list"></textarea>
+          <p class="nota" data-t="g_roles_hint">Uno por línea (hasta 6).</p>
+        </div></details>
       <button type="button" class="boton grande ancho" id="g-hacer"><span data-icono="mezclar"></span><span data-t="g_make">Hacer grupos</span></button>
       <button type="button" class="boton suave ancho" id="g-rotar" hidden><span data-icono="girar"></span><span data-t="g_roles_rotate">Otros roles</span></button>
       <button type="button" class="boton suave ancho" id="g-moodle" hidden><span data-icono="guardar"></span><span data-t="g_save_course">Guardar como grupos del curso</span></button>

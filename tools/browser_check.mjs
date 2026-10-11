@@ -2,10 +2,11 @@
 // Checks the board in a headless Chrome, outside Moodle: app/ is served as it is, with a pretend Moodle course and a
 // pretend live server, and each check drives the real screen as a teacher would.
 // Usage: node tools/browser_check.mjs [check …]   (Node 22 or later, Chrome or Chromium installed; no packages)
-// CHROME=/path/to/chrome to choose the browser.
+// CHROME=/path/to/chrome to choose the browser; SHOTS=<folder> to keep a picture of the screen where a check asks for
+// one (await shot('name') in the check), to look at what it has checked.
 'use strict';
 import { spawn } from 'node:child_process';
-import { mkdtempSync, readFileSync, rmSync, existsSync } from 'node:fs';
+import { mkdtempSync, readFileSync, rmSync, existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { createServer } from 'node:http';
 import { tmpdir } from 'node:os';
 import { dirname, extname, join, normalize } from 'node:path';
@@ -16,9 +17,11 @@ const APP = join(dirname(fileURLToPath(import.meta.url)), '..', 'app');
 // What the page gets before the board: a course with a class, and a live server that answers like livehost.php
 // (start, state, open, close, end) for a vote, keeping what the board sent.
 const FAKE = `
-window.CLASSTOOLS = { lists: [{ id: 1, name: 'Class 1', key: 'c1', students: Array.from({ length: 6 }, (_, i) => ({ id: i + 1, name: 'Student ' + (i + 1) })) }],
+window.CLASSTOOLS = { lists: [{ id: 1, name: 'Class 1', key: 'c1', students: Array.from({ length: 8 }, (_, i) => ({ id: i + 1, n: 'Student ' + (i + 1) })) }],
     courseid: 1, mode: 'teacher', sesskey: 'x', days: {}, state: {}, liveurl: 'fake://live', me: { id: 99, name: 'Teacher' } };
 window.FAKE = { calls: [], polls: 0 };
+// A picture of the screen, when the checks run with SHOTS.
+window.shot = (name) => new Promise((done) => { if (!window.checkShot) { done(); return; } window.shotDone = done; window.checkShot(name); });
 (() => {
     const VOTES = { abcd: ['A', 'B', 'C', 'D'], yesno: ['yes', 'no'], light: ['green', 'yellow', 'red'], five: ['1', '2', '3', '4', '5'] };
     let S = null;
@@ -67,6 +70,134 @@ const CHECKS = {
         if (!open || open.vote !== 'yesno') { return `the vote opened with «${open ? open.vote : 'nothing'}»`; }
         return '';
     },
+    // A popped balloon of the hangman is gone also where there are no animations (Advanced mode, reduced motion).
+    'balloon-popped': async () => {
+        const box = document.createElement('div');
+        box.className = 'ct-balloons';
+        box.innerHTML = '<span class="ct-balloon ct-popped" style="--c:#ce1423"></span>';
+        document.body.append(box);
+        const root = document.documentElement, before = root.dataset.modo;
+        root.dataset.modo = 'advanced';
+        await new Promise((r) => setTimeout(r, 100));
+        const { opacity, transform } = getComputedStyle(box.firstChild);
+        if (before === undefined) { delete root.dataset.modo; } else { root.dataset.modo = before; }
+        box.remove();
+        return opacity !== '0' && transform !== 'matrix(0, 0, 0, 0, 0, 0)'
+            ? `a popped balloon is still seen in Advanced mode (opacity ${opacity}, ${transform})` : '';
+    },
+    // Groups: a ready set of roles (music) is the one handed out.
+    'group-roles': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        document.querySelector('#t-grupos').click();
+        await sleep(300);
+        const roles = document.querySelector('#g-roles');
+        if (!roles.checked) { roles.click(); }
+        const set = document.querySelector('#g-roles-juego');
+        set.value = 'music';
+        set.dispatchEvent(new Event('change', { bubbles: true }));
+        document.querySelector('#g-hacer').click();
+        await sleep(1500);
+        const given = [...document.querySelectorAll('.grupo li .rol')].map((x) => x.textContent);
+        const music = ['Flute', 'Glockenspiel', 'Tambourine', 'Choreography'];
+        if (!given.length) { return 'no roles were handed out'; }
+        document.querySelector('#g-roles-caja').open = true;
+        await window.shot('group-roles');
+        const other = given.filter((r) => !music.includes(r));
+        return other.length ? `roles outside the music set: ${other.join(', ')}` : '';
+    },
+    // Materials: «Whose turn?» chooses someone and, with a relay, steps into a corner with its bar running.
+    'turn-relay': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        document.querySelector('#t-material').click();
+        await sleep(300);
+        const button = document.querySelector('#mt-turn');
+        if (!button || button.hidden) { return 'no «Whose turn?» in the materials'; }
+        button.click();
+        await sleep(200);
+        const layer = document.querySelector('#h-material .ct-turno');
+        if (!layer) { return 'no card'; }
+        const every = layer.querySelector('.ct-turno-cada');
+        every.value = '30';
+        every.dispatchEvent(new Event('change', { bubbles: true }));
+        layer.querySelector('[data-a="other"]').click();
+        // The shuffle (about 2 s) and the name seen big (2.5 s), then the corner.
+        await sleep(6000);
+        const name = layer.querySelector('.ct-turno-nombre').textContent;
+        if (!/^Student \d+$/.test(name)) { return `the card says «${name}»`; }
+        if (!layer.classList.contains('ct-turno-mini')) { return 'the card did not step into the corner'; }
+        const bar = parseFloat(layer.querySelector('.ct-turno-relevo i').style.width);
+        if (!(bar > 0 && bar < 100)) { return `the bar of the relay is at ${bar}%`; }
+        if (getComputedStyle(layer).pointerEvents !== 'none') { return 'the card in the corner still covers the material'; }
+        await window.shot('turn-relay-corner');
+        layer.querySelector('[data-a="stop"]').click();
+        every.value = '0';
+        return document.querySelector('#h-material .ct-turno') ? '«Stop» did not close the card' : '';
+    },
+    // Clock: the learning clock with Roman numerals, and back to digits.
+    'clock-roman': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        document.querySelector('#t-reloj').click();
+        await sleep(200);
+        document.querySelector('#cl-mode [data-v="learn"]').click();
+        await sleep(200);
+        const box = document.querySelector('#cl-o-roman');
+        if (!box) { return 'no Roman numerals switch'; }
+        if (!box.checked) { box.click(); }
+        await sleep(200);
+        const nums = () => [...document.querySelectorAll('#cl-face .cl-num')].map((x) => x.textContent).join(' ');
+        if (nums() !== 'I II III IV V VI VII VIII IX X XI XII') { return `the dial reads «${nums()}»`; }
+        await window.shot('clock-roman');
+        box.click();
+        await sleep(200);
+        return nums() === '1 2 3 4 5 6 7 8 9 10 11 12' ? '' : `back to digits, the dial reads «${nums()}»`;
+    },
+    // Simon: a mistake in round 2 plays round 2 again, not round 1.
+    'simon-repeat': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const msg = () => document.querySelector('#si-msg').textContent;
+        document.querySelector('#t-juegos').click();
+        await sleep(200);
+        document.querySelector('#ga-mode [data-game="simon"]').click();
+        await sleep(200);
+        const turns = document.querySelector('#si-turns');
+        turns.value = turns.options[0].value;
+        turns.dispatchEvent(new Event('change', { bubbles: true }));
+        document.querySelector('#si-onfail [data-v="repeat"]').click();
+        // What the board shows: each pad lit while the board plays the sequence (presses light them too).
+        let shown = [];
+        const board = document.querySelector('#si-board');
+        new MutationObserver((ms) => ms.forEach((m) => {
+            const lit = m.target.classList.contains('ct-lit') && !(m.oldValue || '').includes('ct-lit');
+            if (lit && board.classList.contains('ct-locked')) { shown.push(Number(m.target.dataset.i)); }
+        })).observe(board, { subtree: true, attributes: true, attributeFilter: ['class'], attributeOldValue: true });
+        const asked = (n) => msg().includes(`Round ${n}`) && /Your turn/.test(msg());
+        const waitTurn = async (n) => { for (let i = 0; i < 100 && !asked(n); i++) { await sleep(100); } return asked(n); };
+        const press = (i) => document.querySelector(`#si-board .ct-pad[data-i="${i}"]`).dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, cancelable: true }));
+        document.querySelector('#si-start').click();
+        if (!(await waitTurn(1))) { return `round 1 never asked: «${msg()}»`; }
+        const first = shown.slice(); shown = [];
+        first.forEach(press);
+        if (!(await waitTurn(2))) { return `after round 1 the board says «${msg()}»`; }
+        const second = shown.slice(); shown = [];
+        press((second[0] + 1) % 4);
+        await sleep(500);
+        if (!(await waitTurn(2))) { return `after a mistake in round 2 the board says «${msg()}»`; }
+        return shown.length === 2 && shown.join() === second.join() ? '' : `the sequence played again was ${shown.join()} instead of ${second.join()}`;
+    },
+    // QR: the colours of the corners line up as the colours above them, with «Same» on a line of its own.
+    'qr-swatches': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const tab = document.querySelector('#t-qr');
+        if (!tab) { return 'no QR tab'; }
+        tab.click();
+        await sleep(300);
+        const tops = (sel) => [...new Set([...document.querySelectorAll(`${sel} .ct-swatch:not(.ct-same)`)].map((b) => Math.round(b.getBoundingClientRect().top)))];
+        const colours = tops('#qr-color'), corners = tops('#qr-eyecolor');
+        if (colours.length !== 1) { return `the colours take ${colours.length} lines`; }
+        if (corners.length !== 1) { return `the colours of the corners take ${corners.length} lines`; }
+        await window.shot('qr-swatches');
+        return '';
+    },
 };
 
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png',
@@ -108,16 +239,25 @@ async function main() {
         const ws = new WebSocket(wsUrl);
         await new Promise((ok, ko) => { ws.onopen = ok; ws.onerror = ko; });
         let id = 0; const waiting = new Map(), events = [];
+        const send = (method, params = {}, sessionId) => new Promise((ok, ko) => { const n = ++id; waiting.set(n, [ok, ko]); ws.send(JSON.stringify({ id: n, method, params, sessionId })); });
+        const shots = process.env.SHOTS;
+        if (shots) { mkdirSync(shots, { recursive: true }); }
+        const takeShot = async (sessionId, name) => {
+            const { data } = await send('Page.captureScreenshot', { format: 'png' }, sessionId);
+            writeFileSync(join(shots, `${name.replace(/[^a-z0-9-]/gi, '_')}.png`), Buffer.from(data, 'base64'));
+            await send('Runtime.evaluate', { expression: 'window.shotDone && window.shotDone()' }, sessionId);
+        };
         ws.onmessage = (m) => {
             const msg = JSON.parse(m.data);
             if (msg.id && waiting.has(msg.id)) { const [ok, ko] = waiting.get(msg.id); waiting.delete(msg.id); if (msg.error) { ko(new Error(msg.error.message)); } else { ok(msg.result); } }
+            else if (msg.method === 'Runtime.bindingCalled' && msg.params.name === 'checkShot') { takeShot(msg.sessionId, msg.params.payload).catch((e) => console.error(e.message)); }
             else if (msg.method) { events.push(msg); }
         };
-        const send = (method, params = {}, sessionId) => new Promise((ok, ko) => { const n = ++id; waiting.set(n, [ok, ko]); ws.send(JSON.stringify({ id: n, method, params, sessionId })); });
         for (const name of names) {
             const { targetId } = await send('Target.createTarget', { url: 'about:blank' });
             const { sessionId } = await send('Target.attachToTarget', { targetId, flatten: true });
             await send('Runtime.enable', {}, sessionId);
+            if (shots) { await send('Runtime.addBinding', { name: 'checkShot' }, sessionId); }
             await send('Emulation.setDeviceMetricsOverride', { width: 1280, height: 800, deviceScaleFactor: 1, mobile: false }, sessionId);
             await send('Page.enable', {}, sessionId);
             events.length = 0;

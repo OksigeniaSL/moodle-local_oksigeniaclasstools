@@ -1158,13 +1158,24 @@
     let gEmocion = lee('grupos-emocion', false) === true;
     let gRasca = lee('grupos-rasca', false) === true;   // rasca y gana: cada grupo, tapado hasta que lo rascan
     let gReparto = null;   // el reparto en marcha: { acaba } los coloca a todos ya
-    // Un rol para cada uno dentro de su grupo (portavoz, secretario…), que el profesor puede cambiar. El reparto es
+    // Un rol para cada uno dentro de su grupo, de un juego de roles listo (tareas del grupo, por materia, los de la
+    // enseñanza recíproca para leer) o de los del profesor. Los roles nombran la tarea, no a la persona. El reparto es
     // justo: a cada uno le toca antes el rol que menos ha tenido con esa lista (y, a igualdad, quien menos roles ha
     // tenido); el recuento se guarda en el navegador.
     let gRoles = lee('grupos-roles', false) === true;
-    const ROLES_BASE = () => [t('rl_spokesperson'), t('rl_secretary'), t('rl_materials'), t('rl_time')];
+    const JUEGOS_ROLES = {
+        tasks: ['rl_spokesperson', 'rl_notes', 'rl_materials', 'rl_time'],
+        music: ['rl_flute', 'rl_glockenspiel', 'rl_tambourine', 'rl_dance'],
+        science: ['rl_measure', 'rl_record', 'rl_build', 'rl_photo'],
+        reading: ['rl_predict', 'rl_question', 'rl_clarify', 'rl_summarise'],
+    };
+    const gPropios = () => { const r = lee('roles-nombres', null); return Array.isArray(r) && r.length ? r : null; };
+    // Quien ya había escrito sus roles los sigue teniendo.
+    let gJuegoRoles = lee('roles-juego', gPropios() ? 'own' : 'tasks');
+    if (gJuegoRoles !== 'own' && !JUEGOS_ROLES[gJuegoRoles]) { gJuegoRoles = 'tasks'; }
+    const ROLES_BASE = () => JUEGOS_ROLES.tasks.map((k) => t(k));
     const ROL_COLORES = ['#164281', '#ce1423', '#067e36', '#5b2fb8', '#c2410c', '#0e7c86'];
-    const gListaRoles = () => { const r = lee('roles-nombres', null); return Array.isArray(r) && r.length ? r : ROLES_BASE(); };
+    const gListaRoles = () => (gJuegoRoles === 'own' ? gPropios() || ROLES_BASE() : JUEGOS_ROLES[gJuegoRoles].map((k) => t(k)));
     const gNombreLi = (li) => { const x = li.querySelector(':scope > span:not(.rol):not(.iniciales)'); return x ? x.textContent : ''; };
     const gPonRoles = () => {
         $$('.grupo li .rol', gRejilla).forEach((x) => x.remove());
@@ -1365,6 +1376,13 @@
     $('#g-roles-caja').hidden = !gRoles;
     $('#g-roles-texto').placeholder = ROLES_BASE().join('\n');
     $('#g-roles-texto').value = (lee('roles-nombres', null) || []).join('\n');
+    $('#g-roles-juego').value = gJuegoRoles;
+    $('#g-roles-propios').hidden = gJuegoRoles !== 'own';
+    $('#g-roles-juego').addEventListener('change', (e) => {
+        gJuegoRoles = e.target.value; guarda('roles-juego', gJuegoRoles);
+        $('#g-roles-propios').hidden = gJuegoRoles !== 'own';
+        gPonRoles();
+    });
     $('#g-roles').addEventListener('change', (e) => { gRoles = e.target.checked; guarda('grupos-roles', gRoles); $('#g-roles-caja').hidden = !gRoles; gPonRoles(); });
     $('#g-roles-texto').addEventListener('input', () => {
         const r = [...new Set($('#g-roles-texto').value.split(/\r?\n/).map((x) => x.trim().slice(0, 30)).filter(Boolean))].slice(0, 6);

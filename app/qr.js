@@ -38,7 +38,7 @@
     let logoData = null;                   // the logo as a data URL, so that downloads carry it inside
     let text = '', timer = 0;
 
-    const swatches = (withSame) => (withSame ? `<button type="button" role="radio" class="ct-swatch ct-same" data-v="same" aria-label="${escape(STR.same)}">${STR.same}</button>` : '')
+    const swatches = (withSame) => (withSame ? `<button type="button" role="radio" class="ct-swatch ct-same" data-v="same" aria-label="${escape(STR.same)}">${STR.same}</button><span class="ct-swatch-break" aria-hidden="true"></span>` : '')
         + COLORS.map(([label, c]) => `<button type="button" role="radio" class="ct-swatch" data-v="${c}" style="--c:${c}" aria-label="${escape(label)}" title="${escape(label)}"></button>`).join('');
     root.innerHTML = `
         <div class="tarjeta qr-ajustes">

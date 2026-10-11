@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.23.2 (2026-10-11)
+
+- **Whose turn? everywhere**: a «Whose turn?» button in the Materials bar (rods, tangram, number line…) and in the
+  Games bar, for whoever comes to the board.
+- **Relays**: the «Whose turn?» card can choose the next one by itself every 30 seconds to 5 minutes. Meanwhile it
+  waits in a corner with a bar of the time left, so the one chosen can use the screen; «Stop» ends the relay.
+- **Groups**: the roles name the task, not the person, and come in ready sets: group tasks (spokesperson, notes,
+  materials, timekeeper), music (flute, glockenspiel, tambourine, choreography), science (measure, write down, set up,
+  photograph) and reading, with the four roles of reciprocal teaching (predict, question, clarify, summarise); or the
+  teacher's own.
+- **Simon**: a mistake no longer sends everyone back to one: the same sequence is played again, for the next student
+  or for the class. «From the start» keeps the classic game.
+- **Clock**: the learning clock can show its hours in Roman numerals.
+- **Hangman**: in the Advanced mode, and wherever the system asks for reduced motion, the popped balloons stayed on
+  screen; they now go.
+- **QR**: «Same» in the colour of the corners sits on a line of its own, and the colours line up with those above.
+
 ## 0.23.1 (2026-10-11)
 
 - **Live vote**: the type of answers chosen between two rounds (yes or no, traffic light, 1 to 5) no longer goes back

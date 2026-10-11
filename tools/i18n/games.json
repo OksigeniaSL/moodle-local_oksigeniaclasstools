@@ -315,6 +315,22 @@
   "en": "Oops! {$a} got it wrong",
   "es": "¡Uy! {$a} ha fallado"
  },
+ "si_on_fail": {
+  "en": "After a mistake",
+  "es": "Al fallar"
+ },
+ "si_fail_repeat": {
+  "en": "Same again",
+  "es": "Se repite"
+ },
+ "si_fail_reset": {
+  "en": "From the start",
+  "es": "Desde el principio"
+ },
+ "si_same_again": {
+  "en": "The same one again",
+  "es": "Otra vez la misma"
+ },
  "si_next": {
   "en": "{$a}'s turn",
   "es": "Le toca a {$a}"

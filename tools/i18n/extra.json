@@ -903,13 +903,37 @@
   "en": "Change the roles",
   "es": "Cambiar los roles"
  },
+ "g_roles_set": {
+  "en": "Set of roles",
+  "es": "Juego de roles"
+ },
+ "g_roles_set_tasks": {
+  "en": "Group tasks",
+  "es": "Tareas del grupo"
+ },
+ "g_roles_set_music": {
+  "en": "Music",
+  "es": "Música"
+ },
+ "g_roles_set_science": {
+  "en": "Science",
+  "es": "Ciencias"
+ },
+ "g_roles_set_reading": {
+  "en": "Reading",
+  "es": "Lectura"
+ },
+ "g_roles_set_own": {
+  "en": "My own",
+  "es": "Los míos"
+ },
  "g_roles_list": {
   "en": "Roles, one per line",
   "es": "Roles, uno por línea"
  },
  "g_roles_hint": {
-  "en": "One per line (up to 6). Empty: the usual ones.",
-  "es": "Uno por línea (hasta 6). Vacío: los de siempre."
+  "en": "One per line (up to 6).",
+  "es": "Uno por línea (hasta 6)."
  },
  "g_roles_rotate": {
   "en": "Other roles",
@@ -923,17 +947,65 @@
   "en": "Spokesperson",
   "es": "Portavoz"
  },
- "rl_secretary": {
-  "en": "Secretary",
-  "es": "Secretario"
+ "rl_notes": {
+  "en": "Notes",
+  "es": "Apuntes"
  },
  "rl_materials": {
-  "en": "Materials manager",
-  "es": "Encargado del material"
+  "en": "Materials",
+  "es": "Material"
  },
  "rl_time": {
   "en": "Timekeeper",
-  "es": "Controlador del tiempo"
+  "es": "Tiempo"
+ },
+ "rl_flute": {
+  "en": "Flute",
+  "es": "Flauta"
+ },
+ "rl_glockenspiel": {
+  "en": "Glockenspiel",
+  "es": "Carillón"
+ },
+ "rl_tambourine": {
+  "en": "Tambourine",
+  "es": "Pandero"
+ },
+ "rl_dance": {
+  "en": "Choreography",
+  "es": "Coreografía"
+ },
+ "rl_measure": {
+  "en": "Measure",
+  "es": "Medir"
+ },
+ "rl_record": {
+  "en": "Write down",
+  "es": "Anotar"
+ },
+ "rl_build": {
+  "en": "Set up",
+  "es": "Montar"
+ },
+ "rl_photo": {
+  "en": "Photograph",
+  "es": "Fotografiar"
+ },
+ "rl_predict": {
+  "en": "Predict",
+  "es": "Predecir"
+ },
+ "rl_question": {
+  "en": "Question",
+  "es": "Preguntar"
+ },
+ "rl_clarify": {
+  "en": "Clarify",
+  "es": "Aclarar"
+ },
+ "rl_summarise": {
+  "en": "Summarise",
+  "es": "Resumir"
  },
  "lv_limit": {
   "en": "Closes by itself",
@@ -1446,6 +1518,30 @@
  "turn_task_note": {
   "en": "Which note is it?",
   "es": "¿Qué nota es?"
+ },
+ "turn_relay": {
+  "en": "Relay",
+  "es": "Relevos"
+ },
+ "turn_relay_none": {
+  "en": "Just this one",
+  "es": "Solo esta vez"
+ },
+ "turn_relay_s": {
+  "en": "Another every {$a} seconds",
+  "es": "Otro cada {$a} segundos"
+ },
+ "turn_relay_m1": {
+  "en": "Another every minute",
+  "es": "Otro cada minuto"
+ },
+ "turn_relay_m": {
+  "en": "Another every {$a} minutes",
+  "es": "Otro cada {$a} minutos"
+ },
+ "turn_stop": {
+  "en": "Stop",
+  "es": "Parar"
  },
  "sc_naming": {
   "en": "Notation",

@@ -20,7 +20,8 @@ the Moodle plugins directory. GitHub PRs are for the English strings and for fix
 ## Tests
 
 The GitHub Actions workflow runs PHPUnit and the Moodle checks on every supported branch. The board itself is
-checked in a headless Chrome, outside Moodle, with `node tools/browser_check.mjs` (Node 22 or later, no packages).
+checked in a headless Chrome, outside Moodle, with `node tools/browser_check.mjs` (Node 22 or later, no packages;
+`SHOTS=<folder>` keeps a picture of what some checks look at).
 Then test on a Moodle site: install from `./build.sh`, open the tools from a course as a teacher, and check the
 browser console. Keep in mind the browser cache after an upgrade (scripts carry the plugin version in their address).
 

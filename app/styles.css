@@ -212,6 +212,7 @@ input[type="range"]:focus-visible { outline: 3px solid var(--azul-osc); outline-
 .grupo li .rol { flex: none; max-width: 100%; margin-left: auto; padding: .12em .6em; overflow: hidden; border-radius: 50rem; background: var(--rc); color: #fff; font-size: .62em; font-weight: 900; text-overflow: ellipsis; white-space: nowrap; animation: salta .35s ease-out; }
 .g-roles-caja summary { color: var(--azul); font-weight: 800; cursor: pointer; }
 .g-roles-caja textarea { width: 100%; margin-top: .4rem; }
+.g-roles-caja .campo { margin-top: .5rem; }
 .rejilla-grupos.vacia { display: flex; }
 /* Repartir con emoción: la tarjeta que baraja ocupa el panel de la izquierda; cada nombre vuela a su hueco, ya guardado. */
 .grupo li.por-salir { visibility: hidden; }
@@ -533,6 +534,7 @@ a.redondo { text-decoration: none; }
 
 /* ---------- Marcador (scoreboard.js) ---------- */
 .ct-push { margin-left: auto; }
+.ct-top-botones { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem .6rem; }
 .ct-scoreboard .nota { margin: 0; }
 .ct-teams { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: minmax(0, 1fr); gap: 1rem; flex: 1; min-height: 0; }
 .ct-teams[data-n="1"] { grid-template-columns: minmax(0, 1fr); }
@@ -658,7 +660,8 @@ a.redondo { text-decoration: none; }
 .ct-balloon:nth-child(2n) { animation-delay: -1.2s; }
 .ct-balloon:nth-child(3n) { animation-delay: -2.1s; }
 .ct-balloon::after { content: ""; position: absolute; top: 100%; left: 50%; width: 2px; height: clamp(1.4rem, 5vh, 3rem); background: #9aa7b8; }
-.ct-balloon.ct-popped { animation: explota .35s ease-out forwards; }
+/* A popped balloon is gone even without its animation (Advanced mode, reduced motion). */
+.ct-balloon.ct-popped { opacity: 0; transform: scale(0); animation: explota .35s ease-out forwards; }
 .ct-slots { display: flex; flex-wrap: wrap; justify-content: center; gap: clamp(.25rem, .8vw, .6rem); }
 .ct-slot { display: grid; place-items: end center; width: clamp(2rem, 5.4vw, 4.4rem); height: clamp(2.6rem, 9vh, 5.4rem); border-bottom: 6px solid var(--azul); color: var(--azul-osc); font-size: clamp(1.8rem, 7vh, 4.2rem); font-weight: 1000; line-height: 1.1; }
 .ct-slots.ct-long .ct-slot { width: clamp(1.6rem, 3.6vw, 3rem); font-size: clamp(1.4rem, 5vh, 3rem); }
@@ -744,6 +747,8 @@ a.redondo { text-decoration: none; }
 .ct-swatch[aria-checked="true"] { box-shadow: 0 0 0 3px var(--azul); }
 .ct-swatch.ct-same { width: auto; padding: 0 .8rem; border-radius: 50rem; background: var(--fondo); color: var(--tinta-3); font-weight: 800; }
 .ct-swatch.ct-same[aria-checked="true"] { color: var(--azul); }
+/* «Same» on a line of its own, the colours below it as in the row above. */
+.ct-swatch-break { flex-basis: 100%; height: 0; }
 .ct-file { cursor: pointer; }
 .qr-dibujo svg { width: auto; max-width: 100%; max-height: 100%; aspect-ratio: 1; margin: auto; }
 .qr-ajustes .botonera { flex-wrap: wrap; }
@@ -1063,6 +1068,8 @@ a.redondo { text-decoration: none; }
 .cl-mk-h { stroke: var(--azul-osc); stroke-width: 2.6; }
 .cl-mk-m { stroke: #9aa7b8; stroke-width: 1; }
 .cl-num { fill: var(--azul-osc); font: 900 15px Nunito, system-ui, sans-serif; text-anchor: middle; dominant-baseline: central; }
+/* Roman numerals are wider (VIII, XII): a little smaller, so they keep inside the hour marks. */
+.cl-romanos .cl-num { font-size: 12.5px; letter-spacing: -.02em; }
 .cl-min { fill: var(--rojo); font: 800 7.5px Nunito, system-ui, sans-serif; text-anchor: middle; dominant-baseline: central; }
 .cl-sin-minutos .cl-min { display: none; }
 .cl-hand line:first-child { stroke-linecap: round; }
@@ -1787,6 +1794,19 @@ dialog.ct-sc-dialogo { width: min(40rem, 94vw); }
 .ct-turno.barajando .ct-turno-nombre { color: var(--tinta-3); }
 .ct-turno-tarea { margin: 0; color: var(--verde); font-size: clamp(1.1rem, 3vh, 1.6rem); font-weight: 900; }
 .ct-turno-tarea:empty { display: none; }
+/* Relays: how often the next one, the bar of the time left and «Stop», only when there is a relay. */
+.ct-turno-cada { max-width: 100%; }
+.ct-turno-relevo, .ct-turno-parar { display: none; }
+.ct-turno-relevos .ct-turno-parar { display: inline-flex; }
+/* In a corner while the one chosen works: the screen stays free. */
+.ct-turno.ct-turno-mini { inset: .8rem .8rem auto auto; display: block; padding: 0; background: none; pointer-events: none; animation: none; }
+.ct-turno-mini .ct-turno-tarjeta { flex-direction: row; flex-wrap: wrap; align-items: center; gap: .4rem .8rem; width: min(24rem, 90vw); min-width: 0; padding: .7rem 1rem; border-radius: 20px; text-align: left; pointer-events: auto; }
+.ct-turno-mini .ante, .ct-turno-mini .ct-turno-tarea, .ct-turno-mini .ct-turno-cada, .ct-turno-mini [data-a="ok"] { display: none; }
+.ct-turno-mini .ct-turno-foto { width: 3.2rem; height: 3.2rem; font-size: 1.2rem; }
+.ct-turno-mini .ct-turno-nombre { flex: 1; min-width: 0; font-size: 1.5rem; }
+.ct-turno-mini .ct-turno-relevo { display: block; flex-basis: 100%; height: .5rem; border-radius: 1rem; background: var(--azul-suave); overflow: hidden; }
+.ct-turno-relevo i { display: block; width: 100%; height: 100%; background: var(--verde); transition: width .2s linear; }
+.ct-turno-mini .botonera { flex-basis: 100%; justify-content: flex-end; }
 .ct-wb-turno { position: absolute; left: .7rem; bottom: .7rem; z-index: 6; display: inline-flex; align-items: center; gap: .45rem; min-height: 0;
     padding: .55rem 1rem .55rem .8rem; border: 0; border-radius: 999px; background: var(--superficie); color: var(--azul); font: inherit; font-weight: 800;
     box-shadow: 0 4px 14px rgba(15, 47, 94, .25); cursor: pointer; opacity: .92; }

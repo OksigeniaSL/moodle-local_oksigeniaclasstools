@@ -41,6 +41,7 @@
             <div class="segmentos" role="radiogroup" aria-label="${escape(STR.what)}" id="mt-mode">
                 ${Object.entries(STR.modes).map(([k, v]) => `<button type="button" role="radio" aria-checked="false" data-mode="${k}">${v}</button>`).join('')}
             </div>
+            <button type="button" class="boton suave ct-push" id="mt-turn" hidden><span data-icono="quien"></span><span>${escape(t('turn_button'))}</span></button>
         </div>
         <div class="ct-body">
             <div class="ct-panel" data-panel="rods" hidden>
@@ -529,9 +530,13 @@
     });
     const wanted = load('material-modo', 'rods');
     let mode = LAYOUT[wanted] ? wanted : (Object.keys(LAYOUT)[0] || 'rods');
+    // «Whose turn?» for every material, with a class list; the score has its own, with its own task.
+    const paintTurn = () => { $('#mt-turn').hidden = !(core.turn && core.lists && core.lists().length) || mode === 'score'; };
+    $('#mt-turn').addEventListener('click', () => core.turn(root.querySelector('.ct-body'), { task: t('turn_task_board') }));
+    setIcon($('#mt-turn [data-icono]'), 'quien');
     const showMode = (m) => {
         if (!LAYOUT[m]) { return; }
-        mode = m; save('material-modo', m);
+        mode = m; save('material-modo', m); paintTurn();
         $$('#mt-mode button').forEach((b) => b.setAttribute('aria-checked', String(b.dataset.mode === m)));
         $$('.ct-panel', root).forEach((p) => { p.hidden = p.dataset.panel !== m; });
         requestAnimationFrame(LAYOUT[m]);
@@ -570,7 +575,7 @@
             return panel;
         },
     };
-    core.register('material', { entra: () => { first(); if (LAYOUT[mode]) { showMode(mode); } } });
+    core.register('material', { entra: () => { first(); if (LAYOUT[mode]) { showMode(mode); } paintTurn(); } });
     if (LAYOUT[mode]) { showMode(mode); }
 
     window.ClasstoolsMaterial = { showMode, rods: () => rd, tangram: () => tg, FIGURES, PIECES, world, check, snap, place: figPlace, paint: tgPaint };   // for automated tests

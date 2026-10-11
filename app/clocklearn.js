@@ -15,7 +15,7 @@
     const STR = {
         modes: { now: t('cl_now'), learn: t('cl_learn'), countdown: t('cl_countdown') }, mode: t('cl_mode'),
         level: t('cl_level'), levels: { h: t('cl_level_h'), half: t('cl_level_half'), quarter: t('cl_level_quarter'), five: t('cl_level_five'), minute: t('cl_level_minute') },
-        digital: t('cl_digital'), words: t('cl_words'), h24: t('cl_h24'), minutes: t('cl_minutes'),
+        digital: t('cl_digital'), words: t('cl_words'), h24: t('cl_h24'), minutes: t('cl_minutes'), roman: t('cl_roman'),
         ask: t('cl_ask'), set: t('cl_set'), check: t('cl_check'), reveal: t('cl_reveal'),
         setThis: (x) => t('cl_set_this', x), right: t('cl_right'), wrong: t('cl_wrong'), dragHint: t('cl_drag_hint'),
         clock: t('cl_clock'),
@@ -32,7 +32,9 @@
     };
 
     const MODE_LEVEL = { early: 'h', primary: 'quarter', secondary: 'five', advanced: 'minute' };
-    const opt = Object.assign({ mode: 'now', level: MODE_LEVEL[(core.mode ? core.mode() : 'primary')] || 'quarter', digital: true, words: true, h24: false, minutes: true }, load('reloj-aprender', {}));
+    const opt = Object.assign({ mode: 'now', level: MODE_LEVEL[(core.mode ? core.mode() : 'primary')] || 'quarter', digital: true, words: true, h24: false, minutes: true, roman: false }, load('reloj-aprender', {}));
+    // The hours of the dial in Roman numerals, as on many clocks (IV, not the IIII of some old dials).
+    const ROMAN = ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
     if (!STR.levels[opt.level]) { opt.level = 'quarter'; }
     const st = { t: 3 * 60 + 15, hidden: false, target: null, drag: null };
 
@@ -51,7 +53,7 @@
     }
     for (let h = 1; h <= 12; h++) {
         const a = (h * 30 * Math.PI) / 180;
-        face += `<text class="cl-num" x="${(100 + 66 * Math.sin(a)).toFixed(2)}" y="${(100 - 66 * Math.cos(a)).toFixed(2)}">${h}</text>`;
+        face += `<text class="cl-num" data-h="${h}" x="${(100 + 66 * Math.sin(a)).toFixed(2)}" y="${(100 - 66 * Math.cos(a)).toFixed(2)}">${h}</text>`;
         face += `<text class="cl-min" x="${(100 + 99 * Math.sin(a)).toFixed(2)}" y="${(100 - 99 * Math.cos(a)).toFixed(2)}">${pad((h * 5) % 60)}</text>`;
     }
     panel.innerHTML = `
@@ -81,6 +83,7 @@
             <label class="interruptor"><input type="checkbox" id="cl-o-words"><span>${STR.words}</span></label>
             <label class="interruptor"><input type="checkbox" id="cl-o-minutes"><span>${STR.minutes}</span></label>
             <label class="interruptor"><input type="checkbox" id="cl-o-h24"><span>${STR.h24}</span></label>
+            <label class="interruptor"><input type="checkbox" id="cl-o-roman"><span>${STR.roman}</span></label>
             <p class="nota">${STR.dragHint}</p>
         </div>`;
     root.prepend(bar);
@@ -97,6 +100,8 @@
         $('#cl-h').setAttribute('transform', `rotate(${((t / 60) % 12) * 30} 100 100)`);
         $('#cl-m').setAttribute('transform', `rotate(${(t % 60) * 6} 100 100)`);
         $('#cl-svg').classList.toggle('cl-sin-minutos', !opt.minutes);
+        $('#cl-svg').classList.toggle('cl-romanos', !!opt.roman);
+        $$('#cl-face .cl-num').forEach((x) => { x.textContent = opt.roman ? ROMAN[x.dataset.h] : x.dataset.h; });
         const hide = st.hidden;
         $('#cl-digital').textContent = opt.digital ? (hide ? '?' : digital(t)) : '';
         $('#cl-digital').hidden = !opt.digital;
@@ -113,7 +118,7 @@
         panel.hidden = opt.mode !== 'learn';
         $('#cl-level').value = opt.level;
         $('#cl-o-digital').checked = opt.digital; $('#cl-o-words').checked = opt.words;
-        $('#cl-o-minutes').checked = opt.minutes; $('#cl-o-h24').checked = opt.h24;
+        $('#cl-o-minutes').checked = opt.minutes; $('#cl-o-h24').checked = opt.h24; $('#cl-o-roman').checked = !!opt.roman;
     };
     const persist = () => save('reloj-aprender', opt);
     const msg = (text, kind) => { const m = $('#cl-msg'); m.className = 'ct-cl-msg' + (kind ? ' ' + kind : ''); m.textContent = text; };
@@ -199,7 +204,7 @@
         opt.level = $('#cl-level').value; persist();
         const step = STEP[opt.level]; st.t = Math.round(st.t / step) * step % 1440; paint();
     });
-    [['digital', '#cl-o-digital'], ['words', '#cl-o-words'], ['minutes', '#cl-o-minutes'], ['h24', '#cl-o-h24']].forEach(([k, sel]) => {
+    [['digital', '#cl-o-digital'], ['words', '#cl-o-words'], ['minutes', '#cl-o-minutes'], ['h24', '#cl-o-h24'], ['roman', '#cl-o-roman']].forEach(([k, sel]) => {
         $(sel).addEventListener('change', () => { opt[k] = $(sel).checked; persist(); paint(); });
     });
     // A new screen mode: the clock starts at that mode's level.

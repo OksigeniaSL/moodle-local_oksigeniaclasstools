@@ -12,7 +12,9 @@
 
     root.innerHTML = `
         <div class="barra-herr ct-top"><div class="segmentos" role="radiogroup" aria-label="${escape(t('ga_game'))}" id="ga-mode"></div>
-            <button type="button" class="boton suave ct-push" id="ga-setup" hidden><span data-icono="editar"></span>${t('ga_settings')}</button></div>
+            <div class="ct-push ct-top-botones">
+                <button type="button" class="boton suave" id="ga-turn" hidden><span data-icono="quien"></span><span>${escape(t('turn_button'))}</span></button>
+                <button type="button" class="boton suave" id="ga-setup" hidden><span data-icono="editar"></span>${t('ga_settings')}</button></div></div>
         <div class="ct-body" id="ga-body"></div>`;
     const games = [];
     let current = null, visible = false;
@@ -39,6 +41,10 @@
     const playing = (id, on) => { const p = panelOf(id); if (p) { p.classList.toggle('ct-playing', !!on); } paintSetup(); };
     $('#ga-setup').addEventListener('click', () => playing(current, false));
     core.setIcon($('#ga-setup [data-icono]'), 'editar');
+    // «Whose turn?» for any game, with a class list: who comes to the board.
+    const paintTurn = () => { $('#ga-turn').hidden = !(core.turn && core.lists && core.lists().length); };
+    $('#ga-turn').addEventListener('click', () => core.turn($('#ga-body'), { task: t('turn_task_board') }));
+    core.setIcon($('#ga-turn [data-icono]'), 'quien');
 
     // ---------------------------------------------------------------------------------------------------
     // Shared helpers for the word games: letters without accents (but the letters of the language stay, like Ñ or
@@ -165,7 +171,7 @@
         show, playing,
     };
     core.register('juegos', {
-        entra: () => { visible = true; show(current); },
+        entra: () => { visible = true; show(current); paintTurn(); },
         sale: () => { visible = false; const g = games.find((x) => x.id === current); if (g && g.leave) { g.leave(); } },
         espacio: () => { const g = games.find((x) => x.id === current); if (g && g.space) { g.space(); } },
     });

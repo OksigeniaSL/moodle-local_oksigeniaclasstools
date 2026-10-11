@@ -555,6 +555,10 @@
   "en": "24-hour clock",
   "es": "24 horas"
  },
+ "cl_roman": {
+  "en": "Roman numerals",
+  "es": "Números romanos"
+ },
  "cl_minutes": {
   "en": "Show the minutes",
   "es": "Ver los minutos"

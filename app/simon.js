@@ -1,6 +1,7 @@
 // Simon for the whole class: coloured pads with their own notes; the sequence grows each round. With a class
-// list, a different student repeats it each round (shown big with their face); whoever fails starts it again for
-// the next one, and the record is kept.
+// list, a different student repeats it each round (shown big with their face). A mistake does not send everyone back
+// to one: the same sequence is played again for the next one (or for the class), unless the teacher chooses to start
+// from the beginning, as in the classic game. The record is kept.
 //
 // @copyright 2026 Oksigenia <dev@oksigenia.cc>
 // @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -15,6 +16,7 @@
         everyone: t('ga_whole_class'), start: t('ga_start'), again: t('si_again'), watch: t('si_watch'), yourTurn: t('si_your_turn'),
         round: (n) => t('si_round', n), record: (n, who) => (who ? t('si_record_who', { n, who }) : t('si_record', n)), fail: t('si_fail'),
         failWho: (w) => t('si_fail_who', w), next: (w) => t('si_next', w), pressStart: t('si_press_start'),
+        onFail: t('si_on_fail'), failRepeat: t('si_fail_repeat'), failReset: t('si_fail_reset'), same: t('si_same_again'),
         colors: [t('si_green'), t('si_red'), t('si_yellow'), t('si_blue'), t('si_purple'), t('si_orange')],
     };
     // Classic Simon notes (green, red, yellow, blue) and two more for six pads.
@@ -49,6 +51,11 @@
                         <button type="button" role="radio" aria-checked="false" data-v="fast">${STR.fast}</button>
                     </div>
                     <label class="campo apilado"><span>${STR.turns}</span><select id="si-turns"></select></label>
+                    <p class="ante">${STR.onFail}</p>
+                    <div class="segmentos" role="radiogroup" aria-label="${escape(STR.onFail)}" id="si-onfail">
+                        <button type="button" role="radio" aria-checked="true" data-v="repeat">${STR.failRepeat}</button>
+                        <button type="button" role="radio" aria-checked="false" data-v="reset">${STR.failReset}</button>
+                    </div>
                     </div>
                     <button type="button" class="boton grande" id="si-start"><span data-icono="seguir"></span><span>${STR.start}</span></button>
                     <p class="ct-simon-record" id="si-record"></p>
@@ -65,6 +72,7 @@
 
     const nPads = () => Number(($('#si-pads [aria-checked="true"]') || { dataset: { n: 4 } }).dataset.n);
     const fast = () => ($('#si-speed [aria-checked="true"]') || { dataset: {} }).dataset.v === 'fast';
+    const resetOnFail = () => ($('#si-onfail [aria-checked="true"]') || { dataset: {} }).dataset.v === 'reset';
     const paintBoard = () => {
         const n = nPads();
         $('#si-board').dataset.n = n;
@@ -105,10 +113,11 @@
             setMsg(`${STR.round(s.seq.length)} · ${STR.yourTurn}`);
         }, 500 + s.seq.length * step);
     };
-    const nextRound = () => {
+    // grow: false plays the same sequence again (after a mistake), for the next one or for the class.
+    const nextRound = (grow = true) => {
         const l = list();
         if (l) { s.turn = (s.turn + 1) % s.order.length; paintWho(); announce(STR.next(whoName())); }
-        s.seq.push(random(nPads()));
+        if (grow || !s.seq.length) { s.seq.push(random(nPads())); }
         later(playSequence, 700);
     };
     const start = () => {
@@ -133,8 +142,13 @@
         paintWho();
         setMsg(w ? STR.failWho(w) : STR.fail);
         announce(w ? STR.failWho(w) : STR.fail);
-        // With turns, the next student starts again; without, press «Otra vez» (the settings come back).
-        if (list()) { s.seq = []; later(nextRound, 1800); } else { games.playing('simon', false); }
+        // From the beginning (the classic game): with turns the next one starts at one; without, «Otra vez» (the
+        // settings come back). Otherwise the same sequence again, for the next one or for the whole class.
+        if (resetOnFail()) {
+            if (list()) { s.seq = []; later(nextRound, 1800); } else { games.playing('simon', false); }
+            return;
+        }
+        later(() => { if (!list()) { setMsg(STR.same); } nextRound(false); }, 1800);
     };
     const press = (i) => {
         if (s.state !== 'input') { return; }
@@ -156,6 +170,7 @@
         });
         seg('#si-pads', () => { save('simon-colores', nPads()); clearTimers(); s.state = 'idle'; s.seq = []; paintBoard(); setMsg(STR.pressStart, true); core.relabel($('#si-start'), STR.start, 'seguir'); });
         seg('#si-speed', () => save('simon-rapido', fast()));
+        seg('#si-onfail', () => save('simon-fallo', resetOnFail() ? 'reset' : 'repeat'));
         $('#si-turns').addEventListener('change', () => { save('simon-turnos', $('#si-turns').value); s.order = []; s.turn = -1; paintWho(); });
         $('#si-start').addEventListener('click', start);
         $('#si-board').addEventListener('pointerdown', (e) => { const p = e.target.closest('.ct-pad'); if (p) { e.preventDefault(); press(Number(p.dataset.i)); } });
@@ -170,6 +185,8 @@
         $$('#si-pads button').forEach((x) => x.setAttribute('aria-checked', String(x.dataset.n === n)));
         const saved = load('simon-rapido', null), f = saved === null ? (core.mode ? core.mode() : 'primary') === 'advanced' : saved === true;
         $$('#si-speed button').forEach((x) => x.setAttribute('aria-checked', String((x.dataset.v === 'fast') === f)));
+        const onFail = load('simon-fallo', 'repeat') === 'reset' ? 'reset' : 'repeat';
+        $$('#si-onfail button').forEach((x) => x.setAttribute('aria-checked', String(x.dataset.v === onFail)));
         paintBoard(); setMsg(STR.pressStart, true);
     };
 
