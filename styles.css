@@ -57,8 +57,10 @@
     max-width: 76rem;
     color: #1c1a19;
 }
-.ct-choose [hidden] {
-    display: none !important;
+.ct-choose .ct-choose-card[hidden],
+.ct-choose .ct-choose-cat[hidden],
+.ct-choose .ct-choose-none[hidden] {
+    display: none;
 }
 .ct-choose-lead {
     margin: 0 0 1.25rem;

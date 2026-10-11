@@ -483,12 +483,12 @@ function local_oksigeniaclasstools_choose(array $courses): array {
         $image = \core_course\external\course_summary_exporter::get_course_image($course);
         $students = count_enrolled_users($context, 'moodle/course:isincompletionreports', 0, true);
         $mode = $chosen[$course->id] ?? local_oksigeniaclasstools_default_mode((int) $course->category);
+        $label = $students === 1 ? 'choose_student' : 'choose_students';
         $categories[$key]['courses'][] = [
             'url' => (new moodle_url('/local/oksigeniaclasstools/index.php', ['id' => $course->id]))->out(false),
             'name' => format_string($course->fullname, true, ['context' => $context]),
             'image' => $image ?: $OUTPUT->get_generated_image_for_id($course->id),
-            'students' => get_string($students === 1 ? 'choose_student' : 'choose_students', 'local_oksigeniaclasstools',
-                $students),
+            'students' => get_string($label, 'local_oksigeniaclasstools', $students),
             'mode' => $mode,
             'modename' => get_string('mode_' . $mode, 'local_oksigeniaclasstools'),
         ];
