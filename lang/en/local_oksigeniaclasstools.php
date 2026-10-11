@@ -1176,12 +1176,15 @@ Comparing the noise of different activities.';
 $string['app_gd_simon_how'] = 'With the class list a different student comes out every round; the others may say the colours quietly while they sound.
 After a mistake the same sequence plays again for the next one: nobody starts from scratch. «From the start» keeps the classic game.
 Six colours and the fast speed are more of a challenge for the older ones.
-Two or three rounds are enough as an active break between two tasks.';
+Two or three rounds are enough as an active break between two tasks.
+«Backwards»: the sequence is repeated from the end to the start, so it has to be turned round before pressing.
+«The pads show»: arrows (all four alike, so the direction is read and not the colour), numbers with a rule (a 3 comes up and, with «What it needs to make 10», the 7 is pressed) or notes without colours (only heard; the pads say C, D, E…).
+Nine pads, for those who can already do six.';
 $string['app_gd_simon_scene'] = 'Year 4 come back from break with a lot to say. The teacher opens Simon with the class list: every round one student comes out and the others say the colours quietly. Hugo fails at the seventh; the sequence plays again for Martina, who completes it to applause. Three rounds later, the reading starts.';
 $string['app_gd_simon_sources'] = 'Melby-Lervåg, M. and Hulme, C. (2013). Is working memory training effective? A meta-analytic review. Developmental Psychology, 49(2), 270–291.|https://doi.org/10.1037/a0028228';
 $string['app_gd_simon_stages'] = 'early|Four colours at the normal speed, naming the colours aloud.
-primary|Six colours, in turns with the class list.
-secondary|The fast speed, as a challenge for the class to beat its record.
+primary|Six colours, in turns with the class list; numbers with a rule for mental arithmetic.
+secondary|The fast speed, as a challenge for the class to beat its record; backwards or with arrows; notes without colours in Music.
 advanced|For group activities, or to show in Psychology what working memory is.';
 $string['app_gd_simon_what'] = 'Repeat a sequence of colours and sounds that grows every round: a game of attention and memory for the whole class.';
 $string['app_gd_simon_why'] = 'Simon asks to keep a sequence in mind and repeat it in order, like the tasks with which working memory is measured. It is worth knowing that training that memory improves similar tasks, but it has not been seen to improve other abilities such as reading or arithmetic (Melby-Lervåg and Hulme, 2013).
@@ -2017,30 +2020,53 @@ $string['app_sc_well_done'] = 'Well done!';
 $string['app_sc_write'] = 'Write';
 $string['app_si_again'] = 'Again';
 $string['app_si_blue'] = 'Blue';
+$string['app_si_brown'] = 'Brown';
+$string['app_si_down'] = 'Down';
 $string['app_si_fail'] = 'Oops! Wrong';
 $string['app_si_fail_repeat'] = 'Same again';
 $string['app_si_fail_reset'] = 'From the start';
 $string['app_si_fail_who'] = 'Oops! {$a} got it wrong';
 $string['app_si_fast'] = 'Fast';
 $string['app_si_green'] = 'Green';
+$string['app_si_kind'] = 'The pads show';
+$string['app_si_kind_arrows'] = 'Arrows';
+$string['app_si_kind_colors'] = 'Colours';
+$string['app_si_kind_notes'] = 'Notes, without colours';
+$string['app_si_kind_numbers'] = 'Numbers, with a rule';
+$string['app_si_left'] = 'Left';
+$string['app_si_listen'] = 'Listen!';
 $string['app_si_name'] = 'Simon';
 $string['app_si_next'] = '{$a}\'s turn';
 $string['app_si_normal'] = 'Normal';
+$string['app_si_note_names'] = 'C,D,E,F,G,A,B,high C,high D';
 $string['app_si_on_fail'] = 'After a mistake';
 $string['app_si_orange'] = 'Orange';
-$string['app_si_pads'] = 'Colours';
+$string['app_si_order'] = 'Repeated';
+$string['app_si_order_reverse'] = 'Backwards';
+$string['app_si_order_same'] = 'In order';
+$string['app_si_pads'] = 'Pads';
+$string['app_si_pink'] = 'Pink';
 $string['app_si_press_start'] = 'Press “Start”';
 $string['app_si_purple'] = 'Purple';
 $string['app_si_record'] = 'Record: {$a}';
 $string['app_si_record_who'] = 'Record: {$a->n} ({$a->who})';
 $string['app_si_red'] = 'Red';
+$string['app_si_right'] = 'Right';
 $string['app_si_round'] = 'Round {$a}';
+$string['app_si_rule'] = 'The rule';
+$string['app_si_rule_double'] = 'Its double';
+$string['app_si_rule_minus1'] = 'Take away 1';
+$string['app_si_rule_plus1'] = 'Add 1';
+$string['app_si_rule_ten'] = 'What it needs to make 10';
 $string['app_si_same_again'] = 'The same one again';
 $string['app_si_speed'] = 'Speed';
+$string['app_si_teal'] = 'Teal';
 $string['app_si_turns'] = 'Turns';
+$string['app_si_up'] = 'Up';
 $string['app_si_watch'] = 'Watch!';
 $string['app_si_yellow'] = 'Yellow';
 $string['app_si_your_turn'] = 'Your turn!';
+$string['app_si_your_turn_reverse'] = 'Your turn, backwards!';
 $string['app_sm_adjust'] = 'Adjust to this class';
 $string['app_sm_adjust_hint'] = 'With the class working at a volume that is fine, press it: that will be green.';
 $string['app_sm_adjusted'] = 'Adjusted: that noise is green now. Sensitivity moves it up or down.';

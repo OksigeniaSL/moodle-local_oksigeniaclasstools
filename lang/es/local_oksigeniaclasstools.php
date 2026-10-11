@@ -1178,12 +1178,15 @@ Comparar el ruido de distintas actividades.';
 $string['app_gd_simon_how'] = 'Con la lista de la clase sale un alumno distinto en cada ronda; los demás pueden decir los colores en voz baja mientras suenan.
 Al fallar, la misma secuencia suena para el siguiente: nadie vuelve a empezar de cero. «Desde el principio» deja el juego clásico.
 Seis colores y la velocidad rápida son más reto para los mayores.
-Dos o tres rondas bastan como pausa activa entre dos tareas.';
+Dos o tres rondas bastan como pausa activa entre dos tareas.
+«Al revés»: la secuencia se repite del final al principio, así que hay que darle la vuelta antes de pulsar.
+«Los pulsadores llevan»: flechas (las cuatro iguales, para leer la dirección y no el color), números con una regla (sale un 3 y, con «Lo que falta para 10», se pulsa el 7) o notas sin colores (solo suenan; los pulsadores dicen Do, Re, Mi…).
+Nueve pulsadores, para los que ya dominan seis.';
 $string['app_gd_simon_scene'] = 'La clase de tercero vuelve del recreo con muchas ganas de hablar. El maestro abre Simón con la lista: en cada ronda sale uno y los demás dicen los colores en voz baja. Hugo falla en la séptima; la secuencia vuelve a sonar para Martina, que la completa entre aplausos. Tres rondas después, empiezan la lectura.';
 $string['app_gd_simon_sources'] = 'Melby-Lervåg, M. y Hulme, C. (2013). Is working memory training effective? A meta-analytic review. Developmental Psychology, 49(2), 270–291.|https://doi.org/10.1037/a0028228';
 $string['app_gd_simon_stages'] = 'early|Cuatro colores y velocidad normal, nombrando los colores en voz alta.
-primary|Seis colores, por turnos con la lista de la clase.
-secondary|Velocidad rápida, como reto de la clase para batir su récord.
+primary|Seis colores, por turnos con la lista de la clase; números con una regla para el cálculo mental.
+secondary|Velocidad rápida, al revés o con flechas, como reto de la clase para batir su récord; notas sin colores en Música.
 advanced|Para dinámicas de grupo o para mostrar en Psicología qué es la memoria de trabajo.';
 $string['app_gd_simon_what'] = 'Repetir una secuencia de colores y sonidos que crece en cada ronda: un juego de atención y memoria para toda la clase.';
 $string['app_gd_simon_why'] = 'Simón pide retener una secuencia y repetirla en orden, como las tareas con las que se mide la memoria de trabajo. Conviene saber que entrenar esa memoria mejora las tareas parecidas, pero no se ha visto que mejore otras capacidades como la lectura o el cálculo (Melby-Lervåg y Hulme, 2013).
@@ -2019,30 +2022,53 @@ $string['app_sc_well_done'] = '¡Muy bien!';
 $string['app_sc_write'] = 'Escribir';
 $string['app_si_again'] = 'Otra vez';
 $string['app_si_blue'] = 'Azul';
+$string['app_si_brown'] = 'Marrón';
+$string['app_si_down'] = 'Abajo';
 $string['app_si_fail'] = '¡Uy! Fallo';
 $string['app_si_fail_repeat'] = 'Se repite';
 $string['app_si_fail_reset'] = 'Desde el principio';
 $string['app_si_fail_who'] = '¡Uy! {$a} ha fallado';
 $string['app_si_fast'] = 'Rápida';
 $string['app_si_green'] = 'Verde';
+$string['app_si_kind'] = 'Los pulsadores llevan';
+$string['app_si_kind_arrows'] = 'Flechas';
+$string['app_si_kind_colors'] = 'Colores';
+$string['app_si_kind_notes'] = 'Notas, sin colores';
+$string['app_si_kind_numbers'] = 'Números, con una regla';
+$string['app_si_left'] = 'Izquierda';
+$string['app_si_listen'] = '¡Escuchen!';
 $string['app_si_name'] = 'Simón';
 $string['app_si_next'] = 'Le toca a {$a}';
 $string['app_si_normal'] = 'Normal';
+$string['app_si_note_names'] = 'Do,Re,Mi,Fa,Sol,La,Si,Do agudo,Re agudo';
 $string['app_si_on_fail'] = 'Al fallar';
 $string['app_si_orange'] = 'Naranja';
-$string['app_si_pads'] = 'Colores';
+$string['app_si_order'] = 'Se repite';
+$string['app_si_order_reverse'] = 'Al revés';
+$string['app_si_order_same'] = 'En orden';
+$string['app_si_pads'] = 'Pulsadores';
+$string['app_si_pink'] = 'Rosa';
 $string['app_si_press_start'] = 'Pulsa «Empezar»';
 $string['app_si_purple'] = 'Morado';
 $string['app_si_record'] = 'Récord: {$a}';
 $string['app_si_record_who'] = 'Récord: {$a->n} ({$a->who})';
 $string['app_si_red'] = 'Rojo';
+$string['app_si_right'] = 'Derecha';
 $string['app_si_round'] = 'Ronda {$a}';
+$string['app_si_rule'] = 'La regla';
+$string['app_si_rule_double'] = 'El doble';
+$string['app_si_rule_minus1'] = 'Restar 1';
+$string['app_si_rule_plus1'] = 'Sumar 1';
+$string['app_si_rule_ten'] = 'Lo que falta para 10';
 $string['app_si_same_again'] = 'Otra vez la misma';
 $string['app_si_speed'] = 'Velocidad';
+$string['app_si_teal'] = 'Turquesa';
 $string['app_si_turns'] = 'Turnos';
+$string['app_si_up'] = 'Arriba';
 $string['app_si_watch'] = '¡Miren!';
 $string['app_si_yellow'] = 'Amarillo';
 $string['app_si_your_turn'] = '¡Ahora tú!';
+$string['app_si_your_turn_reverse'] = '¡Ahora tú, al revés!';
 $string['app_sm_adjust'] = 'Ajustar a esta clase';
 $string['app_sm_adjust_hint'] = 'Con la clase trabajando a un volumen que vale, pulsa: lo de ahora quedará en verde.';
 $string['app_sm_adjusted'] = 'Ajustado: ese ruido es ahora el verde. La sensibilidad lo sube o lo baja.';

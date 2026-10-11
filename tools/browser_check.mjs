@@ -175,6 +175,69 @@ const CHECKS = {
         return nums() === '1 2 3 4 5 6 7 8 9 10 11 12' ? '' : `back to digits, the dial reads «${nums()}»`;
     },
     // Simon: a mistake in round 2 plays round 2 again, not round 1.
+    // Simon variants: numbers with a rule (what is shown is not what is pressed), arrows backwards, notes on nine pads.
+    'simon-variants': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const q = (x) => document.querySelector(x);
+        const S = () => window.ClasstoolsSimon.state();
+        const waitInput = async (len) => { for (let i = 0; i < 120; i++) { if (S().state === 'input' && S().seq.length === len) { return true; } await sleep(100); } return false; };
+        q('#t-juegos').click();
+        await sleep(200);
+        q('#ga-mode [data-game="simon"]').click();
+        await sleep(200);
+        const turns = q('#si-turns');
+        turns.value = turns.options[0].value;
+        turns.dispatchEvent(new Event('change', { bubbles: true }));
+        const pick = (sel, v) => { q(sel).value = v; q(sel).dispatchEvent(new Event('change', { bubbles: true })); };
+        try {
+            pick('#si-kind', 'numbers');
+            pick('#si-rule', 'ten');
+            q('#si-order [data-v="same"]').click();
+            if (q('#si-board').children.length !== 9 || q('#si-board .ct-pad[data-i="6"]').textContent !== '7' || q('#si-rule-box').hidden) { return 'numbers: not nine pads 1 to 9 with the rule'; }
+            // While it plays, the number shown is 10 minus the one to press.
+            let seen = '';
+            const watch = new MutationObserver(() => { if (q('#si-show').classList.contains('ct-lit')) { seen = q('#si-show').textContent; } });
+            watch.observe(q('#si-show'), { attributes: true, childList: true, characterData: true, subtree: true });
+            q('#si-start').click();
+            if (!await waitInput(1)) { return 'numbers: no turn to answer'; }
+            watch.disconnect();
+            const answer = S().seq[0] + 1;
+            if (Number(seen) !== 10 - answer) { return `numbers: shown ${seen} for ${answer}`; }
+            window.ClasstoolsSimon.press(S().seq[0]);
+            if (!await waitInput(2)) { return 'numbers: a right answer did not go on'; }
+            await window.shot('simon-numbers');
+            // Arrows, backwards: four pads in a cross; the second round is pressed last first.
+            pick('#si-kind', 'arrows');
+            q('#si-order [data-v="reverse"]').click();
+            if (q('#si-board').children.length !== 4 || !q('#si-board .ct-pad svg') || !q('#si-pads-box').hidden) { return 'arrows: not four arrows'; }
+            q('#si-start').click();
+            if (!await waitInput(1)) { return 'arrows: no turn'; }
+            window.ClasstoolsSimon.press(S().seq[0]);
+            if (!await waitInput(2)) { return 'arrows: round 1 did not go on'; }
+            const seq = S().seq.slice();
+            window.ClasstoolsSimon.press(seq[1]);
+            window.ClasstoolsSimon.press(seq[0]);
+            if (!await waitInput(3)) { return `backwards was not taken: ${seq}`; }
+            await window.shot('simon-arrows');
+            // Notes on nine pads: named, and not lit while the board plays.
+            pick('#si-kind', 'notes');
+            q('#si-pads [data-n="9"]').click();
+            const names = [...q('#si-board').children].map((b) => b.textContent);
+            if (names.length !== 9 || names[0] !== 'C' || names[8] !== 'high D') { return `notes: ${names.join(',')}`; }
+            let lit = false;
+            const watch2 = new MutationObserver(() => { if (q('#si-board .ct-lit')) { lit = true; } });
+            watch2.observe(q('#si-board'), { attributes: true, subtree: true });
+            q('#si-start').click();
+            if (!await waitInput(1)) { return 'notes: no turn'; }
+            watch2.disconnect();
+            if (lit) { return 'notes: a pad was lit while the board played'; }
+        } finally {
+            pick('#si-kind', 'colors');
+            q('#si-order [data-v="same"]').click();
+            q('#si-pads [data-n="4"]').click();
+        }
+        return '';
+    },
     'simon-repeat': async () => {
         const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
         const msg = () => document.querySelector('#si-msg').textContent;

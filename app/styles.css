@@ -2030,3 +2030,21 @@ dialog.ct-sc-dialogo { width: min(40rem, 94vw); }
 .ct-nl-frog.nuevo { animation: ct-nl-salto .45s ease-out; }
 @keyframes ct-nl-salto { 0% { transform: translateY(0); } 40% { transform: translateY(-40px); } 100% { transform: translateY(0); } }
 @media (prefers-reduced-motion: reduce) { .ct-nl-frog.nuevo { animation: none; } }
+/* Simon variants: nine pads, arrows in a cross, numbers and notes written on the pads, the number to transform. */
+.ct-pad { display: grid; place-items: center; color: #fff; font-weight: 900; font-size: 9cqmin; line-height: 1; }
+.ct-simon-board[data-kind="notes"] .ct-pad { font-size: 5cqmin; }
+.ct-simon-board[data-n="9"] { grid-template-columns: repeat(3, auto); }
+.ct-simon-board[data-n="9"] .ct-pad { width: min(29cqh, 29cqw); }
+.ct-simon-board[data-kind="arrows"] { grid-template-columns: repeat(3, auto); grid-template-areas: ". a0 ." "a3 . a1" ". a2 ."; }
+.ct-simon-board[data-kind="arrows"] .ct-pad { width: min(29cqh, 29cqw); }
+.ct-simon-board[data-kind="arrows"] .ct-pad[data-i="0"] { grid-area: a0; }
+.ct-simon-board[data-kind="arrows"] .ct-pad[data-i="1"] { grid-area: a1; }
+.ct-simon-board[data-kind="arrows"] .ct-pad[data-i="2"] { grid-area: a2; }
+.ct-simon-board[data-kind="arrows"] .ct-pad[data-i="3"] { grid-area: a3; }
+.ct-pad svg { width: 60%; height: 60%; fill: #fff; }
+.ct-pad[data-i="1"] svg { transform: rotate(90deg); }
+.ct-pad[data-i="2"] svg { transform: rotate(180deg); }
+.ct-pad[data-i="3"] svg { transform: rotate(270deg); }
+.ct-simon-show { min-height: 1.1em; color: var(--azul); font-size: clamp(3rem, 10vw, 6.5rem); font-weight: 900; line-height: 1.1; text-align: center; transition: transform .1s; }
+.ct-simon-show[data-rule] { color: var(--tinta-3); font-size: clamp(1.2rem, 3vw, 2rem); }
+.ct-simon-show.ct-lit { color: var(--rojo); transform: scale(1.12); }

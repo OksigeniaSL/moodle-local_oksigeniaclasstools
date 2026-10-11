@@ -272,8 +272,8 @@
   "es": "Simón"
  },
  "si_pads": {
-  "en": "Colours",
-  "es": "Colores"
+  "en": "Pads",
+  "es": "Pulsadores"
  },
  "si_speed": {
   "en": "Speed",
@@ -818,5 +818,97 @@
  "ex_ai_accept": {
   "en": "Accept and go on",
   "es": "Aceptar y seguir"
+ },
+ "si_teal": {
+  "en": "Teal",
+  "es": "Turquesa"
+ },
+ "si_pink": {
+  "en": "Pink",
+  "es": "Rosa"
+ },
+ "si_brown": {
+  "en": "Brown",
+  "es": "Marrón"
+ },
+ "si_up": {
+  "en": "Up",
+  "es": "Arriba"
+ },
+ "si_right": {
+  "en": "Right",
+  "es": "Derecha"
+ },
+ "si_down": {
+  "en": "Down",
+  "es": "Abajo"
+ },
+ "si_left": {
+  "en": "Left",
+  "es": "Izquierda"
+ },
+ "si_note_names": {
+  "en": "C,D,E,F,G,A,B,high C,high D",
+  "es": "Do,Re,Mi,Fa,Sol,La,Si,Do agudo,Re agudo"
+ },
+ "si_listen": {
+  "en": "Listen!",
+  "es": "¡Escuchen!"
+ },
+ "si_kind": {
+  "en": "The pads show",
+  "es": "Los pulsadores llevan"
+ },
+ "si_kind_colors": {
+  "en": "Colours",
+  "es": "Colores"
+ },
+ "si_kind_arrows": {
+  "en": "Arrows",
+  "es": "Flechas"
+ },
+ "si_kind_numbers": {
+  "en": "Numbers, with a rule",
+  "es": "Números, con una regla"
+ },
+ "si_kind_notes": {
+  "en": "Notes, without colours",
+  "es": "Notas, sin colores"
+ },
+ "si_rule": {
+  "en": "The rule",
+  "es": "La regla"
+ },
+ "si_rule_plus1": {
+  "en": "Add 1",
+  "es": "Sumar 1"
+ },
+ "si_rule_minus1": {
+  "en": "Take away 1",
+  "es": "Restar 1"
+ },
+ "si_rule_ten": {
+  "en": "What it needs to make 10",
+  "es": "Lo que falta para 10"
+ },
+ "si_rule_double": {
+  "en": "Its double",
+  "es": "El doble"
+ },
+ "si_order": {
+  "en": "Repeated",
+  "es": "Se repite"
+ },
+ "si_order_same": {
+  "en": "In order",
+  "es": "En orden"
+ },
+ "si_order_reverse": {
+  "en": "Backwards",
+  "es": "Al revés"
+ },
+ "si_your_turn_reverse": {
+  "en": "Your turn, backwards!",
+  "es": "¡Ahora tú, al revés!"
  }
 }
