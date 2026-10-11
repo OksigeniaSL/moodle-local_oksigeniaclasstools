@@ -807,6 +807,30 @@
   "en": "Up to",
   "es": "Hasta"
  },
+ "b10_base": {
+  "en": "Base",
+  "es": "Base"
+ },
+ "b10_base_n": {
+  "en": "Base {$a}",
+  "es": "Base {$a}"
+ },
+ "b10_blocks_of": {
+  "en": "Blocks of {$a}",
+  "es": "Bloques de {$a}"
+ },
+ "b10_group_n": {
+  "en": "Swap {$a} for 1 ←",
+  "es": "Cambiar {$a} por 1 ←"
+ },
+ "b10_break_n": {
+  "en": "Break into {$a} →",
+  "es": "Romper en {$a} →"
+ },
+ "b10_in_base": {
+  "en": "{$a->n} in base {$a->b}",
+  "es": "{$a->n} en base {$a->b}"
+ },
  "b10_build": {
   "en": "Build a number",
   "es": "Construir un número"
@@ -824,8 +848,8 @@
   "es": "Vaciar"
  },
  "b10_help": {
-  "en": "Add and take away blocks with + and −, or tap a block to take it away. With ten of a kind, swap them for one of the next column; one can be broken into ten.",
-  "es": "Pon y quita bloques con + y −, o toca un bloque para quitarlo. Con diez iguales, cámbialos por uno de la columna siguiente; uno se puede romper en diez."
+  "en": "Add and take away blocks with + and −, or tap a block to take it away. With as many of a kind as the base (ten in base 10), swap them for one of the next column; one can be broken into that many.",
+  "es": "Pon y quita bloques con + y −, o toca un bloque para quitarlo. Con tantos iguales como la base (diez en base 10), cámbialos por uno de la columna siguiente; uno se puede romper en otros tantos."
  },
  "b10_take": {
   "en": "{$a}: take one away",
@@ -838,14 +862,6 @@
  "b10_more": {
   "en": "{$a}: one more",
   "es": "{$a}: uno más"
- },
- "b10_group": {
-  "en": "Swap 10 for 1 ←",
-  "es": "Cambiar 10 por 1 ←"
- },
- "b10_break": {
-  "en": "Break into 10 →",
-  "es": "Romper en 10 →"
  },
  "b10_grouped": {
   "en": "10 in {$a->a} → 1 in {$a->b}",

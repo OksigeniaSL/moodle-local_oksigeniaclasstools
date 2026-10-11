@@ -506,5 +506,33 @@
  "qr_terracotta": {
   "en": "Terracotta",
   "es": "Teja"
+ },
+ "ch_many": {
+  "en": "Many throws",
+  "es": "Muchas tiradas"
+ },
+ "ch_many_n": {
+  "en": "{$a} throws",
+  "es": "{$a} tiradas"
+ },
+ "ch_many_go": {
+  "en": "Throw",
+  "es": "Tirar"
+ },
+ "ch_many_clear": {
+  "en": "Clear the chart",
+  "es": "Borrar el gráfico"
+ },
+ "ch_many_numbers": {
+  "en": "Only with dice of numbers.",
+  "es": "Solo con dados de números."
+ },
+ "ch_freq_one": {
+  "en": "{$a} throws · each bar, how many times; the line, what is expected",
+  "es": "{$a} tiradas · cada barra, cuántas veces; la línea, lo esperado"
+ },
+ "ch_freq_sum": {
+  "en": "{$a} throws · the sum of the dice; the line, what is expected",
+  "es": "{$a} tiradas · la suma de los dados; la línea, lo esperado"
  }
 }

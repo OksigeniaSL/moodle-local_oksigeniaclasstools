@@ -571,6 +571,59 @@ const CHECKS = {
         const card = document.querySelector('#quiensoy-card').textContent, msg = document.querySelector('#quiensoy-msg').textContent;
         return card === 'Marie Curie' && /60/.test(msg) ? '' : `the end says «${card}» and «${msg}»`;
     },
+    // Dice: a thousand throws of two dice give the eleven sums, with the line of what is expected.
+    'dice-frequencies': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        document.querySelector('#t-azar').click();
+        await sleep(200);
+        document.querySelector('#ch-mode [data-mode="dice"]').click();
+        await sleep(200);
+        document.querySelector('#di-count [data-n="2"]').click();
+        await sleep(100);
+        document.querySelector('#di-many').value = '1000';
+        document.querySelector('#di-many-go').click();
+        await sleep(400);
+        const cols = [...document.querySelectorAll('#di-freq .ct-freq-col')];
+        if (cols.length !== 11) { return `${cols.length} columns for two dice`; }
+        const total = cols.reduce((a, c) => a + Number(c.querySelector('.ct-freq-n').textContent), 0);
+        if (total !== 1000) { return `${total} throws counted`; }
+        if (cols[0].querySelector('.ct-freq-k').textContent !== '2' || cols[10].querySelector('.ct-freq-k').textContent !== '12') { return 'the sums do not go from 2 to 12'; }
+        await window.shot('dice-frequencies');
+        document.querySelector('#di-count [data-n="1"]').click();
+        await sleep(200);
+        if (!document.querySelector('#di-freq').hidden) { return 'the chart of two dice stayed with one'; }
+        return '';
+    },
+    // Base blocks in base 5: 69 is 2 × 25 + 3 × 5 + 4, «234 in base 5», and five ones swap for one block of 5.
+    'base-blocks': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        document.querySelector('#t-material').click();
+        await sleep(200);
+        document.querySelector('#mt-mode [data-mode="base10"]').click();
+        await sleep(200);
+        const base = document.querySelector('#b10-base');
+        base.value = '5';
+        base.dispatchEvent(new Event('change', { bubbles: true }));
+        const cols = document.querySelector('#b10-cols');
+        cols.value = '3';
+        cols.dispatchEvent(new Event('change', { bubbles: true }));
+        document.querySelector('#b10-number').value = '69';
+        document.querySelector('#b10-put').click();
+        await sleep(300);
+        const st = window.ClasstoolsBase10.state(), sum = document.querySelector('#b10-sum').textContent;
+        if (st.n.slice(0, 3).join() !== '4,3,2') { return `69 in base 5 gave ${st.n.join()}`; }
+        if (!sum.includes('234') || !sum.includes('5')) { return `the sum says «${sum}»`; }
+        for (let i = 0; i < 1; i++) { document.querySelector('[data-more="0"]').click(); await sleep(50); }
+        const group = document.querySelector('#b10-mat [data-group="0"]');
+        if (!group) { return 'no swap with five ones'; }
+        await window.shot('base-blocks');
+        group.click();
+        await sleep(500);
+        const after = window.ClasstoolsBase10.state().n.slice(0, 3).join();
+        base.value = '10';
+        base.dispatchEvent(new Event('change', { bubbles: true }));
+        return after === '0,4,2' ? '' : `after the swap: ${after}`;
+    },
     // QR: the colours of the corners line up as the colours above them, with «Same» on a line of its own.
     'qr-swatches': async () => {
         const sleep = (ms) => new Promise((r) => setTimeout(r, ms));

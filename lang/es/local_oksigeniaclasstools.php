@@ -54,16 +54,20 @@ $string['app_asi_listen'] = 'Escucha';
 $string['app_asi_pairs'] = 'Por parejas';
 $string['app_asi_quiet'] = 'En voz baja';
 $string['app_asi_silence'] = 'Silencio';
-$string['app_b10_break'] = 'Romper en 10 →';
+$string['app_b10_base'] = 'Base';
+$string['app_b10_base_n'] = 'Base {$a}';
+$string['app_b10_blocks_of'] = 'Bloques de {$a}';
+$string['app_b10_break_n'] = 'Romper en {$a} →';
 $string['app_b10_broken'] = '1 en {$a->a} → 10 en {$a->b}';
 $string['app_b10_build'] = 'Construir un número';
 $string['app_b10_empty'] = 'Vaciar';
-$string['app_b10_group'] = 'Cambiar 10 por 1 ←';
+$string['app_b10_group_n'] = 'Cambiar {$a} por 1 ←';
 $string['app_b10_grouped'] = '10 en {$a->a} → 1 en {$a->b}';
 $string['app_b10_guess'] = '¿Qué número es? Toca para verlo';
 $string['app_b10_h'] = 'Centenas';
-$string['app_b10_help'] = 'Pon y quita bloques con + y −, o toca un bloque para quitarlo. Con diez iguales, cámbialos por uno de la columna siguiente; uno se puede romper en diez.';
+$string['app_b10_help'] = 'Pon y quita bloques con + y −, o toca un bloque para quitarlo. Con tantos iguales como la base (diez en base 10), cámbialos por uno de la columna siguiente; uno se puede romper en otros tantos.';
 $string['app_b10_hide'] = 'Esconder el número';
+$string['app_b10_in_base'] = '{$a->n} en base {$a->b}';
 $string['app_b10_less'] = '{$a}: uno menos';
 $string['app_b10_more'] = '{$a}: uno más';
 $string['app_b10_put'] = 'Poner';
@@ -168,6 +172,8 @@ $string['app_ch_even'] = 'Par';
 $string['app_ch_even_odd'] = 'Par o impar';
 $string['app_ch_exclaim'] = '¡{$a}!';
 $string['app_ch_false'] = 'Falso';
+$string['app_ch_freq_one'] = '{$a} tiradas · cada barra, cuántas veces; la línea, lo esperado';
+$string['app_ch_freq_sum'] = '{$a} tiradas · la suma de los dados; la línea, lo esperado';
 $string['app_ch_from'] = 'Del';
 $string['app_ch_good'] = 'Bien';
 $string['app_ch_green'] = 'Verde';
@@ -178,6 +184,11 @@ $string['app_ch_last_one'] = 'Solo queda «{$a}»: es el último';
 $string['app_ch_left'] = 'Quedan {$a}';
 $string['app_ch_letters_az'] = 'Letras (A–Z)';
 $string['app_ch_letters_stop'] = 'Letras para el «Stop» (sin K, Ñ, Q, W, X, Y)';
+$string['app_ch_many'] = 'Muchas tiradas';
+$string['app_ch_many_clear'] = 'Borrar el gráfico';
+$string['app_ch_many_go'] = 'Tirar';
+$string['app_ch_many_n'] = '{$a} tiradas';
+$string['app_ch_many_numbers'] = 'Solo con dados de números.';
 $string['app_ch_motif'] = 'Motivo';
 $string['app_ch_new_list'] = 'Nueva lista';
 $string['app_ch_no'] = 'No';
@@ -455,20 +466,22 @@ Menos órdenes de viva voz.';
 $string['app_gd_base10_how'] = '«Construir un número»: que lo formen con bloques y lo lean como suma de sus partes.
 Con diez en una columna, «Cambiar 10 por 1» los agrupa; «Romper en 10» hace lo contrario.
 «Esconder el número» y «¿Qué número es?» para leerlo solo con los bloques.
-Para restar llevando, que rompan una decena antes de quitar: lo mismo que en el papel.';
+Para restar llevando, que rompan una decena antes de quitar: lo mismo que en el papel.
+En otra base, los cambios son de ese número de bloques, y el número sale también escrito en esa base («234 en base 5»).';
 $string['app_gd_base10_scene'] = 'En tercero, el maestro pide 52 menos 17. Un alumno dice que no se puede quitar 7 de 2. Rompe una decena en diez unidades con un toque, quita siete, y la clase ve qué significa «llevarse una» en la resta antes de escribirla.';
 $string['app_gd_base10_sources'] = 'Dienes, Z. P. (1960). Building Up Mathematics. Hutchinson Educational.';
 $string['app_gd_base10_stages'] = 'early|De vez en cuando: contar unidades y ver que diez forman una barra.
 primary|Valor de posición, sumas y restas llevando.
-secondary|Para quien aún no domina el valor de posición.
+secondary|Otras bases: binario y hexadecimal en Tecnología; y para quien aún no domina el valor de posición.
 advanced|En Magisterio, para enseñar el sistema de numeración decimal.';
 $string['app_gd_base10_what'] = 'Unidades, decenas, centenas y millares en una tabla de valores: el número que forman, por partes.';
 $string['app_gd_base10_why'] = 'Cambiar diez por uno (agrupar) y uno por diez (romper) es lo que hay detrás de «llevarse una» en las cuentas: con los bloques se hace a la vista antes de hacerlo en el papel.
-Zoltan Dienes, que expuso su teoría de cómo se aprenden las matemáticas en Building Up Mathematics (1960), dio a conocer los bloques multibase para enseñar el valor de posición.';
+Zoltan Dienes, que expuso su teoría de cómo se aprenden las matemáticas en Building Up Mathematics (1960), dio a conocer los bloques multibase para enseñar el valor de posición: la misma idea en base 2, 5 o 16 enseña que el diez es solo una elección.';
 $string['app_gd_base10_works'] = 'El valor de posición: el 3 de 30 no vale lo mismo que el de 300.
 Agrupar diez de una clase en una de la siguiente, y romper una en diez.
 Sumar y restar llevando, sabiendo el porqué de cada paso.
-Leer y escribir números como suma de sus partes («100 + 30 + 12 = 142»).';
+Leer y escribir números como suma de sus partes («100 + 30 + 12 = 142»).
+Otras bases (2, 5, 16…): el valor de posición sin el diez, para Tecnología y para entender el sistema.';
 $string['app_gd_button'] = 'Guía docente';
 $string['app_gd_close'] = 'Cerrar la guía';
 $string['app_gd_codigo_how'] = 'Escribe el código (de 2 a 8 números o letras) y una pista por línea; se enseñan una a una.

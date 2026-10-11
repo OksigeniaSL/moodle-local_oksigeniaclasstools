@@ -54,16 +54,20 @@ $string['app_asi_listen'] = 'Listen';
 $string['app_asi_pairs'] = 'In pairs';
 $string['app_asi_quiet'] = 'Quiet voices';
 $string['app_asi_silence'] = 'Silence';
-$string['app_b10_break'] = 'Break into 10 →';
+$string['app_b10_base'] = 'Base';
+$string['app_b10_base_n'] = 'Base {$a}';
+$string['app_b10_blocks_of'] = 'Blocks of {$a}';
+$string['app_b10_break_n'] = 'Break into {$a} →';
 $string['app_b10_broken'] = '1 in {$a->a} → 10 in {$a->b}';
 $string['app_b10_build'] = 'Build a number';
 $string['app_b10_empty'] = 'Empty';
-$string['app_b10_group'] = 'Swap 10 for 1 ←';
+$string['app_b10_group_n'] = 'Swap {$a} for 1 ←';
 $string['app_b10_grouped'] = '10 in {$a->a} → 1 in {$a->b}';
 $string['app_b10_guess'] = 'What number is it? Tap to see it';
 $string['app_b10_h'] = 'Hundreds';
-$string['app_b10_help'] = 'Add and take away blocks with + and −, or tap a block to take it away. With ten of a kind, swap them for one of the next column; one can be broken into ten.';
+$string['app_b10_help'] = 'Add and take away blocks with + and −, or tap a block to take it away. With as many of a kind as the base (ten in base 10), swap them for one of the next column; one can be broken into that many.';
 $string['app_b10_hide'] = 'Hide the number';
+$string['app_b10_in_base'] = '{$a->n} in base {$a->b}';
 $string['app_b10_less'] = '{$a}: one less';
 $string['app_b10_more'] = '{$a}: one more';
 $string['app_b10_put'] = 'Put';
@@ -168,6 +172,8 @@ $string['app_ch_even'] = 'Even';
 $string['app_ch_even_odd'] = 'Even or odd';
 $string['app_ch_exclaim'] = '{$a}!';
 $string['app_ch_false'] = 'False';
+$string['app_ch_freq_one'] = '{$a} throws · each bar, how many times; the line, what is expected';
+$string['app_ch_freq_sum'] = '{$a} throws · the sum of the dice; the line, what is expected';
 $string['app_ch_from'] = 'From';
 $string['app_ch_good'] = 'Good';
 $string['app_ch_green'] = 'Green';
@@ -178,6 +184,11 @@ $string['app_ch_last_one'] = 'Only “{$a}” is left: it is the last one';
 $string['app_ch_left'] = '{$a} left';
 $string['app_ch_letters_az'] = 'Letters (A–Z)';
 $string['app_ch_letters_stop'] = 'Letters for “Stop” (no K, Ñ, Q, W, X, Y)';
+$string['app_ch_many'] = 'Many throws';
+$string['app_ch_many_clear'] = 'Clear the chart';
+$string['app_ch_many_go'] = 'Throw';
+$string['app_ch_many_n'] = '{$a} throws';
+$string['app_ch_many_numbers'] = 'Only with dice of numbers.';
 $string['app_ch_motif'] = 'Design';
 $string['app_ch_new_list'] = 'New list';
 $string['app_ch_no'] = 'No';
@@ -455,20 +466,22 @@ Fewer orders given aloud.';
 $string['app_gd_base10_how'] = '«Build a number»: they make it with blocks and read it as the sum of its parts.
 With ten in one column, «Swap 10 for 1» groups them; «Break into 10» does the opposite.
 «Hide the number» and «What number is it?» to read it from the blocks alone.
-To subtract with borrowing, they break a ten before taking away: the same as on paper.';
+To subtract with borrowing, they break a ten before taking away: the same as on paper.
+In another base, the same swaps are of that number of blocks, and the number is also written in that base («234 in base 5»).';
 $string['app_gd_base10_scene'] = 'In Year 3, the teacher asks for 52 minus 17. A student says 7 cannot be taken from 2. He breaks a ten into ten ones with a tap, takes seven away, and the class sees what borrowing one means before writing it down.';
 $string['app_gd_base10_sources'] = 'Dienes, Z. P. (1960). Building Up Mathematics. Hutchinson Educational.';
 $string['app_gd_base10_stages'] = 'early|Now and then: counting ones and seeing that ten make a rod.
 primary|Place value, carrying in additions and borrowing in subtractions.
-secondary|For those who still struggle with place value.
+secondary|Other bases: binary and hexadecimal in technology; and for those who still struggle with place value.
 advanced|In teacher training, to teach the decimal number system.';
 $string['app_gd_base10_what'] = 'Ones, tens, hundreds and thousands on a place-value mat: the number they make, part by part.';
 $string['app_gd_base10_why'] = 'Swapping ten for one (grouping) and one for ten (breaking) is what lies behind carrying and borrowing in written sums: with the blocks it is done in sight before it is done on paper.
-Zoltan Dienes, who set out his theory of how mathematics is learnt in Building Up Mathematics (1960), made multibase blocks known for teaching place value.';
+Zoltan Dienes, who set out his theory of how mathematics is learnt in Building Up Mathematics (1960), made multibase blocks known for teaching place value: the same idea in base 2, 5 or 16 shows that ten is only one choice.';
 $string['app_gd_base10_works'] = 'Place value: the 3 in 30 is not worth the same as the 3 in 300.
 Grouping ten of one kind into one of the next, and breaking one into ten.
 Adding and subtracting with carrying and borrowing, knowing why at each step.
-Reading and writing numbers as the sum of their parts («100 + 30 + 12 = 142»).';
+Reading and writing numbers as the sum of their parts («100 + 30 + 12 = 142»).
+Other bases (2, 5, 16…): place value without the ten, for technology and for understanding the system.';
 $string['app_gd_button'] = 'Teacher\'s guide';
 $string['app_gd_close'] = 'Close the guide';
 $string['app_gd_codigo_how'] = 'Write the code (2 to 8 numbers or letters) and one clue per line; they are shown one by one.

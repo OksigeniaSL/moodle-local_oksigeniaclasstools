@@ -81,12 +81,20 @@
                         <textarea id="di-custom" rows="4" spellcheck="false" placeholder="${escape(STR.customHint)}"></textarea></label>
                     <label class="interruptor" id="di-norepeat-box" hidden><input type="checkbox" id="di-norepeat"><span>${STR.noRepeat}</span></label>
                     <label class="interruptor"><input type="checkbox" id="di-rasca"><span>${escape(t('rs_toggle'))}</span></label>
+                    <div class="ct-many" id="di-many-box">
+                        <p class="ante">${escape(t('ch_many'))}</p>
+                        <div class="ct-row"><select id="di-many" aria-label="${escape(t('ch_many'))}">${[10, 100, 1000].map((n) => `<option value="${n}">${escape(t('ch_many_n', n))}</option>`).join('')}</select>
+                            <button type="button" class="boton suave" id="di-many-go"><span data-icono="dado"></span><span>${escape(t('ch_many_go'))}</span></button></div>
+                        <button type="button" class="boton suave" id="di-many-clear" hidden><span data-icono="limpiar"></span><span>${escape(t('ch_many_clear'))}</span></button>
+                        <p class="nota" id="di-many-note" hidden>${escape(t('ch_many_numbers'))}</p>
+                    </div>
                 </aside>
                 <div class="tarjeta ct-stage">
                     <div class="ct-dice" id="di-dice"></div>
                     <p class="total espera" id="di-total" aria-live="polite"></p>
                     <button type="button" class="boton grande" id="di-roll"><span data-icono="dado"></span>${STR.roll}</button>
                     <ol class="historial" id="di-history" hidden></ol>
+                    <figure class="ct-freq" id="di-freq" hidden></figure>
                 </div>
             </div>
             <div class="ct-panel" data-panel="coin" hidden>
@@ -491,19 +499,71 @@
         turn();
     };
     $('#di-roll').addEventListener('click', roll);
+
+    // Many throws at once: how often each result comes out (the sum, with several dice), next to what is expected in
+    // theory. The more throws, the closer they get: the law of large numbers, seen.
+    let freq = { counts: {}, n: 0, key: '' };
+    const numeric = () => diTypes.slice(0, diN).every((ty) => !isList(ty) && facesOf(ty).every((f) => /^-?\d+$/.test(String(f))));
+    const expected = () => {
+        // The exact chance of each sum, adding the dice one by one.
+        let dist = { 0: 1 };
+        diTypes.slice(0, diN).forEach((ty) => {
+            const faces = facesOf(ty).map(Number), next = {};
+            Object.entries(dist).forEach(([sum, p]) => faces.forEach((f) => { const k = Number(sum) + f; next[k] = (next[k] || 0) + p / faces.length; }));
+            dist = next;
+        });
+        return dist;
+    };
+    const paintFreq = () => {
+        const box = $('#di-freq');
+        box.hidden = !freq.n;
+        $('#di-many-clear').hidden = !freq.n;
+        if (!freq.n) { box.innerHTML = ''; return; }
+        const exp = expected(), keys = Object.keys(exp).map(Number).sort((a, b) => a - b);
+        const top = Math.max(...keys.map((k) => Math.max(exp[k], (freq.counts[k] || 0) / freq.n)));
+        box.innerHTML = `<div class="ct-freq-bars">${keys.map((k) => {
+            const c = freq.counts[k] || 0, share = c / freq.n;
+            return `<div class="ct-freq-col" title="${k}: ${c}"><span class="ct-freq-n">${c}</span><span class="ct-freq-track">`
+                + `<i class="ct-freq-bar" style="height:${(100 * share / top).toFixed(1)}%"></i><i class="ct-freq-exp" style="bottom:${(100 * exp[k] / top).toFixed(1)}%"></i></span>`
+                + `<span class="ct-freq-k">${k}</span></div>`;
+        }).join('')}</div><figcaption>${escape(t(diN > 1 ? 'ch_freq_sum' : 'ch_freq_one', freq.n))}</figcaption>`;
+    };
+    const paintMany = () => {
+        const ok = numeric();
+        $('#di-many-go').disabled = !ok;
+        $('#di-many-note').hidden = ok;
+        // Other dice, another chart.
+        const key = diTypes.slice(0, diN).join(',');
+        if (freq.key !== key) { freq = { counts: {}, n: 0, key }; }
+        paintFreq();
+    };
+    $('#di-many-go').addEventListener('click', () => {
+        if (!numeric()) { return; }
+        const times = Number($('#di-many').value) || 100, types = diTypes.slice(0, diN).map((ty) => facesOf(ty).map(Number));
+        for (let i = 0; i < times; i++) {
+            const sum = types.reduce((a, faces) => a + faces[random(faces.length)], 0);
+            freq.counts[sum] = (freq.counts[sum] || 0) + 1;
+        }
+        freq.n += times;
+        play('dado');
+        paintFreq();
+        announce(t(diN > 1 ? 'ch_freq_sum' : 'ch_freq_one', freq.n));
+    });
+    $('#di-many-clear').addEventListener('click', () => { freq = { counts: {}, n: 0, key: freq.key }; paintFreq(); });
+    paintMany();
     $('#di-rasca').checked = diScratch;
     $('#di-rasca').addEventListener('change', (e) => { diScratch = e.target.checked; save('dados-rasca', diScratch); });
     $$('#di-count button').forEach((b) => b.addEventListener('click', () => {
-        diN = Number(b.dataset.n); save('dados-n', diN); diPaintCount(); diPaintTypes(); diReset();
+        diN = Number(b.dataset.n); save('dados-n', diN); diPaintCount(); diPaintTypes(); diReset(); paintMany();
     }));
     $('#di-types').addEventListener('change', (e) => {
         const s = e.target.closest('select'); if (!s) { return; }
         diTypes[Number(s.dataset.i)] = s.value; save('dados-tipos', diTypes);
-        diPaintTypes(); diReset();
+        diPaintTypes(); diReset(); paintMany();
     });
     $('#di-norepeat').checked = load('dados-sinrepetir', true) !== false;
     $('#di-norepeat').addEventListener('change', () => { save('dados-sinrepetir', $('#di-norepeat').checked); Object.keys(diOut).forEach((k) => delete diOut[k]); });
-    $('#di-custom').addEventListener('input', () => { save('dados-personalizado', $('#di-custom').value); diValues = []; diPaint(diResting()); diSetTotal(); });
+    $('#di-custom').addEventListener('input', () => { save('dados-personalizado', $('#di-custom').value); diValues = []; diPaint(diResting()); diSetTotal(); freq.key = ''; paintMany(); });
 
     // ---------------------------------------------------------------------------------------------------
     // Coin

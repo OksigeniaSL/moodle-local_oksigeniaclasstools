@@ -874,9 +874,9 @@ a.redondo { text-decoration: none; }
 .ct-b10-area { display: flex; flex: 1; flex-wrap: wrap; align-content: flex-start; justify-content: center; gap: calc(var(--u) * .35); min-height: 0; padding: 4px; overflow: hidden; }
 .ct-b10-b { flex: none; padding: 0; border: 0; border-radius: calc(var(--u) * .18); background-color: var(--c); cursor: pointer; transition: transform .3s, opacity .3s; }
 .ct-b10-b.b0 { width: var(--u); height: var(--u); box-shadow: inset 0 -2px 0 rgba(0, 0, 0, .25), inset 0 2px 0 rgba(255, 255, 255, .3); }
-.ct-b10-b.b1 { width: var(--u); height: calc(var(--u) * 10); background-image: repeating-linear-gradient(to bottom, transparent 0 calc(var(--u) - 1.5px), rgba(255, 255, 255, .55) calc(var(--u) - 1.5px) var(--u)); }
-.ct-b10-b.b2 { width: calc(var(--u) * 10); height: calc(var(--u) * 10); background-image: repeating-linear-gradient(to bottom, transparent 0 calc(var(--u) - 1.5px), rgba(255, 255, 255, .5) calc(var(--u) - 1.5px) var(--u)), repeating-linear-gradient(to right, transparent 0 calc(var(--u) - 1.5px), rgba(255, 255, 255, .5) calc(var(--u) - 1.5px) var(--u)); }
-.ct-b10-b.b3 { width: calc(var(--u) * 10); height: calc(var(--u) * 10); background: none; border-radius: 0; }
+.ct-b10-b.b1 { width: var(--u); height: calc(var(--u) * var(--base, 10)); background-image: repeating-linear-gradient(to bottom, transparent 0 calc(var(--u) - 1.5px), rgba(255, 255, 255, .55) calc(var(--u) - 1.5px) var(--u)); }
+.ct-b10-b.b2 { width: calc(var(--u) * var(--base, 10)); height: calc(var(--u) * var(--base, 10)); background-image: repeating-linear-gradient(to bottom, transparent 0 calc(var(--u) - 1.5px), rgba(255, 255, 255, .5) calc(var(--u) - 1.5px) var(--u)), repeating-linear-gradient(to right, transparent 0 calc(var(--u) - 1.5px), rgba(255, 255, 255, .5) calc(var(--u) - 1.5px) var(--u)); }
+.ct-b10-b.b3 { width: calc(var(--u) * var(--base, 10)); height: calc(var(--u) * var(--base, 10)); background: none; border-radius: 0; }
 .ct-b10-cube { display: block; width: 100%; height: 100%; }
 .ct-b10-cube .front { fill: var(--c); }
 .ct-b10-cube .top { fill: #9b7ce6; }
@@ -1939,3 +1939,17 @@ dialog.ct-sc-dialogo { width: min(40rem, 94vw); }
 .ct-ex-why p { margin: 0 0 .3rem; color: var(--tinta); font-size: .95rem; line-height: 1.4; }
 .ct-ex-editor textarea { width: 100%; font-family: inherit; font-size: 1rem; line-height: 1.4; }
 .ct-ex-modes button { padding: .3rem .6rem; line-height: 1.1; white-space: normal; }
+
+/* Dice: many throws at once and how often each result came out, with the line of what is expected. */
+.ct-many { display: grid; gap: .45rem; margin-top: .4rem; }
+.ct-many .ct-row { display: flex; gap: .4rem; }
+.ct-many select { flex: 1; min-width: 0; }
+.ct-freq { width: min(46rem, 100%); margin: .4rem auto 0; }
+.ct-freq-bars { display: flex; align-items: stretch; justify-content: center; gap: .3rem; height: clamp(9rem, 26vh, 15rem); }
+.ct-freq-col { display: flex; flex: 1; flex-direction: column; align-items: center; gap: .2rem; max-width: 3.4rem; }
+.ct-freq-n { color: var(--tinta-3); font-size: .8rem; font-weight: 800; }
+.ct-freq-track { position: relative; flex: 1; width: 100%; border-radius: 8px 8px 0 0; background: var(--fondo); }
+.ct-freq-bar { position: absolute; right: 12%; bottom: 0; left: 12%; border-radius: 6px 6px 0 0; background: var(--azul); transition: height .3s; }
+.ct-freq-exp { position: absolute; right: 0; left: 0; height: 0; border-top: 3px dashed var(--rojo); }
+.ct-freq-k { color: var(--azul-osc); font-weight: 1000; }
+.ct-freq figcaption { margin-top: .4rem; color: var(--tinta-3); font-size: .9rem; font-weight: 700; text-align: center; }

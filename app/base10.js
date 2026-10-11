@@ -1,6 +1,8 @@
 // Base-ten blocks, among the materials: a place-value mat with ones, tens, hundreds (and thousands), blocks added
 // and taken away with + and − (or a tap on a block), ten of a kind swapped for one of the next column and one broken
 // into ten, and the number below as the sum of its places («100 + 30 + 12 = 142»), which can be hidden.
+// Also in other bases (2, 3, 4, 5, 8, 16), as Dienes' multibase blocks: each column is worth the base times the one
+// before, the swaps are of «base» blocks, and the number is also written in that base («234 in base 5»).
 //
 // @copyright 2026 Oksigenia <dev@oksigenia.cc>
 // @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -18,13 +20,18 @@
         { key: 'th', value: 1000, colour: '#5b2fb8' },
     ];
     const MAX = 20;
-    const name = (p) => t('b10_' + p.key);
+    const BASES = [2, 3, 4, 5, 8, 10, 16];
+    const base = () => (BASES.includes(Number(st.base)) ? Number(st.base) : 10);
+    const valueOf = (i) => base() ** i;
+    // In base ten the columns keep their names (tens, hundreds…); in another base, «blocks of 25».
+    const name = (p) => (base() === 10 || PLACES.indexOf(p) === 0 ? t('b10_' + p.key) : t('b10_blocks_of', valueOf(PLACES.indexOf(p))));
 
     const panel = core.material.add('base10', t('mt_base10'), `
         <aside class="tarjeta ct-side">
-            <label class="campo apilado"><span>${escape(t('b10_upto'))}</span><select id="b10-cols">
-                <option value="2">${escape(t('b10_t'))}</option><option value="3">${escape(t('b10_h'))}</option><option value="4">${escape(t('b10_th'))}</option>
+            <label class="campo apilado"><span>${escape(t('b10_base'))}</span><select id="b10-base">
+                ${[10, 2, 3, 4, 5, 8, 16].map((b) => `<option value="${b}">${escape(t('b10_base_n', b))}</option>`).join('')}
             </select></label>
+            <label class="campo apilado"><span>${escape(t('b10_upto'))}</span><select id="b10-cols"></select></label>
             <label class="campo apilado"><span>${escape(t('b10_build'))}</span>
                 <span class="ct-row"><input type="number" id="b10-number" min="0" max="9999" inputmode="numeric">
                 <button type="button" class="boton suave" id="b10-put">${escape(t('b10_put'))}</button></span></label>
@@ -41,9 +48,9 @@
     // Each screen mode starts with its own mat (up to the tens for the youngest, the hundreds in Primary, the thousands
     // from Secondary) and remembers what the teacher changes in it.
     const byMode = core.byMode ? core.byMode('base10-modo', {
-        early: { cols: 2 }, primary: { cols: 3 }, secondary: { cols: 4 }, advanced: { cols: 4 },
+        early: { cols: 2, base: 10 }, primary: { cols: 3, base: 10 }, secondary: { cols: 4, base: 10 }, advanced: { cols: 4, base: 10 },
     }) : { get: () => ({}), set: () => {} };
-    const st = Object.assign({ cols: 3, n: [3, 2, 1, 0], hide: false }, load('base10', {}), byMode.get());
+    const st = Object.assign({ cols: 3, n: [3, 2, 1, 0], hide: false, base: 10 }, load('base10', {}), byMode.get());
     const columns = (c) => ([2, 3, 4].includes(Number(c)) ? Number(c) : 3);
     st.cols = columns(st.cols);
     st.n = PLACES.map((_, i) => Math.max(0, Math.min(MAX, Number((st.n || [])[i]) || 0)));
@@ -57,6 +64,8 @@
     function paint() {
         const mat = $('#b10-mat'), used = PLACES.slice(0, st.cols);
         mat.style.setProperty('--cols', st.cols);
+        // A rod is as long as «base» ones, and a flat is «base» rods.
+        mat.style.setProperty('--base', base());
         mat.innerHTML = used.slice().reverse().map((p) => {
             const i = PLACES.indexOf(p), n = st.n[i], top = i === st.cols - 1;
             const blocks = Array.from({ length: n }, (_, k) => `<button type="button" class="ct-b10-b b${i}${fresh[i] && k >= n - fresh[i] ? ' nuevo' : ''}" data-i="${i}" aria-label="${escape(t('b10_take', name(p)))}">${block(i)}</button>`).join('');
@@ -69,8 +78,8 @@
                     <button type="button" class="redondo suave" data-more="${i}" aria-label="${escape(t('b10_more', name(p)))}"${n < MAX ? '' : ' disabled'}>${core.icon('mas')}</button>
                 </div>
                 <div class="ct-b10-cambios">
-                    ${!top && n >= 10 ? `<button type="button" class="boton suave" data-group="${i}">${escape(t('b10_group', name(PLACES[i + 1])))}</button>` : ''}
-                    ${i > 0 && n > 0 && st.n[i - 1] <= MAX - 10 ? `<button type="button" class="boton suave" data-break="${i}">${escape(t('b10_break', name(PLACES[i - 1])))}</button>` : ''}
+                    ${!top && n >= base() ? `<button type="button" class="boton suave" data-group="${i}">${escape(t('b10_group_n', base()))}</button>` : ''}
+                    ${i > 0 && n > 0 && st.n[i - 1] <= MAX - base() ? `<button type="button" class="boton suave" data-break="${i}">${escape(t('b10_break_n', base()))}</button>` : ''}
                 </div>
             </section>`;
         }).join('');
@@ -87,15 +96,18 @@
             if (areas.every((a) => a.scrollHeight <= a.clientHeight + 1 && a.scrollWidth <= a.clientWidth + 1)) { return; }
         }
     };
-    // The number, as the sum of its places: «100 + 30 + 5 = 135».
-    const total = () => PLACES.slice(0, st.cols).reduce((a, p, i) => a + st.n[i] * p.value, 0);
+    // The number, as the sum of its places: «100 + 30 + 5 = 135»; in another base, «2 × 25 + 3 × 5 + 4 = 69 · 234 in
+    // base 5».
+    const total = () => PLACES.slice(0, st.cols).reduce((a, p, i) => a + st.n[i] * valueOf(i), 0);
     const sum = () => {
-        const box = $('#b10-sum'), v = total();
-        const parts = PLACES.slice(0, st.cols).map((p, i) => st.n[i] * p.value).filter(Boolean).reverse();
+        const box = $('#b10-sum'), v = total(), b = base();
+        const parts = PLACES.slice(0, st.cols).map((p, i) => (st.n[i] ? (b === 10 || i === 0 ? String(st.n[i] * valueOf(i)) : `${st.n[i]} × ${valueOf(i)}`) : ''))
+            .filter(Boolean).reverse();
         box.disabled = !st.hide;
         if (st.hide && !revealed) { box.className = 'total ct-b10-sum oculto'; box.textContent = t('b10_guess'); return; }
         box.className = 'total ct-b10-sum';
-        box.textContent = parts.length > 1 ? `${parts.join(' + ')} = ${v}` : String(v);
+        const sumText = parts.length > 1 || (b !== 10 && parts.length) ? `${parts.join(' + ')} = ${v}` : String(v);
+        box.textContent = b === 10 ? sumText : `${sumText} · ${t('b10_in_base', { n: v.toString(b).toUpperCase(), b })}`;
     };
     const set = (i, n) => {
         const before = st.n[i];
@@ -121,18 +133,18 @@
         };
         if (b.dataset.group !== undefined) {
             const i = Number(b.dataset.group);
-            swap(i, i + 1, 10, 1);
+            swap(i, i + 1, base(), 1);
             announce(t('b10_grouped', { a: name(PLACES[i]), b: name(PLACES[i + 1]) }));
         } else if (b.dataset.break !== undefined) {
             const i = Number(b.dataset.break);
-            swap(i, i - 1, 1, 10);
+            swap(i, i - 1, 1, base());
             announce(t('b10_broken', { a: name(PLACES[i]), b: name(PLACES[i - 1]) }));
         }
     });
     $('#b10-sum').addEventListener('click', () => { if (st.hide) { revealed = !revealed; sum(); play(revealed ? 'elegido' : 'tic'); } });
     $('#b10-put').addEventListener('click', () => {
-        const v = Math.max(0, Math.min(10 ** st.cols - 1, Math.floor(Number($('#b10-number').value) || 0)));
-        st.n = PLACES.map((p, i) => (i < st.cols ? Math.floor(v / p.value) % 10 : 0));
+        const v = Math.max(0, Math.min(base() ** st.cols - 1, Math.floor(Number($('#b10-number').value) || 0)));
+        st.n = PLACES.map((p, i) => (i < st.cols ? Math.floor(v / valueOf(i)) % base() : 0));
         fresh = { 0: st.n[0], 1: st.n[1], 2: st.n[2], 3: st.n[3] };
         revealed = false; keep(); paint(); play('card');
     });
@@ -140,15 +152,27 @@
     // Fewer columns: the blocks of the columns that go away are emptied.
     const setColumns = (c) => { st.cols = columns(c); st.n = st.n.map((x, i) => (i < st.cols ? x : 0)); };
     $('#b10-cols').addEventListener('change', () => { setColumns($('#b10-cols').value); byMode.set({ cols: st.cols }); keep(); paint(); });
+    // The columns are named by the place of the last one («Up to the hundreds», or «Up to blocks of 25»).
+    const fillColumns = () => {
+        $('#b10-cols').innerHTML = [2, 3, 4].map((c) => `<option value="${c}">${escape(name(PLACES[c - 1]))}</option>`).join('');
+        $('#b10-cols').value = String(st.cols);
+    };
+    $('#b10-base').addEventListener('change', () => {
+        st.base = Number($('#b10-base').value);
+        st.base = base();
+        // Another base: the blocks go back to what fits in it.
+        st.n = st.n.map((x) => Math.min(x, base() - 1));
+        byMode.set({ base: st.base }); revealed = false; keep(); fillColumns(); paint();
+    });
     $('#b10-hide').addEventListener('change', () => { st.hide = $('#b10-hide').checked; revealed = false; byMode.set({ hide: st.hide }); keep(); sum(); });
     document.addEventListener('classtools:mode', () => {
         const v = byMode.get();
-        setColumns(v.cols); st.hide = !!v.hide; revealed = false;
-        $('#b10-cols').value = String(st.cols); $('#b10-hide').checked = st.hide;
+        setColumns(v.cols); st.hide = !!v.hide; st.base = v.base || 10; revealed = false;
+        $('#b10-base').value = String(base()); fillColumns(); $('#b10-hide').checked = st.hide;
         keep(); paint();
     });
     $('#b10-empty').addEventListener('click', () => { st.n = [0, 0, 0, 0]; revealed = false; keep(); paint(); });
-    $('#b10-cols').value = String(st.cols); $('#b10-hide').checked = st.hide;
+    $('#b10-base').value = String(base()); fillColumns(); $('#b10-hide').checked = st.hide;
     if (window.ResizeObserver) { new ResizeObserver(() => requestAnimationFrame(fit)).observe($('#b10-mat')); }
     paint();
 
