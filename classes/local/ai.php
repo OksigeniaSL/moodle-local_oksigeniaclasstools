@@ -32,7 +32,7 @@ class ai {
     const GAMES = ['order' => 'app_ord_name', 'classify' => 'app_so_name', 'errors' => 'app_er_name', 'whoami' => 'app_wa_name'];
 
     /** The other things that can be asked for, each with its «what», rules and example among the board's strings. */
-    const KINDS = ['quiz', 'rosco', 'words', 'pairs'];
+    const KINDS = ['quiz', 'rosco', 'words', 'pairs', 'trios'];
 
     /** The levels (the exercises of Early years take the examples of Primary). */
     const LEVELS = ['early', 'primary', 'secondary', 'advanced'];

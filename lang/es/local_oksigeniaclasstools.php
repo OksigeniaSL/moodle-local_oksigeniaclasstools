@@ -62,11 +62,15 @@ La ballena es un pez | F';
 $string['app_ai_example_rosco'] = 'A | Insecto que fabrica miel | abeja
 B | Embarcación que flota y navega | barco
 Ñ | Estación del año en la que caen las hojas | otoño';
+$string['app_ai_example_trios'] = 'Francia = París = francés
+Italia = Roma = italiano
+Portugal = Lisboa = portugués';
 $string['app_ai_example_words'] = 'volcán
 glaciar
 meseta';
 $string['app_ai_for'] = 'Para';
 $string['app_ai_kind_pairs'] = 'Parejas «a = b» (Parejas)';
+$string['app_ai_kind_trios'] = 'Tríos «a = b = c» (Parejas)';
 $string['app_ai_kind_words'] = 'Palabras (ahorcado, palabra, código)';
 $string['app_ai_prompt'] = 'Escribe {$a->what} para {$a->level}, sobre «{$a->topic}».
 
@@ -79,10 +83,12 @@ Contesta solo con eso, en el idioma de este texto, sin explicaciones ni formato 
 $string['app_ai_rules_pairs'] = 'Una pareja por línea: las dos partes separadas por =, cada una de pocas palabras.';
 $string['app_ai_rules_quiz'] = 'Una pregunta por línea: la pregunta y después de dos a cuatro respuestas separadas por |, con * delante de la única correcta. Para verdadero o falso, la afirmación, | y V o F.';
 $string['app_ai_rules_rosco'] = 'Una línea por letra, para estas letras: {$a}. En cada línea, la letra, la pista y la respuesta, separadas por |. La respuesta empieza por esa letra o, si no hay una palabra adecuada, la contiene.';
+$string['app_ai_rules_trios'] = 'Un trío por línea: tres cosas que van juntas, separadas por =, cada una de pocas palabras.';
 $string['app_ai_rules_words'] = 'Una palabra por línea, sin artículos, números ni explicaciones.';
 $string['app_ai_what_pairs'] = '{$a} parejas';
 $string['app_ai_what_quiz'] = '{$a} preguntas de concurso';
 $string['app_ai_what_rosco'] = 'un rosco, con una pista para cada letra';
+$string['app_ai_what_trios'] = '{$a} tríos';
 $string['app_ai_what_words'] = '{$a} palabras';
 $string['app_asi_group'] = 'En grupo';
 $string['app_asi_hand'] = 'Levanta la mano';
@@ -1606,6 +1612,7 @@ $string['app_me_done'] = '¡Todas! En {$a} intentos';
 $string['app_me_faces'] = 'Caras y nombres: {$a}';
 $string['app_me_few'] = 'Hacen falta al menos dos parejas.';
 $string['app_me_found'] = '{$a->a} de {$a->b} parejas';
+$string['app_me_found_trios'] = '{$a->a} de {$a->b} tríos';
 $string['app_me_from_bank'] = 'Banco de preguntas (emparejamiento)';
 $string['app_me_level'] = 'Nivel';
 $string['app_me_level_early'] = 'Infantil';
@@ -1613,10 +1620,16 @@ $string['app_me_level_higher'] = 'Universidad y superior';
 $string['app_me_level_primary'] = 'Primaria';
 $string['app_me_level_secondary'] = 'Secundaria';
 $string['app_me_level_upper'] = 'Bachillerato';
+$string['app_me_limit'] = 'Contra los intentos';
+$string['app_me_lost'] = 'Se acabaron los intentos: {$a->a} de {$a->b} encontradas';
 $string['app_me_moves_many'] = '{$a} intentos';
 $string['app_me_moves_one'] = '{$a} intento';
 $string['app_me_own'] = 'Tus listas';
 $string['app_me_pairs'] = 'Parejas';
+$string['app_me_peek'] = 'Un vistazo al empezar';
+$string['app_me_peek_none'] = 'No';
+$string['app_me_peek_s'] = '{$a} segundos';
+$string['app_me_peeking'] = 'Mírenlas bien…';
 $string['app_me_press_start'] = 'Elige qué emparejar y pulsa «Repartir»';
 $string['app_me_set_animals'] = 'Un animal y su sombra';
 $string['app_me_set_clock'] = 'La hora: reloj y digital';
@@ -1644,6 +1657,9 @@ $string['app_me_start'] = 'Repartir';
 $string['app_me_students'] = 'Alumnos';
 $string['app_me_team'] = 'Equipo {$a}';
 $string['app_me_tie'] = '¡Empate!';
+$string['app_me_tries_left'] = 'Quedan {$a} intentos';
+$string['app_me_tries_one'] = 'Queda 1 intento';
+$string['app_me_trios'] = 'Tríos: tres cartas que van juntas';
 $string['app_me_turn'] = 'Le toca a {$a}';
 $string['app_me_two_teams'] = 'Dos equipos';
 $string['app_me_what'] = 'Qué emparejar';

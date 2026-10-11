@@ -602,5 +602,45 @@
  "cl_clock": {
   "en": "Clock for learning the time",
   "es": "Reloj para aprender la hora"
+ },
+ "me_limit": {
+  "en": "Against the tries",
+  "es": "Contra los intentos"
+ },
+ "me_tries_left": {
+  "en": "{$a} tries left",
+  "es": "Quedan {$a} intentos"
+ },
+ "me_tries_one": {
+  "en": "1 try left",
+  "es": "Queda 1 intento"
+ },
+ "me_lost": {
+  "en": "Out of tries: {$a->a} of {$a->b} found",
+  "es": "Se acabaron los intentos: {$a->a} de {$a->b} encontradas"
+ },
+ "me_peek": {
+  "en": "A glance at the start",
+  "es": "Un vistazo al empezar"
+ },
+ "me_peek_none": {
+  "en": "No",
+  "es": "No"
+ },
+ "me_peek_s": {
+  "en": "{$a} seconds",
+  "es": "{$a} segundos"
+ },
+ "me_peeking": {
+  "en": "Look carefully…",
+  "es": "Mírenlas bien…"
+ },
+ "me_trios": {
+  "en": "Trios: three cards that go together",
+  "es": "Tríos: tres cartas que van juntas"
+ },
+ "me_found_trios": {
+  "en": "{$a->a} of {$a->b} trios",
+  "es": "{$a->a} de {$a->b} tríos"
  }
 }

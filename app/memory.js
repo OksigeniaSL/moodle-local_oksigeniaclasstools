@@ -1,7 +1,8 @@
 // Find the pairs for the whole class: cards face down, turned two at a time. Built-in sets by school level (from
 // shapes and animal shadows to chemical elements and graphs of functions), a student's face and their name, or the
 // teacher's lists («dog = perro» per line). The whole class plays, or two teams take turns (finding a pair keeps
-// the turn).
+// the turn), or the class plays against a number of tries. A glance at the start shows all the cards for a few
+// seconds. Trios: three cards that go together (a number as dots, figure and word, or lists «a = b = c»).
 //
 // @copyright 2026 Oksigenia <dev@oksigenia.cc>
 // @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -20,6 +21,8 @@
         team: (n) => t('me_team', n), moves: (n) => t(n === 1 ? 'me_moves_one' : 'me_moves_many', n), found: (a, b) => t('me_found', { a, b }),
         done: (n) => t('me_done', n), winner: (n) => t('me_winner', n), tie: t('me_tie'), few: t('me_few'),
         pressStart: t('me_press_start'), turn: (n) => t('me_turn', n), card: (n) => t('me_card', n),
+        limit: t('me_limit'), tries: (n) => t(n === 1 ? 'me_tries_one' : 'me_tries_left', n), lost: (a, b) => t('me_lost', { a, b }),
+        peek: t('me_peek'), peekNone: t('me_peek_none'), peeking: t('me_peeking'), trios: t('me_trios'),
     };
     // Names and texts in the user's language (window.CLASSTOOLS_CONTENT); colours, symbols and formulas are the same.
     const CONTENT = window.CLASSTOOLS_CONTENT;
@@ -91,7 +94,8 @@
             { id: 'shapes', name: STR.shapes },
             { id: 'colors', name: STR.colors },
             { id: 'animals', name: t('me_set_animals'), make: (n) => pick(ANIMALS, n).map(([i, c]) => [{ icon: i, color: c }, { icon: i, color: '#2b2d33', shadow: true }]) },
-            { id: 'dots', name: t('me_set_dots'), make: (n) => pick([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], n).map((k) => [{ html: tenFrame(k) }, text(String(k), true)]) },
+            { id: 'dots', name: t('me_set_dots'), make: (n) => pick([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], n).map((k) => [{ html: tenFrame(k) }, text(String(k), true)]),
+                trio: (n) => pick([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], n).map((k) => [{ html: tenFrame(k) }, text(String(k), true), text(NUMBERS[k - 1])]) },
             { id: 'letters', name: t('me_set_letters'), make: (n) => pick(LETTER_PAIRS, n).map((l) => [text(l, true), text(l.toLowerCase(), true)]) },
         ],
         primary: [
@@ -124,7 +128,8 @@
         ],
     };
     const preset = (id) => Object.values(PRESETS).flat().find((p) => p.id === id);
-    const s = { cards: [], open: [], found: 0, pairs: 0, moves: 0, teams: [], turn: 0, busy: false, over: true };
+    const s = { cards: [], open: [], found: 0, pairs: 0, moves: 0, teams: [], turn: 0, busy: false, over: true, size: 2, tries: 0 };
+    let peekTimer = 0;
     let visible = false;
 
     const mount = (panel) => {
@@ -141,7 +146,11 @@
                     <div class="segmentos" role="radiogroup" aria-label="${escape(STR.who)}" id="me-who">
                         <button type="button" role="radio" aria-checked="true" data-who="class">${STR.wholeClass}</button>
                         <button type="button" role="radio" aria-checked="false" data-who="teams">${STR.twoTeams}</button>
+                        <button type="button" role="radio" aria-checked="false" data-who="limit">${STR.limit}</button>
                     </div>
+                    <label class="campo apilado"><span>${STR.peek}</span><select id="me-peek">
+                        ${[0, 3, 5, 10].map((x) => `<option value="${x}">${x ? escape(t('me_peek_s', x)) : STR.peekNone}</option>`).join('')}</select></label>
+                    <label class="interruptor" id="me-trios-box" hidden><input type="checkbox" id="me-trios"><span>${STR.trios}</span></label>
                     <button type="button" class="boton grande" id="me-start"><span data-icono="barajar"></span>${STR.start}</button>
                     <p class="nota" id="me-note"></p>
                 </aside>
@@ -162,8 +171,12 @@
             $$('#me-n button').forEach((x) => x.setAttribute('aria-checked', String(Number(x.dataset.n) === modePairs())));
             if (!load(courseKey, null)) { $('#me-level').value = ''; fill(); }
         });
+        $('#me-peek').value = String([0, 3, 5, 10].includes(Number(load('parejas-vistazo', 0))) ? Number(load('parejas-vistazo', 0)) : 0);
+        $('#me-peek').addEventListener('change', () => save('parejas-vistazo', Number($('#me-peek').value)));
+        $('#me-trios').addEventListener('change', () => save('parejas-trios', $('#me-trios').checked));
         $('#me-src').addEventListener('change', () => {
             save('parejas-fuente', $('#me-src').value);
+            triosBox();
             if ($('#me-src').value.startsWith('glos:')) { glossary.load($('#me-src').value.slice(5)); }
             if ($('#me-src').value.startsWith('bank:')) { loadBank($('#me-src').value.slice(5)); }
         });
@@ -194,6 +207,22 @@
         sel.value = values.includes(before) ? before : (values[0] || '');
         if (sel.value.startsWith('glos:')) { glossary.load(sel.value.slice(5)); }
         if (sel.value.startsWith('bank:')) { loadBank(sel.value.slice(5)); }
+        triosBox();
+    };
+    // Trios, where the set has them: the built-in numbers as dots, and lists with at least two lines «a = b = c».
+    const triosOf = (value) => {
+        const pr = preset(value);
+        if (pr) { return !!pr.trio; }
+        if (value.startsWith('list:')) {
+            const l = core.lists().find((x) => x.id === value.slice(5));
+            return !!l && l.alumnos.filter((line) => line.split('=').map((x) => x.trim()).filter(Boolean).length === 3).length >= 2;
+        }
+        return false;
+    };
+    const triosBox = () => {
+        const can = triosOf($('#me-src').value);
+        $('#me-trios-box').hidden = !can;
+        $('#me-trios').checked = can && load('parejas-trios', false) === true;
     };
     // The matching questions of the course's question bank (inside Moodle): each subquestion and its answer, a pair.
     const AULA = core.moodle;
@@ -219,7 +248,7 @@
     const CARD_TEXT = 70;
     const cut = (text) => (text.length > CARD_TEXT ? text.slice(0, CARD_TEXT - 1).trimEnd() + '…' : text);
     // The two halves of each pair for the chosen set.
-    const pairsFor = (value, n) => {
+    const pairsFor = (value, n, size = 2) => {
         if (value === 'shapes') {
             const combos = shuffle(SHAPES.flatMap((sh) => COLORS.slice(0, 8).map((c) => [sh, c[1]])));
             const chosen = [], usedShape = {}, usedColor = {};
@@ -229,6 +258,12 @@
         if (value === 'colors') { return shuffle(COLORS.slice()).slice(0, n).map(([name, color]) => [{ swatch: color }, { text: name }]); }
         if (value === 'numbers') { return shuffle(NUMBERS.map((w, i) => [i + 1, w])).slice(0, n).map(([d, w]) => [{ text: String(d), big: true }, { text: w }]); }
         const pr = preset(value);
+        if (size === 3) {
+            if (pr && pr.trio) { return pr.trio(n); }
+            const l = value.startsWith('list:') && core.lists().find((x) => x.id === value.slice(5));
+            return l ? shuffle(l.alumnos.map((line) => line.split('=').map((x) => x.trim()).filter(Boolean)).filter((p) => p.length === 3))
+                .slice(0, n).map((p) => p.map((x) => ({ text: x }))) : [];
+        }
         if (pr && pr.make) { return pr.make(n); }
         if (value.startsWith('faces:')) {
             const l = core.lists().find((x) => x.id === value.slice(6));
@@ -264,17 +299,33 @@
     const who = () => ($('#me-who [aria-checked="true"]') || { dataset: { who: 'class' } }).dataset.who;
     const start = () => {
         const n = Number(($('#me-n [aria-checked="true"]') || { dataset: { n: 8 } }).dataset.n);
-        const pairs = pairsFor($('#me-src').value, n);
+        const size = !$('#me-trios-box').hidden && $('#me-trios').checked ? 3 : 2;
+        const pairs = pairsFor($('#me-src').value, n, size);
         if (pairs.length < 2) { $('#me-note').textContent = STR.few; return; }
         $('#me-note').textContent = '';
+        clearTimeout(peekTimer);
         s.cards = shuffle(pairs.flatMap((p, k) => p.map((half) => ({ pair: k, half, state: 'down' }))));
-        s.open = []; s.found = 0; s.pairs = pairs.length; s.moves = 0; s.busy = false; s.over = false; s.turn = 0;
+        s.open = []; s.found = 0; s.pairs = pairs.length; s.moves = 0; s.busy = false; s.over = false; s.turn = 0; s.size = size;
+        // Against the tries: twice as many as pairs (or trios).
+        s.tries = who() === 'limit' ? pairs.length * 2 : 0;
         s.teams = who() === 'teams' ? [{ name: STR.team(1), score: 0 }, { name: STR.team(2), score: 0 }] : [];
         $('#me-grid').innerHTML = s.cards.map((c, i) => `<button type="button" class="ct-mcard" data-i="${i}" aria-label="${escape(STR.card(i + 1))}">
             <span class="ct-mface-in ct-mback"></span><span class="ct-mface-in ct-mfront">${faceHTML(c.half)}</span></button>`).join('');
         games.playing('parejas', true);
         fit(); paintScore(); play('card');
         const m = $('#me-msg'); m.className = 'total'; m.textContent = s.teams.length ? STR.turn(s.teams[0].name) : progress();
+        // A glance: all of them face up for a few seconds, then face down, and the game begins.
+        const peek = Number($('#me-peek').value) || 0;
+        if (peek) {
+            s.busy = true;
+            $$('#me-grid .ct-mcard').forEach((c) => c.classList.add('ct-up'));
+            m.textContent = STR.peeking;
+            peekTimer = setTimeout(() => {
+                $$('#me-grid .ct-mcard').forEach((c) => c.classList.remove('ct-up'));
+                s.busy = false;
+                m.textContent = s.teams.length ? STR.turn(s.teams[0].name) : progress();
+            }, peek * 1000);
+        }
     };
     // Card size so that all of them fit in the board without scrolling.
     const fit = () => {
@@ -290,7 +341,7 @@
         grid.style.setProperty('--cols', best.cols);
         grid.style.setProperty('--cw', Math.floor(best.size) + 'px');
     };
-    const progress = () => `${STR.found(s.found, s.pairs)} · ${STR.moves(s.moves)}`;
+    const progress = () => `${s.size === 3 ? t('me_found_trios', { a: s.found, b: s.pairs }) : STR.found(s.found, s.pairs)} · ${s.tries ? STR.tries(s.tries - s.moves) : STR.moves(s.moves)}`;
     const paintScore = () => {
         $('#me-score').innerHTML = s.teams.length
             ? s.teams.map((t, i) => `<span class="ct-mteam${i === s.turn && !s.over ? ' ct-active' : ''}">${escape(t.name)} <strong>${t.score}</strong></span>`).join('')
@@ -303,10 +354,11 @@
         if (s.over || s.busy || !c || c.state !== 'down') { return; }
         c.state = 'up'; cardEl(i).classList.add('ct-up'); play('tic');
         s.open.push(i);
-        if (s.open.length < 2) { return; }
+        // Two (or three) of the same go; one that is not of the first's group ends the try at once.
+        const first = s.cards[s.open[0]].pair, wrong = s.open.some((k) => s.cards[k].pair !== first);
+        if (!wrong && s.open.length < s.size) { return; }
         s.moves++;
-        const [a, b] = s.open.map((k) => s.cards[k]);
-        if (a.pair === b.pair) {
+        if (!wrong) {
             s.open.forEach((k) => { s.cards[k].state = 'found'; cardEl(k).classList.add('ct-found'); });
             s.open = []; s.found++;
             if (s.teams.length) { s.teams[s.turn].score++; }
@@ -322,10 +374,19 @@
             s.open = []; s.busy = false;
             if (s.teams.length) { s.turn = 1 - s.turn; }
             paintScore();
+            if (s.tries && s.moves >= s.tries) { lose(); return; }
             const m = $('#me-msg'); m.className = 'total'; m.textContent = s.teams.length ? STR.turn(s.teams[s.turn].name) : progress();
         }, 1150);
         paintScore();
     }
+    // Out of tries: the cards left are shown.
+    const lose = () => {
+        s.over = true; games.playing('parejas', false);
+        s.cards.forEach((c, k) => { if (c.state === 'down') { cardEl(k).classList.add('ct-up'); } });
+        const text = STR.lost(s.found, s.pairs), m = $('#me-msg');
+        m.className = 'total'; m.textContent = text;
+        play('wrong'); announce(text);
+    };
     const finish = () => {
         s.over = true; paintScore(); games.playing('parejas', false);
         let text = STR.done(s.moves);

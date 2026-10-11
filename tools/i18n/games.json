@@ -990,5 +990,21 @@
  "ai_kind_pairs": {
   "en": "Pairs «a = b» (Pairs)",
   "es": "Parejas «a = b» (Parejas)"
+ },
+ "ai_kind_trios": {
+  "en": "Trios «a = b = c» (Pairs)",
+  "es": "Tríos «a = b = c» (Parejas)"
+ },
+ "ai_what_trios": {
+  "en": "{$a} trios",
+  "es": "{$a} tríos"
+ },
+ "ai_rules_trios": {
+  "en": "One trio per line: three things that go together, separated by =, each of a few words.",
+  "es": "Un trío por línea: tres cosas que van juntas, separadas por =, cada una de pocas palabras."
+ },
+ "ai_example_trios": {
+  "en": "France = Paris = French\nItaly = Rome = Italian\nPortugal = Lisbon = Portuguese",
+  "es": "Francia = París = francés\nItalia = Roma = italiano\nPortugal = Lisboa = portugués"
  }
 }

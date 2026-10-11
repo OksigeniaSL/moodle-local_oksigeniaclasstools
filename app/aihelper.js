@@ -124,10 +124,10 @@
     if (field) {
         const lists = box({
             levels: ['early', 'primary', 'secondary', 'advanced'], counts: [10, 20, 30], count: 20,
-            kinds: [{ v: 'words', label: t('ai_kind_words') }, { v: 'pairs', label: t('ai_kind_pairs') }],
+            kinds: [{ v: 'words', label: t('ai_kind_words') }, { v: 'pairs', label: t('ai_kind_pairs') }, { v: 'trios', label: t('ai_kind_trios') }],
             add: (text, kind) => {
                 const lines = text.split(/\r?\n/).map((x) => x.replace(/^\s*(?:[-*•]|\d+[.)])\s*/, '').trim()).filter(Boolean)
-                    .filter((x) => (kind === 'pairs' ? /^[^=]+=[^=]+$/.test(x) : !x.includes('=')));
+                    .filter((x) => ({ pairs: /^[^=]+=[^=]+$/, trios: /^[^=]+=[^=]+=[^=]+$/ }[kind] || /^[^=]+$/).test(x));
                 if (!lines.length) { return 0; }
                 const now = names.value.trim();
                 names.value = (now ? now + '\n' : '') + lines.join('\n');

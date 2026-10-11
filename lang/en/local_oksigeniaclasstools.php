@@ -62,11 +62,15 @@ A whale is a fish | F';
 $string['app_ai_example_rosco'] = 'A | The fruit that fell on Newton\'s head, so the story goes | apple
 B | Insect that makes honey | bee
 X | Large farm animal that pulls a plough | ox';
+$string['app_ai_example_trios'] = 'France = Paris = French
+Italy = Rome = Italian
+Portugal = Lisbon = Portuguese';
 $string['app_ai_example_words'] = 'volcano
 glacier
 plateau';
 $string['app_ai_for'] = 'For';
 $string['app_ai_kind_pairs'] = 'Pairs «a = b» (Pairs)';
+$string['app_ai_kind_trios'] = 'Trios «a = b = c» (Pairs)';
 $string['app_ai_kind_words'] = 'Words (hangman, word, secret code)';
 $string['app_ai_prompt'] = 'Write {$a->what} for {$a->level}, on «{$a->topic}».
 
@@ -79,10 +83,12 @@ Answer only with that, in the language of this text, without explanations or Mar
 $string['app_ai_rules_pairs'] = 'One pair per line: the two halves separated by =, each of a few words.';
 $string['app_ai_rules_quiz'] = 'One question per line: the question, then two to four answers separated by |, with * before the only right one. For true or false, the statement, | and T or F.';
 $string['app_ai_rules_rosco'] = 'One line per letter, for these letters: {$a}. On each line, the letter, the clue and the answer, separated by |. The answer starts with that letter or, if no good word does, contains it.';
+$string['app_ai_rules_trios'] = 'One trio per line: three things that go together, separated by =, each of a few words.';
 $string['app_ai_rules_words'] = 'One word per line, without articles, numbers or explanations.';
 $string['app_ai_what_pairs'] = '{$a} pairs';
 $string['app_ai_what_quiz'] = '{$a} quiz questions';
 $string['app_ai_what_rosco'] = 'a letter wheel (rosco), with a clue for each letter';
+$string['app_ai_what_trios'] = '{$a} trios';
 $string['app_ai_what_words'] = '{$a} words';
 $string['app_asi_group'] = 'In groups';
 $string['app_asi_hand'] = 'Raise your hand';
@@ -1604,6 +1610,7 @@ $string['app_me_done'] = 'All of them! In {$a} tries';
 $string['app_me_faces'] = 'Faces and names: {$a}';
 $string['app_me_few'] = 'At least two pairs are needed.';
 $string['app_me_found'] = '{$a->a} of {$a->b} pairs';
+$string['app_me_found_trios'] = '{$a->a} of {$a->b} trios';
 $string['app_me_from_bank'] = 'Question bank (matching)';
 $string['app_me_level'] = 'Level';
 $string['app_me_level_early'] = 'Early years';
@@ -1611,10 +1618,16 @@ $string['app_me_level_higher'] = 'Higher education';
 $string['app_me_level_primary'] = 'Primary';
 $string['app_me_level_secondary'] = 'Secondary';
 $string['app_me_level_upper'] = 'Upper secondary';
+$string['app_me_limit'] = 'Against the tries';
+$string['app_me_lost'] = 'Out of tries: {$a->a} of {$a->b} found';
 $string['app_me_moves_many'] = '{$a} tries';
 $string['app_me_moves_one'] = '{$a} try';
 $string['app_me_own'] = 'Your lists';
 $string['app_me_pairs'] = 'Pairs';
+$string['app_me_peek'] = 'A glance at the start';
+$string['app_me_peek_none'] = 'No';
+$string['app_me_peek_s'] = '{$a} seconds';
+$string['app_me_peeking'] = 'Look carefully…';
 $string['app_me_press_start'] = 'Choose what to match and press “Deal”';
 $string['app_me_set_animals'] = 'An animal and its shadow';
 $string['app_me_set_clock'] = 'The time: clock and digital';
@@ -1642,6 +1655,9 @@ $string['app_me_start'] = 'Deal';
 $string['app_me_students'] = 'Students';
 $string['app_me_team'] = 'Team {$a}';
 $string['app_me_tie'] = 'It\'s a draw!';
+$string['app_me_tries_left'] = '{$a} tries left';
+$string['app_me_tries_one'] = '1 try left';
+$string['app_me_trios'] = 'Trios: three cards that go together';
 $string['app_me_turn'] = '{$a}\'s turn';
 $string['app_me_two_teams'] = 'Two teams';
 $string['app_me_what'] = 'What to match';

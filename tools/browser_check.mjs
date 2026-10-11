@@ -390,6 +390,59 @@ const CHECKS = {
         return slots === entry.w.length ? '' : `the word has ${slots} letters for «${entry.w}»`;
     },
     // Pairs with the matching questions of the question bank.
+    // Pairs: trios of a number (dots, figure, word), a glance at the start, and the class against the tries.
+    'pairs-variants': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const q = (x) => document.querySelector(x);
+        const pick = (sel, v) => { q(sel).value = v; q(sel).dispatchEvent(new Event('change', { bubbles: true })); };
+        q('#t-juegos').click();
+        await sleep(200);
+        q('#ga-mode [data-game="parejas"]').click();
+        await sleep(300);
+        pick('#me-level', 'all');
+        pick('#me-src', 'dots');
+        if (q('#me-trios-box').hidden) { return 'no trios for the dots'; }
+        q('#me-trios').checked = true;
+        q('#me-trios').dispatchEvent(new Event('change'));
+        q('#me-n [data-n="6"]').click();
+        q('#me-who [data-who="class"]').click();
+        pick('#me-peek', '0');
+        q('#me-start').click();
+        await sleep(200);
+        const M = window.ClasstoolsMemory, S = M.state();
+        if (S.cards.length !== 18 || S.size !== 3) { return `${S.cards.length} cards for 6 trios`; }
+        const of = (k) => S.cards.map((c, i) => (c.pair === k ? i : -1)).filter((i) => i >= 0);
+        of(0).forEach((i) => M.flip(i));
+        if (S.found !== 1) { return 'a trio was not found'; }
+        // Two of different trios end the try at once.
+        M.flip(of(1)[0]); M.flip(of(2)[0]);
+        if (!S.busy || S.moves !== 2) { return 'two cards of different trios did not end the try'; }
+        await sleep(1300);
+        await window.shot('pairs-trios');
+        // A glance: all up, then down.
+        pick('#me-src', 'numbers');
+        if (!q('#me-trios-box').hidden) { return 'trios offered for a set without them'; }
+        pick('#me-peek', '3');
+        q('#me-start').click();
+        await sleep(300);
+        if (document.querySelectorAll('#me-grid .ct-up').length !== M.state().cards.length || !M.state().busy) { return 'not all face up in the glance'; }
+        await sleep(3200);
+        if (document.querySelectorAll('#me-grid .ct-up').length || M.state().busy) { return 'the glance did not end'; }
+        // Against the tries: twice as many as pairs, and out of them, the rest shows.
+        pick('#me-peek', '0');
+        q('#me-who [data-who="limit"]').click();
+        q('#me-start').click();
+        await sleep(200);
+        const L = M.state();
+        if (!/12 tries left/.test(q('#me-msg').textContent)) { return `tries: «${q('#me-msg').textContent}»`; }
+        L.tries = 1;
+        const a = L.cards.findIndex((c) => c.pair === 0), b = L.cards.findIndex((c) => c.pair === 1);
+        M.flip(a); M.flip(b);
+        await sleep(1300);
+        if (!L.over || !/Out of tries: 0 of 6/.test(q('#me-msg').textContent)) { return `not lost: «${q('#me-msg').textContent}»`; }
+        q('#me-who [data-who="class"]').click();
+        return '';
+    },
     'bank-pairs': async () => {
         const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
         document.querySelector('#t-juegos').click();
