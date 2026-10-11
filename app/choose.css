@@ -24,6 +24,10 @@
     font-family: "Nunito", system-ui, sans-serif;
 }
 .ct-ch .ct-ch-curso[hidden], .ct-ch .ct-ch-nada[hidden] { display: none; }
+/* This stylesheet loads only on this page: Moodle's page header, empty here (the page has its own), is left out so
+   that the courses start higher. */
+#page-header { display: none; }
+.ct-ch { margin-top: .25rem; }
 .ct-ch-franja { position: absolute; top: 0; right: 0; left: 0; height: 6px; background: linear-gradient(90deg, #ce1423 0 25%, #fbbe17 25% 50%, #067e36 50% 75%, #164281 75%); }
 
 /* The greeting, the title and the search. */
