@@ -63,10 +63,14 @@ class teams {
             'local_oksigeniaclasstools',
             (object) ['list' => $listname, 'when' => $when]
         ));
+        // An ID number not used yet in the course: two lists saved in the same second must not share one.
+        do {
+            $idnumber = self::GROUPING_PREFIX . time() . '-' . random_int(100, 999);
+        } while ($DB->record_exists('groupings', ['courseid' => $course->id, 'idnumber' => $idnumber]));
         $groupingid = groups_create_grouping((object) [
             'courseid' => $course->id,
             'name' => $groupingname,
-            'idnumber' => self::GROUPING_PREFIX . time() . '-' . random_int(100, 999),
+            'idnumber' => $idnumber,
         ]);
         foreach (array_values($teams) as $i => $userids) {
             $groupid = groups_create_group((object) ['courseid' => $course->id,
