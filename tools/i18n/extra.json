@@ -1822,5 +1822,45 @@
  "pl_bad": {
   "en": "Two whole numbers between {$a->a} and {$a->b}, like (3, 2)",
   "es": "Dos números enteros entre {$a->a} y {$a->b}, como (3, 2)"
+ },
+ "nl_kind_jumps": {
+  "en": "Jumps",
+  "es": "Saltos"
+ },
+ "nl_kind_intervals": {
+  "en": "Intervals",
+  "es": "Intervalos"
+ },
+ "iv_write": {
+  "en": "An interval, an inequality or an absolute value",
+  "es": "Un intervalo, una desigualdad o un valor absoluto"
+ },
+ "iv_put": {
+  "en": "Draw",
+  "es": "Dibujar"
+ },
+ "iv_random": {
+  "en": "One at random",
+  "es": "Uno al azar"
+ },
+ "iv_hide": {
+  "en": "Hide how it is written",
+  "es": "Esconder cómo se escribe"
+ },
+ "iv_ask": {
+  "en": "How is it written? (tap to see)",
+  "es": "¿Cómo se escribe? (toca para verlo)"
+ },
+ "iv_bad": {
+  "en": "Write it like [−2, 3), x ≥ 1, −1 < x ≤ 4 or |x − 1| < 2",
+  "es": "Escríbelo como [−2, 3), x ≥ 1, −1 < x ≤ 4 o |x − 1| < 2"
+ },
+ "iv_or": {
+  "en": "or",
+  "es": "o"
+ },
+ "iv_help": {
+  "en": "Write it, or draw one at random. A tap on an end opens or closes it: a filled end is in, a hollow one is not.",
+  "es": "Escríbelo o saca uno al azar. Un toque en un extremo lo abre o lo cierra: el extremo relleno entra y el hueco no."
  }
 }

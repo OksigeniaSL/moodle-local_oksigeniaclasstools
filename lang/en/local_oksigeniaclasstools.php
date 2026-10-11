@@ -996,22 +996,25 @@ $string['app_gd_how'] = 'How to take it to class';
 $string['app_gd_line_how'] = 'Choose the stretch: «From 0 to 10», «From −10 to 10», quarters, thirds, tenths… or your own.
 A tap on the line starts at a point; each tap after it is a jump, drawn with its arc and its sum.
 Hide the numbers and ask where one falls before uncovering it.
-To subtract, jumps backwards; for negatives, crossing zero.';
+To subtract, jumps backwards; for negatives, crossing zero.
+In Early years a frog jumps: the same jump, with something to watch.
+«Intervals»: type [−2, 3), x ≥ 1 or |x − 1| < 2 and it is drawn and written the other ways; a tap on an end opens or closes it. «One at random» with the notation hidden, for them to write it.';
 $string['app_gd_line_scene'] = 'In Year 6, the teacher chooses quarters from 0 to 2, hides the numbers and asks where three quarters goes. Some put it after 1, because three and four seem big numbers to them. When it is uncovered, the line shows them that three quarters does not even reach 1.';
 $string['app_gd_line_sources'] = 'Siegler, R. S. and Ramani, G. B. (2008). Playing linear numerical board games promotes low-income children\'s numerical development. Developmental Science, 11(5), 655–661.|https://doi.org/10.1111/j.1467-7687.2008.00714.x
 Siegler, R. and others (2010). Developing effective fractions instruction for kindergarten through 8th grade (NCEE 2010-4039). Institute of Education Sciences.|https://ies.ed.gov/ncee/wwc/PracticeGuide/15';
 $string['app_gd_line_stages'] = 'early|From 0 to 10: counting jumps one by one and seeing which number is further.
 primary|Adding and subtracting as jumps, decimals and simple fractions.
-secondary|Negative numbers, equivalent fractions and operations with fractions.
-advanced|In teacher training, to teach how to use the line in primary school.';
-$string['app_gd_line_what'] = 'A line with the numbers in order, on which jumps are drawn: whole numbers, negatives, decimals or fractions.';
+secondary|Negative numbers, equivalent fractions and operations with fractions; intervals and inequalities.
+advanced|Intervals, inequalities and absolute value; in teacher training, to teach how to use the line in primary school.';
+$string['app_gd_line_what'] = 'A line with the numbers in order, on which jumps are drawn: whole numbers, negatives, decimals or fractions; and, from Secondary, intervals.';
 $string['app_gd_line_why'] = 'In a study with low-income preschoolers, four 15-minute sessions of a board game with the numbers 1 to 10 in a line closed their gap in placing numbers on a number line; the same game with colours instead of numbers had no effect (Siegler and Ramani, 2008).
 For fractions, the practice guide of the US Institute of Education Sciences recommends using number lines as a central tool from the early grades, so that fractions are seen as numbers (Siegler and others, 2010).';
 $string['app_gd_line_works'] = 'The order of numbers and the distance between them: which is bigger, and by how much.
 Adding and subtracting as jumps («2 + 3 + 4 = 9»).
 Negative numbers, to the left of zero.
 Fractions and decimals as numbers with their own place on the line.
-Estimating where a number falls before checking it.';
+Estimating where a number falls before checking it.
+Intervals, inequalities and absolute value: the same part of the line written three ways.';
 $string['app_gd_none'] = 'This tool has no guide yet.';
 $string['app_gd_palabra_how'] = 'The class proposes and the teacher types: one try, one discussion.
 Before each try, they say which letters they already know and which they have ruled out.
@@ -1295,6 +1298,14 @@ $string['app_in_protractor'] = 'Protractor';
 $string['app_in_ruler'] = 'Ruler';
 $string['app_in_spot'] = 'Spotlight';
 $string['app_in_square'] = 'Set square (45°)';
+$string['app_iv_ask'] = 'How is it written? (tap to see)';
+$string['app_iv_bad'] = 'Write it like [−2, 3), x ≥ 1, −1 < x ≤ 4 or |x − 1| < 2';
+$string['app_iv_help'] = 'Write it, or draw one at random. A tap on an end opens or closes it: a filled end is in, a hollow one is not.';
+$string['app_iv_hide'] = 'Hide how it is written';
+$string['app_iv_or'] = 'or';
+$string['app_iv_put'] = 'Draw';
+$string['app_iv_random'] = 'One at random';
+$string['app_iv_write'] = 'An interval, an inequality or an absolute value';
 $string['app_levels_other'] = 'Other levels';
 $string['app_lock_again'] = 'Again';
 $string['app_lock_bad_code'] = 'The code must have 2 to 8 numbers or letters.';
@@ -1586,6 +1597,8 @@ $string['app_nl_clear'] = 'Clear';
 $string['app_nl_help'] = 'Tap a point to start, then where each jump lands. Tap the point again to start somewhere else.';
 $string['app_nl_help_hidden'] = 'Tap a hidden number to uncover it (and again to hide it). The jumps work the same.';
 $string['app_nl_hide'] = 'Hide the numbers';
+$string['app_nl_kind_intervals'] = 'Intervals';
+$string['app_nl_kind_jumps'] = 'Jumps';
 $string['app_nl_now_jump'] = 'Now tap where the jump lands';
 $string['app_nl_numbers'] = 'Numbers';
 $string['app_nl_p_custom'] = 'My own';

@@ -998,22 +998,25 @@ $string['app_gd_how'] = 'Cómo llevarlo a clase';
 $string['app_gd_line_how'] = 'Elige el tramo: «Del 0 al 10», «Del −10 al 10», cuartos, tercios, décimas… o «A mi manera».
 Un toque en la recta empieza en un punto; cada toque después es un salto, dibujado con su arco y su cuenta.
 Esconde los números y pregunta dónde cae uno antes de descubrirlo.
-Para restar, saltos hacia atrás; para los negativos, cruzar el cero.';
+Para restar, saltos hacia atrás; para los negativos, cruzar el cero.
+En Infantil, salta una rana: el mismo salto, con algo que mirar.
+«Intervalos»: escribe [−2, 3), x ≥ 1 o |x − 1| < 2 y sale dibujado y escrito de las otras maneras; un toque en un extremo lo abre o lo cierra. «Uno al azar» con la notación escondida, para que la escriban ellos.';
 $string['app_gd_line_scene'] = 'En quinto, el maestro elige «Cuartos, del 0 al 2», esconde los números y pregunta dónde va tres cuartos. Algunos lo ponen después del 1, porque tres y cuatro les parecen números grandes. Al descubrirlo, la recta les enseña que tres cuartos ni siquiera llega a 1.';
 $string['app_gd_line_sources'] = 'Siegler, R. S. y Ramani, G. B. (2008). Playing linear numerical board games promotes low-income children\'s numerical development. Developmental Science, 11(5), 655–661.|https://doi.org/10.1111/j.1467-7687.2008.00714.x
 Siegler, R. y otros (2010). Developing effective fractions instruction for kindergarten through 8th grade (NCEE 2010-4039). Institute of Education Sciences.|https://ies.ed.gov/ncee/wwc/PracticeGuide/15';
 $string['app_gd_line_stages'] = 'early|Del 0 al 10: contar saltos de uno en uno y ver qué número está más lejos.
 primary|Sumas y restas como saltos, decimales y fracciones sencillas.
-secondary|Negativos, fracciones equivalentes y operaciones con fracciones.
-advanced|En Magisterio, para enseñar el uso de la recta en Primaria.';
-$string['app_gd_line_what'] = 'Una recta con los números en orden, donde se marcan saltos: enteros, negativos, decimales o fracciones.';
+secondary|Negativos, fracciones equivalentes y operaciones con fracciones; intervalos y desigualdades.
+advanced|Intervalos, inecuaciones y valor absoluto; en Magisterio, para enseñar el uso de la recta en Primaria.';
+$string['app_gd_line_what'] = 'Una recta con los números en orden, donde se marcan saltos: enteros, negativos, decimales o fracciones; y, desde Secundaria, intervalos.';
 $string['app_gd_line_why'] = 'En un estudio con niños de preescolar de familias con pocos recursos, cuatro sesiones de quince minutos con un juego de tablero de números del 1 al 10 en línea igualaron su forma de situar números en una recta con la de sus compañeros; el mismo juego con colores en lugar de números no tuvo efecto (Siegler y Ramani, 2008).
 Para las fracciones, la guía práctica del Institute of Education Sciences de Estados Unidos recomienda la recta numérica como herramienta central desde los primeros cursos, para que se vea que las fracciones son números (Siegler y otros, 2010).';
 $string['app_gd_line_works'] = 'El orden de los números y la distancia entre ellos: cuál es mayor y por cuánto.
 Sumar y restar como saltos («2 + 3 + 4 = 9»).
 Los negativos, a la izquierda del cero.
 Fracciones y decimales como números con su sitio en la recta.
-Estimar dónde cae un número antes de comprobarlo.';
+Estimar dónde cae un número antes de comprobarlo.
+Intervalos, desigualdades y valor absoluto: la misma parte de la recta escrita de tres maneras.';
 $string['app_gd_none'] = 'Esta herramienta aún no tiene guía.';
 $string['app_gd_palabra_how'] = 'La clase propone y el docente escribe: un intento, un debate.
 Antes de cada intento, que digan qué letras ya saben y cuáles han descartado.
@@ -1297,6 +1300,14 @@ $string['app_in_protractor'] = 'Transportador';
 $string['app_in_ruler'] = 'Regla';
 $string['app_in_spot'] = 'Foco';
 $string['app_in_square'] = 'Escuadra';
+$string['app_iv_ask'] = '¿Cómo se escribe? (toca para verlo)';
+$string['app_iv_bad'] = 'Escríbelo como [−2, 3), x ≥ 1, −1 < x ≤ 4 o |x − 1| < 2';
+$string['app_iv_help'] = 'Escríbelo o saca uno al azar. Un toque en un extremo lo abre o lo cierra: el extremo relleno entra y el hueco no.';
+$string['app_iv_hide'] = 'Esconder cómo se escribe';
+$string['app_iv_or'] = 'o';
+$string['app_iv_put'] = 'Dibujar';
+$string['app_iv_random'] = 'Uno al azar';
+$string['app_iv_write'] = 'Un intervalo, una desigualdad o un valor absoluto';
 $string['app_levels_other'] = 'Otros niveles';
 $string['app_lock_again'] = 'Otra vez';
 $string['app_lock_bad_code'] = 'El código tiene que tener de 2 a 8 números o letras.';
@@ -1588,6 +1599,8 @@ $string['app_nl_clear'] = 'Borrar';
 $string['app_nl_help'] = 'Toca un punto para empezar y luego donde cae cada salto. Toca otra vez el punto para empezar en otro sitio.';
 $string['app_nl_help_hidden'] = 'Toca un número escondido para descubrirlo (y otra vez para esconderlo). Los saltos funcionan igual.';
 $string['app_nl_hide'] = 'Esconder los números';
+$string['app_nl_kind_intervals'] = 'Intervalos';
+$string['app_nl_kind_jumps'] = 'Saltos';
 $string['app_nl_now_jump'] = 'Ahora toca donde cae el salto';
 $string['app_nl_numbers'] = 'Números';
 $string['app_nl_p_custom'] = 'A mi manera';

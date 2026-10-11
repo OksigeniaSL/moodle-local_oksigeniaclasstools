@@ -666,6 +666,64 @@ const CHECKS = {
         return '';
     },
     // Base blocks in base 5: 69 is 2 × 25 + 3 × 5 + 4, «234 in base 5», and five ones swap for one block of 5.
+    // Number line: intervals written three ways, an end opened with a tap, one at random hidden; the frog of Early years.
+    'number-line-intervals': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const q = (s) => document.querySelector(s);
+        q('#t-material').click();
+        await sleep(200);
+        q('#mt-mode [data-mode="line"]').click();
+        await sleep(200);
+        q('#nl-preset').value = 'negative';
+        q('#nl-preset').dispatchEvent(new Event('change'));
+        q('#nl-kind [data-v="intervals"]').click();
+        await sleep(100);
+        const show = async (text) => { q('#nl-iv').value = text; q('#nl-iv-put').click(); await sleep(60); return q('#nl-sum').textContent.replace(/\s+/g, ' '); };
+        const want = {
+            '[-2, 3)': '[−2, 3) · −2 ≤ x < 3',
+            '|x - 1| < 2': '(−1, 3) · −1 < x < 3 · |x − 1| < 2',
+            'x >= 4': '[4, +∞) · x ≥ 4',
+            '|x| > 3': '(−∞, −3) ∪ (3, +∞) · x < −3 or x > 3 · |x| > 3',
+            '-1 < x <= 4': '(−1, 4] · −1 < x ≤ 4',
+        };
+        for (const [text, out] of Object.entries(want)) {
+            const got = await show(text);
+            if (got !== out) { return `«${text}» gives «${got}», not «${out}»`; }
+        }
+        await show('[-2, 3)');
+        // A tap on the end at −2 opens it.
+        const ends = [...document.querySelectorAll('#nl-svg .ct-nl-end')];
+        const r = ends[0].getBoundingClientRect();
+        q('#nl-svg').dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, clientX: r.left + r.width / 2, clientY: r.top + r.height / 2 }));
+        await sleep(80);
+        if (!q('#nl-sum').textContent.startsWith('(−2, 3)')) { return `the end did not open: «${q('#nl-sum').textContent}»`; }
+        await window.shot('number-line-interval');
+        const N = window.ClasstoolsNumberLine;
+        if (N.parseIntervals('[3, 1]') || N.parseIntervals('x = 2') || N.parseIntervals('(-2,5; 3]')[0].a !== -2.5) { return 'bad intervals taken, or decimals misread'; }
+        q('#nl-iv-hide').click();
+        q('#nl-iv-random').click();
+        await sleep(80);
+        if (!/How is it written/.test(q('#nl-sum').textContent)) { return `the notation of a random one is not hidden: «${q('#nl-sum').textContent}»`; }
+        q('#nl-sum').click();
+        await sleep(80);
+        if (!/[[(]/.test(q('#nl-sum').textContent)) { return 'the hidden notation does not show'; }
+        q('#nl-iv-hide').click();
+        // Early years: jumps, with a frog.
+        const setMode = async (m) => { q('#b-modo').click(); await sleep(200); q(`#menu-modo [data-modo="${m}"]`).click(); await sleep(300); };
+        try {
+            await setMode('early');
+            q('#nl-kind [data-v="jumps"]').click();
+            await sleep(100);
+            const svg = q('#nl-svg').getBoundingClientRect();
+            q('#nl-svg').dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, clientX: svg.left + svg.width * 0.3, clientY: svg.top + svg.height * 0.6 }));
+            await sleep(100);
+            if (!q('#nl-svg .ct-nl-frog')) { return 'no frog in Early years'; }
+            await window.shot('number-line-frog');
+        } finally {
+            await setMode('primary');
+        }
+        return '';
+    },
     // Coordinate plane: points in four quadrants joined as vectors, then a whole game of battleship by two teams.
     'coordinate-plane': async () => {
         const sleep = (ms) => new Promise((r) => setTimeout(r, ms));

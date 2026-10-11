@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.30.0 (2026-10-11)
+
+- **Coordinate plane**, a new material: the first quadrant (Primary) or all four (from Secondary). Points go on with a
+  tap or typed, named A, B, C with their coordinates (which can be hidden to ask where each one is), apart, joined in a
+  line or a shape, or as vectors with their components. **Battleship**: seven ships hidden on the crossings and one to
+  four teams calling points in turns; a hit shoots again. With its teacher's guide.
+- **Number line, intervals** (Secondary and Advanced): an interval, an inequality or an absolute value is drawn and
+  written the other ways («[−2, 3) · −2 ≤ x < 3»); a tap on an end opens or closes it, and one at random can come with
+  its notation hidden. In Early years, a frog does the jumps.
+- The upgrade shows the coordinate plane on sites that had already chosen which materials to show.
+
 ## 0.29.0 (2026-10-11)
 
 - **Balance scale**, a new material. To compare, in Early years (plain cubes) and Primary (weights of 1, 2, 5 and 10):

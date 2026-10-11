@@ -2016,3 +2016,17 @@ dialog.ct-sc-dialogo { width: min(40rem, 94vw); }
 .ct-pl-team.activo { background: var(--c); color: #fff; }
 .ct-pl-left { padding: .2rem .4rem; color: var(--tinta-3); font-weight: 800; }
 .ct-pl-list { min-height: 1.4em; margin: 0; font-weight: 800; text-align: center; white-space: pre-wrap; }
+/* Number line: intervals and the frog of Early years. */
+.ct-nl-band { stroke: var(--azul); stroke-width: 12; stroke-linecap: butt; opacity: .85; }
+.ct-nl-band-tip { fill: var(--azul); }
+.ct-nl-end { fill: #fff; stroke: var(--azul); stroke-width: 5; cursor: pointer; }
+.ct-nl-end.cerrado { fill: var(--azul); }
+.ct-nl-ask { cursor: pointer; }
+.ct-nl-ivbox { display: flex; flex-direction: column; gap: .6rem; }
+.ct-nl-frog .cuerpo { fill: #2f9e44; stroke: #1b6b2c; stroke-width: 2; }
+.ct-nl-frog .ojo { fill: #fff; stroke: #1b6b2c; stroke-width: 2; }
+.ct-nl-frog .pupila { fill: #111; }
+.ct-nl-frog .boca { fill: none; stroke: #1b6b2c; stroke-width: 2.4; stroke-linecap: round; }
+.ct-nl-frog.nuevo { animation: ct-nl-salto .45s ease-out; }
+@keyframes ct-nl-salto { 0% { transform: translateY(0); } 40% { transform: translateY(-40px); } 100% { transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) { .ct-nl-frog.nuevo { animation: none; } }
