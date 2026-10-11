@@ -376,6 +376,72 @@ $string['app_gb_next'] = 'Toca el siguiente clavo';
 $string['app_gb_size'] = 'Clavos';
 $string['app_gb_squares'] = 'Ver los cuadraditos';
 $string['app_gb_start'] = 'Toca un clavo para empezar una goma';
+$string['app_gd_button'] = 'Guía docente';
+$string['app_gd_close'] = 'Cerrar la guía';
+$string['app_gd_how'] = 'Cómo llevarlo a clase';
+$string['app_gd_none'] = 'Esta herramienta aún no tiene guía.';
+$string['app_gd_quien_how'] = 'Haz la pregunta a toda la clase antes de elegir: así la piensan todos.
+Cuenta hasta tres o cuatro en silencio y entonces pulsa.
+Si quien sale no lo sabe, elige a un compañero que le ayude y luego lo dice con sus palabras.
+Activa «Primero los que menos» para que en unas semanas hayan hablado todos.
+Con «¿Quién falta hoy?», los ausentes no salen.';
+$string['app_gd_quien_scene'] = 'Se corrigen los problemas de ayer. La maestra lee el enunciado, cuenta hasta cuatro en silencio y pulsa: sale Lucía, que llevaba dos semanas sin salir porque «Primero los que menos» está activado. Como cualquiera podía salir, todos tenían su respuesta preparada en el cuaderno.';
+$string['app_gd_quien_sources'] = 'Dallimore, E. J., Hertenstein, J. H. y Platt, M. B. (2013). Impact of cold-calling on student voluntary participation. Journal of Management Education, 37(3), 305–341.|https://doi.org/10.1177/1052562912446067
+Rowe, M. B. (1986). Wait time: Slowing down may be a way of speeding up! Journal of Teacher Education, 37(1), 43–50.
+Lemov, D. (2021). Teach Like a Champion 3.0. Jossey-Bass.';
+$string['app_gd_quien_stages'] = 'early|Para repartir encargos y turnos en la asamblea, con la foto en grande.
+primary|Para corregir en voz alta o elegir quién sale a la pizarra.
+secondary|Para preguntas de repaso, después de pensarlas un minuto en parejas.
+advanced|Para elegir quién expone o defiende una respuesta en un seminario.';
+$string['app_gd_quien_what'] = 'Elegir al azar a quién le toca contestar, con turnos justos, para que participe toda la clase y no siempre los mismos.';
+$string['app_gd_quien_why'] = 'Preguntar a quien no ha levantado la mano es lo que Doug Lemov llama «llamada en frío» (cold call): como cualquiera puede salir, todos preparan la respuesta. En un estudio con estudiantes universitarios, en las clases donde se hacía a menudo más estudiantes contestaban por su cuenta y se sentían más a gusto participando (Dallimore, Hertenstein y Platt, 2013).
+Unos segundos de silencio después de la pregunta dan respuestas más largas y mejor razonadas: Mary Budd Rowe vio que los docentes esperan, de media, menos de un segundo (Rowe, 1986).';
+$string['app_gd_quien_works'] = 'Que piense toda la clase: cualquiera puede salir.
+Turnos repartidos: «Primero los que menos» saca antes a quien menos ha salido en el curso.
+Ver qué ha entendido cada uno, no solo quien levanta la mano.
+Hablar delante de los demás poco a poco, con preguntas a su alcance.';
+$string['app_gd_rods_how'] = 'Empieza con juego libre: escaleras, trenes y «alfombras» de regletas del mismo largo.
+Pide todas las formas de hacer un número con dos regletas: la alfombra del diez reúne sus descomposiciones.
+Tapa los números («Ver los números» apagado) para que razonen con las longitudes.
+Con «Comparar: dos mesas», dos alumnos resuelven el mismo reto de dos formas distintas.
+Mesa con pocas columnas para los pequeños; con muchas, para multiplicar y para las fracciones.';
+$string['app_gd_rods_scene'] = 'En segundo de Primaria, la maestra apaga «Ver los números» y pide: «Hagan la naranja con dos regletas». Sale una pareja tras otra con una solución distinta, hasta que la alfombra del diez está completa. Entonces alguien se da cuenta de que las soluciones van de dos en dos: blanca y azul, azul y blanca.';
+$string['app_gd_rods_sources'] = 'Cuisenaire, G. (1952). Les nombres en couleurs. Thuin.
+Cuisenaire, G. y Gattegno, C. (1971). Initiation aux nombres en couleurs. Delachaux et Niestlé.';
+$string['app_gd_rods_stages'] = 'early|Juego libre, ordenar de la más corta a la más larga y comparar.
+primary|Descomponer, sumar y restar, dobles y mitades, tablas y fracciones.
+secondary|Fracciones equivalentes, proporciones y letras en lugar de regletas como primer álgebra (si r es la roja, r + r es la de cuatro).
+advanced|En Magisterio, para enseñar su uso a los futuros maestros.';
+$string['app_gd_rods_what'] = 'Diez barras de colores de 1 a 10 unidades de largo: los números se ven y se tocan como longitudes.';
+$string['app_gd_rods_why'] = 'Las regletas las ideó Georges Cuisenaire, maestro en Thuin (Bélgica), que publicó su método en 1952 con el título Les nombres en couleurs. Desde 1953, el educador matemático Caleb Gattegno las dio a conocer en todo el mundo.
+Cada número es una longitud y cada longitud tiene su color: las relaciones entre números se ven antes de escribirlas, y se comprueban poniendo una regleta junto a otra.';
+$string['app_gd_rods_works'] = 'Comparar y ordenar: más largo, más corto, igual.
+Componer y descomponer un número («¿con qué dos regletas se hace la naranja?»).
+Relaciones entre números: el doble, la mitad, uno más.
+Sumar, restar, multiplicar y dividir con las manos.
+Fracciones y proporciones: la de dos es la mitad de la de cuatro.';
+$string['app_gd_scene'] = 'En clase';
+$string['app_gd_simon_how'] = 'Con la lista de la clase sale un alumno distinto en cada ronda; los demás pueden decir los colores en voz baja mientras suenan.
+Al fallar, la misma secuencia suena para el siguiente: nadie vuelve a empezar de cero. «Desde el principio» deja el juego clásico.
+Seis colores y la velocidad rápida son más reto para los mayores.
+Dos o tres rondas bastan como pausa activa entre dos tareas.';
+$string['app_gd_simon_scene'] = 'La clase de tercero vuelve del recreo con muchas ganas de hablar. El maestro abre Simón con la lista: en cada ronda sale uno y los demás dicen los colores en voz baja. Hugo falla en la séptima; la secuencia vuelve a sonar para Martina, que la completa entre aplausos. Tres rondas después, empiezan la lectura.';
+$string['app_gd_simon_sources'] = 'Melby-Lervåg, M. y Hulme, C. (2013). Is working memory training effective? A meta-analytic review. Developmental Psychology, 49(2), 270–291.|https://doi.org/10.1037/a0028228';
+$string['app_gd_simon_stages'] = 'early|Cuatro colores y velocidad normal, nombrando los colores en voz alta.
+primary|Seis colores, por turnos con la lista de la clase.
+secondary|Velocidad rápida, como reto de la clase para batir su récord.
+advanced|Para dinámicas de grupo o para mostrar en Psicología qué es la memoria de trabajo.';
+$string['app_gd_simon_what'] = 'Repetir una secuencia de colores y sonidos que crece en cada ronda: un juego de atención y memoria para toda la clase.';
+$string['app_gd_simon_why'] = 'Simón pide retener una secuencia y repetirla en orden, como las tareas con las que se mide la memoria de trabajo. Conviene saber que entrenar esa memoria mejora las tareas parecidas, pero no se ha visto que mejore otras capacidades como la lectura o el cálculo (Melby-Lervåg y Hulme, 2013).
+Por eso se juega por lo que es: un rato corto de atención compartida, turnos y escucha.';
+$string['app_gd_simon_works'] = 'Atención mantenida: mirar y escuchar hasta el final.
+Recordar una secuencia en orden, con lo que se ve y lo que se oye.
+Esperar el turno y escuchar a los demás.
+Jugar en equipo: la clase ayuda a quien sale.';
+$string['app_gd_sources'] = 'Fuentes';
+$string['app_gd_stages'] = 'Por etapas';
+$string['app_gd_why'] = 'Por qué';
+$string['app_gd_works'] = 'Qué trabaja';
 $string['app_gen_again'] = 'Otra vez';
 $string['app_gen_big_view'] = 'Vista en grande';
 $string['app_gen_cancel'] = 'Cancelar';

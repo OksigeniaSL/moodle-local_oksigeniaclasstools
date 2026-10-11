@@ -376,6 +376,72 @@ $string['app_gb_next'] = 'Tap the next peg';
 $string['app_gb_size'] = 'Pegs';
 $string['app_gb_squares'] = 'Show the little squares';
 $string['app_gb_start'] = 'Tap a peg to start a band';
+$string['app_gd_button'] = 'Teacher\'s guide';
+$string['app_gd_close'] = 'Close the guide';
+$string['app_gd_how'] = 'How to take it to class';
+$string['app_gd_none'] = 'This tool has no guide yet.';
+$string['app_gd_quien_how'] = 'Ask the question to the whole class before choosing: that way everyone thinks about it.
+Count to three or four in silence, then press.
+If the one chosen does not know, they choose a classmate to help and then say it in their own words.
+Turn on «Fewest turns first» so that in a few weeks everyone has spoken.
+With «Who\'s missing today?», those absent are not chosen.';
+$string['app_gd_quien_scene'] = 'Yesterday\'s problems are being corrected. The teacher reads one out, counts to four in silence and presses: Lucy comes out, who had not been chosen for two weeks, because «Fewest turns first» is on. As anyone could have been chosen, everyone had their answer ready in their notebook.';
+$string['app_gd_quien_sources'] = 'Dallimore, E. J., Hertenstein, J. H. and Platt, M. B. (2013). Impact of cold-calling on student voluntary participation. Journal of Management Education, 37(3), 305–341.|https://doi.org/10.1177/1052562912446067
+Rowe, M. B. (1986). Wait time: Slowing down may be a way of speeding up! Journal of Teacher Education, 37(1), 43–50.
+Lemov, D. (2021). Teach Like a Champion 3.0. Jossey-Bass.';
+$string['app_gd_quien_stages'] = 'early|To share out jobs and turns in circle time, with the photo shown big.
+primary|To correct aloud or to choose who comes to the board.
+secondary|For review questions, after thinking about them for a minute in pairs.
+advanced|To choose who presents or defends an answer in a seminar.';
+$string['app_gd_quien_what'] = 'Choose at random whose turn it is to answer, with fair turns, so that the whole class takes part and not always the same ones.';
+$string['app_gd_quien_why'] = 'Asking someone who has not put their hand up is what Doug Lemov calls «cold call»: as anyone may be chosen, everyone prepares an answer. In a study with university students, in the classes where it was done often more students answered of their own accord, and they felt more at ease taking part (Dallimore, Hertenstein and Platt, 2013).
+A few seconds of silence after the question bring longer, better reasoned answers: Mary Budd Rowe found that teachers wait, on average, less than a second (Rowe, 1986).';
+$string['app_gd_quien_works'] = 'The whole class thinks: anyone may be chosen.
+Fair turns: «Fewest turns first» chooses first whoever has had fewest turns in the course.
+Seeing what each one has understood, not only those who put their hand up.
+Speaking in front of the others little by little, with questions within their reach.';
+$string['app_gd_rods_how'] = 'Start with free play: staircases, trains and «carpets» of rods of the same length.
+Ask for every way of making a number with two rods: the carpet of ten gathers all its splits.
+Hide the numbers («Show the numbers» off) so that they reason with the lengths.
+With «Compare: two tables», two students solve the same challenge in two different ways.
+A table with few columns for the youngest; with many, to multiply and for fractions.';
+$string['app_gd_rods_scene'] = 'In Year 2, the teacher turns «Show the numbers» off and asks: «Make the orange one with two rods». One pair after another comes out with a different answer, until the carpet of ten is complete. Then someone notices that the answers come in twos: white and blue, blue and white.';
+$string['app_gd_rods_sources'] = 'Cuisenaire, G. (1952). Les nombres en couleurs. Thuin.
+Cuisenaire, G. and Gattegno, C. (1971). Initiation aux nombres en couleurs. Delachaux et Niestlé.';
+$string['app_gd_rods_stages'] = 'early|Free play, ordering from the shortest to the longest, and comparing.
+primary|Splitting numbers, adding and subtracting, doubles and halves, times tables and fractions.
+secondary|Equivalent fractions, ratios, and letters instead of rods as a first algebra (if r is the red one, r + r is the four).
+advanced|In teacher training, to teach future teachers how to use them.';
+$string['app_gd_rods_what'] = 'Ten coloured rods from 1 to 10 units long: numbers are seen and touched as lengths.';
+$string['app_gd_rods_why'] = 'The rods were devised by Georges Cuisenaire, a teacher in Thuin (Belgium), who published his method in 1952 as Les nombres en couleurs. From 1953 the mathematics educator Caleb Gattegno made them known all over the world.
+Each number is a length and each length has its colour: relations between numbers are seen before they are written, and they can be checked by putting one rod next to another.';
+$string['app_gd_rods_works'] = 'Comparing and ordering: longer, shorter, the same.
+Making and breaking a number («which two rods make the orange one?»).
+Relations between numbers: double, half, one more.
+Adding, subtracting, multiplying and dividing with their hands.
+Fractions and ratios: the two is half of the four.';
+$string['app_gd_scene'] = 'In class';
+$string['app_gd_simon_how'] = 'With the class list a different student comes out every round; the others may say the colours quietly while they sound.
+After a mistake the same sequence plays again for the next one: nobody starts from scratch. «From the start» keeps the classic game.
+Six colours and the fast speed are more of a challenge for the older ones.
+Two or three rounds are enough as an active break between two tasks.';
+$string['app_gd_simon_scene'] = 'Year 4 come back from break with a lot to say. The teacher opens Simon with the class list: every round one student comes out and the others say the colours quietly. Hugo fails at the seventh; the sequence plays again for Martina, who completes it to applause. Three rounds later, the reading starts.';
+$string['app_gd_simon_sources'] = 'Melby-Lervåg, M. and Hulme, C. (2013). Is working memory training effective? A meta-analytic review. Developmental Psychology, 49(2), 270–291.|https://doi.org/10.1037/a0028228';
+$string['app_gd_simon_stages'] = 'early|Four colours at the normal speed, naming the colours aloud.
+primary|Six colours, in turns with the class list.
+secondary|The fast speed, as a challenge for the class to beat its record.
+advanced|For group activities, or to show in Psychology what working memory is.';
+$string['app_gd_simon_what'] = 'Repeat a sequence of colours and sounds that grows every round: a game of attention and memory for the whole class.';
+$string['app_gd_simon_why'] = 'Simon asks to keep a sequence in mind and repeat it in order, like the tasks with which working memory is measured. It is worth knowing that training that memory improves similar tasks, but it has not been seen to improve other abilities such as reading or arithmetic (Melby-Lervåg and Hulme, 2013).
+So it is played for what it is: a short time of shared attention, turns and listening.';
+$string['app_gd_simon_works'] = 'Keeping attention: watching and listening to the very end.
+Remembering a sequence in order, with what is seen and what is heard.
+Waiting for their turn and listening to the others.
+Playing as a team: the class helps whoever comes out.';
+$string['app_gd_sources'] = 'Sources';
+$string['app_gd_stages'] = 'By school level';
+$string['app_gd_why'] = 'Why';
+$string['app_gd_works'] = 'What it works on';
 $string['app_gen_again'] = 'Again';
 $string['app_gen_big_view'] = 'Large view';
 $string['app_gen_cancel'] = 'Cancel';

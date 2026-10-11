@@ -551,6 +551,7 @@
         new ResizeObserver(() => requestAnimationFrame(LAYOUT[mode] || (() => {}))).observe(root);
     }
     core.material = {
+        current: () => mode,   // the material on screen (its key)
         /**
          * Adds a material.
          *

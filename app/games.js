@@ -263,6 +263,7 @@
             show(games.some((g) => g.id === wanted) ? wanted : (current || game.id), false);
         },
         show, playing,
+        current: () => current,   // the game on screen (its id)
     };
     core.register('juegos', {
         entra: () => { visible = true; show(current); paintTurn(); },

@@ -399,6 +399,54 @@ const CHECKS = {
             await setMode('primary');
         }
     },
+    // Teacher's guide: the guide of what is on screen (the rods, Simon, «Whose turn?»), with all its parts and sources.
+    'teacher-guide': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const open = async () => { document.querySelector('#b-guia').click(); await sleep(250); return document.querySelector('.ct-guia'); };
+        const close = async () => { document.querySelector('.ct-guia [data-a="close"]').click(); await sleep(150); };
+        const check = (sheet, name) => {
+            if (!sheet || sheet.hidden) { return `no guide for ${name}`; }
+            const parts = sheet.querySelectorAll('.ct-guia-parte').length;
+            if (parts !== 6) { return `${parts} parts in the guide of ${name}`; }
+            if (sheet.querySelectorAll('.ct-guia-etapa').length !== 4) { return `the guide of ${name} does not have the four levels`; }
+            if (!sheet.querySelector('.ct-guia-fuentes li')) { return `the guide of ${name} has no sources`; }
+            if (/gd_/.test(sheet.textContent)) { return `a missing string in the guide of ${name}`; }
+            return '';
+        };
+        document.querySelector('#t-material').click();
+        await sleep(200);
+        document.querySelector('#mt-mode [data-mode="rods"]').click();
+        await sleep(200);
+        let sheet = await open();
+        let bad = check(sheet, 'the rods');
+        if (bad) { return bad; }
+        if (!sheet.querySelector('.ct-guia-etapa.ct-ahora')) { return 'the level of the screen is not marked'; }
+        await window.shot('teacher-guide');
+        sheet.scrollTop = sheet.scrollHeight;
+        await sleep(100);
+        await window.shot('teacher-guide-end');
+        await close();
+        document.querySelector('#t-juegos').click();
+        await sleep(200);
+        document.querySelector('#ga-mode [data-game="simon"]').click();
+        await sleep(200);
+        sheet = await open();
+        bad = check(sheet, 'Simon');
+        if (bad) { return bad; }
+        await close();
+        document.querySelector('#t-quien').click();
+        await sleep(200);
+        sheet = await open();
+        bad = check(sheet, 'Whose turn?');
+        if (bad) { return bad; }
+        const link = sheet.querySelector('.ct-guia-fuentes a');
+        if (!link || link.target !== '_blank') { return 'the links of the sources do not open in a new tab'; }
+        await close();
+        document.querySelector('#t-reloj').click();
+        await sleep(200);
+        sheet = await open();
+        return sheet.querySelector('.ct-guia-parte') ? 'a tool without a guide shows parts' : '';
+    },
     // QR: the colours of the corners line up as the colours above them, with «Same» on a line of its own.
     'qr-swatches': async () => {
         const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
