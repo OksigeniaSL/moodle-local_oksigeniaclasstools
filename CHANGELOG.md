@@ -7,6 +7,8 @@
   from a class. Nineteen guides: «Whose turn?», groups, live sessions, the noise light, «How we work», the clock, the
   rosco, Simon, hangman, word, pairs, the secret code, the rods, the tangram, the number line, the fraction wall, the
   geoboard, the base-ten blocks and the score. Their texts are language strings, so they can be translated.
+- Only teachers see it: inside Moodle, those who teach in the course, or in any of their courses when the board is
+  open without one. Students never do.
 
 ## 0.24.0 (2026-10-11)
 

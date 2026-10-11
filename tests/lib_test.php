@@ -31,9 +31,11 @@ require_once(__DIR__ . '/generator_trait.php');
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @covers     ::local_oksigeniaclasstools_data
  * @covers     ::local_oksigeniaclasstools_surnames
+ * @covers     ::local_oksigeniaclasstools_teaches
  */
 #[\PHPUnit\Framework\Attributes\CoversFunction('local_oksigeniaclasstools_data')]
 #[\PHPUnit\Framework\Attributes\CoversFunction('local_oksigeniaclasstools_surnames')]
+#[\PHPUnit\Framework\Attributes\CoversFunction('local_oksigeniaclasstools_teaches')]
 final class lib_test extends \advanced_testcase {
     use generator_trait;
 
@@ -234,6 +236,17 @@ final class lib_test extends \advanced_testcase {
             'only a particle' => ['Le', ['Le'], 'L'],
             'empty' => ['', [], ''],
         ];
+    }
+
+    public function test_only_teachers_teach(): void {
+        $this->resetAfterTest();
+        [$course, $teacher, $students] = $this->make_class(1);
+        $this->setUser($teacher);
+        $this->assertTrue(local_oksigeniaclasstools_teaches(null), 'A teacher, on the board without a course.');
+        $this->assertTrue(local_oksigeniaclasstools_teaches(['mode' => 'teacher']));
+        $this->setUser($students[0]);
+        $this->assertFalse(local_oksigeniaclasstools_teaches(null), 'A student, on the board without a course.');
+        $this->assertFalse(local_oksigeniaclasstools_teaches(['mode' => 'student']));
     }
 
     public function test_picks_and_kept_tools_reach_the_screen(): void {

@@ -10,8 +10,10 @@
     const core = window.ClasstoolsCore;
     const button = document.getElementById('b-guia');
     if (!core || !button) { return; }
-    // Students who open the board from their account do not need it.
-    if (window.CLASSTOOLS && window.CLASSTOOLS.mode === 'student') { button.hidden = true; return; }
+    // Only for teachers: inside Moodle the site says whether the one who opens the board teaches (in this course, or in
+    // any of theirs without a course); students never see it. Outside Moodle (the demo of the website), it shows.
+    const site = window.CLASSTOOLS_SITE;
+    if ((site && site.teacher === false) || (window.CLASSTOOLS && window.CLASSTOOLS.mode === 'student')) { button.hidden = true; return; }
     const { t, escape, icon } = core;
 
     // The guides there are, with the string of their name.

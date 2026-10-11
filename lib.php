@@ -388,6 +388,28 @@ function local_oksigeniaclasstools_site(): array {
 }
 
 /**
+ * Whether the user teaches with the board: in a course, if it opens for teaching; without a course, if they may use it
+ * in any of their courses (or anywhere on the site).
+ *
+ * @param array|null $data The screen data of the course, or null without a course.
+ * @return bool
+ */
+function local_oksigeniaclasstools_teaches(?array $data): bool {
+    if ($data !== null) {
+        return ($data['mode'] ?? '') === 'teacher';
+    }
+    if (has_capability('local/oksigeniaclasstools:use', context_system::instance())) {
+        return true;
+    }
+    foreach (enrol_get_my_courses(['id']) as $course) {
+        if (has_capability('local/oksigeniaclasstools:use', context_course::instance($course->id))) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
  * The content pack of the board for a language: its own (es_mx), its parent language (es), the base language, or
  * English. Portuguese of Portugal takes the Brazilian one.
  *
@@ -433,7 +455,10 @@ function local_oksigeniaclasstools_output(?array $data): void {
     $assets = '/(<script src="[a-z0-9\/_-]+\.js|<link rel="stylesheet" href="[a-z0-9\/_-]+\.css)"/i';
     $html = preg_replace($assets, '$1?v=' . $version . '"', $html);
     $flags = JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES;
-    $script = '<script>window.CLASSTOOLS_SITE = ' . json_encode(local_oksigeniaclasstools_site(), $flags) . ";</script>\n";
+    $site = local_oksigeniaclasstools_site();
+    // Whether the one who opens it teaches: what is only for teachers (the teacher's guide) shows only to them.
+    $site['teacher'] = local_oksigeniaclasstools_teaches($data);
+    $script = '<script>window.CLASSTOOLS_SITE = ' . json_encode($site, $flags) . ";</script>\n";
     if ($data) {
         $script .= '<script>window.CLASSTOOLS = ' . json_encode($data, $flags) . ";</script>\n";
     }
