@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.53.1 (2026-10-12)
+
+- The eleven guided helps of the 0.52 with their voice in English too.
+- The quiz, hands up and dice helps brought up to date with the board, with their Spanish voice taken again: the quiz
+  shows the «Prompt for your AI» before pasting the questions, hands up is in «Hands up or cards», and the dice end with
+  «Many throws», a thousand at once against what is expected.
+
 ## 0.53.0 (2026-10-12)
 
 - **The class goal, in more looks** that teach something while they fill, besides the jar of marbles: the critter's

@@ -206,6 +206,12 @@
                     await h.type('#qz-name', QUIZ_NAME);
                     await h.press('details.qz-pegar > summary');
                     await h.wait(300);
+                    // «Prompt for your AI»: opened, a topic, and the prompt it writes (already in the paste format).
+                    await h.press('details.qz-pegar details.ct-ai > summary');
+                    await h.type('details.qz-pegar .ct-ai-topic', t('hp_concurso_topic'));
+                    await h.moveTo('details.qz-pegar .ct-ai-text');
+                    await h.wait(1200);
+                    await h.press('details.qz-pegar details.ct-ai > summary');
                     await h.type('#qz-paste', QUIZ_TEXT, true);   // pasted: all at once
                     await h.wait(1300);
                     await h.press('#qz-paste-go');
@@ -445,9 +451,14 @@
                 async (h) => { await h.press('#di-roll'); await h.wait(2200); await h.moveTo('#h-azar .ct-dados, #h-azar .ct-dice, #di-roll'); },
                 async (h) => {
                     await h.choose('#h-azar select[data-i="1"]', 'ops');
-                    await h.wait(500); await h.press('#di-roll'); await h.wait(1800);
-                    await h.choose('#h-azar select[data-i="1"]', 'dir8');
-                    await h.wait(500); await h.press('#di-roll'); await h.wait(1600);
+                    await h.wait(500); await h.press('#di-roll'); await h.wait(1400);
+                    // «Many rolls»: only with dice of numbers; two of them, a thousand at once, and the chart against the expected.
+                    await h.choose('#h-azar select[data-i="0"]', 'd6');
+                    await h.choose('#h-azar select[data-i="1"]', 'd6');
+                    await h.choose('#di-many', '1000');
+                    await h.press('#di-many-go');
+                    await h.moveTo('#di-freq');
+                    await h.wait(1800);
                 },
             ],
             practice: {

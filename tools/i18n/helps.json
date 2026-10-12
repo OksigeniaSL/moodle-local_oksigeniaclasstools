@@ -60,7 +60,7 @@
   "hp_nube_h2": { "en": "They're in: «Show all»", "es": "Ya han llegado: «Mostrar todas»" },
   "hp_concurso_title": { "en": "Quiz: they write it", "es": "Concurso: lo escriben ellos" },
   "hp_concurso_1": { "en": "Year six have written a quiz about volcanoes for year four. Today year four play it, in teams.", "es": "Los de sexto han escrito un concurso sobre volcanes para los de cuarto. Hoy lo juega cuarto, por equipos." },
-  "hp_concurso_2": { "en": "In «Quiz», press «New set» and «Paste several questions»: one per line, with an asterisk before the right answer.", "es": "En «Concurso», pulsa «Nuevo juego» y «Pegar varias preguntas»: una por línea, con un asterisco delante de la buena." },
+  "hp_concurso_2": { "en": "In «Quiz», press «New set» and «Paste several questions, or ask an AI for them»: one per line, with an asterisk before the right answer. The «Prompt for your AI» already uses that format.", "es": "En «Concurso», pulsa «Nuevo juego» y «Pegar varias preguntas o pedírselas a una IA»: una por línea, con un asterisco delante de la buena. El «Prompt para tu IA» ya lleva ese formato." },
   "hp_concurso_3": { "en": "Under «Teams», «They choose», then open the session: everyone picks a team as they join.", "es": "En «Equipos», «Eligen ellos», y abre la sesión: cada uno escoge su equipo al entrar." },
   "hp_concurso_4": { "en": "Press «Start the quiz». The clock runs and, once everyone has answered, the right answer appears with how many chose each one.", "es": "Pulsa «Empezar el concurso». Corre el tiempo y, cuando han contestado todos, se destapa la buena con cuántos eligieron cada respuesta." },
   "hp_concurso_5": { "en": "«Next question» and, at the end, the team podium. Next time, year four write the quiz for year six.", "es": "«Siguiente pregunta» y, al final, el podio por equipos. La próxima vez, cuarto escribe el concurso de sexto." },
@@ -82,7 +82,7 @@
   "hp_pulsadores_h2": { "en": "They've buzzed: «Close the buzzers»", "es": "Ya han pulsado: «Cerrar los pulsadores»" },
   "hp_manos_title": { "en": "Hands up: the class pet", "es": "A mano alzada: la mascota de la clase" },
   "hp_manos_1": { "en": "At circle time, the class chooses a name for its pet. No screens: they raise their hands and you count.", "es": "En la asamblea de Infantil, la clase elige el nombre de su mascota. Sin pantallas: levantan la mano y tú cuentas." },
-  "hp_manos_2": { "en": "Choose «Hands up» and, under «Answers», «My own answers»: type the names, one per line.", "es": "Elige «A mano alzada» y, en «Respuestas», «Mis respuestas»: escribe los nombres, uno por línea." },
+  "hp_manos_2": { "en": "Choose «Hands up or cards» and, under «Answers», «My own answers»: type the names, one per line.", "es": "Elige «A mano alzada o con tarjetas» y, en «Respuestas», «Mis respuestas»: escribe los nombres, uno por línea." },
   "hp_manos_3": { "en": "Type the question and count the hands for each name with «+».", "es": "Escribe la pregunta y cuenta las manos de cada nombre con «+»." },
   "hp_manos_4": { "en": "The bars grow as you count; if you add one too many, «−».", "es": "Las barras crecen mientras cuentas; si se te escapa una de más, «−»." },
   "hp_manos_5": { "en": "Fluffy wins. For the next question, «Back to zero».", "es": "Gana Pelusa. Para la siguiente pregunta, «Poner a cero»." },
@@ -129,7 +129,7 @@
   "hp_dados_2": { "en": "In «Chance», «Dice», choose two: the first, the class list; the second, «Custom».", "es": "En «Azar», «Dados», elige dos: el primero, la lista de la clase; el segundo, «Personalizado»." },
   "hp_dados_3": { "en": "Type the faces, one per line: who?, where?, when?, why?…", "es": "Escribe las caras, una por línea: ¿quién?, ¿dónde?, ¿cuándo?, ¿por qué?…" },
   "hp_dados_4": { "en": "Press «Roll»: a name and a question come out, and off they go.", "es": "Pulsa «Tirar»: sale un nombre y una pregunta, y a contestar." },
-  "hp_dados_5": { "en": "There are more dice: operations for mental maths, arrows to move around a map, vowels, letters or colours.", "es": "Hay más dados: de operaciones para el cálculo, de flechas para moverse por un mapa, de vocales, de letras o de colores." },
+  "hp_dados_5": { "en": "There are dice with operations, arrows, letters or colours. And with number dice, «Many throws»: a thousand at once, and seven comes up far more often than twelve.", "es": "Hay dados de operaciones, de flechas, de letras o de colores. Y con los de números, «Muchas tiradas»: mil de golpe, y el siete sale mucho más que el doce." },
   "hp_dados_6": { "en": "Your turn: set three dice and press «Roll».", "es": "Ahora tú: pon tres dados y pulsa «Tirar»." },
   "hp_dados_7": { "en": "You've got it! This critter is yours: the Dice Roller.", "es": "¡Lo tienes! Este bichito es tuyo: Tiradados." },
   "hp_dados_again": { "en": "Well done! The Dice Roller is already yours.", "es": "¡Bien hecho! Ya tenías a Tiradados." },
@@ -174,5 +174,6 @@
   "hp_manos_q": { "en": "What's our pet called?", "es": "¿Cómo se llama nuestra mascota?" },
   "hp_dados_faces": { "en": "Who?\nWhere?\nWhen?\nWhy?\nWhat happened?\nHow does it end?", "es": "¿Quién?\n¿Dónde?\n¿Cuándo?\n¿Por qué?\n¿Qué pasó?\n¿Cómo acaba?" },
   "hp_ahorcado_word": { "en": "ECOSYSTEM", "es": "ECOSISTEMA" },
-  "hp_ahorcado_clue": { "en": "What we're going to study today", "es": "Lo que vamos a estudiar hoy" }
+  "hp_ahorcado_clue": { "en": "What we're going to study today", "es": "Lo que vamos a estudiar hoy" },
+  "hp_concurso_topic": { "en": "Volcanoes", "es": "Volcanes" }
 }
