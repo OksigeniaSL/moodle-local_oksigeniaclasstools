@@ -20,7 +20,7 @@
     «Which class?»: the look of the board, not of Moodle, and everything on one screen. A greeting with the date, the
     courses in one compact grid (picture, category, name and some faces of the class), filters by category and stage
     and a search, and a panel at the side: carry on with the last class, the board without a course and the fixed
-    remote (with its QR when it is on). The panel has room for the teacher's achievements.
+    remote (with its QR when it is on), the teacher's stickers and the teachers' room.
 
     Context variables required for this template:
     * hello - the greeting, with the teacher's first name
@@ -33,6 +33,8 @@
     * standalone - the address of the board without a course
     * remote - the fixed remote: on, url
     * album - the teacher's stickers, when they are on: got (how many, as text) and json (what the page draws)
+    * sala - the teachers' room, when it is on: joined, count, span, others (texts), json (what the page draws), url,
+      sesskey
 
     Example context (json):
     {
@@ -58,7 +60,10 @@
             "image": "https://example.org/pluginfile.php/1/course/overviewfiles/science.jpg"},
         "standalone": "https://example.org/local/oksigeniaclasstools/index.php?standalone=1",
         "remote": {"on": true, "url": "https://example.org/local/oksigeniaclasstools/mando.php?k=abc"},
-        "album": {"got": "2 of 18 stickers", "json": "{}"}
+        "album": {"got": "2 of 18 stickers", "json": "{}"},
+        "sala": {"joined": false, "count": "3 in the room", "span": "It counts the last 12 weeks.",
+            "others": "And 9 more colleagues play with their classes.", "json": "{}",
+            "url": "https://example.org/local/oksigeniaclasstools/sala.php", "sesskey": "abc"}
     }
 }}
 <div class="ct-ch">
@@ -125,6 +130,17 @@
                 <button type="button" class="ct-ch-boton" id="ct-ch-abrir">{{#str}} app_cr_open, local_oksigeniaclasstools {{/str}}</button>
             </div>
             {{/album}}
+            {{#sala}}
+            <div class="ct-ch-sala" id="ct-ch-sala" data-sala="{{json}}" data-url="{{url}}" data-sesskey="{{sesskey}}">
+                <span class="ct-ch-ante">{{#str}} sala, local_oksigeniaclasstools {{/str}}</span>
+                <strong class="ct-ch-logros-n">{{count}}</strong>
+                <div class="ct-ch-sala-caras" id="ct-ch-sala-caras" aria-hidden="true"></div>
+                <button type="button" class="ct-ch-boton" id="ct-ch-sala-abrir">{{#str}} sala_open, local_oksigeniaclasstools {{/str}}</button>
+                <label class="ct-ch-sala-yo"><input type="checkbox" id="ct-ch-sala-yo"{{#joined}} checked{{/joined}}>
+                    <span>{{#str}} sala_join, local_oksigeniaclasstools {{/str}}</span></label>
+                <p class="ct-ch-nota">{{#str}} sala_join_note, local_oksigeniaclasstools {{/str}}</p>
+            </div>
+            {{/sala}}
             <a class="ct-ch-sin" href="{{standalone}}">
                 <span class="ct-ch-icono" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 5h18v11H3z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 20h8M12 16v4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
                 <span><strong>{{#str}} standalone, local_oksigeniaclasstools {{/str}}</strong><span class="ct-ch-nota">{{#str}} choose_standalone_desc, local_oksigeniaclasstools {{/str}}</span></span>
@@ -152,4 +168,18 @@
         <div class="ct-ch-album-rejilla" id="ct-ch-album-rejilla"></div>
     </dialog>
     {{/album}}
+    {{#sala}}
+    <dialog class="ct-ch-album ct-ch-sala-dialogo" id="ct-ch-sala-dialogo" aria-labelledby="ct-ch-sala-titulo">
+        <div class="ct-ch-album-cab">
+            <div>
+                <h3 id="ct-ch-sala-titulo">{{#str}} sala, local_oksigeniaclasstools {{/str}}</h3>
+                <p class="ct-ch-nota">{{#str}} sala_intro, local_oksigeniaclasstools {{/str}}</p>
+                <p class="ct-ch-semanas">{{span}}</p>
+            </div>
+            <button type="button" class="ct-ch-cerrar" id="ct-ch-sala-cerrar" aria-label="{{#str}} sala_close, local_oksigeniaclasstools {{/str}}">×</button>
+        </div>
+        <ul class="ct-ch-sala-lista" id="ct-ch-sala-lista"></ul>
+        {{#others}}<p class="ct-ch-sala-otros">{{others}}</p>{{/others}}
+    </dialog>
+    {{/sala}}
 </div>

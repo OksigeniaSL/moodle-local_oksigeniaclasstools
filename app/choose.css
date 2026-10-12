@@ -155,3 +155,21 @@
     .ct-ch-curso, .ct-ch-img img, .ct-ch-seguir { transition: none; }
     .cr-destello { animation: none; display: none; }
 }
+/* The teachers' room: in the panel, its critters and whether one is in; in its dialog, each teacher by name. */
+.ct-ch-sala { padding: .8rem; border-radius: 20px; background: linear-gradient(160deg, #e7f3ff, #eefaf1); }
+.ct-ch-sala-caras { display: flex; margin: 0 0 .6rem; }
+.ct-ch-sala-caras .ct-ch-sala-cara { width: 2.4rem; margin-right: -.5rem; }
+.ct-ch-sala-cara { display: block; flex: none; width: 3.2rem; }
+.ct-ch-sala-cara svg { display: block; width: 100%; height: auto; }
+.ct-ch-sala-yo { display: flex; align-items: center; gap: .5rem; margin: .6rem 0 .2rem; color: var(--azul-osc); font-weight: 800; cursor: pointer; }
+.ct-ch-sala-yo input { width: 1.2rem; height: 1.2rem; accent-color: var(--azul); }
+.ct-ch-sala-lista { display: grid; gap: .6rem; margin: 0; padding: 1.1rem 1.4rem 1rem; list-style: none; }
+.ct-ch-sala-profe { display: grid; grid-template-columns: auto minmax(8rem, 14rem) 1fr; align-items: center; gap: .8rem; padding: .5rem .8rem; border-radius: 18px; background: #f4f7fb; }
+.ct-ch-sala-profe.yo { box-shadow: inset 0 0 0 2px var(--azul); }
+.ct-ch-sala-nombre { color: var(--azul-osc); font-weight: 900; }
+.ct-ch-sala-nombre small { color: var(--tinta-3); font-weight: 700; }
+.ct-ch-sala-cromos { display: flex; flex-wrap: wrap; gap: .3rem; }
+.ct-ch-sala-cromos .ct-ch-mini { flex: none; width: 2.8rem; }
+.ct-ch-sala-vacia { color: var(--tinta-3); font-weight: 700; }
+.ct-ch-sala-otros { margin: 0; padding: 0 1.4rem 1.4rem; color: var(--azul-osc); font-weight: 800; }
+@media (max-width: 40rem) { .ct-ch-sala-profe { grid-template-columns: auto 1fr; } .ct-ch-sala-cromos { grid-column: 1 / -1; } }

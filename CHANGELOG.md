@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.51.0 (2026-10-12)
+
+- **Teachers' room**, on «Which class?», beside «My stickers»: the colleagues who want to be seen, by their names, each
+  with their critter and the stickers they got with their classes over a span of time, and how many more colleagues
+  play with their classes. Each teacher decides whether to appear (at first, no) with «Appear in the room», and can
+  leave whenever they like. Only a critter, a name and stickers with their level are shown: never how many times or
+  how long, never an order by use, never a report on anyone.
+- The span is the last weeks (12 at first, «Weeks the room counts») or, when the administrator writes seasons («Seasons
+  of the room»: «2026-09-08 | First term», one per line), the season on now. The room can be turned off, and it needs
+  the stickers on.
+- Privacy: whether a teacher appears in the room is exported with their preferences.
+
 ## 0.50.1 (2026-10-12)
 
 - The practice class of the guided helps is the one of their videos: «4.º B · Ciencias», with its two split groups and

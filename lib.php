@@ -578,6 +578,47 @@ function local_oksigeniaclasstools_choose(array $courses): array {
         'standalone' => (new moodle_url('/local/oksigeniaclasstools/index.php', ['standalone' => 1]))->out(false),
         'remote' => $remote ? ['on' => $remote['on'], 'url' => $remote['url'] ?? ''] : null,
         'album' => $album,
+        'sala' => $album ? local_oksigeniaclasstools_sala((int) $USER->id) : null,
+    ];
+}
+
+/**
+ * The teachers' room for «Which class?»: whether the teacher is in it, how many are, the span it counts, how many more
+ * play, and the teachers in it (name, critter seed and stickers with their level) for the page to draw.
+ *
+ * @param int $userid
+ * @return array|null joined, count, span, others, json, url, sesskey; null when the room is off.
+ */
+function local_oksigeniaclasstools_sala(int $userid): ?array {
+    if (!\local_oksigeniaclasstools\local\sala::on()) {
+        return null;
+    }
+    $component = 'local_oksigeniaclasstools';
+    $room = \local_oksigeniaclasstools\local\sala::room($userid);
+    $span = $room['span'];
+    if (!$span['inseason']) {
+        $when = get_string('sala_weeks_span', $component, $span['weeks']);
+    } else {
+        $date = userdate($span['from'], get_string('strftimedate', 'langconfig'));
+        $when = $span['season'] !== ''
+            ? get_string('sala_season_span', $component, (object) ['name' => format_string($span['season']), 'date' => $date])
+            : get_string('sala_season_span_noname', $component, $date);
+    }
+    $others = $room['others'] === 1 ? get_string('sala_others_one', $component)
+        : ($room['others'] > 1 ? get_string('sala_others', $component, $room['others']) : '');
+    $n = count($room['teachers']);
+    return [
+        'joined' => $room['joined'],
+        'count' => $n ? get_string('sala_count', $component, $n) : get_string('sala_count_none', $component),
+        'span' => $when,
+        'others' => $others,
+        'json' => json_encode([
+            'teachers' => $room['teachers'],
+            'str' => ['you' => get_string('sala_you', $component), 'none' => get_string('sala_none', $component),
+                'empty' => get_string('sala_empty', $component)],
+        ], JSON_UNESCAPED_UNICODE),
+        'url' => (new moodle_url('/local/oksigeniaclasstools/sala.php'))->out(false),
+        'sesskey' => sesskey(),
     ];
 }
 

@@ -1,5 +1,6 @@
 // «Which class?» (index.php without a course): the filters (a stage, a category and the search, together), the QR of
-// the fixed remote, and «My stickers» (a strip of the best ones and the album, drawn with the art of the board).
+// the fixed remote, «My stickers» (a strip of the best ones and the album, drawn with the art of the board) and the
+// teachers' room (the colleagues who want to be seen, with their critter and their stickers).
 //
 // @copyright 2026 Oksigenia <dev@oksigenia.cc>
 // @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -67,4 +68,33 @@
     $('#ct-ch-abrir').addEventListener('click', () => { paintAlbum(); dialog.showModal(); });
     $('#ct-ch-cerrar').addEventListener('click', () => dialog.close());
     dialog.addEventListener('click', (e) => { if (e.target === dialog) { dialog.close(); } });
+
+    // --- The teachers' room --------------------------------------------------------------------------------------
+    const room = $('#ct-ch-sala');
+    if (!room) { return; }
+    let R;
+    try { R = JSON.parse(room.dataset.sala); } catch (e) { R = { teachers: [], str: {} }; }
+    const C = window.ClasstoolsCritter, S = R.str || {};
+    const face = (id) => `<span class="ct-ch-sala-cara">${C ? C.svg('sala:' + id) : ''}</span>`;
+    $('#ct-ch-sala-caras').innerHTML = R.teachers.slice(0, 6).map((x) => face(x.id)).join('');
+    const roomDialog = $('#ct-ch-sala-dialogo');
+    // Each one by their name, with their critter and the stickers they got in the span (never how many times).
+    const paintRoom = () => {
+        $('#ct-ch-sala-lista').innerHTML = R.teachers.length ? R.teachers.map((x) => `<li class="ct-ch-sala-profe${x.me ? ' yo' : ''}">${face(x.id)}
+            <span class="ct-ch-sala-nombre">${L.esc(x.name)}${x.me ? ` <small>(${L.esc(S.you)})</small>` : ''}</span>
+            <span class="ct-ch-sala-cromos">${x.stickers.length ? x.stickers.map((c) => `<span class="ct-ch-mini">${L.draw(c.cromo, c.level, t)}</span>`).join('')
+                : `<span class="ct-ch-nota">${L.esc(S.none)}</span>`}</span></li>`).join('')
+            : `<li class="ct-ch-sala-vacia">${L.esc(S.empty)}</li>`;
+    };
+    $('#ct-ch-sala-abrir').addEventListener('click', () => { paintRoom(); roomDialog.showModal(); });
+    $('#ct-ch-sala-cerrar').addEventListener('click', () => roomDialog.close());
+    roomDialog.addEventListener('click', (e) => { if (e.target === roomDialog) { roomDialog.close(); } });
+    // In or out of the room: kept in Moodle, and the page drawn again.
+    $('#ct-ch-sala-yo').addEventListener('change', (e) => {
+        const box = e.target;
+        box.disabled = true;
+        fetch(room.dataset.url, { method: 'POST', credentials: 'same-origin', body: new URLSearchParams({ sesskey: room.dataset.sesskey, join: box.checked ? '1' : '0' }) })
+            .then((r) => r.json()).then((j) => { if (j && !j.error && !j.errorcode) { location.reload(); } else { throw new Error('sala'); } })
+            .catch(() => { box.checked = !box.checked; box.disabled = false; });
+    });
 })();

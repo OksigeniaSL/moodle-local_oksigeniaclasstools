@@ -144,6 +144,28 @@ if ($hassiteconfig) {
                 4
             ));
         }
+        // The teachers' room: on or off, and the span of time it counts (the last weeks, or seasons).
+        $settings->add(new admin_setting_configcheckbox(
+            'local_oksigeniaclasstools/sala',
+            get_string('sala', 'local_oksigeniaclasstools'),
+            get_string('sala_desc', 'local_oksigeniaclasstools'),
+            1
+        ));
+        $settings->add(new admin_setting_configtext(
+            'local_oksigeniaclasstools/sala_weeks',
+            get_string('sala_weeks', 'local_oksigeniaclasstools'),
+            get_string('sala_weeks_desc', 'local_oksigeniaclasstools'),
+            \local_oksigeniaclasstools\local\sala::WEEKS,
+            PARAM_INT,
+            4
+        ));
+        $settings->add(new admin_setting_configtextarea(
+            'local_oksigeniaclasstools/sala_seasons',
+            get_string('sala_seasons', 'local_oksigeniaclasstools'),
+            get_string('sala_seasons_desc', 'local_oksigeniaclasstools'),
+            '',
+            PARAM_TEXT
+        ));
         // Exercises written by the AI of the site, from Moodle 4.5.
         if (class_exists('\\core_ai\\manager')) {
             $settings->add(new admin_setting_configcheckbox(

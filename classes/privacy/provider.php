@@ -33,6 +33,7 @@ use core_privacy\local\request\userlist;
 use core_privacy\local\request\writer;
 use local_oksigeniaclasstools\local\quizimages;
 use local_oksigeniaclasstools\local\remote;
+use local_oksigeniaclasstools\local\sala;
 
 /**
  * Stores the picks (who was picked and when), what each teacher keeps of each tool in each course, the live sessions,
@@ -41,7 +42,8 @@ use local_oksigeniaclasstools\local\remote;
 class provider implements
     \core_privacy\local\metadata\provider,
     \core_privacy\local\request\core_userlist_provider,
-    \core_privacy\local\request\plugin\provider {
+    \core_privacy\local\request\plugin\provider,
+    \core_privacy\local\request\user_preference_provider {
     /**
      * What is stored.
      *
@@ -75,6 +77,7 @@ class provider implements
             'cromo' => 'privacy:metadata:learnt:cromo',
             'timecreated' => 'privacy:metadata:learnt:timecreated',
         ], 'privacy:metadata:learnt');
+        $collection->add_user_preference(sala::PREF, 'privacy:metadata:preference:sala');
         $collection->add_database_table('local_oksigeniaclasstools_live', [
             'courseid' => 'privacy:metadata:live:courseid',
             'userid' => 'privacy:metadata:live:userid',
@@ -164,6 +167,23 @@ class provider implements
             ['level' => CONTEXT_USER, 'userid' => $userid]
         );
         return $contextlist;
+    }
+
+    /**
+     * Whether the teacher appears in the teachers' room.
+     *
+     * @param int $userid
+     */
+    public static function export_user_preferences(int $userid) {
+        $value = get_user_preferences(sala::PREF, null, $userid);
+        if ($value !== null) {
+            writer::export_user_preference(
+                'local_oksigeniaclasstools',
+                sala::PREF,
+                $value,
+                get_string($value ? 'privacy:sala_in' : 'privacy:sala_out', 'local_oksigeniaclasstools')
+            );
+        }
     }
 
     /**

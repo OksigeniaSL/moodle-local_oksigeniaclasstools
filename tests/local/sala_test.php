@@ -1,0 +1,98 @@
+<?php
+// This file is part of Moodle - https://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
+namespace local_oksigeniaclasstools\local;
+
+defined('MOODLE_INTERNAL') || die();
+
+global $CFG;
+require_once($CFG->dirroot . '/local/oksigeniaclasstools/lib.php');
+
+/**
+ * Tests for the teachers' room: the span it counts (the last weeks or the season on now), who is in it (only who wants,
+ * and only teachers), their stickers in the span, the order by name and how many more play.
+ *
+ * @package    local_oksigeniaclasstools
+ * @category   test
+ * @copyright  2026 Oksigenia <dev@oksigenia.cc>
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @covers     \local_oksigeniaclasstools\local\sala
+ */
+#[\PHPUnit\Framework\Attributes\CoversClass(sala::class)]
+final class sala_test extends \advanced_testcase {
+    public function test_the_span_is_the_last_weeks_or_the_season_on_now(): void {
+        $this->resetAfterTest();
+        $now = make_timestamp(2026, 10, 12, 10);
+        $span = sala::span($now);
+        $this->assertFalse($span['inseason']);
+        $this->assertSame(12, $span['weeks']);
+        $this->assertSame($now - 12 * WEEKSECS, $span['from']);
+        set_config('sala_weeks', 4, 'local_oksigeniaclasstools');
+        $this->assertSame(4, sala::span($now)['weeks']);
+        set_config('sala_seasons', "2027-01-07 | Second term\nnot a date\n2026-09-08 | First term", 'local_oksigeniaclasstools');
+        $span = sala::span($now);
+        $this->assertTrue($span['inseason']);
+        $this->assertSame('First term', $span['season']);
+        $this->assertSame(20260908, $span['day']);
+        // Before the first season: the last weeks again.
+        $this->assertFalse(sala::span(make_timestamp(2026, 8, 1))['inseason']);
+    }
+
+    public function test_the_room_shows_only_who_wants_by_name_with_the_stickers_of_the_span(): void {
+        $this->resetAfterTest();
+        $gen = $this->getDataGenerator();
+        $course = $gen->create_course();
+        $zoe = $gen->create_user(['firstname' => 'Zoe', 'lastname' => 'Vidal']);
+        $ana = $gen->create_user(['firstname' => 'Ana', 'lastname' => 'Ruiz']);
+        $hidden = $gen->create_user();
+        $student = $gen->create_user();
+        $viewer = $gen->create_user();
+        $now = make_timestamp(2026, 10, 12, 10);
+        // Zoe: three days with the dice (level 2), and one long ago that the span leaves out.
+        foreach ([1, 2, 3, 200] as $daysago) {
+            logros::record((int) $zoe->id, (int) $course->id, 'tiradados', $now - $daysago * DAYSECS);
+        }
+        logros::record((int) $ana->id, (int) $course->id, 'sacanombres', $now - DAYSECS);
+        logros::record((int) $hidden->id, (int) $course->id, 'sacanombres', $now - DAYSECS);
+        foreach ([$zoe, $ana] as $teacher) {
+            sala::join((int) $teacher->id, true);
+        }
+        // Someone who never used the board with a class does not appear, even if they asked to.
+        sala::join((int) $student->id, true);
+        $room = sala::room((int) $viewer->id, $now);
+        $this->assertSame(['Ana Ruiz', 'Zoe Vidal'], array_column($room['teachers'], 'name'));
+        $this->assertSame([['cromo' => 'tiradados', 'level' => 2]], $room['teachers'][1]['stickers']);
+        $this->assertSame(1, $room['others']);
+        $this->assertFalse($room['joined']);
+        // Who looks is not one of the others; and leaving the room is at once.
+        $mine = sala::room((int) $hidden->id, $now);
+        $this->assertSame(0, $mine['others']);
+        sala::join((int) $ana->id, false);
+        $this->assertSame(['Zoe Vidal'], array_column(sala::room((int) $viewer->id, $now)['teachers'], 'name'));
+        $this->assertTrue(sala::room((int) $zoe->id, $now)['teachers'][0]['me']);
+    }
+
+    public function test_the_room_can_be_turned_off(): void {
+        $this->resetAfterTest();
+        $this->assertTrue(sala::on());
+        set_config('sala', 0, 'local_oksigeniaclasstools');
+        $this->assertFalse(sala::on());
+        set_config('sala', 1, 'local_oksigeniaclasstools');
+        set_config('logros', 0, 'local_oksigeniaclasstools');
+        $this->assertFalse(sala::on());
+        $this->assertNull(\local_oksigeniaclasstools_sala(2));
+    }
+}
