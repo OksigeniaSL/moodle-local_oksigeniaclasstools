@@ -1808,7 +1808,7 @@ const CHECKS = {
         q('.ct-guia [data-guide="envivo"]').click();
         await sleep(100);
         const buttons = [...document.querySelectorAll('.ct-guia [data-help]')].map((b) => b.dataset.help).join();
-        if (buttons !== 'entrar,votar') { return `helps in the guide: ${buttons}`; }
+        if (buttons !== 'entrar,votar,nube,concurso,pulsadores,manos') { return `helps in the guide: ${buttons}`; }
         q('.ct-guia [data-help="entrar"]').click();
         await sleep(300);
         if (!q('.hp') || !q('.ct-guia').hidden) { return 'the help did not open from the guide'; }
@@ -1823,11 +1823,11 @@ const CHECKS = {
         if (!/Lucía Moreno|Bruno Santana/.test(JSON.stringify(frame.contentWindow.CLASSTOOLS.lists))) { return 'not the invented class'; }
         await window.shot('help-step');
         H.close();
-        for (const id of ['entrar', 'votar']) {
+        for (const id of Object.keys(H.INDEX)) {
             window.FAKE.calls.length = 0;
             const missed = [];
             await H.open(id, { start: true, auto: true, fast: true, miss: (sel) => missed.push(sel) });
-            for (let i = 0; i < 400 && !H.state().done; i++) { await sleep(100); }
+            for (let i = 0; i < 900 && !H.state().done; i++) { await sleep(100); }
             const st = H.state();
             if (missed.length) { return `${id}: not found ${missed.join(', ')}`; }
             if (!st.done || !st.practised) { return `${id}: ${JSON.stringify(st)}`; }

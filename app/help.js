@@ -13,11 +13,21 @@
     // Not inside the practice board itself, nor in a copy of a duel.
     if (!core || core.practica || core.duelo) { return; }
     const { t, escape } = core;
-    // The helps there are: the guide they belong to, the sticker they give, the languages with voice, and whether the
-    // class is already in when the session opens.
+    // The helps there are: the guide (or guides) they are in, the sticker they give, and the languages with voice.
     const INDEX = {
         entrar: { guide: 'envivo', sticker: 'domamoviles', voice: ['es', 'en'] },
-        votar: { guide: 'envivo', sticker: 'cuentavotos', voice: ['es', 'en'], quick: true },
+        votar: { guide: 'envivo', sticker: 'cuentavotos', voice: ['es', 'en'] },
+        nube: { guide: 'envivo', sticker: 'atrapanubes', voice: ['es'] },
+        concurso: { guide: 'envivo', sticker: 'lanzapreguntas', voice: ['es'] },
+        pulsadores: { guide: 'envivo', sticker: 'tocatimbres', voice: ['es'] },
+        manos: { guide: ['envivo', 'tarjetas'], sticker: 'cuentamanos', voice: ['es'] },
+        partitura: { guide: 'score', sticker: 'tocanotas', voice: ['es'] },
+        ahorcado: { guide: 'ahorcado', sticker: 'salvaglobos', voice: ['es'] },
+        rosco: { guide: 'rosco', sticker: 'cazaletras', voice: ['es'] },
+        dados: { guide: 'azar', sticker: 'tiradados', voice: ['es'] },
+        pizarra: { guide: 'pizarra', sticker: 'pasalimpios', voice: ['es'] },
+        cortina: { guide: 'pizarra', sticker: 'quitatelones', voice: ['es'] },
+        instrumentos: { guide: 'pizarra', sticker: 'trazacirculos', voice: ['es'] },
     };
     const VERSION = ((document.currentScript && document.currentScript.src) || '').split('?')[1] || '';
     const LANG = (document.documentElement.lang || 'en').slice(0, 2).toLowerCase();
@@ -487,7 +497,7 @@
         if (box) { box.remove(); box = null; frame = null; }
     }
     // The helps of a guide (for the teacher's guide).
-    const of = (guide) => Object.keys(INDEX).filter((id) => INDEX[id].guide === guide);
+    const of = (guide) => Object.keys(INDEX).filter((id) => [].concat(INDEX[id].guide).includes(guide));
 
     core.help = { open, close, of };
     window.ClasstoolsHelp = { INDEX, open, close, of, state: () => ({ id: ID, step: i, playing, done, practised, had, voice }) };   // for automated tests

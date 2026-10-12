@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.52.0 (2026-10-12)
+
+- **Eleven more guided helps**, each in the teacher's guide of its tool: in «Live», the brainstorm (the cloud of
+  doubts), the quiz (written by the class itself), the buzzers (catching the mistake) and hands up (the class pet, also
+  in the guide of hands up and cards); the score (the relay song), hangman (the word that opens the topic), rosco
+  (Friday revision), dice (the question die) and, on the full drawing board, magic shapes and formulas, the curtain
+  and the spotlight, and the ruler, the protractor and the compass. With voice in Spanish and captions in English (its
+  voices will come); what is typed in them (the question, the quiz, the pet names, the faces of the die, the hangman's
+  word) is in each language.
+
 ## 0.51.1 (2026-10-12)
 
 - The teachers' room on the board too: a discreet button of the top bar (only its star) opens it, with the toggle to
