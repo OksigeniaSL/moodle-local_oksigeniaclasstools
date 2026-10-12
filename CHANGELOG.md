@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.55.1 (2026-10-12)
+
+- The button of the teacher's guide shows a question mark instead of an «i»: where the top bar shows only its icons,
+  it says «help» by itself.
+
 ## 0.55.0 (2026-10-12)
 
 - A guided help for the fixed remote, in the guide of «Live»: turning it on, the QR, and the teacher's phone beside
