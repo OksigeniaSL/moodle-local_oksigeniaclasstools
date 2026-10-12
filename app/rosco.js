@@ -1,6 +1,6 @@
-// Rosco (like the TV word game): a letter ring with a clue for each letter. The whole class plays one rosco, or
-// two teams take turns, each with its own rosco and clock. The teacher marks right, wrong or «pasapalabra».
-// Teachers write their own roscos; they are kept in the browser and, inside Moodle, for the teacher in the course.
+// The alphabet wheel: a letter ring with a clue for each letter. The whole class plays one wheel, or two teams take
+// turns, each with its own wheel and clock. The teacher marks right, wrong or «pass». Teachers write their own
+// wheels; they are kept in the browser and, inside Moodle, for the teacher in the course.
 //
 // @copyright 2026 Oksigenia <dev@oksigenia.cc>
 // @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later

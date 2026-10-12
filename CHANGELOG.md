@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.55.2 (2026-10-12)
+
+- In Spanish, the letter game is «Rueda de letras» and its button to pass, «Paso», everywhere (the game, its teacher's
+  guide, its guided help with its voice taken again, its sticker and the READMEs), with no reference to the TV quiz.
+  The READMEs no longer compare the word game with another one by its name.
+
 ## 0.55.1 (2026-10-12)
 
 - The button of the teacher's guide shows a question mark instead of an «i»: where the top bar shows only its icons,

@@ -152,8 +152,8 @@
   "es": "De la A a la Z, sin pasar palabra."
  },
  "cr_cazaletras_how": {
-  "en": "Finish a letter wheel (rosco).",
-  "es": "Termina un rosco."
+  "en": "Finish a letter wheel.",
+  "es": "Termina una rueda de letras."
  },
  "cr_tiradados_name": {
   "en": "Dice Roller",
@@ -241,7 +241,7 @@
  },
  "cr_fam_rosco": {
   "en": "Letter wheel",
-  "es": "Rosco"
+  "es": "Rueda de letras"
  },
  "cr_fam_dice": {
   "en": "Dice",

@@ -69,11 +69,11 @@
  },
  "ro_name": {
   "en": "Alphabet wheel",
-  "es": "Rosco"
+  "es": "Rueda de letras"
  },
  "ro_new": {
   "en": "New wheel",
-  "es": "Nuevo rosco"
+  "es": "Nueva rueda"
  },
  "ro_edit": {
   "en": "Edit",
@@ -89,7 +89,7 @@
  },
  "ro_second": {
   "en": "Team 2's wheel",
-  "es": "Rosco del equipo 2"
+  "es": "Rueda del equipo 2"
  },
  "ro_time": {
   "en": "Time for each",
@@ -117,7 +117,7 @@
  },
  "ro_pass": {
   "en": "Pass",
-  "es": "Pasapalabra"
+  "es": "Paso"
  },
  "ro_pause": {
   "en": "Pause",
@@ -133,7 +133,7 @@
  },
  "ro_keys": {
   "en": "Keys: Enter, right · Backspace, wrong · Space, pass",
-  "es": "Teclas: Intro, acierto · Retroceso, fallo · Espacio, pasapalabra"
+  "es": "Teclas: Intro, acierto · Retroceso, fallo · Espacio, paso"
  },
  "ro_starts": {
   "en": "Starts with {$a}",
@@ -157,7 +157,7 @@
  },
  "ro_finished": {
   "en": "Wheel complete!",
-  "es": "¡Rosco terminado!"
+  "es": "¡Rueda terminada!"
  },
  "ro_again": {
   "en": "Play again",
@@ -165,7 +165,7 @@
  },
  "ro_change": {
   "en": "Change wheel",
-  "es": "Cambiar de rosco"
+  "es": "Cambiar de rueda"
  },
  "ro_winner": {
   "en": "{$a} wins!",
@@ -197,15 +197,15 @@
  },
  "ro_edit_title": {
   "en": "Edit the wheel",
-  "es": "Editar el rosco"
+  "es": "Editar la rueda"
  },
  "ro_copy_example": {
   "en": "Copy of the example wheel",
-  "es": "Copia del rosco de ejemplo"
+  "es": "Copia de la rueda de ejemplo"
  },
  "ro_wheel_name": {
   "en": "Wheel name",
-  "es": "Nombre del rosco"
+  "es": "Nombre de la rueda"
  },
  "ro_letter": {
   "en": "Letter",
@@ -233,7 +233,7 @@
  },
  "ro_editor_note": {
   "en": "Leave blank the letters you don't want: the wheel is made from those with a clue and an answer.",
-  "es": "Deja vacías las letras que no quieras: el rosco se hace con las que tengan pista y respuesta."
+  "es": "Deja vacías las letras que no quieras: la rueda se hace con las que tengan pista y respuesta."
  },
  "ro_save": {
   "en": "Save",
@@ -245,7 +245,7 @@
  },
  "ro_remove": {
   "en": "Delete the wheel",
-  "es": "Borrar el rosco"
+  "es": "Borrar la rueda"
  },
  "ro_remove_sure": {
   "en": "Sure? Press again",
@@ -261,7 +261,7 @@
  },
  "ro_example": {
   "en": "Example wheel",
-  "es": "Rosco de ejemplo"
+  "es": "Rueda de ejemplo"
  },
  "ro_answer_was": {
   "en": "It was “{$a}”",
@@ -924,8 +924,8 @@
   "es": "{$a} preguntas de concurso"
  },
  "ai_what_rosco": {
-  "en": "a letter wheel (rosco), with a clue for each letter",
-  "es": "un rosco, con una pista para cada letra"
+  "en": "a letter wheel, with a clue for each letter",
+  "es": "una rueda de letras, con una pista para cada letra"
  },
  "ai_what_words": {
   "en": "{$a} words",

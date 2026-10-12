@@ -91,7 +91,7 @@ $string['app_ai_rules_trios'] = 'One trio per line: three things that go togethe
 $string['app_ai_rules_words'] = 'One word per line, without articles, numbers or explanations.';
 $string['app_ai_what_pairs'] = '{$a} pairs';
 $string['app_ai_what_quiz'] = '{$a} quiz questions';
-$string['app_ai_what_rosco'] = 'a letter wheel (rosco), with a clue for each letter';
+$string['app_ai_what_rosco'] = 'a letter wheel, with a clue for each letter';
 $string['app_ai_what_timeline'] = '{$a} events or periods for a timeline';
 $string['app_ai_what_trios'] = '{$a} trios';
 $string['app_ai_what_words'] = '{$a} words';
@@ -334,7 +334,7 @@ $string['app_cr_album'] = 'My stickers';
 $string['app_cr_atrapanubes_how'] = 'Close a brainstorm with {$a} answers or more.';
 $string['app_cr_atrapanubes_name'] = 'Cloud Catcher';
 $string['app_cr_atrapanubes_text'] = 'Catches ideas before the wind takes them.';
-$string['app_cr_cazaletras_how'] = 'Finish a letter wheel (rosco).';
+$string['app_cr_cazaletras_how'] = 'Finish a letter wheel.';
 $string['app_cr_cazaletras_name'] = 'Letter Catcher';
 $string['app_cr_cazaletras_text'] = 'From A to Z, without passing.';
 $string['app_cr_close'] = 'Close';
@@ -1506,17 +1506,17 @@ Making and breaking a number («which two rods make the orange one?»).
 Relations between numbers: double, half, one more.
 Adding, subtracting, multiplying and dividing with their hands.
 Fractions and ratios: the two is half of the four.';
-$string['app_gd_rosco_how'] = 'Write your rosco with the words of the topic, or copy the example one and adapt it.
-The whole class against the clock, or two teams, each with its rosco and its time.
+$string['app_gd_rosco_how'] = 'Write your wheel with the words of the topic, or copy the example one and adapt it.
+The whole class against the clock, or two teams, each with its wheel and its time.
 You mark right, wrong or «Pass».
 Use it to review at the end of a topic, not to introduce it.';
-$string['app_gd_rosco_scene'] = 'Friday review in Year 7: two teams, a science rosco each. The «P» of photosynthesis falls at the first try; the «X» of xylem stays on «Pass» to the very end, and on Monday it is the word everyone remembers.';
+$string['app_gd_rosco_scene'] = 'Friday review in Year 7: two teams, a science wheel each. The «P» of photosynthesis falls at the first try; the «X» of xylem stays on «Pass» to the very end, and on Monday it is the word everyone remembers.';
 $string['app_gd_rosco_sources'] = 'Roediger, H. L. and Karpicke, J. D. (2006). Test-enhanced learning: Taking memory tests improves long-term retention. Psychological Science, 17(3), 249–255.|https://doi.org/10.1111/j.1467-9280.2006.01693.x';
 $string['app_gd_rosco_stages'] = 'primary|Vocabulary of the topic and spelling, with simple clues.
 secondary|Reviewing the concepts of any subject before a test.
 advanced|The terms of the subject, also in other languages.';
-$string['app_gd_rosco_what'] = 'A ring of letters with a clue for each one, as in the TV quiz: the class guesses words.';
-$string['app_gd_rosco_why'] = 'Trying to remember something helps to keep it better than studying it again: in an experiment with university students, those who took a recall test remembered more a week later than those who reread the text, although the latter felt surer (Roediger and Karpicke, 2006). The rosco turns that retrieval practice into a game.';
+$string['app_gd_rosco_what'] = 'A ring of letters with a clue for each one: the class guesses words.';
+$string['app_gd_rosco_why'] = 'Trying to remember something helps to keep it better than studying it again: in an experiment with university students, those who took a recall test remembered more a week later than those who reread the text, although the latter felt surer (Roediger and Karpicke, 2006). The letter wheel turns that retrieval practice into a game.';
 $string['app_gd_rosco_works'] = 'Vocabulary of any subject, with its definition.
 Remembering without looking: each clue makes them bring the word back from memory.
 Spelling: the word starts with that letter, or contains it.
@@ -1939,7 +1939,7 @@ $string['app_hp_rosco_7'] = 'You\'ve got it! This critter is yours: the Letter C
 $string['app_hp_rosco_again'] = 'Well done! The Letter Catcher is already yours.';
 $string['app_hp_rosco_h1'] = 'Press «Start»';
 $string['app_hp_rosco_h2'] = 'And mark «Right»';
-$string['app_hp_rosco_title'] = 'Rosco: Friday revision';
+$string['app_hp_rosco_title'] = 'Alphabet wheel: Friday revision';
 $string['app_hp_skip'] = 'Skip';
 $string['app_hp_step'] = 'Step {$a->n} / {$a->all}';
 $string['app_hp_step_you'] = 'Now you · step {$a->n} / {$a->all}';

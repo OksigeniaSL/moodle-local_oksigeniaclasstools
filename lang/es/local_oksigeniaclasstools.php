@@ -91,7 +91,7 @@ $string['app_ai_rules_trios'] = 'Un trío por línea: tres cosas que van juntas,
 $string['app_ai_rules_words'] = 'Una palabra por línea, sin artículos, números ni explicaciones.';
 $string['app_ai_what_pairs'] = '{$a} parejas';
 $string['app_ai_what_quiz'] = '{$a} preguntas de concurso';
-$string['app_ai_what_rosco'] = 'un rosco, con una pista para cada letra';
+$string['app_ai_what_rosco'] = 'una rueda de letras, con una pista para cada letra';
 $string['app_ai_what_timeline'] = '{$a} hechos o periodos para una línea del tiempo';
 $string['app_ai_what_trios'] = '{$a} tríos';
 $string['app_ai_what_words'] = '{$a} palabras';
@@ -334,7 +334,7 @@ $string['app_cr_album'] = 'Mis logros';
 $string['app_cr_atrapanubes_how'] = 'Cierra una lluvia de ideas con {$a} respuestas o más.';
 $string['app_cr_atrapanubes_name'] = 'Atrapanubes';
 $string['app_cr_atrapanubes_text'] = 'Caza ideas antes de que se las lleve el viento.';
-$string['app_cr_cazaletras_how'] = 'Termina un rosco.';
+$string['app_cr_cazaletras_how'] = 'Termina una rueda de letras.';
 $string['app_cr_cazaletras_name'] = 'Cazaletras';
 $string['app_cr_cazaletras_text'] = 'De la A a la Z, sin pasar palabra.';
 $string['app_cr_close'] = 'Cerrar';
@@ -359,7 +359,7 @@ $string['app_cr_fam_groups'] = 'Grupos';
 $string['app_cr_fam_hangman'] = 'Ahorcado';
 $string['app_cr_fam_live'] = 'En vivo';
 $string['app_cr_fam_picker'] = '¿A quién le toca?';
-$string['app_cr_fam_rosco'] = 'Rosco';
+$string['app_cr_fam_rosco'] = 'Rueda de letras';
 $string['app_cr_fam_score'] = 'Partitura';
 $string['app_cr_fam_timer'] = 'Temporizador';
 $string['app_cr_got'] = '{$a->got} de {$a->all} cromos';
@@ -1508,17 +1508,17 @@ Componer y descomponer un número («¿con qué dos regletas se hace la naranja?
 Relaciones entre números: el doble, la mitad, uno más.
 Sumar, restar, multiplicar y dividir con las manos.
 Fracciones y proporciones: la de dos es la mitad de la de cuatro.';
-$string['app_gd_rosco_how'] = 'Escribe tu rosco con las palabras del tema, o copia el de ejemplo y adáptalo.
-Toda la clase contra el reloj, o dos equipos, cada uno con su rosco y su tiempo.
-Tú marcas acierto, fallo o «Pasapalabra».
-Úsalo para repasar al acabar un tema, no para presentarlo.';
-$string['app_gd_rosco_scene'] = 'Viernes de repaso en primero de ESO: dos equipos, un rosco de Ciencias cada uno. La «F» de fotosíntesis cae al primer intento; la «X» de xilema se queda en pasapalabra hasta el final, y el lunes es la palabra que todos recuerdan.';
+$string['app_gd_rosco_how'] = 'Escribe tu rueda con las palabras del tema, o copia la de ejemplo y adáptala.
+Toda la clase contra el reloj, o dos equipos, cada uno con su rueda y su tiempo.
+Tú marcas acierto, fallo o «Paso».
+Úsala para repasar al acabar un tema, no para presentarlo.';
+$string['app_gd_rosco_scene'] = 'Viernes de repaso en primero de ESO: dos equipos, una rueda de Ciencias cada uno. La «F» de fotosíntesis cae al primer intento; la «X» de xilema se queda en «Paso» hasta el final, y el lunes es la palabra que todos recuerdan.';
 $string['app_gd_rosco_sources'] = 'Roediger, H. L. y Karpicke, J. D. (2006). Test-enhanced learning: Taking memory tests improves long-term retention. Psychological Science, 17(3), 249–255.|https://doi.org/10.1111/j.1467-9280.2006.01693.x';
 $string['app_gd_rosco_stages'] = 'primary|Vocabulario del tema y ortografía, con pistas sencillas.
 secondary|Repaso de conceptos de cualquier materia antes del examen.
 advanced|La terminología de la asignatura, también en otros idiomas.';
-$string['app_gd_rosco_what'] = 'Una rueda de letras con una pista para cada una, como en el concurso de televisión: la clase adivina palabras.';
-$string['app_gd_rosco_why'] = 'Intentar recordar algo ayuda a retenerlo mejor que volver a estudiarlo: en un experimento con estudiantes universitarios, quienes hicieron una prueba de recuerdo recordaban más una semana después que quienes releyeron el texto, aunque estos se sentían más seguros (Roediger y Karpicke, 2006). El rosco convierte esa práctica de recuperación en un juego.';
+$string['app_gd_rosco_what'] = 'Una rueda de letras con una pista para cada una: la clase adivina palabras.';
+$string['app_gd_rosco_why'] = 'Intentar recordar algo ayuda a retenerlo mejor que volver a estudiarlo: en un experimento con estudiantes universitarios, quienes hicieron una prueba de recuerdo recordaban más una semana después que quienes releyeron el texto, aunque estos se sentían más seguros (Roediger y Karpicke, 2006). La rueda de letras convierte esa práctica de recuperación en un juego.';
 $string['app_gd_rosco_works'] = 'Vocabulario de cualquier materia, con su definición.
 Recordar sin mirar: cada pista obliga a sacar la palabra de la memoria.
 Ortografía: la palabra empieza por esa letra o la contiene.
@@ -1931,17 +1931,17 @@ $string['app_hp_pulsadores_again'] = '¡Bien hecho! Ya tenías a Tocatimbres.';
 $string['app_hp_pulsadores_h1'] = 'Pulsa «Abrir los pulsadores»';
 $string['app_hp_pulsadores_h2'] = 'Ya han pulsado: «Cerrar los pulsadores»';
 $string['app_hp_pulsadores_title'] = 'Pulsadores: cazar el error';
-$string['app_hp_rosco_1'] = 'Viernes de repaso: dos equipos, cada uno con su rosco y su reloj.';
-$string['app_hp_rosco_2'] = 'En «Juegos», «Rosco», elige «Dos equipos» y el tiempo, y pulsa «Empezar».';
-$string['app_hp_rosco_3'] = 'Lees la pista y marcas «Acierto», «Fallo» o «Pasapalabra». Con un acierto sigue el mismo equipo; si no, le toca al otro.';
+$string['app_hp_rosco_1'] = 'Viernes de repaso: dos equipos, cada uno con su rueda de letras y su reloj.';
+$string['app_hp_rosco_2'] = 'En «Juegos», «Rueda de letras», elige «Dos equipos» y el tiempo, y pulsa «Empezar».';
+$string['app_hp_rosco_3'] = 'Lees la pista y marcas «Acierto», «Fallo» o «Paso». Con un acierto sigue el mismo equipo; si no, le toca al otro.';
 $string['app_hp_rosco_4'] = 'Cada reloj solo corre en el turno de su equipo.';
-$string['app_hp_rosco_5'] = 'Con «Nuevo rosco» escribes el tuyo con las palabras del tema, y se queda guardado.';
+$string['app_hp_rosco_5'] = 'Con «Nueva rueda» escribes la tuya con las palabras del tema, y se queda guardada.';
 $string['app_hp_rosco_6'] = 'Ahora tú: pulsa «Empezar» y marca la primera respuesta como «Acierto».';
 $string['app_hp_rosco_7'] = '¡Lo tienes! Este bichito es tuyo: Cazaletras.';
 $string['app_hp_rosco_again'] = '¡Bien hecho! Ya tenías a Cazaletras.';
 $string['app_hp_rosco_h1'] = 'Pulsa «Empezar»';
 $string['app_hp_rosco_h2'] = 'Y marca «Acierto»';
-$string['app_hp_rosco_title'] = 'Rosco: viernes de repaso';
+$string['app_hp_rosco_title'] = 'Rueda de letras: viernes de repaso';
 $string['app_hp_skip'] = 'Saltar';
 $string['app_hp_step'] = 'Paso {$a->n} / {$a->all}';
 $string['app_hp_step_you'] = 'Ahora tú · paso {$a->n} / {$a->all}';
@@ -2712,19 +2712,19 @@ $string['app_ro_answer_was'] = 'Era «{$a}»';
 $string['app_ro_bad_many'] = '{$a} fallos';
 $string['app_ro_bad_one'] = '{$a} fallo';
 $string['app_ro_cancel'] = 'Cancelar';
-$string['app_ro_change'] = 'Cambiar de rosco';
+$string['app_ro_change'] = 'Cambiar de rueda';
 $string['app_ro_class'] = 'La clase';
 $string['app_ro_clue'] = 'Pista';
 $string['app_ro_contains'] = 'Contiene la {$a}';
-$string['app_ro_copy_example'] = 'Copia del rosco de ejemplo';
+$string['app_ro_copy_example'] = 'Copia de la rueda de ejemplo';
 $string['app_ro_copy_of'] = '{$a} (copia)';
 $string['app_ro_edit'] = 'Editar';
-$string['app_ro_edit_title'] = 'Editar el rosco';
-$string['app_ro_editor_note'] = 'Deja vacías las letras que no quieras: el rosco se hace con las que tengan pista y respuesta.';
-$string['app_ro_example'] = 'Rosco de ejemplo';
+$string['app_ro_edit_title'] = 'Editar la rueda';
+$string['app_ro_editor_note'] = 'Deja vacías las letras que no quieras: la rueda se hace con las que tengan pista y respuesta.';
+$string['app_ro_example'] = 'Rueda de ejemplo';
 $string['app_ro_finish'] = 'Terminar';
-$string['app_ro_finished'] = '¡Rosco terminado!';
-$string['app_ro_keys'] = 'Teclas: Intro, acierto · Retroceso, fallo · Espacio, pasapalabra';
+$string['app_ro_finished'] = '¡Rueda terminada!';
+$string['app_ro_keys'] = 'Teclas: Intro, acierto · Retroceso, fallo · Espacio, paso';
 $string['app_ro_kind'] = 'Tipo';
 $string['app_ro_kind_contains'] = 'Contiene';
 $string['app_ro_kind_starts'] = 'Empieza';
@@ -2732,27 +2732,27 @@ $string['app_ro_left'] = '{$a} sin contestar';
 $string['app_ro_letter'] = 'Letra';
 $string['app_ro_min'] = '{$a} min';
 $string['app_ro_min_sec'] = '{$a->m} min {$a->s} s';
-$string['app_ro_name'] = 'Rosco';
+$string['app_ro_name'] = 'Rueda de letras';
 $string['app_ro_need_one'] = 'Escribe al menos una letra con su pista y su respuesta.';
-$string['app_ro_new'] = 'Nuevo rosco';
+$string['app_ro_new'] = 'Nueva rueda';
 $string['app_ro_no_time'] = 'Sin tiempo';
 $string['app_ro_ok_many'] = '{$a} aciertos';
 $string['app_ro_ok_one'] = '{$a} acierto';
-$string['app_ro_pass'] = 'Pasapalabra';
+$string['app_ro_pass'] = 'Paso';
 $string['app_ro_pause'] = 'Pausa';
-$string['app_ro_remove'] = 'Borrar el rosco';
+$string['app_ro_remove'] = 'Borrar la rueda';
 $string['app_ro_remove_sure'] = '¿Seguro? Pulsa otra vez';
 $string['app_ro_resume'] = 'Seguir';
 $string['app_ro_right'] = 'Acierto';
 $string['app_ro_save'] = 'Guardar';
-$string['app_ro_second'] = 'Rosco del equipo 2';
+$string['app_ro_second'] = 'Rueda del equipo 2';
 $string['app_ro_starts'] = 'Empieza por la {$a}';
 $string['app_ro_team'] = 'Equipo {$a}';
 $string['app_ro_tie'] = '¡Empate!';
 $string['app_ro_time'] = 'Tiempo de cada uno';
 $string['app_ro_time_up'] = '¡Se acabó el tiempo!';
 $string['app_ro_two_teams'] = 'Dos equipos';
-$string['app_ro_wheel_name'] = 'Nombre del rosco';
+$string['app_ro_wheel_name'] = 'Nombre de la rueda';
 $string['app_ro_who'] = '¿Quién juega?';
 $string['app_ro_winner'] = '¡Gana {$a}!';
 $string['app_ro_wrong'] = 'Fallo';

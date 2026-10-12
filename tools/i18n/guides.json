@@ -288,28 +288,28 @@
   "es": "Orff Schulwerk (Wikipedia, en inglés).|https://en.wikipedia.org/wiki/Orff_Schulwerk"
  },
  "gd_rosco_what": {
-  "en": "A ring of letters with a clue for each one, as in the TV quiz: the class guesses words.",
-  "es": "Una rueda de letras con una pista para cada una, como en el concurso de televisión: la clase adivina palabras."
+  "en": "A ring of letters with a clue for each one: the class guesses words.",
+  "es": "Una rueda de letras con una pista para cada una: la clase adivina palabras."
  },
  "gd_rosco_works": {
   "en": "Vocabulary of any subject, with its definition.\nRemembering without looking: each clue makes them bring the word back from memory.\nSpelling: the word starts with that letter, or contains it.\nTeamwork, with two teams and their clocks.",
   "es": "Vocabulario de cualquier materia, con su definición.\nRecordar sin mirar: cada pista obliga a sacar la palabra de la memoria.\nOrtografía: la palabra empieza por esa letra o la contiene.\nTrabajo en equipo, con dos equipos y su reloj."
  },
  "gd_rosco_why": {
-  "en": "Trying to remember something helps to keep it better than studying it again: in an experiment with university students, those who took a recall test remembered more a week later than those who reread the text, although the latter felt surer (Roediger and Karpicke, 2006). The rosco turns that retrieval practice into a game.",
-  "es": "Intentar recordar algo ayuda a retenerlo mejor que volver a estudiarlo: en un experimento con estudiantes universitarios, quienes hicieron una prueba de recuerdo recordaban más una semana después que quienes releyeron el texto, aunque estos se sentían más seguros (Roediger y Karpicke, 2006). El rosco convierte esa práctica de recuperación en un juego."
+  "en": "Trying to remember something helps to keep it better than studying it again: in an experiment with university students, those who took a recall test remembered more a week later than those who reread the text, although the latter felt surer (Roediger and Karpicke, 2006). The letter wheel turns that retrieval practice into a game.",
+  "es": "Intentar recordar algo ayuda a retenerlo mejor que volver a estudiarlo: en un experimento con estudiantes universitarios, quienes hicieron una prueba de recuerdo recordaban más una semana después que quienes releyeron el texto, aunque estos se sentían más seguros (Roediger y Karpicke, 2006). La rueda de letras convierte esa práctica de recuperación en un juego."
  },
  "gd_rosco_how": {
-  "en": "Write your rosco with the words of the topic, or copy the example one and adapt it.\nThe whole class against the clock, or two teams, each with its rosco and its time.\nYou mark right, wrong or «Pass».\nUse it to review at the end of a topic, not to introduce it.",
-  "es": "Escribe tu rosco con las palabras del tema, o copia el de ejemplo y adáptalo.\nToda la clase contra el reloj, o dos equipos, cada uno con su rosco y su tiempo.\nTú marcas acierto, fallo o «Pasapalabra».\nÚsalo para repasar al acabar un tema, no para presentarlo."
+  "en": "Write your wheel with the words of the topic, or copy the example one and adapt it.\nThe whole class against the clock, or two teams, each with its wheel and its time.\nYou mark right, wrong or «Pass».\nUse it to review at the end of a topic, not to introduce it.",
+  "es": "Escribe tu rueda con las palabras del tema, o copia la de ejemplo y adáptala.\nToda la clase contra el reloj, o dos equipos, cada uno con su rueda y su tiempo.\nTú marcas acierto, fallo o «Paso».\nÚsala para repasar al acabar un tema, no para presentarlo."
  },
  "gd_rosco_stages": {
   "en": "primary|Vocabulary of the topic and spelling, with simple clues.\nsecondary|Reviewing the concepts of any subject before a test.\nadvanced|The terms of the subject, also in other languages.",
   "es": "primary|Vocabulario del tema y ortografía, con pistas sencillas.\nsecondary|Repaso de conceptos de cualquier materia antes del examen.\nadvanced|La terminología de la asignatura, también en otros idiomas."
  },
  "gd_rosco_scene": {
-  "en": "Friday review in Year 7: two teams, a science rosco each. The «P» of photosynthesis falls at the first try; the «X» of xylem stays on «Pass» to the very end, and on Monday it is the word everyone remembers.",
-  "es": "Viernes de repaso en primero de ESO: dos equipos, un rosco de Ciencias cada uno. La «F» de fotosíntesis cae al primer intento; la «X» de xilema se queda en pasapalabra hasta el final, y el lunes es la palabra que todos recuerdan."
+  "en": "Friday review in Year 7: two teams, a science wheel each. The «P» of photosynthesis falls at the first try; the «X» of xylem stays on «Pass» to the very end, and on Monday it is the word everyone remembers.",
+  "es": "Viernes de repaso en primero de ESO: dos equipos, una rueda de Ciencias cada uno. La «F» de fotosíntesis cae al primer intento; la «X» de xilema se queda en «Paso» hasta el final, y el lunes es la palabra que todos recuerdan."
  },
  "gd_rosco_sources": {
   "en": "Roediger, H. L. and Karpicke, J. D. (2006). Test-enhanced learning: Taking memory tests improves long-term retention. Psychological Science, 17(3), 249–255.|https://doi.org/10.1111/j.1467-9280.2006.01693.x",
