@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.40.1 (2026-10-12)
+
+- Wording of the exit ticket, the cards and Simon reviewed in Spanish: the piles say «Lo entiendo» like the faces, the
+  list of who is missing is «Sin entregar», a ticket taken off the screen agrees with «billete», Simon's written word is
+  «Se escribe y la separan», and the guides speak to the teacher in the same way everywhere.
+
 ## 0.40.0 (2026-10-12)
 
 - **Printed cards to vote**, in «Live» › «Hands up or cards» (also outside Moodle): «Print cards» prints, for a class

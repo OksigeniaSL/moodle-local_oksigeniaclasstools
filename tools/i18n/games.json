@@ -1020,8 +1020,8 @@
   "es": "Se encienden sus sílabas"
  },
  "si_syl_read": {
-  "en": "It is written: they split it",
-  "es": "Se escribe: la separan"
+  "en": "It is written and they split it",
+  "es": "Se escribe y la separan"
  },
  "si_syl_split": {
   "en": "Press its syllables in order!",

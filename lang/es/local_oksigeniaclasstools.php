@@ -1418,29 +1418,29 @@ $string['app_gd_rosco_works'] = 'Vocabulario de cualquier materia, con su defini
 Recordar sin mirar: cada pista obliga a sacar la palabra de la memoria.
 Ortografía: la palabra empieza por esa letra o la contiene.
 Trabajo en equipo, con dos equipos y su reloj.';
-$string['app_gd_salida_how'] = 'Prepara el billete: si pregunta «¿Cómo lo llevas?» y hasta tres preguntas cortas, escritas por ti o elegidas de «Ideas». Mejor una o dos: tiene que caber en tres a cinco minutos.
+$string['app_gd_salida_how'] = 'Prepara el billete: elige si pregunta «¿Cómo lo llevas?» y escribe hasta tres preguntas cortas, o elígelas de «Ideas». Mejor una o dos: tiene que caber en tres a cinco minutos.
 Abre la sesión unos minutos antes de acabar; entran con el QR o el código. Con su usuario del Aula virtual sabrás quién necesita qué; sin nombre, suelen contestar con más franqueza.
 Abre el billete. La pizarra solo muestra quién lo ha entregado; al salir, cada alumno enseña su pantalla verde.
 Cierra el billete y salen las caras de la clase. Las respuestas no se ven hasta que pulses «Ver las respuestas»: revísalas antes de proyectarlas, y quita de la pantalla lo que no deba verse.
-Los montones (Todavía no, A medias, Lo entiende, Lo explicaría) dicen por dónde empezar: repasar con todos, grupos pequeños con un experto en cada uno, o seguir adelante.
+Los montones (Todavía no, A medias, Lo entiendo, Lo explicaría) dicen por dónde empezar: repasar con todos, grupos pequeños con un experto en cada uno, o seguir adelante.
 «Una al azar» muestra una respuesta sin nombre, grande, para comentarla con la clase.
 «Descargar» guarda los billetes en una hoja de cálculo: la sesión se borra al día siguiente.
-Sin dispositivos: el mismo billete en una ficha o un pósit, o las cuatro caras en la puerta para que cada uno pegue un gomet o ponga su pinza en la suya al salir; cuéntalas con «A mano alzada».';
+Sin dispositivos: el mismo billete en una ficha o un pósit, o las cuatro caras en la puerta para que cada uno pegue un gomet o ponga su pinza en la suya al salir; cuéntalas con «A mano alzada o con tarjetas».';
 $string['app_gd_salida_scene'] = 'Viernes, cinco minutos antes del recreo: la clase de quinto hace el billete sobre fracciones equivalentes. Al cerrarlo hay nueve caras en «A medias», y casi todas las dudas dicen lo mismo: no ven por qué 2/4 es igual que 1/2.
 El lunes la clase empieza con el muro de fracciones, y los cuatro que lo explicarían hacen de expertos, uno en cada mesa.';
 $string['app_gd_salida_sources'] = 'Black, P. y Wiliam, D. (1998). Assessment and classroom learning. Assessment in Education: Principles, Policy & Practice, 5(1), 7–74.|https://doi.org/10.1080/0969595980050102
 Marzano, R. J. (2012). The many uses of exit slips. Educational Leadership, 70(2).|https://ascd.org/el/articles/the-many-uses-of-exit-slips
 Wiliam, D. (2011). Embedded Formative Assessment. Solution Tree Press.
 Northwest Educational Service District 189 (s. f.). Exit Pass. Formative Assessment Techniques (ficha adaptada de Wiliam, 2011).|https://www.nwesd.org/wp-content/uploads/2013/08/EL_Exit_Pass_kdj.pdf';
-$string['app_gd_salida_stages'] = 'early|Solo las caras, y a mano: al salir, cada uno pone su pinza o un gomet en la cara que toca, y lo comentáis en la asamblea del día siguiente.
+$string['app_gd_salida_stages'] = 'early|Solo las caras, y a mano: al salir, cada uno pone su pinza o un gomet en la cara que toca, y lo comentas con ellos en la asamblea del día siguiente.
 primary|Las caras y una pregunta: «Lo más importante que he aprendido hoy» o «Una duda que me queda». Con su usuario, para hacer los grupos del día siguiente.
 secondary|Una pregunta de comprensión («Explícalo con tus palabras», «Pon un ejemplo») y otra sobre cómo han trabajado; la descarga, para planificar.
 advanced|La duda que más les ha costado y qué cambiarían de la sesión; sin nombre, para que sean francos.';
-$string['app_gd_salida_what'] = 'Al acabar la clase, cada alumno dice desde su móvil o tableta cómo lo lleva (cuatro caras) y contesta de una a tres preguntas cortas. Mientras está abierto ves quién lo ha entregado; al cerrarlo, cómo va la clase y los billetes en montones, para preparar la clase siguiente.';
+$string['app_gd_salida_what'] = 'Al acabar la clase, cada alumno dice desde su móvil o tableta cómo lo lleva (cuatro caras) y contesta de una a tres preguntas cortas. Mientras el billete está abierto, ves quién lo ha entregado; al cerrarlo, cómo va la clase y los billetes en montones, para preparar la clase siguiente.';
 $string['app_gd_salida_why'] = 'El billete de salida es una técnica de evaluación formativa: recoger, mientras se enseña, pruebas de lo que han aprendido para ajustar la enseñanza. En su revisión de la investigación, Black y Wiliam (1998) concluyen que varios estudios muestran pruebas firmes de que reforzar la información frecuente que reciben los alumnos sobre su aprendizaje produce mejoras sustanciales.
 Marzano (2012) distingue cuatro tipos de preguntas para el billete: las que dan datos de lo que han entendido (puntuarse de 0 a 3, o «¿qué es lo que más te ha confundido de hoy?»), las que les hacen analizar su propio esfuerzo, las que valoran una forma de trabajar de la clase y las que abren una comunicación con el profesor. Las caras de Classtools adaptan su escala de 0 a 3, y las ideas de preguntas siguen esos cuatro tipos.
 Lo que importa es qué se hace después. Si casi toda la clase tiene la misma duda, Marzano propone volver a explicarlo al día siguiente; si las dudas son distintas, grupos pequeños, con los alumnos que lo han entendido como expertos en cada uno.
-Wiliam (2011) lo recoge como «pase de salida»: de tres a cinco minutos antes de un descanso, y el docente lo lee y decide qué cambia. Las variantes que se derivan de su libro: agrupar a los alumnos según lo que muestran sus respuestas, devolverles un comentario escrito, o leer en voz alta respuestas sin nombre para empezar un debate.';
+Wiliam (2011) lo recoge como «pase de salida»: de tres a cinco minutos antes de un descanso, en los que el docente lee los pases y decide qué cambiar. Una ficha basada en su libro recoge estas variantes: agrupar a los alumnos según lo que muestran sus respuestas, devolverles un comentario escrito, o leer en voz alta respuestas sin nombre para empezar un debate.';
 $string['app_gd_salida_works'] = 'Saber, antes de la clase siguiente, qué ha entendido cada uno y qué no.
 Que contesten todos, también los que nunca levantan la mano.
 Pensar en lo que han aprendido y en cómo han trabajado.
@@ -1486,12 +1486,12 @@ Dos o tres rondas bastan como pausa activa entre dos tareas.
 «Al revés»: la secuencia se repite del final al principio, así que hay que darle la vuelta antes de pulsar.
 «Los pulsadores llevan»: flechas (las cuatro iguales, para leer la dirección y no el color), números con una regla (sale un 3 y, con «Lo que falta para 10», se pulsa el 7) o notas sin colores (solo suenan; los pulsadores dicen Do, Re, Mi…).
 Nueve pulsadores, para los que ya dominan seis.
-«Sílabas de una palabra»: los pulsadores llevan las sílabas de la palabra y otras; con «Se encienden sus sílabas» la palabra se va formando arriba mientras se encienden, y con «Se escribe: la separan» aparece entera y la clase pulsa sus sílabas en orden. Al acertar, sale la palabra grande. Empiezan con dos sílabas y crecen hasta cinco. Al revés, la palabra se dice del final al principio («pato», «topa»). En Infantil, las sílabas salen en mayúsculas.';
+«Sílabas de una palabra»: los pulsadores llevan las sílabas de la palabra y otras; con «Se encienden sus sílabas» la palabra se va formando arriba mientras se encienden, y con «Se escribe y la separan» aparece entera y la clase pulsa sus sílabas en orden. Al acertar, sale la palabra grande. Empiezan con dos sílabas y crecen hasta cinco. Al revés, la palabra se dice del final al principio («pato», «topa»). En Infantil, las sílabas salen en mayúsculas.';
 $string['app_gd_simon_scene'] = 'La clase de tercero vuelve del recreo con muchas ganas de hablar. El maestro abre Simón con la lista: en cada ronda sale uno y los demás dicen los colores en voz baja. Hugo falla en la séptima; la secuencia vuelve a sonar para Martina, que la completa entre aplausos. Tres rondas después, empiezan la lectura.';
 $string['app_gd_simon_sources'] = 'Melby-Lervåg, M. y Hulme, C. (2013). Is working memory training effective? A meta-analytic review. Developmental Psychology, 49(2), 270–291.|https://doi.org/10.1037/a0028228
 Martínez, N. y Goikoetxea, E. (2020). Los predictores de la lectura y escritura de palabras varían en función de la estructura silábica en español. Psicología Educativa, 26(1), 37–48.|https://doi.org/10.5093/psed2019a20';
 $string['app_gd_simon_stages'] = 'early|Cuatro colores y velocidad normal, nombrando los colores en voz alta; las sílabas de palabras de dos y tres sílabas, dando una palmada por sílaba.
-primary|Seis colores, por turnos con la lista de la clase; números con una regla para el cálculo mental; en 1.º y 2.º, sílabas: «Se escribe: la separan».
+primary|Seis colores, por turnos con la lista de la clase; números con una regla para el cálculo mental; en 1.º y 2.º, sílabas: «Se escribe y la separan».
 secondary|Velocidad rápida, al revés o con flechas, como reto de la clase para batir su récord; notas sin colores en Música.
 advanced|Para dinámicas de grupo o para mostrar en Psicología qué es la memoria de trabajo.';
 $string['app_gd_simon_what'] = 'Repetir una secuencia que crece en cada ronda (colores y sonidos, flechas, números con una regla, notas o las sílabas de una palabra): un juego de atención y memoria para toda la clase.';
@@ -1534,7 +1534,7 @@ Por mesas: cada mesa cuenta sus colores y te lo dice; así cuentan ellos.
 Uno a uno: pasa por las mesas y pregunta o anota; con 12 a 30 alumnos no lleva mucho rato.
 Con un móvil viejo o sin cámara, todo esto funciona igual: la tarjeta no necesita el móvil. Una foto de la clase con las tarjetas levantadas sirve de registro para mirarlo después.
 El semáforo mientras trabajan: la tarjeta encima de la mesa, en rojo si necesitan ayuda; vas primero a las rojas.
-Sí y no, para verdadero o falso rápido; las cuatro tarjetas sueltas, para quien todavía se lía al girar.';
+Sí y no, para verdadero o falso rápido; las cuatro tarjetas sueltas, para quien todavía se confunde al girarla.';
 $string['app_gd_tarjetas_scene'] = 'En segundo, la maestra pregunta qué pesa más: A, un kilo de paja; B, un kilo de hierro; C, pesan lo mismo. Las tarjetas suben a la vez y hay mucho azul. «Por grupos»: los del azul al aro azul, los del rojo al rojo, los del amarillo al amarillo. En cada aro hablan un minuto, y luego cada uno busca a alguien de otro color para convencerlo.
 Al volver a votar hay mucho más amarillo. Los que siguen en azul explican por qué, y la balanza de la clase resuelve la discusión.';
 $string['app_gd_tarjetas_sources'] = 'Narayan, J. S., Heward, W. L., Gardner, R., Courson, F. H. y Omness, C. K. (1990). Using response cards to increase student participation in an elementary classroom. Journal of Applied Behavior Analysis, 23(4), 483–490.|https://doi.org/10.1901/jaba.1990.23-483
@@ -1742,23 +1742,23 @@ $string['app_lv_ex_group'] = 'Cómo ordenar los billetes';
 $string['app_lv_ex_group_feel'] = 'En montones, por cómo lo llevan';
 $string['app_lv_ex_group_time'] = 'Por orden de entrega';
 $string['app_lv_ex_handed'] = 'Lo han entregado {$a->n} de {$a->of}';
-$string['app_lv_ex_hidden'] = 'Quitada de la pantalla.';
-$string['app_lv_ex_hide'] = 'Quitarla de la pantalla';
+$string['app_lv_ex_hidden'] = 'Quitado de la pantalla.';
+$string['app_lv_ex_hide'] = 'Quitarlo de la pantalla';
 $string['app_lv_ex_hide_answers'] = 'Ocultar las respuestas';
 $string['app_lv_ex_ideas'] = 'Ideas…';
-$string['app_lv_ex_in'] = 'Entregado';
+$string['app_lv_ex_in'] = 'Han entregado';
 $string['app_lv_ex_lead'] = 'Al acabar la clase, cada alumno dice cómo lo lleva y contesta de una a tres preguntas cortas. De tres a cinco minutos; te dice por dónde empezar la clase siguiente.';
-$string['app_lv_ex_missing'] = 'Falta';
+$string['app_lv_ex_missing'] = 'Sin entregar';
 $string['app_lv_ex_n'] = 'Billete {$a}';
 $string['app_lv_ex_names'] = 'Con nombres';
 $string['app_lv_ex_new'] = 'Otro billete';
 $string['app_lv_ex_no_texts'] = 'No hay respuestas escritas.';
-$string['app_lv_ex_none'] = 'No entregaste billete.';
+$string['app_lv_ex_none'] = 'No has entregado el billete.';
 $string['app_lv_ex_nothing'] = 'El billete necesita las caras o al menos una pregunta.';
 $string['app_lv_ex_open'] = 'Abrir el billete';
 $string['app_lv_ex_p_activity'] = '¿Qué actividad de hoy te ha ayudado más a aprender?';
 $string['app_lv_ex_p_better'] = '¿Qué podrías haber hecho para aprender mejor?';
-$string['app_lv_ex_p_confused'] = 'Lo que más me ha liado hoy';
+$string['app_lv_ex_p_confused'] = 'Lo que más me ha costado entender hoy';
 $string['app_lv_ex_p_doubt'] = 'Una duda que me queda';
 $string['app_lv_ex_p_effort'] = '¿Cuánto te has esforzado hoy? ¿Por qué?';
 $string['app_lv_ex_p_example'] = 'Pon un ejemplo de lo que hemos visto hoy';
@@ -1777,7 +1777,7 @@ $string['app_lv_ex_random_close'] = 'Cerrar';
 $string['app_lv_ex_reopen'] = 'Reabrir';
 $string['app_lv_ex_s0'] = 'Todavía no';
 $string['app_lv_ex_s1'] = 'A medias';
-$string['app_lv_ex_s2'] = 'Lo entiende';
+$string['app_lv_ex_s2'] = 'Lo entiendo';
 $string['app_lv_ex_s3'] = 'Lo explicaría';
 $string['app_lv_ex_s_none'] = 'Sin cara';
 $string['app_lv_ex_send'] = 'Entregar';
@@ -2511,7 +2511,7 @@ $string['app_si_rule_ten'] = 'Lo que falta para 10';
 $string['app_si_same_again'] = 'Otra vez la misma';
 $string['app_si_speed'] = 'Velocidad';
 $string['app_si_syl_mode'] = 'La palabra';
-$string['app_si_syl_read'] = 'Se escribe: la separan';
+$string['app_si_syl_read'] = 'Se escribe y la separan';
 $string['app_si_syl_split'] = '¡Pulsen sus sílabas en orden!';
 $string['app_si_syl_split_reverse'] = '¡Pulsen sus sílabas al revés!';
 $string['app_si_syl_watch'] = 'Se encienden sus sílabas';

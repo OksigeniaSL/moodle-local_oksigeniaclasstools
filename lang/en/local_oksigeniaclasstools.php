@@ -1416,14 +1416,14 @@ $string['app_gd_rosco_works'] = 'Vocabulary of any subject, with its definition.
 Remembering without looking: each clue makes them bring the word back from memory.
 Spelling: the word starts with that letter, or contains it.
 Teamwork, with two teams and their clocks.';
-$string['app_gd_salida_how'] = 'Prepare the ticket: whether it asks «How are you getting on?» and up to three short questions, written by you or chosen from «Ideas». One or two is better: it has to fit in three to five minutes.
+$string['app_gd_salida_how'] = 'Prepare the ticket: choose whether it asks «How are you getting on?» and write up to three short questions, or choose them from «Ideas». One or two is better: it has to fit in three to five minutes.
 Open the session a few minutes before the end; they join with the QR or the code. With their Moodle account you will know who needs what; without names, they tend to answer more frankly.
 Open the ticket. The board only shows who has handed it in; on the way out, each student shows their green screen.
 Close the ticket and the faces of the class come out. The answers do not show until you press «Show the answers»: check them before projecting them, and take off the screen what should not be seen.
 The piles (Not yet, Halfway, Understand it, Could explain it) say where to start: going over it with everyone, small groups with an expert in each, or moving on.
 «One at random» shows an answer without a name, big, to talk about it with the class.
 «Download» saves the tickets in a spreadsheet: the session is deleted the next day.
-Without devices: the same ticket on a card or a sticky note, or the four faces on the door so each one puts a sticker or their peg on theirs on the way out; count them with «Show of hands».';
+Without devices: the same ticket on a card or a sticky note, or the four faces on the door so each one puts a sticker or their peg on theirs on the way out; count them with «Hands up or cards».';
 $string['app_gd_salida_scene'] = 'Friday, five minutes before break: the year five class does the ticket on equivalent fractions. When it closes there are nine faces on «Halfway», and nearly all the questions say the same: they do not see why 2/4 equals 1/2.
 On Monday the lesson starts with the fraction wall, and the four who could explain it act as experts, one at each table.';
 $string['app_gd_salida_sources'] = 'Black, P. and Wiliam, D. (1998). Assessment and classroom learning. Assessment in Education: Principles, Policy & Practice, 5(1), 7–74.|https://doi.org/10.1080/0969595980050102
@@ -1438,7 +1438,7 @@ $string['app_gd_salida_what'] = 'At the end of the lesson, each student says fro
 $string['app_gd_salida_why'] = 'The exit ticket is a formative assessment technique: gathering, while teaching, evidence of what they have learned in order to adjust the teaching. In their review of the research, Black and Wiliam (1998) conclude that several studies show firm evidence that strengthening the frequent feedback students receive about their learning yields substantial gains.
 Marzano (2012) describes four kinds of exit slip prompts: those that give data on what they understood (rating themselves from 0 to 3, or «what are you most confused about from today?»), those that make them analyse their own effort, those about a way of working in class, and those that open communication with the teacher. The faces of Classtools adapt his 0 to 3 scale, and the question ideas follow those four kinds.
 What matters is what comes next. If nearly the whole class has the same question, Marzano suggests teaching it again the next day; if the questions differ, small groups, with the students who understood it as experts in each.
-Wiliam (2011) describes it as an «exit pass»: three to five minutes before a break, and the teacher reads them and decides what to change. Variations drawn from his book: grouping the students by what their answers show, giving them back a written comment, or reading answers aloud without names to start a discussion.';
+Wiliam (2011) describes it as an «exit pass»: three to five minutes before a break, after which the teacher reads the passes and decides what to change. A handout based on his book gives these variations: grouping the students by what their answers show, giving them back a written comment, or reading answers aloud without names to start a discussion.';
 $string['app_gd_salida_works'] = 'Knowing, before the next lesson, what each one has understood and what not.
 Everyone answers, also those who never raise their hand.
 Thinking about what they learned and how they worked.
@@ -1484,12 +1484,12 @@ Two or three rounds are enough as an active break between two tasks.
 «Backwards»: the sequence is repeated from the end to the start, so it has to be turned round before pressing.
 «The pads show»: arrows (all four alike, so the direction is read and not the colour), numbers with a rule (a 3 comes up and, with «What it needs to make 10», the 7 is pressed) or notes without colours (only heard; the pads say C, D, E…).
 Nine pads, for those who can already do six.
-«Syllables of a word»: the pads show the syllables of the word and others; with «Its syllables light up» the word builds up above as they light, and with «It is written: they split it» it shows whole and the class presses its syllables in order. When they get it, the word shows big. They start with two syllables and grow to five. Backwards, the word is said from the end to the start. In the Infantil mode, the syllables are in capitals.';
+«Syllables of a word»: the pads show the syllables of the word and others; with «Its syllables light up» the word builds up above as they light, and with «It is written and they split it» it shows whole and the class presses its syllables in order. When they get it, the word shows big. They start with two syllables and grow to five. Backwards, the word is said from the end to the start. In the Infantil mode, the syllables are in capitals.';
 $string['app_gd_simon_scene'] = 'Year 4 come back from break with a lot to say. The teacher opens Simon with the class list: every round one student comes out and the others say the colours quietly. Hugo fails at the seventh; the sequence plays again for Martina, who completes it to applause. Three rounds later, the reading starts.';
 $string['app_gd_simon_sources'] = 'Melby-Lervåg, M. and Hulme, C. (2013). Is working memory training effective? A meta-analytic review. Developmental Psychology, 49(2), 270–291.|https://doi.org/10.1037/a0028228
 Martínez, N. and Goikoetxea, E. (2020). Predictors of reading and spelling words change as a function of syllabic structure in Spanish. Psicología Educativa, 26(1), 37–48.|https://doi.org/10.5093/psed2019a20';
 $string['app_gd_simon_stages'] = 'early|Four colours at the normal speed, naming the colours aloud; the syllables of two and three syllable words, clapping once per syllable.
-primary|Six colours, in turns with the class list; numbers with a rule for mental arithmetic; in years one and two, syllables: «It is written: they split it».
+primary|Six colours, in turns with the class list; numbers with a rule for mental arithmetic; in years one and two, syllables: «It is written and they split it».
 secondary|The fast speed, as a challenge for the class to beat its record; backwards or with arrows; notes without colours in Music.
 advanced|For group activities, or to show in Psychology what working memory is.';
 $string['app_gd_simon_what'] = 'Repeating a sequence that grows each round (colours and sounds, arrows, numbers with a rule, notes or the syllables of a word): a game of attention and memory for the whole class.';
@@ -1751,12 +1751,12 @@ $string['app_lv_ex_n'] = 'Ticket {$a}';
 $string['app_lv_ex_names'] = 'With names';
 $string['app_lv_ex_new'] = 'Another ticket';
 $string['app_lv_ex_no_texts'] = 'No written answers.';
-$string['app_lv_ex_none'] = 'You did not hand in a ticket.';
+$string['app_lv_ex_none'] = 'You have not handed in the ticket.';
 $string['app_lv_ex_nothing'] = 'The ticket needs the faces or at least one question.';
 $string['app_lv_ex_open'] = 'Open the ticket';
 $string['app_lv_ex_p_activity'] = 'Which activity today helped you learn most?';
 $string['app_lv_ex_p_better'] = 'What could you have done to learn better?';
-$string['app_lv_ex_p_confused'] = 'What confused me most today';
+$string['app_lv_ex_p_confused'] = 'What I found hardest to understand today';
 $string['app_lv_ex_p_doubt'] = 'A question I still have';
 $string['app_lv_ex_p_effort'] = 'How hard did you work today? Why?';
 $string['app_lv_ex_p_example'] = 'Give an example of what we saw today';
@@ -2509,7 +2509,7 @@ $string['app_si_rule_ten'] = 'What it needs to make 10';
 $string['app_si_same_again'] = 'The same one again';
 $string['app_si_speed'] = 'Speed';
 $string['app_si_syl_mode'] = 'The word';
-$string['app_si_syl_read'] = 'It is written: they split it';
+$string['app_si_syl_read'] = 'It is written and they split it';
 $string['app_si_syl_split'] = 'Press its syllables in order!';
 $string['app_si_syl_split_reverse'] = 'Press its syllables backwards!';
 $string['app_si_syl_watch'] = 'Its syllables light up';
