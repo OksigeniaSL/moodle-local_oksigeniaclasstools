@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.56.2 (2026-10-12)
+
+- The teacher's guide of the exit ticket and of the printed cards also shows the guided helps of «Live», after their
+  own: with an exit ticket open, the guide had none.
+
 ## 0.56.1 (2026-10-12)
 
 - The presentation has «Whose turn?» over the slide, to ask someone of the class, and «Write on it», a clear sheet with

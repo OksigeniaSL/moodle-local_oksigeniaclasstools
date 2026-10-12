@@ -89,8 +89,10 @@
             // Links open in a new tab, so Moodle is not lost.
             return `<li>${escape(ref)}${url ? ` <a href="${escape(url)}" target="_blank" rel="noopener">${escape(url.replace(/^https?:\/\//, ''))}</a>` : ''}</li>`;
         }).join('');
-        // Its guided helps: the board shows how it is done, and then the teacher does it.
-        const helps = core.help ? core.help.of(id) : [];
+        // Its guided helps: the board shows how it is done, and then the teacher does it. The exit ticket and the
+        // printed cards are part of «Live»: after their own helps, the ones of «Live».
+        const parent = ['salida', 'tarjetas'].includes(id) ? core.help && core.help.of('envivo') : null;
+        const helps = core.help ? [...new Set(core.help.of(id).concat(parent || []))] : [];
         const watch = helps.length ? section('ct-guia-ayudas', 'empezar', t('hp_watch'), `<div class="ct-guia-lista">${helps.map((h) => `<button type="button" class="boton" data-help="${h}">`
             + `<span aria-hidden="true">${icon('empezar')}</span><span>${escape(t(`hp_${h}_title`))}</span></button>`).join('')}</div>`) : '';
         sheet.innerHTML = head
