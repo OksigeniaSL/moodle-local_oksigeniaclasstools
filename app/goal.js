@@ -128,7 +128,7 @@
         $('#gl-jar').setAttribute('class', `ct-goal-jar ct-goal-${l}`);
         if (l !== 'bote' && L && L[l]) {
             const seed = core.moodle ? core.moodle.courseid : 0;
-            const v = L[l]({ points: st.points, target: st.target, seed, song: song(), picture: st.pic, image: load(imageKey, ''), t });
+            const v = L[l]({ points: st.points, target: st.target, seed, song: song(), picture: st.pic, image: load(imageKey, ''), level: mode(), t });
             $('#gl-jar').setAttribute('viewBox', v.viewBox);
             $('#gl-jar').innerHTML = v.html;
             $('#gl-caption').textContent = v.caption || '';

@@ -579,5 +579,43 @@
                 after: 2200,
             },
         },
+        // Scoreboard · the class goal: the rocket in Primary, the path in Early years and the mosaic in Secondary, then
+        // the plant up to its fruit.
+        meta: {
+            steps: [
+                async (h) => { await h.wait(1600); await h.press('#t-marcador'); await h.press('#h-marcador [data-v="goal"]'); },
+                async (h) => { await h.moveTo('#gl-more'); await h.wait(600); await h.type('#gl-prize', t('hp_meta_prize')); },
+                async (h) => {
+                    // Eight points: the rocket passes Mars, and its fact comes out under it.
+                    await h.tap('#h-marcador [data-s="1"]', 3, 450);
+                    await h.wait(1200);
+                    await h.press('#h-marcador [data-s="5"]');
+                    await h.wait(700);
+                    await h.moveTo('#gl-caption');
+                },
+                async (h) => {
+                    // The same goal in Early years (the path) and in Secondary (the mosaic, with the fraction).
+                    await h.wait(800);
+                    await h.press('#b-modo'); await h.press('#menu-modo [data-modo="early"]');
+                    await h.wait(3600);
+                    await h.press('#b-modo'); await h.press('#menu-modo [data-modo="secondary"]');
+                    await h.wait(900);
+                    await h.moveTo('#gl-count');
+                },
+                async (h) => {
+                    await h.press('#b-modo', true); await h.press('#menu-modo [data-modo="primary"]', true);
+                    await h.choose('#gl-look', 'planta');
+                    await h.wait(2600);
+                    await h.tap('#h-marcador [data-s="5"]', 4, 380);
+                    await h.tap('#h-marcador [data-s="1"]', 2, 450);
+                    await h.wait(2400);
+                },
+            ],
+            practice: {
+                prep: async (h) => { await h.press('#t-marcador', true); await h.press('#h-marcador [data-v="goal"]', true); },
+                targets: [{ sel: '#h-marcador [data-s="5"]' }],
+                after: 2600,
+            },
+        },
     };
 })();

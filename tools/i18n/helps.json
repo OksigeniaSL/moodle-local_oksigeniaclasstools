@@ -175,5 +175,16 @@
   "hp_dados_faces": { "en": "Who?\nWhere?\nWhen?\nWhy?\nWhat happened?\nHow does it end?", "es": "¿Quién?\n¿Dónde?\n¿Cuándo?\n¿Por qué?\n¿Qué pasó?\n¿Cómo acaba?" },
   "hp_ahorcado_word": { "en": "ECOSYSTEM", "es": "ECOSISTEMA" },
   "hp_ahorcado_clue": { "en": "What we're going to study today", "es": "Lo que vamos a estudiar hoy" },
-  "hp_concurso_topic": { "en": "Volcanoes", "es": "Volcanes" }
+  "hp_concurso_topic": { "en": "Volcanoes", "es": "Volcanes" },
+  "hp_meta_title": { "en": "Class goal: all together", "es": "Meta de la clase: todos a una" },
+  "hp_meta_1": { "en": "The whole class pulls the same way: if together they reach the goal, the prize is for everyone.", "es": "Toda la clase rema hacia lo mismo: si entre todos llegan a la meta, el premio es para todos." },
+  "hp_meta_2": { "en": "In «Scoreboard», «Class goal», set the goal and the prize: for example, thirty, and an afternoon of games.", "es": "En «Marcador», «Meta de la clase», pon la meta y el premio: por ejemplo, treinta, y una tarde de juegos." },
+  "hp_meta_3": { "en": "Every time the whole class manages it, add a point. In Primary, a rocket crosses the solar system, with a fact about each planet it passes.", "es": "Cada vez que lo consigue la clase entera, sumas un punto. En Primaria, un cohete cruza el sistema solar, con un dato de cada planeta que pasa." },
+  "hp_meta_4": { "en": "Each level starts with a look of its own: in Early years, the critter's path, to count squares; from Secondary on, a mosaic that uncovers a picture, with the fraction and the percentage.", "es": "Cada etapa empieza con un aspecto propio: en Infantil, el camino del bichito, para contar casillas; desde Secundaria, un mosaico que se destapa, con la fracción y el porcentaje." },
+  "hp_meta_5": { "en": "Under «Look» there are more: the plant that grows, a song note by note or the jar of marbles. And when they reach the goal, we did it!", "es": "En «Aspecto» hay más: la planta que crece, una canción nota a nota o el bote de canicas. Y al llegar a la meta, ¡lo conseguimos!" },
+  "hp_meta_6": { "en": "Your turn: add five to the class goal.", "es": "Ahora tú: suma cinco a la meta de la clase." },
+  "hp_meta_7": { "en": "You've got it! This critter is yours: the Goal Getter.", "es": "¡Lo tienes! Este bichito es tuyo: Cumplemetas." },
+  "hp_meta_again": { "en": "Well done! The Goal Getter is already yours.", "es": "¡Bien hecho! Ya tenías a Cumplemetas." },
+  "hp_meta_h1": { "en": "Add five with «+5»", "es": "Suma cinco con «+5»" },
+  "hp_meta_prize": { "en": "An afternoon of games", "es": "Una tarde de juegos" }
 }

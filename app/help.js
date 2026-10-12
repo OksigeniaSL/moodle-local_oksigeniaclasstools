@@ -28,6 +28,7 @@
         pizarra: { guide: 'pizarra', sticker: 'pasalimpios', voice: ['es', 'en'] },
         cortina: { guide: 'pizarra', sticker: 'quitatelones', voice: ['es', 'en'] },
         instrumentos: { guide: 'pizarra', sticker: 'trazacirculos', voice: ['es', 'en'] },
+        meta: { guide: 'marcador', sticker: 'cumplemetas', voice: ['es', 'en'] },
     };
     const VERSION = ((document.currentScript && document.currentScript.src) || '').split('?')[1] || '';
     const LANG = (document.documentElement.lang || 'en').slice(0, 2).toLowerCase();

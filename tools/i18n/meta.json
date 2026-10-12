@@ -32,8 +32,8 @@
   "es": "¿Seguro? Pulsa otra vez"
  },
  "gl_help": {
-  "en": "The whole class earns marbles together; when the jar is full, the prize.",
-  "es": "Toda la clase gana canicas a la vez; cuando el bote se llena, llega el premio."
+  "en": "The whole class scores together; when it reaches the goal, the prize.",
+  "es": "Toda la clase suma a la vez; al llegar a la meta, llega el premio."
  },
  "gl_count": {
   "en": "{$a->n} of {$a->of}",

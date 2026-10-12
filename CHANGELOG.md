@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.54.0 (2026-10-12)
+
+- The looks of the class goal, with the art direction's style: the critter's path on a meadow with a sandy track, an
+  arrow at each bend, the tens marked and a flag at the goal (and the squares done in colour, which did not show); the
+  plant in a glass pot, with its life cycle in a ring beside it; the rocket with the last planet passed ringed and the
+  ones to come dimmed; the song with its time signature and bars, and the colours of the glockenspiel in Early years
+  and Primary; and the mosaic without gaps between its tiles, with a grid over what is uncovered to count the pieces.
+- A guided help for the class goal, in the guide of the scoreboard: the rocket in Primary, the path in Early years and
+  the mosaic in Secondary, then the plant up to its fruit; with voice in Spanish and English.
+- The help of the goal and how to get its sticker no longer speak only of the jar.
+
 ## 0.53.2 (2026-10-12)
 
 - The teacher's guide can be expanded: a button beside the close one puts it in the middle of the screen, over the
