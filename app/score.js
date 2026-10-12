@@ -67,6 +67,9 @@
         const n = Number(m[1]), d = Number(m[2]);
         return n >= 2 && n <= 12 && [2, 4, 8].includes(d) ? [n, d] : null;
     };
+    // A note (do, re… or C, D…, with its sharp or flat, octave and length) and a rest, as written in the text format.
+    const NOTE_RE = /^(do|ut|re|ré|mi|fa|sol|so|la|si|ti|[a-h])(#|♯|b|♭)?(\d|'+|,+)?(?::([a-z0-9]+)(\.?))?$/i;
+    const REST_RE = /^(-|sil|silencio|z|rest|pausa|silence|pause)(?::([a-z0-9]+)(\.?))?$/i;
     const readText = (text) => {
         const song = { title: '', from: '', by: '', clef: 'sol', time: [4, 4], tempo: 100, pickup: 0, notes: [], lyrics: '' };
         const lines = String(text).replace(/\r/g, '').split('\n');
@@ -76,7 +79,9 @@
             const line = raw.replace(/(^|\s)(#|\/\/).*$/, '').trim();
             if (!line) { return; }
             const h = line.match(/^([A-Za-zÁÉÍÓÚáéíóúÜüßñ]+)\s*:\s*(.*)$/);
-            const key = h && Object.keys(HEAD).find((k) => HEAD[k].test(h[1]));
+            // «C:q D E…» is a melody, not the composer («C:» in ABC): a line made only of notes and rests is music.
+            const music = line.split(/[\s|]+/).filter(Boolean).every((tok) => NOTE_RE.test(tok) || REST_RE.test(tok));
+            const key = h && !music && Object.keys(HEAD).find((k) => HEAD[k].test(h[1]));
             if (key) {
                 const v = h[2].trim();
                 if (key === 'clef') { song.clef = clefOf(v); } else if (key === 'time') { song.time = timeOf(v) || fail('sc_err_time', v); } else if (key === 'tempo') {
@@ -96,9 +101,9 @@
         };
         body.forEach(([line, n]) => line.split(/[\s|]+/).filter(Boolean).forEach((tok) => {
             const where = `${tok} (${n})`;
-            const rest = tok.match(/^(-|sil|silencio|z|rest|pausa|silence|pause)(?::([a-z0-9]+)(\.?))?$/i);
+            const rest = tok.match(REST_RE);
             if (rest) { last = lengthOf(rest[2], rest[3], where); song.notes.push({ s: 0, a: 0, t: last, r: true }); return; }
-            const m = tok.match(/^(do|ut|re|ré|mi|fa|sol|so|la|si|ti|[a-h])(#|♯|b|♭)?(\d|'+|,+)?(?::([a-z0-9]+)(\.?))?$/i);
+            const m = tok.match(NOTE_RE);
             if (!m) { fail('sc_err_note', where); }
             const l = NOTE_NAMES[m[1].toLowerCase()];
             let oct = octave0;
@@ -914,23 +919,26 @@
             }
         });
     }); }
-    // The prompt for an AI: the format, an example, and the song asked for.
+    // The prompt for an AI: the format, an example, and the song asked for; to copy for any AI, or «Generate» with the
+    // AI of the site (Moodle 4.5 and later, when it has one), and the song comes straight onto the score.
     const promptFor = (title) => t('sc_prompt_text', title || t('sc_prompt_any'));
     function openPrompt() { openDialog(`<form method="dialog" class="ct-sc-form"><h2>${escape(t('sc_prompt_title'))}</h2>
         <p class="nota">${escape(t('sc_prompt_hint'))}</p>
-        <label class="campo apilado"><span>${escape(t('sc_prompt_song'))}</span><input type="text" id="sc-ask" maxlength="80"></label>
-        <textarea id="sc-prompt-text" rows="12" readonly></textarea>
-        <p class="nota" id="sc-copied" aria-live="polite"></p>
-        <div class="botonera"><button type="button" class="boton" id="sc-copy">${escape(t('sc_copy'))}</button><button type="button" class="boton suave" id="sc-done">${escape(t('qz_done'))}</button></div></form>`, (d) => {
-        const area = d.querySelector('#sc-prompt-text'), ask = d.querySelector('#sc-ask');
-        const fill = () => { area.value = promptFor(ask.value.trim()); };
-        fill();
-        ask.addEventListener('input', fill);
+        <div id="sc-ai"></div>
+        <div class="botonera"><button type="button" class="boton suave" id="sc-done">${escape(t('qz_done'))}</button></div></form>`, (d) => {
         d.querySelector('#sc-done').addEventListener('click', () => openImport());   // back to bringing the song in
-        d.querySelector('#sc-copy').addEventListener('click', () => {
-            const ok = () => { d.querySelector('#sc-copied').textContent = t('sc_copied'); };
-            if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(area.value).then(ok, () => { area.select(); document.execCommand('copy'); ok(); }); } else { area.select(); document.execCommand('copy'); ok(); }
+        if (!window.ClasstoolsAI) { return; }
+        const box = window.ClasstoolsAI.box({
+            kind: () => 'song', prompt: (p) => promptFor(p.topic), levels: ['primary'], noLevel: true, topicLabel: t('sc_prompt_song'),
+            add: (text) => {
+                try { take(text, ''); } catch (err) { return 0; }
+                closeDialog(); play('card');
+                return 1;
+            },
+            done: () => t('sc_ai_done'),
         });
+        box.el.open = true;
+        d.querySelector('#sc-ai').append(box.el);
     }); }
     $('#sc-export').addEventListener('click', () => {
         const blob = new Blob([writeText(song)], { type: 'text/plain;charset=utf-8' }), a = document.createElement('a');

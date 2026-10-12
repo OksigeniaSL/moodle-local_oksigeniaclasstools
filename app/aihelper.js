@@ -1,4 +1,4 @@
-// «Prompt for your AI», for any editor of content (exercises, quiz questions, a rosco, words, pairs): the topic, the
+// «Prompt for your AI», for any editor of content (exercises, quiz questions, a rosco, words, pairs, a song): the topic, the
 // level and how many; a text to copy with the format and an example, to paste in any AI; and, when the site has an AI
 // the teacher can use (Moodle 4.5 and later), «Generate», which asks the server to send that same prompt and puts the
 // answer in the editor to check before saving. The first time, Moodle's AI policy.
@@ -41,6 +41,8 @@
      * @param {function(string): number} o.add Puts what the AI wrote in the editor; how many it took (0: none).
      * @param {function(number): string} [o.done] The message after adding them.
      * @param {function(): boolean} [o.ready] Whether the editor has what the prompt needs (the prompt waits until it does).
+     * @param {string} [o.topicLabel] The name of the topic field (a song asks for its name).
+     * @param {boolean} [o.noLevel] Without a choice of level (a song is the same for everyone).
      * @return {{el: HTMLElement, refresh: function(string=)}}
      */
     const box = (o) => {
@@ -52,8 +54,8 @@
             <p class="nota">${escape(t(AI ? 'ex_ai_hint_site' : 'ex_ai_hint'))}</p>
             <div class="ct-ex-ai-fields">
                 ${o.kinds ? `<label class="campo apilado"><span>${escape(t('ai_for'))}</span><select class="ct-ai-kind">${o.kinds.map((k) => `<option value="${k.v}">${escape(k.label)}</option>`).join('')}</select></label>` : ''}
-                <label class="campo apilado"><span>${escape(t('ex_ai_topic'))}</span><input type="text" class="ct-ai-topic" maxlength="120"></label>
-                <label class="campo apilado"><span>${escape(t('ex_ai_level'))}</span><select class="ct-ai-level">${levels}</select></label>
+                <label class="campo apilado"><span>${escape(o.topicLabel || t('ex_ai_topic'))}</span><input type="text" class="ct-ai-topic" maxlength="120"></label>
+                <label class="campo apilado"${o.noLevel ? ' hidden' : ''}><span>${escape(t('ex_ai_level'))}</span><select class="ct-ai-level">${levels}</select></label>
                 ${counts ? `<label class="campo apilado"><span>${escape(t('ex_ai_count'))}</span><select class="ct-ai-n">${counts}</select></label>` : ''}
             </div>
             <textarea class="ct-ai-text" rows="7" readonly></textarea>

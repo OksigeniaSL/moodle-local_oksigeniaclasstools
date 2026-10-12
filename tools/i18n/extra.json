@@ -1484,8 +1484,8 @@
   "es": "Una canción con tu IA"
  },
  "sc_prompt_hint": {
-  "en": "Write the name of the song, copy the text, paste it in your AI and bring back what it answers with «Open».",
-  "es": "Escribe el nombre de la canción, copia el texto, pégalo en tu IA y trae lo que conteste con «Abrir»."
+  "en": "Write the name of the song. With the AI of your Moodle, «Generate» brings it straight onto the score; with your own AI, copy the text, paste it there and bring back what it answers with «Open».",
+  "es": "Escribe el nombre de la canción. Con la IA de tu Moodle, «Generar» la trae directamente a la partitura; con tu propia IA, copia el texto, pégalo allí y trae lo que conteste con «Abrir»."
  },
  "sc_prompt_song": {
   "en": "Song",
@@ -1974,5 +1974,9 @@
  "ca_keys": {
   "en": "Keys",
   "es": "Teclado"
+ },
+ "sc_ai_done": {
+  "en": "The song is on the score: listen to it and check it before playing it in class.",
+  "es": "La canción ya está en la partitura: escúchala y revísala antes de tocarla en clase."
  }
 }

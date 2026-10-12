@@ -2358,6 +2358,7 @@ $string['app_rs_scratch'] = 'Rasca';
 $string['app_rs_toggle'] = 'Rasca y gana';
 $string['app_sc_add_team'] = 'Añadir equipo';
 $string['app_sc_again'] = 'Desde el principio';
+$string['app_sc_ai_done'] = 'La canción ya está en la partitura: escúchala y revísala antes de tocarla en clase.';
 $string['app_sc_clear'] = 'Borrar todo';
 $string['app_sc_clear_sure'] = '¿Seguro? Pulsa otra vez';
 $string['app_sc_clef'] = 'Clave';
@@ -2433,7 +2434,7 @@ $string['app_sc_points_many'] = '{$a} puntos';
 $string['app_sc_points_one'] = '{$a} punto';
 $string['app_sc_prompt'] = 'Prompt para tu IA';
 $string['app_sc_prompt_any'] = 'la canción que quieras';
-$string['app_sc_prompt_hint'] = 'Escribe el nombre de la canción, copia el texto, pégalo en tu IA y trae lo que conteste con «Abrir».';
+$string['app_sc_prompt_hint'] = 'Escribe el nombre de la canción. Con la IA de tu Moodle, «Generar» la trae directamente a la partitura; con tu propia IA, copia el texto, pégalo allí y trae lo que conteste con «Abrir».';
 $string['app_sc_prompt_song'] = 'Canción';
 $string['app_sc_prompt_text'] = 'Escribe la melodía de «{$a}» en el formato de texto de Class tools, para que suene en el carillón del colegio.
 

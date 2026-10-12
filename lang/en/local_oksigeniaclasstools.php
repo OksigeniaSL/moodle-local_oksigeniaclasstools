@@ -2356,6 +2356,7 @@ $string['app_rs_scratch'] = 'Scratch';
 $string['app_rs_toggle'] = 'Scratch to reveal';
 $string['app_sc_add_team'] = 'Add team';
 $string['app_sc_again'] = 'From the start';
+$string['app_sc_ai_done'] = 'The song is on the score: listen to it and check it before playing it in class.';
 $string['app_sc_clear'] = 'Clear';
 $string['app_sc_clear_sure'] = 'Sure? Press again';
 $string['app_sc_clef'] = 'Clef';
@@ -2431,7 +2432,7 @@ $string['app_sc_points_many'] = '{$a} points';
 $string['app_sc_points_one'] = '{$a} point';
 $string['app_sc_prompt'] = 'Prompt for your AI';
 $string['app_sc_prompt_any'] = 'the song you want';
-$string['app_sc_prompt_hint'] = 'Write the name of the song, copy the text, paste it in your AI and bring back what it answers with «Open».';
+$string['app_sc_prompt_hint'] = 'Write the name of the song. With the AI of your Moodle, «Generate» brings it straight onto the score; with your own AI, copy the text, paste it there and bring back what it answers with «Open».';
 $string['app_sc_prompt_song'] = 'Song';
 $string['app_sc_prompt_text'] = 'Write the melody of "{$a}" in the text format of Class tools, so that it plays on the school glockenspiel.
 

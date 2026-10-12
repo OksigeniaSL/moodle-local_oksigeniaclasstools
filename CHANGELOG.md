@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.43.0 (2026-10-12)
+
+- **A song with the AI of the site, in the score**: «A song with your AI» now has «Generate» when Moodle has an AI
+  the teacher can use: the name of the song, and the melody comes straight onto the score, to listen to and check.
+  The prompt to copy for any other AI stays. The server builds the prompt (the song's name only), as for the other
+  contents.
+- Fixed: a melody line that starts with C («C:q C G G…», as in the example of the prompt itself) was taken for the
+  composer («C:» in ABC), so the songs that start on C could not be brought in. A line made only of notes and rests
+  is now always music; «C: Someone» is still the composer.
+
 ## 0.42.0 (2026-10-12)
 
 - **Changing the class from the phone**: «Change the class» on the fixed remote lists the teacher's courses where they

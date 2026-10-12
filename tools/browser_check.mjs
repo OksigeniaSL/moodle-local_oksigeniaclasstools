@@ -57,6 +57,7 @@ window.shot = (name) => new Promise((done) => { if (!window.checkShot) { done();
                 rosco: 'A | Fruit of Newton | apple\\nB | It makes honey | bee\\nC | Man\\'s best friend | dog\\nX | It pulls a plough | ox',
                 words: '1. volcano\\n- glacier\\nplateau',
                 pairs: 'France = Paris\\nItaly = Rome\\nnot a pair',
+                song: 'Title: Frere Jacques\\nOrigin: France\\nClef: treble\\nTime: 4/4\\nTempo: 100\\nC:q D E C | C D E C | E F G:h',
             };
             return json({ ok: true, text: TEXTS[p.get('type')] || '' });
         }
@@ -1534,6 +1535,38 @@ const CHECKS = {
         q('#jn-leer-fin').click();
         await sleep(200);
         return q('.jn-mando') ? '' : 'no way back to the remote';
+    },
+    // The score asks the AI of the site for a song: the prompt with the name, «Generate» (the policy first), and the
+    // song on the score.
+    'score-ai': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const q = (x) => document.querySelector(x);
+        q('#t-material').click();
+        await sleep(200);
+        q('#mt-mode [data-mode="score"]').click();
+        await sleep(300);
+        q('#sc-import').click();
+        await sleep(200);
+        q('#sc-to-prompt').click();
+        await sleep(200);
+        const box = q('.ct-sc-dialogo details.ct-ai');
+        if (!box || !box.open) { return 'no AI box in the dialog of the score'; }
+        const topic = box.querySelector('.ct-ai-topic');
+        topic.value = 'Frere Jacques'; topic.dispatchEvent(new Event('input'));
+        if (!/«Frere Jacques»|"Frere Jacques"/.test(box.querySelector('.ct-ai-text').value)) { return 'the prompt does not ask for the song'; }
+        if (!box.querySelector('.ct-ai-level').closest('label').hidden) { return 'a level is asked for a song'; }
+        box.querySelector('.ct-ai-go').click();
+        await sleep(300);
+        if (!box.querySelector('.ct-ai-policy').hidden) { box.querySelector('.ct-ai-accept').click(); await sleep(400); }
+        const sent = window.FAKE.calls.filter((c) => c.action === 'generate').pop();
+        if (!sent || sent.type !== 'song' || sent.topic !== 'Frere Jacques') { return `asked ${JSON.stringify(sent)}`; }
+        const song = window.ClasstoolsScore.song();
+        if (song.title !== 'Frere Jacques' || song.notes.length !== 11) { return `the score has «${song.title}», ${song.notes.length} notes`; }
+        // A melody that starts with C is music, not the composer of ABC («C:»); «C: Someone» still is the composer.
+        const read = window.ClasstoolsScore.readText('Title: X\nC: Mozart\nC:q C G G | A A G:h');
+        if (read.by !== 'Mozart' || read.notes.length !== 7) { return `C lines: by «${read.by}», ${read.notes.length} notes`; }
+        if (q('.ct-sc-dialogo') && q('.ct-sc-dialogo').open) { return 'the dialog stayed open'; }
+        return '';
     },
     // The calculator: the order of operations, the decimal sign, the strip of results, and both keyboards.
     'calculator': async () => {
