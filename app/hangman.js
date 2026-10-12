@@ -37,14 +37,16 @@
     const s = { word: '', target: '', guessed: new Set(), misses: 0, over: true };
     const ini = { name: '', list: null, letter: '', done: true, used: [] };
     let visible = false, kb = null;
-    const kind = () => (opts.get().kind === 'initial' ? 'initial' : 'word');
+    // Without a class list (the board of a student, or outside a course), only the whole word.
+    const hasClass = () => !!(core.lists && core.lists().some((l) => l.aula));
+    const kind = () => (opts.get().kind === 'initial' && hasClass() ? 'initial' : 'word');
 
     const mount = (panel) => {
         panel.innerHTML = `
             <div class="ct-word-game">
                 <aside class="tarjeta ct-side">
                     <div class="ct-setup ct-setup-group">
-                        <p class="ante">${STR.kind}</p>
+                        <p class="ante" id="ah-kind-label">${STR.kind}</p>
                         <div class="segmentos ct-ah-kind" role="radiogroup" aria-label="${escape(STR.kind)}" id="ah-kind">
                             <button type="button" role="radio" aria-checked="false" data-v="word">${STR.kindWord}</button>
                             <button type="button" role="radio" aria-checked="false" data-v="initial">${STR.kindInitial}</button>
@@ -107,6 +109,7 @@
     // The settings of the mode on screen, and the stage of the game chosen.
     function paintOptions() {
         const o = opts.get(), k = kind();
+        $('#ah-kind').hidden = !hasClass(); $('#ah-kind-label').hidden = !hasClass();
         $$('#ah-kind button').forEach((b) => b.setAttribute('aria-checked', String(b.dataset.v === k)));
         $$('#ah-spent button').forEach((b) => b.setAttribute('aria-checked', String(b.dataset.v === (o.spent === 'stay' ? 'stay' : 'go'))));
         $('#ah-word-box').hidden = k !== 'word';

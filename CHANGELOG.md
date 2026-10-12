@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.52.1 (2026-10-12)
+
+- The teachers' room can only be seen by teachers: a student's account could ask for it (with the names and stickers of
+  the teachers in it).
+- On a student's board (when the site opens it to them), the hangman of Early years plays the whole word: without the
+  class list, the first letter of a name has no names to play with, and it is no longer offered.
+- A check of the board as a student gets it: only the tools without data of the class, and nothing of the class in any
+  tool, game or material, in Primary and in Early years.
+
 ## 0.52.0 (2026-10-12)
 
 - **Eleven more guided helps**, each in the teacher's guide of its tool: in «Live», the brainstorm (the cloud of

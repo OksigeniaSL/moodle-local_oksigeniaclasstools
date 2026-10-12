@@ -37,12 +37,12 @@ if (!sala::on()) {
     echo json_encode(['off' => true]);
     exit;
 }
-if ($action === 'join') {
-    $join = required_param('join', PARAM_BOOL);
-    // Into the room, only teachers; out of it, anyone.
-    if ($join && !sala::can_join((int) $USER->id)) {
-        throw new required_capability_exception(context_system::instance(), 'local/oksigeniaclasstools:use', 'nopermissions', '');
-    }
-    sala::join((int) $USER->id, (bool) $join);
+$join = $action === 'join' ? required_param('join', PARAM_BOOL) : null;
+// Only teachers see the room or come into it (its names and stickers are for colleagues); anyone can leave it.
+if ($join !== false && !sala::can_join((int) $USER->id)) {
+    throw new required_capability_exception(context_system::instance(), 'local/oksigeniaclasstools:use', 'nopermissions', '');
+}
+if ($join !== null) {
+    sala::join((int) $USER->id, $join);
 }
 echo json_encode(local_oksigeniaclasstools_sala_view((int) $USER->id));

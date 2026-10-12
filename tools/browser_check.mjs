@@ -1861,6 +1861,45 @@ const CHECKS = {
         d.close();
         return '';
     },
+    // The board of a student, when the site opens it to them: only the tools without data of the class, and nothing of
+    // the class anywhere (no lists, no «Whose turn?», no faces), going through every tool, game and material, in Primary
+    // and in Early years (where some games use the photos of the class).
+    'student-view': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const q = (x) => document.querySelector(x);
+        const tabs = () => [...document.querySelectorAll('nav [id^="t-"], [id^="t-"].pestana')].filter((b) => !b.hidden && b.offsetParent !== null).map((b) => b.id.slice(2));
+        const shown = [...new Set(tabs())].sort().join();
+        if (shown !== 'azar,cronometro,juegos,material,pizarra,qr,reloj,temporizador') { return `tabs: ${shown}`; }
+        for (const id of ['b-guia', 'b-sala']) { const b = q('#' + id); if (b && !b.hidden && b.offsetParent !== null) { return `${id} shows`; } }
+        const leak = () => {
+            if (document.querySelector('option[value^="list:"]')) { return 'a class list to choose'; }
+            const turn = q('#mt-turn');
+            if (turn && !turn.hidden && turn.offsetParent !== null) { return '«Whose turn?» in the materials'; }
+            if ([...document.querySelectorAll('img')].some((i) => /pluginfile|user\/pix/.test(i.src))) { return 'a photo of someone'; }
+            return '';
+        };
+        for (const mode of ['primary', 'early']) {
+            q('#b-modo').click();
+            q(`#menu-modo [data-modo="${mode}"]`).click();
+            await sleep(200);
+            for (const tab of ['temporizador', 'cronometro', 'azar', 'juegos', 'material', 'pizarra', 'reloj', 'qr']) {
+                q('#t-' + tab).click();
+                await sleep(150);
+                if (tab === 'juegos') { for (const b of document.querySelectorAll('[data-game]')) { b.click(); await sleep(120); const l = leak(); if (l) { return `${mode}, game ${b.dataset.game}: ${l}`; } } }
+                if (tab === 'material') { for (const b of document.querySelectorAll('#h-material [data-mode]')) { b.click(); await sleep(120); const l = leak(); if (l) { return `${mode}, material ${b.dataset.mode}: ${l}`; } } }
+                const l = leak();
+                if (l) { return `${mode}, ${tab}: ${l}`; }
+            }
+        }
+        q('#t-juegos').click();
+        const hangman = q('[data-game="ahorcado"]');
+        if (hangman) { hangman.click(); }
+        await sleep(300);
+        // Without the class, the hangman of Early years is the whole word, with nothing to choose about names.
+        if (q('#ah-kind') && !q('#ah-kind').hidden) { return 'the hangman offers the names of the class'; }
+        await window.shot('student-early-hangman');
+        return '';
+    },
     // Music questions for the quiz: sets that make themselves (which song, rhythm and melody dictations), four
     // different answers with the right one among them, and what each one plays.
     'music-quiz': async () => {
@@ -1981,7 +2020,7 @@ const CHECKS = {
 };
 
 // Checks that run on another page than the board.
-const PAGES = { 'remote-phone': '/phone.html', 'remote-cards': '/phone.html', 'exit-device': '/device.html' };
+const PAGES = { 'remote-phone': '/phone.html', 'remote-cards': '/phone.html', 'exit-device': '/device.html', 'student-view': '/student.html' };
 
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png',
     '.woff2': 'font/woff2', '.json': 'application/json', '.mp3': 'audio/mpeg' };
@@ -1993,6 +2032,15 @@ const server = createServer((req, res) => {
         res.writeHead(200, { 'Content-Type': 'text/html' }); res.end(html); return;
     }
     if (path === '/fake.js') { res.writeHead(200, { 'Content-Type': 'text/javascript' }); res.end(FAKE); return; }
+    if (path === '/student.html') {
+        // The board as Moodle gives it to a student when the site opens it to them (local_oksigeniaclasstools_student_data):
+        // no lists, no addresses of the course, only the tools without data of the class.
+        const config = '<script src="/fake.js"></script>\n<script>window.CLASSTOOLS_SITE = { teacher: false };'
+            + 'window.CLASSTOOLS = { course: "Science", back: "#", lists: [], courseid: 1, mode: "student",'
+            + ' tools: ["temporizador", "cronometro", "azar", "juegos", "material", "pizarra", "reloj", "qr"] };</script>\n';
+        const html = readFileSync(join(APP, 'index.html'), 'utf8').replace('<script src="icons.js">', config + '<script src="icons.js">');
+        res.writeHead(200, { 'Content-Type': 'text/html' }); res.end(html); return;
+    }
     if (path === '/phone.html') {
         // The phone of the fixed remote, with its key, its texts (from the English pack) and the pretend server.
         const config = '<script src="/fake.js"></script>\n<script src="strings.js"></script>\n'
