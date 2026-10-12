@@ -120,5 +120,5 @@
      */
     const play = (music) => (score() && music && music.notes ? score().playNotes(music.notes, music.tempo, { clap: !!music.clap }) : 0);
 
-    window.ClasstoolsMusicQuiz = { KINDS, make, play, rhythmText, melodyText };
+    window.ClasstoolsMusicQuiz = { KINDS, make, play, rhythmText, melodyText, bar, rhythmNotes, CELLS };
 })();

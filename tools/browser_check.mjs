@@ -1739,6 +1739,37 @@ const CHECKS = {
         await window.shot('music-quiz');
         return '';
     },
+    // Clap echo: the taps judged against the rhythm (as many, each near its place, at the class's own speed), and a
+    // whole round: the board claps, the echo is tapped on the drum, and the rhythm shows written in green.
+    'echo-game': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const q = (x) => document.querySelector(x);
+        q('#t-juegos').click();
+        await sleep(200);
+        q('#ga-mode [data-game="eco"]').click();
+        await sleep(200);
+        const E = window.ClasstoolsEcho;
+        E.setRhythm(['ta', 'titi', 'ta', 'ta']);
+        const e = E.onsets(), s = E.sixteenth();
+        if (e.join() !== '0,4,6,8,12') { return `onsets ${e}`; }
+        const at = (k, shift = []) => e.map((x, i) => 1000 + x * s * k + (shift[i] || 0));
+        if (!E.judge(at(1)).ok) { return 'an exact echo was not right'; }
+        if (!E.judge(at(0.9)).ok || !E.judge(at(1.12)).ok) { return 'a slightly faster or slower echo was not right'; }
+        const off = E.judge(at(1, [0, 0, 0, s * 2.2, 0]));
+        if (off.ok || off.marks.join() !== 'true,true,true,false,true') { return `a late tap: ${JSON.stringify(off)}`; }
+        if (!E.judge(at(1).slice(0, 4)).count) { return 'a missing tap was not counted'; }
+        // A whole round.
+        E.listen();
+        for (let i = 0; i < 120 && E.state().state !== 'waiting'; i++) { await sleep(100); }
+        if (E.state().state !== 'waiting') { return 'the class never got its turn'; }
+        const t0 = performance.now();
+        for (const x of e) { const wait = t0 + x * s - performance.now(); if (wait > 0) { await sleep(wait); } E.tap(); }
+        for (let i = 0; i < 30 && E.state().state !== 'done'; i++) { await sleep(100); }
+        if (E.state().state !== 'done' || E.state().streak !== 1) { return `after the echo: ${JSON.stringify(E.state())}`; }
+        if (document.querySelectorAll('#ec-written .ct-eco-celda.bien').length !== 4) { return 'the rhythm is not written in green'; }
+        await window.shot('echo');
+        return '';
+    },
     // The calculator: the order of operations, the decimal sign, the strip of results, and both keyboards.
     'calculator': async () => {
         const sleep = (ms) => new Promise((r) => setTimeout(r, ms));

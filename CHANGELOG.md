@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.48.0 (2026-10-12)
+
+- **Clap echo**, a new game (Infantil to Secondary): the board counts four and claps a rhythm of one or two bars
+  (ta and ti-ti, or harder, with ta-a, a rest and ti-ri-ti-ri), slow or at normal speed, and the class claps it back.
+  The echo can be tapped on a big drum on the board (or with the space bar): the board compares the taps with the
+  rhythm, allowing for a slightly faster or slower echo; or the teacher, listening, says «Well done!». Then the rhythm
+  shows written with its syllables, each beat green or red. A streak of echoes and the record; «Again» and «Another
+  rhythm». It is shown on sites that had already chosen their games, with its teacher's guide.
+
 ## 0.47.0 (2026-10-12)
 
 - **Music in the live quiz**: «Music», when setting a quiz up, makes a set of questions by itself: «Which song is

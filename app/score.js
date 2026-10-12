@@ -950,18 +950,24 @@
     if (window.ResizeObserver) { new ResizeObserver(() => { if (!panel.hidden) { if (mode === 'game') { renderGame(); } else { render(); } } }).observe($('#sc-sheet')); }
     paintSongs(); paintTools(); paintKeys(); paintPlay();
 
-    // Notes played on their own, without the score on screen (the music questions of the quiz): in the voice of the
-    // score, or as claps for a rhythm. How long it lasts, in milliseconds.
+    // Notes played on their own, without the score on screen (the music questions of the quiz, the echo game): in the
+    // voice of the score, or as claps for a rhythm, after four clicks of count-in if asked. How long it lasts, in
+    // milliseconds (with the count-in).
     const playNotes = (notes, tempo = 96, how = {}) => {
         const a = ready();
         if (!a) { return 0; }
-        const q = 60 / tempo / 4, start = a.currentTime + 0.15;
+        const q = 60 / tempo / 4;
+        let start = a.currentTime + 0.15;
+        if (how.countIn) {
+            for (let k = 0; k < 4; k++) { tick(a, start + k * 4 * q, k === 0); }
+            start += 16 * q;
+        }
         let at = 0;
         notes.forEach((n) => {
             if (!n.r) { if (how.clap) { clap(a, start + at * q); } else { sound(n, start + at * q, n.t * q * 0.95); } }
             at += n.t;
         });
-        return Math.round((at * q + 0.3) * 1000);
+        return Math.round((at * q + (how.countIn ? 16 * q : 0) + 0.3) * 1000);
     };
     // The name of a note in the names the teacher uses (do re mi, or C D E).
     const noteName = (s) => names()[letter(s)];

@@ -82,8 +82,8 @@ h2, h3 { margin: 0; }
 .pestana.en-la-otra { box-shadow: inset 0 0 0 2px var(--azul); }
 /* Inside a half (its own container): the side panel above when the half is narrow. */
 @container (max-width: 44rem) {
-    .mesa.dividida :is(.ct-panel, .ct-simon, .ct-word-game, .ct-memory, .ct-secret, .ct-goal) { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); }
-    .mesa.dividida :is(.ct-panel, .ct-simon, .ct-word-game, .ct-memory, .ct-secret) > .ct-side, .mesa.dividida .lv > .lv-side { max-height: 34cqh; }
+    .mesa.dividida :is(.ct-panel, .ct-simon, .ct-eco, .ct-word-game, .ct-memory, .ct-secret, .ct-goal) { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); }
+    .mesa.dividida :is(.ct-panel, .ct-simon, .ct-eco, .ct-word-game, .ct-memory, .ct-secret) > .ct-side, .mesa.dividida .lv > .lv-side { max-height: 34cqh; }
     .mesa.dividida .temporizador > :not(.anillo) { max-height: 40cqh; overflow-y: auto; }
     /* The calculator: a shorter side, and keys that keep a size to tap. */
     .mesa.dividida .ct-panel:has(.ct-calc) > .ct-side { max-height: 24cqh; }
@@ -2207,6 +2207,22 @@ dialog.ct-sc-dialogo { width: min(40rem, 94vw); }
 .ct-simon-show[data-rule] { color: var(--tinta-3); font-size: clamp(1.2rem, 3vw, 2rem); }
 .ct-simon-show.ct-lit { color: var(--rojo); transform: scale(1.12); }
 .ct-simon-show.ct-palabra { color: var(--verde); transform: scale(1.12); }
+/* Eco de palmas (echo.js): el tambor que late con cada palmada y recoge los toques, y el ritmo escrito. */
+.ct-eco { display: grid; grid-template-columns: minmax(15rem, 19rem) minmax(0, 1fr); gap: 1rem; height: 100%; min-height: 0; }
+.ct-eco-stage { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; min-height: 0; container-type: size; }
+.ct-eco-pad { width: min(42cqmin, 17rem); aspect-ratio: 1; border: 10px solid #8a5a2b; border-radius: 50%; background: radial-gradient(circle at 45% 40%, #fff7e6, #f3d9a8 60%, #d9b47a); box-shadow: 0 10px 0 #6b4a1f, 0 18px 30px rgba(15, 47, 94, .2); color: #6b4a1f; font-size: clamp(1.6rem, 6cqmin, 3rem); font-weight: 1000; cursor: pointer; touch-action: manipulation; user-select: none; }
+.ct-eco-pad:focus-visible { outline: 4px solid var(--amarillo); outline-offset: 4px; }
+.ct-eco-pad.late { animation: ct-eco-late .22s ease-out; }
+.ct-eco-pad.toque { animation: ct-eco-toque .18s ease-out; }
+@keyframes ct-eco-late { 50% { transform: scale(1.07); box-shadow: 0 10px 0 #6b4a1f, 0 0 0 14px rgba(251, 190, 23, .45); } }
+@keyframes ct-eco-toque { 50% { transform: translateY(6px) scale(.97); box-shadow: 0 4px 0 #6b4a1f; } }
+.ct-eco-ritmo { display: flex; flex-wrap: wrap; justify-content: center; gap: .4rem; }
+.ct-eco-celda { padding: .3rem .9rem; border-radius: 12px; background: var(--azul-suave); color: var(--azul-osc); font-size: clamp(1.1rem, 2.6vw, 1.6rem); font-weight: 900; }
+.ct-eco-celda.bien { background: var(--verde-suave); color: var(--verde); }
+.ct-eco-celda.mal { background: var(--rojo-suave); color: var(--rojo); }
+.ct-eco-marca { display: flex; justify-content: space-between; gap: .6rem; margin: 0; color: var(--azul-osc); font-weight: 900; }
+.ct-eco-profe { align-items: center; }
+@media (prefers-reduced-motion: reduce) { .ct-eco-pad.late, .ct-eco-pad.toque { animation: none; } }
 .ct-simon-board[data-kind="syllables"] .ct-pad { font-size: 10cqmin; opacity: .85; }
 .ct-simon-board[data-kind="syllables"][data-n="6"] .ct-pad { font-size: 8cqmin; }
 .ct-simon-board[data-kind="syllables"][data-n="9"] .ct-pad { font-size: 6.5cqmin; }

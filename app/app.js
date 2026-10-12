@@ -2015,7 +2015,7 @@
     // ---------------------------------------------------------------------------------------------------
     const LEVELS_OF = {
         // Games.
-        rosco: ['primary', 'secondary', 'advanced'], simon: ['early', 'primary', 'secondary'],
+        rosco: ['primary', 'secondary', 'advanced'], simon: ['early', 'primary', 'secondary'], eco: ['early', 'primary', 'secondary'],
         ahorcado: ['early', 'primary', 'secondary', 'advanced'], palabra: ['primary', 'secondary', 'advanced'],
         parejas: ['early', 'primary', 'secondary', 'advanced'], codigo: ['primary', 'secondary', 'advanced'],
         ordenar: ['primary', 'secondary', 'advanced'], clasificar: ['primary', 'secondary', 'advanced'],

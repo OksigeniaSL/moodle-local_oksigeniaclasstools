@@ -442,6 +442,30 @@ $string['app_dl_side_n'] = 'Lado {$a}';
 $string['app_dl_start'] = 'Empezar';
 $string['app_dl_tie'] = '¡Empate!';
 $string['app_dl_wins'] = 'Gana {$a->who}: {$a->time} (el otro, {$a->other})';
+$string['app_ec_again'] = 'Otra vez';
+$string['app_ec_bars'] = 'Compases';
+$string['app_ec_easy'] = 'Fáciles';
+$string['app_ec_good'] = '¡Bien!';
+$string['app_ec_hard'] = 'Más difíciles';
+$string['app_ec_help'] = 'La pizarra cuenta cuatro y da palmas a un ritmo; la clase lo devuelve con palmas. Alguien puede tocar el eco en el tambor (o con la barra espaciadora) y la pizarra dice si coincide; o escuchas tú y decides.';
+$string['app_ec_level'] = 'Ritmos';
+$string['app_ec_listen'] = 'Escuchar';
+$string['app_ec_msg_count'] = 'Los toques no coinciden: sonaron {$a->want} palmas y hubo {$a->got} toques.';
+$string['app_ec_msg_listen'] = '¡Escuchen!';
+$string['app_ec_msg_right'] = '¡Eco perfecto!';
+$string['app_ec_msg_start'] = 'Pulsa «Escuchar»: la pizarra da palmas y luego le toca a la clase.';
+$string['app_ec_msg_turn'] = 'Ahora ustedes: palmas, o toques en el tambor.';
+$string['app_ec_msg_wrong'] = 'Casi: mira dónde se escapó.';
+$string['app_ec_name'] = 'Eco de palmas';
+$string['app_ec_new'] = 'Otro ritmo';
+$string['app_ec_normal'] = 'Normal';
+$string['app_ec_pad'] = '¡Pom!';
+$string['app_ec_pad_label'] = 'Toca aquí el ritmo';
+$string['app_ec_record'] = 'Récord: {$a}';
+$string['app_ec_slow'] = 'Lenta';
+$string['app_ec_speed'] = 'Velocidad';
+$string['app_ec_streak'] = 'Seguidos: {$a}';
+$string['app_ec_teacher'] = 'Si dan palmas sin el tambor, decides tú:';
 $string['app_ed_confirm_delete'] = '¿Seguro? Pulsa otra vez';
 $string['app_ed_default_name'] = 'Lista {$a}';
 $string['app_ed_delete'] = 'Borrar la lista';
@@ -1141,6 +1165,23 @@ $string['app_gd_codigo_why'] = 'Una revisión de 39 experiencias de escape room 
 $string['app_gd_codigo_works'] = 'Resolver problemas en cadena: cada pista da una cifra.
 Trabajar en equipo y comunicarse.
 Repasar cualquier materia en forma de reto.';
+$string['app_gd_eco_how'] = '«Escuchar»: la pizarra cuenta cuatro y da palmas al ritmo, y el tambor late con cada palmada.
+La clase lo devuelve con palmas, todos a la vez o por turnos con «¿A quién le toca?».
+Para comprobarlo, alguien toca el eco en el tambor (o con la barra espaciadora); o escuchas tú y pulsas «¡Bien!».
+Después sale el ritmo escrito: que la clase lo lea en voz alta con sus sílabas (ta, ti-ti…) antes de pasar a otro.
+«Otra vez» repite el mismo; «Otro ritmo», uno nuevo; dos compases y «Más difíciles», para quienes ya lo dominan.';
+$string['app_gd_eco_scene'] = 'En segundo, antes de sacar las flautas, la maestra pone el eco en lento. La clase devuelve las palmas a la vez, y luego Lucía lo toca en el tambor: verde entero. «Leemos el ritmo»: ta, ti-ti, ta, ta. Con el tercero seguido, salen las flautas.';
+$string['app_gd_eco_sources'] = 'TeacherVision. Teaching rhythms through echo (recurso para docentes).|https://teachervision.com/music/teaching-rhythms-through-echo';
+$string['app_gd_eco_stages'] = 'early|Un compás de ta y ti-ti, lento, todos a la vez con palmas, y tú decides con «¡Bien!».
+primary|Por turnos en el tambor; leer el ritmo escrito con sus sílabas.
+secondary|Dos compases, más difíciles y a velocidad normal, como calentamiento antes de tocar.';
+$string['app_gd_eco_what'] = 'La pizarra cuenta cuatro y da palmas a un ritmo de uno o dos compases, y la clase lo devuelve. El eco se puede tocar en un tambor de la pizarra, que lo compara con el ritmo, o lo juzgas tú escuchando; después sale el ritmo escrito con ta y ti-ti.';
+$string['app_gd_eco_why'] = 'El eco es la forma más directa de aprender un ritmo: se escucha, se guarda y se devuelve, sin partitura. La cuenta de cuatro antes de cada ritmo da el pulso, y los dos niveles (ta y ti-ti, o también ta-a, silencio y ti-ri-ti-ri) y la velocidad permiten ajustar la dificultad.
+El tambor de la pizarra mide el eco con margen para que la clase lo lleve un poco más rápido o más lento, porque lo que se busca es el ritmo, no la velocidad exacta; al final, el ritmo escrito marca en verde lo que coincidió y en rojo lo que se escapó.';
+$string['app_gd_eco_works'] = 'Escuchar con atención y guardar un ritmo en la memoria.
+Llevar el pulso y reproducir duraciones: negras, corcheas, blancas, semicorcheas y silencios.
+Poner nombre a lo que se oye con las sílabas de ritmo.
+Esperar el turno y escuchar a los demás.';
 $string['app_gd_envivo_how'] = 'Abre la sesión: entran con el QR o el código, con su usuario del Aula virtual o sin él.
 Votación: haz la pregunta, abre, espera, cierra y salen las barras; «Otra pregunta» para la segunda ronda.
 Para la instrucción entre iguales: votan, lo discuten en parejas un par de minutos y vuelven a votar.

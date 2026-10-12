@@ -442,6 +442,30 @@ $string['app_dl_side_n'] = 'Side {$a}';
 $string['app_dl_start'] = 'Start';
 $string['app_dl_tie'] = 'A tie!';
 $string['app_dl_wins'] = '{$a->who} wins: {$a->time} (the other one, {$a->other})';
+$string['app_ec_again'] = 'Again';
+$string['app_ec_bars'] = 'Bars';
+$string['app_ec_easy'] = 'Easy';
+$string['app_ec_good'] = 'Well done!';
+$string['app_ec_hard'] = 'Harder';
+$string['app_ec_help'] = 'The board counts four and claps a rhythm; the class claps it back. Someone can tap its echo on the drum (or with the space bar), and the board says whether it matches; or you listen and say.';
+$string['app_ec_level'] = 'Rhythms';
+$string['app_ec_listen'] = 'Listen';
+$string['app_ec_msg_count'] = 'The taps do not match: there were {$a->want} claps and {$a->got} taps.';
+$string['app_ec_msg_listen'] = 'Listen!';
+$string['app_ec_msg_right'] = 'A perfect echo!';
+$string['app_ec_msg_start'] = 'Press «Listen»: the board claps, and then it is the class\'s turn.';
+$string['app_ec_msg_turn'] = 'Your turn: clap it back, or tap it on the drum.';
+$string['app_ec_msg_wrong'] = 'Nearly: look where it slipped.';
+$string['app_ec_name'] = 'Clap echo';
+$string['app_ec_new'] = 'Another rhythm';
+$string['app_ec_normal'] = 'Normal';
+$string['app_ec_pad'] = 'Boom!';
+$string['app_ec_pad_label'] = 'Tap the rhythm here';
+$string['app_ec_record'] = 'Record: {$a}';
+$string['app_ec_slow'] = 'Slow';
+$string['app_ec_speed'] = 'Speed';
+$string['app_ec_streak'] = 'In a row: {$a}';
+$string['app_ec_teacher'] = 'If they clap without the drum, you decide:';
 $string['app_ed_confirm_delete'] = 'Sure? Press again';
 $string['app_ed_default_name'] = 'List {$a}';
 $string['app_ed_delete'] = 'Delete the list';
@@ -1139,6 +1163,23 @@ $string['app_gd_codigo_why'] = 'A review of 39 escape rooms in education found t
 $string['app_gd_codigo_works'] = 'Solving problems in a chain: each clue gives a digit.
 Working as a team and talking to each other.
 Reviewing any subject as a challenge.';
+$string['app_gd_eco_how'] = '«Listen»: the board counts four and claps the rhythm, and the drum pulses with each clap.
+The class claps it back, all at once or in turns with «Whose turn?».
+To check it, someone taps the echo on the drum (or with the space bar); or you listen and press «Well done!».
+Then the rhythm shows written: read it aloud with its syllables (ta, ti-ti…) before going on.
+«Again» repeats the same; «Another rhythm», a new one; two bars and «Harder», for those who have mastered it.';
+$string['app_gd_eco_scene'] = 'In year two, before the recorders come out, the teacher sets the echo to slow. The class claps it back all together, and then Lucía taps it on the drum: all green. «Let\'s read the rhythm»: ta, ti-ti, ta, ta. After the third one in a row, the recorders come out.';
+$string['app_gd_eco_sources'] = 'TeacherVision. Teaching rhythms through echo (resource for teachers).|https://teachervision.com/music/teaching-rhythms-through-echo';
+$string['app_gd_eco_stages'] = 'early|One bar of ta and ti-ti, slow, all clapping at once, and you decide with «Well done!».
+primary|In turns on the drum; reading the written rhythm with its syllables.
+secondary|Two bars, harder and at normal speed, as a warm-up before playing.';
+$string['app_gd_eco_what'] = 'The board counts four and claps a rhythm of one or two bars, and the class claps it back. The echo can be tapped on a drum on the board, which compares it with the rhythm, or you judge it by ear; then the rhythm shows written with ta and ti-ti.';
+$string['app_gd_eco_why'] = 'Echo is the most direct way to learn a rhythm: it is heard, kept and given back, without a score. The count of four before each rhythm gives the beat, and the two levels (ta and ti-ti, or also ta-a, a rest and ti-ri-ti-ri) and the speed adjust the difficulty.
+The drum on the board measures the echo with room for the class to go a little faster or slower, because the rhythm is what matters, not the exact speed; at the end, the written rhythm marks in green what matched and in red what slipped.';
+$string['app_gd_eco_works'] = 'Listening carefully and keeping a rhythm in memory.
+Keeping the beat and reproducing durations: crotchets, quavers, minims, semiquavers and rests.
+Naming what is heard with rhythm syllables.
+Waiting for one\'s turn and listening to the others.';
 $string['app_gd_envivo_how'] = 'Open the session: they join with the QR or the code, with their course account or without one.
 Vote: ask the question, open it, wait, close it and the bars appear; «Another question» for a second round.
 For Peer Instruction: they vote, discuss in pairs for a couple of minutes and vote again.

@@ -171,5 +171,11 @@ function xmldb_local_oksigeniaclasstools_upgrade($oldversion) {
         local_oksigeniaclasstools_show_new('materials', ['tiempo']);
         upgrade_plugin_savepoint(true, 2026112500, 'local', 'oksigeniaclasstools');
     }
+    if ($oldversion < 2026112700) {
+        // Clap echo: shown on sites that already chose their games.
+        require_once(__DIR__ . '/../lib.php');
+        local_oksigeniaclasstools_show_new('games', ['eco']);
+        upgrade_plugin_savepoint(true, 2026112700, 'local', 'oksigeniaclasstools');
+    }
     return true;
 }

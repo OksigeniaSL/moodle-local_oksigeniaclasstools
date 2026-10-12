@@ -950,5 +950,33 @@
  "gd_tiempo_sources": {
   "en": "Pagès, J. and Santisteban, A. (2010). La enseñanza y el aprendizaje del tiempo histórico en la educación primaria. Cadernos CEDES, 30(82), 281–309.|https://doi.org/10.1590/S0101-32622010000300002\nCheek (2010). Factors underlying students' conceptions of deep time: An exploratory study. Doctoral thesis, Durham University.|https://etheses.durham.ac.uk/277/\nInternational Commission on Stratigraphy. International Chronostratigraphic Chart (the ages of the eras in the example).|https://stratigraphy.org/chart",
   "es": "Pagès, J. y Santisteban, A. (2010). La enseñanza y el aprendizaje del tiempo histórico en la educación primaria. Cadernos CEDES, 30(82), 281–309.|https://doi.org/10.1590/S0101-32622010000300002\nCheek (2010). Factors underlying students' conceptions of deep time: An exploratory study. Tesis doctoral, Durham University.|https://etheses.durham.ac.uk/277/\nComisión Internacional de Estratigrafía. Tabla Cronoestratigráfica Internacional (las edades de las eras del ejemplo).|https://stratigraphy.org/chart"
+ },
+ "gd_eco_what": {
+  "en": "The board counts four and claps a rhythm of one or two bars, and the class claps it back. The echo can be tapped on a drum on the board, which compares it with the rhythm, or you judge it by ear; then the rhythm shows written with ta and ti-ti.",
+  "es": "La pizarra cuenta cuatro y da palmas a un ritmo de uno o dos compases, y la clase lo devuelve. El eco se puede tocar en un tambor de la pizarra, que lo compara con el ritmo, o lo juzgas tú escuchando; después sale el ritmo escrito con ta y ti-ti."
+ },
+ "gd_eco_works": {
+  "en": "Listening carefully and keeping a rhythm in memory.\nKeeping the beat and reproducing durations: crotchets, quavers, minims, semiquavers and rests.\nNaming what is heard with rhythm syllables.\nWaiting for one's turn and listening to the others.",
+  "es": "Escuchar con atención y guardar un ritmo en la memoria.\nLlevar el pulso y reproducir duraciones: negras, corcheas, blancas, semicorcheas y silencios.\nPoner nombre a lo que se oye con las sílabas de ritmo.\nEsperar el turno y escuchar a los demás."
+ },
+ "gd_eco_why": {
+  "en": "Echo is the most direct way to learn a rhythm: it is heard, kept and given back, without a score. The count of four before each rhythm gives the beat, and the two levels (ta and ti-ti, or also ta-a, a rest and ti-ri-ti-ri) and the speed adjust the difficulty.\nThe drum on the board measures the echo with room for the class to go a little faster or slower, because the rhythm is what matters, not the exact speed; at the end, the written rhythm marks in green what matched and in red what slipped.",
+  "es": "El eco es la forma más directa de aprender un ritmo: se escucha, se guarda y se devuelve, sin partitura. La cuenta de cuatro antes de cada ritmo da el pulso, y los dos niveles (ta y ti-ti, o también ta-a, silencio y ti-ri-ti-ri) y la velocidad permiten ajustar la dificultad.\nEl tambor de la pizarra mide el eco con margen para que la clase lo lleve un poco más rápido o más lento, porque lo que se busca es el ritmo, no la velocidad exacta; al final, el ritmo escrito marca en verde lo que coincidió y en rojo lo que se escapó."
+ },
+ "gd_eco_how": {
+  "en": "«Listen»: the board counts four and claps the rhythm, and the drum pulses with each clap.\nThe class claps it back, all at once or in turns with «Whose turn?».\nTo check it, someone taps the echo on the drum (or with the space bar); or you listen and press «Well done!».\nThen the rhythm shows written: read it aloud with its syllables (ta, ti-ti…) before going on.\n«Again» repeats the same; «Another rhythm», a new one; two bars and «Harder», for those who have mastered it.",
+  "es": "«Escuchar»: la pizarra cuenta cuatro y da palmas al ritmo, y el tambor late con cada palmada.\nLa clase lo devuelve con palmas, todos a la vez o por turnos con «¿A quién le toca?».\nPara comprobarlo, alguien toca el eco en el tambor (o con la barra espaciadora); o escuchas tú y pulsas «¡Bien!».\nDespués sale el ritmo escrito: que la clase lo lea en voz alta con sus sílabas (ta, ti-ti…) antes de pasar a otro.\n«Otra vez» repite el mismo; «Otro ritmo», uno nuevo; dos compases y «Más difíciles», para quienes ya lo dominan."
+ },
+ "gd_eco_stages": {
+  "en": "early|One bar of ta and ti-ti, slow, all clapping at once, and you decide with «Well done!».\nprimary|In turns on the drum; reading the written rhythm with its syllables.\nsecondary|Two bars, harder and at normal speed, as a warm-up before playing.",
+  "es": "early|Un compás de ta y ti-ti, lento, todos a la vez con palmas, y tú decides con «¡Bien!».\nprimary|Por turnos en el tambor; leer el ritmo escrito con sus sílabas.\nsecondary|Dos compases, más difíciles y a velocidad normal, como calentamiento antes de tocar."
+ },
+ "gd_eco_scene": {
+  "en": "In year two, before the recorders come out, the teacher sets the echo to slow. The class claps it back all together, and then Lucía taps it on the drum: all green. «Let's read the rhythm»: ta, ti-ti, ta, ta. After the third one in a row, the recorders come out.",
+  "es": "En segundo, antes de sacar las flautas, la maestra pone el eco en lento. La clase devuelve las palmas a la vez, y luego Lucía lo toca en el tambor: verde entero. «Leemos el ritmo»: ta, ti-ti, ta, ta. Con el tercero seguido, salen las flautas."
+ },
+ "gd_eco_sources": {
+  "en": "TeacherVision. Teaching rhythms through echo (resource for teachers).|https://teachervision.com/music/teaching-rhythms-through-echo",
+  "es": "TeacherVision. Teaching rhythms through echo (recurso para docentes).|https://teachervision.com/music/teaching-rhythms-through-echo"
  }
 }

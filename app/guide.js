@@ -23,7 +23,7 @@
             salida: 'lv_kind_exit', tarjetas: 'lv_kind_hands', azar: 'tab_chance', marcador: 'tab_scoreboard', pizarra: 'tab_board',
         },
         gd_index_games: {
-            rosco: 'ro_name', simon: 'si_name', ahorcado: 'ah_name', palabra: 'wo_name', parejas: 'me_pairs', codigo: 'lock_name',
+            rosco: 'ro_name', simon: 'si_name', eco: 'ec_name', ahorcado: 'ah_name', palabra: 'wo_name', parejas: 'me_pairs', codigo: 'lock_name',
             ordenar: 'ord_name', clasificar: 'so_name', errores: 'er_name', quiensoy: 'wa_name',
         },
         gd_index_materials: {
