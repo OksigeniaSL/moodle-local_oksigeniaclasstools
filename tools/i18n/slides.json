@@ -8,8 +8,8 @@
   "es": "Enlace de tu presentación de Canva"
  },
  "pr_placeholder": {
-  "en": "https://www.canva.com/design/…",
-  "es": "https://www.canva.com/design/…"
+  "en": "https://canva.link/…",
+  "es": "https://canva.link/…"
  },
  "pr_name": {
   "en": "Name (optional)",
@@ -28,24 +28,24 @@
   "es": "En Canva, abre la presentación y pulsa «Compartir»."
  },
  "pr_step2": {
-  "en": "Look for «Embed» (it may be under «See all») and confirm it: Canva makes the design public.",
-  "es": "Busca «Insertar» (puede estar en «Ver todo») y confírmalo: Canva hace público el diseño."
+  "en": "Under «Access level», choose «Anyone with the link», only to view.",
+  "es": "En «Nivel de acceso», elige «Cualquier persona que tenga el enlace», con «Ver»."
  },
  "pr_step3": {
-  "en": "Copy the smart embed link or the HTML code, and paste it here.",
-  "es": "Copia el enlace de inserción inteligente o el código HTML y pégalo aquí."
+  "en": "Press «Copy link» and paste it here.",
+  "es": "Pulsa «Copiar el enlace» y pégalo aquí."
  },
  "pr_note": {
-  "en": "Anyone with the link can see an embedded design: keep your students' data out of it.",
-  "es": "Un diseño insertado lo puede ver cualquiera que tenga el enlace: no pongas en él datos de tus alumnos."
+  "en": "Anyone with the link can see the presentation: keep your students' data out of it.",
+  "es": "La presentación la puede ver cualquiera que tenga el enlace: no pongas en ella datos de tus alumnos."
  },
  "pr_bad": {
-  "en": "That is not a link to a Canva design. Paste the embed link of your presentation.",
-  "es": "Eso no es un enlace a un diseño de Canva. Pega el enlace de inserción de tu presentación."
+  "en": "That is not a link to a Canva design. Paste the one from «Share» → «Copy link».",
+  "es": "Eso no es un enlace de un diseño de Canva. Pega el que da «Compartir» → «Copiar el enlace»."
  },
  "pr_short": {
-  "en": "Short links (canva.link) cannot be opened here: copy the embed link from «Share» → «Embed».",
-  "es": "Los enlaces cortos (canva.link) no se pueden abrir aquí: copia el enlace de inserción en «Compartir» → «Insertar»."
+  "en": "Canva short links only open inside Moodle. Open the link in the browser and paste here the long address it leads to.",
+  "es": "Los enlaces cortos de Canva solo se abren dentro de Moodle. Abre el enlace en el navegador y pega aquí la dirección larga a la que lleva."
  },
  "pr_recent": {
   "en": "Recent presentations",
@@ -64,8 +64,8 @@
   "es": "Otra presentación"
  },
  "pr_blank": {
-  "en": "Blank? In Canva the design has to be embedded («Share» → «Embed»).",
-  "es": "¿Se ve en blanco? En Canva, el diseño tiene que estar insertado («Compartir» → «Insertar»)."
+  "en": "Not showing? In Canva, the access level has to be «Anyone with the link».",
+  "es": "¿No se ve? En Canva, el nivel de acceso tiene que ser «Cualquier persona que tenga el enlace»."
  },
  "pr_untitled": {
   "en": "Canva presentation",
@@ -74,5 +74,21 @@
  "pr_opened": {
   "en": "Presentation open: {$a}",
   "es": "Presentación abierta: {$a}"
+ },
+ "pr_short_fail": {
+  "en": "That short link could not be followed. Open it in the browser and paste here the long address it leads to.",
+  "es": "No se ha podido seguir ese enlace corto. Ábrelo en el navegador y pega aquí la dirección larga a la que lleva."
+ },
+ "pr_write": {
+  "en": "Write on it",
+  "es": "Escribir encima"
+ },
+ "pr_write_note": {
+  "en": "A clear sheet over the slide. To move on to another slide, turn it off: what is written goes away.",
+  "es": "Una lámina transparente sobre la diapositiva. Para pasar a otra, apágala: lo escrito se borra."
+ },
+ "pr_turn_task": {
+  "en": "Your turn to answer!",
+  "es": "¡Te toca responder!"
  }
 }

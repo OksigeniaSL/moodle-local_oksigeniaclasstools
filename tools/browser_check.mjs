@@ -96,6 +96,10 @@ window.shot = (name) => new Promise((done) => { if (!window.checkShot) { done();
             return json({ boards: [{ course: 1, name: 'One', tool: 'quien', tools: [['quien', 'Whose turn?'], ['reloj', 'Clock']] },
                 { course: 2, name: 'Two', tool: 'reloj', tools: [['reloj', 'Clock']] }] });
         }
+        // A Canva short link, as presentation.php follows it.
+        if (String(url).startsWith('fake://presentation')) {
+            return json(String(p.get('url')).includes('canva.link/abc123xyz') ? { ok: true, id: 'DAHXQxCQhek', token: '1UbXOZJcfKeW6ikUy4ezMA' } : { ok: false });
+        }
         if (String(url).startsWith('fake://glossary')) {
             return json(a === 'list' ? { ok: true, glossaries: [{ id: 5, name: 'Science words', count: 3 }] }
                 : { ok: true, words: GLOSSARY });
@@ -1979,7 +1983,7 @@ const CHECKS = {
         await sleep(150);
         const type = (link, name = '') => { q('#pr-enlace').value = link; q('#pr-nombre').value = name; q('#pr-abrir').click(); };
         type('https://canva.link/abc123xyz');
-        if (q('#pr-error').hidden || !/canva\.link/.test(q('#pr-error').textContent)) { return `short link: ${q('#pr-error').textContent}`; }
+        if (q('#pr-error').hidden || !/short links only open inside Moodle/.test(q('#pr-error').textContent)) { return `short link: ${q('#pr-error').textContent}`; }
         type('https://example.org/slides');
         if (q('#pr-error').hidden || !/Canva/.test(q('#pr-error').textContent) || !q('#pr-vista').hidden) { return 'a link of another site opened'; }
         type(cases[0][0], 'Volcanoes');
@@ -1990,6 +1994,29 @@ const CHECKS = {
         if (q('#pr-canva').href !== D + 'view') { return `open in Canva: ${q('#pr-canva').href}`; }
         if (!q('#pr-error').hidden) { return 'the error stayed after a good link'; }
         await window.shot('presentation-open');
+        // «Whose turn?» over the slide, and writing on it: two strokes, one undone, and none when it is turned off.
+        if (q('#pr-turno').hidden) { return 'no «Whose turn?» on the presentation'; }
+        q('#pr-turno').click();
+        await sleep(2600);
+        if (!q('#pr-marco .ct-turno') || !/Student \d/.test(q('#pr-marco .ct-turno-nombre').textContent)) {
+            return `whose turn over the slide: ${q('#pr-marco .ct-turno-nombre') && q('#pr-marco .ct-turno-nombre').textContent}`;
+        }
+        await window.shot('presentation-turn');
+        q('#pr-marco .ct-turno [data-a="ok"]').click();
+        q('#pr-escribir').click();
+        const sheet = q('#pr-lamina');
+        if (sheet.hidden || q('#pr-paleta').hidden) { return 'the sheet to write on did not show'; }
+        const b = sheet.getBoundingClientRect();
+        const ev = (type, x, y) => sheet.dispatchEvent(new PointerEvent(type, { bubbles: true, pointerId: 1, clientX: b.left + x * b.width, clientY: b.top + y * b.height }));
+        ev('pointerdown', .2, .2); ev('pointermove', .4, .3); ev('pointermove', .6, .5); ev('pointerup', .6, .5);
+        q('#pr-paleta [data-c="#164281"]').click();
+        ev('pointerdown', .3, .7); ev('pointermove', .7, .72); ev('pointerup', .7, .72);
+        if (P.strokes() !== 2) { return `strokes: ${P.strokes()}`; }
+        await window.shot('presentation-write');
+        q('#pr-deshacer').click();
+        if (P.strokes() !== 1) { return `undo: ${P.strokes()}`; }
+        q('#pr-escribir').click();
+        if (!sheet.hidden || P.strokes() !== 0) { return 'turned off, but what was written stayed'; }
         q('#pr-otra').click();
         await sleep(100);
         if (q('#pr-marco iframe') || q('#pr-elige').hidden || q('#pr-recientes').hidden) { return 'back to the list of presentations'; }
@@ -2007,6 +2034,20 @@ const CHECKS = {
         q('#pr-otra').click();
         q('#pr-lista [data-quitar]').click();
         if (P.state().items.length || !q('#pr-recientes').hidden) { return 'removed, but still there'; }
+        // Inside Moodle, a short link goes through the server, which says where it leads; one that leads nowhere says so.
+        window.CLASSTOOLS.presentationurl = 'fake://presentation';
+        type('https://canva.link/nothing99');
+        await sleep(150);
+        if (q('#pr-error').hidden || !/could not be followed/.test(q('#pr-error').textContent)) { return `short link that leads nowhere: ${q('#pr-error').textContent}`; }
+        type(' canva.link/abc123xyz ', 'Robots');
+        await sleep(150);
+        const asked = FAKE.calls.find((c) => c.url === 'canva.link/abc123xyz');
+        if (!asked || q('#pr-vista').hidden || q('#pr-marco iframe').src !== 'https://www.canva.com/design/DAHXQxCQhek/1UbXOZJcfKeW6ikUy4ezMA/view?embed') {
+            return `short link through Moodle: ${JSON.stringify(asked)} ${q('#pr-marco iframe') && q('#pr-marco iframe').src}`;
+        }
+        q('#pr-otra').click();
+        q('#pr-lista [data-quitar]').click();
+        delete window.CLASSTOOLS.presentationurl;
         csp.remove();
         return '';
     },

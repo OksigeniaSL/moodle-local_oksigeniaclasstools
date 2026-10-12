@@ -363,6 +363,9 @@ function local_oksigeniaclasstools_data(stdClass $course, context_course $contex
         // The pictures of the quiz questions: where they are sent, and where the teacher's are served from.
         'quizimgurl' => (new moodle_url('/local/oksigeniaclasstools/quizimage.php'))->out(false),
         'quizimg' => \local_oksigeniaclasstools\local\quizimages::base($context, (int) $USER->id),
+        // Where a Canva short link leads, for the presentation tab (only while the site shows it).
+        'presentationurl' => \local_oksigeniaclasstools\local\presentation::on()
+            ? (new moodle_url('/local/oksigeniaclasstools/presentation.php'))->out(false) : null,
     ];
 }
 

@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.56.1 (2026-10-12)
+
+- The presentation has «Whose turn?» over the slide, to ask someone of the class, and «Write on it», a clear sheet with
+  five colours, undo and clear; turned off, what was written goes away, so that the slides can be moved on.
+- Canva's short links (canva.link, the one «Share» → «Copy link» gives) open too: Moodle asks canva.link where they
+  lead. The steps follow Canva's share menu: what lets a presentation show is the access level «Anyone with the link»;
+  it does not need to be embedded.
+
 ## 0.56.0 (2026-10-12)
 
 - A new tab, «Presentation», off until the administrator turns it on (in the plugin's settings, «Tools»): a Canva
