@@ -28,10 +28,10 @@ namespace local_oksigeniaclasstools\local;
 #[\PHPUnit\Framework\Attributes\CoversClass(presentation::class)]
 final class presentation_test extends \advanced_testcase {
     public function test_design_in_canva_links(): void {
-        $this->assertSame(['id' => 'DAHXQxCQhek', 'token' => '1UbXOZJcfKeW6ikUy4ezMA'], presentation::design(
-            'https://www.canva.com/design/DAHXQxCQhek/1UbXOZJcfKeW6ikUy4ezMA/edit?utm_content=DAHXQxCQhek&utm_source=sharebutton'));
-        $this->assertSame(['id' => 'DAHXQxCQhek', 'token' => ''],
-            presentation::design('https://www.canva.com/design/DAHXQxCQhek/view'));
+        $edit = 'https://www.canva.com/design/DAHXQxCQhek/1UbXOZJcfKeW6ikUy4ezMA/edit?utm_content=DAHXQxCQhek';
+        $this->assertSame(['id' => 'DAHXQxCQhek', 'token' => '1UbXOZJcfKeW6ikUy4ezMA'], presentation::design($edit));
+        $view = 'https://www.canva.com/design/DAHXQxCQhek/view';
+        $this->assertSame(['id' => 'DAHXQxCQhek', 'token' => ''], presentation::design($view));
         $this->assertNull(presentation::design('https://example.org/design/DAHXQxCQhek/1UbXOZJcfKeW6ikUy4ezMA/edit'));
         $this->assertNull(presentation::design('http://www.canva.com/design/DAHXQxCQhek/1UbXOZJcfKeW6ikUy4ezMA/edit'));
     }
