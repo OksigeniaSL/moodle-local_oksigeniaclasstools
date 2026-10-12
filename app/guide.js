@@ -28,7 +28,8 @@
         },
         gd_index_materials: {
             rods: 'mt_rods', tangram: 'mt_tangram', line: 'mt_line', fractions: 'mt_fractions', geoboard: 'mt_geoboard',
-            base10: 'mt_base10', balanza: 'mt_balance', plano: 'mt_plane', tiempo: 'mt_timeline', calc: 'mt_calc', score: 'mt_score',
+            base10: 'mt_base10', balanza: 'mt_balance', plano: 'mt_plane', tiempo: 'mt_timeline', cuerpos: 'mt_solids', calc: 'mt_calc',
+            score: 'mt_score',
         },
     };
     const GUIDES = Object.assign({}, ...Object.values(GROUPS));

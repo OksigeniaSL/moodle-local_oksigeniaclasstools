@@ -1165,6 +1165,28 @@ $string['app_gd_codigo_why'] = 'Una revisión de 39 experiencias de escape room 
 $string['app_gd_codigo_works'] = 'Resolver problemas en cadena: cada pista da una cifra.
 Trabajar en equipo y comunicarse.
 Repasar cualquier materia en forma de reto.';
+$string['app_gd_cuerpos_how'] = 'Elige un cuerpo; arrastra para girarlo, y la rueda o dos dedos lo acercan.
+«Desplegar» lo abre despacio en su desarrollo y lo enseña desde arriba; «Plegar» lo cierra. «Abrirlo poco a poco» lo para a medias, para preguntar qué cara irá dónde.
+«Otro desarrollo»: en los cuerpos pequeños, todos sus desarrollos uno a uno (el cubo tiene 11); en los grandes, uno nuevo cada vez.
+Toca una cara para pintarla: pinta dos caras opuestas del cubo y despliégalo para ver dónde quedan.
+«Contar»: la pizarra numera las caras, las aristas o los vértices uno a uno; con otro toque, todos a la vez.
+«Transparente» deja ver las aristas ocultas, en discontinua. «De frente», «Desde arriba» y «De lado» dan las vistas sin perspectiva.';
+$string['app_gd_cuerpos_scene'] = 'En quinto, la maestra pinta de rojo la cara de arriba del cubo, le da la vuelta y pinta de amarillo la de abajo. Lo abre hasta la mitad y pregunta dónde quedará la amarilla en el desarrollo. Votan a mano alzada, y la clase se divide.
+Lo despliega: la roja y la amarilla quedan a los dos lados del mismo cuadrado, una arriba y otra abajo de la cruz. Luego pasan por los once desarrollos y, antes de abrir cada uno, la clase señala dónde caerá la roja.';
+$string['app_gd_cuerpos_sources'] = 'Euler, L. (1758). Elementa doctrinae solidorum. Novi Commentarii academiae scientiarum Petropolitanae, 4, 109–140 (E230).|https://scholarlycommons.pacific.edu/euler-works/230/
+Uttal, D. H., Meadow, N. G., Tipton, E., Hand, L. L., Alden, A. R., Warren, C. y Newcombe, N. S. (2013). The malleability of spatial skills: A meta-analysis of training studies. Psychological Bulletin, 139(2), 352–402.|https://doi.org/10.1037/a0028446';
+$string['app_gd_cuerpos_stages'] = 'early|El cubo, la esfera, el cilindro, el cono, la pirámide y el ortoedro: reconocerlos, girarlos y buscar en clase objetos con su forma.
+primary|Prismas y pirámides con sus elementos; cuerpos redondos; desarrollos.
+secondary|Poliedros regulares, la fórmula de Euler y las vistas de un cuerpo.
+advanced|Las vistas (alzado, planta y perfil) en Dibujo Técnico, y los desarrollos de los poliedros.';
+$string['app_gd_cuerpos_what'] = 'Cuerpos geométricos que se giran con el dedo y se despliegan en su desarrollo: prismas, pirámides, cuerpos redondos y los poliedros regulares. La pizarra cuenta sus caras, aristas y vértices.';
+$string['app_gd_cuerpos_why'] = 'Las habilidades espaciales se pueden entrenar: en un metaanálisis de 217 estudios, Uttal y colaboradores (2013) encontraron una mejora media de casi media desviación típica frente a los grupos de control, que se mantenía con el tiempo y pasaba a tareas espaciales que no se habían entrenado. Sugieren que una enseñanza rica en lo espacial puede aumentar la participación en matemáticas, ciencias e ingeniería.
+En un poliedro convexo, caras + vértices − aristas = 2. Euler lo enunció en un trabajo escrito en 1750 y publicado en 1758; contar los tres elementos en varios cuerpos es una forma de descubrirlo.';
+$string['app_gd_cuerpos_works'] = 'Reconocer y nombrar cuerpos: prismas, pirámides, cilindro, cono y esfera.
+Sus elementos: caras, aristas y vértices; bases y caras laterales.
+Los desarrollos: qué figura plana se pliega en cada cuerpo.
+Las vistas de frente, desde arriba y de lado.
+En Secundaria, los poliedros regulares y la fórmula de Euler.';
 $string['app_gd_eco_how'] = '«Escuchar»: la pizarra cuenta cuatro y da palmas al ritmo, y el tambor late con cada palmada.
 La clase lo devuelve con palmas, todos a la vez o por turnos con «¿A quién le toca?».
 Para comprobarlo, alguien toca el eco en el tambor (o con la barra espaciadora); o escuchas tú y pulsas «¡Bien!».
@@ -2140,6 +2162,7 @@ $string['app_mt_rods'] = 'Regletas';
 $string['app_mt_rods_help'] = 'Arrastra regletas de la escalera a la mesa. Para girar una, tócala dos veces. Para quitarla, devuélvela a la escalera.';
 $string['app_mt_score'] = 'Partitura';
 $string['app_mt_size'] = 'Tamaño de la mesa';
+$string['app_mt_solids'] = 'Cuerpos geométricos';
 $string['app_mt_tangram'] = 'Tangram';
 $string['app_mt_tangram_help'] = 'Arrastra las piezas. Para girar una, tócala dos veces o pulsa «Girar». El paralelogramo se voltea con «Voltear». Las piezas se imantan al acercarlas.';
 $string['app_mt_timeline'] = 'Línea del tiempo';
@@ -2608,6 +2631,57 @@ $string['app_sc_v_piano'] = 'Piano';
 $string['app_sc_voice'] = 'Sonido';
 $string['app_sc_well_done'] = '¡Muy bien!';
 $string['app_sc_write'] = 'Escribir';
+$string['app_sd_clear'] = 'Quitar los colores';
+$string['app_sd_count'] = 'Contar';
+$string['app_sd_count_edges'] = 'Aristas';
+$string['app_sd_count_faces'] = 'Caras';
+$string['app_sd_count_vertices'] = 'Vértices';
+$string['app_sd_counted_edges'] = '{$a} aristas';
+$string['app_sd_counted_faces'] = '{$a} caras';
+$string['app_sd_counted_vertices'] = '{$a} vértices';
+$string['app_sd_elements'] = 'Caras, aristas y vértices';
+$string['app_sd_elements_n'] = '{$a->f} caras, {$a->e} aristas y {$a->v} vértices';
+$string['app_sd_euler'] = 'Caras + vértices − aristas: {$a}';
+$string['app_sd_fold'] = 'Plegar';
+$string['app_sd_group_prisms'] = 'Prismas';
+$string['app_sd_group_pyramids'] = 'Pirámides';
+$string['app_sd_group_regular'] = 'Poliedros regulares';
+$string['app_sd_group_round'] = 'Cuerpos redondos';
+$string['app_sd_help'] = 'Arrastra para girarlo; la rueda o dos dedos lo acercan. Toca una cara para pintarla: el color se queda al desplegarlo.';
+$string['app_sd_label'] = 'Cuerpo geométrico: arrastra o usa las flechas para girarlo';
+$string['app_sd_n_cilindro'] = 'Cilindro';
+$string['app_sd_n_cono'] = 'Cono';
+$string['app_sd_n_cubo'] = 'Cubo';
+$string['app_sd_n_dodecaedro'] = 'Dodecaedro';
+$string['app_sd_n_esfera'] = 'Esfera';
+$string['app_sd_n_hexaedro'] = 'Cubo (hexaedro)';
+$string['app_sd_n_icosaedro'] = 'Icosaedro';
+$string['app_sd_n_octaedro'] = 'Octaedro';
+$string['app_sd_n_ortoedro'] = 'Ortoedro';
+$string['app_sd_n_piramide3'] = 'Pirámide triangular';
+$string['app_sd_n_piramide4'] = 'Pirámide cuadrangular';
+$string['app_sd_n_piramide5'] = 'Pirámide pentagonal';
+$string['app_sd_n_piramide6'] = 'Pirámide hexagonal';
+$string['app_sd_n_prisma3'] = 'Prisma triangular';
+$string['app_sd_n_prisma5'] = 'Prisma pentagonal';
+$string['app_sd_n_prisma6'] = 'Prisma hexagonal';
+$string['app_sd_n_tetraedro'] = 'Tetraedro';
+$string['app_sd_net_n'] = 'Desarrollo {$a->n} de {$a->all}';
+$string['app_sd_no_net'] = 'La esfera no se puede desplegar en un plano.';
+$string['app_sd_open'] = 'Abrirlo poco a poco';
+$string['app_sd_other_net'] = 'Otro desarrollo';
+$string['app_sd_round_cone'] = 'una base plana (un círculo), una superficie curva y un vértice';
+$string['app_sd_round_cylinder'] = 'dos bases planas (círculos) y una superficie curva';
+$string['app_sd_round_sphere'] = 'una sola superficie curva';
+$string['app_sd_see'] = 'Transparente';
+$string['app_sd_spin'] = 'Girar solo';
+$string['app_sd_unfold'] = 'Desplegar';
+$string['app_sd_view'] = 'Vista';
+$string['app_sd_view_3d'] = '3D';
+$string['app_sd_view_front'] = 'De frente';
+$string['app_sd_view_side'] = 'De lado';
+$string['app_sd_view_top'] = 'Desde arriba';
+$string['app_sd_which'] = 'Cuerpo';
 $string['app_si_again'] = 'Otra vez';
 $string['app_si_blue'] = 'Azul';
 $string['app_si_brown'] = 'Marrón';

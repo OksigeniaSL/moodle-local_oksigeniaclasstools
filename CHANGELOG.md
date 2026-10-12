@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.49.0 (2026-10-12)
+
+- **3D shapes**, among the materials (Infantil to Bachillerato): prisms (cube, cuboid, triangular, pentagonal and
+  hexagonal), pyramids (triangular, square, pentagonal and hexagonal), round solids (cylinder, cone and sphere) and the
+  regular polyhedra, drawn by the board itself, without a 3D library. They turn with a finger, the mouse or the arrow
+  keys, come closer with the wheel or two fingers, and can turn by themselves.
+- «Unfold» opens a shape slowly into its net and shows it from above; «Fold» closes it, and a slider stops it halfway.
+  The nets are the classic ones: the cross of the cube, the strip of the prisms with a base on each side, the star of
+  the pyramids, the sector of the cone, the two flowers of the dodecahedron. «Another net» goes through all the nets
+  of the small shapes (the 11 of the cube and of the octahedron, the 2 of the tetrahedron) and makes new ones for the
+  big ones. The sphere cannot be unfolded, and says so.
+- «Count»: the board numbers the faces, the edges or the vertices one by one (another tap, all at once), seen through.
+  The name of the shape with its faces, edges and vertices (or what a round solid has), and in Secondary
+  «Faces + vertices − edges», which is always 2.
+- A tap paints a face, and its colour stays in the net; «See through» shows the hidden edges dashed; the views from the
+  front, from above and from a side are drawn without perspective.
+- Each school level starts with its own shape, and Infantil only offers the six it works with. It is shown on sites
+  that had already chosen their materials, with its teacher's guide.
+
 ## 0.48.0 (2026-10-12)
 
 - **Clap echo**, a new game (Infantil to Secondary): the board counts four and claps a rhythm of one or two bars

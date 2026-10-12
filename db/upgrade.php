@@ -177,5 +177,11 @@ function xmldb_local_oksigeniaclasstools_upgrade($oldversion) {
         local_oksigeniaclasstools_show_new('games', ['eco']);
         upgrade_plugin_savepoint(true, 2026112700, 'local', 'oksigeniaclasstools');
     }
+    if ($oldversion < 2026112800) {
+        // The 3D shapes: shown on sites that already chose their materials.
+        require_once(__DIR__ . '/../lib.php');
+        local_oksigeniaclasstools_show_new('materials', ['cuerpos']);
+        upgrade_plugin_savepoint(true, 2026112800, 'local', 'oksigeniaclasstools');
+    }
     return true;
 }

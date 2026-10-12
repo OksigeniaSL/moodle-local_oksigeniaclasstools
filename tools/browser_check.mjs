@@ -1616,6 +1616,11 @@ const CHECKS = {
             if (shown() !== [`${left}<`, `${right}>`].sort().join(' ')) { return `${left} and ${right}: ${shown()}`; }
             await window.shot(`split-${left}-${right}`);
         }
+        // The 3D shapes in a half.
+        q('#mt-mode [data-mode="cuerpos"]').click();
+        await sleep(400);
+        if (!q('#sd-svg polygon')) { return 'no 3D shape in a half'; }
+        await window.shot('split-solids');
         q('#b-juntar').click();
         await sleep(200);
         if (q('#mesa').classList.contains('dividida') || shown().split(' ').length !== 1) { return `joined: ${shown()}`; }
@@ -1704,6 +1709,77 @@ const CHECKS = {
         q('.ct-tl-dialogo form').dispatchEvent(new Event('submit', { cancelable: true }));
         await sleep(200);
         if (T.current().title !== 'Mine' || which.selectedOptions[0].textContent !== 'Mine') { return 'the own timeline was not kept'; }
+        return '';
+    },
+    // The 3D shapes: the faces, edges and vertices of each one (and Euler's count), their nets flat and without faces
+    // on top of each other, all the nets of the cube, the octahedron and the tetrahedron, counting one by one, a painted
+    // face, and the views.
+    'solids': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const q = (x) => document.querySelector(x);
+        q('#t-material').click();
+        await sleep(200);
+        q('#mt-mode [data-mode="cuerpos"]').click();
+        await sleep(300);
+        const D = window.ClasstoolsSolids;
+        const want = { cubo: [6, 12, 8], ortoedro: [6, 12, 8], prisma3: [5, 9, 6], prisma5: [7, 15, 10], prisma6: [8, 18, 12],
+            piramide3: [4, 6, 4], piramide4: [5, 8, 5], piramide5: [6, 10, 6], piramide6: [7, 12, 7], tetraedro: [4, 6, 4],
+            hexaedro: [6, 12, 8], octaedro: [8, 12, 6], dodecaedro: [12, 30, 20], icosaedro: [20, 30, 12] };
+        for (const key of Object.keys(D.SOLIDS)) {
+            const s = D.build(key);
+            if (want[key] && [s.f.length, s.edges.length, s.v.length].join() !== want[key].join()) { return `${key}: ${s.f.length}, ${s.edges.length}, ${s.v.length}`; }
+            if (key === 'esfera') { if (s.net) { return 'a net for the sphere'; } continue; }
+            if (!s.net) { return `${key}: no net`; }
+            if (D.overlaps(D.flatOf(s, s.net))) { return `${key}: its net falls on itself`; }
+            // Flat when open: every corner on the floor; the shape when closed.
+            const open = D.moves(s, s.net, 1), shut = D.moves(s, s.net, 0);
+            const high = Math.max(...s.f.flatMap((f, i) => f.map((k) => { const m = open[i], v = s.v[k]; return Math.abs(m.r[3] * v[0] + m.r[4] * v[1] + m.r[5] * v[2] + m.p[1]); })));
+            if (high > 1e-6) { return `${key}: the open net is not flat (${high})`; }
+            if (shut.some((m) => m.p.some((x) => Math.abs(x) > 1e-9))) { return `${key}: not closed`; }
+            if (Math.min(...s.v.map((v) => v[1])) < -1e-9) { return `${key}: below the floor`; }
+        }
+        const counts = { cubo: 11, octaedro: 11, tetraedro: 2 };
+        for (const [key, n] of Object.entries(counts)) { const all = D.allNets(D.build(key)); if (!all || all.length !== n) { return `${key}: ${all && all.length} nets`; } }
+        // The cube: its elements, counted one by one.
+        q('#sd-which').value = 'cubo'; q('#sd-which').dispatchEvent(new Event('change'));
+        await sleep(100);
+        if (!/Cube: 6 faces, 12 edges and 8 vertices/.test(q('#sd-sum').textContent)) { return `sum: «${q('#sd-sum').textContent}»`; }
+        D.startCount('edges');
+        await sleep(1200);
+        if (!(D.state().count && D.state().count.k >= 1 && D.state().count.k < 12)) { return `counting: ${JSON.stringify(D.state().count)}`; }
+        D.startCount('edges');
+        if (D.state().count.k !== 12 || q('#sd-sum').textContent !== '12 edges' || document.querySelectorAll('#sd-svg .ct-sd-num').length !== 12) { return 'all at once'; }
+        await window.shot('solids-count');
+        // A painted face keeps its colour in the net.
+        D.choose('cubo');
+        D.paintFace(0);
+        const red = () => [...document.querySelectorAll('#sd-svg polygon[data-f="0"]')].some((x) => /rgb\((2[0-5]\d|1[6-9]\d),\s*\d{1,2},/.test(x.getAttribute('fill')));
+        D.setOpen(1);
+        if (!red()) { return 'the painted face lost its colour'; }
+        await window.shot('solids-net');
+        D.setOpen(0.5);
+        await window.shot('solids-half');
+        // Another net: the classic one is the first of the eleven.
+        D.setOpen(0);
+        D.otherNet();
+        if (!/2 of 11/.test(q('#sd-net').textContent)) { return `another net: «${q('#sd-net').textContent}»`; }
+        // The views: without perspective.
+        D.choose('prisma5');
+        D.setView('front');
+        await sleep(1100);
+        if (D.state().cam.persp !== 0 || Math.abs(D.state().cam.pitch) > 1e-6) { return `front view: ${JSON.stringify(D.state().cam)}`; }
+        D.setView('3d');
+        await sleep(1000);
+        D.choose('cilindro');
+        q('#sd-see').click();
+        await window.shot('solids-cylinder');
+        q('#sd-see').click();
+        D.choose('icosaedro');
+        D.setOpen(1);
+        await window.shot('solids-icosahedron');
+        D.choose('esfera');
+        if (!q('#sd-fold').disabled || !/cannot be unfolded/.test(q('#sd-net').textContent)) { return 'the sphere unfolds'; }
+        D.choose('cubo');
         return '';
     },
     // Music questions for the quiz: sets that make themselves (which song, rhythm and melody dictations), four

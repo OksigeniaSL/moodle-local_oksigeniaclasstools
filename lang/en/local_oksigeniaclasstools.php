@@ -1163,6 +1163,28 @@ $string['app_gd_codigo_why'] = 'A review of 39 escape rooms in education found t
 $string['app_gd_codigo_works'] = 'Solving problems in a chain: each clue gives a digit.
 Working as a team and talking to each other.
 Reviewing any subject as a challenge.';
+$string['app_gd_cuerpos_how'] = 'Choose a shape; drag to turn it, and the wheel or two fingers bring it closer.
+«Unfold» opens it slowly into its net and shows it from above; «Fold» closes it. «Open it little by little» stops it halfway, to ask which face will go where.
+«Another net»: for the small shapes, all their nets one by one (the cube has 11); for the big ones, a new one each time.
+Tap a face to paint it: paint two opposite faces of the cube and unfold it to see where they end up.
+«Count»: the board numbers the faces, the edges or the vertices one by one; another tap, all at once.
+«See through» shows the hidden edges, dashed. «Front», «From above» and «Side» give the views without perspective.';
+$string['app_gd_cuerpos_scene'] = 'In fifth year, the teacher paints the top face of the cube red, turns it over and paints the bottom one yellow. She opens it halfway and asks where the yellow one will be in the net. Hands go up, and the class is divided.
+She unfolds it: the red and the yellow end up on both sides of the same square, one above the cross and one below. Then they go through the eleven nets and, before each one unfolds, the class points to where the red one will land.';
+$string['app_gd_cuerpos_sources'] = 'Euler, L. (1758). Elementa doctrinae solidorum. Novi Commentarii academiae scientiarum Petropolitanae, 4, 109–140 (E230).|https://scholarlycommons.pacific.edu/euler-works/230/
+Uttal, D. H., Meadow, N. G., Tipton, E., Hand, L. L., Alden, A. R., Warren, C. and Newcombe, N. S. (2013). The malleability of spatial skills: A meta-analysis of training studies. Psychological Bulletin, 139(2), 352–402.|https://doi.org/10.1037/a0028446';
+$string['app_gd_cuerpos_stages'] = 'early|The cube, the sphere, the cylinder, the cone, the pyramid and the cuboid: recognising them, turning them and finding things in the classroom with their shape.
+primary|Prisms and pyramids with their elements; round solids; nets.
+secondary|Regular polyhedra, Euler\'s formula and the views of a solid.
+advanced|The views (front, top and side) in technical drawing, and the nets of the polyhedra.';
+$string['app_gd_cuerpos_what'] = '3D shapes that turn with a finger and unfold into their nets: prisms, pyramids, round solids and the regular polyhedra. The board counts their faces, edges and vertices.';
+$string['app_gd_cuerpos_why'] = 'Spatial skills can be trained: in a meta-analysis of 217 studies, Uttal and colleagues (2013) found an average improvement of almost half a standard deviation over the control groups, which lasted over time and carried over to spatial tasks that had not been trained. They suggest that a spatially rich education may increase participation in mathematics, science and engineering.
+In a convex polyhedron, faces + vertices − edges = 2. Euler stated it in a work written in 1750 and published in 1758; counting the three elements in several solids is a way to discover it.';
+$string['app_gd_cuerpos_works'] = 'Recognising and naming solids: prisms, pyramids, cylinder, cone and sphere.
+Their elements: faces, edges and vertices; bases and side faces.
+Nets: which flat shape folds into each solid.
+The views from the front, from above and from a side.
+In Secondary, the regular polyhedra and Euler\'s formula.';
 $string['app_gd_eco_how'] = '«Listen»: the board counts four and claps the rhythm, and the drum pulses with each clap.
 The class claps it back, all at once or in turns with «Whose turn?».
 To check it, someone taps the echo on the drum (or with the space bar); or you listen and press «Well done!».
@@ -2138,6 +2160,7 @@ $string['app_mt_rods'] = 'Rods';
 $string['app_mt_rods_help'] = 'Drag rods from the staircase to the table. To rotate one, tap it twice. To remove it, put it back on the staircase.';
 $string['app_mt_score'] = 'Score';
 $string['app_mt_size'] = 'Table size';
+$string['app_mt_solids'] = '3D shapes';
 $string['app_mt_tangram'] = 'Tangram';
 $string['app_mt_tangram_help'] = 'Drag the pieces. To rotate one, tap it twice or press “Rotate”. The parallelogram flips with “Flip”. Pieces snap together when they get close.';
 $string['app_mt_timeline'] = 'Timeline';
@@ -2606,6 +2629,57 @@ $string['app_sc_v_piano'] = 'Piano';
 $string['app_sc_voice'] = 'Sound';
 $string['app_sc_well_done'] = 'Well done!';
 $string['app_sc_write'] = 'Write';
+$string['app_sd_clear'] = 'Clear the colours';
+$string['app_sd_count'] = 'Count';
+$string['app_sd_count_edges'] = 'Edges';
+$string['app_sd_count_faces'] = 'Faces';
+$string['app_sd_count_vertices'] = 'Vertices';
+$string['app_sd_counted_edges'] = '{$a} edges';
+$string['app_sd_counted_faces'] = '{$a} faces';
+$string['app_sd_counted_vertices'] = '{$a} vertices';
+$string['app_sd_elements'] = 'Faces, edges and vertices';
+$string['app_sd_elements_n'] = '{$a->f} faces, {$a->e} edges and {$a->v} vertices';
+$string['app_sd_euler'] = 'Faces + vertices − edges: {$a}';
+$string['app_sd_fold'] = 'Fold';
+$string['app_sd_group_prisms'] = 'Prisms';
+$string['app_sd_group_pyramids'] = 'Pyramids';
+$string['app_sd_group_regular'] = 'Regular polyhedra';
+$string['app_sd_group_round'] = 'Round solids';
+$string['app_sd_help'] = 'Drag to turn it; the wheel or two fingers bring it closer. Tap a face to paint it: the colour stays when it is unfolded.';
+$string['app_sd_label'] = '3D shape: drag or use the arrow keys to turn it';
+$string['app_sd_n_cilindro'] = 'Cylinder';
+$string['app_sd_n_cono'] = 'Cone';
+$string['app_sd_n_cubo'] = 'Cube';
+$string['app_sd_n_dodecaedro'] = 'Dodecahedron';
+$string['app_sd_n_esfera'] = 'Sphere';
+$string['app_sd_n_hexaedro'] = 'Cube (hexahedron)';
+$string['app_sd_n_icosaedro'] = 'Icosahedron';
+$string['app_sd_n_octaedro'] = 'Octahedron';
+$string['app_sd_n_ortoedro'] = 'Cuboid';
+$string['app_sd_n_piramide3'] = 'Triangular pyramid';
+$string['app_sd_n_piramide4'] = 'Square pyramid';
+$string['app_sd_n_piramide5'] = 'Pentagonal pyramid';
+$string['app_sd_n_piramide6'] = 'Hexagonal pyramid';
+$string['app_sd_n_prisma3'] = 'Triangular prism';
+$string['app_sd_n_prisma5'] = 'Pentagonal prism';
+$string['app_sd_n_prisma6'] = 'Hexagonal prism';
+$string['app_sd_n_tetraedro'] = 'Tetrahedron';
+$string['app_sd_net_n'] = 'Net {$a->n} of {$a->all}';
+$string['app_sd_no_net'] = 'A sphere cannot be unfolded flat.';
+$string['app_sd_open'] = 'Open it little by little';
+$string['app_sd_other_net'] = 'Another net';
+$string['app_sd_round_cone'] = 'a flat base (a circle), a curved surface and a vertex';
+$string['app_sd_round_cylinder'] = 'two flat bases (circles) and a curved surface';
+$string['app_sd_round_sphere'] = 'only a curved surface';
+$string['app_sd_see'] = 'See through';
+$string['app_sd_spin'] = 'Turn by itself';
+$string['app_sd_unfold'] = 'Unfold';
+$string['app_sd_view'] = 'View';
+$string['app_sd_view_3d'] = '3D';
+$string['app_sd_view_front'] = 'Front';
+$string['app_sd_view_side'] = 'Side';
+$string['app_sd_view_top'] = 'From above';
+$string['app_sd_which'] = 'Shape';
 $string['app_si_again'] = 'Again';
 $string['app_si_blue'] = 'Blue';
 $string['app_si_brown'] = 'Brown';
