@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.37.1 (2026-10-12)
+
+- Scrollbars in the colours of the board (the teacher's guide, the side panels, the editors and the album): thin,
+  rounded and soft blue.
+
 ## 0.37.0 (2026-10-12)
 
 - **My stickers**: each tool has a sticker for the teacher (the critters of the board in costume, by the art director),

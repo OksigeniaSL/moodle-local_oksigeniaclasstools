@@ -97,6 +97,12 @@
 .ct-ch-qr svg path, .ct-ch-qr svg rect[fill="black"] { fill: var(--azul-osc); }
 
 /* Laptops: everything still on one screen. */
+/* The album's scrollbar, as on the board. */
+.ct-ch-album::-webkit-scrollbar { width: 12px; }
+.ct-ch-album::-webkit-scrollbar-thumb { min-height: 40px; border: 3px solid transparent; border-radius: 12px; background: rgba(22, 66, 129, .28) padding-box; }
+.ct-ch-album::-webkit-scrollbar-thumb:hover { background-color: rgba(22, 66, 129, .55); }
+@supports not selector(::-webkit-scrollbar) { .ct-ch-album { scrollbar-width: thin; scrollbar-color: rgba(22, 66, 129, .35) transparent; } }
+
 /* «My stickers»: the strip in the panel, and the album. */
 .ct-ch-logros { padding: .8rem; border-radius: 20px; background: linear-gradient(160deg, #fff7e0, #fdeef1); }
 .ct-ch-logros-n { display: block; margin: .1rem 0 .4rem; color: var(--azul-osc); font-size: 1rem; }
