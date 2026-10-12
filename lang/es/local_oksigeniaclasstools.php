@@ -415,6 +415,28 @@ $string['app_cr_trazacirculos_text'] = 'Su compás nunca se tuerce.';
 $string['app_cr_up'] = '¡Sube de nivel!';
 $string['app_cr_weeks'] = 'Semanas con la pizarra: {$a->n} de {$a->of}';
 $string['app_cr_weeks_done'] = '{$a} semanas con la pizarra: ¡constancia!';
+$string['app_dl_again'] = 'Otra ronda';
+$string['app_dl_button'] = 'Duelo';
+$string['app_dl_challenge'] = 'El reto';
+$string['app_dl_challenge_ph'] = 'El reto, el mismo para los dos (por ejemplo: forma 3/4)';
+$string['app_dl_close'] = 'Cerrar el duelo';
+$string['app_dl_done'] = '¡Hecho!';
+$string['app_dl_first'] = '¡{$a} ha acabado primero!';
+$string['app_dl_hint_compare'] = 'Dos modelos uno al lado del otro, para mirarlos juntos y hablar de ellos.';
+$string['app_dl_hint_together'] = 'Los dos a la vez, cada uno en su mitad (en una pantalla multitáctil): gana el primero que pulse «¡Hecho!».';
+$string['app_dl_hint_turns'] = 'Uno detrás de otro, cada uno con su reloj (para un proyector o una pantalla de un solo toque): gana el más rápido.';
+$string['app_dl_mode'] = 'Cómo juegan';
+$string['app_dl_mode_compare'] = 'Comparar';
+$string['app_dl_mode_together'] = 'A la vez';
+$string['app_dl_mode_turns'] = 'Por turnos';
+$string['app_dl_name'] = 'Quién juega en este lado';
+$string['app_dl_opened'] = 'Duelo: el mismo material en dos mitades.';
+$string['app_dl_pick_two'] = 'Elegir a dos';
+$string['app_dl_restart'] = 'Empezar de nuevo';
+$string['app_dl_side_n'] = 'Lado {$a}';
+$string['app_dl_start'] = 'Empezar';
+$string['app_dl_tie'] = '¡Empate!';
+$string['app_dl_wins'] = 'Gana {$a->who}: {$a->time} (el otro, {$a->other})';
 $string['app_ed_confirm_delete'] = '¿Seguro? Pulsa otra vez';
 $string['app_ed_default_name'] = 'Lista {$a}';
 $string['app_ed_delete'] = 'Borrar la lista';
@@ -1024,7 +1046,8 @@ Sin números (Infantil), solo cubos: qué plato pesa más y cuántos hay que añ
 Con números: varias formas de equilibrar 10 (5 + 5, 5 + 2 + 2 + 1…).
 «Ecuaciones»: una nueva o la que escriban; que digan qué quitarían de los dos platos antes de tocar nada.
 Quitar algo de un solo plato, a propósito: la balanza se inclina y la ecuación pasa a ser una desigualdad.
-«Abrir las cajas» al final, para comprobar el valor de x.';
+«Abrir las cajas» al final, para comprobar el valor de x.
+«Duelo»: el mismo material en dos mitades para dos alumnos con el mismo reto; a la vez en una pantalla multitáctil, por turnos con un reloj cada uno con proyector, o «Comparar» para poner dos modelos uno al lado del otro.';
 $string['app_gd_balanza_scene'] = 'En segundo de ESO, la profesora escribe 3x + 1 = x + 9. Una alumna quiere «pasar el 1 restando». Quita una pesa de un solo plato y la balanza se inclina; la clase ve que hay que quitarla también del otro, y después una caja de cada lado: «pasar restando» deja de ser una regla para aprender de memoria.';
 $string['app_gd_balanza_sources'] = 'Otten, M., Van den Heuvel-Panhuizen, M. y Veldhuis, M. (2019). The balance model for teaching linear equations: a systematic literature review. International Journal of STEM Education, 6, 30.|https://doi.org/10.1186/s40594-019-0183-2
 Vlassis, J. (2002). The balance model: Hindrance or support for the solving of linear equations with one unknown. Educational Studies in Mathematics, 49(3), 341–359.|https://doi.org/10.1023/A:1020229023965';
@@ -1044,7 +1067,8 @@ $string['app_gd_base10_how'] = '«Construir un número»: que lo formen con bloq
 Con diez en una columna, «Cambiar 10 por 1» los agrupa; «Romper en 10» hace lo contrario.
 «Esconder el número» y «¿Qué número es?» para leerlo solo con los bloques.
 Para restar llevando, que rompan una decena antes de quitar: lo mismo que en el papel.
-En otra base, los cambios son de ese número de bloques, y el número sale también escrito en esa base («234 en base 5»).';
+En otra base, los cambios son de ese número de bloques, y el número sale también escrito en esa base («234 en base 5»).
+«Duelo»: el mismo material en dos mitades para dos alumnos con el mismo reto; a la vez en una pantalla multitáctil, por turnos con un reloj cada uno con proyector, o «Comparar» para poner dos modelos uno al lado del otro.';
 $string['app_gd_base10_scene'] = 'En tercero, el maestro pide 52 menos 17. Un alumno dice que no se puede quitar 7 de 2. Rompe una decena en diez unidades con un toque, quita siete, y la clase ve qué significa «llevarse una» en la resta antes de escribirla.';
 $string['app_gd_base10_sources'] = 'Dienes, Z. P. (1960). Building Up Mathematics. Hutchinson Educational.';
 $string['app_gd_base10_stages'] = 'early|De vez en cuando: contar unidades y ver que diez forman una barra.
@@ -1151,7 +1175,8 @@ Corregir explicando el porqué.';
 $string['app_gd_fractions_how'] = 'Que coloreen piezas de una fila y busquen lo mismo en otra: el muro dice qué partes son iguales («1/2 = 2/4 = 3/6»).
 La regla para comparar recorre el muro y alinea las filas.
 En las piezas: fracciones, decimales, porcentajes o nada, para que razonen solo con el tamaño.
-Pregunta primero y comprueba después: «¿Qué es más, dos tercios o tres cuartos?».';
+Pregunta primero y comprueba después: «¿Qué es más, dos tercios o tres cuartos?».
+«Duelo»: el mismo material en dos mitades para dos alumnos con el mismo reto; a la vez en una pantalla multitáctil, por turnos con un reloj cada uno con proyector, o «Comparar» para poner dos modelos uno al lado del otro.';
 $string['app_gd_fractions_scene'] = 'En sexto, la profesora pregunta qué es más, dos tercios o tres cuartos. La clase se divide. Una alumna colorea dos tercios, otra tres cuartos, y la regla para comparar zanja el debate: tres cuartos llega un poco más lejos.';
 $string['app_gd_fractions_sources'] = 'Siegler, R. y otros (2010). Developing effective fractions instruction for kindergarten through 8th grade (NCEE 2010-4039). Institute of Education Sciences.|https://ies.ed.gov/ncee/wwc/PracticeGuide/15';
 $string['app_gd_fractions_stages'] = 'early|Mitades y enteros con piezas de colores, sin números.
@@ -1168,7 +1193,8 @@ $string['app_gd_geoboard_how'] = 'Toca clavos para estirar una goma; toca el pri
 Arrastra una esquina a otro clavo para cambiar la figura.
 «Área y perímetro» da las medidas, y «Ver los cuadraditos» ayuda a contarlas.
 Retos: «Haz un rectángulo de área 6», «¿Cuántos triángulos distintos de área 2 hay?».
-Más clavos para figuras grandes; menos para los pequeños.';
+Más clavos para figuras grandes; menos para los pequeños.
+«Duelo»: el mismo material en dos mitades para dos alumnos con el mismo reto; a la vez en una pantalla multitáctil, por turnos con un reloj cada uno con proyector, o «Comparar» para poner dos modelos uno al lado del otro.';
 $string['app_gd_geoboard_scene'] = 'En segundo de ESO, el profesor pide figuras de área 4. Salen cuadrados, rectángulos y un triángulo raro. En cada una cuentan los clavos de dentro y los del borde, y la clase descubre la regla antes de que nadie diga su nombre: Pick.';
 $string['app_gd_geoboard_sources'] = 'Gattegno, C. (1954). The Gattegno geoboards. Bulletin of the Association for Teaching Aids in Mathematics, 3.|https://roslyn-young.fr/biblios/bibliography-of-gattegno-s-work
 Pick, G. (1899). Geometrisches zur Zahlenlehre. Lotos, 47, 311–319.|https://mathshistory.st-andrews.ac.uk/Biographies/Pick/';
@@ -1211,7 +1237,8 @@ Un toque en la recta empieza en un punto; cada toque después es un salto, dibuj
 Esconde los números y pregunta dónde cae uno antes de descubrirlo.
 Para restar, saltos hacia atrás; para los negativos, cruzar el cero.
 En Infantil, salta una rana: el mismo salto, con algo que mirar.
-«Intervalos»: escribe [−2, 3), x ≥ 1 o |x − 1| < 2 y sale dibujado y escrito de las otras maneras; un toque en un extremo lo abre o lo cierra. «Uno al azar» con la notación escondida, para que la escriban ellos.';
+«Intervalos»: escribe [−2, 3), x ≥ 1 o |x − 1| < 2 y sale dibujado y escrito de las otras maneras; un toque en un extremo lo abre o lo cierra. «Uno al azar» con la notación escondida, para que la escriban ellos.
+«Duelo»: el mismo material en dos mitades para dos alumnos con el mismo reto; a la vez en una pantalla multitáctil, por turnos con un reloj cada uno con proyector, o «Comparar» para poner dos modelos uno al lado del otro.';
 $string['app_gd_line_scene'] = 'En quinto, el maestro elige «Cuartos, del 0 al 2», esconde los números y pregunta dónde va tres cuartos. Algunos lo ponen después del 1, porque tres y cuatro les parecen números grandes. Al descubrirlo, la recta les enseña que tres cuartos ni siquiera llega a 1.';
 $string['app_gd_line_sources'] = 'Siegler, R. S. y Ramani, G. B. (2008). Playing linear numerical board games promotes low-income children\'s numerical development. Developmental Science, 11(5), 655–661.|https://doi.org/10.1111/j.1467-7687.2008.00714.x
 Siegler, R. y otros (2010). Developing effective fractions instruction for kindergarten through 8th grade (NCEE 2010-4039). Institute of Education Sciences.|https://ies.ed.gov/ncee/wwc/PracticeGuide/15';
@@ -1389,7 +1416,8 @@ $string['app_gd_rods_how'] = 'Empieza con juego libre: escaleras, trenes y «alf
 Pide todas las formas de hacer un número con dos regletas: la alfombra del diez reúne sus descomposiciones.
 Tapa los números («Ver los números» apagado) para que razonen con las longitudes.
 Con «Comparar: dos mesas», dos alumnos resuelven el mismo reto de dos formas distintas.
-Mesa con pocas columnas para los pequeños; con muchas, para multiplicar y para las fracciones.';
+Mesa con pocas columnas para los pequeños; con muchas, para multiplicar y para las fracciones.
+«Duelo»: el mismo material en dos mitades para dos alumnos con el mismo reto; a la vez en una pantalla multitáctil, por turnos con un reloj cada uno con proyector, o «Comparar» para poner dos modelos uno al lado del otro.';
 $string['app_gd_rods_scene'] = 'En segundo de Primaria, la maestra apaga «Ver los números» y pide: «Hagan la naranja con dos regletas». Sale una pareja tras otra con una solución distinta, hasta que la alfombra del diez está completa. Entonces alguien se da cuenta de que las soluciones van de dos en dos: blanca y azul, azul y blanca.';
 $string['app_gd_rods_sources'] = 'Cuisenaire, G. (1952). Les nombres en couleurs. Thuin.
 Cuisenaire, G. y Gattegno, C. (1971). Initiation aux nombres en couleurs. Delachaux et Niestlé.';

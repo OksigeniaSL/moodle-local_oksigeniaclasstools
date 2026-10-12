@@ -74,7 +74,8 @@
     };
 
     // --- The fixed remote --------------------------------------------------------------------------------------
-    if (!AULA || !AULA.remoteurl || AULA.mode !== 'teacher') { window.ClasstoolsRemote = { run }; return; }
+    // Not in a copy of a duel (duel.js): only the board itself takes the phone's orders.
+    if (!AULA || !AULA.remoteurl || AULA.mode !== 'teacher' || core.duelo) { window.ClasstoolsRemote = { run }; return; }
     let status = Object.assign({ on: false }, AULA.remote || {}), seq = -1, timer = 0, phone = false, panel = null;
     const call = (action, extra = {}) => fetch(AULA.remoteurl, { method: 'POST', credentials: 'same-origin',
         body: new URLSearchParams({ courseid: AULA.courseid, sesskey: AULA.sesskey, action, ...extra }) })

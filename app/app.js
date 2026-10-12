@@ -36,8 +36,19 @@
     // --- Almacén del navegador: solo comodidades; si no deja guardar, todo sigue funcionando en memoria ---
     let almacen = true;
     try { localStorage.setItem('pizarra:prueba', '1'); localStorage.removeItem('pizarra:prueba'); } catch (e) { almacen = false; }
-    const guarda = (k, v) => { try { localStorage.setItem('pizarra:' + k, JSON.stringify(v)); } catch (e) { almacen = false; } };
-    const lee = (k, d) => { try { const v = localStorage.getItem('pizarra:' + k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } };
+    // En un duelo (duel.js) cada mitad es una copia de la pizarra en un marco, solo con un material: empieza con lo que
+    // hay guardado, pero no guarda nada, ni en el navegador ni en el aula, para no tocar lo del profesor.
+    const DUELO = (location.hash.match(/(?:^#|&)duelo=([a-z0-9]+)/) || [])[1] || '';
+    if (DUELO) { document.documentElement.classList.add('duelo'); }
+    const memoria = {};
+    const guarda = (k, v) => {
+        if (DUELO) { memoria[k] = v; return; }
+        try { localStorage.setItem('pizarra:' + k, JSON.stringify(v)); } catch (e) { almacen = false; }
+    };
+    const lee = (k, d) => {
+        if (DUELO && k in memoria) { return memoria[k]; }
+        try { const v = localStorage.getItem('pizarra:' + k); return v === null ? d : JSON.parse(v); } catch (e) { return d; }
+    };
 
     // --- Modo de la pantalla: uno cada vez (Infantil, Primaria, Secundaria o Superior) y recordado por curso. Cambia
     // el aspecto y los valores con los que empiezan los juegos; no quita ninguna herramienta. ---
@@ -1970,7 +1981,7 @@
         }).catch(() => { /* sin conexión: queda en el navegador */ });
     };
     const guardaEnAula = (tool, datos) => {
-        if (!AULA || !AULA.stateurl) { return; }
+        if (!AULA || !AULA.stateurl || DUELO) { return; }
         pendientes[tool] = datos;
         clearTimeout(esperas[tool]);
         esperas[tool] = setTimeout(() => envia(tool), 1200);
@@ -2063,7 +2074,7 @@
         $, $$, t, translate: traduce, random: azar, shuffle: baraja, escape: escapa, reducedMotion: reducido, save: guarda, load: lee,
         play: suena, sounds: SONIDOS, bell: campana, click: clic, announce: anuncia, icon: icono, setIcon: ponIcono,
         relabel: rotula, repeatWhileHeld: repite, register: (tool, def) => { HERR[tool] = def; }, show: muestra,
-        lists: todas, present: presentes, face: cara, initials: iniciales, preload: precarga, activeList: listaQ,
+        lists: todas, present: presentes, face: cara, initials: iniciales, preload: precarga, activeList: listaQ, duelo: DUELO,
         moodle: AULA, toMoodle: alAula, lastGroups: () => gHechos, openBig: abreGigante, closeBig: cierraGigante,
         newList: () => abreEditor(null), editList: (id) => abreEditor(id),
         kept: (tool) => (AULA && AULA.state && AULA.state[tool]) || null, keep: guardaEnAula,
@@ -2104,7 +2115,14 @@
     const hay = (h) => pestanas.some((b) => b.dataset.h === h);
     muestra(listasAula.length && hay('quien') ? 'quien' : (hay('temporizador') ? 'temporizador' : pestanas[0].dataset.h));
     // La pantalla dividida, si se dejó así (en pantallas anchas).
-    if (lee('dividida-on', false) && innerWidth >= 900 && disponibles().length > 1) { divide(true); }
+    if (!DUELO && lee('dividida-on', false) && innerWidth >= 900 && disponibles().length > 1) { divide(true); }
+    // Una copia de duelo: solo su material, en cuanto estén todos cargados.
+    if (DUELO) {
+        addEventListener('load', () => {
+            if (hay('material')) { muestra('material'); }
+            if (window.ClasstoolsMaterial) { window.ClasstoolsMaterial.showMode(DUELO); }
+        });
+    }
     ajustaBarra();
     try { SCORM.iniciar(); SCORM.guardar({}, 100, true); } catch (e) { /* sin Moodle */ }
 

@@ -838,7 +838,29 @@ a.redondo { text-decoration: none; }
 .ct-mtext.ct-xlong { font-size: 10cqw; text-wrap: balance; }
 
 /* Material: Cuisenaire rods and tangram */
-.ct-material { display: flex; flex-direction: column; gap: .75rem; }
+.ct-material { position: relative; display: flex; flex-direction: column; gap: .75rem; }
+/* The duel (duel.js): the same material twice, a frame for each student, with the challenge on top, a clock and «Done!»
+   under each half, and who wins. The copies in the frames show only their material. */
+html.duelo .barra, html.duelo #h-material .ct-top { display: none; }
+html.duelo .mesa { padding: .3rem; }
+html.duelo .ct-panel { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); gap: .4rem; height: 100%; }
+html.duelo .ct-panel > .ct-side { max-height: 22vh; overflow-y: auto; }
+.ct-duelo { position: absolute; inset: 0; z-index: 6; display: flex; flex-direction: column; gap: .5rem; background: var(--fondo); }
+.ct-duelo-cabeza { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; }
+.ct-duelo-reto { flex: 1 1 16rem; min-height: 48px; padding: .4rem .9rem; border: 1px solid var(--borde); border-radius: 14px; background: var(--superficie); color: var(--azul-osc); font-size: clamp(1.1rem, 2.2vw, 1.6rem); font-weight: 900; }
+.ct-duelo-pista { margin: 0; }
+.ct-duelo-lados { display: grid; flex: 1; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: .8rem; min-height: 0; }
+.ct-duelo-lado { display: flex; flex-direction: column; min-height: 0; overflow: hidden; border: 3px solid var(--azul-suave); border-radius: var(--radio); background: var(--superficie); transition: border-color .2s; }
+.ct-duelo-lado[data-side="1"] { border-color: var(--rojo-suave); }
+.ct-duelo-lado iframe { flex: 1; width: 100%; min-height: 0; border: 0; transition: opacity .2s; }
+.ct-duelo-lado.esperando iframe { opacity: .4; pointer-events: none; }
+.ct-duelo-lado.hecho { border-color: var(--verde); }
+.ct-duelo-pie { display: flex; align-items: center; gap: .6rem; padding: .4rem .6rem; }
+.ct-duelo-nombre { flex: 1; min-width: 0; min-height: 44px; padding: .3rem .7rem; border: 1px solid var(--borde); border-radius: 12px; font-weight: 900; }
+.ct-duelo-reloj { color: var(--azul-osc); font-size: clamp(1.2rem, 2.4vw, 1.8rem); font-weight: 900; font-variant-numeric: tabular-nums; }
+.ct-duelo.comparar :is(.ct-duelo-reloj, [data-done]) { display: none; }
+.ct-duelo-final { display: flex; align-items: center; justify-content: center; gap: 1rem; min-height: 2.6rem; }
+.ct-duelo-resultado { margin: 0; color: var(--verde); font-size: clamp(1.1rem, 2.4vw, 1.8rem); font-weight: 900; text-align: center; }
 .ct-mt-stage { position: relative; display: block; padding: .6rem; }
 /* Number line: the line across the stage, the jumps as arcs in the colour of their chain, the addition below. */
 .ct-nl-stage { justify-content: center; }

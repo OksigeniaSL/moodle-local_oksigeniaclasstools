@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.45.0 (2026-10-12)
+
+- **Duel in the materials** (the rods, the number line, the fraction wall, the geoboard, the base 10 blocks and the
+  balance scale): «Duel» puts the same material in two halves, for two students with the same challenge, written on
+  top. «At once»: both at the same time (on a multi-touch screen each half takes its own fingers) and the first to
+  press «Done!» wins. «In turns»: one after the other, each with their own clock (for a projector or a screen of one
+  touch); the other half waits, faded. «Compare»: two models side by side, without clocks. «At once» is the default
+  only where the screen takes several touches. «Pick two» takes two of the class with the fair draw of «Whose turn?»;
+  «Another round» starts both halves again.
+- Each half is a copy of the board with only that material: it starts with the teacher's settings but saves nothing,
+  neither in the browser nor in the course, and does not take the phone's orders or count stickers.
+- The guides of those six materials explain the duel.
+
 ## 0.44.0 (2026-10-12)
 
 - **Two tools at once**: «Two tools at once» on the bar splits the board in two halves (the timer next to a game, the

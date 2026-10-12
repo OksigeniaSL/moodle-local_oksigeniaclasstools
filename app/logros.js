@@ -33,7 +33,8 @@
     const core = window.ClasstoolsCore;
     if (!core) { return; }
     const AULA = core.moodle;
-    const L = AULA && AULA.mode === 'teacher' && AULA.logrosurl && AULA.logros ? AULA.logros : null;
+    // Not from a copy of a duel (duel.js): the board itself counts.
+    const L = !core.duelo && AULA && AULA.mode === 'teacher' && AULA.logrosurl && AULA.logros ? AULA.logros : null;
     const thr = Object.assign({ devices: 5, picks: 5, students: 8 }, (L && L.thr) || {});
     const sent = {};
     const today = () => { const d = new Date(); return `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}`; };

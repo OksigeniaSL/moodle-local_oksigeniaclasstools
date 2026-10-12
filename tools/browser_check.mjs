@@ -1621,6 +1621,46 @@ const CHECKS = {
         if (q('#mesa').classList.contains('dividida') || shown().split(' ').length !== 1) { return `joined: ${shown()}`; }
         return '';
     },
+    // The duel: the same material in two frames that show only it and save nothing, in turns with a clock each and who
+    // wins, and to compare without clocks.
+    'duel': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const q = (x) => document.querySelector(x);
+        q('#t-material').click();
+        await sleep(200);
+        q('#mt-mode [data-mode="fractions"]').click();
+        await sleep(200);
+        if (q('#mt-duel').hidden) { return 'no duel for the fraction wall'; }
+        q('#mt-mode [data-mode="calc"]').click();
+        await sleep(100);
+        if (!q('#mt-duel').hidden) { return 'a duel offered for the calculator'; }
+        q('#mt-mode [data-mode="fractions"]').click();
+        await sleep(100);
+        q('#mt-duel').click();
+        const frames = [...document.querySelectorAll('.ct-duelo iframe')];
+        if (frames.length !== 2) { return `${frames.length} frames`; }
+        const ready = (f) => { try { const w = f.contentWindow; return w.document.documentElement.classList.contains('duelo') && w.ClasstoolsCore && w.ClasstoolsCore.material.current() === 'fractions' && !w.document.querySelector('#h-material').hidden; } catch (e) { return false; } };
+        for (let i = 0; i < 100 && !frames.every(ready); i++) { await sleep(100); }
+        if (!frames.every(ready)) { return 'the copies did not show the fraction wall alone'; }
+        // A copy saves nothing.
+        frames[0].contentWindow.ClasstoolsCore.save('prueba-duelo', 1);
+        if (localStorage.getItem('pizarra:prueba-duelo') !== null) { return 'a copy wrote in the browser'; }
+        const D = window.ClasstoolsDuel;
+        q('#dl-mode [data-v="turns"]').click();
+        q('#dl-go').click();
+        await sleep(300);
+        if (!q('.ct-duelo-lado[data-side="1"]').classList.contains('esperando')) { return 'the second side is not waiting its turn'; }
+        D.done(0);
+        await sleep(400);
+        if (q('.ct-duelo-lado[data-side="1"]').classList.contains('esperando') || !D.state().side[0].done) { return 'the second side did not start'; }
+        D.done(1);
+        if (!/wins|tie/i.test(q('.ct-duelo-resultado').textContent)) { return `result: «${q('.ct-duelo-resultado').textContent}»`; }
+        await window.shot('duel');
+        q('#dl-mode [data-v="compare"]').click();
+        if (getComputedStyle(q('.ct-duelo-reloj')).display !== 'none') { return 'clocks when comparing'; }
+        q('#dl-close').click();
+        return q('.ct-duelo') ? 'the duel did not close' : '';
+    },
     // The calculator: the order of operations, the decimal sign, the strip of results, and both keyboards.
     'calculator': async () => {
         const sleep = (ms) => new Promise((r) => setTimeout(r, ms));

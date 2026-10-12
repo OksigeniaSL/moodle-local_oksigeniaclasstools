@@ -415,6 +415,28 @@ $string['app_cr_trazacirculos_text'] = 'Their compass never goes astray.';
 $string['app_cr_up'] = 'Up a level!';
 $string['app_cr_weeks'] = 'Weeks with the board: {$a->n} of {$a->of}';
 $string['app_cr_weeks_done'] = '{$a} weeks with the board: steady!';
+$string['app_dl_again'] = 'Another round';
+$string['app_dl_button'] = 'Duel';
+$string['app_dl_challenge'] = 'The challenge';
+$string['app_dl_challenge_ph'] = 'The challenge, the same for both (for example: make 3/4)';
+$string['app_dl_close'] = 'Close the duel';
+$string['app_dl_done'] = 'Done!';
+$string['app_dl_first'] = '{$a} finished first!';
+$string['app_dl_hint_compare'] = 'Two models side by side, to look at them together and talk about them.';
+$string['app_dl_hint_together'] = 'Both at the same time, each in their half (on a multi-touch screen): the first to press «Done!» wins.';
+$string['app_dl_hint_turns'] = 'One after the other, each with their own clock (for a projector or a screen of one touch): the faster one wins.';
+$string['app_dl_mode'] = 'How they play';
+$string['app_dl_mode_compare'] = 'Compare';
+$string['app_dl_mode_together'] = 'At once';
+$string['app_dl_mode_turns'] = 'In turns';
+$string['app_dl_name'] = 'Who plays on this side';
+$string['app_dl_opened'] = 'Duel: the same material in two halves.';
+$string['app_dl_pick_two'] = 'Pick two';
+$string['app_dl_restart'] = 'Start again';
+$string['app_dl_side_n'] = 'Side {$a}';
+$string['app_dl_start'] = 'Start';
+$string['app_dl_tie'] = 'A tie!';
+$string['app_dl_wins'] = '{$a->who} wins: {$a->time} (the other one, {$a->other})';
 $string['app_ed_confirm_delete'] = 'Sure? Press again';
 $string['app_ed_default_name'] = 'List {$a}';
 $string['app_ed_delete'] = 'Delete the list';
@@ -1022,7 +1044,8 @@ Without numbers (Early years), only cubes: which pan weighs more, and how many t
 With numbers: several ways to balance 10 (5 + 5, 5 + 2 + 2 + 1…).
 «Equations»: a new one or one they write; they say what they would take off both pans before touching anything.
 Taking something off one pan only, on purpose: the scale tips and the equation becomes an inequality.
-«Open the boxes» at the end, to check the value of x.';
+«Open the boxes» at the end, to check the value of x.
+«Duel»: the same material in two halves for two students with the same challenge; at once on a multi-touch screen, in turns with a clock each on a projector, or «Compare» to put two models side by side.';
 $string['app_gd_balanza_scene'] = 'In Year 8, the teacher writes 3x + 1 = x + 9. A student wants to «move the 1 over and subtract». She takes a weight off one pan only and the scale tips; the class sees that it has to come off the other one too, and then a box from each side: «move it over» stops being a rule to learn by heart.';
 $string['app_gd_balanza_sources'] = 'Otten, M., Van den Heuvel-Panhuizen, M. and Veldhuis, M. (2019). The balance model for teaching linear equations: a systematic literature review. International Journal of STEM Education, 6, 30.|https://doi.org/10.1186/s40594-019-0183-2
 Vlassis, J. (2002). The balance model: Hindrance or support for the solving of linear equations with one unknown. Educational Studies in Mathematics, 49(3), 341–359.|https://doi.org/10.1023/A:1020229023965';
@@ -1042,7 +1065,8 @@ $string['app_gd_base10_how'] = '«Build a number»: they make it with blocks and
 With ten in one column, «Swap 10 for 1» groups them; «Break into 10» does the opposite.
 «Hide the number» and «What number is it?» to read it from the blocks alone.
 To subtract with borrowing, they break a ten before taking away: the same as on paper.
-In another base, the same swaps are of that number of blocks, and the number is also written in that base («234 in base 5»).';
+In another base, the same swaps are of that number of blocks, and the number is also written in that base («234 in base 5»).
+«Duel»: the same material in two halves for two students with the same challenge; at once on a multi-touch screen, in turns with a clock each on a projector, or «Compare» to put two models side by side.';
 $string['app_gd_base10_scene'] = 'In Year 3, the teacher asks for 52 minus 17. A student says 7 cannot be taken from 2. He breaks a ten into ten ones with a tap, takes seven away, and the class sees what borrowing one means before writing it down.';
 $string['app_gd_base10_sources'] = 'Dienes, Z. P. (1960). Building Up Mathematics. Hutchinson Educational.';
 $string['app_gd_base10_stages'] = 'early|Now and then: counting ones and seeing that ten make a rod.
@@ -1149,7 +1173,8 @@ Correcting, and explaining why.';
 $string['app_gd_fractions_how'] = 'They colour pieces in one row and look for the same amount in another: the wall says which parts are equal («1/2 = 2/4 = 3/6»).
 The ruler for comparing slides across the wall and lines the rows up.
 On the pieces: fractions, decimals, percentages, or nothing, so that they reason with the size alone.
-Ask first and check afterwards: «Which is more, two thirds or three quarters?».';
+Ask first and check afterwards: «Which is more, two thirds or three quarters?».
+«Duel»: the same material in two halves for two students with the same challenge; at once on a multi-touch screen, in turns with a clock each on a projector, or «Compare» to put two models side by side.';
 $string['app_gd_fractions_scene'] = 'In Year 7, the teacher asks which is more, two thirds or three quarters. The class splits in two. One student colours two thirds, another three quarters, and the ruler settles it: three quarters reaches a little further.';
 $string['app_gd_fractions_sources'] = 'Siegler, R. and others (2010). Developing effective fractions instruction for kindergarten through 8th grade (NCEE 2010-4039). Institute of Education Sciences.|https://ies.ed.gov/ncee/wwc/PracticeGuide/15';
 $string['app_gd_fractions_stages'] = 'early|Halves and wholes with coloured pieces, without numbers.
@@ -1166,7 +1191,8 @@ $string['app_gd_geoboard_how'] = 'Tap pegs to stretch a band; tap the first one 
 Drag a corner to another peg to change the figure.
 «Area and perimeter» gives the measures, and the little squares help to count them.
 Challenges: «Make a rectangle of area 6», «How many different triangles of area 2 are there?».
-More pegs for big figures; fewer for the youngest.';
+More pegs for big figures; fewer for the youngest.
+«Duel»: the same material in two halves for two students with the same challenge; at once on a multi-touch screen, in turns with a clock each on a projector, or «Compare» to put two models side by side.';
 $string['app_gd_geoboard_scene'] = 'In Year 8, the teacher asks for figures of area 4. Squares, rectangles and an odd triangle come out. For each one they count the pegs inside and on the edge, and the class finds the rule before anyone says its name: Pick.';
 $string['app_gd_geoboard_sources'] = 'Gattegno, C. (1954). The Gattegno geoboards. Bulletin of the Association for Teaching Aids in Mathematics, 3.|https://roslyn-young.fr/biblios/bibliography-of-gattegno-s-work
 Pick, G. (1899). Geometrisches zur Zahlenlehre. Lotos, 47, 311–319.|https://mathshistory.st-andrews.ac.uk/Biographies/Pick/';
@@ -1209,7 +1235,8 @@ A tap on the line starts at a point; each tap after it is a jump, drawn with its
 Hide the numbers and ask where one falls before uncovering it.
 To subtract, jumps backwards; for negatives, crossing zero.
 In Early years a frog jumps: the same jump, with something to watch.
-«Intervals»: type [−2, 3), x ≥ 1 or |x − 1| < 2 and it is drawn and written the other ways; a tap on an end opens or closes it. «One at random» with the notation hidden, for them to write it.';
+«Intervals»: type [−2, 3), x ≥ 1 or |x − 1| < 2 and it is drawn and written the other ways; a tap on an end opens or closes it. «One at random» with the notation hidden, for them to write it.
+«Duel»: the same material in two halves for two students with the same challenge; at once on a multi-touch screen, in turns with a clock each on a projector, or «Compare» to put two models side by side.';
 $string['app_gd_line_scene'] = 'In Year 6, the teacher chooses quarters from 0 to 2, hides the numbers and asks where three quarters goes. Some put it after 1, because three and four seem big numbers to them. When it is uncovered, the line shows them that three quarters does not even reach 1.';
 $string['app_gd_line_sources'] = 'Siegler, R. S. and Ramani, G. B. (2008). Playing linear numerical board games promotes low-income children\'s numerical development. Developmental Science, 11(5), 655–661.|https://doi.org/10.1111/j.1467-7687.2008.00714.x
 Siegler, R. and others (2010). Developing effective fractions instruction for kindergarten through 8th grade (NCEE 2010-4039). Institute of Education Sciences.|https://ies.ed.gov/ncee/wwc/PracticeGuide/15';
@@ -1387,7 +1414,8 @@ $string['app_gd_rods_how'] = 'Start with free play: staircases, trains and «car
 Ask for every way of making a number with two rods: the carpet of ten gathers all its splits.
 Hide the numbers («Show the numbers» off) so that they reason with the lengths.
 With «Compare: two tables», two students solve the same challenge in two different ways.
-A table with few columns for the youngest; with many, to multiply and for fractions.';
+A table with few columns for the youngest; with many, to multiply and for fractions.
+«Duel»: the same material in two halves for two students with the same challenge; at once on a multi-touch screen, in turns with a clock each on a projector, or «Compare» to put two models side by side.';
 $string['app_gd_rods_scene'] = 'In Year 2, the teacher turns «Show the numbers» off and asks: «Make the orange one with two rods». One pair after another comes out with a different answer, until the carpet of ten is complete. Then someone notices that the answers come in twos: white and blue, blue and white.';
 $string['app_gd_rods_sources'] = 'Cuisenaire, G. (1952). Les nombres en couleurs. Thuin.
 Cuisenaire, G. and Gattegno, C. (1971). Initiation aux nombres en couleurs. Delachaux et Niestlé.';

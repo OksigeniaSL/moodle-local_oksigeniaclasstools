@@ -489,7 +489,7 @@
     };
     paintSetup();
     // A session left open (the page was reloaded): pick it up again.
-    const kept = LIVE ? Number(load(KEY, 0)) || 0 : 0;
+    const kept = LIVE && !core.duelo ? Number(load(KEY, 0)) || 0 : 0;
     if (kept) {
         S = { id: kept };
         call('state').then((v) => { S = null; seq = v.seq || 0; apply(v); schedule(); }).catch(() => { S = null; save(KEY, null); paintSetup(); });
