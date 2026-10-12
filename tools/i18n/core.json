@@ -27,6 +27,9 @@
   "bar_session_title": { "en": "Not saving to the course:", "es": "No se está guardando en el curso:" },
   "bar_session_text": { "en": "your session on the site has expired. What you have now stays on this computer.", "es": "la sesión del aula virtual ha caducado. Lo de ahora sigue en este ordenador." },
   "bar_session_login": { "en": "Log in again", "es": "Volver a entrar" },
+  "bar_split": { "en": "Two tools at once", "es": "Dos herramientas a la vez" },
+  "split_swap": { "en": "Swap sides", "es": "Cambiar de lado" },
+  "split_close": { "en": "One tool only", "es": "Una sola herramienta" },
 
   "gen_start": { "en": "Start", "es": "Empezar" },
   "gen_pause": { "en": "Pause", "es": "Pausa" },

@@ -1568,6 +1568,59 @@ const CHECKS = {
         if (q('.ct-sc-dialogo') && q('.ct-sc-dialogo').open) { return 'the dialog stayed open'; }
         return '';
     },
+    // Two tools at once: the board split in two halves, the half chosen by touching it and its tool with the tabs,
+    // swapping sides, the tab of the other half only choosing it, and back to one tool.
+    'split-screen': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const q = (x) => document.querySelector(x);
+        const shown = () => [...document.querySelectorAll('.herramienta:not([hidden])')].map((s) => s.id.slice(2) + (s.classList.contains('mitad-izq') ? '<' : '>')).sort().join(' ');
+        const C = window.ClasstoolsCore;
+        q('#t-juegos').click();
+        await sleep(200);
+        q('#b-dividir').click();
+        await sleep(300);
+        if (!q('#mesa').classList.contains('dividida') || shown() !== 'juegos< temporizador>') { return `split: ${shown()}`; }
+        if (C.current() !== 'juegos' || !q('#t-temporizador').classList.contains('en-la-otra')) { return 'the other half is not marked'; }
+        // The tab changes the half chosen; touching the other half chooses it.
+        q('#t-material').click();
+        await sleep(200);
+        if (shown() !== 'material< temporizador>') { return `left changed: ${shown()}`; }
+        q('#h-temporizador').dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }));
+        if (C.current() !== 'temporizador') { return 'touching the right half did not choose it'; }
+        q('#t-semaforo').click();
+        await sleep(200);
+        if (shown() !== 'material< semaforo>') { return `right changed: ${shown()}`; }
+        // The tab of the other half only chooses it.
+        q('#t-material').click();
+        if (shown() !== 'material< semaforo>' || C.current() !== 'material') { return `other tab: ${shown()} ${C.current()}`; }
+        q('#b-intercambiar').click();
+        await sleep(200);
+        if (shown() !== 'material> semaforo<') { return `swap: ${shown()}`; }
+        // A game next to the timer, for the picture.
+        q('#t-juegos').click();
+        await sleep(200);
+        q('#ga-mode [data-game="simon"]').click();
+        q('#h-semaforo').dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }));
+        q('#t-temporizador').click();
+        await sleep(500);
+        await window.shot('split-screen');
+        // Other pairs, for the pictures: each tool in its half.
+        for (const [left, right] of [['pizarra', 'material'], ['quien', 'semaforo'], ['envivo', 'marcador'], ['grupos', 'reloj'],
+            ['cronometro', 'azar'], ['asi', 'qr'], ['juegos', 'material']]) {
+            if (left === 'juegos') { q('#ga-mode [data-game="rosco"]').click(); q('#mt-mode [data-mode="calc"]').click(); }
+            q('.mesa .mitad-izq').dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }));
+            q(`#t-${left}`).click();
+            q('.mesa .mitad-der').dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }));
+            q(`#t-${right}`).click();
+            await sleep(500);
+            if (shown() !== [`${left}<`, `${right}>`].sort().join(' ')) { return `${left} and ${right}: ${shown()}`; }
+            await window.shot(`split-${left}-${right}`);
+        }
+        q('#b-juntar').click();
+        await sleep(200);
+        if (q('#mesa').classList.contains('dividida') || shown().split(' ').length !== 1) { return `joined: ${shown()}`; }
+        return '';
+    },
     // The calculator: the order of operations, the decimal sign, the strip of results, and both keyboards.
     'calculator': async () => {
         const sleep = (ms) => new Promise((r) => setTimeout(r, ms));

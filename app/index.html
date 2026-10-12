@@ -26,6 +26,7 @@
     <button type="button" role="tab" class="pestana" id="t-envivo" data-h="envivo" aria-controls="h-envivo" aria-selected="false" tabindex="-1"><span data-icono="mano"></span><span data-t="tab_live">En vivo</span></button>
   </nav>
   <div class="acciones">
+    <button type="button" class="redondo" id="b-dividir" aria-pressed="false" title="Dos herramientas a la vez" data-t-title="bar_split"><span data-icono="columnas"></span><span class="redondo-texto" data-t="bar_split">Dos herramientas a la vez</span></button>
     <button type="button" class="redondo" id="b-guia" title="Guía docente" data-t-title="gd_button" aria-haspopup="dialog"><span data-icono="info"></span><span class="redondo-texto" data-t="gd_button">Guía docente</span></button>
     <button type="button" class="redondo" id="b-sonido" aria-pressed="true" title="Sonido" data-t-title="bar_sound"><span data-icono="sonido"></span><span class="redondo-texto" data-t="bar_sound">Sonido</span></button>
     <button type="button" class="redondo" id="b-ventana" title="Abrir en otra ventana" data-t-title="bar_window" hidden><span data-icono="ventana"></span><span class="redondo-texto" data-t="bar_window">Abrir en otra ventana</span></button>
@@ -34,6 +35,11 @@
 </header>
 
 <main class="mesa" id="mesa">
+  <!-- Entre las dos mitades, cuando la pantalla está dividida -->
+  <div class="mesa-division" id="mesa-division" hidden>
+    <button type="button" class="redondo suave" id="b-intercambiar" title="Cambiar de lado" data-t-title="split_swap" data-t-aria="split_swap" aria-label="Cambiar de lado"><span data-icono="cambiar"></span></button>
+    <button type="button" class="redondo suave" id="b-juntar" title="Una sola herramienta" data-t-title="split_close" data-t-aria="split_close" aria-label="Una sola herramienta"><span data-icono="cerrar"></span></button>
+  </div>
   <!-- Temporizador -->
   <section class="herramienta temporizador" id="h-temporizador" role="tabpanel" aria-labelledby="t-temporizador">
     <div class="anillo" id="tm-anillo">

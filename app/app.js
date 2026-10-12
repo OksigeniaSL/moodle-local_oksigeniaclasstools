@@ -151,12 +151,40 @@
     const HERR = {};   // cada herramienta puede tener entra() y sale()
     const pestanas = $$('.pestana'), barra = $('#barra'), tira = $('#pestanas');
     let actual = 'temporizador';
+    // Pantalla dividida: dos herramientas a la vez, una en cada mitad. La mitad se elige tocándola (queda marcada) y su
+    // herramienta, con las pestañas; «actual» es la de la mitad elegida.
+    const mitades = { on: false, izq: 'temporizador', der: 'quien', foco: 'izq' };
+    const visibles = () => (mitades.on ? [mitades.izq, mitades.der] : [actual]);
     const muestra = (h, foco = false) => {
-        if (h !== actual && HERR[actual] && HERR[actual].sale) { HERR[actual].sale(); }
+        const antes = visibles();
+        if (mitades.on) {
+            // La pestaña de la otra mitad: pasa a ser la elegida, sin cambiar nada.
+            const otra = mitades.foco === 'izq' ? 'der' : 'izq';
+            if (mitades[otra] === h) { mitades.foco = otra; } else { mitades[mitades.foco] = h; }
+            guarda('dividida', { izq: mitades.izq, der: mitades.der });
+        }
         actual = h;
+        const ahora = visibles();
+        antes.filter((x) => !ahora.includes(x)).forEach((x) => { if (HERR[x] && HERR[x].sale) { HERR[x].sale(); } });
+        pintaPestanas(foco);
+        $$('.herramienta').forEach((s) => {
+            const id = s.id.slice(2);
+            s.hidden = !ahora.includes(id);
+            s.classList.toggle('mitad-izq', mitades.on && id === mitades.izq);
+            s.classList.toggle('mitad-der', mitades.on && id === mitades.der);
+            s.classList.toggle('con-foco', mitades.on && id === actual);
+        });
+        ahora.filter((x) => !antes.includes(x) || x === h).forEach((x) => { if (HERR[x] && HERR[x].entra) { HERR[x].entra(); } });
+        insignias();
+        if (barra.classList.contains('compacta')) { ajustaBarra(); }
+        document.dispatchEvent(new CustomEvent('classtools:tab', { detail: h }));
+    };
+    function pintaPestanas(foco) {
+        const otra = mitades.on ? mitades[mitades.foco === 'izq' ? 'der' : 'izq'] : '';
         pestanas.forEach((b) => {
-            const si = b.dataset.h === h;
+            const si = b.dataset.h === actual;
             b.setAttribute('aria-selected', String(si));
+            b.classList.toggle('en-la-otra', b.dataset.h === otra);
             b.tabIndex = si ? 0 : -1;
             if (si && foco) { b.focus(); }
             // En pantallas estrechas la tira de pestañas se desplaza: la elegida, siempre a la vista.
@@ -164,12 +192,49 @@
                 tira.scrollTo({ left: b.offsetLeft - (tira.clientWidth - b.offsetWidth) / 2, behavior: reducido() ? 'auto' : 'smooth' });
             }
         });
-        $$('.herramienta').forEach((s) => { s.hidden = s.id !== 'h-' + h; });
-        if (HERR[h] && HERR[h].entra) { HERR[h].entra(); }
-        insignias();
-        if (barra.classList.contains('compacta')) { ajustaBarra(); }
-        document.dispatchEvent(new CustomEvent('classtools:tab', { detail: h }));
+    }
+    // Dividir y juntar. Al dividir, la herramienta de ahora queda a la izquierda y a la derecha la última que hubo
+    // (o el temporizador); al juntar, se queda la de la mitad elegida.
+    const mesa = $('#mesa'), bDividir = $('#b-dividir');
+    const disponibles = () => pestanas.filter((b) => b.isConnected).map((b) => b.dataset.h);
+    const divide = (on) => {
+        if (on === mitades.on) { return; }
+        const antes = visibles();
+        if (on) {
+            const ultima = lee('dividida', {}) || {};
+            const otra = [ultima.der, ultima.izq, 'temporizador', 'quien'].find((x) => x && x !== actual && disponibles().includes(x));
+            Object.assign(mitades, { on: true, izq: actual, der: otra || disponibles().find((x) => x !== actual), foco: 'izq' });
+        } else { mitades.on = false; }
+        mesa.classList.toggle('dividida', mitades.on);
+        $('#mesa-division').hidden = !mitades.on;
+        bDividir.setAttribute('aria-pressed', String(mitades.on));
+        guarda('dividida-on', mitades.on);
+        if (mitades.on) { guarda('dividida', { izq: mitades.izq, der: mitades.der }); }
+        // Las que salen, salen; las que entran, entran (y se redibujan a su nuevo tamaño).
+        const ahora = visibles();
+        antes.filter((x) => !ahora.includes(x)).forEach((x) => { if (HERR[x] && HERR[x].sale) { HERR[x].sale(); } });
+        muestra(actual);
+        ahora.filter((x) => !antes.includes(x) && x !== actual).forEach((x) => { if (HERR[x] && HERR[x].entra) { HERR[x].entra(); } });
+        dispatchEvent(new Event('resize'));
     };
+    bDividir.addEventListener('click', () => divide(!mitades.on));
+    $('#b-juntar').addEventListener('click', () => divide(false));
+    $('#b-intercambiar').addEventListener('click', () => {
+        [mitades.izq, mitades.der] = [mitades.der, mitades.izq];
+        mitades.foco = mitades.foco === 'izq' ? 'der' : 'izq';
+        muestra(actual);
+        dispatchEvent(new Event('resize'));
+    });
+    // Tocar una mitad la elige (su pestaña se marca y el mando y el teclado van a ella).
+    mesa.addEventListener('pointerdown', (e) => {
+        const s = mitades.on && e.target.closest('.herramienta');
+        if (!s || s.id.slice(2) === actual) { return; }
+        mitades.foco = s.id.slice(2) === mitades.izq ? 'izq' : 'der';
+        actual = s.id.slice(2);
+        pintaPestanas(false);
+        $$('.herramienta').forEach((x) => x.classList.toggle('con-foco', x.id === 'h-' + actual));
+        document.dispatchEvent(new CustomEvent('classtools:tab', { detail: actual }));
+    }, true);
     pestanas.forEach((b) => b.addEventListener('click', () => muestra(b.dataset.h)));
     $('#pestanas').addEventListener('keydown', (e) => {
         const i = pestanas.findIndex((b) => b.dataset.h === actual), n = pestanas.length;
@@ -274,7 +339,7 @@
     mini.querySelector('#tm-mini-parar').setAttribute('aria-label', t('gen_reset'));
     function tmMini() {
         const activo = !tm.acabado && (tm.marcha || (tm.resta > 0 && tm.resta < tm.total));
-        mini.hidden = !activo || actual === 'temporizador';
+        mini.hidden = !activo || visibles().includes('temporizador');
         if (mini.hidden) { return; }
         mini.querySelector('#tm-mini-cifras').textContent = fmtSeg(Math.ceil(tm.resta / 1000));
         mini.querySelector('#tm-mini-arco').style.strokeDashoffset = String(100 * (1 - (tm.total ? tm.resta / tm.total : 0)));
@@ -730,9 +795,9 @@
     // Las pestañas del temporizador y del cronómetro avisan si siguen en marcha mientras usas otra herramienta.
     const insignias = () => {
         const it = $('#ins-temporizador'), ic = $('#ins-cronometro');
-        it.hidden = !(tm.marcha && actual !== 'temporizador');
+        it.hidden = !(tm.marcha && !visibles().includes('temporizador'));
         if (!it.hidden) { it.textContent = fmtSeg(Math.ceil(tm.resta / 1000)); }
-        ic.hidden = !(cr.marcha && actual !== 'cronometro');
+        ic.hidden = !(cr.marcha && !visibles().includes('cronometro'));
         if (!ic.hidden) { ic.textContent = fmtSeg(Math.floor(crTiempo() / 1000)); }
     };
 
@@ -1675,7 +1740,7 @@
             const flujo = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
             clearTimeout(espera);
             $('#s-sinmicro').hidden = true;
-            if (actual !== 'semaforo') { flujo.getTracks().forEach((t) => t.stop()); smZona(null); return; }
+            if (!visibles().includes('semaforo')) { flujo.getTracks().forEach((t) => t.stop()); smZona(null); return; }
             const a = audio();
             if (!a) { throw new Error('sin audio'); }
             sm.flujo = flujo;
@@ -2038,6 +2103,8 @@
     tmPon(5 * 60000);
     const hay = (h) => pestanas.some((b) => b.dataset.h === h);
     muestra(listasAula.length && hay('quien') ? 'quien' : (hay('temporizador') ? 'temporizador' : pestanas[0].dataset.h));
+    // La pantalla dividida, si se dejó así (en pantallas anchas).
+    if (lee('dividida-on', false) && innerWidth >= 900 && disponibles().length > 1) { divide(true); }
     ajustaBarra();
     try { SCORM.iniciar(); SCORM.guardar({}, 100, true); } catch (e) { /* sin Moodle */ }
 

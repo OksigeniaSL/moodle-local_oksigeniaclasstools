@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.44.0 (2026-10-12)
+
+- **Two tools at once**: «Two tools at once» on the bar splits the board in two halves (the timer next to a game, the
+  traffic light next to the work, the board next to a material, the scoreboard next to the quiz…). A half is chosen by
+  touching it (it is marked, and its tab too) and its tool with the tabs; the tab of the other half only chooses it.
+  Between the halves, «Swap sides» and «One tool only». The board remembers it was split. On screens under 900 pixels
+  wide it is not offered.
+- In a half, each tool fits it: the side panels go above when there is no room beside them, the timer puts its ring on
+  top, the traffic light keeps within its column, the QR and the calculator keep their drawing and their keys. Tools
+  that were working go on (the traffic light keeps listening while the other half is used), and the remote and the
+  keyboard go to the half chosen.
+
 ## 0.43.1 (2026-10-12)
 
 - The prompt of a song asks for the length on every note, and for each bar to add up to its time signature (the

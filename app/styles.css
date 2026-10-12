@@ -68,6 +68,42 @@ h2, h3 { margin: 0; }
 /* ---------- Piezas comunes ---------- */
 /* A los lados, algo más de aire: un proyector desajustado o torcido se come el borde de la imagen. */
 .mesa { position: relative; flex: 1; min-height: 0; padding: 1rem clamp(1.25rem, 2.5vw, 2.5rem); container-type: size; }
+/* Pantalla dividida: dos herramientas a la vez, con una tira fina entre ellas; la mitad elegida, marcada. Cada mitad es
+   su propio contenedor: lo que se mide con cq se ajusta a su mitad, y lo que lleva panel lateral lo pone encima si no
+   cabe al lado. */
+.mesa.dividida { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: .6rem; padding-inline: clamp(.6rem, 1.2vw, 1.2rem); }
+.mesa.dividida > .herramienta { grid-row: 1; min-width: 0; padding: .4rem; border-radius: var(--radio); container-type: size; transition: box-shadow .15s; }
+.mesa.dividida > .herramienta.mitad-izq { grid-column: 1; }
+.mesa.dividida > .herramienta.mitad-der { grid-column: 3; }
+.mesa.dividida > .herramienta.con-foco { box-shadow: inset 0 0 0 3px var(--azul-suave); }
+.mesa-division { display: flex; grid-column: 2; grid-row: 1; flex-direction: column; align-items: center; justify-content: center; gap: .6rem; }
+.mesa-division[hidden] { display: none; }
+.mesa-division .redondo { width: 2.4rem; height: 2.4rem; }
+.pestana.en-la-otra { box-shadow: inset 0 0 0 2px var(--azul); }
+/* Inside a half (its own container): the side panel above when the half is narrow. */
+@container (max-width: 44rem) {
+    .mesa.dividida :is(.ct-panel, .ct-simon, .ct-word-game, .ct-memory, .ct-secret, .ct-goal) { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); }
+    .mesa.dividida :is(.ct-panel, .ct-simon, .ct-word-game, .ct-memory, .ct-secret) > .ct-side, .mesa.dividida .lv > .lv-side { max-height: 34cqh; }
+    .mesa.dividida .temporizador > :not(.anillo) { max-height: 40cqh; overflow-y: auto; }
+    /* The calculator: a shorter side, and keys that keep a size to tap. */
+    .mesa.dividida .ct-panel:has(.ct-calc) > .ct-side { max-height: 24cqh; }
+    .mesa.dividida .ct-calc { overflow-y: auto; }
+    .mesa.dividida .ct-calc-display { min-height: 4.6rem; }
+    .mesa.dividida .ct-calc-grid { grid-auto-rows: minmax(2.4rem, 1fr); }
+    .mesa.dividida .ct-calc-key { font-size: clamp(1rem, 2.6cqh, 1.6rem); }
+}
+/* The tools whose half is itself the grid ask the whole board: under 88rem, each half is under 44rem. The timer, with
+   the ring on top, big, and its settings below. */
+/* The traffic light takes its width from its height: in a half, no wider than its column, and its settings narrower. */
+.mesa.dividida > .semaforo { grid-template-columns: minmax(0, 1fr) minmax(14rem, 22rem); gap: 1rem; }
+.mesa.dividida .farola { align-items: center; }
+.mesa.dividida .caja-semaforo { height: auto; width: min(100%, calc(100cqh / 2.6 - .5rem)); }
+@container (max-width: 88rem) {
+    .mesa.dividida > :is(.grupos, .qr, .lv) { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); }
+    .mesa.dividida > .qr > .qr-ajustes { max-height: 42cqh; }
+    .mesa.dividida > .temporizador { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto; }
+}
+@media (max-width: 899px) { #b-dividir { display: none; } }
 .herramienta { height: 100%; min-height: 0; animation: aparece .22s ease-out; }
 .tarjeta { min-width: 0; padding: 1rem 1.1rem; border: 1px solid var(--borde); border-radius: var(--radio); background: var(--superficie); box-shadow: var(--sombra); }
 .boton { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; min-height: 48px; padding: .55rem 1.2rem; border: 0; border-radius: 50rem; background: var(--azul); color: #fff; font-weight: 800; line-height: 1.15; cursor: pointer; box-shadow: 0 2px 0 rgba(15, 47, 94, .22); transition: background-color .15s, transform .1s; }
