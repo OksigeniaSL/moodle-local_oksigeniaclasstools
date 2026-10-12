@@ -950,5 +950,21 @@
     if (window.ResizeObserver) { new ResizeObserver(() => { if (!panel.hidden) { if (mode === 'game') { renderGame(); } else { render(); } } }).observe($('#sc-sheet')); }
     paintSongs(); paintTools(); paintKeys(); paintPlay();
 
-    window.ClasstoolsScore = { readText, readAbc, writeText, song: () => song, songs: () => all(), listen, stop, take, midi, state: () => ({ mode, sel, next, quiz, streak }) };   // for automated tests
+    // Notes played on their own, without the score on screen (the music questions of the quiz): in the voice of the
+    // score, or as claps for a rhythm. How long it lasts, in milliseconds.
+    const playNotes = (notes, tempo = 96, how = {}) => {
+        const a = ready();
+        if (!a) { return 0; }
+        const q = 60 / tempo / 4, start = a.currentTime + 0.15;
+        let at = 0;
+        notes.forEach((n) => {
+            if (!n.r) { if (how.clap) { clap(a, start + at * q); } else { sound(n, start + at * q, n.t * q * 0.95); } }
+            at += n.t;
+        });
+        return Math.round((at * q + 0.3) * 1000);
+    };
+    // The name of a note in the names the teacher uses (do re mi, or C D E).
+    const noteName = (s) => names()[letter(s)];
+    window.ClasstoolsScore = { readText, readAbc, writeText, song: () => song, songs: () => all(), listen, stop, take, midi, playNotes, noteName,
+        state: () => ({ mode, sel, next, quiz, streak }) };   // for automated tests (and the music questions of the quiz)
 })();

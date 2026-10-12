@@ -1144,7 +1144,8 @@ Vote: ask the question, open it, wait, close it and the bars appear; «Another q
 For Peer Instruction: they vote, discuss in pairs for a couple of minutes and vote again.
 Brainstorm: a word or two each; check them before showing them if needed.
 Without tablets: «Hands up», and you count with + and −.
-Fixed remote, on your phone and without logging in: the timer, picking someone, going to a tool, opening or closing the vote or the ticket, the curtain («Uncover a little» pulls it down), the relays, reading the cards and «Change the class», which takes the open board to another of your courses. It turns itself off after the hours without use that the school sets.';
+Fixed remote, on your phone and without logging in: the timer, picking someone, going to a tool, opening or closing the vote or the ticket, the curtain («Uncover a little» pulls it down), the relays, reading the cards and «Change the class», which takes the open board to another of your courses. It turns itself off after the hours without use that the school sets.
+Music quiz: «Music» makes the questions by itself (which song is it?, rhythm dictation with ta and ti-ti, or melody dictation from do) and the board plays each one as it opens; «Again» plays it once more.';
 $string['app_gd_envivo_scene'] = 'Before the experiment, Year 5 vote whether an egg floats in salty water: nearly everyone says no. They do the experiment and repeat the question with «Another question»; the bars change, and the best part begins: explaining why.';
 $string['app_gd_envivo_sources'] = 'Crouch, C. H. and Mazur, E. (2001). Peer Instruction: Ten years of experience and results. American Journal of Physics, 69(9), 970–977.|https://doi.org/10.1119/1.1374249
 White, R. T. and Gunstone, R. F. (1992). Probing Understanding. Falmer Press.';
@@ -2029,6 +2030,31 @@ $string['app_mode_primary'] = 'Primary';
 $string['app_mode_primary_hint'] = 'Ages 6 to 12';
 $string['app_mode_secondary'] = 'Secondary';
 $string['app_mode_secondary_hint'] = 'Ages 12 to 16: more sober';
+$string['app_mq_button'] = 'Music';
+$string['app_mq_count'] = 'How many questions';
+$string['app_mq_hard'] = 'Harder';
+$string['app_mq_hint'] = 'The questions make themselves; when each one opens, the board plays it, and «Again» plays it once more. The set stays with the others, to edit it or play it again.';
+$string['app_mq_kind_melody'] = 'Melody dictation';
+$string['app_mq_kind_rhythm'] = 'Rhythm dictation';
+$string['app_mq_kind_song'] = 'Which song is it?';
+$string['app_mq_make'] = 'Make the quiz';
+$string['app_mq_no_songs'] = 'The score needs at least four songs with a title.';
+$string['app_mq_q_melody'] = 'Which notes did you hear? (it starts on {$a})';
+$string['app_mq_q_rhythm'] = 'Which rhythm did you hear?';
+$string['app_mq_q_song'] = 'Which song is it?';
+$string['app_mq_replay'] = 'Again';
+$string['app_mq_set_melody'] = 'Music: melody dictation';
+$string['app_mq_set_rhythm'] = 'Music: rhythm dictation';
+$string['app_mq_set_song'] = 'Music: which song is it?';
+$string['app_mq_syl_rest'] = 'rest';
+$string['app_mq_syl_ta'] = 'ta';
+$string['app_mq_syl_taa'] = 'ta-a';
+$string['app_mq_syl_tiri'] = 'ti-ri-ti-ri';
+$string['app_mq_syl_titi'] = 'ti-ti';
+$string['app_mq_title'] = 'Music questions';
+$string['app_mq_what_melody'] = 'A few notes that start on do, and four ways of writing them.';
+$string['app_mq_what_rhythm'] = 'A bar of claps, and four rhythms written with ta, ti-ti, ta-a, ti-ri-ti-ri and the rest.';
+$string['app_mq_what_song'] = 'The beginning of a song of the score, and four titles to choose from.';
 $string['app_mt_balance'] = 'Balance scale';
 $string['app_mt_base10'] = 'Base 10 blocks';
 $string['app_mt_calc'] = 'Calculator';

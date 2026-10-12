@@ -3,7 +3,8 @@
 // its seconds, the answers from the devices, the right one revealed with how many chose each, points (calm: being
 // right; fast: also how soon), a ranking after each question and/or at the end (only the top ones, if the teacher
 // wants), teams from the groups made on the board or chosen on the devices, a podium, and a summary for the teacher.
-// A question can have a picture, shown on the board beside its answers.
+// A question can have a picture, shown on the board beside its answers, or music, which the board plays when the
+// question opens (musicquiz.js makes those sets: which song it is, and rhythm and melody dictations).
 //
 // @copyright 2026 Oksigenia <dev@oksigenia.cc>
 // @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -94,7 +95,8 @@
             <div class="qz-fila"><label class="campo apilado qz-crece"><span>${escape(t('qz_set'))}</span><select id="qz-set">${data.sets.map((x) => `<option value="${escape(x.id)}">${escape(x.name)} (${x.questions.length})</option>`).join('')}</select></label>
                 <button type="button" class="boton suave" id="qz-edit"><span data-icono="editar"></span><span>${escape(t('qz_edit'))}</span></button>
                 <button type="button" class="boton suave" id="qz-new"><span data-icono="nueva"></span><span>${escape(t('qz_new'))}</span></button>
-                ${AULA && AULA.bankurl ? `<button type="button" class="boton suave" id="qz-bank"><span data-icono="descargar"></span><span>${escape(t('qz_bank'))}</span></button>` : ''}</div>
+                ${AULA && AULA.bankurl ? `<button type="button" class="boton suave" id="qz-bank"><span data-icono="descargar"></span><span>${escape(t('qz_bank'))}</span></button>` : ''}
+                ${window.ClasstoolsMusicQuiz ? `<button type="button" class="boton suave" id="qz-music"><span data-icono="nota"></span><span>${escape(t('mq_button'))}</span></button>` : ''}</div>
             <div class="qz-opciones">
                 <div><p class="ante">${escape(t('qz_points'))}</p><div class="segmentos" id="qz-mode">${['calm', 'fast'].map((m) => `<button type="button" role="radio" data-v="${m}">${escape(t('qz_mode_' + m))}</button>`).join('')}</div>
                     <p class="nota">${escape(t('qz_mode_hint_' + opt.mode))}</p></div>
@@ -137,6 +139,43 @@
             data.sets.push(x); opt.set = x.id; keep(); keepOpt(); editor(x);
         });
         if ($('#qz-bank')) { $('#qz-bank').addEventListener('click', bankDialog); }
+        if ($('#qz-music')) { $('#qz-music').addEventListener('click', musicDialog); }
+    }
+
+    // A set of music questions that makes itself: which song it is, a rhythm or a melody dictation.
+    function musicDialog() {
+        const M = window.ClasstoolsMusicQuiz;
+        const last = Object.assign({ kind: 'song', n: 8, hard: false }, load('concurso-musica', {}));
+        openDialog(`<form method="dialog" class="qz-editor qz-musica"><h2>${escape(t('mq_title'))}</h2>
+            <p class="nota">${escape(t('mq_hint'))}</p>
+            <div class="segmentos" role="radiogroup" id="mq-kind">${M.KINDS.map((k) => `<button type="button" role="radio" data-v="${k}">${escape(t('mq_kind_' + k))}</button>`).join('')}</div>
+            <p class="nota" id="mq-what"></p>
+            <div class="qz-fila"><label class="campo apilado"><span>${escape(t('mq_count'))}</span><select id="mq-n">${[5, 8, 10, 15].map((n) => `<option value="${n}">${n}</option>`).join('')}</select></label>
+                <label class="interruptor"><input type="checkbox" id="mq-hard"><span>${escape(t('mq_hard'))}</span></label></div>
+            <p class="nota" id="mq-msg" aria-live="polite"></p>
+            <div class="botonera"><button type="submit" class="boton" id="mq-make"><span data-icono="nueva"></span><span>${escape(t('mq_make'))}</span></button>
+                <button type="button" class="boton suave" id="mq-cancel">${escape(t('wb_cancel'))}</button></div></form>`, (d) => {
+            const $ = (s) => d.querySelector(s);
+            let kind = M.KINDS.includes(last.kind) ? last.kind : 'song';
+            const paintKind = () => {
+                d.querySelectorAll('#mq-kind button').forEach((b) => b.setAttribute('aria-checked', String(b.dataset.v === kind)));
+                $('#mq-what').textContent = t('mq_what_' + kind);
+            };
+            paintKind();
+            $('#mq-n').value = String([5, 8, 10, 15].includes(Number(last.n)) ? last.n : 8);
+            $('#mq-hard').checked = !!last.hard;
+            $('#mq-kind').addEventListener('click', (e) => { const b = e.target.closest('[data-v]'); if (b) { kind = b.dataset.v; paintKind(); } });
+            $('#mq-cancel').addEventListener('click', closeDialog);
+            d.querySelector('form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const n = Number($('#mq-n').value), hard = $('#mq-hard').checked;
+                save('concurso-musica', { kind, n, hard });
+                const set = M.make(kind, n, hard);
+                if (!set) { $('#mq-msg').textContent = t('mq_no_songs'); return; }
+                data.sets.push(set); opt.set = set.id; keep(); keepOpt(); play('card');
+                closeDialog();
+            });
+        });
     }
 
     // What the session needs to open: the options, and the teams (from the groups: names and who is in each).
@@ -256,6 +295,8 @@
                 }
                 if (!item.q || item.o.length < 2 || item.c < 0) { $('#qz-msg').textContent = t('qz_need'); return; }
                 if (img) { item.img = img; }
+                // A music question keeps what it plays.
+                if (editing >= 0 && set.questions[editing].music) { item.music = set.questions[editing].music; }
                 if (editing >= 0) { set.questions[editing] = item; } else { set.questions.push(item); }
                 keep(); play('tic'); editor(set);
             });
@@ -350,6 +391,8 @@
         run.full = q.secs || run.secs; save(runKey(S), run);
         act('open', { q: q.q, options: JSON.stringify(q.o), correct: q.c, secs: run.full });
         play('tic');
+        // A music question: the board plays it as it opens.
+        if (q.music && window.ClasstoolsMusicQuiz) { setTimeout(() => window.ClasstoolsMusicQuiz.play(q.music), 700); }
     };
     const reveal = () => { if (revealing || !S || S.revealed) { return; } revealing = true; act('reveal'); };
     const total = () => (run && run.set ? run.set.questions.length : 0);
@@ -408,6 +451,7 @@
             <div class="lv-reloj" id="qz-clock"><span class="lv-reloj-pista"><i id="qz-clock-bar"></i></span><strong id="qz-clock-text"></strong></div>
             ${withPicture(q, tiles(q, v, false))}
             <div class="botonera centro lv-mandos"><p class="lv-grande qz-contestado">${escape(t('lv_answered', { n: v.answered, of: v.devices.length }))}</p>
+                ${q.music ? `<button type="button" class="boton suave" id="qz-replay"><span data-icono="sonido"></span><span>${escape(t('mq_replay'))}</span></button>` : ''}
                 <button type="button" class="boton amarillo" id="qz-reveal"><span data-icono="hecho"></span><span>${escape(t('qz_reveal'))}</span></button></div>`;
     }
     function showReveal(v) {
@@ -469,6 +513,9 @@
         const $ = (s) => stage.querySelector(s);
         if ($('#qz-go')) { $('#qz-go').addEventListener('click', () => { run.phase = ''; save(runKey(v), run); openQuestion(0); }); }
         if ($('#qz-reveal')) { $('#qz-reveal').addEventListener('click', reveal); }
+        if ($('#qz-replay')) {
+            $('#qz-replay').addEventListener('click', () => { const q = question(v.round - 1); if (q && q.music && window.ClasstoolsMusicQuiz) { window.ClasstoolsMusicQuiz.play(q.music); } });
+        }
         if ($('#qz-next')) {
             $('#qz-next').addEventListener('click', () => {
                 const last = v.round >= total();

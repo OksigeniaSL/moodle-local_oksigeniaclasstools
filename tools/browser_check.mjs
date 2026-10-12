@@ -1706,6 +1706,39 @@ const CHECKS = {
         if (T.current().title !== 'Mine' || which.selectedOptions[0].textContent !== 'Mine') { return 'the own timeline was not kept'; }
         return '';
     },
+    // Music questions for the quiz: sets that make themselves (which song, rhythm and melody dictations), four
+    // different answers with the right one among them, and what each one plays.
+    'music-quiz': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const q = (x) => document.querySelector(x);
+        q('#t-envivo').click();
+        await sleep(200);
+        q('#lv-kind [data-v="quiz"]').click();
+        await sleep(200);
+        if (!q('#qz-music')) { return 'no music button'; }
+        const M = window.ClasstoolsMusicQuiz;
+        for (const [kind, hard] of [['song', false], ['rhythm', false], ['rhythm', true], ['melody', false], ['melody', true]]) {
+            const set = M.make(kind, 8, hard);
+            if (!set || set.questions.length !== 8) { return `${kind}: ${set ? set.questions.length : 'none'}`; }
+            for (const x of set.questions) {
+                if (new Set(x.o).size !== x.o.length || x.o.length !== 4 || x.c < 0 || x.c > 3) { return `${kind} options: ${JSON.stringify(x.o)} ${x.c}`; }
+                if (!x.music || !x.music.notes.length) { return `${kind}: nothing to play`; }
+                if (kind === 'rhythm' && x.music.notes.reduce((a, n) => a + n.t, 0) !== 16) { return 'a rhythm that is not one bar of four'; }
+            }
+            if (kind === 'melody' && !set.questions.every((x) => /^do /.test(x.o[x.c]) || /^C /.test(x.o[x.c]))) { return 'a melody that does not start on do'; }
+        }
+        if (!(M.play(M.make('melody', 1, false).questions[0].music) > 0)) { return 'nothing played'; }
+        // From the dialog: the set goes with the others and is chosen.
+        q('#qz-music').click();
+        await sleep(200);
+        q('#mq-kind [data-v="rhythm"]').click();
+        q('form.qz-musica').dispatchEvent(new Event('submit', { cancelable: true }));
+        await sleep(300);
+        const chosen = q('#qz-set').selectedOptions[0].textContent;
+        if (!/Music: rhythm dictation \(8\)/.test(chosen)) { return `set chosen: ${chosen}`; }
+        await window.shot('music-quiz');
+        return '';
+    },
     // The calculator: the order of operations, the decimal sign, the strip of results, and both keyboards.
     'calculator': async () => {
         const sleep = (ms) => new Promise((r) => setTimeout(r, ms));

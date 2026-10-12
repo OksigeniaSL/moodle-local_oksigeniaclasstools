@@ -1146,7 +1146,8 @@ Votación: haz la pregunta, abre, espera, cierra y salen las barras; «Otra preg
 Para la instrucción entre iguales: votan, lo discuten en parejas un par de minutos y vuelven a votar.
 Lluvia de ideas: una o dos palabras cada uno; revísalas antes de mostrarlas si hace falta.
 Sin tabletas: «A mano alzada», y cuentas tú con + y −.
-Mando fijo, en tu móvil y sin entrar en el Aula virtual: el temporizador, elegir a alguien, ir a una herramienta, abrir o cerrar la votación o el billete, la cortina («Destapar un poco» va bajándola), los relevos, leer las tarjetas y «Cambiar de clase», que lleva la pizarra abierta a otro de tus cursos. Se apaga solo tras las horas sin usarlo que fije el centro.';
+Mando fijo, en tu móvil y sin entrar en el Aula virtual: el temporizador, elegir a alguien, ir a una herramienta, abrir o cerrar la votación o el billete, la cortina («Destapar un poco» va bajándola), los relevos, leer las tarjetas y «Cambiar de clase», que lleva la pizarra abierta a otro de tus cursos. Se apaga solo tras las horas sin usarlo que fije el centro.
+Concurso de música: «Música» hace las preguntas solas (¿qué canción es?, dictado rítmico con ta y ti-ti, o dictado melódico desde do) y la pizarra toca cada una al abrirla; «Otra vez» la repite.';
 $string['app_gd_envivo_scene'] = 'Antes del experimento, la clase de cuarto vota si el huevo flota en agua con sal: casi todos dicen que no. Hacen el experimento y repiten la pregunta con «Otra pregunta»; las barras cambian, y empieza la mejor parte: explicar por qué.';
 $string['app_gd_envivo_sources'] = 'Crouch, C. H. y Mazur, E. (2001). Peer Instruction: Ten years of experience and results. American Journal of Physics, 69(9), 970–977.|https://doi.org/10.1119/1.1374249
 White, R. T. y Gunstone, R. F. (1992). Probing Understanding. Falmer Press.';
@@ -2031,6 +2032,31 @@ $string['app_mode_primary'] = 'Primaria';
 $string['app_mode_primary_hint'] = 'De 6 a 12 años';
 $string['app_mode_secondary'] = 'Secundaria';
 $string['app_mode_secondary_hint'] = 'De 12 a 16 años: más sobrio';
+$string['app_mq_button'] = 'Música';
+$string['app_mq_count'] = 'Cuántas preguntas';
+$string['app_mq_hard'] = 'Más difícil';
+$string['app_mq_hint'] = 'Las preguntas se hacen solas; al abrir cada una, la pizarra la toca, y «Otra vez» la repite. El concurso se queda con los demás, para editarlo o jugarlo otra vez.';
+$string['app_mq_kind_melody'] = 'Dictado melódico';
+$string['app_mq_kind_rhythm'] = 'Dictado rítmico';
+$string['app_mq_kind_song'] = '¿Qué canción es?';
+$string['app_mq_make'] = 'Crear el concurso';
+$string['app_mq_no_songs'] = 'La partitura necesita al menos cuatro canciones con título.';
+$string['app_mq_q_melody'] = '¿Qué notas han sonado? (empieza en {$a})';
+$string['app_mq_q_rhythm'] = '¿Qué ritmo ha sonado?';
+$string['app_mq_q_song'] = '¿Qué canción es?';
+$string['app_mq_replay'] = 'Otra vez';
+$string['app_mq_set_melody'] = 'Música: dictado melódico';
+$string['app_mq_set_rhythm'] = 'Música: dictado rítmico';
+$string['app_mq_set_song'] = 'Música: ¿qué canción es?';
+$string['app_mq_syl_rest'] = 'silencio';
+$string['app_mq_syl_ta'] = 'ta';
+$string['app_mq_syl_taa'] = 'ta-a';
+$string['app_mq_syl_tiri'] = 'ti-ri-ti-ri';
+$string['app_mq_syl_titi'] = 'ti-ti';
+$string['app_mq_title'] = 'Preguntas de música';
+$string['app_mq_what_melody'] = 'Unas notas que empiezan en do, y cuatro maneras de escribirlas.';
+$string['app_mq_what_rhythm'] = 'Un compás de palmas, y cuatro ritmos escritos con ta, ti-ti, ta-a, ti-ri-ti-ri y el silencio.';
+$string['app_mq_what_song'] = 'El principio de una canción de la partitura, y cuatro títulos para elegir.';
 $string['app_mt_balance'] = 'Balanza';
 $string['app_mt_base10'] = 'Bloques de base 10';
 $string['app_mt_calc'] = 'Calculadora';

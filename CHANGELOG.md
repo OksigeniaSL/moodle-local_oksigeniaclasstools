@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.47.0 (2026-10-12)
+
+- **Music in the live quiz**: «Music», when setting a quiz up, makes a set of questions by itself: «Which song is
+  it?» (the beginning of a song of the score, and four titles), «Rhythm dictation» (a bar of claps, and four rhythms
+  written with ta, ti-ti, ta-a, ti-ri-ti-ri and the rest) or «Melody dictation» (a few notes from do, and four ways of
+  writing them in the names the teacher uses), easier or harder, 5 to 15 questions. The board plays each question as
+  it opens, with time to listen and then to answer, and «Again» plays it once more. The set stays with the others and
+  is played like any quiz (points, teams, ranking, podium); editing a question keeps what it plays.
+
 ## 0.46.0 (2026-10-12)
 
 - **Timeline**, among the materials (Primary and up): events (a point) and periods (a bar) on a line that zooms from
