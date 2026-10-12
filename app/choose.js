@@ -49,7 +49,8 @@
         if (a && typeof a === 'object') { Object.keys(a).forEach((k) => { s = s.split(`{$a->${k}}`).join(a[k]); }); } else if (a !== undefined) { s = s.split('{$a}').join(a); }
         return s;
     };
-    const got = A.items.filter((i) => i.level > 0).sort((a, b) => b.level - a.level);
+    // Got: used for real with a class (a level), or learned in its guided help («Learned»).
+    const got = A.items.filter((i) => i.level > 0 || i.learned).sort((a, b) => b.level - a.level);
     $('#ct-ch-tira').innerHTML = got.length
         ? got.slice(0, 4).map((i) => `<span class="ct-ch-mini">${L.draw(i.cromo, i.level, t)}</span>`).join('')
         : `<p class="ct-ch-nota">${L.esc(t('cr_none'))}</p>`;
@@ -57,9 +58,11 @@
     const dialog = $('#ct-ch-album');
     const paintAlbum = () => {
         $('#ct-ch-semanas').textContent = A.weeks || '';
-        $('#ct-ch-album-rejilla').innerHTML = A.items.map((i) => (i.level > 0
-            ? `<figure class="ct-ch-cromo">${L.draw(i.cromo, i.level, t)}<figcaption><strong>${L.esc(i.days)}</strong>${L.esc(i.next)}</figcaption></figure>`
-            : `<figure class="ct-ch-cromo ct-ch-hueco">${L.draw(i.cromo, 1, t)}<figcaption><strong>${L.esc(t('cr_missing'))}</strong>${L.esc(i.how)}</figcaption></figure>`)).join('');
+        $('#ct-ch-album-rejilla').innerHTML = A.items.map((i) => {
+            if (i.level > 0) { return `<figure class="ct-ch-cromo">${L.draw(i.cromo, i.level, t)}<figcaption><strong>${L.esc(i.days)}</strong>${L.esc(i.next)}</figcaption></figure>`; }
+            if (i.learned) { return `<figure class="ct-ch-cromo">${L.draw(i.cromo, 0, t)}<figcaption><strong>${L.esc(t('cr_level_0'))}</strong>${L.esc(i.how)}</figcaption></figure>`; }
+            return `<figure class="ct-ch-cromo ct-ch-hueco">${L.draw(i.cromo, 1, t)}<figcaption><strong>${L.esc(t('cr_missing'))}</strong>${L.esc(i.how)}</figcaption></figure>`;
+        }).join('');
     };
     $('#ct-ch-abrir').addEventListener('click', () => { paintAlbum(); dialog.showModal(); });
     $('#ct-ch-cerrar').addEventListener('click', () => dialog.close());

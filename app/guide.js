@@ -75,8 +75,13 @@
             // Links open in a new tab, so Moodle is not lost.
             return `<li>${escape(ref)}${url ? ` <a href="${escape(url)}" target="_blank" rel="noopener">${escape(url.replace(/^https?:\/\//, ''))}</a>` : ''}</li>`;
         }).join('');
+        // Its guided helps: the board shows how it is done, and then the teacher does it.
+        const helps = core.help ? core.help.of(id) : [];
+        const watch = helps.length ? section('ct-guia-ayudas', 'empezar', t('hp_watch'), `<div class="ct-guia-lista">${helps.map((h) => `<button type="button" class="boton" data-help="${h}">`
+            + `<span aria-hidden="true">${icon('empezar')}</span><span>${escape(t(`hp_${h}_title`))}</span></button>`).join('')}</div>`) : '';
         sheet.innerHTML = head
             + `<p class="ct-guia-lead">${escape(t(k('what')))}</p>`
+            + watch
             + section('ct-guia-trabaja', 'acierto', t('gd_works'), `<ul>${lines(k('works')).map((x) => `<li>${escape(x)}</li>`).join('')}</ul>`)
             + section('ct-guia-porque', 'aprender', t('gd_why'), lines(k('why')).map((x) => `<p>${escape(x)}</p>`).join(''))
             + section('ct-guia-como', 'lista', t('gd_how'), `<ol>${lines(k('how')).map((x) => `<li>${escape(x)}</li>`).join('')}</ol>`)
@@ -102,6 +107,8 @@
     button.addEventListener('click', () => (sheet.hidden ? open() : close()));
     sheet.addEventListener('click', (e) => {
         if (e.target.closest('[data-a="close"]')) { close(); return; }
+        const help = e.target.closest('[data-help]');
+        if (help && core.help) { close(); core.help.open(help.dataset.help); return; }
         const other = e.target.closest('[data-guide], [data-a="index"]');
         if (!other) { return; }
         paint(other.dataset.guide || 'index');

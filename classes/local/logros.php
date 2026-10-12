@@ -148,16 +148,55 @@ class logros {
      * @param int $userid
      * @return array cromos (cromo, family, days, level, next: days for the next level), got, weeks, weeksneeded
      */
+    /**
+     * A sticker learned: the «Now you» of its guided help, done on the practice board (once is enough).
+     *
+     * @param int $userid
+     * @param int $courseid Where the help was opened.
+     * @param string $cromo
+     * @return array The sticker, that it is learned, and whether it was already.
+     */
+    public static function learn(int $userid, int $courseid, string $cromo): array {
+        global $DB;
+        if (!isset(self::CROMOS[$cromo])) {
+            throw new \moodle_exception('invalidparameter', 'debug');
+        }
+        $before = $DB->record_exists('local_oksigeniaclasstools_learnt', ['userid' => $userid, 'cromo' => $cromo]);
+        if (!$before) {
+            try {
+                $DB->insert_record('local_oksigeniaclasstools_learnt', (object) [
+                    'userid' => $userid, 'courseid' => $courseid, 'cromo' => $cromo, 'timecreated' => time(),
+                ]);
+            } catch (\dml_write_exception $e) {
+                // Learned twice at once: it is already there.
+                unset($e);
+            }
+        }
+        return ['cromo' => $cromo, 'learned' => true, 'before' => $before];
+    }
+
+    /**
+     * The stickers a teacher has learned in the guided helps.
+     *
+     * @param int $userid
+     * @return string[]
+     */
+    public static function learned(int $userid): array {
+        global $DB;
+        return array_values($DB->get_fieldset_select('local_oksigeniaclasstools_learnt', 'cromo', 'userid = ?', [$userid]));
+    }
+
     public static function album(int $userid): array {
         $days = self::days($userid);
+        $learned = array_flip(self::learned($userid));
         $cromos = [];
         foreach (self::CROMOS as $cromo => $family) {
             $d = $days[$cromo] ?? 0;
             $level = self::level($d);
             $cromos[] = ['cromo' => $cromo, 'family' => $family, 'days' => $d, 'level' => $level,
-                'next' => self::LEVELS[$level + 1] ?? 0];
+                'learned' => isset($learned[$cromo]), 'next' => self::LEVELS[$level + 1] ?? 0];
         }
-        return ['cromos' => $cromos, 'got' => count(array_filter($cromos, fn($c) => $c['level'] > 0)),
+        return ['cromos' => $cromos, 'got' => count(array_filter($cromos, fn($c) => $c['level'] > 0 || $c['learned'])),
             'weeks' => self::weeks($userid), 'weeksneeded' => self::WEEKS];
     }
 
@@ -171,5 +210,6 @@ class logros {
         global $DB;
         $where = ['userid' => $userid] + ($courseid ? ['courseid' => $courseid] : []);
         $DB->delete_records('local_oksigeniaclasstools_uses', $where);
+        $DB->delete_records('local_oksigeniaclasstools_learnt', $where);
     }
 }

@@ -30,12 +30,18 @@ use local_oksigeniaclasstools\local\logros;
 
 $courseid = required_param('courseid', PARAM_INT);
 $cromo = required_param('cromo', PARAM_ALPHA);
+// «use»: a real use with a class; «learn»: the «Now you» of the guided help of the tool, done.
+$action = optional_param('action', 'use', PARAM_ALPHA);
 require_sesskey();
 $course = get_course($courseid);
 require_login($course, false, null, false, true);
 require_capability('local/oksigeniaclasstools:use', context_course::instance($course->id));
 if (!logros::on()) {
     echo json_encode(['off' => true]);
+    exit;
+}
+if ($action === 'learn') {
+    echo json_encode(logros::learn((int) $USER->id, (int) $course->id, $cromo));
     exit;
 }
 echo json_encode(logros::record((int) $USER->id, (int) $course->id, $cromo));

@@ -340,6 +340,7 @@ function local_oksigeniaclasstools_data(stdClass $course, context_course $contex
             ? (new moodle_url('/local/oksigeniaclasstools/logros.php'))->out(false) : null,
         'logros' => \local_oksigeniaclasstools\local\logros::on() ? [
             'thr' => \local_oksigeniaclasstools\local\logros::thresholds(),
+            'learned' => \local_oksigeniaclasstools\local\logros::learned((int) $USER->id),
             'levels' => (object) array_map(
                 fn($days) => \local_oksigeniaclasstools\local\logros::level($days),
                 \local_oksigeniaclasstools\local\logros::days((int) $USER->id)
@@ -603,6 +604,7 @@ function local_oksigeniaclasstools_album(int $userid): ?array {
         $items[] = [
             'cromo' => $c['cromo'],
             'level' => $c['level'],
+            'learned' => !empty($c['learned']),
             'days' => $c['days'] === 1 ? get_string('app_cr_day', $component) : get_string('app_cr_days', $component, $c['days']),
             'next' => $c['next'] ? get_string('app_cr_next', $component, $c['next']) : get_string('app_cr_top', $component),
             'how' => get_string('app_cr_' . $c['cromo'] . '_how', $component, $a),

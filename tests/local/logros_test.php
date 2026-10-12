@@ -67,7 +67,10 @@ final class logros_test extends \advanced_testcase {
         $this->assertCount(count(logros::CROMOS), $album['cromos']);
         $this->assertSame(1, $album['got']);
         $dice = array_values(array_filter($album['cromos'], fn($c) => $c['cromo'] === 'tiradados'))[0];
-        $this->assertSame(['cromo' => 'tiradados', 'family' => 'dice', 'days' => 1, 'level' => 1, 'next' => 3], $dice);
+        $this->assertSame(
+            ['cromo' => 'tiradados', 'family' => 'dice', 'days' => 1, 'level' => 1, 'learned' => false, 'next' => 3],
+            $dice
+        );
         $this->assertSame(1, $album['weeks']);
         $this->assertSame(['devices' => 5, 'picks' => 5, 'students' => 8], logros::thresholds());
         set_config('logros_devices', 12, 'local_oksigeniaclasstools');
@@ -76,6 +79,30 @@ final class logros_test extends \advanced_testcase {
         set_config('logros', 0, 'local_oksigeniaclasstools');
         $this->assertFalse(logros::on());
         $this->assertNull(\local_oksigeniaclasstools_album((int) $teacher->id));
+    }
+
+    public function test_a_sticker_learned_in_its_guided_help(): void {
+        $this->resetAfterTest();
+        $teacher = $this->getDataGenerator()->create_user();
+        $course = $this->getDataGenerator()->create_course();
+        $this->assertSame(['cromo' => 'domamoviles', 'learned' => true, 'before' => false], logros::learn(
+            (int) $teacher->id,
+            (int) $course->id,
+            'domamoviles'
+        ));
+        // Learned again: kept once, and said so.
+        $this->assertTrue(logros::learn((int) $teacher->id, (int) $course->id, 'domamoviles')['before']);
+        $this->assertSame(['domamoviles'], logros::learned((int) $teacher->id));
+        // Learned is not a use: no days, no level, but the sticker is in the album.
+        $this->assertSame([], logros::days((int) $teacher->id));
+        $album = logros::album((int) $teacher->id);
+        $this->assertSame(1, $album['got']);
+        $tamer = array_values(array_filter($album['cromos'], fn($c) => $c['cromo'] === 'domamoviles'))[0];
+        $this->assertSame(0, $tamer['level']);
+        $this->assertTrue($tamer['learned']);
+        // And privacy forgets it with the course.
+        \local_oksigeniaclasstools\privacy\provider::delete_data_for_all_users_in_context(\context_course::instance($course->id));
+        $this->assertSame([], logros::learned((int) $teacher->id));
     }
 
     public function test_privacy_forgets_the_uses_of_a_course(): void {

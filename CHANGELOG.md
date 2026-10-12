@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.50.0 (2026-10-12)
+
+- **Guided helps**, in the teacher's guide of «Live»; the first two, «Getting the class in» and «Vote: predict before
+  the experiment». The board shows how it is done on a practice board, with an invented class whose devices join and
+  vote by themselves: a pointer does what the voice says (Spanish or English; in other languages, captions only), step
+  by step, with captions. Then «Now you»: each button is ringed in turn, the teacher presses it, and the sticker of the
+  tool is theirs, at the level «Learned», kept in Moodle and shown in the album of «Which class?». Steps can be gone
+  back and forward, the captions hidden and «Now you» skipped.
+- The practice board reads and saves nothing of the teacher's, and nothing done in it counts as a use for the stickers.
+- Privacy: the stickers learned are exported and deleted with the course where their help was opened.
+
 ## 0.49.0 (2026-10-12)
 
 - **3D shapes**, among the materials (Infantil to Bachillerato): prisms (cube, cuboid, triangular, pentagonal and

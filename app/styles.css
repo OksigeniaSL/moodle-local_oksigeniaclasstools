@@ -2293,3 +2293,58 @@ dialog.ct-sc-dialogo { width: min(40rem, 94vw); }
 @supports not selector(::-webkit-scrollbar) {
     * { scrollbar-width: thin; scrollbar-color: rgba(22, 66, 129, .35) transparent; }
 }
+/* Guided helps (help.js): the practice board in a frame, the pointer that does what the voice says, the ring of «Now you»,
+   and the bar with the step, the caption and the controls. */
+.hp { position: fixed; inset: 0; z-index: 3000; display: grid; grid-template-rows: minmax(0, 1fr) auto; background: var(--fondo); }
+.hp-escena { position: relative; min-height: 0; }
+.hp-pizarra { display: block; width: 100%; height: 100%; border: 0; background: var(--fondo); }
+.hp-fx { position: fixed; inset: 0; pointer-events: none; }
+.hp-cursor { position: fixed; left: -60px; top: -60px; z-index: 5; width: 34px; height: 40px; filter: drop-shadow(0 3px 6px rgba(15, 47, 94, .35)); transition: left .75s cubic-bezier(.22, .8, .24, 1), top .75s cubic-bezier(.22, .8, .24, 1), transform .15s; }
+.hp-cursor.press { transform: scale(.82); }
+.hp-cursor.off { opacity: 0; }
+.hp-onda { position: fixed; z-index: 4; width: 18px; height: 18px; margin: -9px 0 0 -9px; border: 3px solid var(--amarillo); border-radius: 50%; animation: hp-onda .6s ease-out forwards; }
+@keyframes hp-onda { to { transform: scale(4.2); opacity: 0; } }
+.hp-anillo { position: fixed; z-index: 3; border: 4px solid var(--amarillo); border-radius: 16px; box-shadow: 0 0 0 9999px rgba(15, 47, 94, .28), 0 0 24px rgba(251, 190, 23, .8); opacity: 0; transition: opacity .3s, left .4s, top .4s, width .4s, height .4s; }
+.hp-anillo.on { opacity: 1; animation: hp-latido 1.2s ease-in-out infinite; }
+@keyframes hp-latido { 50% { box-shadow: 0 0 0 9999px rgba(15, 47, 94, .28), 0 0 38px rgba(251, 190, 23, 1); } }
+.hp-pista { position: fixed; z-index: 6; max-width: 360px; padding: 12px 18px; border-radius: 14px; background: var(--azul); color: #fff; font-size: 20px; font-weight: 800; box-shadow: 0 12px 30px rgba(15, 47, 94, .35); opacity: 0; transform: translateY(6px); transition: opacity .25s, transform .25s; }
+.hp-pista.on { opacity: 1; transform: none; }
+.hp-pista small { display: block; margin-bottom: 2px; color: var(--amarillo); font-size: 13px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+.hp-turno { position: absolute; inset: 0; z-index: 7; display: grid; place-items: center; background: rgba(244, 247, 251, .86); opacity: 0; transition: opacity .3s; }
+.hp-turno.on { opacity: 1; }
+.hp-turno div { color: var(--azul); font-size: 64px; font-weight: 900; }
+.hp-puerta { position: absolute; inset: 0; z-index: 9; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; border: 0; background: rgba(244, 247, 251, .55); backdrop-filter: blur(5px); color: var(--azul-osc); font: inherit; cursor: pointer; }
+.hp-puerta b { font-size: 30px; font-weight: 900; }
+.hp-puerta > span:last-child { color: var(--tinta-3); font-size: 18px; font-weight: 700; }
+.hp-disco { display: grid; place-items: center; width: 128px; height: 128px; border-radius: 50%; background: var(--azul); color: #fff; box-shadow: 0 18px 40px rgba(22, 66, 129, .35); }
+.hp-disco svg { width: 52px; height: 52px; margin-left: 8px; }
+.hp-puerta:focus-visible .hp-disco { outline: 4px solid var(--amarillo); outline-offset: 4px; }
+.hp-premio { position: absolute; inset: 0; z-index: 8; display: grid; place-items: center; background: rgba(15, 47, 94, .35); opacity: 0; pointer-events: none; transition: opacity .35s; }
+.hp-premio.on { opacity: 1; pointer-events: auto; }
+.hp-cromo { width: 330px; transform: scale(.6) rotate(-8deg); transition: transform .6s cubic-bezier(.2, 1.6, .4, 1); filter: drop-shadow(0 30px 50px rgba(15, 47, 94, .45)); }
+.hp-premio.on .hp-cromo { transform: scale(1) rotate(-2deg); }
+.hp-cromo svg { display: block; width: 100%; height: auto; }
+.hp-confeti { position: absolute; inset: 0; z-index: 9; width: 100%; height: 100%; pointer-events: none; }
+.hp-barra { position: relative; z-index: 10; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 24px; padding: 14px 26px 12px; border-top: 1px solid var(--borde); background: #fff; }
+.hp-barra::before { content: ""; position: absolute; top: -6px; left: 0; right: 0; height: 6px; background: linear-gradient(90deg, var(--rojo) 0 25%, var(--amarillo) 25% 50%, var(--verde) 50% 75%, var(--azul) 75%); }
+.hp-paso { margin: 0; color: var(--azul); font-size: 14px; font-weight: 900; letter-spacing: .14em; text-transform: uppercase; }
+.hp-paso.tu { color: var(--rojo); }
+.hp-sub { min-height: 2.6em; max-width: 1200px; margin: 2px 0 0; color: var(--azul-osc); font-size: clamp(18px, 1.9vw, 24px); font-weight: 700; line-height: 1.3; }
+.hp-sub.off { visibility: hidden; }
+.hp-mandos { display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between; gap: 8px; }
+.hp-botones { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
+.hp-botones button { display: grid; place-items: center; width: 46px; height: 46px; border: 0; border-radius: 50%; background: var(--azul-suave); color: var(--azul); font: inherit; font-weight: 900; cursor: pointer; }
+.hp-botones button svg { width: 22px; height: 22px; }
+.hp-botones #hp-play { background: var(--azul); color: #fff; }
+.hp-botones .hp-texto { width: auto; padding: 0 18px; border-radius: 50rem; }
+.hp-botones button[hidden] { display: none; }
+.hp-botones button:focus-visible { outline: 3px solid var(--amarillo); outline-offset: 2px; }
+.hp-puntos { display: flex; gap: 6px; }
+.hp-puntos i { width: 10px; height: 10px; border-radius: 50%; background: #d9e2ee; }
+.hp-puntos i.done { background: var(--azul); }
+.hp-puntos i.on { background: var(--amarillo); transform: scale(1.3); }
+.hp-puntos i.tu { border: 2px solid var(--rojo); }
+.hp-ficticio { margin: 0; color: var(--tinta-3); font-size: 13px; font-weight: 800; }
+@media (prefers-reduced-motion: reduce) { .hp-cursor, .hp-anillo, .hp-cromo { transition: none; } .hp-anillo.on { animation: none; } }
+/* The helps of a tool, in its teacher's guide. */
+.ct-guia-ayudas .ct-guia-lista { display: flex; flex-wrap: wrap; gap: .5rem; }

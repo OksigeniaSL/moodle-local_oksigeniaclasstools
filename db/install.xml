@@ -119,5 +119,21 @@
         <INDEX NAME="userid-cromo-courseid-day" UNIQUE="true" FIELDS="userid, cromo, courseid, day"/>
       </INDEXES>
     </TABLE>
+    <TABLE NAME="local_oksigeniaclasstools_learnt" COMMENT="The stickers a teacher has learned: the «Now you» of their guided help, done on the practice board">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="The teacher"/>
+        <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Where the help was opened"/>
+        <FIELD NAME="cromo" TYPE="char" LENGTH="20" NOTNULL="true" SEQUENCE="false" COMMENT="The sticker (one per tool)"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="userid-cromo" UNIQUE="true" FIELDS="userid, cromo"/>
+      </INDEXES>
+    </TABLE>
   </TABLES>
 </XMLDB>

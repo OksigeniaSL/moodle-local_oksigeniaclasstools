@@ -77,6 +77,7 @@ window.shot = (name) => new Promise((done) => { if (!window.checkShot) { done();
         }
         // The teacher's stickers, as logros.php gives it: the first use of a sticker is its level 1.
         if (String(url).startsWith('fake://logros')) {
+            if (a === 'learn') { return json({ cromo: p.get('cromo'), learned: true, before: false }); }
             return json({ cromo: p.get('cromo'), days: 1, level: 1, up: true });
         }
         // The phone of the fixed remote, as mandoapi.php gives it: two open boards.
@@ -1781,6 +1782,55 @@ const CHECKS = {
         if (!q('#sd-fold').disabled || !/cannot be unfolded/.test(q('#sd-net').textContent)) { return 'the sphere unfolds'; }
         D.choose('cubo');
         return '';
+    },
+    // The guided helps: in the guide of «Live», each one plays whole on the practice board (with an invented class and
+    // a pretend Moodle, nothing of the teacher's touched), «Now you» done by the pointer, and the sticker learned.
+    'helps': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const q = (x) => document.querySelector(x);
+        const kept = () => Object.keys(localStorage).filter((k) => k.startsWith('pizarra:')).sort().join();
+        q('#t-envivo').click();
+        await sleep(300);
+        const before = kept();
+        // In the guide of «Live» (whatever is open in it), its helps.
+        q('#b-guia').click();
+        await sleep(200);
+        q('.ct-guia [data-a="index"]').click();
+        q('.ct-guia [data-guide="envivo"]').click();
+        await sleep(100);
+        const buttons = [...document.querySelectorAll('.ct-guia [data-help]')].map((b) => b.dataset.help).join();
+        if (buttons !== 'entrar,votar') { return `helps in the guide: ${buttons}`; }
+        q('.ct-guia [data-help="entrar"]').click();
+        await sleep(300);
+        if (!q('.hp') || !q('.ct-guia').hidden) { return 'the help did not open from the guide'; }
+        const H = window.ClasstoolsHelp;
+        H.close();
+        // A watched step, at its own pace, for the picture.
+        await H.open('entrar', { start: true });
+        await sleep(9000);
+        const frame = q('.hp-pizarra');
+        const inner = frame.contentDocument;
+        if (!/#practica/.test(frame.contentWindow.location.hash) || !inner.documentElement.classList.contains('practica')) { return 'not the practice board'; }
+        if (!/Amelia Brooks|Noah Patel/.test(JSON.stringify(frame.contentWindow.CLASSTOOLS.lists))) { return 'not the invented class'; }
+        await window.shot('help-step');
+        H.close();
+        for (const id of ['entrar', 'votar']) {
+            window.FAKE.calls.length = 0;
+            await H.open(id, { start: true, auto: true, fast: true });
+            for (let i = 0; i < 400 && !H.state().done; i++) { await sleep(100); }
+            const st = H.state();
+            if (!st.done || !st.practised) { return `${id}: ${JSON.stringify(st)}`; }
+            if (!q('.hp-premio.on svg')) { return `${id}: no sticker`; }
+            if (!window.FAKE.calls.some((c) => c.action === 'learn' && c.cromo === H.INDEX[id].sticker)) { return `${id}: the sticker was not learned`; }
+            if (id === 'votar') { await window.shot('help-sticker'); }
+            H.close();
+        }
+        if (kept() !== before) { return 'the practice board touched what the teacher keeps'; }
+        // Learned: the end says so the next time.
+        await H.open('entrar', { start: false });
+        if (!H.state().had) { return 'the learned sticker was not known'; }
+        H.close();
+        return q('.hp') ? 'the help did not close' : '';
     },
     // Music questions for the quiz: sets that make themselves (which song, rhythm and melody dictations), four
     // different answers with the right one among them, and what each one plays.

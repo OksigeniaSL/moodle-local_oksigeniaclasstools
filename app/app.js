@@ -40,12 +40,16 @@
     // hay guardado, pero no guarda nada, ni en el navegador ni en el aula, para no tocar lo del profesor.
     const DUELO = (location.hash.match(/(?:^#|&)duelo=([a-z0-9]+)/) || [])[1] || '';
     if (DUELO) { document.documentElement.classList.add('duelo'); }
+    // La pizarra de práctica de una ayuda guiada (help.js, practice.js): empieza de cero y no lee ni guarda nada del
+    // profesor.
+    const PRACTICA = /(?:^#|&)practica(?:&|$)/.test(location.hash);
     const memoria = {};
     const guarda = (k, v) => {
-        if (DUELO) { memoria[k] = v; return; }
+        if (DUELO || PRACTICA) { memoria[k] = v; return; }
         try { localStorage.setItem('pizarra:' + k, JSON.stringify(v)); } catch (e) { almacen = false; }
     };
     const lee = (k, d) => {
+        if (PRACTICA) { return k in memoria ? memoria[k] : d; }
         if (DUELO && k in memoria) { return memoria[k]; }
         try { const v = localStorage.getItem('pizarra:' + k); return v === null ? d : JSON.parse(v); } catch (e) { return d; }
     };
@@ -1981,7 +1985,7 @@
         }).catch(() => { /* sin conexión: queda en el navegador */ });
     };
     const guardaEnAula = (tool, datos) => {
-        if (!AULA || !AULA.stateurl || DUELO) { return; }
+        if (!AULA || !AULA.stateurl || DUELO || PRACTICA) { return; }
         pendientes[tool] = datos;
         clearTimeout(esperas[tool]);
         esperas[tool] = setTimeout(() => envia(tool), 1200);
@@ -2075,7 +2079,7 @@
         $, $$, t, translate: traduce, random: azar, shuffle: baraja, escape: escapa, reducedMotion: reducido, save: guarda, load: lee,
         play: suena, sounds: SONIDOS, bell: campana, click: clic, announce: anuncia, icon: icono, setIcon: ponIcono,
         relabel: rotula, repeatWhileHeld: repite, register: (tool, def) => { HERR[tool] = def; }, show: muestra,
-        lists: todas, present: presentes, face: cara, initials: iniciales, preload: precarga, activeList: listaQ, duelo: DUELO,
+        lists: todas, present: presentes, face: cara, initials: iniciales, preload: precarga, activeList: listaQ, duelo: DUELO, practica: PRACTICA,
         moodle: AULA, toMoodle: alAula, lastGroups: () => gHechos, openBig: abreGigante, closeBig: cierraGigante,
         newList: () => abreEditor(null), editList: (id) => abreEditor(id),
         kept: (tool) => (AULA && AULA.state && AULA.state[tool]) || null, keep: guardaEnAula,
