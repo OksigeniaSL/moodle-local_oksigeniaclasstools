@@ -25,8 +25,13 @@
         const l = level || (core.mode ? core.mode() : 'primary');
         return t(`ex_example_${type}_${['secondary', 'advanced'].includes(l) ? l : 'primary'}`);
     };
-    const exercisesOf = (type, mode) => X.parse(exampleText(type), type, mode).map((e) => Object.assign(e, { example: true }))
-        .concat(X.parse(store[type] || '', type, mode));
+    // The examples, then the teacher's own (without those that are an example as it was: saved by an editor that once
+    // opened with the examples in it).
+    const exercisesOf = (type, mode) => {
+        const examples = X.parse(exampleText(type), type, mode).map((e) => Object.assign(e, { example: true }));
+        const seen = new Set(examples.map((e) => X.toText(e)));
+        return examples.concat(X.parse(store[type] || '', type, mode).filter((e) => !seen.has(X.toText(e))));
+    };
     const labelOf = (e, i) => {
         const name = e.title || t('ex_untitled', i + 1);
         return e.example ? t('ex_example', name) : name;
@@ -75,7 +80,7 @@
             const type = editing.type, found = X.parse(text, type).length;
             if (!found) { return 0; }
             const area = $('#ex-ed-text'), now = area.value.trim();
-            area.value = (now && now !== exampleText(type).trim() ? now + '\n\n' : '') + text;
+            area.value = (now ? now + '\n\n' : '') + text;
             countText();
             return found;
         },
@@ -95,7 +100,9 @@
         editing = { type, done, name };
         $('#ex-ed-title').textContent = t('ex_edit_title', name);
         $('#ex-ed-help').textContent = `${t('ex_help_' + type)} ${t('ex_format')}`;
-        $('#ex-ed-text').value = store[type] || exampleText(type);
+        // Empty for a first exercise, with the examples as a model to follow (not copied into the teacher's own).
+        $('#ex-ed-text').value = store[type] || '';
+        $('#ex-ed-text').placeholder = exampleText(type);
         if (ai) { ai.refresh(); }
         countText();
         dialog.showModal();
@@ -137,6 +144,8 @@
             def.api.why([]);
             save(p + '-ejercicio', $(`#${p}-ex`).value);
             def.start(current, mode());
+            // One of the teacher's own, not an example: the sticker of «My exercises».
+            if (!current.example && core.logro) { core.logro('creajuegos'); }
         };
         games.add({
             id: p, name: t(def.name),
@@ -161,7 +170,12 @@
                 def.stage($(`#${p}-stage`));
                 $$('[data-icono]', panel).forEach((el) => setIcon(el, el.dataset.icono));
                 $(`#${p}-start`).addEventListener('click', start);
-                $(`#${p}-edit`).addEventListener('click', () => edit(def.type, t(def.name), fill));
+                // After saving, the newest exercise (the last of the list) stays chosen.
+                $(`#${p}-edit`).addEventListener('click', () => edit(def.type, t(def.name), () => {
+                    fill();
+                    const sel = $(`#${p}-ex`);
+                    if (sel.options.length) { sel.value = String(sel.options.length - 1); save(p + '-ejercicio', sel.value); }
+                }));
                 $(`#${p}-ex`).addEventListener('change', () => save(p + '-ejercicio', $(`#${p}-ex`).value));
                 document.addEventListener('classtools:mode', fill);
                 if (def.modes) {
@@ -196,7 +210,7 @@
         controls: `<button type="button" class="boton grande verde" id="ordenar-check" hidden><span data-icono="comprobar"></span><span>${escape(t('ex_check'))}</span></button>`,
         stage: (stage) => {
             stage.innerHTML = `<p class="ct-word-clue" id="ordenar-title"></p><ol class="ct-ord-slots" id="ordenar-slots"></ol>
-                <div class="ct-ex-pool" id="ordenar-pool"></div><p class="total espera" id="ordenar-msg">${escape(t('ga_press_new_word'))}</p>`;
+                <div class="ct-ex-pool" id="ordenar-pool"></div><p class="total espera" id="ordenar-msg">${escape(t('ex_press_start'))}</p>`;
         },
         wire: () => {
             $('#ordenar-pool').addEventListener('click', (e) => {
@@ -263,7 +277,7 @@
             <button type="button" class="boton suave" id="clasificar-again" hidden><span data-icono="otra"></span><span>${escape(t('so_another'))}</span></button>`,
         stage: (stage) => {
             stage.innerHTML = `<p class="ct-word-clue" id="clasificar-title"></p><div class="ct-so-boxes" id="clasificar-boxes"></div>
-                <div class="ct-ex-pool" id="clasificar-pool"></div><p class="total espera" id="clasificar-msg">${escape(t('ga_press_new_word'))}</p>`;
+                <div class="ct-ex-pool" id="clasificar-pool"></div><p class="total espera" id="clasificar-msg">${escape(t('ex_press_start'))}</p>`;
         },
         wire: () => {
             $('#clasificar-pool').addEventListener('click', (e) => {
@@ -374,7 +388,7 @@
         controls: `<button type="button" class="boton suave" id="errores-show" hidden><span data-icono="ocultar"></span><span>${escape(t('er_show'))}</span></button>`,
         stage: (stage) => {
             stage.innerHTML = `<p class="ct-word-clue" id="errores-title"></p><div class="ct-er-text" id="errores-text"></div>
-                <p class="total espera" id="errores-msg">${escape(t('ga_press_new_word'))}</p>`;
+                <p class="total espera" id="errores-msg">${escape(t('ex_press_start'))}</p>`;
         },
         wire: () => {
             $('#errores-text').addEventListener('click', (e) => {
@@ -436,7 +450,7 @@
             <button type="button" class="boton suave" id="quiensoy-next" hidden><span data-icono="otra"></span><span>${escape(t('wa_next'))}</span></button>`,
         stage: (stage) => {
             stage.innerHTML = `<div class="ct-wa-card" id="quiensoy-card">?</div><ol class="ct-wa-clues" id="quiensoy-clues"></ol>
-                <p class="total espera" id="quiensoy-msg">${escape(t('ga_press_new_word'))}</p>`;
+                <p class="total espera" id="quiensoy-msg">${escape(t('ex_press_start'))}</p>`;
         },
         wire: () => {
             $('#quiensoy-clue').addEventListener('click', () => { if (!wa.over && wa.shown < wa.ex.clues.length) { wa.shown++; play('tic'); paintWho(); } });

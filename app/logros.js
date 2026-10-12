@@ -13,6 +13,7 @@
         mandamas: 'live', cuentamanos: 'live', repartequipos: 'groups', sacanombres: 'picker', guardatiempos: 'timer',
         tocanotas: 'score', salvaglobos: 'hangman', cazaletras: 'rosco', tiradados: 'dice', cumplemetas: 'goal',
         pasalimpios: 'board', quitatelones: 'board', trazacirculos: 'board', picabilletes: 'exit', despliegacubos: 'solids',
+        despejaequis: 'balance', creajuegos: 'exercises',
     };
     const ORDER = Object.keys(FAMILY);
     const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));

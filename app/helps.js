@@ -404,6 +404,118 @@
                 after: 2600,
             },
         },
+        // Balance scale: 3x + 1 = x + 9 and «move the 1 over and subtract», the scene of the teacher's guide.
+        balanza: {
+            steps: [
+                // The balance comes up as the voice gets to it, at the end of the line.
+                async (h) => { await h.wait(4500); await h.press('#t-material'); await h.press('#mt-mode [data-mode="balanza"]'); },
+                async (h) => {
+                    await h.wait(800);
+                    await h.press('#ba-kind [data-v="equation"]');
+                    await h.type('#ba-eq', '3x + 1 = x + 9');
+                    await h.press('#ba-put');
+                    await h.wait(600);
+                    await h.moveTo('#ba-text');
+                },
+                async (h) => {
+                    // The 1 off the left pan only: the scale tips and the note says so; then a 1 off the right pan.
+                    await h.press('#ba-l .ct-ba-u');
+                    await h.wait(1200);
+                    await h.moveTo('#ba-text');
+                    await h.wait(1600);
+                    await h.press('#ba-r .ct-ba-u');
+                    await h.wait(900);
+                },
+                async (h) => { await h.wait(3200); await h.press('#ba-x'); await h.wait(900); await h.moveTo('#ba-text'); },
+                async (h) => {
+                    await h.wait(600);
+                    await h.press('#ba-share');
+                    await h.wait(1600);
+                    // «Put» again: the same equation; opening the boxes shows a 4 in each (4 + 4 + 4 + 1 = 4 + 9).
+                    await h.press('#ba-put');
+                    await h.wait(500);
+                    await h.press('#ba-reveal');
+                    await h.wait(1000);
+                    await h.moveTo('#ba-l');
+                    await h.wait(700);
+                    await h.moveTo('#ba-r');
+                },
+            ],
+            practice: {
+                // The same equation on the scale, at once.
+                prep: async (h) => {
+                    await h.press('#t-material', true);
+                    await h.press('#mt-mode [data-mode="balanza"]', true);
+                    await h.press('#ba-kind [data-v="equation"]', true);
+                    await h.type('#ba-eq', '3x + 1 = x + 9', true);
+                    await h.press('#ba-put', true);
+                },
+                targets: [{ sel: '#ba-one' }, { sel: '#ba-x' }, { sel: '#ba-share' }],
+                after: 2600,
+            },
+        },
+        // «My exercises»: the frog's life cycle written by the teacher in «Order», saved, played and checked.
+        ejercicios: {
+            steps: [
+                async (h) => {
+                    await h.wait(1400);
+                    await h.press('#t-juegos');
+                    await h.press('#ga-mode [data-game="ordenar"]');
+                    await h.wait(600);
+                    await h.moveTo('#ordenar-ex');   // «Example: The water cycle», the first of the list
+                },
+                async (h) => {
+                    await h.press('#ordenar-edit');
+                    await h.moveTo('#ex-ed-text');
+                    await h.wait(1200);              // the empty box shows the examples as a model
+                    await h.type('#ex-ed-text', t('hp_ejercicios_text'));
+                },
+                async (h) => {
+                    await h.moveTo('#ex-ed-count');  // «1 exercise ready»: the format is right
+                    await h.wait(1600);
+                    await h.press('.ct-ex-editor .ct-ex-ai summary');
+                    await h.type('.ct-ex-editor .ct-ai-topic', t('hp_ejercicios_topic'));
+                    await h.wait(400);
+                    await h.moveTo('.ct-ex-editor .ct-ai-text');
+                    await h.wait(1200);
+                    await h.press('.ct-ex-editor button[value="save"]');
+                },
+                async (h) => {
+                    // Saved, the new one is chosen (the last of the list, after the examples of the level).
+                    await h.moveTo('#ordenar-ex');
+                    await h.press('#ordenar-start');
+                    // Said by the class, a little wrong: the tadpole with legs before the tadpole.
+                    for (const i of [0, 2, 1, 3]) { await h.press(`#ordenar-pool [data-i="${i}"]`); }
+                    await h.press('#ordenar-check');
+                    await h.moveTo('#ordenar-msg');   // «2 of 4 in their place»: the two wrong ones back in the pool
+                    await h.wait(500);
+                    await h.moveTo('#ordenar-why .ante');
+                },
+                async (h) => {
+                    await h.wait(600);
+                    await h.press('#ordenar-pool [data-i="1"]');
+                    await h.press('#ordenar-pool [data-i="2"]');
+                    await h.press('#ordenar-check');
+                    await h.wait(1800);
+                    for (const g of ['clasificar', 'errores', 'quiensoy']) { await h.moveTo(`#ga-mode [data-game="${g}"]`); await h.wait(250); }
+                },
+            ],
+            practice: {
+                // «My exercises» open and empty, to write one from scratch.
+                prep: async (h) => {
+                    await h.press('#t-juegos', true);
+                    await h.press('#ga-mode [data-game="ordenar"]', true);
+                    await h.press('#ordenar-edit', true);
+                    await h.type('#ex-ed-text', '', true);
+                },
+                targets: [
+                    { sel: '#ex-ed-text', event: 'input', auto: (h) => h.type('#ex-ed-text', t('hp_ejercicios_practice')) },
+                    // «input» counts at the first letter: «Save» is ringed a moment later, so the typing ends first.
+                    { sel: '.ct-ex-editor button[value="save"]', delay: 2500 },
+                ],
+                after: 2400,
+            },
+        },
         // Score: the relay song, one note each on the board's glockenspiel.
         partitura: {
             steps: [

@@ -647,6 +647,35 @@ const CHECKS = {
         return bad.length ? bad.join('; ') : '';
     },
     // Order: a wrong try sends cards back, then the right order wins.
+    // «My exercises»: the box opens empty with the examples as a model; what is saved below the examples (as an older
+    // editor let) does not list them twice, and the new exercise stays chosen; before starting, the hint says «Start».
+    'exercises-own': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const q = (x) => document.querySelector(x);
+        q('#t-juegos').click();
+        await sleep(200);
+        q('#ga-mode [data-game="ordenar"]').click();
+        await sleep(200);
+        if (!/Start/.test(q('#ordenar-msg').textContent)) { return `hint before starting: ${q('#ordenar-msg').textContent}`; }
+        const examples = q('#ordenar-ex').options.length;
+        q('#ordenar-edit').click();
+        await sleep(200);
+        const area = q('#ex-ed-text');
+        if (area.value || !area.placeholder.includes('#')) { return `the box opened with «${area.value.slice(0, 40)}», model «${area.placeholder.slice(0, 40)}»`; }
+        area.value = area.placeholder + '\n\n# The frog\nEgg\nTadpole\nFrog';
+        q('.ct-ex-editor [value="save"]').click();
+        await sleep(300);
+        const sel = q('#ordenar-ex');
+        if (sel.options.length !== examples + 1) { return `${sel.options.length} exercises after saving one (${examples} examples)`; }
+        if (sel.selectedIndex !== examples || !/frog/.test(sel.options[sel.selectedIndex].textContent)) { return `chosen after saving: ${sel.options[sel.selectedIndex].textContent}`; }
+        // Back as it was.
+        q('#ordenar-edit').click();
+        await sleep(200);
+        q('#ex-ed-text').value = '';
+        q('.ct-ex-editor [value="save"]').click();
+        await sleep(200);
+        return q('#ordenar-ex').options.length === examples ? '' : 'the own exercise did not go';
+    },
     'order-game': async () => {
         const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
         document.querySelector('#t-juegos').click();
@@ -1139,6 +1168,10 @@ const CHECKS = {
         await window.shot('balance-equation');
         const st = window.ClasstoolsBalance;
         if (q('#ba-text').textContent !== 'x = 4' || !st.solved() || !/4/.test(q('#ba-note').textContent)) { return `not worked out: «${q('#ba-text').textContent}» «${q('#ba-note').textContent}»`; }
+        // Worked out, the box stays closed: «Open the boxes» is the check at the end.
+        if (q('.ct-ba-x').textContent !== 'x') { return `the box opened by itself: ${q('.ct-ba-x').textContent}`; }
+        q('#ba-reveal').click();
+        if (q('.ct-ba-x').textContent !== '4') { return `opened: ${q('.ct-ba-x').textContent}`; }
         if (st.parse('3x = 7') || st.parse('x + 5 = 2') || !st.parse('4x + 1 = 2x + 9')) { return 'equations without a whole positive solution are taken, or good ones refused'; }
         return '';
     },
@@ -2353,6 +2386,8 @@ async function main() {
             else if (msg.method === 'Runtime.bindingCalled' && msg.params.name === 'checkShot') { takeShot(msg.sessionId, msg.params.payload).catch((e) => console.error(e.message)); }
             else if (msg.method) { events.push(msg); }
         };
+        // Nothing a check downloads (the spreadsheet of the exit ticket, a PNG of the QR…) lands in the Downloads folder.
+        await send('Browser.setDownloadBehavior', { behavior: 'deny' });
         for (const name of names) {
             const { targetId } = await send('Target.createTarget', { url: 'about:blank' });
             const { sessionId } = await send('Target.attachToTarget', { targetId, flatten: true });

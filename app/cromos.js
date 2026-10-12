@@ -282,6 +282,39 @@
                 ${GLOVE(98, 78, -10)}`,
             icon: '<path d="M0 -32 L28 -18 L0 -4 L-28 -18 Z M-28 -18 V18 L0 32 V-4 M28 -18 V18 L0 32"/>',
         },
+        despejaequis: {
+            box: [12, -2, 126, 96],
+            seed: 'cromo-2014', family: 'material',
+            costume: () => `
+                ${stick('M98 70 L98 22', '#7b8799', 4)}
+                <path d="M74 22 H122" fill="none" stroke="${INK}" stroke-width="7" stroke-linecap="round"/>
+                <path d="M74 22 H122" fill="none" stroke="#c9d3e0" stroke-width="3" stroke-linecap="round"/>
+                <circle cx="98" cy="20" r="4" fill="#fbbe17" ${S2}/>
+                <path d="M74 22 L67 42 M74 22 L81 42 M122 22 L115 42 M122 22 L129 42" fill="none" ${S2}/>
+                <path d="M64 42 H84 Q82 50 74 50 Q66 50 64 42 Z" fill="#c9d3e0" ${S2}/>
+                <path d="M112 42 H132 Q130 50 122 50 Q114 50 112 42 Z" fill="#c9d3e0" ${S2}/>
+                <rect x="67" y="29" width="13" height="13" rx="2" fill="#fff" ${S2}/>
+                <path d="M70 32 l7 7 M77 32 l-7 7" stroke="#0b6b74" stroke-width="2.5" stroke-linecap="round"/>
+                <circle cx="117" cy="38" r="4" fill="#5b2fb8" ${S2}/><circle cx="127" cy="38" r="4" fill="#5b2fb8" ${S2}/>
+                ${GLOVE(98, 76, -8)}`,
+            icon: '<path d="M0 -32 V28 M-18 28 H18 M-32 -26 H32"/><path d="M-32 -26 L-40 -4 H-24 Z M32 -26 L24 -4 H40 Z"/>',
+        },
+        creajuegos: {
+            box: [-14, -6, 118, 96],
+            seed: 'cromo-2018', family: 'games',
+            costume: () => `
+                <g transform="rotate(32 98 44)">
+                    <rect x="92" y="10" width="12" height="52" rx="2" fill="#fbbe17" ${S}/>
+                    <path d="M92 10 h12 v-7 a3 3 0 0 0 -3 -3 h-6 a3 3 0 0 0 -3 3 Z" fill="#ff8fb3" ${S}/>
+                    <path d="M92 62 L98 78 L104 62 Z" fill="#f3d5a9" ${S}/><path d="M96.4 74 L98 78 L99.6 74 Z" fill="${INK}"/>
+                    <path d="M98 14 V60" stroke="#e0a400" stroke-width="2"/></g>
+                ${GLOVE(90, 74, -30)}
+                ${[['#ce1423', 1, -16], ['#164281', 2, -4], ['#067e36', 3, 8]].map(([c, n, r], i) => `<g transform="rotate(${r} ${2 + i * 9} 76)">`
+                    + `<rect x="${-6 + i * 9}" y="52" width="16" height="22" rx="3" fill="#fff" ${S2}/>`
+                    + Array.from({ length: n }, (_, k) => `<circle cx="${2 + i * 9}" cy="${58 + k * 5.5}" r="2.2" fill="${c}"/>`).join('') + '</g>').join('')}
+                ${GLOVE(6, 78, 20)}`,
+            icon: '<path d="M10 -34 L30 -14 L-6 22 L-20 26 L-16 12 Z"/><path d="M-36 -2 h16 v22 h-16 Z M-30 6 h4"/>',
+        },
     };
     // The panel of each family of tools (the colours of the board).
     const FAMILY = {

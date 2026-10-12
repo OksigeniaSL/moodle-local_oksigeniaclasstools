@@ -338,6 +338,9 @@ $string['app_cr_cazaletras_how'] = 'Termina una rueda de letras.';
 $string['app_cr_cazaletras_name'] = 'Cazaletras';
 $string['app_cr_cazaletras_text'] = 'De la A a la Z, sin pasar palabra.';
 $string['app_cr_close'] = 'Cerrar';
+$string['app_cr_creajuegos_how'] = 'Juega uno de tus ejercicios en Ordenar, Clasificar, Caza de errores o ¿Quién soy?';
+$string['app_cr_creajuegos_name'] = 'Creajuegos';
+$string['app_cr_creajuegos_text'] = 'Cada tema, un juego nuevo.';
 $string['app_cr_cuentamanos_how'] = 'Cuenta {$a} manos o más en una pregunta a mano alzada.';
 $string['app_cr_cuentamanos_name'] = 'Cuentamanos';
 $string['app_cr_cuentamanos_text'] = 'No se le escapa ni una mano.';
@@ -349,14 +352,19 @@ $string['app_cr_cumplemetas_name'] = 'Cumplemetas';
 $string['app_cr_cumplemetas_text'] = 'Con su clase, llega a todas las metas.';
 $string['app_cr_day'] = '1 día de uso';
 $string['app_cr_days'] = '{$a} días de uso';
+$string['app_cr_despejaequis_how'] = 'Resuelve una ecuación en la balanza sin romper el equilibrio.';
+$string['app_cr_despejaequis_name'] = 'Despejaequis';
+$string['app_cr_despejaequis_text'] = 'Lo que hace a un lado, lo hace al otro.';
 $string['app_cr_despliegacubos_how'] = 'Enseña otro desarrollo de un cuerpo con «Otro desarrollo».';
 $string['app_cr_despliegacubos_name'] = 'Despliegacubos';
 $string['app_cr_despliegacubos_text'] = 'Conoce las once formas de abrir un cubo.';
 $string['app_cr_domamoviles_how'] = 'Que entren {$a} dispositivos o más en una sesión «En vivo».';
 $string['app_cr_domamoviles_name'] = 'Domamóviles';
 $string['app_cr_domamoviles_text'] = 'Ningún móvil se le resiste.';
+$string['app_cr_fam_balance'] = 'Balanza';
 $string['app_cr_fam_board'] = 'Pizarra';
 $string['app_cr_fam_dice'] = 'Dados';
+$string['app_cr_fam_exercises'] = 'Mis ejercicios';
 $string['app_cr_fam_exit'] = 'Billete de salida';
 $string['app_cr_fam_goal'] = 'Meta de la clase';
 $string['app_cr_fam_groups'] = 'Grupos';
@@ -906,6 +914,7 @@ $string['app_ex_help_errors'] = 'El texto, con cada error así: [lo que pone|lo 
 $string['app_ex_help_order'] = 'Los elementos en su orden correcto, uno por línea.';
 $string['app_ex_help_whoami'] = '«= respuesta» en la primera línea (otras respuestas válidas tras /) y debajo las pistas, de la más difícil a la más fácil.';
 $string['app_ex_mine'] = 'Mis ejercicios';
+$string['app_ex_press_start'] = 'Elige el ejercicio y pulsa «Empezar»';
 $string['app_ex_save'] = 'Guardar';
 $string['app_ex_text'] = 'Tus ejercicios, con una línea en blanco entre uno y otro';
 $string['app_ex_untitled'] = 'Ejercicio {$a}';
@@ -1772,6 +1781,18 @@ $string['app_hp_ahorcado_h1'] = 'Pulsa «Nueva palabra»';
 $string['app_hp_ahorcado_h2'] = 'Prueba la E';
 $string['app_hp_ahorcado_title'] = 'Ahorcado: la palabra que abre el tema';
 $string['app_hp_ahorcado_word'] = 'ECOSISTEMA';
+$string['app_hp_balanza_1'] = 'Toca resolver 3x + 1 = x + 9, y una alumna lo tiene claro: «el 1 pasa restando». ¿Y por qué restando? Hoy lo comprueba en la balanza.';
+$string['app_hp_balanza_2'] = 'En «Material», «Balanza», elige «Ecuaciones», escríbela y pulsa «Poner». Cada caja pesa x, y los dos platos pesan lo mismo.';
+$string['app_hp_balanza_3'] = 'Ella quita el 1 de un solo plato y la balanza se inclina. Para que vuelva el equilibrio, hay que quitar un 1 también del otro.';
+$string['app_hp_balanza_4'] = 'Eso era «pasar restando»: quitar lo mismo de los dos platos. Con las cajas, igual: «Quitar una caja de cada plato». Queda 2x = 8.';
+$string['app_hp_balanza_5'] = 'Con «Repartir los dos platos entre 2», queda una caja sola: x = 4. Para comprobarlo, pon otra vez la ecuación y «Abrir las cajas»: un 4 en cada una.';
+$string['app_hp_balanza_6'] = 'Ahora tú: quita lo mismo de los dos platos hasta que quede una caja sola.';
+$string['app_hp_balanza_7'] = '¡Lo tienes! Este bichito es tuyo: Despejaequis.';
+$string['app_hp_balanza_again'] = '¡Bien hecho! Ya tenías a Despejaequis.';
+$string['app_hp_balanza_h1'] = 'Pulsa «Quitar 1 de cada plato»';
+$string['app_hp_balanza_h2'] = 'Ahora «Quitar una caja de cada plato»';
+$string['app_hp_balanza_h3'] = 'Y «Repartir los dos platos entre 2»';
+$string['app_hp_balanza_title'] = 'Balanza: ecuaciones en equilibrio';
 $string['app_hp_captions'] = 'Subtítulos';
 $string['app_hp_close'] = 'Cerrar la ayuda';
 $string['app_hp_close_short'] = 'Cerrar';
@@ -1819,6 +1840,28 @@ $string['app_hp_dados_h1'] = 'Pon tres dados';
 $string['app_hp_dados_h2'] = 'Y ahora «Tirar»';
 $string['app_hp_dados_title'] = 'Dados: el dado de las preguntas';
 $string['app_hp_done'] = '¡Bien hecho!';
+$string['app_hp_ejercicios_1'] = 'En «Juegos», «Ordenar» trae ejemplos, como el ciclo del agua. Esta semana toca la metamorfosis de la rana: ese ejercicio lo escribes tú.';
+$string['app_hp_ejercicios_2'] = 'Pulsa «Mis ejercicios» y escribe el tuyo: el título tras #, una fase por línea, en su orden, y tras ?, un porqué.';
+$string['app_hp_ejercicios_3'] = 'Abajo pone «1 ejercicio listo». Para pedir más a tu IA, de cualquier tema, «Prompt para tu IA» te da el texto. Pulsa «Guardar».';
+$string['app_hp_ejercicios_4'] = 'Elígelo en «Ejercicio» y pulsa «Empezar». La clase dice el orden y tú tocas las tarjetas; «Comprobar» devuelve las mal puestas, con su porqué.';
+$string['app_hp_ejercicios_5'] = 'A la segunda, ¡todo en orden! En «Clasificar», «Caza de errores» y «¿Quién soy?» se hace igual: cada uno explica su formato en «Mis ejercicios».';
+$string['app_hp_ejercicios_6'] = 'Ahora tú: escribe un ejercicio corto, con su título y dos líneas, y pulsa «Guardar».';
+$string['app_hp_ejercicios_7'] = '¡Lo tienes! Este bichito es tuyo: Creajuegos.';
+$string['app_hp_ejercicios_again'] = '¡Bien hecho! Ya tenías a Creajuegos.';
+$string['app_hp_ejercicios_h1'] = 'Escribe # y un título; debajo, dos líneas en su orden';
+$string['app_hp_ejercicios_h2'] = 'Cuando acabes, «Guardar»';
+$string['app_hp_ejercicios_practice'] = '# Del trigo al pan
+Moler el trigo
+Amasar
+Hornear';
+$string['app_hp_ejercicios_text'] = '# La metamorfosis de la rana
+Huevo
+Renacuajo
+Renacuajo con patas
+Rana
+? Renacuajo con patas: al renacuajo le salen las patas antes de perder la cola';
+$string['app_hp_ejercicios_title'] = 'Mis ejercicios: un juego para cada tema';
+$string['app_hp_ejercicios_topic'] = 'Las plantas';
 $string['app_hp_entrar_1'] = '«En vivo» abre la pizarra a los móviles. Lo vemos en una reunión de familias.';
 $string['app_hp_entrar_2'] = 'Elige «Votación» y, en «¿Cómo entran?», «Con el código»: no hace falta cuenta, así que también pueden entrar las familias.';
 $string['app_hp_entrar_3'] = 'Pulsa «Abrir la sesión». En la pizarra aparecen el QR y un código de cuatro letras.';

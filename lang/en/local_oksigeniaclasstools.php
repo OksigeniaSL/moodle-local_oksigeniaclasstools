@@ -338,6 +338,9 @@ $string['app_cr_cazaletras_how'] = 'Finish a letter wheel.';
 $string['app_cr_cazaletras_name'] = 'Letter Catcher';
 $string['app_cr_cazaletras_text'] = 'From A to Z, without passing.';
 $string['app_cr_close'] = 'Close';
+$string['app_cr_creajuegos_how'] = 'Play one of your own exercises in Order, Sort, Spot the mistakes or Who am I?';
+$string['app_cr_creajuegos_name'] = 'Game Maker';
+$string['app_cr_creajuegos_text'] = 'A new game for every topic.';
 $string['app_cr_cuentamanos_how'] = 'Count {$a} hands or more in a show of hands.';
 $string['app_cr_cuentamanos_name'] = 'Hand Counter';
 $string['app_cr_cuentamanos_text'] = 'Not a single hand gets away.';
@@ -349,14 +352,19 @@ $string['app_cr_cumplemetas_name'] = 'Goal Getter';
 $string['app_cr_cumplemetas_text'] = 'With their class, reaches every goal.';
 $string['app_cr_day'] = '1 day of use';
 $string['app_cr_days'] = '{$a} days of use';
+$string['app_cr_despejaequis_how'] = 'Solve an equation on the balance scale, keeping it in balance.';
+$string['app_cr_despejaequis_name'] = 'X Finder';
+$string['app_cr_despejaequis_text'] = 'What it does to one side, it does to the other.';
 $string['app_cr_despliegacubos_how'] = 'Show another net of a 3D shape with «Another net».';
 $string['app_cr_despliegacubos_name'] = 'Cube Unfolder';
 $string['app_cr_despliegacubos_text'] = 'Knows the eleven ways to open a cube.';
 $string['app_cr_domamoviles_how'] = 'Have {$a} devices or more join a live session.';
 $string['app_cr_domamoviles_name'] = 'Phone Tamer';
 $string['app_cr_domamoviles_text'] = 'No phone resists them.';
+$string['app_cr_fam_balance'] = 'Balance scale';
 $string['app_cr_fam_board'] = 'Whiteboard';
 $string['app_cr_fam_dice'] = 'Dice';
+$string['app_cr_fam_exercises'] = 'My exercises';
 $string['app_cr_fam_exit'] = 'Exit ticket';
 $string['app_cr_fam_goal'] = 'Class goal';
 $string['app_cr_fam_groups'] = 'Groups';
@@ -904,6 +912,7 @@ $string['app_ex_help_errors'] = 'The text, with each mistake as [what it says|ri
 $string['app_ex_help_order'] = 'The items in their right order, one per line.';
 $string['app_ex_help_whoami'] = '«= answer» on the first line (other accepted answers after /), then the clues, from the hardest to the easiest.';
 $string['app_ex_mine'] = 'My exercises';
+$string['app_ex_press_start'] = 'Choose the exercise and press «Start»';
 $string['app_ex_save'] = 'Save';
 $string['app_ex_text'] = 'Your exercises, a blank line between them';
 $string['app_ex_untitled'] = 'Exercise {$a}';
@@ -1770,6 +1779,18 @@ $string['app_hp_ahorcado_h1'] = 'Press «New word»';
 $string['app_hp_ahorcado_h2'] = 'Try the E';
 $string['app_hp_ahorcado_title'] = 'Hangman: the word that opens the topic';
 $string['app_hp_ahorcado_word'] = 'ECOSYSTEM';
+$string['app_hp_balanza_1'] = 'Time to solve 3x + 1 = x + 9, and a student knows the rule: «move the 1 over and subtract». But why subtract? Today she finds out on the balance scale.';
+$string['app_hp_balanza_2'] = 'In «Materials», «Balance scale», choose «Equations», type it in and press «Put». Each box weighs x, and both pans weigh the same.';
+$string['app_hp_balanza_3'] = 'She takes the 1 off one pan only, and the scale tips. To bring it back into balance, a 1 has to come off the other pan too.';
+$string['app_hp_balanza_4'] = 'That\'s all «move it over and subtract» meant: the same off both pans. Boxes work the same way: «Take a box off each pan». That leaves 2x = 8.';
+$string['app_hp_balanza_5'] = 'With «Share both pans out by 2», a box is left on its own: x = 4. To check, put the equation in again and press «Open the boxes»: a 4 in each one.';
+$string['app_hp_balanza_6'] = 'Your turn: take the same off both pans until a box is left on its own.';
+$string['app_hp_balanza_7'] = 'You\'ve got it! This critter is yours: the X Finder.';
+$string['app_hp_balanza_again'] = 'Well done! The X Finder is already yours.';
+$string['app_hp_balanza_h1'] = 'Press «Take 1 off each pan»';
+$string['app_hp_balanza_h2'] = 'Now «Take a box off each pan»';
+$string['app_hp_balanza_h3'] = 'And «Share both pans out by 2»';
+$string['app_hp_balanza_title'] = 'Balance scale: equations in balance';
 $string['app_hp_captions'] = 'Captions';
 $string['app_hp_close'] = 'Close the help';
 $string['app_hp_close_short'] = 'Close';
@@ -1817,6 +1838,28 @@ $string['app_hp_dados_h1'] = 'Set three dice';
 $string['app_hp_dados_h2'] = 'And now «Roll»';
 $string['app_hp_dados_title'] = 'Dice: the question die';
 $string['app_hp_done'] = 'Well done!';
+$string['app_hp_ejercicios_1'] = 'In «Games», «Order» comes with examples, like the water cycle. This week it\'s the frog\'s life cycle, and that one you write yourself.';
+$string['app_hp_ejercicios_2'] = 'Press «My exercises» and write your own: the title after #, one stage per line, in order, and after ?, the reason why.';
+$string['app_hp_ejercicios_3'] = 'Below, it says «1 exercise ready». To ask your AI for more, on any topic, «Prompt for your AI» gives you the text. Press «Save».';
+$string['app_hp_ejercicios_4'] = 'Pick it under «Exercise» and press «Start». The class calls out the order and you tap the cards; «Check» sends the wrong ones back, with their reason.';
+$string['app_hp_ejercicios_5'] = 'Second time round, all in order! «Sort», «Spot the mistakes» and «Who am I?» work the same way: each one explains its format in «My exercises».';
+$string['app_hp_ejercicios_6'] = 'Your turn: write a short exercise, with a title and two lines, and press «Save».';
+$string['app_hp_ejercicios_7'] = 'You\'ve got it! This critter is yours: the Game Maker.';
+$string['app_hp_ejercicios_again'] = 'Well done! The Game Maker is already yours.';
+$string['app_hp_ejercicios_h1'] = 'Type # and a title; below it, two lines in order';
+$string['app_hp_ejercicios_h2'] = 'When you finish, «Save»';
+$string['app_hp_ejercicios_practice'] = '# From wheat to bread
+Grind the wheat
+Knead
+Bake';
+$string['app_hp_ejercicios_text'] = '# The frog\'s life cycle
+Egg
+Tadpole
+Tadpole with legs
+Frog
+? Tadpole with legs: a tadpole grows its legs before it loses its tail';
+$string['app_hp_ejercicios_title'] = 'My exercises: a game for every topic';
+$string['app_hp_ejercicios_topic'] = 'Plants';
 $string['app_hp_entrar_1'] = '«Live» opens your board to phones. Let\'s see it at a parents\' evening.';
 $string['app_hp_entrar_2'] = 'Choose «Vote» and, under «How do they join?», «With the code»: no account needed, so families can join too.';
 $string['app_hp_entrar_3'] = 'Press «Open the session». The board shows a QR code and a four-letter code.';

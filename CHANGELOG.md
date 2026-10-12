@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.58.0 (2026-10-12)
+
+- Two more guided helps, from the art direction, with voice in Spanish and English: the balance scale (3x + 1 = x + 9
+  and why «move it over and subtract» works) and «My exercises» (the frog's life cycle written in «Order», saved,
+  played and checked). With their stickers: the X Finder (solve an equation on the scale) and the Game Maker (play one
+  of your own exercises).
+- Balance scale: the field of the equation and «Put» keep their size, and working an equation out no longer opens the
+  boxes by itself: «Open the boxes» is the check at the end, as the teacher's guide says. The same full-size field in
+  the base 10 blocks and the intervals of the number line.
+- «My exercises»: the box opens empty, with the examples as a model to follow, so they are not saved again as the
+  teacher's own (and those saved before are not listed twice); after saving, the new exercise stays chosen; before
+  starting, the four games say «Choose the exercise and press «Start»»; and the editor scrolls inside the screen.
+
 ## 0.57.0 (2026-10-12)
 
 - A guided help for the exit ticket, in its teacher's guide: five minutes before break, the faces and two questions,

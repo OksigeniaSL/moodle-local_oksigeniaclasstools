@@ -374,5 +374,37 @@
  "cr_fam_solids": {
   "en": "3D shapes",
   "es": "Cuerpos geométricos"
+ },
+ "cr_despejaequis_name": {
+  "en": "X Finder",
+  "es": "Despejaequis"
+ },
+ "cr_despejaequis_text": {
+  "en": "What it does to one side, it does to the other.",
+  "es": "Lo que hace a un lado, lo hace al otro."
+ },
+ "cr_despejaequis_how": {
+  "en": "Solve an equation on the balance scale, keeping it in balance.",
+  "es": "Resuelve una ecuación en la balanza sin romper el equilibrio."
+ },
+ "cr_creajuegos_name": {
+  "en": "Game Maker",
+  "es": "Creajuegos"
+ },
+ "cr_creajuegos_text": {
+  "en": "A new game for every topic.",
+  "es": "Cada tema, un juego nuevo."
+ },
+ "cr_creajuegos_how": {
+  "en": "Play one of your own exercises in Order, Sort, Spot the mistakes or Who am I?",
+  "es": "Juega uno de tus ejercicios en Ordenar, Clasificar, Caza de errores o ¿Quién soy?"
+ },
+ "cr_fam_balance": {
+  "en": "Balance scale",
+  "es": "Balanza"
+ },
+ "cr_fam_exercises": {
+  "en": "My exercises",
+  "es": "Mis ejercicios"
  }
 }

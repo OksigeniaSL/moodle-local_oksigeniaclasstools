@@ -169,7 +169,8 @@
         const was = solved();
         fn();
         keep(); paint();
-        if (!was && solved()) { st.eq.shown = true; keep(); paint(); play('elegido'); announce(t('ba_solved', st.eq.x)); }
+        // Solved: a sound and the note; the boxes stay closed, for «Open the boxes» to check it at the end.
+        if (!was && solved()) { play('elegido'); announce(t('ba_solved', st.eq.x)); if (core.logro) { core.logro('despejaequis'); } }
     };
     const setEquation = (e) => { st.eq = e; history = []; keep(); paint(); play('card'); };
 

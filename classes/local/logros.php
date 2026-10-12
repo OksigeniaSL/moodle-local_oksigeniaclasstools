@@ -33,6 +33,7 @@ class logros {
         'sacanombres' => 'picker', 'guardatiempos' => 'timer', 'tocanotas' => 'score', 'salvaglobos' => 'hangman',
         'cazaletras' => 'rosco', 'tiradados' => 'dice', 'cumplemetas' => 'goal', 'pasalimpios' => 'board',
         'quitatelones' => 'board', 'trazacirculos' => 'board', 'picabilletes' => 'exit', 'despliegacubos' => 'solids',
+        'despejaequis' => 'balance', 'creajuegos' => 'exercises',
     ];
 
     /** Days of use for each level. */
