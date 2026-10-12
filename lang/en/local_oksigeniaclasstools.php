@@ -2446,7 +2446,7 @@ Tempo: quarter notes per minute (for example, 100)
 Pickup: how long the notes before the first bar last, only if there are any (q, e…)
 2. Then only the melody, one voice, with the notes separated by spaces and | between bars.
 3. Notes: C D E F G A B (or do re mi fa sol la si). Middle C is C4: C5 is an octave higher and G3 one lower; with no number, octave 4. Sharp with # (F#), flat with b (Bb).
-4. The length, after a colon: w whole, h half, q quarter, e eighth, s sixteenth; with a dot after it, dotted (G:q.). If there is none, the same as the note before.
+4. The length, after a colon, on every note: w whole, h half, q quarter, e eighth, s sixteenth; with a dot after it, dotted (G:q.). Each bar must add up to its time signature.
 5. A rest is - with its length (-:q).
 6. No chords, triplets, ties or repeats: all written out.
 
@@ -2456,7 +2456,7 @@ Origin: France
 Clef: treble
 Time: 4/4
 Tempo: 100
-C:q C G G | A A G:h | F:q F E E | D D C:h
+C:q C:q G:q G:q | A:q A:q G:h | F:q F:q E:q E:q | D:q D:q C:h
 
 Answer only with the text, without explanations.';
 $string['app_sc_prompt_title'] = 'A song with your AI';

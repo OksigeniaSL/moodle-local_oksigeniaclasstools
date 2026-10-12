@@ -2448,7 +2448,7 @@ Tempo: negras por minuto (por ejemplo, 100)
 Anacrusa: lo que duran las notas antes del primer compás, solo si las hay (n, c…)
 2. Después, solo la melodía, a una voz, con las notas separadas por espacios y | entre compases.
 3. Notas: do re mi fa sol la si. El do central es do4: do5 es una octava más arriba y sol3 una más abajo; sin número, la octava 4. Sostenido con # (fa#), bemol con b (sib).
-4. La duración, después de dos puntos: r redonda, b blanca, n negra, c corchea, s semicorchea; con un punto detrás, con puntillo (sol:n.). Si no se pone, vale la de la nota anterior.
+4. La duración, después de dos puntos, en todas las notas: r redonda, b blanca, n negra, c corchea, s semicorchea; con un punto detrás, con puntillo (sol:n.). Cada compás tiene que sumar lo que dice el compás.
 5. Un silencio es - con su duración (-:n).
 6. Sin acordes, tresillos, ligaduras ni repeticiones: todo seguido.
 
@@ -2458,7 +2458,7 @@ Origen: Francia
 Clave: sol
 Compás: 4/4
 Tempo: 100
-do:n do sol sol | la la sol:b | fa:n fa mi mi | re re do:b
+do:n do:n sol:n sol:n | la:n la:n sol:b | fa:n fa:n mi:n mi:n | re:n re:n do:b
 
 Responde solo con el texto, sin explicaciones.';
 $string['app_sc_prompt_title'] = 'Una canción con tu IA';

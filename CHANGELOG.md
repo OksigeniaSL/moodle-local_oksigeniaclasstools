@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.43.1 (2026-10-12)
+
+- The prompt of a song asks for the length on every note, and for each bar to add up to its time signature (the
+  example too). Tried with the AI of a real site: with the old rule it left lengths out and carried the one before
+  (two bars too long in «Frère Jacques»); with the new one the song comes exact.
+
 ## 0.43.0 (2026-10-12)
 
 - **A song with the AI of the site, in the score**: «A song with your AI» now has «Generate» when Moodle has an AI
