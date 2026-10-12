@@ -1808,7 +1808,7 @@ const CHECKS = {
         q('.ct-guia [data-guide="envivo"]').click();
         await sleep(100);
         const buttons = [...document.querySelectorAll('.ct-guia [data-help]')].map((b) => b.dataset.help).join();
-        if (buttons !== 'entrar,votar,nube,concurso,pulsadores,manos') { return `helps in the guide: ${buttons}`; }
+        if (buttons !== 'entrar,votar,nube,mando,concurso,pulsadores,manos') { return `helps in the guide: ${buttons}`; }
         q('.ct-guia [data-help="entrar"]').click();
         await sleep(300);
         if (!q('.hp') || !q('.ct-guia').hidden) { return 'the help did not open from the guide'; }
@@ -1978,6 +1978,21 @@ const CHECKS = {
         if (sheet.classList.contains('ancha') || !q('.ct-guia-fondo').hidden) { return 'not back to the side'; }
         sheet.querySelector('[data-a="close"]').click();
         return '';
+    },
+    // The round buttons of the top bar with only their icon (as on a narrow screen): each icon in the middle of its
+    // circle.
+    'bar-icons-centred': async () => {
+        document.head.insertAdjacentHTML('beforeend', '<style id="solo-iconos">.acciones .redondo-texto { display: none !important; }</style>');
+        await new Promise((r) => setTimeout(r, 100));
+        const off = [...document.querySelectorAll('.acciones .redondo')].filter((b) => !b.hidden && b.offsetParent !== null).map((b) => {
+            const r = b.getBoundingClientRect(), i = b.querySelector('svg');
+            if (!i) { return ''; }
+            const k = i.getBoundingClientRect();
+            const dx = (k.left + k.right) / 2 - (r.left + r.right) / 2, dy = (k.top + k.bottom) / 2 - (r.top + r.bottom) / 2;
+            return Math.abs(dx) > 1.5 || Math.abs(dy) > 1.5 ? `${b.id || b.className}: ${dx.toFixed(1)}, ${dy.toFixed(1)}` : '';
+        }).filter(Boolean);
+        document.getElementById('solo-iconos').remove();
+        return off.join(' | ');
     },
     // Music questions for the quiz: sets that make themselves (which song, rhythm and melody dictations), four
     // different answers with the right one among them, and what each one plays.

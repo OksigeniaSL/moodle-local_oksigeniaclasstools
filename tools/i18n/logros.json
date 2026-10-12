@@ -36,7 +36,7 @@
   "es": "Cierra una lluvia de ideas con {$a} respuestas o más."
  },
  "cr_lanzapreguntas_name": {
-  "en": "Question Thrower",
+  "en": "Question Launcher",
   "es": "Lanzapreguntas"
  },
  "cr_lanzapreguntas_text": {
@@ -48,7 +48,7 @@
   "es": "Haz 3 preguntas de concurso con {$a} dispositivos o más."
  },
  "cr_tocatimbres_name": {
-  "en": "Buzzer Beater",
+  "en": "Bell Ringer",
   "es": "Tocatimbres"
  },
  "cr_tocatimbres_text": {
@@ -144,7 +144,7 @@
   "es": "Termina una partida de ahorcado."
  },
  "cr_cazaletras_name": {
-  "en": "Letter Hunter",
+  "en": "Letter Catcher",
   "es": "Cazaletras"
  },
  "cr_cazaletras_text": {
@@ -180,7 +180,7 @@
   "es": "Llega a la meta de la clase."
  },
  "cr_pasalimpios_name": {
-  "en": "Clean Liner",
+  "en": "Tidy Hand",
   "es": "Pasalimpios"
  },
  "cr_pasalimpios_text": {

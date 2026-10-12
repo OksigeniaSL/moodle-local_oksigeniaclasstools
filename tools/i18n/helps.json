@@ -186,5 +186,19 @@
   "hp_meta_7": { "en": "You've got it! This critter is yours: the Goal Getter.", "es": "¡Lo tienes! Este bichito es tuyo: Cumplemetas." },
   "hp_meta_again": { "en": "Well done! The Goal Getter is already yours.", "es": "¡Bien hecho! Ya tenías a Cumplemetas." },
   "hp_meta_h1": { "en": "Add five with «+5»", "es": "Suma cinco con «+5»" },
-  "hp_meta_prize": { "en": "An afternoon of games", "es": "Una tarde de juegos" }
+  "hp_meta_prize": { "en": "An afternoon of games", "es": "Una tarde de juegos" },
+  "hp_mando_title": { "en": "The fixed remote: the board in your pocket", "es": "Mando fijo: la pizarra en el bolsillo" },
+  "hp_mando_1": { "en": "They're working in groups and you go from table to table. In «Live», «Remote», press «Turn the fixed remote on».", "es": "Trabajan en grupos y tú vas de mesa en mesa. En «En vivo», «Mando», pulsa «Encender el mando fijo»." },
+  "hp_mando_2": { "en": "Scan the QR code with your phone: the address doesn't change and doesn't ask you to log in. Your phone now drives this board.", "es": "Escanea el QR con el móvil: la dirección no cambia y no pide entrar. Tu móvil ya maneja esta pizarra." },
+  "hp_mando_3": { "en": "In «Go to a tool», the timer: start it from your phone and, if a group needs a little longer, «+1 minute».", "es": "En «Ir a una herramienta», el temporizador: arráncalo desde el móvil y, si un grupo va justo, «+1 minuto»." },
+  "hp_mando_4": { "en": "«Whose turn?» picks someone to tell everyone how their group is doing, and the «Curtain» covers the board while they think.", "es": "«¿A quién le toca?» elige a alguien para contar cómo va su grupo, y la «Cortina» tapa la pizarra mientras piensan." },
+  "hp_mando_5": { "en": "Save the address on your phone: it works all year and for all your classes, which you switch in «Change the class». If it ever gets out, «Change the address».", "es": "Guarda la dirección en el móvil: vale todo el curso y para todas tus clases, que cambias en «Cambiar de clase». Si un día se escapa, «Cambiar la dirección»." },
+  "hp_mando_6": { "en": "Your turn: from your phone, start the timer and then press «Whose turn?».", "es": "Ahora tú: desde el móvil, arranca el temporizador y luego pulsa «¿A quién le toca?»." },
+  "hp_mando_7": { "en": "You've got it! This critter is yours: the Remote Master.", "es": "¡Lo tienes! Este bichito es tuyo: Mandamás." },
+  "hp_mando_again": { "en": "Well done! The Remote Master is already yours.", "es": "¡Bien hecho! Ya tenías a Mandamás." },
+  "hp_mando_h1": { "en": "On the phone: «Timer: start or pause»", "es": "En el móvil: «Temporizador: empezar o pausa»" },
+  "hp_mando_h2": { "en": "And now «Whose turn?»", "es": "Y ahora «¿A quién le toca?»" },
+  "hp_practice_phone": { "en": "The teacher's phone", "es": "El móvil del docente" },
+  "hp_practice_other1": { "en": "Class 3A · Maths", "es": "3.º A · Matemáticas" },
+  "hp_practice_other2": { "en": "Class 2C · Language", "es": "2.º C · Lengua" }
 }

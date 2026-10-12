@@ -93,6 +93,12 @@
         });
         await h.gesture('.ct-in-is-compass [data-act="pencil"]', pts, { px: true, every: 22, step: 8 });
     }
+    // The fixed remote chosen in «Live», at once (turning it on, in the help).
+    async function openFixedRemote(h) {
+        await h.press('#t-envivo', true);
+        await h.press('#lv-kind [data-v="remote"]', true);
+        await h.until('[data-rm="on"]');
+    }
     // A vote with the class inside, done at once.
     const voteOpen = async (h) => {
         await h.press('#t-envivo', true);
@@ -615,6 +621,59 @@
                 prep: async (h) => { await h.press('#t-marcador', true); await h.press('#h-marcador [data-v="goal"]', true); },
                 targets: [{ sel: '#h-marcador [data-s="5"]' }],
                 after: 2600,
+            },
+        },
+        // «Live» · the fixed remote: the board in the pocket, going from table to table while the class works in groups.
+        mando: {
+            setup: async (h) => { await openFixedRemote(h); },
+            steps: [
+                async (h) => { await h.wait(1800); await h.press('[data-rm="on"]'); await h.until('.ct-rm .lv-qr'); },
+                async (h) => {
+                    await h.moveTo('.ct-rm .lv-qr');
+                    await h.phone(true);
+                    await h.until('movil:.jn-mando');
+                    await h.wait(1800);
+                    await h.moveTo('.ct-rm-ok', true);                // «Phone connected»
+                    await h.moveTo('movil:.jn-mando');
+                },
+                async (h) => {
+                    await h.press('movil:details.jn-herramientas:not(#jn-clases) > summary');
+                    await h.press('movil:[data-cmd="tool_temporizador"]');
+                    await h.wait(1000);
+                    await h.press('movil:[data-cmd="tm_toggle"]');
+                    await h.wait(1600);
+                    await h.press('movil:[data-cmd="tm_plus"]');
+                    await h.wait(1500);
+                    await h.moveTo('#tm-cifras');
+                },
+                async (h) => {
+                    await h.press('movil:[data-cmd="pick"]');
+                    await h.wait(2600);
+                    await h.moveTo('#q-nombre');
+                    await h.press('movil:[data-cmd="curtain"]');
+                    await h.wait(2000);
+                },
+                async (h) => {
+                    // The phone draws itself again once it hears the board is on another tool: only then is the list of
+                    // classes opened, or it would close under the pointer.
+                    await h.pause(1800);
+                    await h.press('movil:#jn-clases > summary');
+                    await h.until('movil:#jn-clases-lista button');
+                    await h.moveTo('movil:#jn-clases-lista');
+                    await h.wait(2000);
+                },
+            ],
+            practice: {
+                prep: async (h) => {
+                    await openFixedRemote(h);
+                    await h.press('[data-rm="on"]', true);
+                    await h.until('.ct-rm .lv-qr');
+                    await h.press('#t-temporizador', true);
+                    await h.phone(true, true);
+                    await h.until('movil:.jn-mando');
+                },
+                targets: [{ sel: 'movil:[data-cmd="tm_toggle"]' }, { sel: 'movil:[data-cmd="pick"]' }],
+                after: 3400,
             },
         },
     };

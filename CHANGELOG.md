@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.55.0 (2026-10-12)
+
+- A guided help for the fixed remote, in the guide of «Live»: turning it on, the QR, and the teacher's phone beside
+  the practice board with the real page of the remote (the timer started and a minute more, «Whose turn?», the
+  curtain and the list of classes); «Now you» from the phone. With voice in Spanish and English.
+- The practice board of the helps has a fixed remote of its own, with two more invented classes, and its phone keeps
+  nothing; going to another class from it is not done.
+- The fixed remote: with the timer running, the phone got the name of the timer with its countdown («Timer4:58»), drew
+  itself again every second and closed «Go to a tool» and «Change class» while they were open. It gets the name of
+  the tab now.
+- Four stickers have the English names their helps say: Question Launcher, Bell Ringer, Letter Catcher and Tidy Hand.
+- The icons of «Present» and «Back to the course» sit in the middle of their circles (they were a little high).
+
 ## 0.54.0 (2026-10-12)
 
 - The looks of the class goal, with the art direction's style: the critter's path on a meadow with a sandy track, an

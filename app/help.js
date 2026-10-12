@@ -18,6 +18,7 @@
         entrar: { guide: 'envivo', sticker: 'domamoviles', voice: ['es', 'en'] },
         votar: { guide: 'envivo', sticker: 'cuentavotos', voice: ['es', 'en'] },
         nube: { guide: 'envivo', sticker: 'atrapanubes', voice: ['es', 'en'] },
+        mando: { guide: 'envivo', sticker: 'mandamas', voice: ['es', 'en'] },
         concurso: { guide: 'envivo', sticker: 'lanzapreguntas', voice: ['es', 'en'] },
         pulsadores: { guide: 'envivo', sticker: 'tocatimbres', voice: ['es', 'en'] },
         manos: { guide: ['envivo', 'tarjetas'], sticker: 'cuentamanos', voice: ['es', 'en'] },
@@ -56,17 +57,22 @@
     // --- The layer ---------------------------------------------------------------------------------------------------
     const ICON_PLAY = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13L19.5 12z"/></svg>';
     const ICON_PAUSE = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="7" y="5" width="3.4" height="14" rx="1"/><rect x="13.6" y="5" width="3.4" height="14" rx="1"/></svg>';
-    let box = null, frame = null, cur = null, ring = null, hint = null;
+    let box = null, frame = null, cur = null, ring = null, hint = null, phoneFrame = null;
     let ID = '', P = null, opts = {}, token = 0, i = 0, playing = false, fast = false, begun = false, done = false, had = false, voice = '';
     const vo = new Audio(), bed = new Audio();
     bed.loop = true;
     const $ = (s) => box.querySelector(s);
     const doc = () => frame && frame.contentDocument;
-    const el = (sel) => { const d = doc(); return d && d.querySelector(sel); };
-    // Where something of the practice board is on the screen.
+    // «movil:…» names something on the teacher's phone beside the board (a help about the remote); anything else, on
+    // the practice board.
+    const docOf = (sel) => (sel.indexOf('movil:') === 0 ? phoneFrame && phoneFrame.contentDocument : doc());
+    const bare = (sel) => sel.replace(/^movil:/, '');
+    const el = (sel) => { const d = docOf(sel); return d && d.querySelector(bare(sel)); };
+    // Where something of the practice board (or of the phone, drawn smaller than it lays out) is on the screen.
     const center = (e) => {
-        const b = e.getBoundingClientRect(), o = frame.getBoundingClientRect();
-        const r = { left: o.left + b.left, top: o.top + b.top, width: b.width, height: b.height };
+        const f = e.ownerDocument.defaultView.frameElement || frame, b = e.getBoundingClientRect(), o = f.getBoundingClientRect();
+        const k = f.offsetWidth ? o.width / f.offsetWidth : 1;
+        const r = { left: o.left + b.left * k, top: o.top + b.top * k, width: b.width * k, height: b.height * k };
         r.right = r.left + r.width; r.bottom = r.top + r.height;
         return { x: r.left + r.width / 2, y: r.top + r.height / 2, r };
     };
@@ -188,7 +194,7 @@
             const d = e.ownerDocument, w = d.defaultView, b = e.getBoundingClientRect();
             const Q = pts.map(([x, y]) => (o.px ? [b.left + x, b.top + y] : [b.left + x * b.width, b.top + y * b.height]));
             const target = d.elementFromPoint(Q[0][0], Q[0][1]) || e;
-            const f = frame.getBoundingClientRect();
+            const f = (w.frameElement || frame).getBoundingClientRect();
             const cursor = ([x, y]) => { cur.style.left = (f.left + x - 4) + 'px'; cur.style.top = (f.top + y - 2) + 'px'; };
             const proto = w.Element.prototype, capture = proto.setPointerCapture;
             let captured = null;
@@ -224,7 +230,16 @@
         };
         const rect = async (sel) => { const e = await until(sel); return e ? e.getBoundingClientRect() : null; };
         const pause = (ms) => sleep(ms);
-        return { wait, pause, until, moveTo, press, type, choose, tap, draw: gesture, drag, gesture, rect, live };
+        // The teacher's phone beside the board, with the real page of the fixed remote (practicephone.js links it to
+        // the practice board), or away.
+        const phone = async (show, quick) => {
+            const p = $('.hp-movil');
+            if (!show) { p.classList.remove('on'); return; }
+            await new Promise((ok) => { phoneFrame.addEventListener('load', ok, { once: true }); phoneFrame.src = `mando.html?hp=${Date.now()}#practica`; });
+            p.classList.add('on');
+            await wait(700, quick);
+        };
+        return { wait, pause, until, moveTo, press, type, choose, tap, draw: gesture, drag, gesture, rect, phone, live };
     };
     // Until what sel names has stayed put for longer than a poll of the board (1.5 s), or 8 s at most.
     const still = async (sel) => {
@@ -236,8 +251,10 @@
             await sleep(100);
         }
     };
-    // A fresh practice board (a new address, or the frame would only move to another fragment of the same page).
+    // A fresh practice board (a new address, or the frame would only move to another fragment of the same page), and no
+    // phone until a step brings it, linked to the new board.
     const loadBoard = () => new Promise((ok) => {
+        if (box) { $('.hp-movil').classList.remove('on'); }
         frame.addEventListener('load', () => setTimeout(ok, fast ? 300 : 600), { once: true });
         const search = location.search.replace(/[?&]hp=\d+/, '');
         frame.src = `${location.pathname}${search ? search + '&' : '?'}hp=${Date.now()}#practica${P.quick ? '&rapido' : ''}`;
@@ -281,7 +298,7 @@
             hint.classList.add('on');
             await new Promise((resolve) => {
                 // What counts as done: a click on it, or another event (x.event), landing on it or on x.on.
-                const d = doc(), evt = x.event || 'click', on = x.on || x.sel;
+                const d = docOf(x.sel), evt = x.event || 'click', on = bare(x.on || x.sel);
                 const onDone = (ev) => { if (ev.target.closest && ev.target.closest(on)) { d.removeEventListener(evt, onDone, true); resolve(); } };
                 d.addEventListener(evt, onDone, true);
                 const stop = () => { if (!h.live()) { d.removeEventListener(evt, onDone, true); resolve(); } else { setTimeout(stop, 300); } };
@@ -411,6 +428,7 @@
         const n = LAST() + 1;
         box.innerHTML = `<div class="hp-escena">
                 <iframe class="hp-pizarra" title="${escape(t('hp_practice_board'))}"></iframe>
+                <div class="hp-movil" aria-hidden="true"><div class="hp-pantalla"><iframe class="hp-movil-marco" title="${escape(t('hp_practice_phone'))}"></iframe></div></div>
                 <div class="hp-fx">
                     <div class="hp-anillo"></div>
                     <div class="hp-pista" aria-live="polite"><small></small><span></span></div>
@@ -439,7 +457,7 @@
                 </div>
             </div>`;
         document.body.append(box);
-        frame = $('.hp-pizarra'); cur = $('.hp-cursor'); ring = $('.hp-anillo'); hint = $('.hp-pista');
+        frame = $('.hp-pizarra'); cur = $('.hp-cursor'); ring = $('.hp-anillo'); hint = $('.hp-pista'); phoneFrame = $('.hp-movil-marco');
         $('#hp-start').addEventListener('click', start);
         $('#hp-play').addEventListener('click', () => {
             if (playing) { playing = false; vo.pause(); fadeBed(0, 400); token++; paint(); } else { startBed(); jump(done ? 0 : i); }

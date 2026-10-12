@@ -1898,7 +1898,7 @@
     (() => {
         const b = document.createElement('button');
         b.type = 'button'; b.className = 'redondo'; b.id = 'b-presentar'; b.title = t('bar_present');
-        b.innerHTML = `<span>${icono('ampliar')}</span><span class="redondo-texto">${escapa(t('bar_present'))}</span>`;
+        b.innerHTML = `<span class="ico-caja">${icono('ampliar')}</span><span class="redondo-texto">${escapa(t('bar_present'))}</span>`;
         $('.acciones').prepend(b);
         const sale = document.createElement('button');
         sale.type = 'button'; sale.className = 'salir-presentar'; sale.id = 'b-salir-presentar'; sale.hidden = true;
@@ -2098,7 +2098,7 @@
     if (vuelta) {
         const v = document.createElement('a');
         v.className = 'redondo'; v.href = vuelta[0]; v.title = vuelta[1];
-        v.innerHTML = `<span>${icono('salir')}</span><span class="redondo-texto">${escapa(vuelta[1])}</span>`;
+        v.innerHTML = `<span class="ico-caja">${icono('salir')}</span><span class="redondo-texto">${escapa(vuelta[1])}</span>`;
         $('.acciones').prepend(v);
     }
     if (AULA && AULA.course) {

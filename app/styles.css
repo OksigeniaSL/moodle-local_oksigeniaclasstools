@@ -22,7 +22,7 @@ body { display: flex; flex-direction: column; overflow: hidden; background: var(
 button, input, select, textarea { font: inherit; color: inherit; }
 button { touch-action: manipulation; -webkit-user-select: none; user-select: none; }
 h2, h3 { margin: 0; }
-[data-icono] { display: inline-flex; }
+[data-icono], .ico-caja { display: inline-flex; }
 .ico { width: 1em; height: 1em; flex: none; overflow: visible; }
 .solo-lector { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .ante { margin: 0; color: var(--tinta-3); font-size: .74rem; font-weight: 900; letter-spacing: .09em; text-transform: uppercase; }
@@ -2469,3 +2469,10 @@ dialog.ct-sala { width: min(60rem, 94vw); max-width: none; overflow-y: auto; }
 .ct-guia.ancha .ct-guia-fuentes li { font-size: clamp(.9rem, .75rem + .35vw, 1.15rem); }
 @keyframes ct-guia-crece { from { opacity: 0; transform: translate(-50%, -48%) scale(.97); } }
 @media (prefers-reduced-motion: reduce) { .ct-guia.ancha { animation: none; } }
+/* The teacher's phone beside the practice board (a help about the remote): a phone of real size, shown smaller. */
+.hp-movil { position: absolute; right: 26px; bottom: 16px; z-index: 4; padding: 13px 10px; border-radius: 34px; background: #12161f; box-shadow: 0 24px 60px rgba(15, 47, 94, .45), inset 0 0 0 2px #2c3442; transform: translateY(130%); visibility: hidden; transition: transform .6s cubic-bezier(.2, 1.2, .4, 1), visibility 0s .6s; }
+.hp-movil.on { transform: none; visibility: visible; transition: transform .6s cubic-bezier(.2, 1.2, .4, 1), visibility 0s; }
+.hp-movil::before { content: ""; position: absolute; top: 5px; left: 50%; width: 60px; height: 4px; margin-left: -30px; border-radius: 3px; background: #2c3442; }
+.hp-pantalla { width: 216px; height: 432px; overflow: hidden; border-radius: 24px; background: #fff; }
+.hp-movil-marco { display: block; width: 360px; height: 720px; border: 0; transform: scale(.6); transform-origin: 0 0; }
+@media (prefers-reduced-motion: reduce) { .hp-movil, .hp-movil.on { transition: none; } }

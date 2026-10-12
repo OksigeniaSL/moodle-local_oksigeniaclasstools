@@ -82,8 +82,9 @@
         .then((r) => r.json()).then((j) => { if (!j || j.error || j.errorcode) { throw new Error('remote'); } return j; });
     // The tools of the board, with their names, for the phone to go to them.
     const tools = () => core.tabs().map((id) => {
-        const b = document.querySelector(`[data-h="${id}"]`);
-        const name = b ? (b.getAttribute('aria-label') || b.textContent || '').trim() : '';
+        // The label of the tab (the timer's tab also carries its countdown, which would change every second).
+        const b = document.querySelector(`[data-h="${id}"]`), label = b && (b.querySelector('[data-t]') || b);
+        const name = b ? (b.getAttribute('aria-label') || label.textContent || '').trim() : '';
         return `${id}|${name.replace(/[|;]/g, ' ').slice(0, 40)}`;
     }).filter((x) => !x.endsWith('|')).join(';');
     const poll = () => {

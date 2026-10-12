@@ -70,7 +70,7 @@
         ],
         me: { n: 'Marta Ibáñez', i: 1 }, state: {},
         pickurl: 'pick.php', stateurl: 'state.php', groupsurl: null, boardurl: null, liveurl: 'livehost.php',
-        remoteurl: null, remote: null, logrosurl: null, logros: null,
+        remoteurl: 'remote.php', remote: { on: false }, logrosurl: null, logros: null,
         bankurl: 'quizbank.php', glossaryurl: 'glossary.php', aiurl: null, quizimgurl: 'quizimage.php', quizimg: '',
     };
 
@@ -181,6 +181,24 @@
         }
         return v;
     };
+    // The fixed remote: this board and two more classes of the same teacher, an address that changes with «Change the
+    // address», and the orders the practice phone (practicephone.js) leaves for the board.
+    const rm = { on: false, n: 0, seq: 0, cmds: [], phone: false, tool: '', tools: [] };
+    const rmUrl = () => `https://campus.example/local/oksigeniaclasstools/mando.php?k=${['Q7f2Lm9xTa4Rk8Vb3Nc6Wd1Ye5Hj0Pu2', 'Z3pK8sV1nM6qT4rB9wX2cY7fL5hJ0dG3'][rm.n % 2]}`;
+    const CLASSES = () => [{ id: 1, name: STR.hp_practice_course || 'Practice class' }, { id: 2, name: STR.hp_practice_other1 || 'Class 3A' },
+        { id: 3, name: STR.hp_practice_other2 || 'Class 2C' }];
+    const remote = (body) => {
+        const action = body.get('action');
+        if (action === 'on') { Object.assign(rm, { on: true, seq: 0, cmds: [], phone: false }); }
+        if (action === 'off') { rm.on = false; }
+        if (action === 'rotate') { rm.n++; rm.phone = false; }
+        if (action === 'poll') {
+            rm.tool = body.get('tool') || '';
+            rm.tools = (body.get('tools') || '').split(';').filter(Boolean).map((x) => x.split('|'));
+            return { on: rm.on, seq: rm.seq, cmds: rm.cmds.slice(-10), phone: rm.phone };
+        }
+        return rm.on ? { on: true, url: rmUrl() } : { on: false };
+    };
     const json = (data) => Promise.resolve(new Response(JSON.stringify(data), { headers: { 'Content-Type': 'application/json' } }));
     const parse = (s, d) => { try { return JSON.parse(s); } catch (e) { return d; } };
     const host = (body) => {
@@ -223,6 +241,7 @@
         const body = new URLSearchParams(opts && opts.body && typeof opts.body !== 'object' ? String(opts.body)
             : (opts && opts.body instanceof URLSearchParams ? opts.body.toString() : ''));
         if (/livehost\.php/.test(u)) { return json(host(body)); }
+        if (/remote\.php/.test(u)) { return json(remote(body)); }
         // Words, questions and pictures of the course: none in a practice class.
         if (/(quizbank|glossary)\.php/.test(u)) { return json({ ok: true, questions: [], words: [], items: [] }); }
         // Anything else that would reach Moodle (picks, kept tools…): accepted and forgotten.
@@ -235,5 +254,20 @@
         remoteView: () => ({ kind: 'remote', code: 'K7Q2', identity: 'moodle', joined: st.joined, ended: !st.started || st.kind !== 'remote' }),
         remoteJoin: () => { if (st.started && st.kind === 'remote') { st.joined = true; } },
         remoteCommand: (cmd) => { if (st.joined) { st.seq++; st.cmds.push({ seq: st.seq, cmd }); } },
+        // For the fixed remote's page beside the board, as mandoapi.php would answer it. Going to another class is
+        // not done (it would take the practice board to a real course).
+        mando: {
+            state: () => {
+                if (!rm.on) { return { off: true }; }
+                rm.phone = true;
+                return { boards: [{ course: 1, name: CLASSES()[0].name, tool: rm.tool, tools: rm.tools }] };
+            },
+            command: (cmd) => {
+                if (!rm.on) { return { off: true }; }
+                if (!/^course_/.test(cmd)) { rm.seq++; rm.cmds.push({ seq: rm.seq, cmd, course: 1 }); }
+                return { ok: true };
+            },
+            courses: () => ({ courses: CLASSES() }),
+        },
     };
 })();
