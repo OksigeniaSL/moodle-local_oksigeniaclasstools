@@ -300,3 +300,140 @@
         },
     };
 })();
+
+// --- Printed cards («Hands up or cards»): printing and reading them, with no printer and no camera ----------------
+// From the art direction's practica.js. The practice class already has its cards (printed for its list, 4.º B).
+// «Print» shows the sheet over the board instead of the printer's dialog. «Read the cards» gets a camera that sees the
+// class with the cards up, drawn here and panning slowly across the room: the board's own reader (scanner.js) reads
+// that picture as it would read a real camera, so the outlines, the bars and «Still to read» are the real ones.
+(() => {
+    if (!/(?:^#|&)practica(?:&|$)/.test(location.hash)) { return; }
+    // The list the cards were printed for, in the board's memory (nothing of the practice board is kept).
+    addEventListener('load', () => {
+        const core = window.ClasstoolsCore;
+        if (core && !core.load('tarjetas-lista', '')) { core.save('tarjetas-lista', 'aula-g1'); }
+    });
+
+    // --- The print, as a sheet over the board -------------------------------------------------------------------
+    const closeSheet = () => {
+        const f = document.getElementById('ct-tarjetas-imprimir');
+        if (f) { f.style.cssText = 'position:fixed;right:0;bottom:0;width:0;height:0;border:0;visibility:hidden'; }
+        ['pr-hoja', 'pr-hoja-cerrar'].forEach((id) => { const e = document.getElementById(id); if (e) { e.remove(); } });
+    };
+    const showSheet = (frame) => {
+        closeSheet();
+        // A page of the print (two cards, 280 mm) with a white edge, as large as fits.
+        const k = Math.min(innerHeight * 0.92 / 1114, innerWidth * 0.9 / 850);
+        const back = document.createElement('div');
+        back.id = 'pr-hoja';
+        back.style.cssText = 'position:fixed;inset:0;z-index:2147483000;background:rgba(15,31,56,.55)';
+        back.addEventListener('click', closeSheet);
+        frame.style.cssText = 'position:fixed;left:50%;top:50%;width:850px;height:1114px;border:28px solid #fff;box-sizing:border-box;z-index:2147483001;background:#fff;'
+            + `box-shadow:0 12px 40px rgba(0,0,0,.45);transform:translate(-50%,-50%) scale(${k.toFixed(3)});visibility:visible`;
+        const x = document.createElement('button');
+        x.type = 'button'; x.id = 'pr-hoja-cerrar'; x.className = 'redondo';
+        const core = window.ClasstoolsCore;
+        x.setAttribute('aria-label', core ? core.t('gen_close') : 'Close');
+        x.innerHTML = core ? core.icon('cerrar') : '×';
+        x.style.cssText = `position:fixed;z-index:2147483002;left:calc(50% + ${Math.round(425 * k) + 12}px);top:calc(50% - ${Math.round(557 * k)}px)`;
+        x.addEventListener('click', closeSheet);
+        document.body.append(back, x);
+    };
+    // cards.js writes the page into a hidden frame and calls its print(): that print shows the sheet instead.
+    new MutationObserver((muts) => muts.forEach((m) => m.addedNodes.forEach((n) => {
+        if (n.id === 'ct-tarjetas-imprimir' && n.contentWindow) { n.contentWindow.print = () => showSheet(n); }
+    }))).observe(document.documentElement, { childList: true, subtree: true });
+
+    // --- The camera: the class with their cards up ----------------------------------------------------------------
+    // The answer of each card (card n is the n-th of the list), after «Two minutes to convince»: mostly C, yellow.
+    // «-»: that card is not up (still to read).
+    const ANSWERS = 'CBCCAC-CCBCCBC-CACCBC-CB';
+    // As printed, A is on top; the card is turned so its answer is: B a quarter anticlockwise, C half, D a quarter clockwise.
+    const TURN = { A: 0, B: -Math.PI / 2, C: Math.PI, D: Math.PI / 2 };
+    const BANDS = [['A', '#ce1423', '#fff'], ['B', '#164281', '#fff'], ['C', '#fbbe17', '#1c1a19'], ['D', '#067e36', '#fff']];
+    const SKINS = ['#f6d3b3', '#eec09a', '#d9a27a', '#b97d57', '#8d5a3b', '#f3c9a6'];
+    const HAIRS = ['#2b1d16', '#4a2f22', '#6b4226', '#a0672f', '#d4a253', '#1c1c1c'];
+    const SHIRTS = ['#4f86c6', '#e2725b', '#5cae7a', '#9a7bd1', '#e8b04a', '#4bb3bd'];
+    // Three rows of eight, the back ones smaller; each row half a seat apart from the one in front.
+    const SEATS = [];
+    for (let r = 0; r < 3; r++) {
+        for (let c = 0; c < 8; c++) {
+            SEATS.push({ x: 150 + c * 270 + (r % 2 ? 0 : 135), y: [205, 455, 715][r], s: [168, 190, 214][r], n: r * 8 + c });
+        }
+    }
+    // The picture of the camera (4:3) and the room it pans across.
+    const SCENE = 2460, W = 1200, H = 900;
+    const drawCard = (g, id, s) => {
+        const b = s * 20 / 135, u = (s - 2 * b) / 8, code = window.ClasstoolsScanner ? window.ClasstoolsScanner.CODES[id - 1] : 0;
+        g.fillStyle = '#fff'; g.fillRect(-s / 2, -s / 2, s, s);
+        // The bands, each with its letter upright when it is on top.
+        const band = ([letter, colour, ink], k) => {
+            g.save(); g.rotate(k * Math.PI / 2);   // A on top, B right, C bottom, D left
+            g.fillStyle = colour; g.fillRect(-s / 2, -s / 2, s, b);
+            g.fillStyle = ink; g.font = `900 ${Math.round(b * 0.8)}px Nunito, sans-serif`; g.textAlign = 'center'; g.textBaseline = 'middle';
+            g.fillText(letter, 0, -s / 2 + b / 2 + 1);
+            g.restore();
+        };
+        // The side bands go between the top and bottom ones: drawn first, then the top and bottom over them.
+        band(BANDS[1], 1); band(BANDS[3], 3); band(BANDS[0], 0); band(BANDS[2], 2);
+        // The mark, in the middle: a black border and its 4 × 4 cells (scanner.js, as printed).
+        const o = -s / 2 + b;
+        g.fillStyle = '#000'; g.fillRect(o + u, o + u, 6 * u, 6 * u);
+        g.fillStyle = '#fff'; g.fillRect(o + 2 * u, o + 2 * u, 4 * u, 4 * u);
+        g.fillStyle = '#000';
+        for (let r = 0; r < 4; r++) {
+            for (let c = 0; c < 4; c++) { if ((code >> (r * 4 + c)) & 1) { g.fillRect(o + (2 + c) * u, o + (2 + r) * u, u + 0.5, u + 0.5); } }
+        }
+        g.strokeStyle = 'rgba(0,0,0,.25)'; g.lineWidth = 1; g.strokeRect(-s / 2, -s / 2, s, s);
+    };
+    const drawClass = (g, t) => {
+        // The camera goes over the room as a hand would: still on the left, then the middle, then the right (about
+        // five seconds), with a slight shake. Still, so the outlines the board draws stay on their cards.
+        const at = [[0, 0], [1500, 0], [2300, 0.5], [3600, 0.5], [4400, 1]];
+        let p = 1;
+        for (let i = 1; i < at.length; i++) {
+            if (t < at[i][0]) { const k = (t - at[i - 1][0]) / (at[i][0] - at[i - 1][0]); p = at[i - 1][1] + (at[i][1] - at[i - 1][1]) * k * k * (3 - 2 * k); break; }
+        }
+        const pan = (SCENE - W) * p;
+        g.fillStyle = '#ece4d6'; g.fillRect(0, 0, W, H);
+        g.fillStyle = '#d9cbb3'; g.fillRect(0, H * 0.78, W, H * 0.22);
+        g.save();
+        g.translate(-pan, Math.sin(t / 420) * 2.5);
+        SEATS.forEach(({ x, y, s, n }) => {
+            const answer = ANSWERS[n], skin = SKINS[(n * 7) % SKINS.length], hair = HAIRS[(n * 5) % HAIRS.length];
+            const up = answer && answer !== '-';
+            // The student: shirt, head and hair; the card in front of the face, held by both hands.
+            g.fillStyle = SHIRTS[(n * 3) % SHIRTS.length];
+            g.beginPath(); g.ellipse(x, y + s * 0.62, s * 0.46, s * 0.4, 0, Math.PI, 0); g.fill();
+            const hy = up ? y - s * 0.58 : y + s * 0.05;
+            g.fillStyle = hair; g.beginPath(); g.arc(x, hy - s * 0.03, s * 0.25, 0, Math.PI * 2); g.fill();
+            g.fillStyle = skin; g.beginPath(); g.arc(x, hy + s * 0.03, s * 0.22, 0, Math.PI * 2); g.fill();
+            if (!up) { return; }
+            const wobble = 0.07 * Math.sin(n * 2.3) + 0.025 * Math.sin(t / 650 + n);
+            g.save(); g.translate(x, y); g.rotate(TURN[answer] + wobble);
+            drawCard(g, n + 1, s);
+            g.restore();
+            g.fillStyle = skin;
+            [-1, 1].forEach((side) => { g.beginPath(); g.arc(x + side * s * 0.47, y + s * 0.38, s * 0.09, 0, Math.PI * 2); g.fill(); });
+        });
+        g.restore();
+    };
+    const camera = () => {
+        const c = document.createElement('canvas');
+        c.width = W; c.height = H;
+        const g = c.getContext('2d'), t0 = performance.now(), stream = c.captureStream(15);
+        const frame = () => {
+            if (stream.getVideoTracks().every((tr) => tr.readyState === 'ended')) { return; }
+            drawClass(g, performance.now() - t0);
+            requestAnimationFrame(frame);
+        };
+        frame();
+        return stream;
+    };
+    if (!navigator.mediaDevices) { try { Object.defineProperty(navigator, 'mediaDevices', { value: {} }); } catch (e) { /* none */ } }
+    if (navigator.mediaDevices) {
+        navigator.mediaDevices.getUserMedia = (want) => (want && want.video ? Promise.resolve(camera())
+            : Promise.reject(new DOMException('No camera in the practice class', 'NotAllowedError')));
+    }
+    window.CLASSTOOLS_PRACTICE = Object.assign(window.CLASSTOOLS_PRACTICE || {}, { cards: { answers: ANSWERS, closeSheet } });
+})();

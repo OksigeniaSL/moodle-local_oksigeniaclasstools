@@ -406,5 +406,53 @@
  "cr_fam_exercises": {
   "en": "My exercises",
   "es": "Mis ejercicios"
+ },
+ "cr_alzatarjetas_name": {
+  "en": "Card Raiser",
+  "es": "Alzatarjetas"
+ },
+ "cr_alzatarjetas_text": {
+  "en": "Reads the whole class at a glance.",
+  "es": "Lee toda la clase de un vistazo."
+ },
+ "cr_alzatarjetas_how": {
+  "en": "Read {$a} printed cards or more with the camera.",
+  "es": "Lee {$a} tarjetas impresas o más con la cámara."
+ },
+ "cr_echacuentas_name": {
+  "en": "Number Cruncher",
+  "es": "Echacuentas"
+ },
+ "cr_echacuentas_text": {
+  "en": "Estimates first, then works it out.",
+  "es": "Primero estima, luego calcula."
+ },
+ "cr_echacuentas_how": {
+  "en": "Show a result on the calculator after «Estimate first».",
+  "es": "Muestra un resultado en la calculadora después de «Estimar antes»."
+ },
+ "cr_sigueluces_name": {
+  "en": "Light Chaser",
+  "es": "Sigueluces"
+ },
+ "cr_sigueluces_text": {
+  "en": "Never misses a light.",
+  "es": "No se le escapa ni una luz."
+ },
+ "cr_sigueluces_how": {
+  "en": "Get a Simon sequence of 5 or more right.",
+  "es": "Acierta una secuencia de Simón de 5 o más."
+ },
+ "cr_fam_cards": {
+  "en": "Printed cards",
+  "es": "Tarjetas impresas"
+ },
+ "cr_fam_calc": {
+  "en": "Calculator",
+  "es": "Calculadora"
+ },
+ "cr_fam_simon": {
+  "en": "Simon",
+  "es": "Simón"
  }
 }

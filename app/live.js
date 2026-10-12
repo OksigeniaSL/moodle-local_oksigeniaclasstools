@@ -134,6 +134,18 @@
     const colourOf = (o, i) => (OPTIONS.abcd.concat(OPTIONS.yesno, OPTIONS.light, OPTIONS.five).includes(o) && $('#lv-vote').value !== 'custom'
         ? COLOURS[o] : TEAMS[i % TEAMS.length]);
     const keepHands = () => save('manos', hd);
+    // Back from reading the cards: what they said (A to D) becomes the hands of the question, for its bars and «By
+    // groups» (the cards only have A to D).
+    const fromCards = () => {
+        const C = window.ClasstoolsCards, read = C ? C.read() : new Map();
+        if (read.size) {
+            if ($('#lv-vote').value !== 'abcd') { $('#lv-vote').value = 'abcd'; save('envivo-voto', 'abcd'); }
+            hd.counts = {};
+            read.forEach((answer) => { hd.counts[answer] = (hd.counts[answer] || 0) + 1; });
+            keepHands();
+        }
+        paintHands();
+    };
     const paintHands = () => {
         stage.innerHTML = `<div class="lv-pregunta"><input type="text" id="lv-hq" maxlength="140" placeholder="${escape(t('lv_question_ph'))}" aria-label="${escape(t('lv_question_ph'))}"></div>
             <div class="lv-centro"><p class="lv-grande" id="lv-htotal"></p><div class="lv-barras" id="lv-hbars"></div></div>
@@ -151,7 +163,7 @@
         $('#lv-hscan').hidden = !C || !window.ClasstoolsScanner;
         if (C) {
             $('#lv-hprint').addEventListener('click', () => C.ask());
-            $('#lv-hscan').addEventListener('click', () => C.scan(stage, paintHands));
+            $('#lv-hscan').addEventListener('click', () => C.scan(stage, fromCards));
             $('#lv-hgroups').addEventListener('click', () => {
                 const opts = handOptions();
                 C.groups(stage, opts, colourOf, opts.map((o) => Math.max(0, Number(hd.counts[o]) || 0)), paintHands);
@@ -485,7 +497,7 @@
         if (S || !window.ClasstoolsCards) { return; }
         if (core.current && core.current() !== 'envivo') { core.show('envivo'); }
         kind = 'hands'; save('envivo-tipo', kind); paintSetup();
-        window.ClasstoolsCards.scan(stage, paintHands);
+        window.ClasstoolsCards.scan(stage, fromCards);
     };
     paintSetup();
     // A session left open (the page was reloaded): pick it up again.

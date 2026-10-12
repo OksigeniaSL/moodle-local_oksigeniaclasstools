@@ -295,6 +295,8 @@
         hiddenResult = false;
         keep(ans);
         play('elegido');
+        // Estimated first and then checked: the sticker of the calculator.
+        if (core.logro) { core.logro('echacuentas'); }
         announce(`${expr} = ${shown}`);
         paint(); openSheet();
     };
@@ -314,6 +316,9 @@
             // Estimating: a second «=» shows it.
             if (fresh && hiddenResult) { reveal(); return; }
             if (fresh) { return; }
+            // Brackets left open are closed, as they are worked out: «∛(27» is shown as «∛(27)».
+            const open = (expr.match(/\(/g) || []).length - (expr.match(/\)/g) || []).length;
+            if (open > 0) { expr += ')'.repeat(open); }
             const v = evaluate(expr);
             shown = format(v);
             const ok = v !== null && !Number.isNaN(v);

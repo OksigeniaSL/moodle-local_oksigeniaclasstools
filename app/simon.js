@@ -288,6 +288,7 @@
         if (s.input === s.seq.length) {
             s.state = 'idle';
             if (s.seq.length > s.record) { s.record = s.seq.length; s.recordWho = whoName(); paintWho(); }
+            if (s.seq.length >= 5 && core.logro) { core.logro('sigueluces'); }
             if (kind() === 'syllables') {
                 // The whole word, big, before the next one.
                 const box = $('#si-show');
@@ -323,6 +324,13 @@
         seg('#si-onfail', () => save('simon-fallo', resetOnFail() ? 'reset' : 'repeat'));
         $('#si-turns').addEventListener('change', () => { save('simon-turnos', $('#si-turns').value); s.order = []; s.turn = -1; paintWho(); });
         $('#si-start').addEventListener('click', start);
+        // Early years in the middle of a game: the syllables (and the word on top) in capitals at once, and back.
+        document.addEventListener('classtools:mode', () => {
+            if (kind() !== 'syllables') { return; }
+            paintBoard();
+            const box = $('#si-show'), lang = (CONTENT.lang || 'en').replace('_', '-');
+            if (box.textContent && !box.dataset.rule) { box.textContent = caps(box.textContent.toLocaleLowerCase(lang)); }
+        });
         $('#si-board').addEventListener('pointerdown', (e) => { const p = e.target.closest('.ct-pad'); if (p) { e.preventDefault(); press(Number(p.dataset.i)); } });
         $('#si-board').addEventListener('click', (e) => { const p = e.target.closest('.ct-pad'); if (p && e.detail === 0) { press(Number(p.dataset.i)); } });   // keyboard
         document.addEventListener('keydown', (e) => {

@@ -29,7 +29,7 @@ class kept {
 
     /** The tools that keep something in Moodle. */
     const TOOLS = ['scoreboard', 'roscos', 'candados', 'settings', 'goal', 'countdown', 'quizzes', 'board', 'scores', 'ejercicios',
-        'presentaciones'];
+        'presentaciones', 'tarjetas'];
 
     /** Largest JSON kept for a tool, in bytes. */
     const DATA_MAX_LENGTH = 200000;

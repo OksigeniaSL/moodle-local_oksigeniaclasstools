@@ -896,8 +896,8 @@
   "es": "El doble"
  },
  "si_order": {
-  "en": "Repeated",
-  "es": "Se repite"
+  "en": "When repeating",
+  "es": "Al repetir"
  },
  "si_order_same": {
   "en": "In order",

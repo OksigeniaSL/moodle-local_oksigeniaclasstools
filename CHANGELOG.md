@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.59.0 (2026-10-12)
+
+- The last three guided helps of the art direction, with voice in Spanish and English: printed cards (the kilo of straw
+  and the kilo of iron: printed, in groups, two minutes to convince and read by the camera), the calculator (the
+  museum trip with brackets, estimating first, step by step and the cube root) and Simon with syllables. With their
+  stickers: the Card Raiser (read as many cards with the camera as a live session needs), the Number Cruncher (show a
+  result after «Estimate first») and the Light Chaser (get a sequence of 5 or more right). Twenty helps in all.
+- The practice board prints the cards as a sheet over it and has a camera of its own that sees a class drawn with the
+  real marks, read by the board's own reader: a help never opens the printer or the teacher's camera.
+- Printed cards: what the camera (or the phone) reads becomes the hands of the question, in its bars and «In groups»;
+  and the list they were printed for is kept in Moodle too, so they keep their names when read on another computer.
+- Calculator: brackets left open are closed when it works out («∛(27) = 3»); the guide says how to see an estimated
+  result («Show the result», or «=» and Enter with a keyboard).
+- Simon with syllables: the word on top is sized by the height too, and nothing is kept for «whose turn» when nobody
+  is shown, so the pads keep their size (twice as big in Early years); changing to Early years in a game puts the
+  syllables in capitals at once; and the order of the sequence is «When repeating», no longer a second «Same again».
+- The browser checks no longer leave what they download in the Downloads folder.
+
 ## 0.58.0 (2026-10-12)
 
 - Two more guided helps, from the art direction, with voice in Spanish and English: the balance scale (3x + 1 = x + 9

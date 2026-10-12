@@ -11,6 +11,23 @@
     const t = (k) => (window.ClasstoolsCore ? window.ClasstoolsCore.t(k) : k);
 
     // --- What several helps do at once (from the art direction's pieces) ------------------------------------
+    // Simon's word on its pads, pressed in order. The word is drawn at random, so its pads are read from the board's
+    // hook for tests (ClasstoolsSimon.state().seq), in the frame of the practice board.
+    async function pressWord(h, quick) {
+        const pad = await h.until('#si-board .ct-pad');
+        const simon = pad && pad.ownerDocument.defaultView.ClasstoolsSimon;
+        if (!simon) { return; }
+        // Once the board waits for the answer (a written word takes a moment to come up).
+        for (let k = 0; k < 150 && !(simon.state().state === 'input' && simon.state().seq.length) && h.live(); k++) { await h.pause(100); }
+        for (const i of simon.state().seq.slice()) { await h.press(`#si-board .ct-pad[data-i="${i}"]`, quick); }
+    }
+    // After a word is split: it comes out whole, and then the next one is written.
+    async function nextWord(h) {
+        await h.until('#si-show.ct-palabra');
+        await h.until('#si-show:not(.ct-palabra)', 6000);
+        await h.pause(300);
+    }
+
     // A brainstorm session open with the class inside, at once.
     async function openIdeas(h) {
         await h.press('#t-envivo', true);
@@ -512,6 +529,182 @@
                     { sel: '#ex-ed-text', event: 'input', auto: (h) => h.type('#ex-ed-text', t('hp_ejercicios_practice')) },
                     // «input» counts at the first letter: «Save» is ringed a moment later, so the typing ends first.
                     { sel: '.ct-ex-editor button[value="save"]', delay: 2500 },
+                ],
+                after: 2400,
+            },
+        },
+        // «Hands up or cards»: the trick question of the kilo of straw, the cards printed, «In groups», two minutes to
+        // convince, and the cards read by the camera (in the practice board, a class drawn with the real marks).
+        tarjetas: {
+            steps: [
+                async (h) => {
+                    await h.wait(1400);
+                    await h.press('#t-envivo');
+                    await h.press('#lv-kind [data-v="hands"]');
+                    await h.type('#lv-hq', t('hp_tarjetas_q'));
+                },
+                async (h) => {
+                    await h.press('#lv-hprint');
+                    // The formats one after the other as the voice names them, and back to the one that is turned.
+                    for (const f of ['rotate', 'four', 'light', 'yesno', 'rotate']) { await h.choose('#tc-format', f); }
+                    await h.moveTo('#tc-for');
+                    await h.press('#tc-print');
+                    // The print, shown as a sheet over the practice board (practice.js): the cards of Lucía and Hugo.
+                    await h.until('#pr-hoja-cerrar', 5000);
+                    await h.wait(1600);
+                },
+                async (h) => {
+                    await h.press('#pr-hoja-cerrar');
+                    await h.press('#lv-hgroups');
+                    await h.wait(500);
+                    await h.moveTo('.tc-zona:nth-child(2)');   // B, the blue: the kilo of iron
+                    await h.wait(900);
+                },
+                async (h) => {
+                    await h.press('#tc-talk');
+                    await h.moveTo('#tc-say');
+                    await h.wait(1600);
+                    await h.press('#tc-back');
+                    await h.press('#lv-hscan');
+                    // The practice camera sweeps the class in five seconds: the readings come as it goes.
+                    await h.press('#tc-cam');
+                    await h.moveTo('.tc-camara');
+                    await h.wait(1500);
+                },
+                async (h) => {
+                    await h.until('#tc-bars .lv-barra:nth-of-type(3)');
+                    await h.wait(2400);
+                    await h.moveTo('#tc-bars .lv-barra:nth-of-type(3)');   // C, the yellow
+                    await h.wait(600);
+                    await h.press('#tc-missing > summary');
+                    await h.moveTo('#tc-missing-list');
+                    await h.wait(1200);
+                    await h.press('label.interruptor:has(#tc-names)');
+                    await h.moveTo('#tc-bars .tc-quienes');
+                    await h.wait(1600);
+                },
+            ],
+            practice: {
+                prep: async (h) => {
+                    await openHands(h);
+                    await h.type('#lv-hq', t('hp_tarjetas_q'), true);
+                },
+                targets: [{ sel: '#lv-hscan' }, { sel: '#tc-cam' }],
+                after: 5200,
+            },
+        },
+        // Calculator: the museum trip, (24 − 3) × 6 with brackets, estimating first, step by step, and the cube root.
+        calculadora: {
+            steps: [
+                async (h) => {
+                    await h.wait(1400);
+                    await h.press('#t-material');
+                    await h.press('#mt-mode [data-mode="calc"]');
+                    await h.moveTo('#ca-result');
+                },
+                async (h) => {
+                    for (const k of ['(', '2', '4', '−', '3', ')', '×', '6']) { await h.press(`#ca-keys [data-k="${k}"]`); }
+                },
+                async (h) => {
+                    await h.press('label.interruptor:has(#ca-guess-on)');
+                    await h.press('#ca-keys [data-k="equals"]');
+                    await h.moveTo('#ca-result');                 // «?», in yellow
+                    await h.wait(2200);
+                    await h.press('#ca-reveal');
+                },
+                async (h) => {
+                    await h.moveTo('label.interruptor:has(#ca-steps-on)');
+                    await h.wait(500);
+                    await h.moveTo('#ca-lines li:first-child .ca-hacer');   // underlined: what is done now
+                    await h.wait(900);
+                    await h.moveTo('#ca-lines li:nth-child(2) .ca-hecho');  // in green: what has just been worked out
+                    await h.wait(900);
+                    await h.moveTo('#ca-lines li:last-child');
+                },
+                async (h) => {
+                    // Estimating off again, so the cube root comes out at once.
+                    await h.press('label.interruptor:has(#ca-guess-on)', true);
+                    await h.press('#ca-kind [data-v="sci"]');
+                    await h.press('#ca-keys [data-k="second"]');
+                    await h.moveTo('#ca-keys [data-k="sin("]');            // now sin⁻¹
+                    await h.press('#ca-keys [data-k="√("]');               // now ∛
+                    for (const k of ['2', '7', 'equals']) { await h.press(`#ca-keys [data-k="${k}"]`); }
+                    await h.moveTo('#ca-result');
+                },
+            ],
+            practice: {
+                prep: async (h) => {
+                    await h.press('#t-material', true);
+                    await h.press('#mt-mode [data-mode="calc"]', true);
+                    await h.press('label.interruptor:has(#ca-guess-on)', true);
+                    for (const k of ['(', '2', '4', '−', '3', ')', '×', '6']) { await h.press(`#ca-keys [data-k="${k}"]`, true); }
+                },
+                targets: [{ sel: '#ca-keys [data-k="equals"]' }, { sel: '#ca-reveal', delay: 1600 }],
+                after: 2600,
+            },
+        },
+        // Simon with syllables, five minutes before reading: the word lit syllable by syllable, then written whole for
+        // them to split it, and in capitals in Early years.
+        silabas: {
+            steps: [
+                async (h) => {
+                    await h.wait(1400);
+                    await h.press('#t-juegos');
+                    await h.press('#ga-mode [data-game="simon"]');
+                    await h.moveTo('#si-kind');
+                },
+                async (h) => {
+                    await h.choose('#si-kind', 'syllables');
+                    await h.moveTo('#si-syl');                  // «Its syllables light up», the one there is at first
+                    await h.wait(600);
+                    await h.press('#si-start');
+                    await h.until('#si-board.ct-locked');        // the syllables light up, and the word forms above them
+                    await h.moveTo('#si-show');
+                    await h.wait(900);
+                },
+                async (h) => {
+                    await h.until('#si-board:not(.ct-locked)', 15000);   // the whole word has been shown: their turn
+                    await pressWord(h);
+                    await h.until('#si-show.ct-palabra');
+                    await h.moveTo('#si-show');                 // the word, whole and in green, before the next one
+                    await h.wait(300);
+                },
+                async (h) => {
+                    // Back to the settings, «It is written and they split it» (the game starts again from two syllables).
+                    await h.press('#ga-setup');
+                    await h.choose('#si-syl', 'read');
+                    await h.press('#si-start');
+                    await h.pause(1000);
+                    await pressWord(h);
+                    // The second word of two syllables, split at once; then the first of three.
+                    await nextWord(h);
+                    await pressWord(h, true);
+                    await nextWord(h);
+                    await h.moveTo('#si-show');
+                    await h.wait(1200);
+                },
+                async (h) => {
+                    // Early years: the pads and the word in capitals at once.
+                    await h.press('#b-modo');
+                    await h.press('#menu-modo [data-modo="early"]');
+                    await h.wait(900);
+                    await h.moveTo('#si-show');
+                    await h.wait(600);
+                    await h.moveTo('#si-board .ct-pad[data-i="0"]');
+                    await h.wait(1200);
+                },
+            ],
+            practice: {
+                prep: async (h) => {
+                    await h.press('#t-juegos', true);
+                    await h.press('#ga-mode [data-game="simon"]', true);
+                    await h.choose('#si-kind', 'syllables', true);
+                    await h.choose('#si-syl', 'read', true);
+                },
+                targets: [
+                    { sel: '#si-start' },
+                    // Done when the word comes out whole, in green (its transition ends on #si-show).
+                    { sel: '#si-board', event: 'transitionend', on: '#si-show', delay: 1200, auto: (h) => pressWord(h) },
                 ],
                 after: 2400,
             },

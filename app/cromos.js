@@ -315,6 +315,51 @@
                 ${GLOVE(6, 78, 20)}`,
             icon: '<path d="M10 -34 L30 -14 L-6 22 L-20 26 L-16 12 Z"/><path d="M-36 -2 h16 v22 h-16 Z M-30 6 h4"/>',
         },
+        alzatarjetas: {
+            box: [10, -40, 92, 96],
+            seed: 'cromo-2172', family: 'live',
+            costume: () => `
+                <g transform="rotate(-6 50 -12)">
+                    <rect x="26" y="-38" width="48" height="48" rx="4" fill="#fff" ${S}/>
+                    <path d="M30 -34 H70" stroke="#ce1423" stroke-width="5"/><path d="M70 -34 V6" stroke="#164281" stroke-width="5"/>
+                    <path d="M70 6 H30" stroke="#067e36" stroke-width="5"/><path d="M30 6 V-34" stroke="#fbbe17" stroke-width="5"/>
+                    <rect x="38" y="-26" width="24" height="24" fill="${INK}"/>
+                    <rect x="42" y="-22" width="6" height="6" fill="#fff"/><rect x="52" y="-22" width="6" height="6" fill="#fff"/>
+                    <rect x="42" y="-12" width="6" height="6" fill="#fff"/>
+                </g>
+                ${GLOVE(26, 10, 60)}${GLOVE(74, 6, -60)}`,
+            icon: '<rect x="-28" y="-28" width="56" height="56" rx="4"/><rect x="-12" y="-12" width="24" height="24"/><path d="M-22 -22 H22"/>',
+        },
+        echacuentas: {
+            box: [10, 2, 122, 98],
+            seed: 'cromo-2120', family: 'material',
+            costume: () => `
+                <path d="M24 28 Q50 16 76 28" fill="none" stroke="${INK}" stroke-width="7" stroke-linecap="round"/>
+                <path d="M24 28 Q50 16 76 28" fill="none" stroke="#9a6334" stroke-width="3" stroke-linecap="round"/>
+                <path d="M26 28 Q50 18 74 28 L84 38 Q50 22 16 38 Z" fill="#2fb36a" fill-opacity=".78" ${S}/>
+                <path d="M104 46 Q120 52 112 66 Q106 76 116 86" fill="none" stroke="${INK}" stroke-width="10" stroke-linecap="round"/>
+                <path d="M104 46 Q120 52 112 66 Q106 76 116 86" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
+                <rect x="84" y="44" width="26" height="36" rx="4" fill="#2b3446" ${S}/>
+                <rect x="88" y="48" width="18" height="8" rx="1.5" fill="#b9f3c8"/>
+                ${[0, 1, 2].map((r) => [0, 1, 2].map((c) => `<rect x="${88.5 + c * 6}" y="${59.5 + r * 6}" width="4" height="4" rx="1" fill="${r === 2 && c === 2 ? '#ea7317' : '#c9d3e0'}"/>`).join('')).join('')}
+                ${GLOVE(84, 82, 20)}`,
+            icon: '<rect x="-22" y="-32" width="44" height="64" rx="6"/><rect x="-14" y="-24" width="28" height="12"/><path d="M-12 -2 h4 M-2 -2 h4 M8 -2 h4 M-12 10 h4 M-2 10 h4 M8 10 h4 M-12 22 h4 M-2 22 h4 M8 22 h4"/>',
+        },
+        sigueluces: {
+            box: [12, -14, 104, 96],
+            seed: 'cromo-2083', family: 'games',
+            costume: () => `
+                ${[['#2fb36a', 180], ['#ff5b6b', 225], ['#ffd23f', 270], ['#3b82c4', 315]].map(([c, a]) => {
+                    const r = 21, p = (d) => `${(50 + r * Math.cos(d * Math.PI / 180)).toFixed(1)} ${(23 + r * Math.sin(d * Math.PI / 180)).toFixed(1)}`;
+                    return `<path d="M50 23 L${p(a)} A${r} ${r} 0 0 1 ${p(a + 45)} Z" fill="${c}" ${S2}/>`;
+                }).join('')}
+                <path d="M27 24 H73" stroke="${INK}" stroke-width="5" stroke-linecap="round"/>
+                <circle cx="50" cy="22" r="5" fill="${INK}"/>
+                <path d="M66 -4 l4 -7 M74 3 l7 -4 M77 12 l8 0" stroke="#3b82c4" stroke-width="3" stroke-linecap="round"/>
+                <circle cx="94" cy="44" r="9" fill="#ffd23f" ${S}/><circle cx="94" cy="44" r="13" fill="none" stroke="#ffd23f" stroke-width="2" opacity=".7"/>
+                ${GLOVE(90, 58, -40)}`,
+            icon: '<path d="M-4 -32 A32 32 0 0 0 -32 -4 H-14 A14 14 0 0 1 -4 -14 Z M4 -32 A32 32 0 0 1 32 -4 H14 A14 14 0 0 0 4 -14 Z M-4 32 A32 32 0 0 1 -32 4 H-14 A14 14 0 0 0 -4 14 Z M4 32 A32 32 0 0 0 32 4 H14 A14 14 0 0 1 4 14 Z"/>',
+        },
     };
     // The panel of each family of tools (the colours of the board).
     const FAMILY = {

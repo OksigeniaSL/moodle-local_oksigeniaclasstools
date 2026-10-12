@@ -677,7 +677,8 @@ function local_oksigeniaclasstools_album(int $userid): ?array {
     $component = 'local_oksigeniaclasstools';
     $data = \local_oksigeniaclasstools\local\logros::album($userid);
     $thr = \local_oksigeniaclasstools\local\logros::thresholds();
-    $measure = ['sacanombres' => $thr['picks'], 'repartequipos' => $thr['students'], 'picabilletes' => $thr['devices']];
+    $measure = ['sacanombres' => $thr['picks'], 'repartequipos' => $thr['students'], 'picabilletes' => $thr['devices'],
+        'alzatarjetas' => $thr['devices']];
     $items = [];
     foreach ($data['cromos'] as $c) {
         $family = $c['family'];

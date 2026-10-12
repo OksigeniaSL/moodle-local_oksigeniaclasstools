@@ -139,6 +139,8 @@
                 // The cards are read with this list (card n is its n-th student).
                 save('tarjetas-lista', list ? list.id : '');
                 save('tarjetas-cuantas', people.length);
+                // Also in Moodle, for the course: read on another computer, the cards still have their names.
+                core.keep('tarjetas', { list: list ? list.id : '', count: people.length });
                 print($('#tc-format').value, people);
                 dialog.close();
                 announce(t('tc_printing'));
@@ -196,9 +198,12 @@
     // view: the reading area; its buttons are below it, in the same stage (box).
     let cam = null, loop = 0, view = null, box = null, names = false;
     const people = () => {
-        const list = (core.lists ? core.lists() : []).find((l) => l.id === load('tarjetas-lista', ''));
+        // The list the cards were printed for: in this browser or, printed on another computer, as Moodle keeps it.
+        const kept = (core.kept && core.kept('tarjetas')) || {};
+        const id = load('tarjetas-lista', null) ?? kept.list ?? '';
+        const list = (core.lists ? core.lists() : []).find((l) => l.id === id);
         if (list) { return list.alumnos.slice(0, window.ClasstoolsScanner ? window.ClasstoolsScanner.MAX : 60); }
-        const n = Math.max(1, Math.min(60, Number(load('tarjetas-cuantas', 25)) || 25));
+        const n = Math.max(1, Math.min(60, Number(load('tarjetas-cuantas', kept.count || 25)) || 25));
         return Array.from({ length: n }, (_, i) => t('tc_card_n', i + 1));
     };
     const ABCD = ['A', 'B', 'C', 'D'];
@@ -226,6 +231,8 @@
         const most = people().length;
         list.forEach(({ id, answer }) => { if (id <= most && read.get(id) !== answer) { read.set(id, answer); changed = true; } });
         if (changed) { play('tic'); paintRead(); }
+        // As many cards read as a live session needs devices: a real reading, for the sticker.
+        if (changed && core.logro && core.logros && read.size >= core.logros.thr.devices) { core.logro('alzatarjetas'); }
         return changed;
     };
     const stopCam = () => {

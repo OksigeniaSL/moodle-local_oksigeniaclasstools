@@ -580,7 +580,8 @@ const CHECKS = {
         const close = async () => { document.querySelector('.ct-guia [data-a="close"]').click(); await sleep(150); };
         const check = (sheet, name) => {
             if (!sheet || sheet.hidden) { return `no guide for ${name}`; }
-            const parts = sheet.querySelectorAll('.ct-guia-parte').length;
+            // Six parts, and one more with the guided helps of the tool when it has any.
+            const parts = sheet.querySelectorAll('.ct-guia-parte').length - (sheet.querySelector('.ct-guia-ayudas') ? 1 : 0);
             if (parts !== 6) { return `${parts} parts in the guide of ${name}`; }
             if (sheet.querySelectorAll('.ct-guia-etapa').length !== 4) { return `the guide of ${name} does not have the four levels`; }
             if (!sheet.querySelector('.ct-guia-fuentes li')) { return `the guide of ${name} has no sources`; }
@@ -1560,6 +1561,18 @@ const CHECKS = {
         await sleep(100);
         if (C.read().get(7) !== 'B' || C.read().get(3) !== 'C') { return 'the phone readings did not count'; }
         if (!/5/.test(q('#tc-count').textContent)) { return `count: ${q('#tc-count').textContent}`; }
+        // Back to the question: what the cards said is its hands, in the bars and «In groups».
+        q('#tc-back').click();
+        await sleep(100);
+        const bars = [...document.querySelectorAll('#lv-hbars .lv-tally strong')].map((x) => x.textContent).join(' ');
+        if (bars !== '0 2 2 1') { return `bars after reading the cards: ${bars}`; }
+        q('#lv-hgroups').click();
+        await sleep(100);
+        const zones = [...document.querySelectorAll('.tc-zona span')].map((x) => x.textContent).join(' ');
+        if (zones !== '2 2 1') { return `groups after reading the cards: ${zones}`; }
+        q('#tc-back').click();
+        (await until('#lv-hscan')).click();
+        await until('#tc-new');
         q('#tc-new').click();
         if (C.read().size) { return 'another question did not clear the readings'; }
         return '';
@@ -1847,7 +1860,7 @@ const CHECKS = {
         const buttons = [...document.querySelectorAll('.ct-guia [data-help]')].map((b) => b.dataset.help).join();
         if (buttons !== 'entrar,votar,nube,mando,concurso,pulsadores,manos') { return `helps in the guide: ${buttons}`; }
         // In the guides of the exit ticket and of the printed cards too, after their own.
-        for (const [guide, want] of [['salida', 'salida,entrar,votar,nube,mando,concurso,pulsadores,manos'], ['tarjetas', 'manos,entrar,votar,nube,mando,concurso,pulsadores']]) {
+        for (const [guide, want] of [['salida', 'salida,entrar,votar,nube,mando,concurso,pulsadores,manos'], ['tarjetas', 'manos,tarjetas,entrar,votar,nube,mando,concurso,pulsadores']]) {
             q('.ct-guia [data-a="index"]').click();
             q(`.ct-guia [data-guide="${guide}"]`).click();
             await sleep(100);
