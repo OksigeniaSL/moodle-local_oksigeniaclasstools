@@ -110,7 +110,11 @@
                 </div>
                 <div class="botonera centro lv-mandos"><button type="button" class="boton grande amarillo" id="ex-close"><span data-icono="pausa"></span><span>${escape(t('lv_ex_close'))}</span></button></div>`;
             icons(stage);
-            stage.querySelector('#ex-close').addEventListener('click', () => { act('close'); play('cuenta'); });
+            stage.querySelector('#ex-close').addEventListener('click', () => {
+                // A real exit ticket for the sticker: handed in by as many as a live session needs.
+                if (core.logro && core.logros && S.tickets.length >= core.logros.thr.devices) { core.logro('picabilletes'); }
+                act('close'); play('cuenta');
+            });
         }
         const $ = (s) => stage.querySelector(s);
         const done = new Set(S.tickets.map((x) => x.device));

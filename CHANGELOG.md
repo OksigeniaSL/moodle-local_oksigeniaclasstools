@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.57.0 (2026-10-12)
+
+- A guided help for the exit ticket, in its teacher's guide: five minutes before break, the faces and two questions,
+  the class handing it in, how they are getting on and the doubts in piles; «Now you» opens and closes it. With voice
+  in Spanish and English (from the art direction). The practice board has its 21 invented tickets.
+- Two new stickers, drawn by the art direction: the Ticket Clipper (close an exit ticket that as many have handed in
+  as a live session needs) and the Cube Unfolder (show another net of a 3D shape).
+
 ## 0.56.3 (2026-10-12)
 
 - «Which class?»: each teacher can hide from there the courses that are not classes (a dining hall, a staff room with

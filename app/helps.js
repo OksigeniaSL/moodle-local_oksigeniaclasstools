@@ -357,6 +357,53 @@
                 after: 2200,
             },
         },
+        // «En vivo» · the exit ticket five minutes before break: who has handed it in, how the class is getting on, and
+        // the doubts in piles (the 21 invented tickets of the practice board).
+        salida: {
+            steps: [
+                async (h) => { await h.wait(1600); await h.press('#t-envivo'); await h.press('#lv-kind [data-v="exit"]'); },
+                async (h) => {
+                    await h.moveTo('#ex-feel');
+                    await h.wait(1200);
+                    await h.moveTo('#ex-q0');
+                    await h.choose('select[data-i="1"]', t('lv_ex_p_doubt'));
+                    await h.wait(800);
+                },
+                async (h) => {
+                    await h.press('#lv-identity [data-v="anon"]', true);
+                    await h.press('#lv-start');
+                    await h.wait(1200);
+                    await h.press('#ex-open');
+                    await h.wait(1600);
+                    // 21 of the 22 hand it in before it is closed (eight of them «halfway», as the voice says).
+                    await h.until('#ex-done li:nth-child(21)', 15000);
+                    await h.moveTo('#ex-count');
+                    await h.wait(1200);
+                    await h.moveTo('#ex-missing');
+                },
+                async (h) => { await h.wait(900); await h.press('#ex-close'); await h.wait(900); await h.moveTo('#ex-bars'); },
+                async (h) => {
+                    await h.press('#ex-show');
+                    await h.wait(900);
+                    await h.moveTo('#ex-piles .ex-monton:nth-child(2) h4');
+                    await h.wait(2200);
+                },
+            ],
+            practice: {
+                prep: async (h) => {
+                    await h.press('#t-envivo', true);
+                    await h.press('#lv-kind [data-v="exit"]', true);
+                    await h.press('#lv-identity [data-v="anon"]', true);
+                    await h.press('#lv-start', true);
+                    await h.until('#ex-open:not([hidden])');
+                },
+                targets: [
+                    { sel: '#ex-open' },
+                    { sel: '#ex-close', delay: 3000 },
+                ],
+                after: 2600,
+            },
+        },
         // Score: the relay song, one note each on the board's glockenspiel.
         partitura: {
             steps: [

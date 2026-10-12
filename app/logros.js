@@ -12,7 +12,7 @@
         domamoviles: 'live', cuentavotos: 'live', atrapanubes: 'live', lanzapreguntas: 'live', tocatimbres: 'live',
         mandamas: 'live', cuentamanos: 'live', repartequipos: 'groups', sacanombres: 'picker', guardatiempos: 'timer',
         tocanotas: 'score', salvaglobos: 'hangman', cazaletras: 'rosco', tiradados: 'dice', cumplemetas: 'goal',
-        pasalimpios: 'board', quitatelones: 'board', trazacirculos: 'board',
+        pasalimpios: 'board', quitatelones: 'board', trazacirculos: 'board', picabilletes: 'exit', despliegacubos: 'solids',
     };
     const ORDER = Object.keys(FAMILY);
     const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));

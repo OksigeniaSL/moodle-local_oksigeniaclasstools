@@ -253,6 +253,35 @@
                 ${GLOVE(33, 77, 80)}${GLOVE(67, 77, -80)}`,
             icon: '<path d="M-20 -30 h40 M-20 30 h40"/><path d="M-16 -30 Q-16 -8 0 0 Q16 -8 16 -30 M-16 30 Q-16 8 0 0 Q16 8 16 30"/><path d="M-8 22 Q0 14 8 22 Z"/>',
         },
+        picabilletes: {
+            box: [-12, -4, 116, 96],
+            seed: 'cromo-2044', family: 'live',
+            costume: () => `
+                <path d="M30 24 Q29 4 50 3 Q71 4 70 24 Z" fill="#164281" ${S}/>
+                <rect x="29" y="16" width="42" height="8" rx="2" fill="#fbbe17" ${S2}/>
+                <circle cx="50" cy="10" r="4" fill="#fbbe17" ${S2}/>
+                <path d="M27 24 Q50 33 76 23 L74 30 Q50 38 26 30 Z" fill="${INK}"/>
+                <g transform="rotate(-14 4 60)"><path d="M-10 50 H18 V70 H-10 Z" fill="#2fb36a" ${S}/>
+                    <path d="M8 50 V70" stroke="#fff" stroke-width="2" stroke-dasharray="3 3"/>
+                    <circle cx="0" cy="60" r="3.6" fill="#fff" ${S2}/></g>
+                ${GLOVE(8, 74, 10)}
+                ${stick('M90 76 L100 46', '#9aa5b5', 4)}${stick('M98 79 L106 50', '#9aa5b5', 4)}
+                <circle cx="103" cy="46" r="6" fill="#c9d3e0" ${S}/>
+                ${GLOVE(94, 80, -20)}`,
+            icon: '<rect x="-28" y="-16" width="56" height="32" rx="4"/><path d="M14 -16 v32" stroke-dasharray="4 4"/><circle cx="-6" cy="0" r="6"/>',
+        },
+        despliegacubos: {
+            box: [8, -22, 124, 96],
+            seed: 'cromo-2005', family: 'material',
+            costume: () => `
+                <path d="M50 -20 L68 -11 L50 -2 L32 -11 Z" fill="#8fe0e4" ${S}/>
+                <path d="M32 -11 L50 -2 V20 L32 11 Z" fill="#2fa3ad" ${S}/>
+                <path d="M68 -11 L50 -2 V20 L68 11 Z" fill="#0b6b74" ${S}/>
+                ${[[96, 40], [86, 50], [96, 50], [106, 50], [116, 50], [96, 60]].map(([x, y]) => `<rect x="${x}" y="${y}" width="10" height="10" fill="#8fe0e4" ${S2}/>`).join('')}
+                <path d="M96 40 L104 32 L114 32 L106 40 Z" fill="#c1e6e8" ${S2}/>
+                ${GLOVE(98, 78, -10)}`,
+            icon: '<path d="M0 -32 L28 -18 L0 -4 L-28 -18 Z M-28 -18 V18 L0 32 V-4 M28 -18 V18 L0 32"/>',
+        },
     };
     // The panel of each family of tools (the colours of the board).
     const FAMILY = {

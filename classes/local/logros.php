@@ -32,7 +32,7 @@ class logros {
         'tocatimbres' => 'live', 'mandamas' => 'live', 'cuentamanos' => 'live', 'repartequipos' => 'groups',
         'sacanombres' => 'picker', 'guardatiempos' => 'timer', 'tocanotas' => 'score', 'salvaglobos' => 'hangman',
         'cazaletras' => 'rosco', 'tiradados' => 'dice', 'cumplemetas' => 'goal', 'pasalimpios' => 'board',
-        'quitatelones' => 'board', 'trazacirculos' => 'board',
+        'quitatelones' => 'board', 'trazacirculos' => 'board', 'picabilletes' => 'exit', 'despliegacubos' => 'solids',
     ];
 
     /** Days of use for each level. */

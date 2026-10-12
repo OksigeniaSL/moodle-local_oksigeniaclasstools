@@ -22,6 +22,7 @@
         concurso: { guide: 'envivo', sticker: 'lanzapreguntas', voice: ['es', 'en'] },
         pulsadores: { guide: 'envivo', sticker: 'tocatimbres', voice: ['es', 'en'] },
         manos: { guide: ['envivo', 'tarjetas'], sticker: 'cuentamanos', voice: ['es', 'en'] },
+        salida: { guide: 'salida', sticker: 'picabilletes', voice: ['es', 'en'] },
         partitura: { guide: 'score', sticker: 'tocanotas', voice: ['es', 'en'] },
         ahorcado: { guide: 'ahorcado', sticker: 'salvaglobos', voice: ['es', 'en'] },
         rosco: { guide: 'rosco', sticker: 'cazaletras', voice: ['es', 'en'] },

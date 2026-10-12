@@ -100,8 +100,34 @@
         [[7, 6000], [4, 6310], [12, 6580], [2, 6940], [19, 7200], [9, 7550]],
         [[5, 1200], [14, 1420], [7, 1760], [0, 2000], [17, 2350]],
     ];
+    // An exit ticket after a lesson on invertebrates (from the art direction's practica.js): how each one is getting on
+    // (0 «not yet» … 3 «could explain it»), the most important thing learned and a doubt left. Eight are «halfway», and
+    // most of their doubts say the same.
+    const TICKETS = [
+        ['2', 'Los insectos tienen seis patas', 'Ninguna'],
+        ['1', 'Que hay animales sin huesos', '¿Por qué la araña no es un insecto?'],
+        ['3', 'Los insectos tienen seis patas y las arañas ocho', ''],
+        ['1', 'Los invertebrados no tienen esqueleto por dentro', 'No entiendo por qué la araña no es un insecto'],
+        ['2', 'El caracol es un molusco', '¿El caracol tiene huesos en la concha?'],
+        ['0', 'Bichos', 'Todo'],
+        ['1', 'Que casi todos los animales son invertebrados', '¿La araña es un insecto o no?'],
+        ['2', 'Las mariposas tienen seis patas', ''],
+        ['3', 'Insecto: seis patas, cabeza, tórax y abdomen', 'Ninguna'],
+        ['1', 'Los insectos tienen antenas', 'Lo de las ocho patas de la araña'],
+        ['2', 'La lombriz es un invertebrado', '¿El pulpo tiene huesos?'],
+        ['1', 'Hay muchos tipos de invertebrados', '¿Por qué la araña no es un insecto si es un bicho?'],
+        ['0', 'No me acuerdo', 'Qué es un invertebrado'],
+        ['2', 'Las arañas son arácnidos', ''],
+        ['1', 'Los invertebrados no tienen columna', 'No sé por qué la araña no es un insecto'],
+        ['2', 'Los insectos tienen el cuerpo en tres partes', 'Ninguna'],
+        ['3', 'La araña no es un insecto porque tiene ocho patas', ''],
+        ['1', 'Las medusas son invertebrados', '¿Las arañas no son insectos?'],
+        ['2', 'Hay invertebrados en el mar', '¿El cangrejo es un insecto?'],
+        ['0', 'Los animales', 'No entiendo lo de vertebrado'],
+        ['1', 'Las hormigas son insectos', '¿Y la araña?'],
+    ];
     const st = { started: 0, kind: 'vote', identity: 'anon', vote: 'abcd', round: 0, open: false, openedAt: 0, closedAt: 0,
-        joinMs: QUICK ? 15 : 380, voteMs: 260, q: '', max: 1, ideaMs: 150, feel: true, prompts: [],
+        joinMs: QUICK ? 15 : 380, voteMs: 260, q: '', max: 1, ideaMs: 150, ticketMs: 170, feel: true, prompts: [],
         teams: [], pick: false, mode: 'calm', top: 0, qs: {}, revealed: 0, answered: {}, answerMs: 120, joined: false, cmds: [], seq: 0 };
 
     const view = () => {
@@ -137,8 +163,11 @@
             v.teams = st.teams;
             v.presses = got.map(([i, at]) => ({ device: v.devices[i].device, name: v.devices[i].name, team: v.devices[i].team, after: at - got[0][1] }));
         }
+        // The tickets come in one after another while it is open: 21 of the 22 devices.
         if (st.kind === 'exit') {
-            Object.assign(v, { feel: st.feel, prompts: st.prompts, tickets: [] });
+            const n = st.round ? Math.min(joined, TICKETS.length, Math.floor((until - st.openedAt) / st.ticketMs)) : 0;
+            Object.assign(v, { feel: st.feel, prompts: st.prompts, tickets: TICKETS.slice(0, n).map(([feel, ...texts], i) => ({
+                device: v.devices[i].device, name: v.devices[i].name, feel: st.feel ? feel : '', texts: st.prompts.map((_, k) => texts[k] || '') })) });
         }
         if (st.kind === 'quiz') {
             const upto = st.revealed === st.round ? st.round : st.round - 1;

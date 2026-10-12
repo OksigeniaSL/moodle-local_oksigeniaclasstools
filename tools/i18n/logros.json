@@ -342,5 +342,37 @@
  "cr_none": {
   "en": "No stickers yet: use any tool with your class and they start coming.",
   "es": "Aún no hay cromos: usa cualquier herramienta con tu clase y empezarán a llegar."
+ },
+ "cr_picabilletes_name": {
+  "en": "Ticket Clipper",
+  "es": "Picabilletes"
+ },
+ "cr_picabilletes_text": {
+  "en": "Nobody leaves without a ticket.",
+  "es": "Nadie sale sin su billete."
+ },
+ "cr_picabilletes_how": {
+  "en": "Close an exit ticket that {$a} or more have handed in.",
+  "es": "Cierra un billete de salida que hayan entregado {$a} o más."
+ },
+ "cr_despliegacubos_name": {
+  "en": "Cube Unfolder",
+  "es": "Despliegacubos"
+ },
+ "cr_despliegacubos_text": {
+  "en": "Knows the eleven ways to open a cube.",
+  "es": "Conoce las once formas de abrir un cubo."
+ },
+ "cr_despliegacubos_how": {
+  "en": "Show another net of a 3D shape with «Another net».",
+  "es": "Enseña otro desarrollo de un cuerpo con «Otro desarrollo»."
+ },
+ "cr_fam_exit": {
+  "en": "Exit ticket",
+  "es": "Billete de salida"
+ },
+ "cr_fam_solids": {
+  "en": "3D shapes",
+  "es": "Cuerpos geométricos"
  }
 }

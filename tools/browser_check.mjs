@@ -1814,7 +1814,7 @@ const CHECKS = {
         const buttons = [...document.querySelectorAll('.ct-guia [data-help]')].map((b) => b.dataset.help).join();
         if (buttons !== 'entrar,votar,nube,mando,concurso,pulsadores,manos') { return `helps in the guide: ${buttons}`; }
         // In the guides of the exit ticket and of the printed cards too, after their own.
-        for (const [guide, want] of [['salida', 'entrar,votar,nube,mando,concurso,pulsadores,manos'], ['tarjetas', 'manos,entrar,votar,nube,mando,concurso,pulsadores']]) {
+        for (const [guide, want] of [['salida', 'salida,entrar,votar,nube,mando,concurso,pulsadores,manos'], ['tarjetas', 'manos,entrar,votar,nube,mando,concurso,pulsadores']]) {
             q('.ct-guia [data-a="index"]').click();
             q(`.ct-guia [data-guide="${guide}"]`).click();
             await sleep(100);

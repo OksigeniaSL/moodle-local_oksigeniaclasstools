@@ -556,6 +556,7 @@
         const show = () => { net = next; unfold(); };
         if (open > 0.001) { fold(show, 2.5); } else { show(); }
         play('card');
+        if (core.logro) { core.logro('despliegacubos'); }
     };
 
     // --- Counting ------------------------------------------------------------------------------------------------------
