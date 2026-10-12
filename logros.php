@@ -30,7 +30,7 @@ use local_oksigeniaclasstools\local\logros;
 
 $courseid = required_param('courseid', PARAM_INT);
 $cromo = required_param('cromo', PARAM_ALPHA);
-// «use»: a real use with a class; «learn»: the «Now you» of the guided help of the tool, done.
+// What happened: a real use with a class («use»), or the «Now you» of the guided help of the tool, done («learn»).
 $action = optional_param('action', 'use', PARAM_ALPHA);
 require_sesskey();
 $course = get_course($courseid);

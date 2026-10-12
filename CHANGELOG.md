@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.50.1 (2026-10-12)
+
+- The practice class of the guided helps is the one of their videos: «4.º B · Ciencias», with its two split groups and
+  the same 24 invented names and drawn faces.
+- A help whose step no longer finds its button now fails the board's checks, instead of going out of date unnoticed.
+
 ## 0.50.0 (2026-10-12)
 
 - **Guided helps**, in the teacher's guide of «Live»; the first two, «Getting the class in» and «Vote: predict before

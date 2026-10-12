@@ -143,12 +143,6 @@ class logros {
     }
 
     /**
-     * The album of a teacher: each sticker with its level and days, and the weeks of use.
-     *
-     * @param int $userid
-     * @return array cromos (cromo, family, days, level, next: days for the next level), got, weeks, weeksneeded
-     */
-    /**
      * A sticker learned: the «Now you» of its guided help, done on the practice board (once is enough).
      *
      * @param int $userid
@@ -186,6 +180,12 @@ class logros {
         return array_values($DB->get_fieldset_select('local_oksigeniaclasstools_learnt', 'cromo', 'userid = ?', [$userid]));
     }
 
+    /**
+     * The album of a teacher: each sticker with its level and days, and the weeks of use.
+     *
+     * @param int $userid
+     * @return array cromos (cromo, family, days, level, next: days for the next level), got, weeks, weeksneeded
+     */
     public static function album(int $userid): array {
         $days = self::days($userid);
         $learned = array_flip(self::learned($userid));

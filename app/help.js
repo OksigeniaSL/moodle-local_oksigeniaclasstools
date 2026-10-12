@@ -99,7 +99,14 @@
     const H = (my) => {
         const live = () => my === token;
         const wait = (ms, quick) => sleep(fast || quick ? 0 : ms);
-        const until = async (sel, ms = 8000) => { const t0 = Date.now(); while (!el(sel) && Date.now() - t0 < ms) { await sleep(60); } return el(sel); };
+        // What a step looks for; not found in time, the tests hear of it (opts.miss): a help that no longer finds its button
+        // fails instead of going old without anyone noticing.
+        const until = async (sel, ms = 8000) => {
+            const t0 = Date.now();
+            while (!el(sel) && Date.now() - t0 < ms) { await sleep(60); }
+            if (!el(sel) && live() && opts.miss) { opts.miss(sel); }
+            return el(sel);
+        };
         const moveTo = async (sel, quick) => {
             const e = await until(sel);
             if (!e || !live()) { return null; }
@@ -457,8 +464,8 @@
      * Opens a help.
      *
      * @param {string} id
-     * @param {{auto: boolean, fast: boolean, start: boolean}} o auto: «Now you» done by the pointer; fast: without
-     *     waiting (for tests); start: without the gate.
+     * @param {{auto: boolean, fast: boolean, start: boolean, miss: Function}} o auto: «Now you» done by the pointer;
+     *     fast: without waiting (for tests); start: without the gate; miss: told of what a step did not find.
      * @return {Promise}
      */
     const open = async (id, o = {}) => {

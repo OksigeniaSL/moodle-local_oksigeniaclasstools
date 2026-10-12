@@ -14,34 +14,61 @@
     const STR = Object.assign({}, window.CLASSTOOLS_STR || {}, (window.CLASSTOOLS_SITE && window.CLASSTOOLS_SITE.str) || {});
 
     // --- The class: invented names and faces drawn here (no real students) ---------------------------------------
-    const NAMES = ['Amelia Brooks', 'Noah Patel', 'Lucía Romero', 'Ethan Walker', 'Sofia Rossi', 'Liam O\'Connor', 'Maya Chen',
-        'Oliver Smith', 'Zara Ahmed', 'Leo Müller', 'Chloe Martin', 'Lucas Silva', 'Ava Johnson', 'Hugo Laurent', 'Isla Murphy',
-        'Mateo García', 'Grace Kim', 'Theo Novak', 'Emma Wilson', 'Yusuf Demir', 'Nina Kowalski', 'Jack Taylor', 'Aria Singh', 'Felix Berg'];
-    const SKIN = ['#f6d3b3', '#eec5a0', '#d9a77c', '#b9835a', '#8d5a3b', '#62402b'];
-    const HAIR = ['#2b1d14', '#4a2f1b', '#7a4b26', '#b8862d', '#e3b866', '#1d1d1f', '#a0522d', '#5b3a29'];
-    const BG = ['#dbeafe', '#fde68a', '#fecdd3', '#bbf7d0', '#e9d5ff', '#fed7aa', '#cffafe', '#fbcfe8'];
-    const hash = (s) => [...s].reduce((a, c) => (a * 31 + c.charCodeAt(0)) >>> 0, 7);
-    const face = (name, i) => {
-        const k = hash(name), skin = SKIN[k % SKIN.length], hair = HAIR[(k >> 3) % HAIR.length], bg = BG[i % BG.length];
-        const hairs = [
-            `<path d="M30 52 Q30 22 60 20 Q90 22 90 52 Q84 36 60 34 Q36 36 30 52Z" fill="${hair}"/>`,
-            `<path d="M26 70 Q24 20 60 18 Q96 20 94 70 L86 70 Q88 38 60 34 Q32 38 34 70Z" fill="${hair}"/>`,
-            `<circle cx="60" cy="16" r="11" fill="${hair}"/><path d="M30 52 Q30 24 60 22 Q90 24 90 52 Q84 38 60 36 Q36 38 30 52Z" fill="${hair}"/>`,
-            `<g fill="${hair}">${Array.from({ length: 9 }, (_, j) => `<circle cx="${32 + j * 7}" cy="${30 - Math.sin((j / 8) * Math.PI) * 10}" r="9"/>`).join('')}</g>`,
-        ];
-        const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><rect width="120" height="120" fill="${bg}"/>`
-            + `<path d="M22 120 Q24 92 60 90 Q96 92 98 120Z" fill="${['#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6'][k % 5]}"/>`
-            + `<rect x="52" y="74" width="16" height="18" rx="6" fill="${skin}"/><ellipse cx="60" cy="54" rx="28" ry="31" fill="${skin}"/>`
-            + `${hairs[(k >> 6) % 4]}<circle cx="49" cy="56" r="3.6" fill="#2a1f1a"/><circle cx="71" cy="56" r="3.6" fill="#2a1f1a"/>`
-            + '<path d="M50 68 Q60 76 70 68" stroke="#7a3b2e" stroke-width="3" fill="none" stroke-linecap="round"/>'
-            + '<circle cx="43" cy="66" r="4" fill="#f08a8a" opacity=".35"/><circle cx="77" cy="66" r="4" fill="#f08a8a" opacity=".35"/></svg>';
+    // The same class as the videos of the helps (the art direction's build-demo.mjs): the same names, and the same
+    // faces from the same seeded random.
+    const NAMES = ['Lucía Moreno', 'Hugo Serrano', 'Martina Castro', 'Mateo Delgado', 'Sofía Ramos', 'Leo Navarro',
+        'Valeria Molina', 'Daniel Rubio', 'Paula Herrero', 'Álvaro Medina', 'Carmen Vidal', 'Marcos Cano',
+        'Julia Prieto', 'Adrián Campos', 'Noa Garrido', 'Izan Cabrera', 'Olivia Pastor', 'Bruno Santana',
+        'Alba Fuentes', 'Gael Lorenzo', 'Irene Mora', 'Enzo Vega', 'Vera Calvo', 'Nicolás León'];
+    const LONG_HAIR = new Set(['Lucía', 'Martina', 'Sofía', 'Valeria', 'Paula', 'Carmen', 'Julia', 'Noa', 'Olivia', 'Alba', 'Irene', 'Vera']);
+    let seed = 7;
+    const rnd = () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; };
+    const pick = (a) => a[Math.floor(rnd() * a.length)];
+    const SKINS = ['#f6d3b3', '#eec09a', '#d9a27a', '#b97d57', '#8d5a3b', '#f3c9a6'];
+    const HAIRS = ['#2b1d16', '#4a2f22', '#6b4226', '#a0672f', '#d4a253', '#1c1c1c', '#7a3b1e'];
+    const BACKS = ['#cfe0f7', '#fde7b0', '#cdeed8', '#f8d4d8', '#e3d8fb', '#d6f0f5', '#ffe0c7'];
+    const SHIRTS = ['#164281', '#ce1423', '#067e36', '#5b2fb8', '#fbbe17', '#0e7c86', '#e05a2b'];
+    const face = (first) => {
+        const skin = pick(SKINS), hair = pick(HAIRS), back = pick(BACKS), shirt = pick(SHIRTS);
+        const style = LONG_HAIR.has(first) ? pick(['long', 'bun', 'bob', 'curly']) : pick(['short', 'curly', 'side', 'short']);
+        const behind = {
+            long: `<path d="M52 92c0-34 20-54 48-54s48 20 48 54v58H52z" fill="${hair}"/>`,
+            bob: `<path d="M54 96c0-34 19-52 46-52s46 18 46 52v28H54z" fill="${hair}"/>`,
+            bun: `<circle cx="100" cy="40" r="17" fill="${hair}"/>`,
+            curly: `<g fill="${hair}">${[[62, 78], [74, 58], [94, 48], [114, 50], [132, 62], [140, 84], [58, 100], [142, 104]]
+                .map(([x, y]) => `<circle cx="${x}" cy="${y}" r="17"/>`).join('')}</g>`,
+            short: '', side: '',
+        }[style];
+        const top = {
+            long: `<path d="M60 92c4-26 20-40 40-40s38 14 41 40c-12-12-30-18-50-16-12 2-22 8-31 16z" fill="${hair}"/>`,
+            bob: `<path d="M60 92c4-26 20-40 40-40s38 14 41 40c-14-14-36-20-81 0z" fill="${hair}"/>`,
+            bun: `<path d="M61 90c3-25 19-39 39-39s37 14 40 39c-10-12-26-18-40-18s-30 6-39 18z" fill="${hair}"/>`,
+            curly: '',
+            short: `<path d="M61 88c2-24 18-38 39-38s37 14 39 38c-8-8-22-14-39-14s-31 6-39 14z" fill="${hair}"/>`,
+            side: `<path d="M60 90c2-26 19-40 41-40 20 0 36 13 39 36-20-2-40-8-56-20-6 10-14 18-24 24z" fill="${hair}"/>`,
+        }[style];
+        const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><rect width="200" height="200" fill="${back}"/>${behind}`
+            + `<path d="M38 200c4-34 30-52 62-52s58 18 62 52z" fill="${shirt}"/><rect x="88" y="124" width="24" height="30" rx="10" fill="${skin}"/>`
+            + `<ellipse cx="100" cy="98" rx="38" ry="42" fill="${skin}"/><circle cx="62" cy="102" r="7" fill="${skin}"/>`
+            + `<circle cx="138" cy="102" r="7" fill="${skin}"/>${top}<circle cx="86" cy="100" r="4.2" fill="#2a1f1a"/>`
+            + '<circle cx="114" cy="100" r="4.2" fill="#2a1f1a"/><circle cx="78" cy="114" r="6" fill="#f08a8a" opacity=".35"/>'
+            + '<circle cx="122" cy="114" r="6" fill="#f08a8a" opacity=".35"/>'
+            + '<path d="M88 118c6 7 18 7 24 0" stroke="#7a3b2e" stroke-width="3.5" fill="none" stroke-linecap="round"/></svg>';
         return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
     };
-    const students = NAMES.map((n, i) => ({ n, f: face(n, i), i: 9001 + i, v: 0 }));
+    const students = NAMES.map((n, i) => {
+        const v = Math.floor(rnd() * 3);
+        return { n, i: 100 + i, v, f: face(n.split(' ')[0]) };
+    });
+    const half = (k) => students.filter((_, i) => i % 2 === k);
     window.CLASSTOOLS = {
         course: STR.hp_practice_course || 'Practice class', back: '#', courseid: 1, mode: 'teacher', sesskey: 'practica', days: 90,
-        lists: [{ id: 'p1', name: STR.hp_practice_list || 'Class', students }],
-        me: { n: STR.hp_practice_me || 'Teacher', i: 9000 }, state: {},
+        lists: [
+            { id: 'g1', name: STR.hp_practice_list || 'Class', students },
+            { id: 'g2', name: STR.hp_practice_half_a || 'A', students: half(0) },
+            { id: 'g3', name: STR.hp_practice_half_b || 'B', students: half(1) },
+        ],
+        me: { n: 'Marta Ibáñez', i: 1 }, state: {},
         pickurl: 'pick.php', stateurl: 'state.php', groupsurl: null, boardurl: null, liveurl: 'livehost.php',
         remoteurl: null, remote: null, logrosurl: null, logros: null,
         bankurl: 'quizbank.php', glossaryurl: 'glossary.php', aiurl: null, quizimgurl: 'quizimage.php', quizimg: '',
@@ -83,7 +110,7 @@
         const v = {
             id: 7, code: 'K7Q2', kind: st.kind, identity: st.identity, round: st.round, open: st.open, left: 0, show: false,
             ended: !st.started, others: 0, notice: true, url: 'join.php?c=K7Q2',
-            devices: Array.from({ length: joined }, (_, i) => ({ device: 'd' + (1000 + i * 37), name: st.identity === 'moodle' ? NAMES[i] : '',
+            devices: Array.from({ length: joined }, (_, i) => ({ device: 'd' + (1000 + i * 37), name: st.identity === 'moodle' ? NAMES[i % NAMES.length] : '',
                 team: (st.kind === 'quiz' || st.kind === 'buzz') && st.teams.length ? (i % st.teams.length) + 1 : 0 })),
         };
         const until = st.open ? now : st.closedAt;

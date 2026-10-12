@@ -9,9 +9,8 @@
   "hp_your_turn_n": { "en": "Your turn · {$a->n} of {$a->all}", "es": "Te toca · {$a->n} de {$a->all}" },
   "hp_fictional": { "en": "Practice class · fictitious data", "es": "Clase de práctica · datos ficticios" },
   "hp_practice_board": { "en": "Practice board", "es": "Pizarra de práctica" },
-  "hp_practice_course": { "en": "Practice class", "es": "Clase de práctica" },
-  "hp_practice_list": { "en": "Class 5B", "es": "5.º B" },
-  "hp_practice_me": { "en": "Teacher", "es": "Profe" },
+  "hp_practice_course": { "en": "Class 4B · Science", "es": "4.º B · Ciencias" },
+  "hp_practice_list": { "en": "Class 4B", "es": "4.º B" },
   "hp_prev": { "en": "Previous step", "es": "Paso anterior" },
   "hp_next": { "en": "Next step", "es": "Paso siguiente" },
   "hp_play": { "en": "Play", "es": "Reproducir" },
@@ -45,5 +44,7 @@
   "hp_votar_again": { "en": "Well done! The Vote Counter is already yours.", "es": "¡Bien hecho! Ya tenías a Cuentavotos." },
   "hp_votar_h1": { "en": "Press «Open the vote»", "es": "Pulsa «Abrir la votación»" },
   "hp_votar_h2": { "en": "They have voted: «Close the vote»", "es": "Ya han votado: «Cerrar la votación»" },
-  "hp_votar_q": { "en": "Does an egg float in salty water?", "es": "¿El huevo flota en agua con sal?" }
+  "hp_votar_q": { "en": "Does an egg float in salty water?", "es": "¿El huevo flota en agua con sal?" },
+  "hp_practice_half_a": { "en": "Split group A", "es": "Desdoble A" },
+  "hp_practice_half_b": { "en": "Split group B", "es": "Desdoble B" }
 }

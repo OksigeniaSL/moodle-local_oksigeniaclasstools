@@ -1811,14 +1811,16 @@ const CHECKS = {
         const frame = q('.hp-pizarra');
         const inner = frame.contentDocument;
         if (!/#practica/.test(frame.contentWindow.location.hash) || !inner.documentElement.classList.contains('practica')) { return 'not the practice board'; }
-        if (!/Amelia Brooks|Noah Patel/.test(JSON.stringify(frame.contentWindow.CLASSTOOLS.lists))) { return 'not the invented class'; }
+        if (!/Lucía Moreno|Bruno Santana/.test(JSON.stringify(frame.contentWindow.CLASSTOOLS.lists))) { return 'not the invented class'; }
         await window.shot('help-step');
         H.close();
         for (const id of ['entrar', 'votar']) {
             window.FAKE.calls.length = 0;
-            await H.open(id, { start: true, auto: true, fast: true });
+            const missed = [];
+            await H.open(id, { start: true, auto: true, fast: true, miss: (sel) => missed.push(sel) });
             for (let i = 0; i < 400 && !H.state().done; i++) { await sleep(100); }
             const st = H.state();
+            if (missed.length) { return `${id}: not found ${missed.join(', ')}`; }
             if (!st.done || !st.practised) { return `${id}: ${JSON.stringify(st)}`; }
             if (!q('.hp-premio.on svg')) { return `${id}: no sticker`; }
             if (!window.FAKE.calls.some((c) => c.action === 'learn' && c.cromo === H.INDEX[id].sticker)) { return `${id}: the sticker was not learned`; }
