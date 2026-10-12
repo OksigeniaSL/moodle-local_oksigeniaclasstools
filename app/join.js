@@ -1,6 +1,7 @@
 // The page where a device joins a live session of the board: it asks for the code (unless it came in the address,
 // from the QR), joins, and then shows only buttons — the answers of a vote, the team buzzer, a box for a word or two
-// in a brainstorm, or the remote for the teacher's own phone. It asks the site every second and a half how the session goes.
+// in a brainstorm, the exit ticket, or the remote for the teacher's own phone. It asks the site every second and a half
+// how the session goes.
 //
 // @copyright 2026 Oksigenia <dev@oksigenia.cc>
 // @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -91,6 +92,7 @@
         const key = JSON.stringify({ ...v, left: 0 });   // the time left alone does not draw the screen again
         if (key === shown) { return; }
         shown = key;
+        document.body.classList.remove('jn-verde');
         if (v.ended) { screen(t('lv_bye')); stop(); return; }
         if (v.kicked) { screen(t('lv_kicked')); stop(); return; }
         if (v.full) { screen(t('lv_full')); return; }
@@ -101,6 +103,7 @@
         if (v.kind === 'quiz') { quiz(v); return; }
         if (v.kind === 'vote') { vote(v); return; }
         if (v.kind === 'ideas') { ideas(v); return; }
+        if (v.kind === 'exit') { ticket(v); return; }
         if (v.kind === 'buzz') { buzzer(v); }
     };
 
@@ -170,6 +173,66 @@
             buzz(); b.disabled = true;
             post('unidea', { slot: b.dataset.slot }).then(apply).catch(() => { b.disabled = false; });
         }));
+    };
+
+    // An exit ticket: how they are getting on (four faces) and a sentence for each question, handed in at once. Once
+    // handed in, the ticket itself, to show at the door; it can be changed while it is open. What is being written
+    // survives the screen being drawn again.
+    const F = window.ClasstoolsFaces;
+    let editing = false;
+    const draft = { round: 0, feel: '', texts: [] };
+    const face = (level, big) => (F && level !== '' ? `<span class="jn-cara${big ? ' grande' : ''}">${F.svg(level)}</span>` : '');
+    const myTicket = (v, m) => `<div class="jn-billete">${m.feel !== '' ? `<p class="jn-billete-cara">${face(m.feel, true)}<span>${escape(t('lv_ex_f' + m.feel))}</span></p>` : ''}`
+        + (v.prompts || []).map((q, i) => (m.texts[i] ? `<p class="jn-billete-q">${escape(q)}</p><p class="jn-billete-a">${escape(m.texts[i])}</p>` : '')).join('')
+        + '</div>';
+    const ticket = (v) => {
+        if (!v.round) { screen(t('lv_ex_wait'), t('lv_joined')); return; }
+        if (draft.round !== v.round) {
+            draft.round = v.round; editing = false;
+            draft.feel = v.mine ? v.mine.feel : ''; draft.texts = v.mine ? v.mine.texts.slice() : [];
+        }
+        const m = v.mine;
+        if (!v.open) {
+            screen(t('lv_ex_closed'), m ? '' : t('lv_ex_none'), m ? myTicket(v, m) : '');
+            return;
+        }
+        if (m && !editing) {
+            // Green from afar: the teacher at the door sees it is handed in.
+            document.body.classList.add('jn-verde');
+            root.innerHTML = `${head()}<div class="jn-centro"><p class="jn-titulo jn-listo">${escape(t('lv_ex_sent'))}</p>
+                <p class="jn-texto">${escape(t('lv_ex_sent_text'))}</p>${myTicket(v, m)}
+                <button type="button" class="jn-boton suave" id="jn-ex-change">${escape(t('lv_ex_change'))}</button></div>`;
+            document.getElementById('jn-ex-change').addEventListener('click', () => {
+                editing = true; draft.feel = m.feel; draft.texts = m.texts.slice(); shown = ''; render();
+            });
+            return;
+        }
+        const faces = v.feel && F ? `<fieldset class="jn-caras"><legend class="jn-titulo">${escape(t('lv_ex_feel_q'))}</legend>
+            ${F.LEVELS.map((l) => `<button type="button" class="jn-cara-op${draft.feel === l ? ' mia' : ''}" data-feel="${l}" aria-pressed="${draft.feel === l}">${face(l)}<span>${escape(t('lv_ex_f' + l))}</span></button>`).join('')}
+            </fieldset>` : '';
+        const questions = (v.prompts || []).map((q, i) => `<label class="jn-ex-q"><span>${escape(q)}</span>
+            <textarea rows="3" maxlength="${v.length || 200}" data-i="${i}" spellcheck="true" placeholder="${escape(t('lv_ex_ph'))}"></textarea></label>`).join('');
+        root.innerHTML = `${head()}<form class="jn-ex" id="jn-ex">${faces}${questions}
+            <button class="jn-boton" type="submit">${escape(t(m ? 'lv_ex_send_again' : 'lv_ex_send'))}</button>
+            <p class="jn-aviso" id="jn-ex-empty" hidden>${escape(t('lv_ex_empty'))}</p></form>`;
+        root.querySelectorAll('textarea[data-i]').forEach((a) => {
+            a.value = draft.texts[a.dataset.i] || '';
+            a.addEventListener('input', () => { draft.texts[a.dataset.i] = a.value; document.getElementById('jn-ex-empty').hidden = true; });
+        });
+        root.querySelectorAll('[data-feel]').forEach((b) => b.addEventListener('click', () => {
+            buzz(); draft.feel = b.dataset.feel; document.getElementById('jn-ex-empty').hidden = true;
+            root.querySelectorAll('[data-feel]').forEach((x) => { x.classList.toggle('mia', x === b); x.setAttribute('aria-pressed', String(x === b)); });
+        }));
+        document.getElementById('jn-ex').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const texts = (v.prompts || []).map((_, i) => String(draft.texts[i] || '').trim());
+            if (draft.feel === '' && !texts.some(Boolean)) { document.getElementById('jn-ex-empty').hidden = false; return; }
+            buzz();
+            const b = e.currentTarget.querySelector('button[type="submit"]'); b.disabled = true;
+            post('ticket', { feel: v.feel ? draft.feel : '', texts: JSON.stringify(texts) })
+                .then((r) => { editing = false; shown = ''; apply(r); })
+                .catch(() => { b.disabled = false; });
+        });
     };
 
     // A quiz: one big button per answer, in its colour and with its letter (and its text, if the teacher shows it on

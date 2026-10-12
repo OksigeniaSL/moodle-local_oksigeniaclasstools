@@ -158,5 +158,12 @@ function xmldb_local_oksigeniaclasstools_upgrade($oldversion) {
         }
         upgrade_plugin_savepoint(true, 2026111600, 'local', 'oksigeniaclasstools');
     }
+    if ($oldversion < 2026111700) {
+        // The answers of an exit ticket are sentences: room for them.
+        $table = new xmldb_table('local_oksigeniaclasstools_livein');
+        $field = new xmldb_field('answer', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null, 'team');
+        $dbman->change_field_precision($table, $field);
+        upgrade_plugin_savepoint(true, 2026111700, 'local', 'oksigeniaclasstools');
+    }
     return true;
 }

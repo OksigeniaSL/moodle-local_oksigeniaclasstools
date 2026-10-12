@@ -18,7 +18,8 @@ namespace local_oksigeniaclasstools\local;
 
 /**
  * Live sessions: the board opens one, the students' devices join it (with a code, or with their Moodle account) and
- * answer — a vote, a buzzer per team, or a word or two for a brainstorm — and the board shows it as it happens. The
+ * answer — a vote, a buzzer per team, a word or two for a brainstorm, or an exit ticket at the end of the lesson — and
+ * the board shows it as it happens. The
  * teacher's phone can also join a session of its own and work as a remote. Devices ask every second or so (no
  * sockets): the state lives in two small tables, where each answer is one row, so presses at the same moment never
  * overwrite each other.
@@ -29,7 +30,7 @@ namespace local_oksigeniaclasstools\local;
  */
 class live {
     /** What a session is for. */
-    const KINDS = ['vote', 'buzz', 'remote', 'ideas', 'quiz'];
+    const KINDS = ['vote', 'buzz', 'remote', 'ideas', 'quiz', 'exit'];
 
     /** Most teams in a quiz. */
     const MAX_TEAMS = 8;
@@ -42,6 +43,18 @@ class live {
 
     /** Most answers of one device to a brainstorm question. */
     const MAX_IDEAS = 3;
+
+    /** Most questions with a written answer in an exit ticket. */
+    const MAX_PROMPTS = 3;
+
+    /** Longest question of an exit ticket, in characters. */
+    const PROMPT_LENGTH = 140;
+
+    /** Longest answer to a question of an exit ticket, in characters. */
+    const TICKET_LENGTH = 200;
+
+    /** How a student feels about the lesson in an exit ticket: 0 (not yet) to 3 (could explain it to someone). */
+    const FEELINGS = ['0', '1', '2', '3'];
 
     /**
      * How devices join: with the code only, with their Moodle account (the board shows their names), or with their
@@ -74,7 +87,7 @@ class live {
      *
      * @param \stdClass $course
      * @param int $teacherid
-     * @param string $kind vote, buzz or remote.
+     * @param string $kind vote, buzz, remote, ideas, quiz or exit.
      * @param string $identity anon, moodle or hidden (a remote is always moodle).
      * @param array $options vote => kind of vote; teams => names of the teams (buzz); max => answers of each device
      *     (ideas, 1 to 3); lang => the teacher's language (the names of the anonymous critters come in it); for a
@@ -121,6 +134,10 @@ class live {
         if ($kind === 'ideas') {
             $state['max'] = max(1, min(self::MAX_IDEAS, (int) ($options['max'] ?? 1)));
             $state['q'] = '';
+        }
+        if ($kind === 'exit') {
+            $state['feel'] = true;
+            $state['prompts'] = [];
         }
         if ($kind === 'quiz') {
             $teams = array_slice(array_values(array_filter(array_map(
@@ -234,12 +251,14 @@ class live {
      * What the teacher does with an open session.
      *
      * @param \stdClass $live
-     * @param string $action open (a new question or round), reopen (a brainstorm question again, keeping its answers),
+     * @param string $action open (a new question or round), reopen (a brainstorm question or an exit ticket again,
+     *     keeping its answers),
      *     close, reveal (a quiz question: its right answer and the points reach the devices), show (results on the
      *     devices too), kick, command (from the remote) or end.
      * @param array $data device (kick), command (command), vote (open: another kind of vote), q and max (open: the
      *     brainstorm question, which the devices see, and how many answers each); q, options, correct and secs (open:
-     *     a quiz question, its 2 to 4 answers, the right one, from 0, and its seconds).
+     *     a quiz question, its 2 to 4 answers, the right one, from 0, and its seconds); feel and prompts (open: an exit
+     *     ticket, whether it asks how they feel about the lesson, and up to 3 questions with a written answer).
      * @return \stdClass The session.
      */
     public static function control(\stdClass $live, string $action, array $data = []): \stdClass {
@@ -273,6 +292,17 @@ class live {
                     $state['closesat'] = time() + $secs + 1;
                     $state['revealed'] = 0;
                 }
+                if ($live->kind === 'exit') {
+                    $prompts = array_slice(array_values(array_filter(array_map(
+                        fn($q) => \core_text::substr(trim(clean_param((string) $q, PARAM_TEXT)), 0, self::PROMPT_LENGTH),
+                        (array) ($data['prompts'] ?? [])
+                    ), fn($q) => $q !== '')), 0, self::MAX_PROMPTS);
+                    if (!$prompts && empty($data['feel'])) {
+                        throw new \moodle_exception('invalidparameter', 'debug');
+                    }
+                    $state['feel'] = !empty($data['feel']);
+                    $state['prompts'] = $prompts;
+                }
                 if ($live->kind === 'ideas') {
                     $state['q'] = \core_text::substr(trim(clean_param((string) ($data['q'] ?? ''), PARAM_TEXT)), 0, 140);
                     if (!empty($data['max'])) {
@@ -281,7 +311,7 @@ class live {
                 }
                 break;
             case 'reopen':
-                if ($live->kind !== 'ideas' || $live->round < 1) {
+                if (!in_array($live->kind, ['ideas', 'exit'], true) || $live->round < 1) {
                     throw new \moodle_exception('invalidparameter', 'debug');
                 }
                 $state['open'] = true;
@@ -531,6 +561,99 @@ class live {
     }
 
     /**
+     * A device hands in its exit ticket: how it feels about the lesson and its written answers, all at once. Handing it
+     * in again while it is open replaces the previous one. Rows «device:0» (how it feels) and «device:1» to «device:3»
+     * (the answer to each question); empty answers are left out.
+     *
+     * @param \stdClass $live
+     * @param string $device
+     * @param string $feel One of FEELINGS, or '' without it.
+     * @param array $texts The answer to each question, in their order.
+     * @throws \moodle_exception If the device is not in or the ticket is closed.
+     */
+    public static function ticket(\stdClass $live, string $device, string $feel, array $texts): void {
+        global $DB;
+        $state = json_decode($live->state, true);
+        $joined = $DB->get_record('local_oksigeniaclasstools_livein', ['liveid' => $live->id, 'round' => 0, 'device' => $device]);
+        $kicked = in_array($device, $state['kicked'], true);
+        if ($live->kind !== 'exit' || !$joined || $kicked || !self::is_open($state) || $live->round < 1) {
+            throw new \moodle_exception('liveclosed', 'local_oksigeniaclasstools');
+        }
+        $rows = [];
+        if (!empty($state['feel']) && in_array($feel, self::FEELINGS, true)) {
+            $rows[0] = $feel;
+        }
+        foreach (array_keys($state['prompts']) as $i) {
+            $text = trim(preg_replace('/\s+/u', ' ', clean_param((string) ($texts[$i] ?? ''), PARAM_TEXT)));
+            $text = \core_text::substr($text, 0, self::TICKET_LENGTH);
+            if ($text !== '') {
+                $rows[$i + 1] = $text;
+            }
+        }
+        if (!$rows) {
+            return;
+        }
+        $transaction = $DB->start_delegated_transaction();
+        $DB->delete_records_select(
+            'local_oksigeniaclasstools_livein',
+            'liveid = :liveid AND round = :round AND ' . $DB->sql_like('device', ':slots'),
+            ['liveid' => $live->id, 'round' => $live->round, 'slots' => $DB->sql_like_escape($device) . ':%']
+        );
+        $now = self::ms();
+        foreach ($rows as $slot => $answer) {
+            $DB->insert_record('local_oksigeniaclasstools_livein', (object) [
+                'liveid' => $live->id, 'round' => $live->round, 'device' => $device . ':' . $slot,
+                'userid' => $joined->userid, 'team' => 0, 'answer' => $answer, 'timecreated' => $now,
+            ]);
+        }
+        $transaction->allow_commit();
+    }
+
+    /**
+     * The exit tickets of the current round: each device that handed one in, with how it feels and its answers.
+     *
+     * @param \stdClass $live
+     * @param string $device Only this device's ticket ('' all).
+     * @return array device => [feel ('' without it), texts (one per question, '' unanswered), t (when, ms)]
+     */
+    private static function tickets(\stdClass $live, string $device = ''): array {
+        global $DB;
+        $state = json_decode($live->state, true);
+        if (!$live->round) {
+            return [];
+        }
+        $where = 'liveid = :liveid AND round = :round';
+        $params = ['liveid' => $live->id, 'round' => $live->round];
+        if ($device !== '') {
+            $where .= ' AND ' . $DB->sql_like('device', ':slots');
+            $params['slots'] = $DB->sql_like_escape($device) . ':%';
+        }
+        $rows = $DB->get_records_select(
+            'local_oksigeniaclasstools_livein',
+            $where,
+            $params,
+            'timecreated, id',
+            'id, device, answer, timecreated'
+        );
+        $tickets = [];
+        foreach ($rows as $row) {
+            $cut = (int) strrpos($row->device, ':');
+            $owner = substr($row->device, 0, $cut);
+            $slot = (int) substr($row->device, $cut + 1);
+            if (!isset($tickets[$owner])) {
+                $blank = array_fill(0, count($state['prompts']), '');
+                $tickets[$owner] = ['feel' => '', 'texts' => $blank, 't' => (int) $row->timecreated];
+            }
+            if ($slot === 0) {
+                $tickets[$owner]['feel'] = $row->answer;
+            } else if ($slot <= count($state['prompts'])) {
+                $tickets[$owner]['texts'][$slot - 1] = $row->answer;
+            }
+        }
+        return $tickets;
+    }
+
+    /**
      * The answers of a device to the current brainstorm question.
      *
      * @param \stdClass $live
@@ -623,6 +746,13 @@ class live {
                     $view['result']['teamrank'] = array_search($me['team'], $order, true) + 1;
                 }
             }
+            return $view;
+        }
+        if ($live->kind === 'exit') {
+            $view['feel'] = !empty($state['feel']);
+            $view['prompts'] = $state['prompts'];
+            $view['length'] = self::TICKET_LENGTH;
+            $view['mine'] = self::tickets($live, $device)[$device] ?? null;
             return $view;
         }
         if ($live->kind === 'ideas') {
@@ -722,6 +852,15 @@ class live {
                 }
             }
             $view['ideas'] = $ideas;
+        }
+        if ($live->kind === 'exit') {
+            $view['feel'] = !empty($state['feel']);
+            $view['prompts'] = $state['prompts'];
+            $tickets = [];
+            foreach (self::tickets($live) as $device => $ticket) {
+                $tickets[] = ['device' => (string) $device, 'name' => $names[$device] ?? ''] + $ticket;
+            }
+            $view['tickets'] = $tickets;
         }
         if ($live->kind === 'quiz') {
             $view['teams'] = $state['teams'];

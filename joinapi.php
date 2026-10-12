@@ -16,7 +16,8 @@
 
 /**
  * What a device that joined a live session with its Moodle account does: join (or pick a team), answer (or send and
- * take back brainstorm answers), ask how it goes and, for the teacher's own phone, send commands to the board.
+ * take back brainstorm answers, or hand in an exit ticket), ask how it goes and, for the teacher's own phone, send
+ * commands to the board.
  *
  * @package    local_oksigeniaclasstools
  * @copyright  2026 Oksigenia <dev@oksigenia.cc>
@@ -58,5 +59,12 @@ if ($action === 'command') {
     live::idea($live, $device, required_param('text', PARAM_TEXT));
 } else if ($action === 'unidea') {
     live::unidea($live, $device, required_param('slot', PARAM_INT));
+} else if ($action === 'ticket') {
+    live::ticket(
+        $live,
+        $device,
+        optional_param('feel', '', PARAM_ALPHANUM),
+        json_decode(optional_param('texts', '[]', PARAM_RAW), true) ?: []
+    );
 }
 echo json_encode(live::device_view($live, $device));

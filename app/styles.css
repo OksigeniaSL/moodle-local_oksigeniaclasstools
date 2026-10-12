@@ -1499,6 +1499,53 @@ button.id-revisar { padding-right: .8rem; cursor: pointer; }
 .id-lienzo .centro { margin: .4rem 0 0; }
 :root[data-modo="advanced"] .id-palabra, :root[data-modo="advanced"] .id-texto { font-weight: 700; }
 @media (prefers-reduced-motion: reduce) { .id-lienzo .nueva { animation: none; } .id-palabra { transition: none; } }
+/* El billete de salida (exit.js): prepararlo, quién lo ha entregado, y el resumen con los billetes en montones. */
+.ex-editor { display: flex; flex-direction: column; gap: 1rem; width: min(100%, 52rem); margin: 0 auto; }
+.ex-cabeza { display: flex; align-items: center; gap: 1rem; }
+.ex-cabeza h3 { margin: 0 0 .2rem; color: var(--azul-osc); font-size: clamp(1.3rem, 2.4vw, 1.9rem); font-weight: 900; }
+.ex-ico { display: grid; flex: none; place-items: center; width: 3.4rem; height: 3.4rem; border-radius: 16px; background: var(--verde-suave); color: var(--verde); }
+.ex-ico svg { width: 1.9rem; height: 1.9rem; fill: currentColor; }
+.ex-bloque { display: flex; flex-wrap: wrap; align-items: center; gap: .8rem 1.2rem; padding: .9rem 1rem; border: 1px solid var(--borde); border-radius: var(--radio); background: var(--superficie); }
+.ex-muestra { display: flex; flex-wrap: wrap; gap: .4rem 1rem; transition: opacity .2s; }
+.ex-muestra.apagada { opacity: .35; }
+.ex-muestra > span { display: inline-flex; align-items: center; gap: .4rem; }
+.ex-muestra small { color: var(--tinta-3); font-size: .85rem; font-weight: 800; }
+.ex-cara { display: inline-block; flex: none; line-height: 0; }
+.ex-cara svg { width: 2.2rem; height: 2.2rem; }
+.ex-pregunta .campo { flex: 1 1 22rem; }
+.ex-pregunta input { min-height: 48px; padding: .4rem .8rem; border: 1px solid var(--borde); border-radius: 12px; background: var(--fondo); color: var(--tinta); font-size: 1.1rem; font-weight: 800; }
+.ex-pregunta select { min-height: 48px; max-width: 16rem; padding: 0 .8rem; border: 1px solid var(--borde); border-radius: 12px; background: var(--superficie); font-weight: 800; }
+.ex-primero { text-align: center; }
+.ex-pista { flex: none; width: min(100%, 36rem); }
+.ex-quien { width: min(100%, 56rem); }
+.ex-quien ul { display: flex; flex-wrap: wrap; justify-content: center; gap: .4rem; margin: .4rem 0 0; padding: 0; list-style: none; }
+.ex-quien li { display: inline-flex; align-items: center; gap: .35rem; padding: .25rem .8rem .25rem .3rem; border-radius: 50rem; background: var(--verde-suave); color: var(--verde); font-weight: 900; }
+.ex-quien li svg { width: 1.8rem; height: 1.8rem; }
+.ex-quien li:not(:has(svg)) { padding-left: .8rem; }
+.ex-faltan li { background: var(--fondo); color: var(--tinta-3); }
+.ex-resumen { position: relative; display: flex; flex: 1; flex-direction: column; align-items: center; gap: 1rem; min-height: 0; }
+.ex-barras .lv-barra { grid-template-columns: 13em minmax(0, 1fr) 3rem; }
+.ex-nivel { display: inline-flex; align-items: center; gap: .5rem; font-size: .8em; font-weight: 900; }
+.ex-nivel .ex-cara svg { width: 2.6rem; height: 2.6rem; }
+.ex-cuenta { margin: 0; color: var(--tinta-3); font-weight: 900; }
+.ex-velo { max-width: 40rem; padding: .8rem 1.2rem; border-radius: 14px; background: var(--amarillo-suave); color: var(--amarillo-tinta); text-align: center; }
+.ex-montones { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: .8rem; align-items: start; width: 100%; }
+.ex-monton { display: flex; flex-direction: column; gap: .5rem; padding: .7rem; border-radius: var(--radio); background: var(--fondo); }
+.ex-monton h4 { display: flex; align-items: center; gap: .5rem; margin: 0; font-size: 1rem; font-weight: 900; }
+.ex-monton h4 b { margin-left: auto; padding: 0 .55em; border-radius: 50rem; background: var(--superficie); color: var(--azul-osc); }
+.ex-monton ul { display: flex; flex-direction: column; gap: .5rem; margin: 0; padding: 0; list-style: none; }
+.ex-monton.ex-uno ul { display: grid; grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr)); }
+.ex-tarjeta { position: relative; padding: .6rem 2.2rem .6rem .8rem; border-left: 6px solid var(--c); border-radius: 10px; background: var(--superficie); box-shadow: 0 1px 3px rgba(15, 47, 94, .2); }
+.ex-tarjeta small { display: block; color: var(--tinta-3); font-size: .75rem; font-weight: 800; }
+.ex-tarjeta p { margin: 0 0 .3rem; font-size: clamp(.95rem, 1.5vw, 1.15rem); font-weight: 800; overflow-wrap: anywhere; }
+.ex-nombre { display: inline-block; margin-top: .2rem; padding: 0 .5em; border-radius: 50rem; background: var(--azul-suave); color: var(--azul-osc); font-size: .8rem; font-weight: 900; }
+.ex-quita { position: absolute; top: .3rem; right: .3rem; display: grid; place-items: center; width: 1.9rem; height: 1.9rem; padding: 0; border: 0; border-radius: 50%; background: none; color: var(--tinta-3); cursor: pointer; }
+.ex-quita:hover, .ex-quita:focus-visible { background: var(--rojo-suave); color: var(--rojo); }
+.ex-quita svg { width: .9rem; height: .9rem; fill: currentColor; }
+.ex-azar { position: absolute; inset: 0; z-index: 3; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.4rem; padding: 2rem; border-radius: var(--radio); background: var(--fondo); }
+.ex-azar-in { max-width: 54rem; text-align: center; }
+.ex-azar-in small { display: block; color: var(--tinta-3); font-size: clamp(1rem, 1.8vw, 1.4rem); font-weight: 800; }
+.ex-azar-in p { margin: 0 0 1rem; color: var(--azul-osc); font-size: clamp(1.8rem, 4vw, 3.4rem); font-weight: 900; line-height: 1.2; text-wrap: balance; }
 
 /* Live sessions without names: the critters of those who are in, under the count, and in the list. */
 .lv-bichos { display: flex; flex-wrap: wrap; justify-content: center; gap: .1rem; max-height: 9.5rem; overflow: hidden; }

@@ -1,4 +1,5 @@
-// Live sessions on the board: a vote, team buzzers or a brainstorm (ideas.js) answered from the students' devices, or
+// Live sessions on the board: a vote, team buzzers, a brainstorm (ideas.js), a quiz (quiz.js) or an exit ticket (exit.js)
+// answered from the students' devices, or
 // the teacher's phone as a remote. The board opens the session in Moodle, shows the code and its QR, and asks every second and a half how it
 // goes (only inside a Moodle course, where the session lives). And, anywhere, a vote by a show of hands, counted on the
 // board with + and −.
@@ -22,10 +23,10 @@
     const TEAMS = [['#164281'], ['#ce1423'], ['#067e36'], ['#5b2fb8'], ['#fbbe17', true], ['#0e7c86']];
     const label = (v) => (['yes', 'no', 'green', 'yellow', 'red'].includes(v) ? t('lv_' + v) : v);
     const KEY = 'envivo-' + (LIVE ? AULA.courseid : 0);   // the open session, to find it again after reloading the page
-    const KINDS = LIVE ? ['vote', 'ideas', 'quiz', 'buzz', 'remote', 'hands'] : ['hands'];
+    const KINDS = LIVE ? ['vote', 'ideas', 'quiz', 'buzz', 'exit', 'remote', 'hands'] : ['hands'];
 
     // Each choice as a card: an icon, its name and what it is, in a line.
-    const KIND_ICONS = { vote: 'encuesta', ideas: 'nube', quiz: 'trofeo', buzz: 'campana', remote: 'mando', hands: 'mano' };
+    const KIND_ICONS = { vote: 'encuesta', ideas: 'nube', quiz: 'trofeo', buzz: 'campana', exit: 'billete', remote: 'mando', hands: 'mano' };
     const card = (v, ico, name, text) => `<button type="button" role="radio" aria-checked="false" data-v="${v}" class="lv-opcion">`
         + `<span class="lv-opcion-ico">${core.icon(ico)}</span><span class="lv-opcion-texto"><strong>${escape(name)}</strong><small>${escape(text)}</small></span></button>`;
     root.innerHTML = `
@@ -108,7 +109,9 @@
         $('#lv-start').hidden = hands;
         $('#lv-n').textContent = teams;
         if (S) { return; }
-        if (hands) { paintHands(); } else if (kind === 'quiz' && window.ClasstoolsQuiz) { window.ClasstoolsQuiz.setup(stage); } else if (kind === 'remote' && window.ClasstoolsRemote && window.ClasstoolsRemote.show) {
+        if (hands) { paintHands(); } else if (kind === 'quiz' && window.ClasstoolsQuiz) { window.ClasstoolsQuiz.setup(stage); } else if (kind === 'exit' && window.ClasstoolsLiveExit) {
+            window.ClasstoolsLiveExit.setup(stage);
+        } else if (kind === 'remote' && window.ClasstoolsRemote && window.ClasstoolsRemote.show) {
             // The fixed remote, without a session; a session with its code is still there, in «Open the session».
             stage.innerHTML = '<div class="lv-centro" id="lv-rm"></div>';
             window.ClasstoolsRemote.show(stage.querySelector('#lv-rm'));
@@ -269,6 +272,8 @@
             if (window.ClasstoolsLiveIdeas) { window.ClasstoolsLiveIdeas.paint(stage, v, first, act); }
         } else if (v.kind === 'quiz') {
             if (window.ClasstoolsQuiz) { window.ClasstoolsQuiz.paint(stage, v, first, act); }
+        } else if (v.kind === 'exit') {
+            if (window.ClasstoolsLiveExit) { window.ClasstoolsLiveExit.paint(stage, v, first, act); }
         } else { paintBuzz(v, first); }
         realUse(v);
     }
@@ -458,6 +463,8 @@
     };
 
     core.register('envivo', { entra: () => { if (S) { poll(); } } });
+    // What is chosen or open, for the teacher's guide.
+    core.liveKind = () => (S && S.kind ? S.kind : kind);
     paintSetup();
     // A session left open (the page was reloaded): pick it up again.
     const kept = LIVE ? Number(load(KEY, 0)) || 0 : 0;

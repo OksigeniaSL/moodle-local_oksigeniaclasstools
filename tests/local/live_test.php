@@ -340,6 +340,55 @@ final class live_test extends \advanced_testcase {
         live::join($live, $a);
     }
 
+    public function test_an_exit_ticket_takes_how_they_feel_and_their_sentences(): void {
+        $this->resetAfterTest();
+        $course = $this->getDataGenerator()->create_course();
+        $student = $this->getDataGenerator()->create_user();
+        $live = live::start($course, 2, 'exit', 'moodle');
+        $device = 'u' . $student->id;
+        live::join($live, $device, $student->id);
+        // Nothing to ask: no ticket.
+        try {
+            live::control($live, 'open', ['feel' => 0, 'prompts' => ['  ']]);
+            $this->fail('Opened an empty ticket');
+        } catch (\moodle_exception $e) {
+            $this->assertSame('invalidparameter', $e->errorcode);
+        }
+        $live = live::control($live, 'open', ['feel' => 1, 'prompts' => ['What did you learn?', '', 'A doubt', 'Four', 'Five']]);
+        $this->assertSame(['What did you learn?', 'A doubt', 'Four'], live::device_view($live, $device)['prompts']);
+        $this->assertNull(live::device_view($live, $device)['mine']);
+        $long = str_repeat('a', 250);
+        live::ticket($live, $device, '1', ['Fractions   are parts', '', $long]);
+        $mine = live::device_view($live, $device)['mine'];
+        $this->assertSame('1', $mine['feel']);
+        $this->assertSame(['Fractions are parts', '', str_repeat('a', live::TICKET_LENGTH)], $mine['texts']);
+        // Handing it in again replaces it; a feeling out of the scale is left out.
+        live::ticket($live, $device, '7', ['Halves and quarters']);
+        $view = live::board_view($live);
+        $this->assertCount(1, $view['tickets']);
+        $this->assertSame('', $view['tickets'][0]['feel']);
+        $this->assertSame(['Halves and quarters', '', ''], $view['tickets'][0]['texts']);
+        $this->assertSame(fullname($student), $view['tickets'][0]['name']);
+        // Closed: no more tickets, until it is reopened (keeping them).
+        $live = live::control($live, 'close');
+        try {
+            live::ticket($live, $device, '2', ['Late']);
+            $this->fail('Handed in a closed ticket');
+        } catch (\moodle_exception $e) {
+            $this->assertSame('liveclosed', $e->errorcode);
+        }
+        $live = live::control($live, 'reopen');
+        live::ticket($live, $device, '3', ['Late', 'None']);
+        $this->assertSame('3', live::board_view($live)['tickets'][0]['feel']);
+        // A new ticket starts empty; a device sent out loses its ticket.
+        $live = live::control($live, 'open', ['feel' => 0, 'prompts' => ['Only one']]);
+        $this->assertSame([], live::board_view($live)['tickets']);
+        live::ticket($live, $device, '2', ['Yes']);
+        $this->assertSame('', live::board_view($live)['tickets'][0]['feel']);
+        live::control($live, 'kick', ['device' => $device]);
+        $this->assertSame([], live::board_view($live)['tickets']);
+    }
+
     public function test_with_accounts_the_board_shows_names(): void {
         $this->resetAfterTest();
         $course = $this->getDataGenerator()->create_course();

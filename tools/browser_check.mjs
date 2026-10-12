@@ -88,6 +88,8 @@ window.shot = (name) => new Promise((done) => { if (!window.checkShot) { done();
             return json(a === 'list' ? { ok: true, glossaries: [{ id: 5, name: 'Science words', count: 3 }] }
                 : { ok: true, words: GLOSSARY });
         }
+        // A check may bring a live server of its own (another kind of session, or the device's side).
+        if (FAKE.live && ['fake://live', 'fake://join'].some((x) => String(url).startsWith(x))) { return json(FAKE.live(Object.fromEntries(p))); }
         if (a === 'start') { S = { vote: VOTES[p.get('vote')] ? p.get('vote') : 'abcd', round: 0, open: false, ended: false }; }
         else if (a === 'state') { FAKE.polls++; }
         else if (a === 'open') { if (VOTES[p.get('vote')]) { S.vote = p.get('vote'); } S.open = true; S.round++; }
@@ -1155,10 +1157,112 @@ const CHECKS = {
         await window.shot('qr-swatches');
         return '';
     },
+    // The exit ticket on the board: prepared before the session, opened with its questions, who has handed it in while
+    // it is open, and once closed the faces of the class, the answers hidden until asked for, in piles by face, one
+    // at random, taken off the screen, and the download.
+    'exit-ticket': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const q = (s) => document.querySelector(s);
+        const until = async (s) => { for (let i = 0; i < 100 && !q(s); i++) { await sleep(50); } return q(s); };
+        const devices = ['a', 'b', 'c', 'd'].map((x) => ({ device: x.repeat(32), name: '', team: 0 }));
+        const L = { round: 0, open: false, feel: true, prompts: [], tickets: [], ended: false };
+        window.FAKE.live = (c) => {
+            if (c.action === 'open') { L.round++; L.open = true; L.feel = c.feel === '1'; L.prompts = JSON.parse(c.prompts); L.tickets = []; }
+            if (c.action === 'close') { L.open = false; }
+            if (c.action === 'reopen') { L.open = true; }
+            if (c.action === 'end') { L.ended = true; }
+            return { id: 8, code: 'EXIT42', kind: 'exit', identity: 'anon', round: L.round, open: L.open, left: 0, show: false, ended: L.ended,
+                others: 0, notice: false, url: 'https://example.org/local/oksigeniaclasstools/join.php?c=EXIT42', devices,
+                feel: L.feel, prompts: L.prompts, tickets: L.tickets };
+        };
+        (await until('#t-envivo')).click();
+        (await until('#lv-kind [data-v="exit"]')).click();
+        const first = await until('#ex-q0');
+        if (!first) { return 'no editor for the ticket before the session'; }
+        if (!q('#ex-open').hidden || q('#ex-first').hidden) { return 'the ticket can be opened before the session'; }
+        if (window.ClasstoolsGuide.which() !== 'salida') { return `the guide is «${window.ClasstoolsGuide.which()}»`; }
+        // A question from the ideas, another written, the third empty.
+        const pick = q('#lv-stage select[data-i="1"]');
+        pick.value = pick.querySelector('optgroup option:nth-child(2)').value;
+        pick.dispatchEvent(new Event('change'));
+        if (q('#ex-q1').value !== pick.querySelector('optgroup option:nth-child(2)').value) { return 'the idea did not reach the question'; }
+        q('#ex-q0').value = 'What is a fraction?'; q('#ex-q0').dispatchEvent(new Event('input'));
+        q('#ex-q2').value = ''; q('#ex-q2').dispatchEvent(new Event('input'));
+        await sleep(600);
+        await window.shot('exit-editor');
+        q('#lv-start').click();
+        (await until('#ex-open:not([hidden])')).click();
+        const opened = window.FAKE.calls.filter((c) => c.action === 'open').pop();
+        if (!opened || opened.feel !== '1' || JSON.parse(opened.prompts).length !== 2) { return `opened with ${JSON.stringify(opened)}`; }
+        if (!await until('#ex-count')) { return 'no count while it is open'; }
+        L.tickets = [{ device: devices[0].device, name: '', feel: '0', texts: ['Parts of a whole', 'Why 2/4 = 1/2?'], t: 1 }];
+        await sleep(1800);
+        if (!/1/.test(q('#ex-count').textContent) || !q('#ex-done li')) { return `count: ${q('#ex-count').textContent}`; }
+        if (q('#ex-missing').children.length !== 3) { return `missing: ${q('#ex-missing').children.length}`; }
+        if (document.querySelector('.ex-tarjeta')) { return 'answers on screen while it is open'; }
+        await window.shot('exit-open');
+        L.tickets.push({ device: devices[1].device, name: '', feel: '3', texts: ['A part', ''], t: 2 },
+            { device: devices[2].device, name: '', feel: '0', texts: ['', 'Equivalent ones'], t: 3 },
+            { device: devices[3].device, name: '', feel: '2', texts: ['', ''], t: 4 });
+        q('#ex-close').click();
+        await until('#ex-bars .lv-barra');
+        const counts = [...document.querySelectorAll('#ex-bars .lv-barra strong')].map((x) => x.textContent).join(',');
+        if (counts !== '1,1,0,2') { return `faces counted ${counts}`; }
+        if (q('#ex-veil').hidden || !q('#ex-piles').hidden) { return 'the answers show before asking for them'; }
+        await window.shot('exit-closed');
+        q('#ex-show').click();
+        const piles = [...document.querySelectorAll('.ex-monton')].map((m) => m.querySelectorAll('.ex-tarjeta').length).join(',');
+        if (piles !== '2,0,0,1') { return `piles ${piles}`; }
+        await window.shot('exit-piles');
+        q('#ex-random').click();
+        if (q('#ex-random-card').hidden || !q('.ex-azar-in p')) { return 'nothing at random'; }
+        await window.shot('exit-random');
+        q('#ex-random-card [data-a="close"]').click();
+        q('.ex-monton .ex-quita').click();
+        if (document.querySelectorAll('.ex-tarjeta').length !== 2) { return 'a card taken off the screen is still there'; }
+        let csv = '';
+        const make = URL.createObjectURL;
+        URL.createObjectURL = (b) => { b.text().then((x) => { csv = x; }); return make.call(URL, b); };
+        q('#ex-csv').click();
+        await sleep(200);
+        URL.createObjectURL = make;
+        const lines = csv.replace('\ufeff', '').split('\r\n');
+        if (lines.length !== 5 || !lines[0].includes('What is a fraction?') || !lines[1].includes('Why 2/4 = 1/2?')) { return `download: ${csv}`; }
+        q('#ex-new').click();
+        if (!await until('#ex-q0') || q('#ex-q0').value !== 'What is a fraction?' || q('#ex-back').hidden) { return 'another ticket does not start from the last one'; }
+        return '';
+    },
+    // The exit ticket on a student's device: faces and questions, handed in, the ticket to show, changed, and closed.
+    'exit-device': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const q = (s) => document.querySelector(s);
+        const until = async (s) => { for (let i = 0; i < 100 && !q(s); i++) { await sleep(50); } return q(s); };
+        const D = window.FAKE.device;
+        if (!await until('.jn-cara-op')) { return 'no faces'; }
+        if (document.querySelectorAll('.jn-cara-op').length !== 4 || document.querySelectorAll('.jn-ex-q textarea').length !== 2) { return 'the ticket is not complete'; }
+        q('.jn-ex button[type="submit"]').click();
+        if (q('#jn-ex-empty').hidden) { return 'an empty ticket was handed in'; }
+        q('.jn-cara-op[data-feel="1"]').click();
+        const box = document.querySelectorAll('.jn-ex-q textarea');
+        box[0].value = 'Fractions are parts'; box[0].dispatchEvent(new Event('input'));
+        await window.shot('exit-device-form');
+        await sleep(1700);   // a poll in between does not lose what is written
+        if (document.querySelectorAll('.jn-ex-q textarea')[0].value !== 'Fractions are parts') { return 'the text was lost'; }
+        q('.jn-ex button[type="submit"]').click();
+        if (!await until('.jn-billete')) { return 'no ticket after handing it in'; }
+        if (D.mine.feel !== '1' || D.mine.texts[0] !== 'Fractions are parts' || D.mine.texts[1] !== '') { return `sent ${JSON.stringify(D.mine)}`; }
+        await window.shot('exit-device-sent');
+        q('#jn-ex-change').click();
+        if (!q('.jn-cara-op[data-feel="1"].mia') || document.querySelectorAll('.jn-ex-q textarea')[0].value !== 'Fractions are parts') { return 'changing it starts empty'; }
+        D.open = false;
+        for (let i = 0; i < 60 && !q('.jn-centro .jn-billete'); i++) { await sleep(100); }
+        if (!q('.jn-centro .jn-billete')) { return 'no ticket once closed'; }
+        return '';
+    },
 };
 
 // Checks that run on another page than the board.
-const PAGES = { 'remote-phone': '/phone.html' };
+const PAGES = { 'remote-phone': '/phone.html', 'exit-device': '/device.html' };
 
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png',
     '.woff2': 'font/woff2', '.json': 'application/json', '.mp3': 'audio/mpeg' };
@@ -1175,6 +1279,19 @@ const server = createServer((req, res) => {
         const config = '<script src="/fake.js"></script>\n<script src="strings.js"></script>\n'
             + '<script>window.CLASSTOOLS_REMOTE = { k: "key1", api: "fake://mando", site: "Site", str: window.CLASSTOOLS_STR };</script>\n';
         const html = readFileSync(join(APP, 'mando.html'), 'utf8').replace('<script src="mando.js">', config + '<script src="mando.js">');
+        res.writeHead(200, { 'Content-Type': 'text/html' }); res.end(html); return;
+    }
+    if (path === '/device.html') {
+        // A student's device in an exit ticket, with the code only: the texts of the English pack and a pretend server.
+        const config = '<script src="/fake.js"></script>\n<script src="strings.js"></script>\n<script>'
+            + 'window.FAKE.device = { open: true, mine: null };'
+            + 'window.FAKE.live = (c) => { const D = window.FAKE.device;'
+            + ' if (c.action === "ticket") { D.mine = { feel: c.feel, texts: JSON.parse(c.texts), t: 1 }; }'
+            + ' return { kind: "exit", round: 1, open: D.open, left: 0, ended: false, kicked: false, identity: "anon", seed: "a".repeat(32),'
+            + ' joined: true, team: 0, feel: true, prompts: ["What did you learn?", "A question you still have"], length: 200, mine: D.mine }; };'
+            + 'window.CLASSTOOLS_JOIN = { code: "EXIT42", found: true, kind: "exit", identity: "anon", api: "fake://join", sesskey: "",'
+            + ' page: "join.php", site: "Site", str: window.CLASSTOOLS_STR };</script>\n';
+        const html = readFileSync(join(APP, 'join.html'), 'utf8').replace('<script src="faces.js">', config + '<script src="faces.js">');
         res.writeHead(200, { 'Content-Type': 'text/html' }); res.end(html); return;
     }
     const file = normalize(join(APP, path));

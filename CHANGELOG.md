@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.38.0 (2026-10-12)
+
+- **Exit ticket**, in «Live»: at the end of the lesson each student says from their device how they are getting on
+  (four faces, from «not yet» to «could explain it to someone», adapted from Marzano's 0–3 scale) and answers one to
+  three short questions, written by the teacher or chosen from ideas grouped by what they ask (what they understood,
+  how they worked, how the lesson went, for the teacher). While it is open the board shows only who has handed it in,
+  and the device turns green to show at the door. Once closed: the faces of the class in bars, and the answers, which
+  do not show until the teacher asks for them, in piles by face («not yet» first), with names only on request, one at
+  random without a name to talk about it, cards that can be taken off the screen, and a download as a spreadsheet.
+  It can be reopened, and another ticket starts from the last one.
+- The teacher's guide of the exit ticket: what it is for, why (formative assessment: Black and Wiliam, 1998; the four
+  kinds of prompts of Marzano, 2012; the exit pass of Wiliam, 2011), how to take it to class, with and without
+  devices, and what it gives at each stage.
+- The answers of live sessions have room for sentences (255 characters).
+
 ## 0.37.1 (2026-10-12)
 
 - Scrollbars in the colours of the board (the teacher's guide, the side panels, the editors and the album): thin,

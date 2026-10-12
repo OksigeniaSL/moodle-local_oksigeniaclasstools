@@ -71,6 +71,8 @@ if ($action === 'start') {
             'max' => optional_param('max', 0, PARAM_INT),
             'options' => json_decode(optional_param('options', '[]', PARAM_RAW), true) ?: [],
             'correct' => optional_param('correct', -1, PARAM_INT),
+            'feel' => optional_param('feel', 0, PARAM_BOOL),
+            'prompts' => json_decode(optional_param('prompts', '[]', PARAM_RAW), true) ?: [],
         ]);
     }
 }

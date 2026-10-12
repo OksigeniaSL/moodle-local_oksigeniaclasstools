@@ -20,7 +20,7 @@
     const GROUPS = {
         gd_index_tools: {
             quien: 'tab_picker', grupos: 'tab_groups', semaforo: 'tab_noise', asi: 'tab_rules', reloj: 'tab_clock', envivo: 'tab_live',
-            azar: 'tab_chance', marcador: 'tab_scoreboard', pizarra: 'tab_board',
+            salida: 'lv_kind_exit', azar: 'tab_chance', marcador: 'tab_scoreboard', pizarra: 'tab_board',
         },
         gd_index_games: {
             rosco: 'ro_name', simon: 'si_name', ahorcado: 'ah_name', palabra: 'wo_name', parejas: 'me_pairs', codigo: 'lock_name',
@@ -33,9 +33,10 @@
     };
     const GUIDES = Object.assign({}, ...Object.values(GROUPS));
     const MODES = ['early', 'primary', 'secondary', 'advanced'];
-    // Which guide: the tool on screen, or the game or material open in it.
+    // Which guide: the tool on screen, or the game or material open in it (or the exit ticket, in «Live»).
     const which = () => {
         const tool = core.current ? core.current() : '';
+        if (tool === 'envivo' && core.liveKind && core.liveKind() === 'exit') { return 'salida'; }
         if (tool === 'juegos' && window.ClasstoolsGames && window.ClasstoolsGames.current) { return window.ClasstoolsGames.current(); }
         if (tool === 'material' && core.material && core.material.current) { return core.material.current(); }
         return tool;

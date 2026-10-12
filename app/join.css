@@ -111,3 +111,24 @@ button { touch-action: manipulation; -webkit-user-select: none; user-select: non
 .jn-espera i:nth-child(3) { animation-delay: .4s; }
 @keyframes jn-latido { 0%, 100% { opacity: .25; transform: scale(.8); } 50% { opacity: 1; transform: scale(1); } }
 @media (prefers-reduced-motion: reduce) { .jn-espera i { animation: none; opacity: .6; } }
+/* The exit ticket: four faces, a box for each question, and the ticket handed in, to show at the door. */
+.jn-ex { display: flex; flex: 1; flex-direction: column; gap: 1.1rem; width: 100%; }
+.jn-caras { display: grid; grid-template-columns: repeat(2, 1fr); gap: .6rem; margin: 0; padding: 0; border: 0; }
+.jn-caras legend { grid-column: 1 / -1; margin-bottom: .6rem; text-align: center; }
+.jn-cara-op { display: flex; flex-direction: column; align-items: center; gap: .3rem; padding: .7rem .5rem; border: 3px solid var(--borde); border-radius: 18px; background: var(--superficie); font-size: 1rem; font-weight: 800; line-height: 1.15; }
+.jn-cara-op.mia { border-color: var(--azul); background: var(--azul-suave); color: var(--azul-osc); }
+.jn-cara-op:focus-visible { outline: 4px solid var(--amarillo); outline-offset: 3px; }
+.jn-cara svg { display: block; width: 56px; height: 56px; }
+.jn-cara.grande svg { width: 72px; height: 72px; }
+.jn-ex-q { display: flex; flex-direction: column; gap: .4rem; font-size: 1.15rem; font-weight: 900; }
+.jn-ex-q textarea { width: 100%; padding: .6rem .8rem; border: 3px solid var(--borde); border-radius: 18px; background: var(--superficie); font: 700 1.1rem/1.35 "Nunito", system-ui, sans-serif; resize: vertical; }
+.jn-ex-q textarea:focus { border-color: var(--azul); outline: none; }
+.jn-ex .jn-boton { align-self: center; min-width: 60%; }
+.jn-billete { position: relative; width: 100%; padding: 1.1rem 1.4rem; border: 3px dashed var(--verde); border-radius: 22px; background: #eaf6ee; text-align: left; }
+.jn-billete-cara { display: flex; align-items: center; gap: .8rem; margin: 0 0 .4rem; font-size: 1.2rem; font-weight: 900; }
+.jn-billete-q { margin: .6rem 0 0; color: var(--tinta-3); font-size: .9rem; }
+.jn-billete-a { margin: .1rem 0 0; font-size: 1.1rem; overflow-wrap: anywhere; }
+body.jn-verde { background: var(--verde); }
+body.jn-verde .jn-titulo, body.jn-verde .jn-texto, body.jn-verde .jn-cabeza, body.jn-verde .jn-cabeza strong { color: #fff; }
+body.jn-verde .jn-billete { border-color: #fff; background: #fff; }
+body.jn-verde .jn-boton.suave { background: rgba(255, 255, 255, .9); }

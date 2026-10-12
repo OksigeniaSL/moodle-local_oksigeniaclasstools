@@ -1410,6 +1410,33 @@ $string['app_gd_rosco_works'] = 'Vocabulario de cualquier materia, con su defini
 Recordar sin mirar: cada pista obliga a sacar la palabra de la memoria.
 Ortografía: la palabra empieza por esa letra o la contiene.
 Trabajo en equipo, con dos equipos y su reloj.';
+$string['app_gd_salida_how'] = 'Prepara el billete: si pregunta «¿Cómo lo llevas?» y hasta tres preguntas cortas, escritas por ti o elegidas de «Ideas». Mejor una o dos: tiene que caber en tres a cinco minutos.
+Abre la sesión unos minutos antes de acabar; entran con el QR o el código. Con su usuario del Aula virtual sabrás quién necesita qué; sin nombre, suelen contestar con más franqueza.
+Abre el billete. La pizarra solo muestra quién lo ha entregado; al salir, cada alumno enseña su pantalla verde.
+Cierra el billete y salen las caras de la clase. Las respuestas no se ven hasta que pulses «Ver las respuestas»: revísalas antes de proyectarlas, y quita de la pantalla lo que no deba verse.
+Los montones (Todavía no, A medias, Lo entiende, Lo explicaría) dicen por dónde empezar: repasar con todos, grupos pequeños con un experto en cada uno, o seguir adelante.
+«Una al azar» muestra una respuesta sin nombre, grande, para comentarla con la clase.
+«Descargar» guarda los billetes en una hoja de cálculo: la sesión se borra al día siguiente.
+Sin dispositivos: el mismo billete en una ficha o un pósit, o las cuatro caras en la puerta para que cada uno pegue un gomet o ponga su pinza en la suya al salir; cuéntalas con «A mano alzada».';
+$string['app_gd_salida_scene'] = 'Viernes, cinco minutos antes del recreo: la clase de quinto hace el billete sobre fracciones equivalentes. Al cerrarlo hay nueve caras en «A medias», y casi todas las dudas dicen lo mismo: no ven por qué 2/4 es igual que 1/2.
+El lunes la clase empieza con el muro de fracciones, y los cuatro que lo explicarían hacen de expertos, uno en cada mesa.';
+$string['app_gd_salida_sources'] = 'Black, P. y Wiliam, D. (1998). Assessment and classroom learning. Assessment in Education: Principles, Policy & Practice, 5(1), 7–74.|https://doi.org/10.1080/0969595980050102
+Marzano, R. J. (2012). The many uses of exit slips. Educational Leadership, 70(2).|https://ascd.org/el/articles/the-many-uses-of-exit-slips
+Wiliam, D. (2011). Embedded Formative Assessment. Solution Tree Press.
+Northwest Educational Service District 189 (s. f.). Exit Pass. Formative Assessment Techniques (ficha adaptada de Wiliam, 2011).|https://www.nwesd.org/wp-content/uploads/2013/08/EL_Exit_Pass_kdj.pdf';
+$string['app_gd_salida_stages'] = 'early|Solo las caras, y a mano: al salir, cada uno pone su pinza o un gomet en la cara que toca, y lo comentáis en la asamblea del día siguiente.
+primary|Las caras y una pregunta: «Lo más importante que he aprendido hoy» o «Una duda que me queda». Con su usuario, para hacer los grupos del día siguiente.
+secondary|Una pregunta de comprensión («Explícalo con tus palabras», «Pon un ejemplo») y otra sobre cómo han trabajado; la descarga, para planificar.
+advanced|La duda que más les ha costado y qué cambiarían de la sesión; sin nombre, para que sean francos.';
+$string['app_gd_salida_what'] = 'Al acabar la clase, cada alumno dice desde su móvil o tableta cómo lo lleva (cuatro caras) y contesta de una a tres preguntas cortas. Mientras está abierto ves quién lo ha entregado; al cerrarlo, cómo va la clase y los billetes en montones, para preparar la clase siguiente.';
+$string['app_gd_salida_why'] = 'El billete de salida es una técnica de evaluación formativa: recoger, mientras se enseña, pruebas de lo que han aprendido para ajustar la enseñanza. En su revisión de la investigación, Black y Wiliam (1998) concluyen que varios estudios muestran pruebas firmes de que reforzar la información frecuente que reciben los alumnos sobre su aprendizaje produce mejoras sustanciales.
+Marzano (2012) distingue cuatro tipos de preguntas para el billete: las que dan datos de lo que han entendido (puntuarse de 0 a 3, o «¿qué es lo que más te ha confundido de hoy?»), las que les hacen analizar su propio esfuerzo, las que valoran una forma de trabajar de la clase y las que abren una comunicación con el profesor. Las caras de Classtools adaptan su escala de 0 a 3, y las ideas de preguntas siguen esos cuatro tipos.
+Lo que importa es qué se hace después. Si casi toda la clase tiene la misma duda, Marzano propone volver a explicarlo al día siguiente; si las dudas son distintas, grupos pequeños, con los alumnos que lo han entendido como expertos en cada uno.
+Wiliam (2011) lo recoge como «pase de salida»: de tres a cinco minutos antes de un descanso, y el docente lo lee y decide qué cambia. Las variantes que se derivan de su libro: agrupar a los alumnos según lo que muestran sus respuestas, devolverles un comentario escrito, o leer en voz alta respuestas sin nombre para empezar un debate.';
+$string['app_gd_salida_works'] = 'Saber, antes de la clase siguiente, qué ha entendido cada uno y qué no.
+Que contesten todos, también los que nunca levantan la mano.
+Pensar en lo que han aprendido y en cómo han trabajado.
+Una vía para decirte lo que no dirían en voz alta.';
 $string['app_gd_scene'] = 'En clase';
 $string['app_gd_score_how'] = 'Elige una canción o escribe una con toques en el pentagrama.
 «Toca conmigo»: sale un alumno al carillón y la pantalla enciende la nota que toca.
@@ -1647,6 +1674,78 @@ $string['app_lv_end'] = 'Terminar la sesión';
 $string['app_lv_end_confirm'] = 'Pulsa otra vez para terminarla';
 $string['app_lv_ended'] = 'Sesión terminada';
 $string['app_lv_enter'] = 'Entrar';
+$string['app_lv_ex_back'] = 'Volver al resumen';
+$string['app_lv_ex_change'] = 'Cambiarlo';
+$string['app_lv_ex_close'] = 'Cerrar el billete';
+$string['app_lv_ex_closed'] = 'Billete cerrado';
+$string['app_lv_ex_csv_who'] = 'Quién';
+$string['app_lv_ex_door'] = 'Al salir, cada uno enseña su billete: la pantalla verde de su dispositivo.';
+$string['app_lv_ex_download'] = 'Descargar';
+$string['app_lv_ex_empty'] = 'Elige una cara o escribe algo antes.';
+$string['app_lv_ex_f0'] = 'Todavía no lo entiendo';
+$string['app_lv_ex_f1'] = 'Lo entiendo a medias';
+$string['app_lv_ex_f2'] = 'Lo entiendo';
+$string['app_lv_ex_f3'] = 'Lo podría explicar a otro';
+$string['app_lv_ex_feel_on'] = 'Preguntar «¿Cómo lo llevas?» (cuatro caras)';
+$string['app_lv_ex_feel_q'] = '¿Cómo lo llevas?';
+$string['app_lv_ex_file'] = 'billete-de-salida';
+$string['app_lv_ex_first'] = 'Prepáralo ya; abre la sesión (a la izquierda) unos minutos antes de acabar, y luego el billete.';
+$string['app_lv_ex_g_lesson'] = 'Cómo ha ido la clase';
+$string['app_lv_ex_g_self'] = 'Cómo han trabajado';
+$string['app_lv_ex_g_teacher'] = 'Para el profesor';
+$string['app_lv_ex_g_understand'] = 'Qué han entendido';
+$string['app_lv_ex_group'] = 'Cómo ordenar los billetes';
+$string['app_lv_ex_group_feel'] = 'En montones, por cómo lo llevan';
+$string['app_lv_ex_group_time'] = 'Por orden de entrega';
+$string['app_lv_ex_handed'] = 'Lo han entregado {$a->n} de {$a->of}';
+$string['app_lv_ex_hidden'] = 'Quitada de la pantalla.';
+$string['app_lv_ex_hide'] = 'Quitarla de la pantalla';
+$string['app_lv_ex_hide_answers'] = 'Ocultar las respuestas';
+$string['app_lv_ex_ideas'] = 'Ideas…';
+$string['app_lv_ex_in'] = 'Entregado';
+$string['app_lv_ex_lead'] = 'Al acabar la clase, cada alumno dice cómo lo lleva y contesta de una a tres preguntas cortas. De tres a cinco minutos; te dice por dónde empezar la clase siguiente.';
+$string['app_lv_ex_missing'] = 'Falta';
+$string['app_lv_ex_n'] = 'Billete {$a}';
+$string['app_lv_ex_names'] = 'Con nombres';
+$string['app_lv_ex_new'] = 'Otro billete';
+$string['app_lv_ex_no_texts'] = 'No hay respuestas escritas.';
+$string['app_lv_ex_none'] = 'No entregaste billete.';
+$string['app_lv_ex_nothing'] = 'El billete necesita las caras o al menos una pregunta.';
+$string['app_lv_ex_open'] = 'Abrir el billete';
+$string['app_lv_ex_p_activity'] = '¿Qué actividad de hoy te ha ayudado más a aprender?';
+$string['app_lv_ex_p_better'] = '¿Qué podrías haber hecho para aprender mejor?';
+$string['app_lv_ex_p_confused'] = 'Lo que más me ha liado hoy';
+$string['app_lv_ex_p_doubt'] = 'Una duda que me queda';
+$string['app_lv_ex_p_effort'] = '¿Cuánto te has esforzado hoy? ¿Por qué?';
+$string['app_lv_ex_p_example'] = 'Pon un ejemplo de lo que hemos visto hoy';
+$string['app_lv_ex_p_group'] = '¿Te ha ayudado el trabajo en grupo a entenderlo? ¿Qué cambiarías?';
+$string['app_lv_ex_p_learned'] = 'Lo más importante que he aprendido hoy';
+$string['app_lv_ex_p_teacher'] = '¿Qué podría hacer yo para que lo entiendas mejor?';
+$string['app_lv_ex_p_use'] = '¿Dónde lo usarías fuera de clase?';
+$string['app_lv_ex_p_words'] = 'Explícalo con tus palabras: ';
+$string['app_lv_ex_ph'] = 'Una o dos frases';
+$string['app_lv_ex_q_n'] = 'Pregunta {$a}';
+$string['app_lv_ex_q_optional'] = 'Opcional';
+$string['app_lv_ex_q_ph'] = 'Escríbela o elige una de «Ideas»';
+$string['app_lv_ex_random'] = 'Una al azar';
+$string['app_lv_ex_random_again'] = 'Otra';
+$string['app_lv_ex_random_close'] = 'Cerrar';
+$string['app_lv_ex_reopen'] = 'Reabrir';
+$string['app_lv_ex_s0'] = 'Todavía no';
+$string['app_lv_ex_s1'] = 'A medias';
+$string['app_lv_ex_s2'] = 'Lo entiende';
+$string['app_lv_ex_s3'] = 'Lo explicaría';
+$string['app_lv_ex_s_none'] = 'Sin cara';
+$string['app_lv_ex_send'] = 'Entregar';
+$string['app_lv_ex_send_again'] = 'Entregar de nuevo';
+$string['app_lv_ex_sent'] = 'Billete entregado';
+$string['app_lv_ex_sent_text'] = 'Enséñalo al salir. Puedes cambiarlo mientras esté abierto.';
+$string['app_lv_ex_show_answers'] = 'Ver las respuestas';
+$string['app_lv_ex_title'] = 'Billete de salida';
+$string['app_lv_ex_total_many'] = '{$a} billetes';
+$string['app_lv_ex_total_one'] = '{$a} billete';
+$string['app_lv_ex_veil'] = 'Las respuestas no se ven hasta que pulses «Ver las respuestas»: revísalas antes de proyectarlas.';
+$string['app_lv_ex_wait'] = 'Mira la pizarra: ya viene el billete.';
 $string['app_lv_failed'] = 'El sitio no contesta. Lo intento otra vez…';
 $string['app_lv_first'] = '¡{$a} ha pulsado primero!';
 $string['app_lv_full'] = 'La sesión está llena.';
@@ -1681,6 +1780,7 @@ $string['app_lv_joined'] = 'Ya estás dentro.';
 $string['app_lv_kick'] = 'Sacar a {$a} de la sesión';
 $string['app_lv_kicked'] = 'El profe ha sacado este dispositivo de la sesión.';
 $string['app_lv_kind_buzz'] = 'Pulsadores';
+$string['app_lv_kind_exit'] = 'Billete de salida';
 $string['app_lv_kind_hands'] = 'A mano alzada';
 $string['app_lv_kind_ideas'] = 'Lluvia de ideas';
 $string['app_lv_kind_quiz'] = 'Concurso';
@@ -1730,6 +1830,7 @@ $string['app_lv_remote_title'] = 'Mando de la pizarra';
 $string['app_lv_remote_waiting'] = 'Esperando a tu móvil…';
 $string['app_lv_sent'] = 'enviado';
 $string['app_lv_short_buzz'] = 'Por equipos: ¿quién pulsa antes?';
+$string['app_lv_short_exit'] = 'Al acabar la clase: cómo lo llevan y qué han aprendido';
 $string['app_lv_short_hands'] = 'Sin tabletas: tú cuentas las manos';
 $string['app_lv_short_ideas'] = 'Escriben una o dos palabras: una nube viva';
 $string['app_lv_short_quiz'] = 'Preguntas con puntos, cada uno o por equipos';
@@ -2690,7 +2791,7 @@ $string['privacy:metadata:live:courseid'] = 'El curso de la sesión.';
 $string['privacy:metadata:live:timecreated'] = 'Cuándo se abrió.';
 $string['privacy:metadata:live:userid'] = 'El profesor que la abrió.';
 $string['privacy:metadata:livein'] = 'Quién entró en una sesión en vivo con su usuario, y qué contestó.';
-$string['privacy:metadata:livein:answer'] = 'Qué contestó.';
+$string['privacy:metadata:livein:answer'] = 'Qué contestó: un voto, una o dos palabras, o las frases de un billete de salida (se guarda un día como mucho).';
 $string['privacy:metadata:livein:team'] = 'Su equipo, en los pulsadores.';
 $string['privacy:metadata:livein:timecreated'] = 'Cuándo contestó.';
 $string['privacy:metadata:livein:userid'] = 'El alumno, cuando entró con su usuario.';

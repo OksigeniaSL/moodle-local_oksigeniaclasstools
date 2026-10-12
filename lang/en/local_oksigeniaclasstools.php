@@ -1408,6 +1408,33 @@ $string['app_gd_rosco_works'] = 'Vocabulary of any subject, with its definition.
 Remembering without looking: each clue makes them bring the word back from memory.
 Spelling: the word starts with that letter, or contains it.
 Teamwork, with two teams and their clocks.';
+$string['app_gd_salida_how'] = 'Prepare the ticket: whether it asks «How are you getting on?» and up to three short questions, written by you or chosen from «Ideas». One or two is better: it has to fit in three to five minutes.
+Open the session a few minutes before the end; they join with the QR or the code. With their Moodle account you will know who needs what; without names, they tend to answer more frankly.
+Open the ticket. The board only shows who has handed it in; on the way out, each student shows their green screen.
+Close the ticket and the faces of the class come out. The answers do not show until you press «Show the answers»: check them before projecting them, and take off the screen what should not be seen.
+The piles (Not yet, Halfway, Understand it, Could explain it) say where to start: going over it with everyone, small groups with an expert in each, or moving on.
+«One at random» shows an answer without a name, big, to talk about it with the class.
+«Download» saves the tickets in a spreadsheet: the session is deleted the next day.
+Without devices: the same ticket on a card or a sticky note, or the four faces on the door so each one puts a sticker or their peg on theirs on the way out; count them with «Show of hands».';
+$string['app_gd_salida_scene'] = 'Friday, five minutes before break: the year five class does the ticket on equivalent fractions. When it closes there are nine faces on «Halfway», and nearly all the questions say the same: they do not see why 2/4 equals 1/2.
+On Monday the lesson starts with the fraction wall, and the four who could explain it act as experts, one at each table.';
+$string['app_gd_salida_sources'] = 'Black, P. and Wiliam, D. (1998). Assessment and classroom learning. Assessment in Education: Principles, Policy & Practice, 5(1), 7–74.|https://doi.org/10.1080/0969595980050102
+Marzano, R. J. (2012). The many uses of exit slips. Educational Leadership, 70(2).|https://ascd.org/el/articles/the-many-uses-of-exit-slips
+Wiliam, D. (2011). Embedded Formative Assessment. Solution Tree Press.
+Northwest Educational Service District 189 (n. d.). Exit Pass. Formative Assessment Techniques (handout adapted from Wiliam, 2011).|https://www.nwesd.org/wp-content/uploads/2013/08/EL_Exit_Pass_kdj.pdf';
+$string['app_gd_salida_stages'] = 'early|Only the faces, and by hand: on the way out, each one puts their peg or a sticker on their face, and you talk about it at circle time the next day.
+primary|The faces and one question: «The most important thing I learned today» or «A question I still have». With their accounts, to make the next day\'s groups.
+secondary|A question on understanding («Explain it in your own words», «Give an example») and another on how they worked; the download, to plan.
+advanced|The point they found hardest and what they would change in the session; without names, so they are frank.';
+$string['app_gd_salida_what'] = 'At the end of the lesson, each student says from their phone or tablet how they are getting on (four faces) and answers one to three short questions. While it is open you see who has handed it in; once closed, how the class is getting on and the tickets in piles, to prepare the next lesson.';
+$string['app_gd_salida_why'] = 'The exit ticket is a formative assessment technique: gathering, while teaching, evidence of what they have learned in order to adjust the teaching. In their review of the research, Black and Wiliam (1998) conclude that several studies show firm evidence that strengthening the frequent feedback students receive about their learning yields substantial gains.
+Marzano (2012) describes four kinds of exit slip prompts: those that give data on what they understood (rating themselves from 0 to 3, or «what are you most confused about from today?»), those that make them analyse their own effort, those about a way of working in class, and those that open communication with the teacher. The faces of Classtools adapt his 0 to 3 scale, and the question ideas follow those four kinds.
+What matters is what comes next. If nearly the whole class has the same question, Marzano suggests teaching it again the next day; if the questions differ, small groups, with the students who understood it as experts in each.
+Wiliam (2011) describes it as an «exit pass»: three to five minutes before a break, and the teacher reads them and decides what to change. Variations drawn from his book: grouping the students by what their answers show, giving them back a written comment, or reading answers aloud without names to start a discussion.';
+$string['app_gd_salida_works'] = 'Knowing, before the next lesson, what each one has understood and what not.
+Everyone answers, also those who never raise their hand.
+Thinking about what they learned and how they worked.
+A way to tell you what they would not say aloud.';
 $string['app_gd_scene'] = 'In class';
 $string['app_gd_score_how'] = 'Choose a song, or write one with taps on the staff.
 «Play with me»: a student comes to the glockenspiel and the screen lights the note to play.
@@ -1645,6 +1672,78 @@ $string['app_lv_end'] = 'End the session';
 $string['app_lv_end_confirm'] = 'Tap again to end it';
 $string['app_lv_ended'] = 'Session ended';
 $string['app_lv_enter'] = 'Enter';
+$string['app_lv_ex_back'] = 'Back to the summary';
+$string['app_lv_ex_change'] = 'Change it';
+$string['app_lv_ex_close'] = 'Close the ticket';
+$string['app_lv_ex_closed'] = 'Ticket closed';
+$string['app_lv_ex_csv_who'] = 'Who';
+$string['app_lv_ex_door'] = 'On the way out, each one shows their ticket: the green screen on their device.';
+$string['app_lv_ex_download'] = 'Download';
+$string['app_lv_ex_empty'] = 'Choose a face or write something first.';
+$string['app_lv_ex_f0'] = 'I don\'t understand it yet';
+$string['app_lv_ex_f1'] = 'I half understand it';
+$string['app_lv_ex_f2'] = 'I understand it';
+$string['app_lv_ex_f3'] = 'I could explain it to someone';
+$string['app_lv_ex_feel_on'] = 'Ask «How are you getting on?» (four faces)';
+$string['app_lv_ex_feel_q'] = 'How are you getting on?';
+$string['app_lv_ex_file'] = 'exit-ticket';
+$string['app_lv_ex_first'] = 'Prepare it now; open the session (on the left) a few minutes before the end, and then the ticket.';
+$string['app_lv_ex_g_lesson'] = 'How the lesson went';
+$string['app_lv_ex_g_self'] = 'How they worked';
+$string['app_lv_ex_g_teacher'] = 'For the teacher';
+$string['app_lv_ex_g_understand'] = 'What they understood';
+$string['app_lv_ex_group'] = 'How to sort the tickets';
+$string['app_lv_ex_group_feel'] = 'In piles, by how they are getting on';
+$string['app_lv_ex_group_time'] = 'In the order they came';
+$string['app_lv_ex_handed'] = '{$a->n} of {$a->of} have handed it in';
+$string['app_lv_ex_hidden'] = 'Taken off the screen.';
+$string['app_lv_ex_hide'] = 'Take it off the screen';
+$string['app_lv_ex_hide_answers'] = 'Hide the answers';
+$string['app_lv_ex_ideas'] = 'Ideas…';
+$string['app_lv_ex_in'] = 'Handed in';
+$string['app_lv_ex_lead'] = 'At the end of the lesson, each student says how they are getting on and answers one to three short questions. Three to five minutes; it tells you where to start the next lesson.';
+$string['app_lv_ex_missing'] = 'Still to hand in';
+$string['app_lv_ex_n'] = 'Ticket {$a}';
+$string['app_lv_ex_names'] = 'With names';
+$string['app_lv_ex_new'] = 'Another ticket';
+$string['app_lv_ex_no_texts'] = 'No written answers.';
+$string['app_lv_ex_none'] = 'You did not hand in a ticket.';
+$string['app_lv_ex_nothing'] = 'The ticket needs the faces or at least one question.';
+$string['app_lv_ex_open'] = 'Open the ticket';
+$string['app_lv_ex_p_activity'] = 'Which activity today helped you learn most?';
+$string['app_lv_ex_p_better'] = 'What could you have done to learn better?';
+$string['app_lv_ex_p_confused'] = 'What confused me most today';
+$string['app_lv_ex_p_doubt'] = 'A question I still have';
+$string['app_lv_ex_p_effort'] = 'How hard did you work today? Why?';
+$string['app_lv_ex_p_example'] = 'Give an example of what we saw today';
+$string['app_lv_ex_p_group'] = 'Did the group work help you understand it? What would you change?';
+$string['app_lv_ex_p_learned'] = 'The most important thing I learned today';
+$string['app_lv_ex_p_teacher'] = 'What could I do to help you understand it better?';
+$string['app_lv_ex_p_use'] = 'Where would you use it outside school?';
+$string['app_lv_ex_p_words'] = 'Explain it in your own words: ';
+$string['app_lv_ex_ph'] = 'A sentence or two';
+$string['app_lv_ex_q_n'] = 'Question {$a}';
+$string['app_lv_ex_q_optional'] = 'Optional';
+$string['app_lv_ex_q_ph'] = 'Write it, or choose one from «Ideas»';
+$string['app_lv_ex_random'] = 'One at random';
+$string['app_lv_ex_random_again'] = 'Another';
+$string['app_lv_ex_random_close'] = 'Close';
+$string['app_lv_ex_reopen'] = 'Reopen';
+$string['app_lv_ex_s0'] = 'Not yet';
+$string['app_lv_ex_s1'] = 'Halfway';
+$string['app_lv_ex_s2'] = 'Understand it';
+$string['app_lv_ex_s3'] = 'Could explain it';
+$string['app_lv_ex_s_none'] = 'No face';
+$string['app_lv_ex_send'] = 'Hand it in';
+$string['app_lv_ex_send_again'] = 'Hand it in again';
+$string['app_lv_ex_sent'] = 'Ticket handed in';
+$string['app_lv_ex_sent_text'] = 'Show it on the way out. You can change it while it is open.';
+$string['app_lv_ex_show_answers'] = 'Show the answers';
+$string['app_lv_ex_title'] = 'Exit ticket';
+$string['app_lv_ex_total_many'] = '{$a} tickets';
+$string['app_lv_ex_total_one'] = '{$a} ticket';
+$string['app_lv_ex_veil'] = 'The answers do not show until you press «Show the answers»: check them before projecting them.';
+$string['app_lv_ex_wait'] = 'Look at the board: the ticket is coming.';
 $string['app_lv_failed'] = 'The site does not answer. Trying again…';
 $string['app_lv_first'] = '{$a} pressed first!';
 $string['app_lv_full'] = 'The session is full.';
@@ -1679,6 +1778,7 @@ $string['app_lv_joined'] = 'You are in.';
 $string['app_lv_kick'] = 'Take {$a} out of the session';
 $string['app_lv_kicked'] = 'The teacher has taken this device out of the session.';
 $string['app_lv_kind_buzz'] = 'Buzzers';
+$string['app_lv_kind_exit'] = 'Exit ticket';
 $string['app_lv_kind_hands'] = 'Hands up';
 $string['app_lv_kind_ideas'] = 'Brainstorm';
 $string['app_lv_kind_quiz'] = 'Quiz';
@@ -1728,6 +1828,7 @@ $string['app_lv_remote_title'] = 'Remote for the board';
 $string['app_lv_remote_waiting'] = 'Waiting for your phone…';
 $string['app_lv_sent'] = 'sent';
 $string['app_lv_short_buzz'] = 'In teams: who presses first?';
+$string['app_lv_short_exit'] = 'How they are getting on and what they learned, at the end of the lesson';
 $string['app_lv_short_hands'] = 'No devices: you count the hands';
 $string['app_lv_short_ideas'] = 'They write a word or two: a live cloud';
 $string['app_lv_short_quiz'] = 'Questions with points, each one or by teams';
@@ -2688,7 +2789,7 @@ $string['privacy:metadata:live:courseid'] = 'The course of the session.';
 $string['privacy:metadata:live:timecreated'] = 'When it was opened.';
 $string['privacy:metadata:live:userid'] = 'The teacher who opened it.';
 $string['privacy:metadata:livein'] = 'Who joined a live session with their account, and what they answered.';
-$string['privacy:metadata:livein:answer'] = 'What they answered.';
+$string['privacy:metadata:livein:answer'] = 'What they answered: a vote, a word or two, or the sentences of an exit ticket (kept for a day at most).';
 $string['privacy:metadata:livein:team'] = 'Their team, for the buzzers.';
 $string['privacy:metadata:livein:timecreated'] = 'When they answered.';
 $string['privacy:metadata:livein:userid'] = 'The student, when they joined with their account.';
