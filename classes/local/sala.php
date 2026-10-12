@@ -97,6 +97,16 @@ class sala {
     }
 
     /**
+     * Whether someone can come into the room: who can use the board in some course (a teacher).
+     *
+     * @param int $userid
+     * @return bool
+     */
+    public static function can_join(int $userid): bool {
+        return (bool) get_user_capability_course('local/oksigeniaclasstools:use', $userid, false, '', '', 1);
+    }
+
+    /**
      * A teacher comes into the room or leaves it.
      *
      * @param int $userid
@@ -133,14 +143,11 @@ class sala {
             }
         }
         $rows->close();
-        // Who wants to be seen: of those who have used the board with a class (so only teachers).
-        $in = array_map('intval', $DB->get_fieldset_sql(
-            'SELECT DISTINCT p.userid
-               FROM {user_preferences} p
-               JOIN {local_oksigeniaclasstools_uses} u ON u.userid = p.userid
-              WHERE p.name = ? AND p.value = ?',
-            [self::PREF, '1']
-        ));
+        // Who wants to be seen (only teachers can say so: sala.php), also before their first sticker.
+        $in = array_map(
+            'intval',
+            $DB->get_fieldset_select('user_preferences', 'userid', 'name = ? AND value = ?', [self::PREF, '1'])
+        );
         $teachers = [];
         if ($in) {
             [$insql, $params] = $DB->get_in_or_equal($in);

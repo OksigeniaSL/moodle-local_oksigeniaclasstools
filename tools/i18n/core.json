@@ -18,6 +18,7 @@
   "bar_brand_strong": { "en": "tools", "es": "de clase" },
   "bar_tools": { "en": "Tools", "es": "Herramientas" },
   "bar_sound": { "en": "Sound", "es": "Sonido" },
+  "sl_button": { "en": "Teachers' room", "es": "Sala de profes" },
   "bar_sound_on": { "en": "Sound on (press to mute)", "es": "Sonido activado (pulsa para quitarlo)" },
   "bar_sound_off": { "en": "Sound off (press to turn it on)", "es": "Sonido quitado (pulsa para activarlo)" },
   "bar_window": { "en": "Open in another window", "es": "Abrir en otra ventana" },

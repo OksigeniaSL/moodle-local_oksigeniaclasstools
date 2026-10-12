@@ -2348,3 +2348,26 @@ dialog.ct-sc-dialogo { width: min(40rem, 94vw); }
 @media (prefers-reduced-motion: reduce) { .hp-cursor, .hp-anillo, .hp-cromo { transition: none; } .hp-anillo.on { animation: none; } }
 /* The helps of a tool, in its teacher's guide. */
 .ct-guia-ayudas .ct-guia-lista { display: flex; flex-wrap: wrap; gap: .5rem; }
+/* The teachers' room (sala.js): a discreet button of the top bar, only its icon; and the room, as on «Which class?». */
+.redondo.discreto .redondo-texto { display: none; }
+.redondo.discreto { opacity: .75; }
+.redondo.discreto:hover, .redondo.discreto:focus-visible { opacity: 1; }
+dialog.ct-sala { width: min(60rem, 94vw); max-width: none; overflow-y: auto; }
+.ct-sala-cab { position: sticky; top: 0; z-index: 1; display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; padding: 1.2rem 1.4rem .8rem; border-bottom: 1px solid var(--borde); background: var(--superficie); }
+.ct-sala-cab h2 { margin: 0; color: var(--azul-osc); font-size: 1.5rem; font-weight: 900; }
+.ct-sala-cab .nota { margin: .2rem 0 0; }
+.ct-sala-tiempo { margin: .3rem 0 0; color: var(--azul); font-weight: 900; }
+.ct-sala-lista { display: grid; gap: .6rem; margin: 0; padding: 1rem 1.4rem; list-style: none; }
+.ct-sala-profe { display: grid; grid-template-columns: auto minmax(8rem, 14rem) 1fr; align-items: center; gap: .8rem; padding: .5rem .8rem; border-radius: 18px; background: var(--fondo); }
+.ct-sala-profe.yo { box-shadow: inset 0 0 0 2px var(--azul); }
+.ct-sala-cara { display: block; width: 3.2rem; }
+.ct-sala-cara svg { display: block; width: 100%; height: auto; }
+.ct-sala-nombre { color: var(--azul-osc); font-weight: 900; }
+.ct-sala-nombre small { color: var(--tinta-3); font-weight: 700; }
+.ct-sala-cromos { display: flex; flex-wrap: wrap; gap: .3rem; }
+.ct-sala-cromo { width: 2.8rem; }
+.ct-sala-cromo svg { display: block; width: 100%; height: auto; filter: drop-shadow(0 3px 6px rgba(15, 47, 94, .2)); }
+.ct-sala-otros { margin: 0; padding: 0 1.4rem; color: var(--azul-osc); font-weight: 800; }
+.ct-sala-pie { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem 1rem; padding: 1rem 1.4rem 1.4rem; }
+.ct-sala-pie .nota { flex: 1 1 18rem; margin: 0; }
+@media (max-width: 40rem) { .ct-sala-profe { grid-template-columns: auto 1fr; } .ct-sala-cromos { grid-column: 1 / -1; } }

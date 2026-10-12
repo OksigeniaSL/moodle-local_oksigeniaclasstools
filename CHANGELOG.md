@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.51.1 (2026-10-12)
+
+- The teachers' room on the board too: a discreet button of the top bar (only its star) opens it, with the toggle to
+  appear in it.
+- Whoever comes into the room appears in it at once, also before their first sticker (it said nobody was in yet, and
+  invited them again). Only teachers can come in.
+
 ## 0.51.0 (2026-10-12)
 
 - **Teachers' room**, on «Which class?», beside «My stickers»: the colleagues who want to be seen, by their names, each

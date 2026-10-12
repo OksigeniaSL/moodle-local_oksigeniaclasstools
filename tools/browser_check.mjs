@@ -20,7 +20,7 @@ const FAKE = `
 window.CLASSTOOLS = { lists: [{ id: 1, name: 'Class 1', key: 'c1', students: Array.from({ length: 8 }, (_, i) => ({ id: i + 1, n: 'Student ' + (i + 1) })) }],
     courseid: 1, mode: 'teacher', sesskey: 'x', days: {}, state: {}, liveurl: 'fake://live', glossaryurl: 'fake://glossary', bankurl: 'fake://bank',
     aiurl: 'fake://ai', remoteurl: 'fake://remote', remote: { on: false },
-    logrosurl: 'fake://logros', logros: { thr: { devices: 5, picks: 5, students: 8 }, levels: {} },
+    logrosurl: 'fake://logros', logros: { thr: { devices: 5, picks: 5, students: 8 }, levels: {} }, salaurl: 'fake://sala',
     me: { id: 99, name: 'Teacher' } };
 window.FAKE = { calls: [], polls: 0 };
 const BANK_PAIRS = [['frog', 'amphibian'], ['cat', 'mammal'], ['bee', 'insect']];
@@ -74,6 +74,15 @@ window.shot = (name) => new Promise((done) => { if (!window.checkShot) { done();
                 return json({ on: true, seq: R.seq, cmds, phone: !!FAKE.remoteCmds });
             }
             return json(status());
+        }
+        // The teachers' room, as sala.php gives it: the teacher comes in or leaves, and the room as they see it.
+        if (String(url).startsWith('fake://sala')) {
+            if (a === 'join') { FAKE.salaIn = p.get('join') === '1'; }
+            const me = { id: 99, name: 'Teacher', me: true, stickers: [] };
+            return json({ joined: !!FAKE.salaIn, count: '', span: 'It counts the last 12 weeks.', others: 'And 9 more colleagues play with their classes.',
+                teachers: [{ id: 7, name: 'Ana Ruiz', me: false, stickers: [{ cromo: 'tiradados', level: 2 }] }].concat(FAKE.salaIn ? [me] : []),
+                str: { title: "Teachers' room", intro: 'Who else plays with their class.', you: 'you', none: 'No stickers in this time', empty: 'Nobody yet',
+                    join: 'Appear in the room', join_note: 'Only your critter, your name and your stickers.', close: 'Close' } });
         }
         // The teacher's stickers, as logros.php gives it: the first use of a sticker is its level 1.
         if (String(url).startsWith('fake://logros')) {
@@ -1833,6 +1842,24 @@ const CHECKS = {
         if (!H.state().had) { return 'the learned sticker was not known'; }
         H.close();
         return q('.hp') ? 'the help did not close' : '';
+    },
+    // The teachers' room from the board: a discreet button (only its icon), the room with its colleagues, and coming in.
+    'sala-board': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const q = (x) => document.querySelector(x);
+        const b = q('#b-sala');
+        if (!b || b.hidden) { return 'no button'; }
+        if (getComputedStyle(b.querySelector('.redondo-texto')).display !== 'none') { return 'the button is not discreet'; }
+        b.click();
+        await sleep(300);
+        const d = window.ClasstoolsSala.dialog();
+        if (!d || !d.open || d.querySelectorAll('.ct-sala-profe').length !== 1 || !d.querySelector('.ct-sala-cromo svg')) { return 'the room did not open'; }
+        d.querySelector('#sl-yo').click();
+        await sleep(300);
+        if (d.querySelectorAll('.ct-sala-profe').length !== 2 || !d.querySelector('.ct-sala-profe.yo') || !d.querySelector('#sl-yo').checked) { return 'coming in did not show the teacher'; }
+        await window.shot('sala-board');
+        d.close();
+        return '';
     },
     // Music questions for the quiz: sets that make themselves (which song, rhythm and melody dictations), four
     // different answers with the right one among them, and what each one plays.

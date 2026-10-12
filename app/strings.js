@@ -1939,6 +1939,7 @@ window.CLASSTOOLS_STR = {
 "si_yellow": "Yellow",
 "si_your_turn": "Your turn!",
 "si_your_turn_reverse": "Your turn, backwards!",
+"sl_button": "Teachers' room",
 "sm_adjust": "Adjust to this class",
 "sm_adjust_hint": "With the class working at a volume that is fine, press it: that will be green.",
 "sm_adjusted": "Adjusted: that noise is green now. Sensitivity moves it up or down.",

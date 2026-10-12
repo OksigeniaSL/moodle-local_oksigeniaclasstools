@@ -15,7 +15,8 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * A teacher comes into the teachers' room or leaves it (from «Which class?»).
+ * The teachers' room: a teacher comes into it or leaves it (from «Which class?» or the board), and the room as they see
+ * it, for the board.
  *
  * @package    local_oksigeniaclasstools
  * @copyright  2026 Oksigenia <dev@oksigenia.cc>
@@ -27,12 +28,21 @@ require(__DIR__ . '/../../config.php');
 
 use local_oksigeniaclasstools\local\sala;
 
-$join = required_param('join', PARAM_BOOL);
+require_once(__DIR__ . '/lib.php');
+
+$action = optional_param('action', 'join', PARAM_ALPHA);
 require_sesskey();
 require_login(null, false);
 if (!sala::on()) {
     echo json_encode(['off' => true]);
     exit;
 }
-sala::join((int) $USER->id, (bool) $join);
-echo json_encode(['joined' => sala::joined((int) $USER->id)]);
+if ($action === 'join') {
+    $join = required_param('join', PARAM_BOOL);
+    // Into the room, only teachers; out of it, anyone.
+    if ($join && !sala::can_join((int) $USER->id)) {
+        throw new required_capability_exception(context_system::instance(), 'local/oksigeniaclasstools:use', 'nopermissions', '');
+    }
+    sala::join((int) $USER->id, (bool) $join);
+}
+echo json_encode(local_oksigeniaclasstools_sala_view((int) $USER->id));

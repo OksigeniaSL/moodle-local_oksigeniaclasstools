@@ -338,6 +338,9 @@ function local_oksigeniaclasstools_data(stdClass $course, context_course $contex
         // The teacher's stickers: where real uses go, what makes a use real, and the level of each sticker now.
         'logrosurl' => \local_oksigeniaclasstools\local\logros::on()
             ? (new moodle_url('/local/oksigeniaclasstools/logros.php'))->out(false) : null,
+        // The teachers' room, a tap away from the board.
+        'salaurl' => \local_oksigeniaclasstools\local\sala::on()
+            ? (new moodle_url('/local/oksigeniaclasstools/sala.php'))->out(false) : null,
         'logros' => \local_oksigeniaclasstools\local\logros::on() ? [
             'thr' => \local_oksigeniaclasstools\local\logros::thresholds(),
             'learned' => \local_oksigeniaclasstools\local\logros::learned((int) $USER->id),
@@ -593,6 +596,25 @@ function local_oksigeniaclasstools_sala(int $userid): ?array {
     if (!\local_oksigeniaclasstools\local\sala::on()) {
         return null;
     }
+    $view = local_oksigeniaclasstools_sala_view($userid);
+    return [
+        'joined' => $view['joined'],
+        'count' => $view['count'],
+        'span' => $view['span'],
+        'others' => $view['others'],
+        'json' => json_encode(['teachers' => $view['teachers'], 'str' => $view['str']], JSON_UNESCAPED_UNICODE),
+        'url' => (new moodle_url('/local/oksigeniaclasstools/sala.php'))->out(false),
+        'sesskey' => sesskey(),
+    ];
+}
+
+/**
+ * The teachers' room as a teacher sees it, with its texts: for «Which class?» and for the board.
+ *
+ * @param int $userid
+ * @return array joined, count, span, others (texts), teachers (id, name, me, stickers) and str (the texts of the room)
+ */
+function local_oksigeniaclasstools_sala_view(int $userid): array {
     $component = 'local_oksigeniaclasstools';
     $room = \local_oksigeniaclasstools\local\sala::room($userid);
     $span = $room['span'];
@@ -607,18 +629,18 @@ function local_oksigeniaclasstools_sala(int $userid): ?array {
     $others = $room['others'] === 1 ? get_string('sala_others_one', $component)
         : ($room['others'] > 1 ? get_string('sala_others', $component, $room['others']) : '');
     $n = count($room['teachers']);
+    $str = [];
+    foreach (['you', 'none', 'empty', 'intro', 'join', 'join_note', 'close'] as $key) {
+        $str[$key] = get_string('sala_' . $key, $component);
+    }
+    $str['title'] = get_string('sala', $component);
     return [
         'joined' => $room['joined'],
         'count' => $n ? get_string('sala_count', $component, $n) : get_string('sala_count_none', $component),
         'span' => $when,
         'others' => $others,
-        'json' => json_encode([
-            'teachers' => $room['teachers'],
-            'str' => ['you' => get_string('sala_you', $component), 'none' => get_string('sala_none', $component),
-                'empty' => get_string('sala_empty', $component)],
-        ], JSON_UNESCAPED_UNICODE),
-        'url' => (new moodle_url('/local/oksigeniaclasstools/sala.php'))->out(false),
-        'sesskey' => sesskey(),
+        'teachers' => $room['teachers'],
+        'str' => $str,
     ];
 }
 

@@ -2784,6 +2784,7 @@ $string['app_si_word_n'] = 'Word {$a}';
 $string['app_si_yellow'] = 'Yellow';
 $string['app_si_your_turn'] = 'Your turn!';
 $string['app_si_your_turn_reverse'] = 'Your turn, backwards!';
+$string['app_sl_button'] = 'Teachers\' room';
 $string['app_sm_adjust'] = 'Adjust to this class';
 $string['app_sm_adjust_hint'] = 'With the class working at a volume that is fine, press it: that will be green.';
 $string['app_sm_adjusted'] = 'Adjusted: that noise is green now. Sensitivity moves it up or down.';

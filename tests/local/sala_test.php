@@ -22,8 +22,9 @@ global $CFG;
 require_once($CFG->dirroot . '/local/oksigeniaclasstools/lib.php');
 
 /**
- * Tests for the teachers' room: the span it counts (the last weeks or the season on now), who is in it (only who wants,
- * and only teachers), their stickers in the span, the order by name and how many more play.
+ * Tests for the teachers' room: the span it counts (the last weeks or the season on now), who is in it (who wants, also
+ * before their first sticker; only teachers can come in), their stickers in the span, the order by name and how many
+ * more play.
  *
  * @package    local_oksigeniaclasstools
  * @category   test
@@ -58,7 +59,7 @@ final class sala_test extends \advanced_testcase {
         $zoe = $gen->create_user(['firstname' => 'Zoe', 'lastname' => 'Vidal']);
         $ana = $gen->create_user(['firstname' => 'Ana', 'lastname' => 'Ruiz']);
         $hidden = $gen->create_user();
-        $student = $gen->create_user();
+        $newcomer = $gen->create_user(['firstname' => 'Bea', 'lastname' => 'Soler']);
         $viewer = $gen->create_user();
         $now = make_timestamp(2026, 10, 12, 10);
         // Zoe: three days with the dice (level 2), and one long ago that the span leaves out.
@@ -67,22 +68,32 @@ final class sala_test extends \advanced_testcase {
         }
         logros::record((int) $ana->id, (int) $course->id, 'sacanombres', $now - DAYSECS);
         logros::record((int) $hidden->id, (int) $course->id, 'sacanombres', $now - DAYSECS);
-        foreach ([$zoe, $ana] as $teacher) {
+        foreach ([$zoe, $ana, $newcomer] as $teacher) {
             sala::join((int) $teacher->id, true);
         }
-        // Someone who never used the board with a class does not appear, even if they asked to.
-        sala::join((int) $student->id, true);
         $room = sala::room((int) $viewer->id, $now);
-        $this->assertSame(['Ana Ruiz', 'Zoe Vidal'], array_column($room['teachers'], 'name'));
-        $this->assertSame([['cromo' => 'tiradados', 'level' => 2]], $room['teachers'][1]['stickers']);
+        $this->assertSame(['Ana Ruiz', 'Bea Soler', 'Zoe Vidal'], array_column($room['teachers'], 'name'));
+        // Who came in before their first sticker is in the room too, without stickers.
+        $this->assertSame([], $room['teachers'][1]['stickers']);
+        $this->assertSame([['cromo' => 'tiradados', 'level' => 2]], $room['teachers'][2]['stickers']);
         $this->assertSame(1, $room['others']);
         $this->assertFalse($room['joined']);
         // Who looks is not one of the others; and leaving the room is at once.
         $mine = sala::room((int) $hidden->id, $now);
         $this->assertSame(0, $mine['others']);
         sala::join((int) $ana->id, false);
-        $this->assertSame(['Zoe Vidal'], array_column(sala::room((int) $viewer->id, $now)['teachers'], 'name'));
-        $this->assertTrue(sala::room((int) $zoe->id, $now)['teachers'][0]['me']);
+        $this->assertSame(['Bea Soler', 'Zoe Vidal'], array_column(sala::room((int) $viewer->id, $now)['teachers'], 'name'));
+        $this->assertTrue(sala::room((int) $zoe->id, $now)['teachers'][1]['me']);
+    }
+
+    public function test_only_teachers_can_come_in(): void {
+        $this->resetAfterTest();
+        $gen = $this->getDataGenerator();
+        $course = $gen->create_course();
+        $teacher = $gen->create_and_enrol($course, 'editingteacher');
+        $student = $gen->create_and_enrol($course, 'student');
+        $this->assertTrue(sala::can_join((int) $teacher->id));
+        $this->assertFalse(sala::can_join((int) $student->id));
     }
 
     public function test_the_room_can_be_turned_off(): void {

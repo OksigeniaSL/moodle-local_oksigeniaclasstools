@@ -2786,6 +2786,7 @@ $string['app_si_word_n'] = 'Palabra {$a}';
 $string['app_si_yellow'] = 'Amarillo';
 $string['app_si_your_turn'] = '¡Ahora tú!';
 $string['app_si_your_turn_reverse'] = '¡Ahora tú, al revés!';
+$string['app_sl_button'] = 'Sala de profes';
 $string['app_sm_adjust'] = 'Ajustar a esta clase';
 $string['app_sm_adjust_hint'] = 'Con la clase trabajando a un volumen que vale, pulsa: lo de ahora quedará en verde.';
 $string['app_sm_adjusted'] = 'Ajustado: ese ruido es ahora el verde. La sensibilidad lo sube o lo baja.';
