@@ -1499,6 +1499,14 @@ button.id-revisar { padding-right: .8rem; cursor: pointer; }
 .id-lienzo .centro { margin: .4rem 0 0; }
 :root[data-modo="advanced"] .id-palabra, :root[data-modo="advanced"] .id-texto { font-weight: 700; }
 @media (prefers-reduced-motion: reduce) { .id-lienzo .nueva { animation: none; } .id-palabra { transition: none; } }
+/* Tarjetas impresas (cards.js): cada respuesta en su rincón, con su color. */
+.tc-grupos { display: grid; flex: 1; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; min-height: 0; }
+.tc-grupos[data-n="3"], .tc-grupos[data-n="5"] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.tc-zona { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .4rem; min-height: 8rem; border-radius: var(--radio); background: var(--c); color: #fff; text-align: center; }
+.tc-zona.claro { color: var(--tinta); }
+.tc-zona strong { font-size: clamp(2rem, 7vh, 5rem); font-weight: 1000; line-height: 1.05; overflow-wrap: anywhere; }
+.tc-zona span { padding: 0 .6em; border-radius: 50rem; background: rgba(255, 255, 255, .25); font-size: clamp(1.2rem, 3vh, 2rem); font-weight: 900; }
+.tc-consigna { margin: 0; color: var(--azul-osc); font-size: clamp(1.2rem, 3vh, 2rem); font-weight: 900; text-align: center; font-variant-numeric: tabular-nums; }
 /* El billete de salida (exit.js): prepararlo, quién lo ha entregado, y el resumen con los billetes en montones. */
 .ex-editor { display: flex; flex-direction: column; gap: 1rem; width: min(100%, 52rem); margin: 0 auto; }
 .ex-cabeza { display: flex; align-items: center; gap: 1rem; }

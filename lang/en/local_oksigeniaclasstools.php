@@ -1522,6 +1522,38 @@ Naming figures: triangles, square, parallelogram.
 Area without formulas: made with the same seven pieces, every figure has the same area.
 Fractions of the square: each small triangle is a sixteenth of it.
 Persevering: trying, turning and trying again.';
+$string['app_gd_tarjetas_how'] = 'Print them with «Print cards»: with the names of a list or numbered. The card that is turned comes two to a page; the others, a page per student. Laminated, they last the whole year.
+Ask, give time to think in silence and, at the signal («three, two, one, up!»), all at once: so nobody looks at what the next one raises.
+Without a phone: you read the colours at a glance; if you want the numbers on the board, count them with + and −.
+Talk before giving the answer: «Those with blue, why?». Have someone of each colour explain theirs.
+«In groups»: each one to the place of their colour (the corner, the hoop or the table of that colour); there, they talk it over; then «Two minutes to convince» someone of another colour, and they vote again.
+Peer instruction: they vote, discuss it in pairs with someone who chose something else, and vote again (Crouch and Mazur, 2001).
+By tables: each table counts its colours and tells you; so they do the counting.
+One by one: go round the tables and ask or take notes; with 12 to 30 students it does not take long.
+With an old phone or without a camera, all this works the same: the card does not need the phone. A photo of the class with the cards up is a record to look at later.
+The traffic light while they work: the card on the table, red if they need help; you go to the red ones first.
+Yes and no, for quick true or false; the four separate cards, for those who still get mixed up turning one.';
+$string['app_gd_tarjetas_scene'] = 'In year two, the teacher asks which weighs more: A, a kilo of straw; B, a kilo of iron; C, they weigh the same. The cards go up at once and there is a lot of blue. «In groups»: blue to the blue hoop, red to the red one, yellow to the yellow one. In each hoop they talk for a minute, and then each one looks for someone of another colour to convince.
+When they vote again there is much more yellow. Those still on blue explain why, and the class balance settles the discussion.';
+$string['app_gd_tarjetas_sources'] = 'Narayan, J. S., Heward, W. L., Gardner, R., Courson, F. H. and Omness, C. K. (1990). Using response cards to increase student participation in an elementary classroom. Journal of Applied Behavior Analysis, 23(4), 483–490.|https://doi.org/10.1901/jaba.1990.23-483
+Gardner, R., Heward, W. L. and Grossi, T. A. (1994). Effects of response cards on student participation and academic achievement: A systematic replication with inner-city students during whole-class science instruction. Journal of Applied Behavior Analysis, 27(1), 63–71.|https://doi.org/10.1901/jaba.1994.27-63
+Lasry, N. (2008). Clickers or flashcards: Is there really a difference? The Physics Teacher, 46(4), 242–244.|https://doi.org/10.1119/1.2895678
+Wiliam, D. (2011). Embedded Formative Assessment. Solution Tree Press.
+Northwest Educational Service District 189 (n. d.). ABCD Cards. Formative Assessment Techniques (handout adapted from Wiliam, 2011).|https://www.nwesd.org/wp-content/uploads/2013/08/EL_ABCD_Cards_kdj.pdf
+Crouch, C. H. and Mazur, E. (2001). Peer Instruction: Ten years of experience and results. American Journal of Physics, 69(9), 970–977.|https://doi.org/10.1119/1.1374249';
+$string['app_gd_tarjetas_stages'] = 'early|Yes and no, or the traffic light, and moving: those with the red card, to the red hoop; count together how many are in each hoop.
+primary|The card that is turned or the four cards with multiple choice questions; in groups and convincing someone of another colour; the traffic light while they work.
+secondary|Concept questions with a common mistake among the options: vote, discuss in pairs and vote again.
+advanced|Peer instruction in large groups without devices: the cards work as well as clickers.';
+$string['app_gd_tarjetas_what'] = 'Voting without devices: hands up or printed cards (one that is turned with A, B, C and D, four separate cards, the traffic light, or yes and no). The board prints the cards with the names of the class, and helps to count and to make groups by answer. No phone is needed: the card works on its own.';
+$string['app_gd_tarjetas_why'] = 'When each student answers with a card instead of raising a hand for one to answer, everyone answers. In a year four class, Narayan, Heward, Gardner, Courson and Omness (1990) found that with response cards participation was much higher than with hands up, that most students did better in the daily quizzes, and that 19 of the 20 students preferred them. In a replication in a year five science class, Gardner, Heward and Grossi (1994) counted fourteen times more answers, and all 22 students did better on what was taught with cards.
+Technology is not what counts: in physics, with peer instruction, Lasry (2008) compared clickers with paper flashcards and found that clickers gave no advantage in what was learned; their value is mostly in recording the data.
+ABCD cards are one of the techniques of Wiliam (2011): a question with up to four options, time to think and, at a signal, everyone raises their answer. If one option is a common mistake, it is clear at once who has it; and with questions of opinion, hearing someone defend another answer makes some change their mind.';
+$string['app_gd_tarjetas_works'] = 'Everyone answers at once, not only whoever raises a hand.
+Seeing at a glance what the class has understood and who needs help.
+Explaining why: every answer has someone to defend it.
+Moving and grouping by answer.
+Working «unplugged», with the material in their hands.';
 $string['app_gd_why'] = 'Why';
 $string['app_gd_works'] = 'What it works on';
 $string['app_gen_again'] = 'Again';
@@ -1791,7 +1823,7 @@ $string['app_lv_kick'] = 'Take {$a} out of the session';
 $string['app_lv_kicked'] = 'The teacher has taken this device out of the session.';
 $string['app_lv_kind_buzz'] = 'Buzzers';
 $string['app_lv_kind_exit'] = 'Exit ticket';
-$string['app_lv_kind_hands'] = 'Hands up';
+$string['app_lv_kind_hands'] = 'Hands up or cards';
 $string['app_lv_kind_ideas'] = 'Brainstorm';
 $string['app_lv_kind_quiz'] = 'Quiz';
 $string['app_lv_kind_remote'] = 'Remote';
@@ -1841,7 +1873,7 @@ $string['app_lv_remote_waiting'] = 'Waiting for your phone…';
 $string['app_lv_sent'] = 'sent';
 $string['app_lv_short_buzz'] = 'In teams: who presses first?';
 $string['app_lv_short_exit'] = 'How they are getting on and what they learned, at the end of the lesson';
-$string['app_lv_short_hands'] = 'No devices: you count the hands';
+$string['app_lv_short_hands'] = 'No devices: hands or printed cards, and you count';
 $string['app_lv_short_ideas'] = 'They write a word or two: a live cloud';
 $string['app_lv_short_quiz'] = 'Questions with points, each one or by teams';
 $string['app_lv_short_remote'] = 'Your phone runs the board';
@@ -2562,6 +2594,28 @@ $string['app_tab_rules'] = 'How we work';
 $string['app_tab_scoreboard'] = 'Scoreboard';
 $string['app_tab_stopwatch'] = 'Stopwatch';
 $string['app_tab_timer'] = 'Timer';
+$string['app_tc_back'] = 'Back to counting';
+$string['app_tc_card_n'] = 'Card {$a}';
+$string['app_tc_count'] = 'How many';
+$string['app_tc_f_four'] = 'Four cards: A, B, C and D';
+$string['app_tc_f_light'] = 'Traffic light: green, yellow and red';
+$string['app_tc_f_rotate'] = 'One card that is turned: A, B, C and D';
+$string['app_tc_f_yesno'] = 'Yes and no';
+$string['app_tc_for'] = 'For';
+$string['app_tc_format'] = 'Which cards';
+$string['app_tc_groups'] = 'In groups';
+$string['app_tc_groups_lead'] = 'Each one to the place of their colour: talk about why.';
+$string['app_tc_note_rotate'] = 'Two cards to a page. Each one turns the card so their answer is on top. Laminated, they last the whole year.';
+$string['app_tc_note_set'] = 'One page per student, to cut out. Laminated, they last the whole year.';
+$string['app_tc_numbered'] = 'Numbered, without names';
+$string['app_tc_print'] = 'Print';
+$string['app_tc_print_cards'] = 'Print cards';
+$string['app_tc_printing'] = 'The cards are ready to print.';
+$string['app_tc_talk'] = 'Two minutes to convince';
+$string['app_tc_talk_done'] = 'Time\'s up: raise the cards again!';
+$string['app_tc_talk_now'] = 'Talk with someone of another colour:';
+$string['app_tc_title'] = 'Cards to vote';
+$string['app_tc_turn'] = 'Turn the card: your answer on top.';
 $string['app_tm_custom'] = 'Your own time';
 $string['app_tm_fact_barco'] = 'A sailing boat sails at about 15 km/h.';
 $string['app_tm_fact_caracol'] = 'A snail travels about 50 metres in an hour.';

@@ -137,11 +137,23 @@
     const paintHands = () => {
         stage.innerHTML = `<div class="lv-pregunta"><input type="text" id="lv-hq" maxlength="140" placeholder="${escape(t('lv_question_ph'))}" aria-label="${escape(t('lv_question_ph'))}"></div>
             <div class="lv-centro"><p class="lv-grande" id="lv-htotal"></p><div class="lv-barras" id="lv-hbars"></div></div>
-            <div class="botonera centro lv-mandos"><button type="button" class="boton suave" id="lv-hreset"><span data-icono="reiniciar"></span><span>${escape(t('lv_hands_reset'))}</span></button></div>`;
+            <div class="botonera centro lv-mandos"><button type="button" class="boton suave" id="lv-hreset"><span data-icono="reiniciar"></span><span>${escape(t('lv_hands_reset'))}</span></button>
+                <button type="button" class="boton suave" id="lv-hgroups"><span data-icono="grupos"></span><span>${escape(t('tc_groups'))}</span></button>
+                <button type="button" class="boton suave" id="lv-hprint"><span data-icono="cartas"></span><span>${escape(t('tc_print_cards'))}</span></button></div>`;
         $$('[data-icono]', stage).forEach((e) => setIcon(e, e.dataset.icono));
         $('#lv-hq').value = hd.question;
         $('#lv-hq').addEventListener('input', () => { hd.question = $('#lv-hq').value; keepHands(); });
         $('#lv-hreset').addEventListener('click', () => { hd.counts = {}; keepHands(); paintHandBars(); play('tic'); });
+        // Printed cards, and each answer to its corner (cards.js).
+        const C = window.ClasstoolsCards;
+        $('#lv-hprint').hidden = $('#lv-hgroups').hidden = !C;
+        if (C) {
+            $('#lv-hprint').addEventListener('click', () => C.ask());
+            $('#lv-hgroups').addEventListener('click', () => {
+                const opts = handOptions();
+                C.groups(stage, opts, colourOf, opts.map((o) => Math.max(0, Number(hd.counts[o]) || 0)), paintHands);
+            });
+        }
         paintHandBars();
     };
     const paintHandBars = () => {

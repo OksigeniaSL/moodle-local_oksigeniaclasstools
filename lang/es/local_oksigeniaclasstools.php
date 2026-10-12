@@ -1524,6 +1524,38 @@ Nombrar figuras: triángulos, cuadrado, romboide.
 Áreas sin fórmulas: con las mismas siete piezas, todas las figuras miden lo mismo.
 Fracciones del cuadrado: cada triángulo pequeño es su dieciseisava parte.
 Perseverar: probar, girar y volver a probar.';
+$string['app_gd_tarjetas_how'] = 'Imprímelas con «Imprimir tarjetas»: con los nombres de una lista o numeradas. La que se gira sale dos por hoja; las demás, una hoja por alumno. Plastificadas, duran el curso.
+Pregunta, deja tiempo para pensar en silencio y, a la señal («tres, dos, uno, ¡arriba!»), todos a la vez: así nadie mira lo que levanta el de al lado.
+Sin móvil: lees los colores de un vistazo; si quieres los números en la pizarra, cuéntalos con + y −.
+Conversa antes de dar la respuesta: «Los del azul, ¿por qué?». Que alguien de cada color explique la suya.
+«Por grupos»: cada uno al sitio de su color (el rincón, el aro o la mesa de ese color); dentro, que lo hablen; luego «Dos minutos para convencer» a alguien de otro color, y se vota otra vez.
+Instrucción entre iguales: votan, lo discuten en parejas con alguien que eligió otra cosa y vuelven a votar (Crouch y Mazur, 2001).
+Por mesas: cada mesa cuenta sus colores y te lo dice; así cuentan ellos.
+Uno a uno: pasa por las mesas y pregunta o anota; con 12 a 30 alumnos no lleva mucho rato.
+Con un móvil viejo o sin cámara, todo esto funciona igual: la tarjeta no necesita el móvil. Una foto de la clase con las tarjetas levantadas sirve de registro para mirarlo después.
+El semáforo mientras trabajan: la tarjeta encima de la mesa, en rojo si necesitan ayuda; vas primero a las rojas.
+Sí y no, para verdadero o falso rápido; las cuatro tarjetas sueltas, para quien todavía se lía al girar.';
+$string['app_gd_tarjetas_scene'] = 'En segundo, la maestra pregunta qué pesa más: A, un kilo de paja; B, un kilo de hierro; C, pesan lo mismo. Las tarjetas suben a la vez y hay mucho azul. «Por grupos»: los del azul al aro azul, los del rojo al rojo, los del amarillo al amarillo. En cada aro hablan un minuto, y luego cada uno busca a alguien de otro color para convencerlo.
+Al volver a votar hay mucho más amarillo. Los que siguen en azul explican por qué, y la balanza de la clase resuelve la discusión.';
+$string['app_gd_tarjetas_sources'] = 'Narayan, J. S., Heward, W. L., Gardner, R., Courson, F. H. y Omness, C. K. (1990). Using response cards to increase student participation in an elementary classroom. Journal of Applied Behavior Analysis, 23(4), 483–490.|https://doi.org/10.1901/jaba.1990.23-483
+Gardner, R., Heward, W. L. y Grossi, T. A. (1994). Effects of response cards on student participation and academic achievement: A systematic replication with inner-city students during whole-class science instruction. Journal of Applied Behavior Analysis, 27(1), 63–71.|https://doi.org/10.1901/jaba.1994.27-63
+Lasry, N. (2008). Clickers or flashcards: Is there really a difference? The Physics Teacher, 46(4), 242–244.|https://doi.org/10.1119/1.2895678
+Wiliam, D. (2011). Embedded Formative Assessment. Solution Tree Press.
+Northwest Educational Service District 189 (s. f.). ABCD Cards. Formative Assessment Techniques (ficha adaptada de Wiliam, 2011).|https://www.nwesd.org/wp-content/uploads/2013/08/EL_ABCD_Cards_kdj.pdf
+Crouch, C. H. y Mazur, E. (2001). Peer Instruction: Ten years of experience and results. American Journal of Physics, 69(9), 970–977.|https://doi.org/10.1119/1.1374249';
+$string['app_gd_tarjetas_stages'] = 'early|Sí y no, o el semáforo, y moverse: los de la tarjeta roja, al aro rojo; luego se cuenta entre todos cuántos hay en cada aro.
+primary|La que se gira o las cuatro tarjetas con preguntas de opción; por grupos y a convencer al de otro color; el semáforo mientras trabajan.
+secondary|Preguntas de concepto con un error frecuente entre las opciones: votar, discutir en parejas y volver a votar.
+advanced|Instrucción entre iguales en grupos grandes sin dispositivos: las tarjetas sirven igual que los mandos.';
+$string['app_gd_tarjetas_what'] = 'Votar sin dispositivos: a mano alzada o con tarjetas impresas (una que se gira con A, B, C y D, cuatro tarjetas sueltas, el semáforo, o sí y no). La pizarra imprime las tarjetas con los nombres de la clase, ayuda a contar y a hacer grupos por respuestas. No hace falta móvil: la tarjeta funciona sola.';
+$string['app_gd_tarjetas_why'] = 'Cuando cada alumno contesta con una tarjeta en lugar de levantar la mano para que responda uno, contestan todos. En una clase de cuarto de Primaria, Narayan, Heward, Gardner, Courson y Omness (1990) vieron que con tarjetas de respuesta la participación era mucho mayor que levantando la mano, que la mayoría sacaba mejores notas en los controles diarios, y que 19 de los 20 alumnos las preferían. En una réplica en una clase de Ciencias de quinto, Gardner, Heward y Grossi (1994) contaron catorce veces más respuestas, y los 22 alumnos sacaron mejores notas en lo trabajado con tarjetas.
+Lo que cuenta no es la tecnología: en Física, con instrucción entre iguales, Lasry (2008) comparó mandos electrónicos con tarjetas de papel y no encontró que los mandos dieran ventaja en lo aprendido; su valor está sobre todo en registrar los datos.
+Las tarjetas A, B, C y D son una de las técnicas de Wiliam (2011): una pregunta con hasta cuatro opciones, tiempo para pensar y, a una señal, todos levantan su respuesta. Si una opción es un error frecuente, se ve enseguida quién lo tiene; y en las preguntas de opinión, escuchar a quien defiende otra respuesta lleva a algunos a cambiar de idea.';
+$string['app_gd_tarjetas_works'] = 'Que contesten todos a la vez, no solo quien levanta la mano.
+Ver de un vistazo qué ha entendido la clase y quién necesita ayuda.
+Explicar por qué: cada respuesta tiene quien la defienda.
+Moverse y agruparse por respuestas.
+Trabajar «desenchufado», con el material en la mano.';
 $string['app_gd_why'] = 'Por qué';
 $string['app_gd_works'] = 'Qué trabaja';
 $string['app_gen_again'] = 'Otra vez';
@@ -1793,7 +1825,7 @@ $string['app_lv_kick'] = 'Sacar a {$a} de la sesión';
 $string['app_lv_kicked'] = 'El profe ha sacado este dispositivo de la sesión.';
 $string['app_lv_kind_buzz'] = 'Pulsadores';
 $string['app_lv_kind_exit'] = 'Billete de salida';
-$string['app_lv_kind_hands'] = 'A mano alzada';
+$string['app_lv_kind_hands'] = 'A mano alzada o con tarjetas';
 $string['app_lv_kind_ideas'] = 'Lluvia de ideas';
 $string['app_lv_kind_quiz'] = 'Concurso';
 $string['app_lv_kind_remote'] = 'Mando';
@@ -1843,7 +1875,7 @@ $string['app_lv_remote_waiting'] = 'Esperando a tu móvil…';
 $string['app_lv_sent'] = 'enviado';
 $string['app_lv_short_buzz'] = 'Por equipos: ¿quién pulsa antes?';
 $string['app_lv_short_exit'] = 'Al acabar la clase: cómo lo llevan y qué han aprendido';
-$string['app_lv_short_hands'] = 'Sin tabletas: tú cuentas las manos';
+$string['app_lv_short_hands'] = 'Sin dispositivos: manos o tarjetas impresas, y cuentas tú';
 $string['app_lv_short_ideas'] = 'Escriben una o dos palabras: una nube viva';
 $string['app_lv_short_quiz'] = 'Preguntas con puntos, cada uno o por equipos';
 $string['app_lv_short_remote'] = 'Tu móvil maneja la pizarra';
@@ -2564,6 +2596,28 @@ $string['app_tab_rules'] = 'Así trabajamos';
 $string['app_tab_scoreboard'] = 'Marcador';
 $string['app_tab_stopwatch'] = 'Cronómetro';
 $string['app_tab_timer'] = 'Temporizador';
+$string['app_tc_back'] = 'Volver a contar';
+$string['app_tc_card_n'] = 'Tarjeta {$a}';
+$string['app_tc_count'] = 'Cuántas';
+$string['app_tc_f_four'] = 'Cuatro tarjetas: A, B, C y D';
+$string['app_tc_f_light'] = 'Semáforo: verde, amarillo y rojo';
+$string['app_tc_f_rotate'] = 'Una tarjeta que se gira: A, B, C y D';
+$string['app_tc_f_yesno'] = 'Sí y no';
+$string['app_tc_for'] = 'Para';
+$string['app_tc_format'] = 'Qué tarjetas';
+$string['app_tc_groups'] = 'Por grupos';
+$string['app_tc_groups_lead'] = 'Cada uno, al sitio de su color: hablen de por qué.';
+$string['app_tc_note_rotate'] = 'Dos tarjetas por página. Cada uno gira la tarjeta para que su respuesta quede arriba. Plastificadas, duran todo el curso.';
+$string['app_tc_note_set'] = 'Una página por alumno, para recortar. Plastificadas, duran todo el curso.';
+$string['app_tc_numbered'] = 'Numeradas, sin nombres';
+$string['app_tc_print'] = 'Imprimir';
+$string['app_tc_print_cards'] = 'Imprimir tarjetas';
+$string['app_tc_printing'] = 'Las tarjetas están listas para imprimir.';
+$string['app_tc_talk'] = 'Dos minutos para convencer';
+$string['app_tc_talk_done'] = '¡Tiempo! Levanten otra vez las tarjetas.';
+$string['app_tc_talk_now'] = 'Hablen con alguien de otro color:';
+$string['app_tc_title'] = 'Tarjetas para votar';
+$string['app_tc_turn'] = 'Gira la tarjeta: tu respuesta, arriba.';
 $string['app_tm_custom'] = 'A tu medida';
 $string['app_tm_fact_barco'] = 'Un velero navega a unos 15 km/h.';
 $string['app_tm_fact_caracol'] = 'Un caracol recorre unos 50 metros en una hora.';

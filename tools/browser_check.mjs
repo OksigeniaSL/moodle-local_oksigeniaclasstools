@@ -1310,6 +1310,52 @@ const CHECKS = {
         pick('#si-kind', 'colors');
         return '';
     },
+    // Printed cards: from «Hands up or cards», the dialog with the class lists, the page of the card that is turned
+    // (two to a page, a name on each, the four sides) and of the sets, and each answer to its place with the talk timer.
+    'printed-cards': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const q = (s) => document.querySelector(s);
+        const until = async (s) => { for (let i = 0; i < 100 && !q(s); i++) { await sleep(50); } return q(s); };
+        (await until('#t-envivo')).click();
+        (await until('#lv-kind [data-v="hands"]')).click();
+        if (window.ClasstoolsGuide.which() !== 'tarjetas') { return `the guide is «${window.ClasstoolsGuide.which()}»`; }
+        (await until('#lv-hprint')).click();
+        const dialog = await until('#tc-dialogo[open]');
+        if (!dialog) { return 'no dialog to print'; }
+        const fors = [...q('#tc-for').options].map((o) => o.value);
+        if (!fors[0] || fors[fors.length - 1] !== '') { return `for: ${fors}`; }
+        dialog.close();
+        const C = window.ClasstoolsCards;
+        const names = window.CLASSTOOLS.lists[0].students.map((x) => x.n);
+        const show = async (format, name) => {
+            const frame = document.createElement('iframe');
+            frame.style.cssText = 'position:fixed;inset:0;width:100vw;height:100vh;z-index:99;background:#fff;border:0';
+            frame.srcdoc = C.print(format, names, true);
+            document.body.append(frame);
+            await sleep(500);
+            const doc = frame.contentDocument;
+            const out = { pages: doc.querySelectorAll('.pagina').length, cards: doc.querySelectorAll('.girar, .carta').length, text: doc.body.textContent };
+            await window.shot(name);
+            frame.remove();
+            return out;
+        };
+        const rotate = await show('rotate', 'cards-rotate');
+        if (rotate.pages !== 4 || rotate.cards !== 8 || !rotate.text.includes(names[7])) { return `turned card: ${JSON.stringify({ ...rotate, text: '' })}`; }
+        const four = await show('four', 'cards-four');
+        if (four.pages !== 8 || four.cards !== 32) { return `four cards: ${JSON.stringify({ ...four, text: '' })}`; }
+        // In groups: four places with their hands, and the timer.
+        q('#lv-vote').value = 'abcd'; q('#lv-vote').dispatchEvent(new Event('change'));
+        q('#lv-hbars [data-o="B"][data-d="1"]').click();
+        q('#lv-hgroups').click();
+        if (document.querySelectorAll('.tc-zona').length !== 4 || !/1/.test(document.querySelectorAll('.tc-zona')[1].textContent)) { return 'no groups'; }
+        q('#tc-talk').click();
+        await sleep(400);
+        if (!/1:5\d|2:00/.test(q('#tc-say').textContent)) { return `timer: ${q('#tc-say').textContent}`; }
+        await window.shot('cards-groups');
+        q('#tc-back').click();
+        if (!q('#lv-hbars')) { return 'no way back to counting'; }
+        return '';
+    },
     // The calculator: the order of operations, the decimal sign, the strip of results, and both keyboards.
     'calculator': async () => {
         const sleep = (ms) => new Promise((r) => setTimeout(r, ms));

@@ -876,8 +876,8 @@
   "es": "¿Qué número es? Toca para verlo"
  },
  "lv_kind_hands": {
-  "en": "Hands up",
-  "es": "A mano alzada"
+  "en": "Hands up or cards",
+  "es": "A mano alzada o con tarjetas"
  },
  "lv_intro_hands": {
   "en": "Count the raised hands for each answer with + and −.",

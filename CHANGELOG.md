@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.40.0 (2026-10-12)
+
+- **Printed cards to vote**, in «Live» › «Hands up or cards» (also outside Moodle): «Print cards» prints, for a class
+  list or numbered, one card that is turned so the answer is on top (A, B, C and D, each side in the colour of its
+  answer on the board, two cards to a page), four separate cards A, B, C and D, the traffic light, or yes and no (a
+  page per student). They work without any phone: the class raises them and the teacher reads the colours, talks,
+  asks, or counts with + and −.
+- «In groups»: each answer as a big area of its colour on the board, for each one to go to the corner, hoop or table of
+  their colour, with the hands counted and «Two minutes to convince» someone of another colour before voting again.
+- The teacher's guide of the cards, with hybrid and unplugged ideas (by tables, one by one, with an old phone, a photo
+  as a record, the traffic light while they work, hoops in Infantil) and the research on response cards (Narayan et
+  al., 1990; Gardner, Heward and Grossi, 1994; Lasry, 2008; Wiliam, 2011).
+
 ## 0.39.0 (2026-10-12)
 
 - **The calculator, redesigned for class.** «Step by step» works out a combined operation line by line, one level of
