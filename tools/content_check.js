@@ -49,6 +49,22 @@ for (const file of files) {
         const twice = Object.entries(seen).filter(([, ks]) => ks.filter((k) => hang.includes(k)).length > 1).map(([w]) => w);
         if (twice.length) { warn.push(`in two Hangman lists: ${twice.join(', ')}`); }
     }
+    // Simon with syllables (optional: without it, the game does not offer it in that language): words split into
+    // their syllables with «-», 2 to 5 of them, in small letters, and enough of each length.
+    if ('syllables' in C) {
+        const l = C.syllables;
+        if (!Array.isArray(l)) { errors.push('syllables: a list'); } else {
+            const badOnes = l.filter((w) => typeof w !== 'string' || w !== w.toLowerCase() || !/^[^-\s]+(-[^-\s]+){1,4}$/.test(w)
+                || ![...norm(w.replace(/-/g, '').toUpperCase())].every((c) => A.has(c)));
+            if (badOnes.length) { errors.push(`syllables (small letters, 2–5 parts with «-»): ${badOnes.join(', ')}`); }
+            [2, 3, 4, 5].forEach((n) => {
+                const k = l.filter((w) => typeof w === 'string' && w.split('-').length === n).length;
+                if (k < (n === 5 ? 5 : 8)) { errors.push(`syllables: only ${k} words of ${n} syllables`); }
+            });
+            const dup = l.filter((w, i) => l.indexOf(w) !== i);
+            if (dup.length) { warn.push(`syllables repeated: ${dup.join(', ')}`); }
+        }
+    }
     // Names of the anonymous participants of a live session: an animal and a word that goes with any animal.
     need('avatar', (v) => v && ['aw', 'wa'].includes(v.order) && [' ', '-', ''].includes(v.join) && Array.isArray(v.animals) && Array.isArray(v.words),
         'order aw or wa, join, animals and words');

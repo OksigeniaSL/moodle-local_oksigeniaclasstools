@@ -60,6 +60,21 @@ window.CLASSTOOLS_CONTENT = {
             'FOTONES', 'ÓRBITAS', 'VÉRTICE', 'CÍRCULO', 'TÉRMINO'],
     },
     // Anonymous participants of a live session: «Búho valiente», «Tortuga en patines».
+    // Simon with syllables: words that children know, split into their syllables (2 to 5), as they are written.
+    syllables: [
+        'ma-no', 'ca-sa', 'ga-to', 'pe-rro', 'lu-na', 'me-sa', 'so-pa', 'pa-to', 'ra-na', 'va-ca', 'pe-ra',
+        'ni-do', 'bo-ta', 'ta-za', 'si-lla', 'co-che', 'le-che', 'ro-sa', 'mo-no', 'bar-co', 'ár-bol', 'glo-bo',
+        'ca-ma',
+        'pe-lo-ta', 'ca-mi-sa', 'za-pa-to', 'mu-ñe-ca', 'pa-lo-ma', 'to-ma-te', 'pá-ja-ro', 'ca-ba-llo',
+        'co-ne-jo', 'gu-sa-no', 'pi-za-rra', 'ven-ta-na', 'pa-ya-so', 'ma-le-ta', 'plá-ta-no', 'tor-tu-ga',
+        'ji-ra-fa', 'ar-di-lla', 'ca-me-llo', 'can-gu-ro', 'mon-ta-ña', 'es-tre-lla', 'pla-ne-ta', 'ga-lle-ta',
+        'bo-te-lla',
+        'ma-ri-po-sa', 'e-le-fan-te', 'co-co-dri-lo', 'bi-ci-cle-ta', 'ca-ra-co-la', 'te-lé-fo-no', 'a-ma-po-la',
+        'ma-ri-qui-ta', 'di-no-sau-rio', 'a-gua-ca-te', 'ca-la-ba-za', 'za-na-ho-ria', 'me-lo-co-tón',
+        'ca-ra-me-lo', 'ma-ri-ne-ro', 'a-ba-ni-co', 'te-le-vi-sión', 'ham-bur-gue-sa',
+        'hi-po-pó-ta-mo', 'he-li-cóp-te-ro', 'fri-go-rí-fi-co', 'ma-te-má-ti-cas', 'ma-ri-po-si-ta',
+        'e-le-fan-ti-to', 'a-ni-ma-li-to', 'ma-ra-vi-llo-so', 'co-mu-ni-ca-ción',
+    ],
     avatar: {
         order: 'aw', join: ' ',
         animals: ['búho', 'lince', 'delfín', 'pingüino', 'koala', 'panda', 'tigre', 'león', 'lobo', 'oso', 'castor',

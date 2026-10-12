@@ -41,6 +41,7 @@ Check a file with `node tools/content_check.js app/content/xx.js` (all of them w
 | `clock(t)` | The time in words, as said in the classroom, for `t` minutes after midnight (0–1439), 12-hour, first letter in capital: «Las tres y cuarto», «Quarter past three», «Viertel nach drei». |
 | `rosco` | One item per letter of the alphabet: [letter, `s` (starts with) or `c` (contains), clue, answer]. Clues for children of 8–12, neutral (no places or people of one country). |
 | `lock` | The example lock, code 4127: `{ name, final, clues: [4 clues, one per digit, 4 then 1 then 2 then 7] }`. |
+| `syllables` | Optional. Simon with syllables: 40–80 words children know, in small letters, split into their syllables with «-» (`'ma-ri-po-sa'`), at least 8 of 2, 3 and 4 syllables and 5 of 5. Without it, Simon does not offer syllables in that language. |
 
 Word lists: capitals, only letters of the alphabet (no spaces, hyphens or apostrophes), no proper names, no repeated
 words, and each Hangman word in one list only.

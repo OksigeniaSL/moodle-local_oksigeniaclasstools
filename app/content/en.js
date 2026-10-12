@@ -64,6 +64,19 @@ window.CLASSTOOLS_CONTENT = {
             'HORIZON', 'PRAIRIE', 'FRACTAL', 'ESTUARY', 'ISTHMUS', 'AQUIFER'],
     },
     // Anonymous participants of a live session: «Brave owl», «Juggling octopus».
+    // Simon with syllables: words that children know, split into their syllables (2 to 5) as dictionaries divide them.
+    syllables: [
+        'ba-by', 'ta-ble', 'ap-ple', 'rab-bit', 'mon-key', 'pan-da', 'ti-ger', 'ze-bra', 'rain-bow', 'pen-cil',
+        'win-dow', 'kit-ten', 'pup-py', 'gar-den', 'flow-er', 'pic-nic', 'ro-bot', 'cup-cake', 'dol-phin',
+        'pump-kin',
+        'ba-nan-a', 'el-e-phant', 'but-ter-fly', 'kan-ga-roo', 'oc-to-pus', 'um-brel-la', 'to-ma-to', 'po-ta-to',
+        'di-no-saur', 'buf-fa-lo', 'an-i-mal', 'ham-burg-er', 'straw-ber-ry', 'bi-cy-cle', 'spa-ghet-ti',
+        'com-put-er', 'go-ril-la', 'vol-ca-no', 'pi-an-o', 'won-der-ful',
+        'wa-ter-mel-on', 'cat-er-pil-lar', 'al-li-ga-tor', 'hel-i-cop-ter', 'av-o-ca-do', 'ar-ma-dil-lo',
+        'cal-cu-la-tor', 'mac-a-ro-ni', 'sal-a-man-der', 'tel-e-vi-sion', 'a-quar-i-um', 'har-mon-i-ca',
+        'hip-po-pot-a-mus', 're-frig-er-a-tor', 'ab-ra-ca-dab-ra', 'u-ni-ver-si-ty', 'vo-cab-u-lar-y',
+        'cu-ri-os-i-ty', 'op-por-tu-ni-ty',
+    ],
     avatar: {
         order: 'wa', join: ' ',
         animals: ['owl', 'eagle', 'hawk', 'falcon', 'condor', 'robin', 'hummingbird', 'flamingo', 'pelican',

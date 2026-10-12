@@ -184,8 +184,13 @@ $string['app_bq_work_n'] = 'Trabajo {$a->n} de {$a->of}';
 $string['app_ca_ans'] = 'Ans';
 $string['app_ca_basic'] = 'Básica';
 $string['app_ca_error'] = 'No se puede calcular';
+$string['app_ca_guess'] = 'Estimar antes';
+$string['app_ca_guess_now'] = '¿Cuánto dará? Estímenlo y luego lo vemos.';
+$string['app_ca_keys'] = 'Teclado';
 $string['app_ca_kind'] = 'Tipo de calculadora';
+$string['app_ca_reveal'] = 'Ver el resultado';
 $string['app_ca_sci'] = 'Científica';
+$string['app_ca_steps'] = 'Paso a paso';
 $string['app_ca_tape'] = 'Resultados';
 $string['app_ca_tape_clear'] = 'Borrar los resultados';
 $string['app_ca_tape_empty'] = 'Cada resultado se queda aquí; tocándolo se vuelve a usar.';
@@ -1054,22 +1059,25 @@ Sumar y restar llevando, sabiendo el porqué de cada paso.
 Leer y escribir números como suma de sus partes («100 + 30 + 12 = 142»).
 Otras bases (2, 5, 16…): el valor de posición sin el diez, para Tecnología y para entender el sistema.';
 $string['app_gd_button'] = 'Guía docente';
-$string['app_gd_calc_how'] = 'Antes de pulsar «=», que estimen el resultado.
-Para comprobar una cuenta hecha en el cuaderno.
+$string['app_gd_calc_how'] = 'Con «Estimar antes», el resultado sale como «?» hasta que pulses otra vez «=» o «Ver el resultado»: primero estiman y luego comprueban.
+Con «Paso a paso», una operación combinada se resuelve línea a línea: lo que toca hacer va subrayado y lo que se acaba de calcular, en verde. Pregúntales qué va después antes de enseñarlo.
+Para comprobar una cuenta hecha en el cuaderno, línea a línea con los pasos.
 Patrones: multiplicar varias veces por 10, dividir entre 3, ver los decimales que se repiten.
-En Secundaria, la científica para potencias, raíces y trigonometría.';
+En Secundaria, la científica para potencias, raíces, trigonometría y notación científica; «2nd» da las funciones inversas.';
 $string['app_gd_calc_scene'] = 'En sexto, el maestro pregunta cuánto es 1 entre 3. Alguien dice 0,3. Lo teclean y salen treses hasta el final de la pantalla: la clase ve que el decimal no se acaba, y de ahí sale la idea de decimal periódico.';
 $string['app_gd_calc_sources'] = 'Ellington, A. J. (2003). A meta-analysis of the effects of calculators on students\' achievement and attitude levels in precollege mathematics classes. Journal for Research in Mathematics Education, 34(5), 433–463.';
-$string['app_gd_calc_stages'] = 'primary|Comprobar cuentas y explorar patrones con la básica.
-secondary|La científica: potencias, raíces, notación científica.
-advanced|Funciones y trigonometría.';
-$string['app_gd_calc_what'] = 'Una calculadora grande en la pizarra: básica en Primaria y científica desde Secundaria.';
+$string['app_gd_calc_stages'] = 'primary|Operaciones combinadas paso a paso, con y sin paréntesis; estimar antes de calcular; comprobar cuentas.
+secondary|La científica: potencias, raíces, notación científica; la jerarquía con potencias y números negativos.
+advanced|Funciones, trigonometría en grados o radianes, y logaritmos.';
+$string['app_gd_calc_what'] = 'Una calculadora grande en la pizarra: básica en Primaria y científica desde Secundaria. «Paso a paso» enseña cómo se resuelve una operación combinada, y «Estimar antes» oculta el resultado hasta que la clase diga cuánto dará.';
 $string['app_gd_calc_why'] = 'Un metaanálisis de 54 estudios (Ellington, 2003) encontró que, cuando la calculadora se usaba también en los exámenes, mejoraban las destrezas de operar y de resolver problemas, y también la actitud hacia las matemáticas.
 Proyectada, todos ven las mismas teclas y el mismo resultado, y se puede pensar en voz alta qué teclear antes de hacerlo.';
 $string['app_gd_calc_works'] = 'Comprobar los resultados del cálculo escrito o mental.
+La jerarquía de las operaciones: paréntesis, potencias, × y ÷, + y −, paso a paso.
+Estimar antes de calcular.
 Explorar patrones: qué pasa al multiplicar por 10, por 0,1…
 Centrarse en el problema cuando las cuentas son largas.
-La científica: potencias, raíces, funciones.';
+La científica: potencias, raíces, funciones y notación científica.';
 $string['app_gd_clasificar_how'] = '«Clasificar»: una tarjeta y después su caja; al comprobar, las mal puestas vuelven.
 «El intruso»: cuatro tarjetas, tres de un grupo y una de otro; que digan por qué sobra antes de tocarla.
 «Venn»: dos grupos que comparten elementos, como los múltiplos de 4 y los de 6.
@@ -1477,20 +1485,24 @@ Seis colores y la velocidad rápida son más reto para los mayores.
 Dos o tres rondas bastan como pausa activa entre dos tareas.
 «Al revés»: la secuencia se repite del final al principio, así que hay que darle la vuelta antes de pulsar.
 «Los pulsadores llevan»: flechas (las cuatro iguales, para leer la dirección y no el color), números con una regla (sale un 3 y, con «Lo que falta para 10», se pulsa el 7) o notas sin colores (solo suenan; los pulsadores dicen Do, Re, Mi…).
-Nueve pulsadores, para los que ya dominan seis.';
+Nueve pulsadores, para los que ya dominan seis.
+«Sílabas de una palabra»: los pulsadores llevan las sílabas de la palabra y otras; con «Se encienden sus sílabas» la palabra se va formando arriba mientras se encienden, y con «Se escribe: la separan» aparece entera y la clase pulsa sus sílabas en orden. Al acertar, sale la palabra grande. Empiezan con dos sílabas y crecen hasta cinco. Al revés, la palabra se dice del final al principio («pato», «topa»). En Infantil, las sílabas salen en mayúsculas.';
 $string['app_gd_simon_scene'] = 'La clase de tercero vuelve del recreo con muchas ganas de hablar. El maestro abre Simón con la lista: en cada ronda sale uno y los demás dicen los colores en voz baja. Hugo falla en la séptima; la secuencia vuelve a sonar para Martina, que la completa entre aplausos. Tres rondas después, empiezan la lectura.';
-$string['app_gd_simon_sources'] = 'Melby-Lervåg, M. y Hulme, C. (2013). Is working memory training effective? A meta-analytic review. Developmental Psychology, 49(2), 270–291.|https://doi.org/10.1037/a0028228';
-$string['app_gd_simon_stages'] = 'early|Cuatro colores y velocidad normal, nombrando los colores en voz alta.
-primary|Seis colores, por turnos con la lista de la clase; números con una regla para el cálculo mental.
+$string['app_gd_simon_sources'] = 'Melby-Lervåg, M. y Hulme, C. (2013). Is working memory training effective? A meta-analytic review. Developmental Psychology, 49(2), 270–291.|https://doi.org/10.1037/a0028228
+Martínez, N. y Goikoetxea, E. (2020). Los predictores de la lectura y escritura de palabras varían en función de la estructura silábica en español. Psicología Educativa, 26(1), 37–48.|https://doi.org/10.5093/psed2019a20';
+$string['app_gd_simon_stages'] = 'early|Cuatro colores y velocidad normal, nombrando los colores en voz alta; las sílabas de palabras de dos y tres sílabas, dando una palmada por sílaba.
+primary|Seis colores, por turnos con la lista de la clase; números con una regla para el cálculo mental; en 1.º y 2.º, sílabas: «Se escribe: la separan».
 secondary|Velocidad rápida, al revés o con flechas, como reto de la clase para batir su récord; notas sin colores en Música.
 advanced|Para dinámicas de grupo o para mostrar en Psicología qué es la memoria de trabajo.';
-$string['app_gd_simon_what'] = 'Repetir una secuencia de colores y sonidos que crece en cada ronda: un juego de atención y memoria para toda la clase.';
+$string['app_gd_simon_what'] = 'Repetir una secuencia que crece en cada ronda (colores y sonidos, flechas, números con una regla, notas o las sílabas de una palabra): un juego de atención y memoria para toda la clase.';
 $string['app_gd_simon_why'] = 'Simón pide retener una secuencia y repetirla en orden, como las tareas con las que se mide la memoria de trabajo. Conviene saber que entrenar esa memoria mejora las tareas parecidas, pero no se ha visto que mejore otras capacidades como la lectura o el cálculo (Melby-Lervåg y Hulme, 2013).
-Por eso se juega por lo que es: un rato corto de atención compartida, turnos y escucha.';
+Por eso se juega por lo que es: un rato corto de atención compartida, turnos y escucha.
+Con sílabas, el juego trabaja la conciencia silábica. Martínez y Goikoetxea (2020) siguieron a 47 niños de habla española desde Infantil hasta 2.º de Primaria: recogen que en español los niños identifican las sílabas con más facilidad que los fonemas, y encontraron que el conocimiento de las letras predecía la lectura y la escritura de palabras de sílabas simples, mientras que en las de sílabas complejas (como «bla» o «tren») pesaba la conciencia fonológica.';
 $string['app_gd_simon_works'] = 'Atención mantenida: mirar y escuchar hasta el final.
 Recordar una secuencia en orden, con lo que se ve y lo que se oye.
 Esperar el turno y escuchar a los demás.
-Jugar en equipo: la clase ayuda a quien sale.';
+Jugar en equipo: la clase ayuda a quien sale.
+Con sílabas: separar una palabra en sus sílabas y juntarlas para leerla.';
 $string['app_gd_sources'] = 'Fuentes';
 $string['app_gd_stages'] = 'Por etapas';
 $string['app_gd_tangram_how'] = 'Empieza con las siluetas sencillas (Casa, Barco) y deja los polígonos para después.
@@ -2438,6 +2450,7 @@ $string['app_si_kind_arrows'] = 'Flechas';
 $string['app_si_kind_colors'] = 'Colores';
 $string['app_si_kind_notes'] = 'Notas, sin colores';
 $string['app_si_kind_numbers'] = 'Números, con una regla';
+$string['app_si_kind_syllables'] = 'Sílabas de una palabra';
 $string['app_si_left'] = 'Izquierda';
 $string['app_si_listen'] = '¡Escuchen!';
 $string['app_si_name'] = 'Simón';
@@ -2465,10 +2478,16 @@ $string['app_si_rule_plus1'] = 'Sumar 1';
 $string['app_si_rule_ten'] = 'Lo que falta para 10';
 $string['app_si_same_again'] = 'Otra vez la misma';
 $string['app_si_speed'] = 'Velocidad';
+$string['app_si_syl_mode'] = 'La palabra';
+$string['app_si_syl_read'] = 'Se escribe: la separan';
+$string['app_si_syl_split'] = '¡Pulsen sus sílabas en orden!';
+$string['app_si_syl_split_reverse'] = '¡Pulsen sus sílabas al revés!';
+$string['app_si_syl_watch'] = 'Se encienden sus sílabas';
 $string['app_si_teal'] = 'Turquesa';
 $string['app_si_turns'] = 'Turnos';
 $string['app_si_up'] = 'Arriba';
 $string['app_si_watch'] = '¡Miren!';
+$string['app_si_word_n'] = 'Palabra {$a}';
 $string['app_si_yellow'] = 'Amarillo';
 $string['app_si_your_turn'] = '¡Ahora tú!';
 $string['app_si_your_turn_reverse'] = '¡Ahora tú, al revés!';

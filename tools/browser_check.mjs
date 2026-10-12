@@ -1259,6 +1259,110 @@ const CHECKS = {
         if (!q('.jn-centro .jn-billete')) { return 'no ticket once closed'; }
         return '';
     },
+    // Simon with syllables: the pads have the word's syllables and others, the word is the sequence, it shows whole
+    // when it is done, the words get longer, and «it is written» shows it at once for them to split it (backwards too).
+    'simon-syllables': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const q = (x) => document.querySelector(x);
+        const S = () => window.ClasstoolsSimon.state();
+        const waitInput = async () => { for (let i = 0; i < 150; i++) { if (S().state === 'input') { return true; } await sleep(100); } return false; };
+        const pick = (sel, v) => { q(sel).value = v; q(sel).dispatchEvent(new Event('change', { bubbles: true })); };
+        q('#t-juegos').click();
+        await sleep(200);
+        q('#ga-mode [data-game="simon"]').click();
+        await sleep(200);
+        pick('#si-turns', '');
+        if (![...q('#si-kind').options].some((o) => o.value === 'syllables')) { return 'no syllables with the Spanish content'; }
+        pick('#si-kind', 'syllables');
+        pick('#si-syl', 'watch');
+        q('#si-order [data-v="same"]').click();
+        q('#si-onfail [data-v="repeat"]').click();
+        if (q('#si-syl-box').hidden || q('#si-pads-box').hidden) { return 'the options of syllables do not show'; }
+        q('#si-start').click();
+        const done = [];
+        for (let w = 0; w < 3; w++) {
+            if (!await waitInput()) { return `no turn for word ${w + 1}`; }
+            const st = S();
+            const pads = [...document.querySelectorAll('#si-board .ct-pad')].map((p) => p.textContent);
+            if (!st.word.every((x) => pads.includes(x))) { return `the pads ${pads} lack syllables of ${st.word.join('-')}`; }
+            if (new Set(pads).size !== pads.length || ![4, 6, 9].includes(pads.length)) { return `pads: ${pads}`; }
+            if (w === 0) { await window.shot('simon-syllables'); }
+            st.seq.slice().forEach((i) => window.ClasstoolsSimon.press(i));
+            await sleep(150);
+            if (q('#si-show').textContent !== st.word.join('')) { return `the word shown is «${q('#si-show').textContent}»`; }
+            done.push(st.word.length);
+            await sleep(900);
+        }
+        if (done.join() !== '2,2,3') { return `word lengths ${done}`; }
+        // Written, backwards.
+        q('#si-order [data-v="reverse"]').click();
+        pick('#si-syl', 'read');
+        q('#si-start').click();
+        if (!await waitInput()) { return 'no turn when it is written'; }
+        const st = S();
+        if (q('#si-show').textContent !== st.word.join('')) { return `written: «${q('#si-show').textContent}»`; }
+        await window.shot('simon-syllables-read');
+        st.seq.slice().reverse().forEach((i) => window.ClasstoolsSimon.press(i));
+        await sleep(150);
+        if (S().words !== 1) { return 'backwards did not count'; }
+        q('#si-order [data-v="same"]').click();
+        pick('#si-syl', 'watch');
+        pick('#si-kind', 'colors');
+        return '';
+    },
+    // The calculator: the order of operations, the decimal sign, the strip of results, and both keyboards.
+    'calculator': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const q = (s) => document.querySelector(s);
+        q('#t-material').click();
+        await sleep(200);
+        q('#mt-mode [data-mode="calc"]').click();
+        await sleep(200);
+        const C = window.ClasstoolsCalculator;
+        const cases = [['2+3×4', 14], ['(2+3)×4', 20], ['2^3^2', 512], ['−2^2', -4], ['10÷4', 2.5], ['50%', 0.5], ['5!', 120], ['2π', 2 * Math.PI]];
+        for (const [e, want] of cases) {
+            const got = C.evaluate(e);
+            if (Math.abs(got - want) > 1e-9) { return `${e} gave ${got}`; }
+        }
+        // Step by step: one level of the order of operations at a time, the ones of the same level together.
+        const plain = (e) => C.steps(e).map((l) => { const d = document.createElement('div'); d.innerHTML = l.replace(/<sup>/g, '^'); return d.textContent; }).join(' | ');
+        const STEPS = [['2+3×4', '2 + 3 × 4 | 2 + 12 | 14'], ['2×3+4×5', '2 × 3 + 4 × 5 | 6 + 20 | 26'],
+            ['(2+3)×(4−1)', '(2 + 3) × (4 − 1) | 5 × 3 | 15'], ['−2^2+1', '−2^2 + 1 | −4 + 1 | −3'], ['10−4−3', '10 − 4 − 3 | 6 − 3 | 3'],
+            ['2×(−3)', '2 × (−3) | −6'], ['√(9)+2^3', '√(9) + 2^3 | 3 + 8 | 11'], ['√(1+3)×2', '√(1 + 3) × 2 | √(4) × 2 | 2 × 2 | 4']];
+        for (const [e, want] of STEPS) { if (plain(e) !== want) { return `steps of ${e}: ${plain(e)}`; } }
+        q('#ca-kind [data-v="basic"]').click();
+        if (!q('#ca-steps-on').checked) { q('#ca-steps-on').click(); }
+        for (const k of ['1', '2', '+', '3', '×', '4', '−', '(', '5', '−', '1', ')', 'equals']) { C.press(k); }
+        if (C.state().tape[0].v !== 20) { return `the strip has ${C.state().tape[0].v}`; }
+        if (q('#ca-sheet').hidden || q('#ca-lines').children.length !== 5) { return `steps on screen: ${q('#ca-lines').children.length}`; }
+        await sleep(300);
+        await window.shot('calc-steps');
+        // A key brings the keys back.
+        C.press('clear');
+        if (!q('#ca-sheet').hidden || q('#ca-keys').hidden) { return 'the keys did not come back'; }
+        // Estimating: the result stays hidden until «=» again, and only then goes to the strip.
+        q('#ca-guess-on').click();
+        const before = C.state().tape.length;
+        for (const k of ['2', '5', '×', '4', 'equals']) { C.press(k); }
+        if (!C.state().hidden || q('#ca-result').textContent !== '?' || C.state().tape.length !== before) { return 'the result was not hidden'; }
+        await sleep(300);
+        await window.shot('calc-guess');
+        C.press('equals');
+        if (C.state().hidden || C.state().tape[0].v !== 100) { return 'the result did not show'; }
+        q('#ca-guess-on').click();
+        await sleep(300);
+        await window.shot('calc-basic');
+        // The scientific one, with «2nd» for the inverse.
+        q('#ca-kind [data-v="sci"]').click();
+        for (const k of ['clear', 'second', 'sin(', '1', ')', 'equals']) { C.press(k); }
+        if (C.state().tape[0].v !== 90) { return `sin⁻¹(1) gave ${C.state().tape[0].v}`; }
+        for (const k of ['clear', '√(', '2', ')', '×', 'sin(', '4', '5', ')', '+', '2', '×10^', '3', 'equals']) { C.press(k); }
+        if (Math.abs(C.state().tape[0].v - 2001) > 1e-9) { return `√2 × sin 45 + 2×10³ gave ${C.state().tape[0].v}`; }
+        C.press('second');
+        await sleep(300);
+        await window.shot('calc-sci');
+        return '';
+    },
 };
 
 // Checks that run on another page than the board.

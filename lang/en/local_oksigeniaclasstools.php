@@ -184,8 +184,13 @@ $string['app_bq_work_n'] = 'Work {$a->n} of {$a->of}';
 $string['app_ca_ans'] = 'Ans';
 $string['app_ca_basic'] = 'Basic';
 $string['app_ca_error'] = 'It cannot be worked out';
+$string['app_ca_guess'] = 'Estimate first';
+$string['app_ca_guess_now'] = 'How much will it be? Estimate it, and then look.';
+$string['app_ca_keys'] = 'Keys';
 $string['app_ca_kind'] = 'Kind of calculator';
+$string['app_ca_reveal'] = 'Show the result';
 $string['app_ca_sci'] = 'Scientific';
+$string['app_ca_steps'] = 'Step by step';
 $string['app_ca_tape'] = 'Results';
 $string['app_ca_tape_clear'] = 'Clear the results';
 $string['app_ca_tape_empty'] = 'Each result stays here; a tap uses it again.';
@@ -1052,22 +1057,25 @@ Adding and subtracting with carrying and borrowing, knowing why at each step.
 Reading and writing numbers as the sum of their parts («100 + 30 + 12 = 142»).
 Other bases (2, 5, 16…): place value without the ten, for technology and for understanding the system.';
 $string['app_gd_button'] = 'Teacher\'s guide';
-$string['app_gd_calc_how'] = 'Before pressing «=», they estimate the result.
-To check a sum done in the exercise book.
-Patterns: multiplying by 10 several times, dividing by 3, seeing the decimals that repeat.
-In Secondary, the scientific one for powers, roots and trigonometry.';
+$string['app_gd_calc_how'] = 'With «Estimate first», the result shows «?» until you press «=» again or «Show the result»: first they estimate, then they check.
+With «Step by step», a combined operation is worked out line by line: what is about to be done is underlined, and what has just been worked out is in green. Ask them which comes next before showing it.
+To check a sum done in the notebook, line by line against the steps.
+Patterns: multiply by 10 several times, divide by 3, see the decimals that repeat.
+In Secondary, the scientific one for powers, roots, trigonometry and powers of ten; «2nd» gives the inverse functions.';
 $string['app_gd_calc_scene'] = 'In Year 7, the teacher asks how much 1 divided by 3 is. Someone says 0.3. They key it in and threes fill the screen to the end: the class sees that the decimal does not finish, and from there comes the idea of a recurring decimal.';
 $string['app_gd_calc_sources'] = 'Ellington, A. J. (2003). A meta-analysis of the effects of calculators on students\' achievement and attitude levels in precollege mathematics classes. Journal for Research in Mathematics Education, 34(5), 433–463.';
-$string['app_gd_calc_stages'] = 'primary|Checking sums and exploring patterns with the basic one.
-secondary|The scientific one: powers, roots, scientific notation.
-advanced|Functions and trigonometry.';
-$string['app_gd_calc_what'] = 'A big calculator on the board: basic in Primary and scientific from Secondary.';
+$string['app_gd_calc_stages'] = 'primary|Combined operations step by step, with and without brackets; estimating before calculating; checking sums.
+secondary|The scientific one: powers, roots, powers of ten; the order of operations with powers and negative numbers.
+advanced|Functions, trigonometry in degrees or radians, and logarithms.';
+$string['app_gd_calc_what'] = 'A big calculator on the board: basic in Primary and scientific from Secondary. «Step by step» shows how a combined operation is worked out, and «Estimate first» hides the result until the class has said how much it will be.';
 $string['app_gd_calc_why'] = 'A meta-analysis of 54 studies (Ellington, 2003) found that, when the calculator was also used in the tests, the skills of operating and of solving problems got better, and so did the attitude towards mathematics.
 Projected, everyone sees the same keys and the same result, and they can think aloud about what to key in before doing it.';
-$string['app_gd_calc_works'] = 'Checking the results of written or mental arithmetic.
+$string['app_gd_calc_works'] = 'Checking the results of written or mental calculation.
+The order of operations: brackets, powers, × and ÷, + and −, one step at a time.
+Estimating before calculating.
 Exploring patterns: what happens when multiplying by 10, by 0.1…
 Focusing on the problem when the sums are long.
-The scientific one: powers, roots, functions.';
+The scientific one: powers, roots, functions, powers of ten.';
 $string['app_gd_clasificar_how'] = '«Sort»: a card and then its box; on checking, the wrong ones go back.
 «Odd one out»: four cards, three of a group and one of another; they say why it does not fit before tapping it.
 «Venn»: two groups that share items, such as the multiples of 4 and those of 6.
@@ -1475,20 +1483,24 @@ Six colours and the fast speed are more of a challenge for the older ones.
 Two or three rounds are enough as an active break between two tasks.
 «Backwards»: the sequence is repeated from the end to the start, so it has to be turned round before pressing.
 «The pads show»: arrows (all four alike, so the direction is read and not the colour), numbers with a rule (a 3 comes up and, with «What it needs to make 10», the 7 is pressed) or notes without colours (only heard; the pads say C, D, E…).
-Nine pads, for those who can already do six.';
+Nine pads, for those who can already do six.
+«Syllables of a word»: the pads show the syllables of the word and others; with «Its syllables light up» the word builds up above as they light, and with «It is written: they split it» it shows whole and the class presses its syllables in order. When they get it, the word shows big. They start with two syllables and grow to five. Backwards, the word is said from the end to the start. In the Infantil mode, the syllables are in capitals.';
 $string['app_gd_simon_scene'] = 'Year 4 come back from break with a lot to say. The teacher opens Simon with the class list: every round one student comes out and the others say the colours quietly. Hugo fails at the seventh; the sequence plays again for Martina, who completes it to applause. Three rounds later, the reading starts.';
-$string['app_gd_simon_sources'] = 'Melby-Lervåg, M. and Hulme, C. (2013). Is working memory training effective? A meta-analytic review. Developmental Psychology, 49(2), 270–291.|https://doi.org/10.1037/a0028228';
-$string['app_gd_simon_stages'] = 'early|Four colours at the normal speed, naming the colours aloud.
-primary|Six colours, in turns with the class list; numbers with a rule for mental arithmetic.
+$string['app_gd_simon_sources'] = 'Melby-Lervåg, M. and Hulme, C. (2013). Is working memory training effective? A meta-analytic review. Developmental Psychology, 49(2), 270–291.|https://doi.org/10.1037/a0028228
+Martínez, N. and Goikoetxea, E. (2020). Predictors of reading and spelling words change as a function of syllabic structure in Spanish. Psicología Educativa, 26(1), 37–48.|https://doi.org/10.5093/psed2019a20';
+$string['app_gd_simon_stages'] = 'early|Four colours at the normal speed, naming the colours aloud; the syllables of two and three syllable words, clapping once per syllable.
+primary|Six colours, in turns with the class list; numbers with a rule for mental arithmetic; in years one and two, syllables: «It is written: they split it».
 secondary|The fast speed, as a challenge for the class to beat its record; backwards or with arrows; notes without colours in Music.
 advanced|For group activities, or to show in Psychology what working memory is.';
-$string['app_gd_simon_what'] = 'Repeat a sequence of colours and sounds that grows every round: a game of attention and memory for the whole class.';
+$string['app_gd_simon_what'] = 'Repeating a sequence that grows each round (colours and sounds, arrows, numbers with a rule, notes or the syllables of a word): a game of attention and memory for the whole class.';
 $string['app_gd_simon_why'] = 'Simon asks to keep a sequence in mind and repeat it in order, like the tasks with which working memory is measured. It is worth knowing that training that memory improves similar tasks, but it has not been seen to improve other abilities such as reading or arithmetic (Melby-Lervåg and Hulme, 2013).
-So it is played for what it is: a short time of shared attention, turns and listening.';
+So it is played for what it is: a short time of shared attention, turns and listening.
+With syllables, the game works on syllable awareness. Martínez and Goikoetxea (2020) followed 47 Spanish-speaking children from kindergarten to year two: they note that in Spanish children identify syllables more easily than phonemes, and found that letter knowledge predicted reading and spelling words with simple syllables, while for complex syllables (such as «bla» or «tren») phonological awareness weighed more.';
 $string['app_gd_simon_works'] = 'Keeping attention: watching and listening to the very end.
 Remembering a sequence in order, with what is seen and what is heard.
 Waiting for their turn and listening to the others.
-Playing as a team: the class helps whoever comes out.';
+Playing as a team: the class helps whoever comes out.
+With syllables: splitting a word into its syllables and putting them together to read it.';
 $string['app_gd_sources'] = 'Sources';
 $string['app_gd_stages'] = 'By school level';
 $string['app_gd_tangram_how'] = 'Start with the easy silhouettes (House, Boat) and leave the polygons for later.
@@ -2436,6 +2448,7 @@ $string['app_si_kind_arrows'] = 'Arrows';
 $string['app_si_kind_colors'] = 'Colours';
 $string['app_si_kind_notes'] = 'Notes, without colours';
 $string['app_si_kind_numbers'] = 'Numbers, with a rule';
+$string['app_si_kind_syllables'] = 'Syllables of a word';
 $string['app_si_left'] = 'Left';
 $string['app_si_listen'] = 'Listen!';
 $string['app_si_name'] = 'Simon';
@@ -2463,10 +2476,16 @@ $string['app_si_rule_plus1'] = 'Add 1';
 $string['app_si_rule_ten'] = 'What it needs to make 10';
 $string['app_si_same_again'] = 'The same one again';
 $string['app_si_speed'] = 'Speed';
+$string['app_si_syl_mode'] = 'The word';
+$string['app_si_syl_read'] = 'It is written: they split it';
+$string['app_si_syl_split'] = 'Press its syllables in order!';
+$string['app_si_syl_split_reverse'] = 'Press its syllables backwards!';
+$string['app_si_syl_watch'] = 'Its syllables light up';
 $string['app_si_teal'] = 'Teal';
 $string['app_si_turns'] = 'Turns';
 $string['app_si_up'] = 'Up';
 $string['app_si_watch'] = 'Watch!';
+$string['app_si_word_n'] = 'Word {$a}';
 $string['app_si_yellow'] = 'Yellow';
 $string['app_si_your_turn'] = 'Your turn!';
 $string['app_si_your_turn_reverse'] = 'Your turn, backwards!';

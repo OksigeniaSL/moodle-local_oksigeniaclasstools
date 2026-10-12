@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.39.0 (2026-10-12)
+
+- **The calculator, redesigned for class.** «Step by step» works out a combined operation line by line, one level of
+  the order of operations at a time (brackets, then powers, roots and functions, then × and ÷, then + and −; the ones
+  of the same level together), with what is about to be done underlined and what has just been worked out in green;
+  on by default in Primary. «Estimate first» hides the result («?») until «=» is pressed again, so the class estimates
+  before checking. The basic calculator has brackets, the operations in solid blue and a wide «=»; the scientific one
+  has a «2nd» key for the inverse functions (sin⁻¹, cos⁻¹, tan⁻¹, x³, ∛, eˣ, 10ˣ) and «×10ˣ» for powers of ten, and
+  shows DEG or RAD on the display. Negative numbers read as numbers (−2² = −4).
+- **Simon with the syllables of a word** (Spanish and English for now): the pads show the syllables of a word and some
+  others, and the word is the sequence: its syllables light up while it builds up on the board, or it is written whole
+  for the class to split it. The words grow from two syllables to five; backwards, the word is said from the end; in
+  the Infantil mode, in capitals. The content packs can bring their words split into syllables (`syllables`).
+- The teacher's guides of the calculator and of Simon, updated (Martínez and Goikoetxea, 2020, on syllables in
+  Spanish).
+
 ## 0.38.0 (2026-10-12)
 
 - **Exit ticket**, in «Live»: at the end of the lesson each student says from their device how they are getting on

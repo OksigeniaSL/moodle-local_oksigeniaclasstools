@@ -1954,5 +1954,25 @@
  "rm_warning": {
   "en": "Whoever has this address can drive your board while it is open, although they see nothing of the students. If you have shared it by mistake, change it.",
   "es": "Quien tenga esta dirección puede manejar tu pizarra mientras esté abierta, aunque no ve nada de los alumnos. Si la has compartido sin querer, cámbiala."
+ },
+ "ca_steps": {
+  "en": "Step by step",
+  "es": "Paso a paso"
+ },
+ "ca_guess": {
+  "en": "Estimate first",
+  "es": "Estimar antes"
+ },
+ "ca_guess_now": {
+  "en": "How much will it be? Estimate it, and then look.",
+  "es": "¿Cuánto dará? Estímenlo y luego lo vemos."
+ },
+ "ca_reveal": {
+  "en": "Show the result",
+  "es": "Ver el resultado"
+ },
+ "ca_keys": {
+  "en": "Keys",
+  "es": "Teclado"
  }
 }

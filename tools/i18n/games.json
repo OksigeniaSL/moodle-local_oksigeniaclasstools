@@ -1006,5 +1006,33 @@
  "ai_example_trios": {
   "en": "France = Paris = French\nItaly = Rome = Italian\nPortugal = Lisbon = Portuguese",
   "es": "Francia = París = francés\nItalia = Roma = italiano\nPortugal = Lisboa = portugués"
+ },
+ "si_kind_syllables": {
+  "en": "Syllables of a word",
+  "es": "Sílabas de una palabra"
+ },
+ "si_syl_mode": {
+  "en": "The word",
+  "es": "La palabra"
+ },
+ "si_syl_watch": {
+  "en": "Its syllables light up",
+  "es": "Se encienden sus sílabas"
+ },
+ "si_syl_read": {
+  "en": "It is written: they split it",
+  "es": "Se escribe: la separan"
+ },
+ "si_syl_split": {
+  "en": "Press its syllables in order!",
+  "es": "¡Pulsen sus sílabas en orden!"
+ },
+ "si_syl_split_reverse": {
+  "en": "Press its syllables backwards!",
+  "es": "¡Pulsen sus sílabas al revés!"
+ },
+ "si_word_n": {
+  "en": "Word {$a}",
+  "es": "Palabra {$a}"
  }
 }
