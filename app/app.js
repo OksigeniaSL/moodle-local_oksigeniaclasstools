@@ -2108,8 +2108,11 @@
         const marca = $('.marca'), textos = marca.lastElementChild, app = document.createElement('span');
         app.className = 'marca-app';
         app.append(...textos.childNodes);
-        const curso = document.createElement('span');
+        // El nombre del curso lleva al curso (como «Volver al curso»), salvo en la pizarra de práctica o en un duelo.
+        const alCurso = AULA.back && AULA.back !== '#' && !PRACTICA && !DUELO;
+        const curso = document.createElement(alCurso ? 'a' : 'span');
         curso.className = 'marca-curso'; curso.textContent = AULA.course; curso.title = AULA.course;
+        if (alCurso) { curso.href = AULA.back; curso.title = `${t('bar_back')}: ${AULA.course}`; }
         textos.append(app, curso);
         marca.classList.add('con-curso');
         ajustaBarra();

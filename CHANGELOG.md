@@ -4,6 +4,9 @@
 
 - The button of the teacher's guide shows a question mark instead of an «i»: where the top bar shows only its icons,
   it says «help» by itself.
+- The close button of a guided help stands out more and, at the end of the help, turns into a green «Close» that beats
+  gently (still with «reduce motion») and takes the focus.
+- The name of the course in the top bar leads to the course, like «Back to the course».
 
 ## 0.55.0 (2026-10-12)
 

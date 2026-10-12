@@ -1766,6 +1766,7 @@ $string['app_hp_ahorcado_title'] = 'Ahorcado: la palabra que abre el tema';
 $string['app_hp_ahorcado_word'] = 'ECOSISTEMA';
 $string['app_hp_captions'] = 'Subtítulos';
 $string['app_hp_close'] = 'Cerrar la ayuda';
+$string['app_hp_close_short'] = 'Cerrar';
 $string['app_hp_concurso_1'] = 'Los de sexto han escrito un concurso sobre volcanes para los de cuarto. Hoy lo juega cuarto, por equipos.';
 $string['app_hp_concurso_2'] = 'En «Concurso», pulsa «Nuevo juego» y «Pegar varias preguntas o pedírselas a una IA»: una por línea, con un asterisco delante de la buena. El «Prompt para tu IA» ya lleva ese formato.';
 $string['app_hp_concurso_3'] = 'En «Equipos», «Eligen ellos», y abre la sesión: cada uno escoge su equipo al entrar.';

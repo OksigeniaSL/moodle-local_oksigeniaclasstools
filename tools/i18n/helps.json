@@ -200,5 +200,6 @@
   "hp_mando_h2": { "en": "And now «Whose turn?»", "es": "Y ahora «¿A quién le toca?»" },
   "hp_practice_phone": { "en": "The teacher's phone", "es": "El móvil del docente" },
   "hp_practice_other1": { "en": "Class 3A · Maths", "es": "3.º A · Matemáticas" },
-  "hp_practice_other2": { "en": "Class 2C · Language", "es": "2.º C · Lengua" }
+  "hp_practice_other2": { "en": "Class 2C · Language", "es": "2.º C · Lengua" },
+  "hp_close_short": { "en": "Close", "es": "Cerrar" }
 }

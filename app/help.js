@@ -403,13 +403,15 @@
         playing = false; done = true; cur.classList.add('off');
         paint();
         $('#hp-again').hidden = false;
+        $('#hp-close').classList.add('fin');
+        if (!opts.fast) { $('#hp-close').focus({ preventScroll: true }); }
     }
     // Jumping to a step: a fresh board, the steps before it done at once, then this one with its voice.
     async function jump(k) {
         const my = ++token;
         vo.pause();
         $('.hp-premio').classList.remove('on'); ring.classList.remove('on'); hint.classList.remove('on');
-        $('#hp-again').hidden = true; $('#hp-skip').hidden = true;
+        $('#hp-again').hidden = true; $('#hp-skip').hidden = true; $('#hp-close').classList.remove('fin');
         if (k <= steps()) { practised = false; }
         fast = true;
         await loadBoard();
@@ -450,7 +452,7 @@
                         <button type="button" id="hp-play"></button>
                         <button type="button" id="hp-next" aria-label="${escape(t('hp_next'))}" title="${escape(t('hp_next'))}"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M15 5h2v14h-2zM4 5v14l10-7z"/></svg></button>
                         <button type="button" id="hp-cc" aria-pressed="true" aria-label="${escape(t('hp_captions'))}" title="${escape(t('hp_captions'))}">CC</button>
-                        <button type="button" id="hp-close" aria-label="${escape(t('hp_close'))}" title="${escape(t('hp_close'))}"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.4 5 12 10.6 17.6 5 19 6.4 13.4 12 19 17.6 17.6 19 12 13.4 6.4 19 5 17.6 10.6 12 5 6.4z"/></svg></button>
+                        <button type="button" id="hp-close" aria-label="${escape(t('hp_close'))}" title="${escape(t('hp_close'))}"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.4 5 12 10.6 17.6 5 19 6.4 13.4 12 19 17.6 17.6 19 12 13.4 6.4 19 5 17.6 10.6 12 5 6.4z"/></svg><span class="hp-cerrar-texto">${escape(t('hp_close_short'))}</span></button>
                     </div>
                     <div class="hp-puntos">${Array.from({ length: n }, (_, k) => `<i${k === steps() ? ' class="tu"' : ''}></i>`).join('')}</div>
                     <p class="hp-ficticio">${escape(t('hp_fictional'))}</p>

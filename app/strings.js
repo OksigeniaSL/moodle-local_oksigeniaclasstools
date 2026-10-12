@@ -945,6 +945,7 @@ window.CLASSTOOLS_STR = {
 "hp_ahorcado_word": "ECOSYSTEM",
 "hp_captions": "Captions",
 "hp_close": "Close the help",
+"hp_close_short": "Close",
 "hp_concurso_1": "Year six have written a quiz about volcanoes for year four. Today year four play it, in teams.",
 "hp_concurso_2": "In «Quiz», press «New set» and «Paste several questions, or ask an AI for them»: one per line, with an asterisk before the right answer. The «Prompt for your AI» already uses that format.",
 "hp_concurso_3": "Under «Teams», «They choose», then open the session: everyone picks a team as they join.",

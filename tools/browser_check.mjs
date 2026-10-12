@@ -1832,6 +1832,7 @@ const CHECKS = {
             if (missed.length) { return `${id}: not found ${missed.join(', ')}`; }
             if (!st.done || !st.practised) { return `${id}: ${JSON.stringify(st)}`; }
             if (!q('.hp-premio.on svg')) { return `${id}: no sticker`; }
+            if (!q('#hp-close.fin')) { return `${id}: the close button does not stand out at the end`; }
             if (!window.FAKE.calls.some((c) => c.action === 'learn' && c.cromo === H.INDEX[id].sticker)) { return `${id}: the sticker was not learned`; }
             if (id === 'votar') { await window.shot('help-sticker'); }
             H.close();
@@ -1871,6 +1872,9 @@ const CHECKS = {
         const shown = [...new Set(tabs())].sort().join();
         if (shown !== 'azar,cronometro,juegos,material,pizarra,qr,reloj,temporizador') { return `tabs: ${shown}`; }
         for (const id of ['b-guia', 'b-sala']) { const b = q('#' + id); if (b && !b.hidden && b.offsetParent !== null) { return `${id} shows`; } }
+        // The name of the course leads to the course.
+        const course = q('a.marca-curso');
+        if (!course || course.getAttribute('href') !== 'course.html' || course.textContent !== 'Science') { return 'the name of the course does not lead to it'; }
         const leak = () => {
             if (document.querySelector('option[value^="list:"]')) { return 'a class list to choose'; }
             const turn = q('#mt-turn');
@@ -2130,7 +2134,7 @@ const server = createServer((req, res) => {
         // The board as Moodle gives it to a student when the site opens it to them (local_oksigeniaclasstools_student_data):
         // no lists, no addresses of the course, only the tools without data of the class.
         const config = '<script src="/fake.js"></script>\n<script>window.CLASSTOOLS_SITE = { teacher: false };'
-            + 'window.CLASSTOOLS = { course: "Science", back: "#", lists: [], courseid: 1, mode: "student",'
+            + 'window.CLASSTOOLS = { course: "Science", back: "course.html", lists: [], courseid: 1, mode: "student",'
             + ' tools: ["temporizador", "cronometro", "azar", "juegos", "material", "pizarra", "reloj", "qr"] };</script>\n';
         const html = readFileSync(join(APP, 'index.html'), 'utf8').replace('<script src="icons.js">', config + '<script src="icons.js">');
         res.writeHead(200, { 'Content-Type': 'text/html' }); res.end(html); return;

@@ -1764,6 +1764,7 @@ $string['app_hp_ahorcado_title'] = 'Hangman: the word that opens the topic';
 $string['app_hp_ahorcado_word'] = 'ECOSYSTEM';
 $string['app_hp_captions'] = 'Captions';
 $string['app_hp_close'] = 'Close the help';
+$string['app_hp_close_short'] = 'Close';
 $string['app_hp_concurso_1'] = 'Year six have written a quiz about volcanoes for year four. Today year four play it, in teams.';
 $string['app_hp_concurso_2'] = 'In «Quiz», press «New set» and «Paste several questions, or ask an AI for them»: one per line, with an asterisk before the right answer. The «Prompt for your AI» already uses that format.';
 $string['app_hp_concurso_3'] = 'Under «Teams», «They choose», then open the session: everyone picks a team as they join.';

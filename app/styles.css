@@ -42,6 +42,8 @@ h2, h3 { margin: 0; }
 .marca-app { color: var(--tinta-2); font-size: .78rem; font-weight: 700; }
 .marca-app strong { color: inherit; font-weight: 800; }
 .marca-curso { max-width: 17rem; overflow: hidden; color: var(--azul-osc); font-size: 1.15rem; font-weight: 900; text-overflow: ellipsis; }
+a.marca-curso { text-decoration: none; }
+a.marca-curso:hover, a.marca-curso:focus-visible { text-decoration: underline; text-underline-offset: 3px; }
 .sello { display: grid; place-items: center; width: 2.4rem; height: 2.4rem; border-radius: 12px; background: var(--azul); color: #fff; font-size: 1.15rem; }
 .pestanas { position: relative; display: flex; gap: .15rem; flex: 0 1 auto; min-width: 0; margin: 0 auto; padding: .25rem; border-radius: 50rem; background: var(--fondo); }
 .pestana { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: .45rem; flex: none; min-height: 48px; padding: .4rem .6rem; border: 0; border-radius: 50rem; background: none; color: var(--tinta-3); font-weight: 800; white-space: nowrap; cursor: pointer; transition: background-color .15s, color .15s; }
@@ -2476,3 +2478,11 @@ dialog.ct-sala { width: min(60rem, 94vw); max-width: none; overflow-y: auto; }
 .hp-pantalla { width: 216px; height: 432px; overflow: hidden; border-radius: 24px; background: #fff; }
 .hp-movil-marco { display: block; width: 360px; height: 720px; border: 0; transform: scale(.6); transform-origin: 0 0; }
 @media (prefers-reduced-motion: reduce) { .hp-movil, .hp-movil.on { transition: none; } }
+/* The close button of a help: clearer always, and at the end a green «Close» that beats gently. */
+.hp-botones #hp-close { border: 2px solid var(--azul-osc); background: #fff; color: var(--azul-osc); }
+.hp-botones #hp-close:hover { background: var(--azul-suave); }
+.hp-cerrar-texto { display: none; }
+.hp-botones #hp-close.fin { display: inline-flex; gap: .45rem; width: auto; padding: 0 1.2rem 0 .95rem; border-color: var(--verde); border-radius: 50rem; background: var(--verde); color: #fff; animation: hp-cerrar 1.6s ease-in-out infinite; }
+.hp-botones #hp-close.fin .hp-cerrar-texto { display: inline; font-size: 1.05rem; }
+@keyframes hp-cerrar { 50% { box-shadow: 0 0 0 8px rgba(6, 126, 54, .25); transform: scale(1.06); } }
+@media (prefers-reduced-motion: reduce) { .hp-botones #hp-close.fin { animation: none; } }
