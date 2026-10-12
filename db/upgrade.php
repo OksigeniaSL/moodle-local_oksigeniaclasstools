@@ -165,5 +165,11 @@ function xmldb_local_oksigeniaclasstools_upgrade($oldversion) {
         $dbman->change_field_precision($table, $field);
         upgrade_plugin_savepoint(true, 2026111700, 'local', 'oksigeniaclasstools');
     }
+    if ($oldversion < 2026112500) {
+        // The timeline: shown on sites that already chose their materials.
+        require_once(__DIR__ . '/../lib.php');
+        local_oksigeniaclasstools_show_new('materials', ['tiempo']);
+        upgrade_plugin_savepoint(true, 2026112500, 'local', 'oksigeniaclasstools');
+    }
     return true;
 }

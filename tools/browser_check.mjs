@@ -1661,6 +1661,51 @@ const CHECKS = {
         q('#dl-close').click();
         return q('.ct-duelo') ? 'the duel did not close' : '';
     },
+    // The timeline: the dates as written, the examples of each level, the marks that follow the zoom (days, years,
+    // millions of years), hiding the dates and showing one with a tap, and a timeline of one's own.
+    'timeline': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const q = (x) => document.querySelector(x);
+        q('#t-material').click();
+        await sleep(200);
+        q('#mt-mode [data-mode="tiempo"]').click();
+        await sleep(300);
+        const T = window.ClasstoolsTimeline;
+        const d = (s) => { const r = T.dateOf(s); return r ? `${Math.floor(r.t)}·${r.show}` : 'null'; };
+        const cases = [['1492', /^1492·1492$/], ['753 BC', /^-753·753 BC$/], ['-753', /^-753·753 BC$/], ['66 Ma', /^-659\d{5}·66 Ma ago$/],
+            ['4,5 Ga', /^-449\d{7}·4,500 Ma ago$/], ['300 ka', /^-29\d{4}·300,000 years ago$/], ['1969-07-20', /^1969·(20 Jul 1969|Jul 20, 1969)$/], ['nonsense', /^null$/]];
+        for (const [s, re] of cases) { if (!re.test(d(s))) { return `date «${s}»: ${d(s)}`; } }
+        const tl = T.parse('My story\n1936-1939 | A war\n1969-07-20 | The Moon\n476 – 1492 | Middle Ages\nnot a line | x');
+        if (tl.title !== 'My story' || tl.items.length !== 3 || tl.items[0].b === undefined || tl.bad.join() !== '5') { return `parse: ${JSON.stringify(tl)}`; }
+        // The example of Primary: the history of flight.
+        if (!/flight/i.test(q('#tl-which').selectedOptions[0].textContent) || T.current().items.length !== 5) { return 'not the history of flight'; }
+        T.setView(1969.5, 1969.6);
+        if (!T.ticks().some((k) => /Jul/.test(k.text))) { return `days and months: ${T.ticks().map((k) => k.text).join(' ')}`; }
+        T.setView(-5e9, 2026);
+        if (!T.ticks().some((k) => /Ma ago/.test(k.text))) { return `millions of years: ${T.ticks().map((k) => k.text).join(' ')}`; }
+        T.fit();
+        // Hiding the dates: only the names, until one is tapped.
+        q('#tl-hide').click();
+        const label = () => [...document.querySelectorAll('#tl-svg .ct-tl-hecho text')].map((x) => x.textContent).join(' | ');
+        if (/1969/.test(label())) { return 'the dates show while hidden'; }
+        T.pick(4);
+        if (!/1969/.test(label()) || !/Moon/.test(q('#tl-info').textContent)) { return 'a tap did not show its date'; }
+        q('#tl-hide').click();
+        await window.shot('timeline');
+        // The history of the Earth, and a timeline of one's own.
+        const which = q('#tl-which');
+        which.value = 'ex:earth'; which.dispatchEvent(new Event('change'));
+        await sleep(200);
+        if (T.current().items.length !== 7) { return `earth: ${T.current().items.length}`; }
+        await window.shot('timeline-earth');
+        q('#tl-new').click();
+        await sleep(200);
+        q('#tl-text').value = 'Mine\n2020 | One\n2021 | Two';
+        q('.ct-tl-dialogo form').dispatchEvent(new Event('submit', { cancelable: true }));
+        await sleep(200);
+        if (T.current().title !== 'Mine' || which.selectedOptions[0].textContent !== 'Mine') { return 'the own timeline was not kept'; }
+        return '';
+    },
     // The calculator: the order of operations, the decimal sign, the strip of results, and both keyboards.
     'calculator': async () => {
         const sleep = (ms) => new Promise((r) => setTimeout(r, ms));

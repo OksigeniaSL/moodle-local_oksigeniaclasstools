@@ -1557,6 +1557,25 @@ button.id-revisar { padding-right: .8rem; cursor: pointer; }
 .id-lienzo .centro { margin: .4rem 0 0; }
 :root[data-modo="advanced"] .id-palabra, :root[data-modo="advanced"] .id-texto { font-weight: 700; }
 @media (prefers-reduced-motion: reduce) { .id-lienzo .nueva { animation: none; } .id-palabra { transition: none; } }
+/* La línea del tiempo (timeline.js): la línea con sus marcas, los hechos encima y los periodos debajo. */
+.ct-tl-stage { display: flex; flex-direction: column; gap: .5rem; min-height: 0; }
+.ct-tl-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .6rem; align-self: stretch; width: 100%; }
+.ct-tl-info { flex: 1 1 14rem; min-height: 1.4em; margin: 0; color: var(--azul-osc); font-size: clamp(1.1rem, 2.4vw, 1.8rem); font-weight: 900; }
+.ct-tl-zoom { display: flex; align-items: center; gap: .4rem; margin-left: auto; }
+.ct-tl { flex: 1; width: 100%; min-height: 12rem; touch-action: none; cursor: grab; user-select: none; }
+.ct-tl:active { cursor: grabbing; }
+.ct-tl-eje { stroke: var(--azul-osc); stroke-width: 3; }
+.ct-tl-marca { stroke: var(--azul-osc); stroke-width: 2; }
+.ct-tl-fecha { fill: var(--tinta-3); font-size: 13px; font-weight: 800; }
+.ct-tl-hoy { stroke: var(--rojo); stroke-width: 3; }
+.ct-tl-hoy-txt { fill: var(--rojo); font-size: 12px; font-weight: 900; }
+.ct-tl-nombre { fill: var(--tinta); font-size: 15px; font-weight: 800; }
+.ct-tl-palo { stroke-width: 2; }
+.ct-tl-hecho, .ct-tl-periodo { cursor: pointer; outline: none; }
+.ct-tl-hecho.elegido rect, .ct-tl-periodo.elegido rect { stroke-width: 3; }
+.ct-tl-hecho:focus-visible rect, .ct-tl-periodo:focus-visible rect { stroke: var(--amarillo); stroke-width: 4; }
+.ct-tl-vacia { fill: var(--tinta-3); font-size: 18px; font-weight: 800; }
+.ct-tl-bad { margin: 0; color: var(--rojo); }
 /* Tarjetas impresas (cards.js): cada respuesta en su rincón, con su color. */
 .tc-grupos { display: grid; flex: 1; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; min-height: 0; }
 .tc-grupos[data-n="3"], .tc-grupos[data-n="5"] { grid-template-columns: repeat(3, minmax(0, 1fr)); }

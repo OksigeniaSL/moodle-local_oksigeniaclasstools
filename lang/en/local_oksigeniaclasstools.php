@@ -62,6 +62,9 @@ A whale is a fish | F';
 $string['app_ai_example_rosco'] = 'A | The fruit that fell on Newton\'s head, so the story goes | apple
 B | Insect that makes honey | bee
 X | Large farm animal that pulls a plough | ox';
+$string['app_ai_example_timeline'] = '476 – 1492 | Middle Ages
+1492 | Columbus reaches America
+1969-07-20 | Landing on the Moon';
 $string['app_ai_example_trios'] = 'France = Paris = French
 Italy = Rome = Italian
 Portugal = Lisbon = Portuguese';
@@ -83,11 +86,13 @@ Answer only with that, in the language of this text, without explanations or Mar
 $string['app_ai_rules_pairs'] = 'One pair per line: the two halves separated by =, each of a few words.';
 $string['app_ai_rules_quiz'] = 'One question per line: the question, then two to four answers separated by |, with * before the only right one. For true or false, the statement, | and T or F.';
 $string['app_ai_rules_rosco'] = 'One line per letter, for these letters: {$a}. On each line, the letter, the clue and the answer, separated by |. The answer starts with that letter or, if no good word does, contains it.';
+$string['app_ai_rules_timeline'] = 'One line per event: «date | name», or per period: «date – date | name». Dates: a year (1492), a year before Christ (753 BC), a full date (1969-07-20), or millions of years ago (66 Ma). Only dates you are sure of; nothing made up.';
 $string['app_ai_rules_trios'] = 'One trio per line: three things that go together, separated by =, each of a few words.';
 $string['app_ai_rules_words'] = 'One word per line, without articles, numbers or explanations.';
 $string['app_ai_what_pairs'] = '{$a} pairs';
 $string['app_ai_what_quiz'] = '{$a} quiz questions';
 $string['app_ai_what_rosco'] = 'a letter wheel (rosco), with a clue for each letter';
+$string['app_ai_what_timeline'] = '{$a} events or periods for a timeline';
 $string['app_ai_what_trios'] = '{$a} trios';
 $string['app_ai_what_words'] = '{$a} words';
 $string['app_asi_group'] = 'In groups';
@@ -1585,6 +1590,26 @@ Seeing at a glance what the class has understood and who needs help.
 Explaining why: every answer has someone to defend it.
 Moving and grouping by answer.
 Working «unplugged», with the material in their hands.';
+$string['app_gd_tiempo_how'] = 'Choose an example or make your own timeline: a line per event («1492 | Columbus reaches America») or per period («476 – 1492 | Middle Ages»).
+«See it all» fits the timeline; drag to move along it and zoom with the wheel, two fingers or the magnifier: the marks go from days to years, centuries or millions of years.
+«Hide the dates»: the class puts the events in order before seeing them; a tap on one shows its date.
+To feel duration, compare periods («how many Middle Ages fit in Ancient history?») or look for where Homo sapiens is in the history of the Earth.
+The AI of your Moodle or your own AI can suggest events on a topic: check the dates before using them.';
+$string['app_gd_tiempo_scene'] = 'In year six, the teacher opens the history of the Earth with the dates hidden and asks what came first, the dinosaurs or the first people. They know at once.
+Then she taps «See it all» and looks for Homo sapiens: the line has to be zoomed in a long way to see it apart from «Today». The class goes quiet for a moment.';
+$string['app_gd_tiempo_sources'] = 'Pagès, J. and Santisteban, A. (2010). La enseñanza y el aprendizaje del tiempo histórico en la educación primaria. Cadernos CEDES, 30(82), 281–309.|https://doi.org/10.1590/S0101-32622010000300002
+Cheek (2010). Factors underlying students\' conceptions of deep time: An exploratory study. Doctoral thesis, Durham University.|https://etheses.durham.ac.uk/277/
+International Commission on Stratigraphy. International Chronostratigraphic Chart (the ages of the eras in the example).|https://stratigraphy.org/chart';
+$string['app_gd_tiempo_stages'] = 'primary|A life or a school year, with months and years; the history of flight; before and after Christ.
+secondary|The ages of history and what was happening elsewhere at the same time; the periods of a topic.
+advanced|The history of the Earth, with its eras, and the scale of deep time.';
+$string['app_gd_tiempo_what'] = 'A timeline that zooms in and out, from days to the age of the Earth: events (a point) and periods (a bar), with examples for each stage and timelines of your own, written or asked to an AI.';
+$string['app_gd_tiempo_why'] = 'Historical time is a complex concept: Pagès and Santisteban (2010) propose teaching it in primary school with a model that goes beyond learning dates, so that history helps to understand the present from the past.
+With deep time, the order is usually clear and duration is the hard part: interviewing 35 students, Cheek (2010) found that putting the great events of the Earth\'s history in order was easy for them and measuring the time between them was not, partly because of numbers in the thousands and millions. Zooming the line in and out makes those distances visible.';
+$string['app_gd_tiempo_works'] = 'Putting events in order and seeing what happens at the same time.
+Duration: how far one event is from another, and how long some periods are next to others.
+Scales: the months of a life, the centuries of history, the millions of years of the Earth.
+Before and after Christ, and «millions of years ago».';
 $string['app_gd_why'] = 'Why';
 $string['app_gd_works'] = 'What it works on';
 $string['app_gen_again'] = 'Again';
@@ -2048,6 +2073,7 @@ $string['app_mt_score'] = 'Score';
 $string['app_mt_size'] = 'Table size';
 $string['app_mt_tangram'] = 'Tangram';
 $string['app_mt_tangram_help'] = 'Drag the pieces. To rotate one, tap it twice or press “Rotate”. The parallelogram flips with “Flip”. Pieces snap together when they get close.';
+$string['app_mt_timeline'] = 'Timeline';
 $string['app_mt_turn'] = 'Rotate';
 $string['app_mt_two'] = 'Compare: two tables';
 $string['app_mt_what'] = 'Material';
@@ -2676,6 +2702,53 @@ $string['app_tc_talk_done'] = 'Time\'s up: raise the cards again!';
 $string['app_tc_talk_now'] = 'Talk with someone of another colour:';
 $string['app_tc_title'] = 'Cards to vote';
 $string['app_tc_turn'] = 'Turn the card: your answer on top.';
+$string['app_tl_ago_ma'] = '{$a} Ma ago';
+$string['app_tl_ago_years'] = '{$a} years ago';
+$string['app_tl_bad_lines'] = 'Lines that cannot be read: {$a}';
+$string['app_tl_bc'] = '{$a} BC';
+$string['app_tl_delete'] = 'Delete the timeline';
+$string['app_tl_delete_sure'] = 'Sure? Tap again';
+$string['app_tl_edit'] = 'Edit';
+$string['app_tl_empty'] = 'This timeline has no dates yet';
+$string['app_tl_err_empty'] = 'At least one line «date | name» is needed.';
+$string['app_tl_ex_ages'] = 'The ages of history (as taught in Spain)
+3200 BC – 476 | Ancient history
+476 – 1492 | Middle Ages
+1492 – 1789 | Modern age
+1789 – today | Contemporary age
+3200 BC | Writing appears in Mesopotamia: prehistory ends
+476 | The Western Roman Empire falls
+1492 | Columbus reaches America
+1789 | The French Revolution';
+$string['app_tl_ex_earth'] = 'The history of the Earth
+4540 Ma | The Earth forms
+4540 Ma – 538.8 Ma | Precambrian
+538.8 Ma – 251.9 Ma | Palaeozoic
+251.9 Ma – 66 Ma | Mesozoic
+66 Ma – today | Cenozoic
+66 Ma | The extinction of the (non-bird) dinosaurs
+300 ka | Homo sapiens appears';
+$string['app_tl_ex_flight'] = 'History of flight
+1783-11-21 | First people to fly, in a balloon of the Montgolfier brothers
+1903-12-17 | First flight in an aeroplane (the Wright brothers)
+1927-05-21 | Lindbergh crosses the Atlantic without stopping
+1961-04-12 | Gagarin, the first person in space
+1969-07-20 | Landing on the Moon';
+$string['app_tl_examples'] = 'Examples';
+$string['app_tl_fit'] = 'See it all';
+$string['app_tl_format'] = 'One line per event: «date | name». A period: «date – date | name». Dates: 1969-07-20, 1492, 753 BC, 66 Ma (millions of years ago), 300 ka (thousands of years ago), today. The first line, without «|», is the title.';
+$string['app_tl_help'] = 'Drag to move along it; the wheel, two fingers or the magnifier zoom in and out. Tap an event or a period to see it big.';
+$string['app_tl_hide'] = 'Hide the dates';
+$string['app_tl_mine'] = 'Mine';
+$string['app_tl_new'] = 'New timeline';
+$string['app_tl_text_ph'] = 'History of flight
+1903-12-17 | First flight in an aeroplane
+1969-07-20 | Landing on the Moon';
+$string['app_tl_today'] = 'Today';
+$string['app_tl_untitled'] = 'Untitled';
+$string['app_tl_which'] = 'Timeline';
+$string['app_tl_zoom_in'] = 'Zoom in';
+$string['app_tl_zoom_out'] = 'Zoom out';
 $string['app_tm_custom'] = 'Your own time';
 $string['app_tm_fact_barco'] = 'A sailing boat sails at about 15 km/h.';
 $string['app_tm_fact_caracol'] = 'A snail travels about 50 metres in an hour.';

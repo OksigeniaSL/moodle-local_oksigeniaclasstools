@@ -18,11 +18,11 @@ namespace local_oksigeniaclasstools\local;
 
 /**
  * Content written by the AI of the site: exercises for the games of the shared format (Order, Sort, Spot the mistakes,
- * Who am I?), quiz questions, a rosco, words, pairs, or a song for the score. Only from Moodle 4.5, when the
- * administrator has a provider that generates text and has not turned this off, and the course has not turned its AI
- * tools off (Moodle 5.1). The prompt is built here from what is asked for, the topic, the level and how many, so the
- * board is not an open door to the AI. Moodle shows its AI policy before the first use and keeps a record of each
- * request.
+ * Who am I?), quiz questions, a rosco, words, pairs, a song for the score or the dates of a timeline. Only from
+ * Moodle 4.5, when the administrator has a provider that generates text and has not turned this off, and the course
+ * has not turned its AI tools off (Moodle 5.1). The prompt is built here from what is asked for, the topic, the level
+ * and how many, so the board is not an open door to the AI. Moodle shows its AI policy before the first use and keeps
+ * a record of each request.
  *
  * @package    local_oksigeniaclasstools
  * @copyright  2026 Oksigenia <dev@oksigenia.cc>
@@ -36,7 +36,7 @@ class ai {
      * The other things that can be asked for, each with its «what», rules and example among the board's strings; and a
      * song for the score, by its name (its prompt has its own format and example).
      */
-    const KINDS = ['quiz', 'rosco', 'words', 'pairs', 'trios', 'song'];
+    const KINDS = ['quiz', 'rosco', 'words', 'pairs', 'trios', 'song', 'timeline'];
 
     /** The levels (the exercises of Early years take the examples of Primary). */
     const LEVELS = ['early', 'primary', 'secondary', 'advanced'];

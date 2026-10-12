@@ -62,6 +62,9 @@ La ballena es un pez | F';
 $string['app_ai_example_rosco'] = 'A | Insecto que fabrica miel | abeja
 B | Embarcación que flota y navega | barco
 Ñ | Estación del año en la que caen las hojas | otoño';
+$string['app_ai_example_timeline'] = '476 – 1492 | Edad Media
+1492 | Colón llega a América
+1969-07-20 | Llegada a la Luna';
 $string['app_ai_example_trios'] = 'Francia = París = francés
 Italia = Roma = italiano
 Portugal = Lisboa = portugués';
@@ -83,11 +86,13 @@ Contesta solo con eso, en el idioma de este texto, sin explicaciones ni formato 
 $string['app_ai_rules_pairs'] = 'Una pareja por línea: las dos partes separadas por =, cada una de pocas palabras.';
 $string['app_ai_rules_quiz'] = 'Una pregunta por línea: la pregunta y después de dos a cuatro respuestas separadas por |, con * delante de la única correcta. Para verdadero o falso, la afirmación, | y V o F.';
 $string['app_ai_rules_rosco'] = 'Una línea por letra, para estas letras: {$a}. En cada línea, la letra, la pista y la respuesta, separadas por |. La respuesta empieza por esa letra o, si no hay una palabra adecuada, la contiene.';
+$string['app_ai_rules_timeline'] = 'Una línea por hecho: «fecha | nombre», o por periodo: «fecha – fecha | nombre». Fechas: un año (1492), un año antes de Cristo (753 a. C.), una fecha completa (1969-07-20) o millones de años (66 Ma). Solo fechas seguras, nada inventado.';
 $string['app_ai_rules_trios'] = 'Un trío por línea: tres cosas que van juntas, separadas por =, cada una de pocas palabras.';
 $string['app_ai_rules_words'] = 'Una palabra por línea, sin artículos, números ni explicaciones.';
 $string['app_ai_what_pairs'] = '{$a} parejas';
 $string['app_ai_what_quiz'] = '{$a} preguntas de concurso';
 $string['app_ai_what_rosco'] = 'un rosco, con una pista para cada letra';
+$string['app_ai_what_timeline'] = '{$a} hechos o periodos para una línea del tiempo';
 $string['app_ai_what_trios'] = '{$a} tríos';
 $string['app_ai_what_words'] = '{$a} palabras';
 $string['app_asi_group'] = 'En grupo';
@@ -1587,6 +1592,26 @@ Ver de un vistazo qué ha entendido la clase y quién necesita ayuda.
 Explicar por qué: cada respuesta tiene quien la defienda.
 Moverse y agruparse por respuestas.
 Trabajar «desenchufado», con el material en la mano.';
+$string['app_gd_tiempo_how'] = 'Elige un ejemplo o crea tu línea: una línea por hecho («1492 | Colón llega a América») o por periodo («476 – 1492 | Edad Media»).
+«Ver todo» encaja la línea; arrastra para moverte y acerca con la rueda, dos dedos o la lupa: las marcas pasan de días a años, siglos o millones de años.
+«Esconder las fechas»: la clase ordena los hechos antes de verlas; al tocar uno, sale su fecha.
+Para notar la duración, compara periodos («¿cuántas Edades Medias caben en la Edad Antigua?») o busca dónde queda Homo sapiens en la historia de la Tierra.
+La IA del Aula virtual o tu propia IA pueden proponer hechos de un tema: revisa las fechas antes de usarlas.';
+$string['app_gd_tiempo_scene'] = 'En sexto, la maestra abre la historia de la Tierra con las fechas escondidas y pregunta qué fue antes, los dinosaurios o las primeras personas. Lo saben enseguida.
+Luego toca «Ver todo» y busca Homo sapiens: hay que acercar mucho la línea para verlo separado del «Hoy». La clase se queda callada un momento.';
+$string['app_gd_tiempo_sources'] = 'Pagès, J. y Santisteban, A. (2010). La enseñanza y el aprendizaje del tiempo histórico en la educación primaria. Cadernos CEDES, 30(82), 281–309.|https://doi.org/10.1590/S0101-32622010000300002
+Cheek (2010). Factors underlying students\' conceptions of deep time: An exploratory study. Tesis doctoral, Durham University.|https://etheses.durham.ac.uk/277/
+Comisión Internacional de Estratigrafía. Tabla Cronoestratigráfica Internacional (las edades de las eras del ejemplo).|https://stratigraphy.org/chart';
+$string['app_gd_tiempo_stages'] = 'primary|Una vida o un curso, con meses y años; la historia del vuelo; antes y después de Cristo.
+secondary|Las edades de la Historia y lo que pasaba a la vez en otros sitios; los periodos de un tema.
+advanced|La historia de la Tierra, con sus eras, y la escala del tiempo profundo.';
+$string['app_gd_tiempo_what'] = 'Una línea del tiempo que se acerca y se aleja, de días a la edad de la Tierra: hechos (un punto) y periodos (una barra), con ejemplos para cada etapa y líneas propias, escritas o pedidas a una IA.';
+$string['app_gd_tiempo_why'] = 'El tiempo histórico es un concepto complejo: Pagès y Santisteban (2010) proponen enseñarlo en Primaria con un modelo que va más allá de memorizar fechas, para que la historia ayude a entender el presente a partir del pasado.
+Con el tiempo profundo, el orden suele estar claro y lo difícil es la duración: en entrevistas a 35 estudiantes, Cheek (2010) encontró que ordenar los grandes hechos de la historia de la Tierra no les costaba y medir el tiempo que pasa entre ellos sí, también por la dificultad de las cifras de miles y de millones. Acercar y alejar la línea hace visibles esas distancias.';
+$string['app_gd_tiempo_works'] = 'Ordenar hechos en el tiempo y ver lo que pasa a la vez.
+La duración: cuánto separa un hecho de otro, y lo largos que son unos periodos frente a otros.
+Las escalas: los meses de una vida, los siglos de la Historia, los millones de años de la Tierra.
+Antes y después de Cristo, y «hace millones de años».';
 $string['app_gd_why'] = 'Por qué';
 $string['app_gd_works'] = 'Qué trabaja';
 $string['app_gen_again'] = 'Otra vez';
@@ -2050,6 +2075,7 @@ $string['app_mt_score'] = 'Partitura';
 $string['app_mt_size'] = 'Tamaño de la mesa';
 $string['app_mt_tangram'] = 'Tangram';
 $string['app_mt_tangram_help'] = 'Arrastra las piezas. Para girar una, tócala dos veces o pulsa «Girar». El paralelogramo se voltea con «Voltear». Las piezas se imantan al acercarlas.';
+$string['app_mt_timeline'] = 'Línea del tiempo';
 $string['app_mt_turn'] = 'Girar';
 $string['app_mt_two'] = 'Comparar: dos mesas';
 $string['app_mt_what'] = 'Material';
@@ -2678,6 +2704,53 @@ $string['app_tc_talk_done'] = '¡Tiempo! Levanten otra vez las tarjetas.';
 $string['app_tc_talk_now'] = 'Hablen con alguien de otro color:';
 $string['app_tc_title'] = 'Tarjetas para votar';
 $string['app_tc_turn'] = 'Gira la tarjeta: tu respuesta, arriba.';
+$string['app_tl_ago_ma'] = 'hace {$a} Ma';
+$string['app_tl_ago_years'] = 'hace {$a} años';
+$string['app_tl_bad_lines'] = 'Líneas que no se entienden: {$a}';
+$string['app_tl_bc'] = '{$a} a. C.';
+$string['app_tl_delete'] = 'Borrar la línea';
+$string['app_tl_delete_sure'] = '¿Seguro? Toca otra vez';
+$string['app_tl_edit'] = 'Editar';
+$string['app_tl_empty'] = 'Esta línea todavía no tiene fechas';
+$string['app_tl_err_empty'] = 'Hace falta al menos una línea con «fecha | nombre».';
+$string['app_tl_ex_ages'] = 'Las edades de la Historia
+3200 a. C. – 476 | Edad Antigua
+476 – 1492 | Edad Media
+1492 – 1789 | Edad Moderna
+1789 – hoy | Edad Contemporánea
+3200 a. C. | Aparece la escritura en Mesopotamia: termina la Prehistoria
+476 | Cae el Imperio romano de Occidente
+1492 | Colón llega a América
+1789 | Revolución francesa';
+$string['app_tl_ex_earth'] = 'Historia de la Tierra
+4540 Ma | Se forma la Tierra
+4540 Ma – 538,8 Ma | Precámbrico
+538,8 Ma – 251,9 Ma | Paleozoico
+251,9 Ma – 66 Ma | Mesozoico
+66 Ma – hoy | Cenozoico
+66 Ma | Extinción de los dinosaurios (salvo las aves)
+300 ka | Aparece Homo sapiens';
+$string['app_tl_ex_flight'] = 'Historia del vuelo
+1783-11-21 | Primeras personas que vuelan, en un globo de los hermanos Montgolfier
+1903-12-17 | Primer vuelo en avión (los hermanos Wright)
+1927-05-21 | Lindbergh cruza el Atlántico sin escalas
+1961-04-12 | Gagarin, primera persona en el espacio
+1969-07-20 | Llegada a la Luna';
+$string['app_tl_examples'] = 'Ejemplos';
+$string['app_tl_fit'] = 'Ver todo';
+$string['app_tl_format'] = 'Una línea por hecho: «fecha | nombre». Un periodo: «fecha – fecha | nombre». Fechas: 1969-07-20, 1492, 753 a. C., 66 Ma (millones de años), 300 ka (miles de años), hoy. La primera línea, sin «|», es el título.';
+$string['app_tl_help'] = 'Arrastra para moverte; la rueda, dos dedos o la lupa acercan y alejan. Toca un hecho o un periodo para verlo en grande.';
+$string['app_tl_hide'] = 'Esconder las fechas';
+$string['app_tl_mine'] = 'Las mías';
+$string['app_tl_new'] = 'Nueva línea';
+$string['app_tl_text_ph'] = 'Historia del vuelo
+1903-12-17 | Primer vuelo en avión
+1969-07-20 | Llegada a la Luna';
+$string['app_tl_today'] = 'Hoy';
+$string['app_tl_untitled'] = 'Sin título';
+$string['app_tl_which'] = 'Línea';
+$string['app_tl_zoom_in'] = 'Acercar';
+$string['app_tl_zoom_out'] = 'Alejar';
 $string['app_tm_custom'] = 'A tu medida';
 $string['app_tm_fact_barco'] = 'Un velero navega a unos 15 km/h.';
 $string['app_tm_fact_caracol'] = 'Un caracol recorre unos 50 metros en una hora.';

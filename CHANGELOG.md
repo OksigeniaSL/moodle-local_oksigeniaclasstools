@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.46.0 (2026-10-12)
+
+- **Timeline**, among the materials (Primary and up): events (a point) and periods (a bar) on a line that zooms from
+  days to the age of the Earth, dragged to move along it and zoomed with the wheel, two fingers, the magnifier or the
+  keyboard; «See it all» fits it. The marks follow the zoom: days and months, years, centuries, thousands of years and
+  millions of years ago, with «Today» marked. Dates as they are written: 1969-07-20, 1492, 753 BC, 66 Ma, 300 ka,
+  today; a period is two dates with a dash. «Hide the dates» shows only the names, to put them in order first; a tap
+  on one shows its name and date, big.
+- Examples for each stage (the history of flight, the ages of history, the history of the Earth with the ages of its
+  eras from the International Chronostratigraphic Chart), and the teacher's own timelines, written or asked to the AI
+  of the site or to any AI.
+- The timeline is shown on sites that had already chosen their materials, and its teacher's guide (Pagès and
+  Santisteban, 2010, on historical time; Cheek, 2010, on deep time).
+
 ## 0.45.0 (2026-10-12)
 
 - **Duel in the materials** (the rods, the number line, the fraction wall, the geoboard, the base 10 blocks and the
