@@ -501,6 +501,8 @@ function local_oksigeniaclasstools_choose(array $courses): array {
         }
     }
     $site = local_oksigeniaclasstools_default_mode();
+    // The courses the teacher hid from here (a dining hall, a staff room…): at the end of the page, folded away.
+    $hiddenids = \local_oksigeniaclasstools\local\hidden::ids((int) $USER->id);
     $categories = [];
     $cards = [];
     foreach ($courses as $course) {
@@ -541,6 +543,8 @@ function local_oksigeniaclasstools_choose(array $courses): array {
         $label = $students === 1 ? 'choose_student' : 'choose_students';
         $image = \core_course\external\course_summary_exporter::get_course_image($course);
         $cards[] = [
+            'id' => (int) $course->id,
+            'hidden' => in_array((int) $course->id, $hiddenids, true),
             'url' => (new moodle_url('/local/oksigeniaclasstools/index.php', ['id' => $course->id]))->out(false),
             'name' => format_string($course->fullname, true, ['context' => $context]),
             'category' => $categories[$catid]['name'],
@@ -588,6 +592,10 @@ function local_oksigeniaclasstools_choose(array $courses): array {
             return $card;
         }, $cards),
         'continue' => $last ? ['url' => $last['url'], 'name' => $last['name'], 'image' => $last['image']] : null,
+        // Hiding a course from here, and how many are hidden.
+        'hideurl' => (new moodle_url('/local/oksigeniaclasstools/hide.php'))->out(false),
+        'sesskey' => sesskey(),
+        'hiddencount' => count(array_filter(array_column($cards, 'hidden'))),
         'standalone' => (new moodle_url('/local/oksigeniaclasstools/index.php', ['standalone' => 1]))->out(false),
         'remote' => $remote ? ['on' => $remote['on'], 'url' => $remote['url'] ?? ''] : null,
         'album' => $album,

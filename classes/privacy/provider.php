@@ -31,6 +31,7 @@ use core_privacy\local\request\contextlist;
 use core_privacy\local\request\transform;
 use core_privacy\local\request\userlist;
 use core_privacy\local\request\writer;
+use local_oksigeniaclasstools\local\hidden;
 use local_oksigeniaclasstools\local\quizimages;
 use local_oksigeniaclasstools\local\remote;
 use local_oksigeniaclasstools\local\sala;
@@ -78,6 +79,7 @@ class provider implements
             'timecreated' => 'privacy:metadata:learnt:timecreated',
         ], 'privacy:metadata:learnt');
         $collection->add_user_preference(sala::PREF, 'privacy:metadata:preference:sala');
+        $collection->add_user_preference(hidden::PREF, 'privacy:metadata:preference:hidden');
         $collection->add_database_table('local_oksigeniaclasstools_live', [
             'courseid' => 'privacy:metadata:live:courseid',
             'userid' => 'privacy:metadata:live:userid',
@@ -170,7 +172,7 @@ class provider implements
     }
 
     /**
-     * Whether the teacher appears in the teachers' room.
+     * Whether the teacher appears in the teachers' room, and the courses they hide from «Which class?».
      *
      * @param int $userid
      */
@@ -182,6 +184,15 @@ class provider implements
                 sala::PREF,
                 $value,
                 get_string($value ? 'privacy:sala_in' : 'privacy:sala_out', 'local_oksigeniaclasstools')
+            );
+        }
+        $hidden = get_user_preferences(hidden::PREF, null, $userid);
+        if ($hidden !== null) {
+            writer::export_user_preference(
+                'local_oksigeniaclasstools',
+                hidden::PREF,
+                $hidden,
+                get_string('privacy:hidden', 'local_oksigeniaclasstools', $hidden)
             );
         }
     }

@@ -1,5 +1,5 @@
-// «Which class?» (index.php without a course): the filters (a stage, a category and the search, together), the QR of
-// the fixed remote, «My stickers» (a strip of the best ones and the album, drawn with the art of the board) and the
+// «Which class?» (index.php without a course): the filters (a stage, a category and the search, together), hiding a
+// course from here (only for this teacher, folded away at the end), the QR of the fixed remote, «My stickers» (a strip of the best ones and the album, drawn with the art of the board) and the
 // teachers' room (the colleagues who want to be seen, with their critter and their stickers).
 //
 // @copyright 2026 Oksigenia <dev@oksigenia.cc>
@@ -10,13 +10,14 @@
 
     // --- The filters ---------------------------------------------------------------------------------------------
     const input = $('#ct-ch-buscar'), select = $('#ct-ch-categoria');
-    let stage = '';
+    let stage = '', showHidden = false;
     const plain = (s) => String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
     const filter = () => {
         const q = input ? plain(input.value.trim()) : '', cat = select ? select.value : '';
         let shown = 0;
-        document.querySelectorAll('.ct-ch-curso').forEach((card) => {
-            const ok = (!q || plain(card.dataset.name).includes(q)) && (!cat || card.dataset.cat === cat) && (!stage || card.dataset.mode === stage);
+        document.querySelectorAll('.ct-ch-sitio').forEach((card) => {
+            const ok = (!q || plain(card.dataset.name).includes(q)) && (!cat || card.dataset.cat === cat) && (!stage || card.dataset.mode === stage)
+                && (showHidden || card.dataset.oculto !== '1');
             card.hidden = !ok;
             if (ok) { shown++; }
         });
@@ -30,6 +31,39 @@
         buttons.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
         filter();
     }));
+
+    // --- Hiding a course from here (a dining hall or a staff room is not a class) -------------------------------------
+    const grid = $('.ct-ch-rejilla'), more = $('#ct-ch-verocultos');
+    const paintMore = () => {
+        const n = document.querySelectorAll('.ct-ch-sitio[data-oculto="1"]').length;
+        if (!n) { showHidden = false; }
+        more.hidden = !n;
+        more.textContent = `${showHidden ? more.dataset.hide : more.dataset.show} (${n})`;
+        more.setAttribute('aria-pressed', String(showHidden));
+        document.querySelectorAll('.ct-ch-sitio').forEach((card) => {
+            const b = card.querySelector('.ct-ch-ocultar'), label = card.dataset.oculto === '1' ? b.dataset.show : b.dataset.hide;
+            b.title = label;
+            b.setAttribute('aria-label', `${label}: ${card.dataset.name}`);
+        });
+    };
+    if (grid && more) {
+        grid.addEventListener('click', (e) => {
+            const b = e.target.closest('.ct-ch-ocultar');
+            if (!b) { return; }
+            const card = b.closest('.ct-ch-sitio'), hide = card.dataset.oculto !== '1';
+            b.disabled = true;
+            fetch(grid.dataset.hideurl, { method: 'POST', credentials: 'same-origin',
+                body: new URLSearchParams({ sesskey: grid.dataset.sesskey, courseid: card.dataset.id, hide: hide ? '1' : '0' }) })
+                .then((r) => r.json()).then((j) => {
+                    if (!j || !j.ok) { return; }
+                    card.dataset.oculto = hide ? '1' : '0';
+                    paintMore();
+                    filter();
+                }).catch(() => {}).finally(() => { b.disabled = false; });
+        });
+        more.addEventListener('click', () => { showHidden = !showHidden; paintMore(); filter(); });
+        paintMore();
+    }
 
     // --- The QR of the fixed remote ------------------------------------------------------------------------------
     const qr = $('#ct-ch-qr');

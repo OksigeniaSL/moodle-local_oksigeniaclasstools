@@ -63,6 +63,7 @@ final class provider_test extends provider_testcase {
         $this->assertContains('local_oksigeniaclasstools_learnt', $tables);
         $this->assertContains('core_message', $tables);
         $this->assertContains('core_files', $tables);
+        $this->assertContains(\local_oksigeniaclasstools\local\hidden::PREF, $tables);
     }
 
     public function test_contexts_and_users(): void {

@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.56.3 (2026-10-12)
+
+- «Which class?»: each teacher can hide from there the courses that are not classes (a dining hall, a staff room with
+  hundreds of students), with the button in the corner of the card; «Show the hidden ones» brings them back, faded,
+  to open them or show them again. Only for that teacher and only on that page (a user preference, in the privacy
+  export); the course and the board in it stay as they were.
+
 ## 0.56.2 (2026-10-12)
 
 - The teacher's guide of the exit ticket and of the printed cards also shows the guided helps of «Live», after their

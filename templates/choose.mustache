@@ -99,9 +99,10 @@
     </div>
     {{/stages.0}}
     <div class="ct-ch-cuerpo">
-        <div class="ct-ch-rejilla">
+        <div class="ct-ch-rejilla" data-hideurl="{{hideurl}}" data-sesskey="{{sesskey}}">
             {{#courses}}
-            <a class="ct-ch-curso ct-mode-{{mode}}" href="{{url}}" data-name="{{name}}" data-mode="{{mode}}" data-cat="{{categoryid}}">
+            <div class="ct-ch-sitio" data-id="{{id}}" data-name="{{name}}" data-mode="{{mode}}" data-cat="{{categoryid}}" data-oculto="{{#hidden}}1{{/hidden}}{{^hidden}}0{{/hidden}}"{{#hidden}} hidden{{/hidden}}>
+            <a class="ct-ch-curso ct-mode-{{mode}}" href="{{url}}">
                 <span class="ct-ch-img"><img src="{{image}}" alt="" loading="lazy">{{#modename}}<span class="ct-ch-modo">{{modename}}</span>{{/modename}}</span>
                 <span class="ct-ch-info">
                     <span class="ct-ch-cat">{{category}}</span>
@@ -112,8 +113,11 @@
                     </span>
                 </span>
             </a>
+            <button type="button" class="ct-ch-ocultar" aria-label="{{#str}} choose_hide, local_oksigeniaclasstools {{/str}}: {{name}}" title="{{#str}} choose_hide, local_oksigeniaclasstools {{/str}}" data-hide="{{#str}} choose_hide, local_oksigeniaclasstools {{/str}}" data-show="{{#str}} choose_unhide, local_oksigeniaclasstools {{/str}}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="12" r="2.8" fill="none" stroke="currentColor" stroke-width="2"/><path class="ct-ch-tachado" d="M4 4l16 16" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            </div>
             {{/courses}}
             <p class="ct-ch-nada" id="ct-ch-nada" hidden>{{#str}} choose_none_found, local_oksigeniaclasstools {{/str}}</p>
+            <button type="button" class="ct-ch-verocultos" id="ct-ch-verocultos" aria-pressed="false" data-show="{{#str}} choose_showhidden, local_oksigeniaclasstools {{/str}}" data-hide="{{#str}} choose_hidehidden, local_oksigeniaclasstools {{/str}}"{{^hiddencount}} hidden{{/hiddencount}}>{{#str}} choose_showhidden, local_oksigeniaclasstools {{/str}} ({{hiddencount}})</button>
         </div>
         <aside class="ct-ch-panel">
             {{#continue}}
