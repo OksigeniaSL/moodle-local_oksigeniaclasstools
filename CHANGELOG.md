@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.59.1 (2026-10-12)
+
+- The teachers' room says what it counts: the stickers won using the tools with a class in that time, not the ones
+  learned in the guided helps (which «My stickers» does count), so «1 of 25» and «no stickers» no longer look at odds.
+
 ## 0.59.0 (2026-10-12)
 
 - The last three guided helps of the art direction, with voice in Spanish and English: printed cards (the kilo of straw
