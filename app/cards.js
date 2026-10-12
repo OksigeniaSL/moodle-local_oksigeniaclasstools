@@ -1,10 +1,13 @@
 // Printed cards to answer without devices, for «Hands up or cards» in «Live»: one card that is turned so the answer
-// is on top (A, B, C and D, each side in the colour of its answer on the board), four separate cards A, B, C and D,
+// is on top (A, B, C and D, each side in the colour of its answer on the board, and in the middle its mark, which a
+// camera can read: scanner.js), four separate cards A, B, C and D,
 // the traffic light, or yes and no; with the names of a class list or numbered. They are printed from the board (a
 // page per student, two to a page for the card that is turned) and work on their own: the class raises them and the
 // teacher reads the colours, talks, asks, counts with + and − or groups them. «In groups» shows each answer as a big
 // area of its colour (the corner, the hoop, the table of that colour) with a timer to talk with someone of another
-// colour.
+// colour. «Read the cards» reads the marks with the camera of the board's computer, or takes what the teacher's phone
+// reads (the fixed remote sends only card numbers and letters): the answers in bars, who is still to be read, and,
+// on request, who answered what.
 //
 // @copyright 2026 Oksigenia <dev@oksigenia.cc>
 // @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -28,12 +31,16 @@
         const [c, light] = COLOURS[v];
         return `<div class="banda ${side}" style="background:${c};color:${light ? '#1c1a19' : '#fff'}"><span>${escape(v)}</span></div>`;
     };
-    const cardsOf = (format, who) => {
+    const cardsOf = (format, who, number = 0) => {
         const name = `<p class="quien">${escape(who)}</p>`;
         if (format === 'rotate') {
-            // Each side, upright when it is turned to the top: A on top, B on the right, C at the bottom, D on the left.
+            // Each side, upright when it is turned to the top: A on top, B on the right, C at the bottom, D on the left;
+            // the name and the number of the card in a corner, and the mark in the middle, with its white margin.
+            const S = window.ClasstoolsScanner;
+            const mark = S && number >= 1 && number <= S.MAX ? S.svg(number) : '';
             return `<div class="girar">${band('A', 'arriba')}${band('B', 'derecha')}${band('C', 'abajo')}${band('D', 'izquierda')}
-                <div class="centro">${name}<p class="pista">${escape(t('tc_turn'))}</p></div></div>`;
+                <p class="esquina">${escape(who)}${mark ? ` · ${number}` : ''}</p>
+                <div class="centro">${mark || `${name}<p class="pista">${escape(t('tc_turn'))}</p>`}</div></div>`;
         }
         return `<div class="juego ${format}">${FORMATS[format].map((v) => {
             const [c, light] = COLOURS[v];
@@ -50,15 +57,17 @@
         .pagina:last-child { page-break-after: auto; break-after: auto; }
         .girar { position: relative; width: 135mm; height: 135mm; border: .3mm dashed #9aa5b5; }
         .banda { position: absolute; display: flex; align-items: center; justify-content: center; font-weight: 1000; }
-        .banda span { display: block; font-size: 26mm; line-height: 1; }
-        .banda.arriba { top: 0; left: 0; right: 0; height: 32mm; }
-        .banda.abajo { bottom: 0; left: 0; right: 0; height: 32mm; }
+        .banda span { display: block; font-size: 16mm; line-height: 1; }
+        .banda.arriba { top: 0; left: 0; right: 0; height: 20mm; }
+        .banda.abajo { bottom: 0; left: 0; right: 0; height: 20mm; }
         .banda.abajo span { transform: rotate(180deg); }
-        .banda.derecha { top: 32mm; right: 0; bottom: 32mm; width: 32mm; }
+        .banda.derecha { top: 20mm; right: 0; bottom: 20mm; width: 20mm; }
         .banda.derecha span { transform: rotate(90deg); }
-        .banda.izquierda { top: 32mm; left: 0; bottom: 32mm; width: 32mm; }
+        .banda.izquierda { top: 20mm; left: 0; bottom: 20mm; width: 20mm; }
         .banda.izquierda span { transform: rotate(-90deg); }
-        .centro { position: absolute; top: 32mm; right: 32mm; bottom: 32mm; left: 32mm; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3mm; padding: 3mm; text-align: center; }
+        .esquina { position: absolute; top: 1.5mm; left: 3mm; max-width: 45mm; margin: 0; overflow: hidden; color: #fff; font-size: 3.2mm; font-weight: 800; line-height: 1.2; white-space: nowrap; text-overflow: ellipsis; }
+        .centro { position: absolute; top: 20mm; right: 20mm; bottom: 20mm; left: 20mm; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3mm; text-align: center; }
+        .centro svg { display: block; width: 100%; height: 100%; }
         .quien { margin: 0; color: #1c1a19; font-size: 5mm; font-weight: 900; line-height: 1.15; overflow-wrap: anywhere; }
         .pista { margin: 0; color: #55514d; font-size: 3.2mm; font-weight: 700; }
         .juego { display: grid; gap: 4mm; width: 194mm; height: 280mm; }
@@ -75,7 +84,7 @@
         const font = new URL('fonts/nunito-latin-wght-normal.woff2', document.baseURI).href;
         const pages = [];
         if (format === 'rotate') {
-            for (let i = 0; i < people.length; i += 2) { pages.push(people.slice(i, i + 2).map((p) => cardsOf(format, p)).join('')); }
+            for (let i = 0; i < people.length; i += 2) { pages.push(people.slice(i, i + 2).map((p, j) => cardsOf(format, p, i + j + 1)).join('')); }
         } else { people.forEach((p) => pages.push(cardsOf(format, p))); }
         const html = `<!doctype html><html lang="${escape(document.documentElement.lang || 'en')}"><head><meta charset="utf-8"><title>${escape(t('tc_title'))}</title>`
             + `<style>${STYLE(font)}</style></head><body>${pages.map((p) => `<section class="pagina">${p}</section>`).join('')}</body></html>`;
@@ -127,6 +136,9 @@
                 const list = core.lists().find((l) => l.id === $('#tc-for').value);
                 const n = Math.max(1, Math.min(60, Number($('#tc-count').value) || 25));
                 const people = list ? list.alumnos.slice() : Array.from({ length: n }, (_, i) => t('tc_card_n', i + 1));
+                // The cards are read with this list (card n is its n-th student).
+                save('tarjetas-lista', list ? list.id : '');
+                save('tarjetas-cuantas', people.length);
                 print($('#tc-format').value, people);
                 dialog.close();
                 announce(t('tc_printing'));
@@ -178,5 +190,136 @@
         });
     };
 
-    window.ClasstoolsCards = { ask, print, groups, cardsOf };
+    // --- Reading the cards -----------------------------------------------------------------------------------------
+    // What has been read for the current question: card → answer (the last reading of each card counts).
+    const read = new Map();
+    // view: the reading area; its buttons are below it, in the same stage (box).
+    let cam = null, loop = 0, view = null, box = null, names = false;
+    const people = () => {
+        const list = (core.lists ? core.lists() : []).find((l) => l.id === load('tarjetas-lista', ''));
+        if (list) { return list.alumnos.slice(0, window.ClasstoolsScanner ? window.ClasstoolsScanner.MAX : 60); }
+        const n = Math.max(1, Math.min(60, Number(load('tarjetas-cuantas', 25)) || 25));
+        return Array.from({ length: n }, (_, i) => t('tc_card_n', i + 1));
+    };
+    const ABCD = ['A', 'B', 'C', 'D'];
+    const paintRead = () => {
+        if (!view || !view.isConnected) { return; }
+        const all = people(), $ = (q) => view.querySelector(q);
+        const counts = ABCD.map((a) => [...read.values()].filter((x) => x === a).length);
+        const most = Math.max(1, ...counts);
+        $('#tc-bars').innerHTML = ABCD.map((a, i) => {
+            const [c, light] = COLOURS[a];
+            const who = names ? [...read.entries()].filter(([, x]) => x === a).map(([id]) => all[id - 1] || t('tc_card_n', id)) : [];
+            return `<div class="lv-barra"><span class="lv-op${light ? ' claro' : ''}" style="--c:${c}">${a}</span>`
+                + `<span class="lv-pista"><i style="--c:${c}; width:${(100 * counts[i] / most).toFixed(1)}%"></i></span><strong>${counts[i]}</strong></div>`
+                + (who.length ? `<p class="tc-quienes">${who.map(escape).join(', ')}</p>` : '');
+        }).join('');
+        const done = read.size;
+        $('#tc-count').textContent = t('tc_scan_count', { n: done, of: all.length });
+        const missing = all.map((p, i) => [p, i + 1]).filter(([, id]) => !read.has(id)).map(([p]) => p);
+        $('#tc-missing').hidden = !missing.length || !read.size;
+        $('#tc-missing-list').textContent = missing.join(', ');
+    };
+    // Readings: from the camera here or from the phone. A card beyond the list is not one of this class.
+    const take = (list) => {
+        let changed = false;
+        const most = people().length;
+        list.forEach(({ id, answer }) => { if (id <= most && read.get(id) !== answer) { read.set(id, answer); changed = true; } });
+        if (changed) { play('tic'); paintRead(); }
+        return changed;
+    };
+    const stopCam = () => {
+        clearTimeout(loop); loop = 0;
+        if (cam) { cam.getTracks().forEach((tr) => tr.stop()); cam = null; }
+        if (view && view.isConnected) {
+            view.querySelector('#tc-video').srcObject = null;
+            view.querySelector('.tc-camara').classList.remove('encendida');
+            core.relabel(box.querySelector('#tc-cam'), t('tc_scan_cam'), 'pantalla');
+        }
+    };
+    const startCam = () => {
+        const S = window.ClasstoolsScanner;
+        if (!S || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { view.querySelector('#tc-nocam').hidden = false; return; }
+        navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment', width: { ideal: 1920 }, height: { ideal: 1080 } }, audio: false })
+            .then((stream) => {
+                if (!view || !view.isConnected) { stream.getTracks().forEach((tr) => tr.stop()); return; }
+                cam = stream;
+                const video = view.querySelector('#tc-video');
+                video.srcObject = stream;
+                video.play().catch(() => {});
+                view.querySelector('.tc-camara').classList.add('encendida');
+                view.querySelector('#tc-nocam').hidden = true;
+                core.relabel(box.querySelector('#tc-cam'), t('tc_scan_stop'), 'pausa');
+                const work = document.createElement('canvas'), wctx = work.getContext('2d', { willReadFrequently: true });
+                const tick = () => {
+                    if (!cam || !view || !view.isConnected) { stopCam(); return; }
+                    if (video.videoWidth) {
+                        const k = Math.min(1, 1280 / video.videoWidth);
+                        work.width = Math.round(video.videoWidth * k); work.height = Math.round(video.videoHeight * k);
+                        wctx.drawImage(video, 0, 0, work.width, work.height);
+                        const got = S.detect(wctx.getImageData(0, 0, work.width, work.height));
+                        take(got);
+                        outline(got, work.width, work.height);
+                    }
+                    loop = setTimeout(tick, 150);
+                };
+                tick();
+            })
+            .catch(() => { view.querySelector('#tc-nocam').hidden = false; });
+    };
+    // The cards read in the picture, outlined in the colour of their answer, with their number.
+    const outline = (got, w, h) => {
+        const layer = view.querySelector('#tc-layer'), video = view.querySelector('#tc-video');
+        layer.width = video.clientWidth; layer.height = video.clientHeight;
+        const ctx = layer.getContext('2d');
+        ctx.clearRect(0, 0, layer.width, layer.height);
+        // The picture fits the box keeping its shape (object-fit: contain).
+        const k = Math.min(layer.width / w, layer.height / h), ox = (layer.width - w * k) / 2, oy = (layer.height - h * k) / 2;
+        got.forEach(({ id, answer, corners }) => {
+            ctx.strokeStyle = COLOURS[answer][0]; ctx.lineWidth = 4;
+            ctx.beginPath();
+            corners.forEach(([x, y], i) => { const X = ox + x * k, Y = oy + y * k; if (i) { ctx.lineTo(X, Y); } else { ctx.moveTo(X, Y); } });
+            ctx.closePath(); ctx.stroke();
+            ctx.fillStyle = COLOURS[answer][0]; ctx.font = 'bold 18px Nunito, sans-serif';
+            ctx.fillText(`${id} ${answer}`, ox + corners[0][0] * k, oy + corners[0][1] * k - 6);
+        });
+    };
+    const scan = (stage, back) => {
+        clearInterval(talkTimer);
+        stage.innerHTML = `<div class="tc-leer">
+                <div class="tc-camara"><video id="tc-video" playsinline muted></video><canvas id="tc-layer" aria-hidden="true"></canvas>
+                    <p class="nota" id="tc-nocam" hidden>${escape(t('tc_scan_nocam'))}</p>
+                    <p class="nota tc-pista">${escape(t('tc_scan_hint'))}</p></div>
+                <div class="tc-lecturas">
+                    <p class="lv-grande" id="tc-count" aria-live="polite"></p>
+                    <div class="lv-barras" id="tc-bars"></div>
+                    <details id="tc-missing" hidden><summary>${escape(t('tc_scan_missing'))}</summary><p id="tc-missing-list"></p></details>
+                    <label class="interruptor"><input type="checkbox" id="tc-names"><span>${escape(t('tc_scan_names'))}</span></label>
+                </div>
+            </div>
+            <div class="botonera centro lv-mandos">
+                <button type="button" class="boton" id="tc-cam"><span data-icono="pantalla"></span><span>${escape(t('tc_scan_cam'))}</span></button>
+                <button type="button" class="boton suave" id="tc-new"><span data-icono="reiniciar"></span><span>${escape(t('tc_scan_new'))}</span></button>
+                <button type="button" class="boton suave" id="tc-back"><span data-icono="anterior"></span><span>${escape(t('tc_back'))}</span></button>
+            </div>
+            <p class="nota centro">${escape(t('tc_scan_phone'))}</p>`;
+        view = stage.querySelector('.tc-leer'); box = stage;
+        stage.querySelectorAll('[data-icono]').forEach((el) => setIcon(el, el.dataset.icono));
+        const $ = (q) => stage.querySelector(q);
+        $('#tc-names').checked = names;
+        $('#tc-names').addEventListener('change', () => { names = $('#tc-names').checked; paintRead(); });
+        $('#tc-cam').addEventListener('click', () => { if (cam) { stopCam(); } else { startCam(); } });
+        $('#tc-new').addEventListener('click', () => { read.clear(); paintRead(); play('tic'); });
+        $('#tc-back').addEventListener('click', () => { stopCam(); view = null; back(); });
+        paintRead();
+    };
+    // From the phone: «cards_7a12c…» (card number and answer, many at once).
+    const fromPhone = (cmd) => {
+        const list = [...String(cmd).slice(6).matchAll(/([0-9]{1,2})([abcd])/g)].map((m) => ({ id: Number(m[1]), answer: m[2].toUpperCase() }));
+        if (!list.length) { return; }
+        if ((!view || !view.isConnected) && core.liveOpenScan) { core.liveOpenScan(); }
+        take(list);
+    };
+
+    window.ClasstoolsCards = { ask, print, groups, cardsOf, scan, take, fromPhone, read: () => new Map(read) };
 })();

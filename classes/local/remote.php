@@ -238,7 +238,8 @@ class remote {
     }
 
     /**
-     * An order from the phone for the board of a course: only known orders, for an open board, and not too fast.
+     * An order from the phone for the board of a course: only known orders (or the printed cards it read, as
+     * «cards_7a12c»), for an open board, and not too fast.
      *
      * @param \stdClass $row
      * @param string $cmd
@@ -246,7 +247,9 @@ class remote {
      * @return array ok, or ok false and why (unknown, closed, toofast).
      */
     public static function command(\stdClass $row, string $cmd, int $courseid): array {
-        if (!in_array($cmd, self::COMMANDS, true) && !preg_match('/^tool_[a-z]{2,20}$/', $cmd)) {
+        // Printed cards read by the phone: card numbers (1 to 60) and their answers, up to 20 at once.
+        $cards = (bool) preg_match('/^cards_(([1-9]|[1-5][0-9]|60)[abcd]){1,20}$/', $cmd);
+        if (!$cards && !in_array($cmd, self::COMMANDS, true) && !preg_match('/^tool_[a-z]{2,20}$/', $cmd)) {
             return ['ok' => false, 'why' => 'unknown'];
         }
         $open = array_column(self::open_boards($row), 'tools', 'course');

@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.41.0 (2026-10-12)
+
+- **Reading the printed cards with a camera.** The card that is turned now carries in its middle a mark of our own,
+  open design (`docs/cards-markers.md`): a black border and 4 × 4 cells that say which card it is (1 to 60); the side
+  on top is the answer. «Read the cards», in «Hands up or cards», reads them with the camera of the board's computer:
+  each card is outlined in the colour of its answer, and the board shows the answers in bars, who is still to be read
+  and, only on request, who answered what. A card read again with another answer changes; «Another question» starts
+  again. The cards are read with the class list they were printed for.
+- **With the phone**: «Read the cards» on the fixed remote turns the phone into the reader, to go round the tables or
+  point at the class; it sends the board only card numbers and answers, and the board goes to «Read the cards» by
+  itself. The pictures never leave the device.
+- The reading works on its own (no libraries): adaptive threshold, the dark patches, their four corners refined with
+  straight lines, perspective, and codes that are told apart in any turn even with a cell read wrong. Checked with
+  pictures of the 60 cards at once, small marks of 24 pixels, turned up to 35 degrees, blurred and with noise.
+- The guide of the cards explains the reading with the camera; the card without a phone works as before.
+
 ## 0.40.1 (2026-10-12)
 
 - Wording of the exit ticket, the cards and Simon reviewed in Spanish: the piles say «Lo entiendo» like the faces, the

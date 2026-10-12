@@ -1,7 +1,9 @@
 // The teacher's fixed remote, on the phone: the address with its key, without logging in. It shows the teacher's
 // boards that are open (the course of each, nothing about the students); with more than one, it asks which one. The
 // buttons send orders to that board: the timer, a pick, whose turn, the next question, presenting, the tools. It asks
-// the site every two seconds which boards are open.
+// the site every two seconds which boards are open. «Read the cards» turns the phone into the reader of the printed
+// cards: the camera, each card outlined in the colour of its answer, and the readings sent to the board (only the
+// numbers of the cards and their answers: the names are on the board).
 //
 // @copyright 2026 Oksigenia <dev@oksigenia.cc>
 // @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -28,6 +30,7 @@
     const board = () => boards.find((b) => b.course === course) || boards[0] || null;
 
     const render = () => {
+        if (scanning) { return; }
         const b = board();
         if (!b) { shown = ''; screen(t('rm_no_board_title'), t('rm_no_board_text'), '<div class="jn-espera" aria-hidden="true"><i></i><i></i><i></i></div>'); return; }
         course = b.course;
@@ -41,9 +44,87 @@
             ${now ? `<p class="jn-texto">${escape(t('rm_on_board', now[1]))}</p>` : ''}
             <div class="jn-mando">${COMMANDS.map(([c, k, cls]) => `<button type="button" class="${cls || ''}" data-cmd="${c}">${escape(t(k))}</button>`).join('')}</div>
             <p class="jn-texto" id="jn-hecho" aria-live="polite">${escape(last) || '&nbsp;'}</p>
+            ${window.ClasstoolsScanner ? `<button type="button" class="jn-boton jn-leer-boton" id="jn-leer">${escape(t('rm_scan'))}</button>` : ''}
             ${tools.length ? `<details class="jn-herramientas"><summary>${escape(t('rm_tools'))}</summary><div class="jn-mando">${tools.map(([id, name]) => `<button type="button" data-cmd="tool_${escape(id)}"${id === b.tool ? ' aria-current="true"' : ''}>${escape(name)}</button>`).join('')}</div></details>` : ''}`;
     };
+    // --- Reading the printed cards ----------------------------------------------------------------------------------
+    let scanning = false, stream = null, loop = 0, sendTimer = 0;
+    const seen = new Map(), pending = new Map();
+    const COLOURS = { A: '#ce1423', B: '#164281', C: '#fbbe17', D: '#067e36' };
+    const send = () => {
+        clearTimeout(sendTimer);
+        if (!scanning) { return; }
+        const batch = [...pending.entries()].slice(0, 20);
+        if (batch.length) {
+            const cmd = 'cards_' + batch.map(([id, a]) => `${id}${a.toLowerCase()}`).join('');
+            post('command', { cmd, course }).then((v) => {
+                if (v && v.ok) { batch.forEach(([id, a]) => { if (pending.get(id) === a) { pending.delete(id); } }); }
+                const note = document.getElementById('jn-leer-nota');
+                if (note && v && v.why === 'closed') { note.textContent = t('rm_closed'); }
+            }).catch(() => {});
+        }
+        sendTimer = setTimeout(send, 1000);
+    };
+    const stopScan = () => {
+        scanning = false;
+        clearTimeout(loop); clearTimeout(sendTimer);
+        if (stream) { stream.getTracks().forEach((tr) => tr.stop()); stream = null; }
+        shown = ''; render();
+    };
+    const startScan = () => {
+        scanning = true;
+        seen.clear(); pending.clear();
+        root.innerHTML = `${head()}<div class="jn-leer">
+            <div class="jn-camara"><video id="jn-video" playsinline muted></video><canvas id="jn-capa" aria-hidden="true"></canvas></div>
+            <p class="jn-titulo" id="jn-leidas" aria-live="polite">${escape(t('rm_scan_count', 0))}</p>
+            <p class="jn-texto" id="jn-leer-nota">${escape(t('rm_scan_hint'))}</p>
+            <ol class="jn-ultimas" id="jn-ultimas"></ol>
+            <button type="button" class="jn-boton suave" id="jn-leer-fin">${escape(t('rm_scan_back'))}</button></div>`;
+        document.getElementById('jn-leer-fin').addEventListener('click', () => { buzz(); stopScan(); });
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { document.getElementById('jn-leer-nota').textContent = t('rm_scan_nocam'); return; }
+        navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment', width: { ideal: 1920 }, height: { ideal: 1080 } }, audio: false })
+            .then((s) => {
+                if (!scanning) { s.getTracks().forEach((tr) => tr.stop()); return; }
+                stream = s;
+                const video = document.getElementById('jn-video'), layer = document.getElementById('jn-capa');
+                video.srcObject = s; video.play().catch(() => {});
+                const work = document.createElement('canvas'), wctx = work.getContext('2d', { willReadFrequently: true });
+                const tick = () => {
+                    if (!scanning) { return; }
+                    if (video.videoWidth) {
+                        const k = Math.min(1, 1280 / video.videoWidth);
+                        work.width = Math.round(video.videoWidth * k); work.height = Math.round(video.videoHeight * k);
+                        wctx.drawImage(video, 0, 0, work.width, work.height);
+                        const got = window.ClasstoolsScanner.detect(wctx.getImageData(0, 0, work.width, work.height));
+                        // The cards read, outlined over the picture in the colour of their answer.
+                        layer.width = video.clientWidth; layer.height = video.clientHeight;
+                        const ctx = layer.getContext('2d'), f = Math.min(layer.width / work.width, layer.height / work.height);
+                        const ox = (layer.width - work.width * f) / 2, oy = (layer.height - work.height * f) / 2;
+                        ctx.clearRect(0, 0, layer.width, layer.height);
+                        let fresh = false;
+                        got.forEach(({ id, answer, corners }) => {
+                            ctx.strokeStyle = COLOURS[answer]; ctx.lineWidth = 5; ctx.beginPath();
+                            corners.forEach(([x, y], i) => (i ? ctx.lineTo(ox + x * f, oy + y * f) : ctx.moveTo(ox + x * f, oy + y * f)));
+                            ctx.closePath(); ctx.stroke();
+                            if (seen.get(id) !== answer) { seen.set(id, answer); pending.set(id, answer); fresh = true; }
+                        });
+                        if (fresh) {
+                            buzz();
+                            document.getElementById('jn-leidas').textContent = t('rm_scan_count', seen.size);
+                            document.getElementById('jn-ultimas').innerHTML = [...seen.entries()].reverse().slice(0, 8)
+                                .map(([id, a]) => `<li style="--c:${COLOURS[a]}"><b>${a}</b> ${escape(t('rm_scan_card', id))}</li>`).join('');
+                        }
+                    }
+                    loop = setTimeout(tick, 200);
+                };
+                tick();
+                send();
+            })
+            .catch(() => { const n = document.getElementById('jn-leer-nota'); if (n) { n.textContent = t('rm_scan_nocam'); } });
+    };
+
     root.addEventListener('click', (e) => {
+        if (e.target.closest('#jn-leer')) { buzz(); startScan(); return; }
         const pick = e.target.closest('[data-course]');
         if (pick) { course = Number(pick.dataset.course); localStorage.setItem('mando-curso', String(course)); shown = ''; render(); return; }
         const b = e.target.closest('[data-cmd]');

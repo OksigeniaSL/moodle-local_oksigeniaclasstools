@@ -132,3 +132,11 @@ body.jn-verde { background: var(--verde); }
 body.jn-verde .jn-titulo, body.jn-verde .jn-texto, body.jn-verde .jn-cabeza, body.jn-verde .jn-cabeza strong { color: #fff; }
 body.jn-verde .jn-billete { border-color: #fff; background: #fff; }
 body.jn-verde .jn-boton.suave { background: rgba(255, 255, 255, .9); }
+/* The fixed remote reading the printed cards: the camera, the cards outlined, and the last ones read. */
+.jn-leer-boton { align-self: center; min-width: 70%; background: var(--verde); }
+.jn-leer { display: flex; flex: 1; flex-direction: column; align-items: center; gap: .8rem; text-align: center; }
+.jn-camara { position: relative; width: 100%; aspect-ratio: 4 / 3; border-radius: 18px; background: #0f1f38; overflow: hidden; }
+.jn-camara video, .jn-camara canvas { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+.jn-ultimas { display: flex; flex-wrap: wrap; justify-content: center; gap: .4rem; margin: 0; padding: 0; list-style: none; }
+.jn-ultimas li { display: inline-flex; align-items: center; gap: .3rem; padding: .2rem .7rem .2rem .25rem; border-radius: 50rem; background: var(--superficie); font-weight: 800; }
+.jn-ultimas b { display: grid; place-items: center; width: 1.8rem; height: 1.8rem; border-radius: 50%; background: var(--c); color: #fff; }

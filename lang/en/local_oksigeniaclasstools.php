@@ -1530,7 +1530,8 @@ Talk before giving the answer: «Those with blue, why?». Have someone of each c
 Peer instruction: they vote, discuss it in pairs with someone who chose something else, and vote again (Crouch and Mazur, 2001).
 By tables: each table counts its colours and tells you; so they do the counting.
 One by one: go round the tables and ask or take notes; with 12 to 30 students it does not take long.
-With an old phone or without a camera, all this works the same: the card does not need the phone. A photo of the class with the cards up is a record to look at later.
+With the camera: «Read the cards», with the camera of the board\'s computer or with the phone («Read the cards» on the fixed remote), pointing at the raised cards or going round the tables. Each one is outlined in its colour and the board counts, says who is still to be read and, only if you ask, who answered what. The pictures do not leave the device: only card numbers and letters reach the board. They are read with the list they were printed for: if the list changes, print them again.
+With an old phone or without a camera, everything else works the same: the card does not need the phone. A photo of the class with the cards up is a record to look at later.
 The traffic light while they work: the card on the table, red if they need help; you go to the red ones first.
 Yes and no, for quick true or false; the four separate cards, for those who still get mixed up turning one.';
 $string['app_gd_tarjetas_scene'] = 'In year two, the teacher asks which weighs more: A, a kilo of straw; B, a kilo of iron; C, they weigh the same. The cards go up at once and there is a lot of blue. «In groups»: blue to the blue hoop, red to the red one, yellow to the yellow one. In each hoop they talk for a minute, and then each one looks for someone of another colour to convince.
@@ -1545,7 +1546,7 @@ $string['app_gd_tarjetas_stages'] = 'early|Yes and no, or the traffic light, and
 primary|The card that is turned or the four cards with multiple choice questions; in groups and convincing someone of another colour; the traffic light while they work.
 secondary|Concept questions with a common mistake among the options: vote, discuss in pairs and vote again.
 advanced|Peer instruction in large groups without devices: the cards work as well as clickers.';
-$string['app_gd_tarjetas_what'] = 'Voting without devices: hands up or printed cards (one that is turned with A, B, C and D, four separate cards, the traffic light, or yes and no). The board prints the cards with the names of the class, and helps to count and to make groups by answer. No phone is needed: the card works on its own.';
+$string['app_gd_tarjetas_what'] = 'Voting without devices: hands up or printed cards (one that is turned with A, B, C and D, four separate cards, the traffic light, or yes and no). The board prints the cards with the names of the class, and helps to count and to make groups by answer. No phone is needed: the card works on its own; if you like, the card that is turned can be read with the camera of the computer or the phone.';
 $string['app_gd_tarjetas_why'] = 'When each student answers with a card instead of raising a hand for one to answer, everyone answers. In a year four class, Narayan, Heward, Gardner, Courson and Omness (1990) found that with response cards participation was much higher than with hands up, that most students did better in the daily quizzes, and that 19 of the 20 students preferred them. In a replication in a year five science class, Gardner, Heward and Grossi (1994) counted fourteen times more answers, and all 22 students did better on what was taught with cards.
 Technology is not what counts: in physics, with peer instruction, Lasry (2008) compared clickers with paper flashcards and found that clickers gave no advantage in what was learned; their value is mostly in recording the data.
 ABCD cards are one of the techniques of Wiliam (2011): a question with up to four options, time to think and, at a signal, everyone raises their answer. If one option is a common mistake, it is clear at once who has it; and with questions of opinion, hearing someone defend another answer makes some change their mind.';
@@ -2276,6 +2277,12 @@ $string['app_rm_phone_in'] = 'phone connected';
 $string['app_rm_phone_waiting'] = 'waiting for the phone';
 $string['app_rm_rotate'] = 'Change the address';
 $string['app_rm_rotate_sure'] = 'The old one will stop working. Tap again';
+$string['app_rm_scan'] = 'Read the cards';
+$string['app_rm_scan_back'] = 'Back to the remote';
+$string['app_rm_scan_card'] = 'card {$a}';
+$string['app_rm_scan_count'] = 'Cards read: {$a}';
+$string['app_rm_scan_hint'] = 'Point at the raised cards: each one is outlined in the colour of its answer and goes to the board.';
+$string['app_rm_scan_nocam'] = 'The camera cannot be used: allow it in the browser.';
 $string['app_rm_title'] = 'Fixed remote';
 $string['app_rm_tools'] = 'Go to a tool';
 $string['app_rm_turn_off'] = 'Turn off';
@@ -2611,6 +2618,16 @@ $string['app_tc_numbered'] = 'Numbered, without names';
 $string['app_tc_print'] = 'Print';
 $string['app_tc_print_cards'] = 'Print cards';
 $string['app_tc_printing'] = 'The cards are ready to print.';
+$string['app_tc_scan'] = 'Read the cards';
+$string['app_tc_scan_cam'] = 'Use this computer\'s camera';
+$string['app_tc_scan_count'] = '{$a->n} of {$a->of} read';
+$string['app_tc_scan_hint'] = 'Point the camera at the raised cards: each one is outlined in the colour of its answer.';
+$string['app_tc_scan_missing'] = 'Still to read';
+$string['app_tc_scan_names'] = 'Who answered what';
+$string['app_tc_scan_new'] = 'Another question';
+$string['app_tc_scan_nocam'] = 'The camera cannot be used: allow it in the browser, or read them with the phone.';
+$string['app_tc_scan_phone'] = 'Also with the phone: «Read the cards» on the fixed remote («Live» › «Remote»). The cards are read with the list they were printed for.';
+$string['app_tc_scan_stop'] = 'Stop the camera';
 $string['app_tc_talk'] = 'Two minutes to convince';
 $string['app_tc_talk_done'] = 'Time\'s up: raise the cards again!';
 $string['app_tc_talk_now'] = 'Talk with someone of another colour:';

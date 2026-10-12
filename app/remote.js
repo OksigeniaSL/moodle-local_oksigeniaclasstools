@@ -1,7 +1,7 @@
 // The remote on the board: what each order of the teacher's phone does (for the remote of a live session and for the
-// fixed one), and the fixed remote itself. While it is on, the open board asks the site every second and a half for
-// its orders and says which tool it is on; its panel (in «Live», «Remote») turns it on and off, shows its address and
-// QR, and changes the address when it may have been shared.
+// fixed one, which can also send the printed cards it reads), and the fixed remote itself. While it is on, the open
+// board asks the site every second and a half for its orders and says which tool it is on; its panel (in «Live»,
+// «Remote») turns it on and off, shows its address and QR, and changes the address when it may have been shared.
 //
 // @copyright 2026 Oksigenia <dev@oksigenia.cc>
 // @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -36,6 +36,8 @@
         if (orders >= 5 && core.logro) { core.logro('mandamas'); }
         try {
             if (cmd.startsWith('tool_')) { const id = cmd.slice(5); if (core.tabs().includes(id)) { core.show(id); } return; }
+            // Cards read by the phone: card numbers and answers (cards.js).
+            if (cmd.startsWith('cards_')) { if (window.ClasstoolsCards) { window.ClasstoolsCards.fromPhone(cmd); } return; }
             if (RUN[cmd]) { RUN[cmd](); }
         } catch (e) { /* a tool that is not there */ }
     };

@@ -1532,7 +1532,8 @@ Conversa antes de dar la respuesta: «Los del azul, ¿por qué?». Que alguien d
 Instrucción entre iguales: votan, lo discuten en parejas con alguien que eligió otra cosa y vuelven a votar (Crouch y Mazur, 2001).
 Por mesas: cada mesa cuenta sus colores y te lo dice; así cuentan ellos.
 Uno a uno: pasa por las mesas y pregunta o anota; con 12 a 30 alumnos no lleva mucho rato.
-Con un móvil viejo o sin cámara, todo esto funciona igual: la tarjeta no necesita el móvil. Una foto de la clase con las tarjetas levantadas sirve de registro para mirarlo después.
+Con la cámara: «Leer las tarjetas», con la del ordenador de la pizarra o con el móvil («Leer las tarjetas» en el mando fijo), apuntando a las tarjetas levantadas o pasando por las mesas. Cada una se recuadra en su color y la pizarra cuenta, dice quién falta por leer y, solo si lo pides, quién ha contestado qué. Las imágenes no salen del dispositivo: a la pizarra solo llegan números de tarjeta y letras. Se leen con la lista para la que se imprimieron: si la lista cambia, vuelve a imprimirlas.
+Con un móvil viejo o sin cámara, todo lo demás funciona igual: la tarjeta no necesita el móvil. Una foto de la clase con las tarjetas levantadas sirve de registro para mirarlo después.
 El semáforo mientras trabajan: la tarjeta encima de la mesa, en rojo si necesitan ayuda; vas primero a las rojas.
 Sí y no, para verdadero o falso rápido; las cuatro tarjetas sueltas, para quien todavía se confunde al girarla.';
 $string['app_gd_tarjetas_scene'] = 'En segundo, la maestra pregunta qué pesa más: A, un kilo de paja; B, un kilo de hierro; C, pesan lo mismo. Las tarjetas suben a la vez y hay mucho azul. «Por grupos»: los del azul al aro azul, los del rojo al rojo, los del amarillo al amarillo. En cada aro hablan un minuto, y luego cada uno busca a alguien de otro color para convencerlo.
@@ -1547,7 +1548,7 @@ $string['app_gd_tarjetas_stages'] = 'early|Sí y no, o el semáforo, y moverse: 
 primary|La que se gira o las cuatro tarjetas con preguntas de opción; por grupos y a convencer al de otro color; el semáforo mientras trabajan.
 secondary|Preguntas de concepto con un error frecuente entre las opciones: votar, discutir en parejas y volver a votar.
 advanced|Instrucción entre iguales en grupos grandes sin dispositivos: las tarjetas sirven igual que los mandos.';
-$string['app_gd_tarjetas_what'] = 'Votar sin dispositivos: a mano alzada o con tarjetas impresas (una que se gira con A, B, C y D, cuatro tarjetas sueltas, el semáforo, o sí y no). La pizarra imprime las tarjetas con los nombres de la clase, ayuda a contar y a hacer grupos por respuestas. No hace falta móvil: la tarjeta funciona sola.';
+$string['app_gd_tarjetas_what'] = 'Votar sin dispositivos: a mano alzada o con tarjetas impresas (una que se gira con A, B, C y D, cuatro tarjetas sueltas, el semáforo, o sí y no). La pizarra imprime las tarjetas con los nombres de la clase, ayuda a contar y a hacer grupos por respuestas. No hace falta móvil: la tarjeta funciona sola; si quieres, la que se gira se puede leer con la cámara del ordenador o del móvil.';
 $string['app_gd_tarjetas_why'] = 'Cuando cada alumno contesta con una tarjeta en lugar de levantar la mano para que responda uno, contestan todos. En una clase de cuarto de Primaria, Narayan, Heward, Gardner, Courson y Omness (1990) vieron que con tarjetas de respuesta la participación era mucho mayor que levantando la mano, que la mayoría sacaba mejores notas en los controles diarios, y que 19 de los 20 alumnos las preferían. En una réplica en una clase de Ciencias de quinto, Gardner, Heward y Grossi (1994) contaron catorce veces más respuestas, y los 22 alumnos sacaron mejores notas en lo trabajado con tarjetas.
 Lo que cuenta no es la tecnología: en Física, con instrucción entre iguales, Lasry (2008) comparó mandos electrónicos con tarjetas de papel y no encontró que los mandos dieran ventaja en lo aprendido; su valor está sobre todo en registrar los datos.
 Las tarjetas A, B, C y D son una de las técnicas de Wiliam (2011): una pregunta con hasta cuatro opciones, tiempo para pensar y, a una señal, todos levantan su respuesta. Si una opción es un error frecuente, se ve enseguida quién lo tiene; y en las preguntas de opinión, escuchar a quien defiende otra respuesta lleva a algunos a cambiar de idea.';
@@ -2278,6 +2279,12 @@ $string['app_rm_phone_in'] = 'móvil conectado';
 $string['app_rm_phone_waiting'] = 'esperando al móvil';
 $string['app_rm_rotate'] = 'Cambiar la dirección';
 $string['app_rm_rotate_sure'] = 'La anterior dejará de valer. Pulsa otra vez';
+$string['app_rm_scan'] = 'Leer las tarjetas';
+$string['app_rm_scan_back'] = 'Volver al mando';
+$string['app_rm_scan_card'] = 'tarjeta {$a}';
+$string['app_rm_scan_count'] = 'Tarjetas leídas: {$a}';
+$string['app_rm_scan_hint'] = 'Apunta a las tarjetas levantadas: cada una se recuadra en el color de su respuesta y pasa a la pizarra.';
+$string['app_rm_scan_nocam'] = 'No se puede usar la cámara: dale permiso en el navegador.';
 $string['app_rm_title'] = 'Mando fijo';
 $string['app_rm_tools'] = 'Ir a una herramienta';
 $string['app_rm_turn_off'] = 'Apagar';
@@ -2613,6 +2620,16 @@ $string['app_tc_numbered'] = 'Numeradas, sin nombres';
 $string['app_tc_print'] = 'Imprimir';
 $string['app_tc_print_cards'] = 'Imprimir tarjetas';
 $string['app_tc_printing'] = 'Las tarjetas están listas para imprimir.';
+$string['app_tc_scan'] = 'Leer las tarjetas';
+$string['app_tc_scan_cam'] = 'Usar la cámara de este equipo';
+$string['app_tc_scan_count'] = 'Leídas: {$a->n} de {$a->of}';
+$string['app_tc_scan_hint'] = 'Apunta la cámara a las tarjetas levantadas: cada una se recuadra en el color de su respuesta.';
+$string['app_tc_scan_missing'] = 'Faltan por leer';
+$string['app_tc_scan_names'] = 'Quién ha contestado qué';
+$string['app_tc_scan_new'] = 'Otra pregunta';
+$string['app_tc_scan_nocam'] = 'No se puede usar la cámara: dale permiso en el navegador, o léelas con el móvil.';
+$string['app_tc_scan_phone'] = 'También con el móvil: «Leer las tarjetas» en el mando fijo («En vivo» › «Mando»). Las tarjetas se leen con la lista para la que se imprimieron.';
+$string['app_tc_scan_stop'] = 'Parar la cámara';
 $string['app_tc_talk'] = 'Dos minutos para convencer';
 $string['app_tc_talk_done'] = '¡Tiempo! Levanten otra vez las tarjetas.';
 $string['app_tc_talk_now'] = 'Hablen con alguien de otro color:';

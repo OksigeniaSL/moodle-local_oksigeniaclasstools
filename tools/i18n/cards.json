@@ -20,5 +20,21 @@
   "tc_talk": { "en": "Two minutes to convince", "es": "Dos minutos para convencer" },
   "tc_talk_now": { "en": "Talk with someone of another colour:", "es": "Hablen con alguien de otro color:" },
   "tc_talk_done": { "en": "Time's up: raise the cards again!", "es": "¡Tiempo! Levanten otra vez las tarjetas." },
-  "tc_back": { "en": "Back to counting", "es": "Volver a contar" }
+  "tc_back": { "en": "Back to counting", "es": "Volver a contar" },
+  "tc_scan": { "en": "Read the cards", "es": "Leer las tarjetas" },
+  "tc_scan_cam": { "en": "Use this computer's camera", "es": "Usar la cámara de este equipo" },
+  "tc_scan_stop": { "en": "Stop the camera", "es": "Parar la cámara" },
+  "tc_scan_new": { "en": "Another question", "es": "Otra pregunta" },
+  "tc_scan_count": { "en": "{$a->n} of {$a->of} read", "es": "Leídas: {$a->n} de {$a->of}" },
+  "tc_scan_missing": { "en": "Still to read", "es": "Faltan por leer" },
+  "tc_scan_names": { "en": "Who answered what", "es": "Quién ha contestado qué" },
+  "tc_scan_hint": { "en": "Point the camera at the raised cards: each one is outlined in the colour of its answer.", "es": "Apunta la cámara a las tarjetas levantadas: cada una se recuadra en el color de su respuesta." },
+  "tc_scan_nocam": { "en": "The camera cannot be used: allow it in the browser, or read them with the phone.", "es": "No se puede usar la cámara: dale permiso en el navegador, o léelas con el móvil." },
+  "tc_scan_phone": { "en": "Also with the phone: «Read the cards» on the fixed remote («Live» › «Remote»). The cards are read with the list they were printed for.", "es": "También con el móvil: «Leer las tarjetas» en el mando fijo («En vivo» › «Mando»). Las tarjetas se leen con la lista para la que se imprimieron." },
+  "rm_scan": { "en": "Read the cards", "es": "Leer las tarjetas" },
+  "rm_scan_count": { "en": "Cards read: {$a}", "es": "Tarjetas leídas: {$a}" },
+  "rm_scan_hint": { "en": "Point at the raised cards: each one is outlined in the colour of its answer and goes to the board.", "es": "Apunta a las tarjetas levantadas: cada una se recuadra en el color de su respuesta y pasa a la pizarra." },
+  "rm_scan_card": { "en": "card {$a}", "es": "tarjeta {$a}" },
+  "rm_scan_back": { "en": "Back to the remote", "es": "Volver al mando" },
+  "rm_scan_nocam": { "en": "The camera cannot be used: allow it in the browser.", "es": "No se puede usar la cámara: dale permiso en el navegador." }
 }

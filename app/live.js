@@ -139,6 +139,7 @@
             <div class="lv-centro"><p class="lv-grande" id="lv-htotal"></p><div class="lv-barras" id="lv-hbars"></div></div>
             <div class="botonera centro lv-mandos"><button type="button" class="boton suave" id="lv-hreset"><span data-icono="reiniciar"></span><span>${escape(t('lv_hands_reset'))}</span></button>
                 <button type="button" class="boton suave" id="lv-hgroups"><span data-icono="grupos"></span><span>${escape(t('tc_groups'))}</span></button>
+                <button type="button" class="boton suave" id="lv-hscan"><span data-icono="pantalla"></span><span>${escape(t('tc_scan'))}</span></button>
                 <button type="button" class="boton suave" id="lv-hprint"><span data-icono="cartas"></span><span>${escape(t('tc_print_cards'))}</span></button></div>`;
         $$('[data-icono]', stage).forEach((e) => setIcon(e, e.dataset.icono));
         $('#lv-hq').value = hd.question;
@@ -147,8 +148,10 @@
         // Printed cards, and each answer to its corner (cards.js).
         const C = window.ClasstoolsCards;
         $('#lv-hprint').hidden = $('#lv-hgroups').hidden = !C;
+        $('#lv-hscan').hidden = !C || !window.ClasstoolsScanner;
         if (C) {
             $('#lv-hprint').addEventListener('click', () => C.ask());
+            $('#lv-hscan').addEventListener('click', () => C.scan(stage, paintHands));
             $('#lv-hgroups').addEventListener('click', () => {
                 const opts = handOptions();
                 C.groups(stage, opts, colourOf, opts.map((o) => Math.max(0, Number(hd.counts[o]) || 0)), paintHands);
@@ -477,6 +480,13 @@
     core.register('envivo', { entra: () => { if (S) { poll(); } } });
     // What is chosen or open, for the teacher's guide.
     core.liveKind = () => (S && S.kind ? S.kind : kind);
+    // The phone reads cards: the board goes to «Read the cards» (unless a session with devices is open).
+    core.liveOpenScan = () => {
+        if (S || !window.ClasstoolsCards) { return; }
+        if (core.current && core.current() !== 'envivo') { core.show('envivo'); }
+        kind = 'hands'; save('envivo-tipo', kind); paintSetup();
+        window.ClasstoolsCards.scan(stage, paintHands);
+    };
     paintSetup();
     // A session left open (the page was reloaded): pick it up again.
     const kept = LIVE ? Number(load(KEY, 0)) || 0 : 0;

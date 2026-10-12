@@ -85,6 +85,23 @@ final class remote_test extends \advanced_testcase {
         $this->assertSame(['on' => false], remote::board((int) $teacher->id, $one, 0, 'quien', $tools));
     }
 
+    public function test_the_phone_sends_the_cards_it_reads(): void {
+        $this->resetAfterTest();
+        $gen = $this->getDataGenerator();
+        $teacher = $gen->create_user();
+        $course = $gen->create_course();
+        remote::set_enabled((int) $teacher->id, true);
+        remote::board((int) $teacher->id, $course, 0, 'envivo', [['envivo', 'Live']]);
+        $send = fn(string $cmd) => remote::command(remote::get((int) $teacher->id), $cmd, (int) $course->id);
+        // Card numbers from 1 to 60, answers a to d, up to 20 at once.
+        foreach (['cards_', 'cards_0a', 'cards_61b', 'cards_7e', 'cards_7', 'cards_' . str_repeat('1a', 21)] as $bad) {
+            $this->assertSame(['ok' => false, 'why' => 'unknown'], $send($bad), $bad);
+        }
+        $this->assertSame(['ok' => true], $send('cards_7a12c60d'));
+        $got = remote::board((int) $teacher->id, $course, 0, 'envivo', [['envivo', 'Live']]);
+        $this->assertSame(['cards_7a12c60d'], array_column($got['cmds'], 'cmd'));
+    }
+
     public function test_privacy_forgets_the_remote(): void {
         $this->resetAfterTest();
         $teacher = $this->getDataGenerator()->create_user();

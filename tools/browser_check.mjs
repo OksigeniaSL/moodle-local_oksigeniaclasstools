@@ -1356,6 +1356,129 @@ const CHECKS = {
         if (!q('#lv-hbars')) { return 'no way back to counting'; }
         return '';
     },
+    // The marks of the cards read from a picture: several cards at once, turned to each answer, tilted, small and big,
+    // with blur and noise, on a cluttered background; and nothing read where there is no card.
+    'card-scanner': async () => {
+        const S = window.ClasstoolsScanner;
+        const canvas = document.createElement('canvas');
+        canvas.width = 1280; canvas.height = 720;
+        const ctx = canvas.getContext('2d');
+        // A card as printed (135 units: bands of 20, the mark with its margin in the middle 95), turned and tilted.
+        const card = (id, x, y, size, quarter, tilt, skew = 0) => {
+            const u = size / 135;
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.rotate((quarter * 90 + tilt) * Math.PI / 180);
+            ctx.transform(1, 0, skew, 1, 0, 0);
+            ctx.scale(u, u);
+            ctx.translate(-67.5, -67.5);
+            ctx.fillStyle = '#ce1423'; ctx.fillRect(0, 0, 135, 20);
+            ctx.fillStyle = '#fbbe17'; ctx.fillRect(0, 115, 135, 20);
+            ctx.fillStyle = '#164281'; ctx.fillRect(115, 20, 20, 95);
+            ctx.fillStyle = '#067e36'; ctx.fillRect(0, 20, 20, 95);
+            ctx.fillStyle = '#fff'; ctx.fillRect(20, 20, 95, 95);
+            const c = 95 / 8, code = S.CODES[id - 1];
+            ctx.fillStyle = '#111';
+            ctx.fillRect(20 + c, 20 + c, 6 * c, 6 * c);
+            ctx.fillStyle = '#fff';
+            ctx.fillRect(20 + 2 * c, 20 + 2 * c, 4 * c, 4 * c);
+            ctx.fillStyle = '#111';
+            for (let r = 0; r < 4; r++) { for (let col = 0; col < 4; col++) { if ((code >> (r * 4 + col)) & 1) { ctx.fillRect(20 + (2 + col) * c, 20 + (2 + r) * c, c + 0.3, c + 0.3); } } }
+            ctx.restore();
+        };
+        const scene = (cards, blur) => {
+            ctx.filter = 'none';
+            ctx.fillStyle = '#8a8f99'; ctx.fillRect(0, 0, 1280, 720);
+            // Clutter: stripes, blocks and letters, as a classroom has.
+            for (let i = 0; i < 40; i++) { ctx.fillStyle = i % 2 ? '#2b2b2b' : '#d8d2c4'; ctx.fillRect((i * 97) % 1280, (i * 53) % 720, 20 + (i * 13) % 90, 10 + (i * 7) % 60); }
+            ctx.fillStyle = '#222'; ctx.font = '48px sans-serif'; ctx.fillText('ABCD 1234 Mesa', 40, 690);
+            cards.forEach((k) => card(...k));
+            const img = ctx.getImageData(0, 0, 1280, 720);
+            if (blur) {
+                ctx.filter = 'blur(1.2px)'; ctx.drawImage(canvas, 0, 0); ctx.filter = 'none';
+                const b = ctx.getImageData(0, 0, 1280, 720);
+                for (let i = 0; i < b.data.length; i += 4) { const nz = ((i * 2654435761) % 41) - 20; for (let j = 0; j < 3; j++) { b.data[i + j] = Math.max(0, Math.min(255, b.data[i + j] + nz)); } }
+                return b;
+            }
+            return img;
+        };
+        const ANS = ['A', 'D', 'C', 'B'];
+        const cases = [
+            [[1, 200, 200, 230, 0, 0], [17, 520, 200, 200, 1, 8], [33, 840, 220, 180, 2, -10], [60, 1120, 220, 160, 3, 5]],
+            [[5, 180, 520, 110, 0, 14, 0.15], [9, 420, 520, 90, 1, -12], [28, 640, 520, 80, 2, 0, -0.2], [44, 860, 520, 70, 3, 10], [12, 1080, 520, 300, 1, -3]],
+            // Small and tilted: marks of about 24 pixels (cells of 4), up to 35 degrees.
+            [[2, 150, 150, 45, 0, 35], [3, 350, 150, 45, 1, -20], [4, 550, 150, 55, 2, 30], [6, 750, 150, 55, 3, -35], [7, 950, 150, 65, 0, 20]],
+            // The whole class at once: the 60 cards, each turned its own way.
+            Array.from({ length: 60 }, (_, i) => [i + 1, 64 + (i % 10) * 128, 60 + Math.floor(i / 10) * 120, 100, i % 4, ((i * 7) % 21) - 10]),
+        ];
+        for (const [i, cards] of cases.entries()) {
+            for (const blur of [false, true]) {
+                const got = S.detect(scene(cards, blur));
+                const want = cards.map(([id, , , , q]) => `${id}${ANS[q]}`).sort().join(' ');
+                const have = got.map((g) => `${g.id}${g.answer}`).sort().join(' ');
+                if (have !== want) { return `scene ${i + 1}${blur ? ' blurred' : ''}: read «${have}», expected «${want}»`; }
+            }
+        }
+        if (S.detect(scene([], true)).length) { return 'a card read where there is none'; }
+        document.body.append(canvas);
+        canvas.style.cssText = 'position:fixed;inset:0;width:100vw;height:100vh;z-index:99';
+        scene(cases[1], true);
+        await window.shot('card-scanner');
+        canvas.remove();
+        return '';
+    },
+    // Reading the cards on the board with its camera (the picture of four cards that Chrome plays as a camera), and
+    // what the phone sends.
+    'card-reading': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const q = (s) => document.querySelector(s);
+        const until = async (s) => { for (let i = 0; i < 100 && !q(s); i++) { await sleep(50); } return q(s); };
+        (await until('#t-envivo')).click();
+        (await until('#lv-kind [data-v="hands"]')).click();
+        // Cards printed numbered, 60 of them (the camera has cards 3, 14, 27 and 45).
+        window.ClasstoolsCore.save('tarjetas-lista', '');
+        window.ClasstoolsCore.save('tarjetas-cuantas', 60);
+        (await until('#lv-hscan')).click();
+        (await until('#tc-cam')).click();
+        const C = window.ClasstoolsCards, want = '14D 27C 3A 45B';
+        let have = '';
+        for (let i = 0; i < 60; i++) {
+            have = [...C.read().entries()].map(([id, a]) => `${id}${a}`).sort().join(' ');
+            if (have === want) { break; }
+            await sleep(200);
+        }
+        if (have !== want) { return `the camera read «${have}», expected «${want}»`; }
+        await sleep(300);
+        await window.shot('card-reading');
+        // The phone sends more (the camera here stopped): they add up, and a card read again with another answer changes.
+        q('#tc-cam').click();
+        C.fromPhone('cards_7b3c');
+        await sleep(100);
+        if (C.read().get(7) !== 'B' || C.read().get(3) !== 'C') { return 'the phone readings did not count'; }
+        if (!/5/.test(q('#tc-count').textContent)) { return `count: ${q('#tc-count').textContent}`; }
+        q('#tc-new').click();
+        if (C.read().size) { return 'another question did not clear the readings'; }
+        return '';
+    },
+    // The phone reads the cards (the picture of four cards as its camera) and sends their numbers and answers.
+    'remote-cards': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const q = (s) => document.querySelector(s);
+        for (let i = 0; i < 60 && !q('#jn-leer'); i++) { await sleep(100); }
+        if (!q('#jn-leer')) { return 'no button to read the cards'; }
+        q('#jn-leer').click();
+        let sent = '';
+        for (let i = 0; i < 80; i++) {
+            sent = window.FAKE.calls.filter((c) => c.action === 'command' && c.cmd.startsWith('cards_')).map((c) => c.cmd.slice(6)).join('');
+            if (['3a', '14d', '27c', '45b'].every((x) => new RegExp(`(^|[a-d])${x}`).test(sent))) { break; }
+            await sleep(200);
+        }
+        if (!['3a', '14d', '27c', '45b'].every((x) => new RegExp(`(^|[a-d])${x}`).test(sent))) { return `sent «${sent}»`; }
+        await window.shot('remote-cards');
+        q('#jn-leer-fin').click();
+        await sleep(200);
+        return q('.jn-mando') ? '' : 'no way back to the remote';
+    },
     // The calculator: the order of operations, the decimal sign, the strip of results, and both keyboards.
     'calculator': async () => {
         const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -1412,7 +1535,7 @@ const CHECKS = {
 };
 
 // Checks that run on another page than the board.
-const PAGES = { 'remote-phone': '/phone.html', 'exit-device': '/device.html' };
+const PAGES = { 'remote-phone': '/phone.html', 'remote-cards': '/phone.html', 'exit-device': '/device.html' };
 
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png',
     '.woff2': 'font/woff2', '.json': 'application/json', '.mp3': 'audio/mpeg' };
@@ -1449,6 +1572,38 @@ const server = createServer((req, res) => {
     res.writeHead(200, { 'Content-Type': TYPES[extname(file)] || 'application/octet-stream' }); res.end(readFileSync(file));
 });
 
+// A camera for the checks: a still picture of four printed cards held up, each turned to another answer (cards 3, 14,
+// 27 and 45: A, D, C and B), as a Y4M video that Chrome plays as its camera.
+const CAMERA_CARDS = [[3, 0], [14, 1], [27, 2], [45, 3]];
+const cameraVideo = (file) => {
+    const W = 1280, H = 720, Y = new Uint8Array(W * H).fill(140);
+    for (let i = 0; i < 30; i++) { const x0 = (i * 211) % W, y0 = (i * 97) % H; for (let y = y0; y < Math.min(H, y0 + 30); y++) { for (let x = x0; x < Math.min(W, x0 + 60); x++) { Y[y * W + x] = i % 2 ? 40 : 220; } } }
+    const scanner = readFileSync(join(APP, 'scanner.js'), 'utf8');
+    const codes = JSON.parse(`[${scanner.match(/const CODES = \[([^\]]+)\]/)[1]}]`);
+    // A card as printed (135 units) at x0, y0, turned k quarters clockwise.
+    const card = (id, x0, y0, size, k) => {
+        const code = codes[id - 1], c = 95 / 8;
+        for (let iy = 0; iy < size; iy++) {
+            for (let ix = 0; ix < size; ix++) {
+                let x = (ix + 0.5) * 135 / size, y = (iy + 0.5) * 135 / size;
+                for (let r = 0; r < k; r++) { [x, y] = [y, 135 - x]; }
+                let v = 255;
+                if (y < 20) { v = 77; } else if (y >= 115) { v = 189; } else if (x < 20) { v = 81; } else if (x >= 115) { v = 60; } else {
+                    const cx = Math.floor((x - 20) / c), cy = Math.floor((y - 20) / c);
+                    if (cx >= 1 && cx <= 6 && cy >= 1 && cy <= 6) {
+                        const inside = cx >= 2 && cx <= 5 && cy >= 2 && cy <= 5;
+                        v = !inside || (code >> ((cy - 2) * 4 + (cx - 2))) & 1 ? 20 : 255;
+                    }
+                }
+                Y[(y0 + iy) * W + x0 + ix] = v;
+            }
+        }
+    };
+    CAMERA_CARDS.forEach(([id, k], i) => card(id, 80 + i * 300, 220, 220, k));
+    const frame = Buffer.concat([Buffer.from('FRAME\n'), Buffer.from(Y), Buffer.alloc(W * H / 2, 128)]);
+    writeFileSync(file, Buffer.concat([Buffer.from(`YUV4MPEG2 W${W} H${H} F5:1 Ip A1:1 C420jpeg\n`), frame, frame]));
+};
+
 const chromePath = () => process.env.CHROME || ['/usr/bin/google-chrome', '/usr/bin/chromium', '/usr/bin/chromium-browser'].find(existsSync);
 
 async function main() {
@@ -1460,8 +1615,11 @@ async function main() {
     await new Promise((r) => server.listen(0, '127.0.0.1', r));
     const base = `http://127.0.0.1:${server.address().port}`;
     const profile = mkdtempSync(join(tmpdir(), 'ct-check-'));
+    const video = join(profile, 'camera.y4m');
+    cameraVideo(video);
     const chrome = spawn(bin, ['--headless=new', '--remote-debugging-port=0', `--user-data-dir=${profile}`, '--no-first-run',
-        '--no-default-browser-check', '--disable-gpu', '--mute-audio', 'about:blank'], { stdio: ['ignore', 'ignore', 'pipe'] });
+        '--no-default-browser-check', '--disable-gpu', '--mute-audio', '--use-fake-ui-for-media-stream',
+        '--use-fake-device-for-media-stream', `--use-file-for-fake-video-capture=${video}`, 'about:blank'], { stdio: ['ignore', 'ignore', 'pipe'] });
     let failed = 0;
     try {
         const wsUrl = await new Promise((ok, ko) => {
