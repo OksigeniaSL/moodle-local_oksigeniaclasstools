@@ -79,6 +79,7 @@ The students in these screenshots do not exist: their names are made up and thei
 | My stickers | Each tool has a sticker for the teacher, earned by using it for real with a class and raised a level with the days of use; the album is on «Which class?». Only each teacher sees theirs, with no rankings, and the administrator can turn it off. |
 | Teacher's guide | A button in the top bar opens the guide of what is on screen: what it is for, what it works on, why (with its sources), how to take it to class and what it gives at each school level. Only teachers see it. |
 | Screen modes | Early years, Primary, Secondary or Advanced: one at a time, per course. They change the look and the defaults (bigger notes and colours for the youngest, the full board for the older ones…) and put first what suits the level; the rest stays one tap away, in «Other levels». «Names in capitals», in the same menu, shows the students' names in capitals (on by default in Early years). |
+| Two at once | **Two tools at once**, each in one half of the screen (the timer beside the quiz, the stopwatch beside a material); and the **duel** in six materials: the same material twice, one for each of two students with the same challenge, at once (on a multi-touch screen), in turns or to compare. |
 
 Lists come from the course: one per group and one per cohort enrolled with cohort sync, and the whole course. A
 group and a cohort with the same students appear once. Separate groups mode is respected.
