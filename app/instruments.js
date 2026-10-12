@@ -434,6 +434,20 @@
     paintCurtain();
     paintButtons();
 
-    // For automated tests.
-    window.ClasstoolsInstruments = { items: () => items, create, remove, curtain: () => cv, spot: () => sp };
+    // From the teacher's phone: the curtain on or off, and uncovering a little more each time (as a sheet of paper
+    // pulled down over a projected page).
+    const remoteCurtain = (what) => {
+        if (!kit.full() && board.setFull) { board.setFull(true, false); }
+        if (what === 'reveal' && !curtain.hidden) {
+            cv.t = Math.min(cv.b - 0.04, cv.t + 0.125);
+        } else {
+            cv = { l: 0, t: 0, r: 1, b: 1 };
+            curtain.hidden = what === 'reveal' ? false : !curtain.hidden;
+        }
+        paintCurtain(); paintButtons();
+    };
+
+    // For automated tests (and the phone).
+    window.ClasstoolsInstruments = { items: () => items, create, remove, curtain: () => cv, spot: () => sp, remoteCurtain,
+        curtainShown: () => !curtain.hidden };
 })();

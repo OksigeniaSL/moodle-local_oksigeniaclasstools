@@ -83,6 +83,8 @@
         $('.ct-turno-cada').addEventListener('change', (e) => {
             relay = Number(e.target.value) || 0;
             save('turno-relevo', relay);
+            // The last relay chosen, for the phone to turn it on again.
+            if (relay) { save('turno-relevo-ultimo', relay); }
             layer.classList.toggle('ct-turno-relevos', !!relay);
         });
         layer.classList.toggle('ct-turno-relevos', !!relay);

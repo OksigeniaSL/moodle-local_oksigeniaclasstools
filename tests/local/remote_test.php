@@ -102,6 +102,60 @@ final class remote_test extends \advanced_testcase {
         $this->assertSame(['cards_7a12c60d'], array_column($got['cmds'], 'cmd'));
     }
 
+    public function test_new_orders_and_going_to_another_course(): void {
+        $this->resetAfterTest();
+        $gen = $this->getDataGenerator();
+        $teacher = $gen->create_user();
+        $here = $gen->create_course(['fullname' => 'Maths 6']);
+        $other = $gen->create_course(['fullname' => 'Language 5']);
+        $notmine = $gen->create_course(['fullname' => 'Someone else']);
+        $gen->enrol_user($teacher->id, $here->id, 'editingteacher');
+        $gen->enrol_user($teacher->id, $other->id, 'editingteacher');
+        $this->assertSame(['Language 5', 'Maths 6'], array_column(remote::courses((int) $teacher->id), 'name'));
+        remote::set_enabled((int) $teacher->id, true);
+        remote::board((int) $teacher->id, $here, 0, 'pizarra', [['pizarra', 'Board']]);
+        $send = function (string $cmd) use ($teacher, $here) {
+            global $DB;
+            // No waiting between orders here.
+            $row = remote::get((int) $teacher->id);
+            $state = json_decode($row->state, true);
+            $state['last'] = 0;
+            $DB->set_field('local_oksigeniaclasstools_remote', 'state', json_encode($state), ['id' => $row->id]);
+            return remote::command(remote::get((int) $teacher->id), $cmd, (int) $here->id);
+        };
+        foreach (['curtain', 'reveal', 'relay', 'live', 'course_' . $other->id] as $cmd) {
+            $this->assertSame(['ok' => true], $send($cmd), $cmd);
+        }
+        // Not a course of theirs, nor the one on the board.
+        $this->assertSame(['ok' => false, 'why' => 'unknown'], $send('course_' . $notmine->id));
+        $this->assertSame(['ok' => false, 'why' => 'unknown'], $send('course_' . $here->id));
+    }
+
+    public function test_it_turns_itself_off_after_hours_without_orders(): void {
+        global $DB;
+        $this->resetAfterTest();
+        $teacher = $this->getDataGenerator()->create_user();
+        set_config('remoteoff', 1, 'local_oksigeniaclasstools');
+        $row = remote::set_enabled((int) $teacher->id, true);
+        $this->assertTrue(remote::status((int) $teacher->id)['on']);
+        // An order from the phone half an hour ago keeps it on; two hours without one turn it off.
+        $state = json_decode($row->state, true);
+        $state['since'] = time() - 2 * HOURSECS;
+        $state['last'] = (time() - 1800) * 1000;
+        $DB->set_field('local_oksigeniaclasstools_remote', 'state', json_encode($state), ['id' => $row->id]);
+        $this->assertNotNull(remote::by_token($row->token));
+        $state['last'] = 0;
+        $DB->set_field('local_oksigeniaclasstools_remote', 'state', json_encode($state), ['id' => $row->id]);
+        $this->assertNull(remote::by_token($row->token));
+        $this->assertFalse(remote::status((int) $teacher->id)['on']);
+        // Turned on again, it counts from then; with «never» it stays on.
+        remote::set_enabled((int) $teacher->id, true);
+        $this->assertTrue(remote::status((int) $teacher->id)['on']);
+        set_config('remoteoff', 0, 'local_oksigeniaclasstools');
+        $DB->set_field('local_oksigeniaclasstools_remote', 'state', json_encode(['since' => 1]), ['userid' => $teacher->id]);
+        $this->assertTrue(remote::status((int) $teacher->id)['on']);
+    }
+
     public function test_privacy_forgets_the_remote(): void {
         $this->resetAfterTest();
         $teacher = $this->getDataGenerator()->create_user();

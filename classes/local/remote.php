@@ -20,7 +20,9 @@ namespace local_oksigeniaclasstools\local;
  * The fixed remote of a teacher: an address for the phone that does not change and needs no login, with a key the
  * teacher can change (the old address stops working) and a switch to turn it off. The phone sees the teacher's boards
  * that are open (by course, nothing about the students) and sends them orders; a board takes only its own, and only
- * while it is open. Whoever has the address can drive the board, so it is changed when it may have been shared.
+ * while it is open. Whoever has the address can drive the board, so it is changed when it may have been shared, and
+ * it turns itself off after the hours without orders that the site chooses. From the phone, the board can also go to
+ * another of the teacher's courses.
  *
  * @package    local_oksigeniaclasstools
  * @copyright  2026 Oksigenia <dev@oksigenia.cc>
@@ -28,7 +30,11 @@ namespace local_oksigeniaclasstools\local;
  */
 class remote {
     /** The orders a phone can send: the ones of the remote of a live session, and some more. */
-    const COMMANDS = ['tm_toggle', 'tm_reset', 'tm_plus', 'pick', 'tab_next', 'tab_prev', 'present', 'turn', 'next'];
+    const COMMANDS = ['tm_toggle', 'tm_reset', 'tm_plus', 'pick', 'tab_next', 'tab_prev', 'present', 'turn', 'next',
+        'curtain', 'reveal', 'relay', 'live'];
+
+    /** Most courses the phone lists to change the class. */
+    const MAX_COURSES = 60;
 
     /** Length of the key. */
     const TOKEN_LENGTH = 32;
@@ -67,7 +73,40 @@ class remote {
         if (strlen($token) !== self::TOKEN_LENGTH || !ctype_alnum($token)) {
             return null;
         }
-        return $DB->get_record('local_oksigeniaclasstools_remote', ['token' => $token, 'enabled' => 1]) ?: null;
+        $row = $DB->get_record('local_oksigeniaclasstools_remote', ['token' => $token, 'enabled' => 1]) ?: null;
+        return $row && self::alive($row) ? $row : null;
+    }
+
+    /**
+     * Whether a remote that is on is still on: it turns itself off after the hours of the site's setting without
+     * orders from the phone (counting from when it was turned on).
+     *
+     * @param \stdClass $row
+     * @return bool
+     */
+    public static function alive(\stdClass $row): bool {
+        if (!$row->enabled) {
+            return false;
+        }
+        $setting = get_config('local_oksigeniaclasstools', 'remoteoff');
+        $hours = $setting === false ? 2 : (int) $setting;
+        if ($hours <= 0) {
+            return true;
+        }
+        $state = self::state($row);
+        if (empty($state['since'])) {
+            // Turned on before it could turn itself off: from now.
+            $state['since'] = time();
+            self::keep($row, $state);
+            return true;
+        }
+        $used = max((int) $state['since'], intdiv((int) $state['last'], 1000));
+        if (time() - $used < $hours * HOURSECS) {
+            return true;
+        }
+        self::set_enabled((int) $row->userid, false);
+        $row->enabled = 0;
+        return false;
     }
 
     /**
@@ -95,13 +134,19 @@ class remote {
         $now = time();
         $row = self::get($userid);
         if (!$row) {
-            $row = (object) ['userid' => $userid, 'token' => self::new_token(), 'enabled' => (int) $on, 'state' => '{}',
-                'timecreated' => $now, 'timemodified' => $now];
+            $row = (object) ['userid' => $userid, 'token' => self::new_token(), 'enabled' => (int) $on,
+                'state' => json_encode(['since' => $now]), 'timecreated' => $now, 'timemodified' => $now];
             $row->id = $DB->insert_record('local_oksigeniaclasstools_remote', $row);
             return $row;
         }
         $row->enabled = (int) $on;
         $row->timemodified = $now;
+        if ($on) {
+            // It counts its hours from now.
+            $state = self::state($row);
+            $state['since'] = $now;
+            $row->state = json_encode($state);
+        }
         $DB->update_record('local_oksigeniaclasstools_remote', $row);
         return $row;
     }
@@ -116,7 +161,7 @@ class remote {
         global $DB;
         $row = self::get($userid) ?: self::set_enabled($userid, true);
         $row->token = self::new_token();
-        $row->state = '{}';
+        $row->state = json_encode(['since' => time()]);
         $row->timemodified = time();
         $DB->update_record('local_oksigeniaclasstools_remote', $row);
         return $row;
@@ -140,7 +185,7 @@ class remote {
      */
     public static function status(int $userid): array {
         $row = self::get($userid);
-        return $row && $row->enabled ? ['on' => true, 'url' => self::url($row)] : ['on' => false];
+        return $row && self::alive($row) ? ['on' => true, 'url' => self::url($row)] : ['on' => false];
     }
 
     /**
@@ -181,7 +226,7 @@ class remote {
      */
     public static function board(int $userid, \stdClass $course, int $since, string $tool, array $tools): array {
         $row = self::get($userid);
-        if (!$row || !$row->enabled) {
+        if (!$row || !self::alive($row)) {
             return ['on' => false];
         }
         $state = self::state($row);
@@ -238,8 +283,28 @@ class remote {
     }
 
     /**
+     * The teacher's courses where they can use the board, for the phone to change the class: id and name.
+     *
+     * @param int $userid
+     * @return array[] id, name
+     */
+    public static function courses(int $userid): array {
+        $list = [];
+        foreach (enrol_get_users_courses($userid, true, 'id, shortname, fullname') as $course) {
+            $context = \context_course::instance($course->id);
+            if (!has_capability('local/oksigeniaclasstools:use', $context, $userid)) {
+                continue;
+            }
+            $name = format_string($course->fullname, true, ['context' => $context, 'escape' => false]);
+            $list[] = ['id' => (int) $course->id, 'name' => \core_text::substr($name, 0, 60)];
+        }
+        usort($list, fn($a, $b) => strcoll($a['name'], $b['name']));
+        return array_slice($list, 0, self::MAX_COURSES);
+    }
+
+    /**
      * An order from the phone for the board of a course: only known orders (or the printed cards it read, as
-     * «cards_7a12c»), for an open board, and not too fast.
+     * «cards_7a12c», or another course of the teacher to go to, as «course_12»), for an open board, and not too fast.
      *
      * @param \stdClass $row
      * @param string $cmd
@@ -249,7 +314,12 @@ class remote {
     public static function command(\stdClass $row, string $cmd, int $courseid): array {
         // Printed cards read by the phone: card numbers (1 to 60) and their answers, up to 20 at once.
         $cards = (bool) preg_match('/^cards_(([1-9]|[1-5][0-9]|60)[abcd]){1,20}$/', $cmd);
-        if (!$cards && !in_array($cmd, self::COMMANDS, true) && !preg_match('/^tool_[a-z]{2,20}$/', $cmd)) {
+        // Another course of the teacher (not the one on the board).
+        $goto = preg_match('/^course_([1-9][0-9]{0,9})$/', $cmd, $m) ? (int) $m[1] : 0;
+        if ($goto && ($goto === $courseid || !in_array($goto, array_column(self::courses((int) $row->userid), 'id'), true))) {
+            return ['ok' => false, 'why' => 'unknown'];
+        }
+        if (!$cards && !$goto && !in_array($cmd, self::COMMANDS, true) && !preg_match('/^tool_[a-z]{2,20}$/', $cmd)) {
             return ['ok' => false, 'why' => 'unknown'];
         }
         $open = array_column(self::open_boards($row), 'tools', 'course');

@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.42.0 (2026-10-12)
+
+- **Changing the class from the phone**: «Change the class» on the fixed remote lists the teacher's courses where they
+  can use the board, and the open board goes to the one chosen (from 6th Maths to 5th Language without touching the
+  computer); the phone follows it. Only the teacher's own courses are accepted.
+- **The fixed remote turns itself off** after the hours without orders from the phone that the site chooses (a new
+  setting: never, 1, 2, 4 or 8 hours; 2 by default), counting from when it was turned on. It is turned on again on the
+  board with one tap.
+- **New orders**: the curtain of the board on or off, and «Uncover a little», which pulls it down an eighth at a time
+  (as a sheet of paper over a projected page); the relays of «Whose turn?» on (as last chosen, or every minute) or
+  off; and opening or closing what is on in «Live» (the vote, the brainstorm question or the exit ticket).
+- On the board, the panel of the fixed remote shows each order arriving (the waves go from the phone to the board) and
+  says which was the last one.
+
 ## 0.41.0 (2026-10-12)
 
 - **Reading the printed cards with a camera.** The card that is turned now carries in its middle a mark of our own,

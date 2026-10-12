@@ -23,7 +23,8 @@
 
     const COMMANDS = [['tm_toggle', 'lv_cmd_timer', 'grande'], ['tm_reset', 'lv_cmd_reset'], ['tm_plus', 'lv_cmd_plus'],
         ['pick', 'lv_cmd_pick'], ['turn', 'rm_cmd_turn'], ['next', 'rm_cmd_next'], ['present', 'lv_cmd_present'],
-        ['tab_prev', 'lv_cmd_prev'], ['tab_next', 'lv_cmd_next']];
+        ['tab_prev', 'lv_cmd_prev'], ['tab_next', 'lv_cmd_next'], ['live', 'rm_cmd_live'], ['relay', 'rm_cmd_relay'],
+        ['curtain', 'rm_cmd_curtain'], ['reveal', 'rm_cmd_reveal']];
     const post = (action, extra = {}) => fetch(R.api, { method: 'POST', body: new URLSearchParams({ k: R.k, action, ...extra }) })
         .then((r) => r.json());
     let boards = [], course = Number(localStorage.getItem('mando-curso')) || 0, shown = '', timer = 0, failures = 0, last = '';
@@ -45,6 +46,7 @@
             <div class="jn-mando">${COMMANDS.map(([c, k, cls]) => `<button type="button" class="${cls || ''}" data-cmd="${c}">${escape(t(k))}</button>`).join('')}</div>
             <p class="jn-texto" id="jn-hecho" aria-live="polite">${escape(last) || '&nbsp;'}</p>
             ${window.ClasstoolsScanner ? `<button type="button" class="jn-boton jn-leer-boton" id="jn-leer">${escape(t('rm_scan'))}</button>` : ''}
+            <details class="jn-herramientas" id="jn-clases"><summary>${escape(t('rm_course'))}</summary><p class="jn-texto">${escape(t('rm_course_hint'))}</p><div class="jn-mando" id="jn-clases-lista"></div></details>
             ${tools.length ? `<details class="jn-herramientas"><summary>${escape(t('rm_tools'))}</summary><div class="jn-mando">${tools.map(([id, name]) => `<button type="button" data-cmd="tool_${escape(id)}"${id === b.tool ? ' aria-current="true"' : ''}>${escape(name)}</button>`).join('')}</div></details>` : ''}`;
     };
     // --- Reading the printed cards ----------------------------------------------------------------------------------
@@ -123,8 +125,34 @@
             .catch(() => { const n = document.getElementById('jn-leer-nota'); if (n) { n.textContent = t('rm_scan_nocam'); } });
     };
 
+    // Changing the class: the teacher's courses (asked for when the list is opened), and the board goes to the one
+    // chosen; the phone follows it.
+    root.addEventListener('toggle', (e) => {
+        if (e.target.id !== 'jn-clases' || !e.target.open) { return; }
+        const box = document.getElementById('jn-clases-lista');
+        post('courses').then((v) => {
+            const list = (v && v.courses) || [];
+            box.innerHTML = list.filter((c) => c.id !== course).map((c) => `<button type="button" data-goto="${c.id}">${escape(c.name)}</button>`).join('')
+                || `<p class="jn-texto">${escape(t('rm_course_none'))}</p>`;
+        }).catch(() => { box.innerHTML = `<p class="jn-texto">${escape(t('lv_offline'))}</p>`; });
+    }, true);
     root.addEventListener('click', (e) => {
         if (e.target.closest('#jn-leer')) { buzz(); startScan(); return; }
+        const goto = e.target.closest('[data-goto]');
+        if (goto) {
+            buzz();
+            const to = Number(goto.dataset.goto), name = goto.textContent;
+            post('command', { cmd: `course_${to}`, course }).then((v) => {
+                const done = document.getElementById('jn-hecho');
+                if (v && v.ok) {
+                    last = t('rm_course_going', name);
+                    // The phone follows the board to its new course.
+                    course = to; localStorage.setItem('mando-curso', String(to));
+                } else { last = v && v.why === 'closed' ? t('rm_closed') : ''; }
+                if (done) { done.textContent = last || ' '; }
+            }).catch(() => {});
+            return;
+        }
         const pick = e.target.closest('[data-course]');
         if (pick) { course = Number(pick.dataset.course); localStorage.setItem('mando-curso', String(course)); shown = ''; render(); return; }
         const b = e.target.closest('[data-cmd]');

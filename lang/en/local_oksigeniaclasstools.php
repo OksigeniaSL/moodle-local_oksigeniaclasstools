@@ -1113,7 +1113,8 @@ $string['app_gd_envivo_how'] = 'Open the session: they join with the QR or the c
 Vote: ask the question, open it, wait, close it and the bars appear; «Another question» for a second round.
 For Peer Instruction: they vote, discuss in pairs for a couple of minutes and vote again.
 Brainstorm: a word or two each; check them before showing them if needed.
-Without tablets: «Hands up», and you count with + and −.';
+Without tablets: «Hands up», and you count with + and −.
+Fixed remote, on your phone and without logging in: the timer, picking someone, going to a tool, opening or closing the vote or the ticket, the curtain («Uncover a little» pulls it down), the relays, reading the cards and «Change the class», which takes the open board to another of your courses. It turns itself off after the hours without use that the school sets.';
 $string['app_gd_envivo_scene'] = 'Before the experiment, Year 5 vote whether an egg floats in salty water: nearly everyone says no. They do the experiment and repeat the question with «Another question»; the bars change, and the best part begins: explaining why.';
 $string['app_gd_envivo_sources'] = 'Crouch, C. H. and Mazur, E. (2001). Peer Instruction: Ten years of experience and results. American Journal of Physics, 69(9), 970–977.|https://doi.org/10.1119/1.1374249
 White, R. T. and Gunstone, R. F. (1992). Probing Understanding. Falmer Press.';
@@ -2261,12 +2262,21 @@ $string['app_rl_summarise'] = 'Summarise';
 $string['app_rl_tambourine'] = 'Tambourine';
 $string['app_rl_time'] = 'Timekeeper';
 $string['app_rm_closed'] = 'That board is not open any more.';
+$string['app_rm_cmd_curtain'] = 'Curtain';
+$string['app_rm_cmd_live'] = 'Open or close (Live)';
 $string['app_rm_cmd_next'] = 'Next question';
+$string['app_rm_cmd_relay'] = 'Relays on/off';
+$string['app_rm_cmd_reveal'] = 'Uncover a little';
 $string['app_rm_cmd_turn'] = 'Pick someone here';
 $string['app_rm_copied'] = 'Address copied.';
 $string['app_rm_copy'] = 'Copy the address';
+$string['app_rm_course'] = 'Change the class';
+$string['app_rm_course_going'] = 'The board goes to {$a}';
+$string['app_rm_course_hint'] = 'The open board goes to the class you choose.';
+$string['app_rm_course_none'] = 'You have no other class with the board.';
 $string['app_rm_how'] = 'Scan the code with your phone and keep it on its home screen: the address is always the same.';
 $string['app_rm_intro'] = 'An address for your phone that does not change and does not ask you to log in: open it, for instance, from the home screen of the phone, and it drives the board you have open.';
+$string['app_rm_last'] = 'Last order: {$a}';
 $string['app_rm_no_board_text'] = 'Open the board on the computer, in a course: it shows up here by itself.';
 $string['app_rm_no_board_title'] = 'No board is open';
 $string['app_rm_off_text'] = 'It has been turned off, or its address has changed. On the board, in «Live» and «Remote», there is the address of now.';
@@ -2287,6 +2297,7 @@ $string['app_rm_title'] = 'Fixed remote';
 $string['app_rm_tools'] = 'Go to a tool';
 $string['app_rm_turn_off'] = 'Turn off';
 $string['app_rm_turn_on'] = 'Turn the fixed remote on';
+$string['app_rm_waiting_orders'] = 'Waiting for orders from the phone';
 $string['app_rm_warning'] = 'Whoever has this address can drive your board while it is open, although they see nothing of the students. If you have shared it by mistake, change it.';
 $string['app_rm_which'] = 'Which board';
 $string['app_ro_again'] = 'Play again';
@@ -2907,6 +2918,11 @@ $string['privacy:metadata:uses:timecreated'] = 'When it was kept.';
 $string['privacy:metadata:uses:userid'] = 'The teacher.';
 $string['privacy:remote'] = 'Fixed remote';
 $string['privacy:uses'] = 'Uses for the stickers';
+$string['remoteoff'] = 'Fixed remote: turn off by itself';
+$string['remoteoff_desc'] = 'The fixed remote of each teacher turns itself off after these hours without orders from the phone (counting from when it was turned on). The teacher turns it on again on the board with one tap.';
+$string['remoteoff_hours'] = 'After {$a} hours';
+$string['remoteoff_never'] = 'Never';
+$string['remoteoff_one'] = 'After 1 hour';
 $string['show_games'] = 'Games';
 $string['show_games_desc'] = 'The games of the Games tab on this site.';
 $string['show_materials'] = 'Materials';

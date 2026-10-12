@@ -1115,7 +1115,8 @@ $string['app_gd_envivo_how'] = 'Abre la sesión: entran con el QR o el código, 
 Votación: haz la pregunta, abre, espera, cierra y salen las barras; «Otra pregunta» para la segunda ronda.
 Para la instrucción entre iguales: votan, lo discuten en parejas un par de minutos y vuelven a votar.
 Lluvia de ideas: una o dos palabras cada uno; revísalas antes de mostrarlas si hace falta.
-Sin tabletas: «A mano alzada», y cuentas tú con + y −.';
+Sin tabletas: «A mano alzada», y cuentas tú con + y −.
+Mando fijo, en tu móvil y sin entrar en el Aula virtual: el temporizador, elegir a alguien, ir a una herramienta, abrir o cerrar la votación o el billete, la cortina («Destapar un poco» va bajándola), los relevos, leer las tarjetas y «Cambiar de clase», que lleva la pizarra abierta a otro de tus cursos. Se apaga solo tras las horas sin usarlo que fije el centro.';
 $string['app_gd_envivo_scene'] = 'Antes del experimento, la clase de cuarto vota si el huevo flota en agua con sal: casi todos dicen que no. Hacen el experimento y repiten la pregunta con «Otra pregunta»; las barras cambian, y empieza la mejor parte: explicar por qué.';
 $string['app_gd_envivo_sources'] = 'Crouch, C. H. y Mazur, E. (2001). Peer Instruction: Ten years of experience and results. American Journal of Physics, 69(9), 970–977.|https://doi.org/10.1119/1.1374249
 White, R. T. y Gunstone, R. F. (1992). Probing Understanding. Falmer Press.';
@@ -2263,12 +2264,21 @@ $string['app_rl_summarise'] = 'Resumir';
 $string['app_rl_tambourine'] = 'Pandero';
 $string['app_rl_time'] = 'Tiempo';
 $string['app_rm_closed'] = 'Esa pizarra ya no está abierta.';
+$string['app_rm_cmd_curtain'] = 'Cortina';
+$string['app_rm_cmd_live'] = 'Abrir o cerrar (En vivo)';
 $string['app_rm_cmd_next'] = 'Siguiente pregunta';
+$string['app_rm_cmd_relay'] = 'Relevos sí o no';
+$string['app_rm_cmd_reveal'] = 'Destapar un poco';
 $string['app_rm_cmd_turn'] = 'Elegir a alguien aquí';
 $string['app_rm_copied'] = 'Dirección copiada.';
 $string['app_rm_copy'] = 'Copiar la dirección';
+$string['app_rm_course'] = 'Cambiar de clase';
+$string['app_rm_course_going'] = 'La pizarra pasa a {$a}';
+$string['app_rm_course_hint'] = 'La pizarra abierta pasa a la clase que elijas.';
+$string['app_rm_course_none'] = 'No tienes otra clase con la pizarra.';
 $string['app_rm_how'] = 'Escanea el código con el móvil y guárdalo en su pantalla de inicio: la dirección es siempre la misma.';
 $string['app_rm_intro'] = 'Una dirección para tu móvil que no cambia y no pide entrar en el aula virtual: ábrela, por ejemplo, desde la pantalla de inicio del móvil, y maneja la pizarra que tengas abierta.';
+$string['app_rm_last'] = 'Última orden: {$a}';
 $string['app_rm_no_board_text'] = 'Abre la pizarra en el ordenador, en un curso: aparece aquí sola.';
 $string['app_rm_no_board_title'] = 'No hay ninguna pizarra abierta';
 $string['app_rm_off_text'] = 'Se ha apagado o su dirección ha cambiado. En la pizarra, en «En vivo» y «Mando», está la dirección de ahora.';
@@ -2289,6 +2299,7 @@ $string['app_rm_title'] = 'Mando fijo';
 $string['app_rm_tools'] = 'Ir a una herramienta';
 $string['app_rm_turn_off'] = 'Apagar';
 $string['app_rm_turn_on'] = 'Encender el mando fijo';
+$string['app_rm_waiting_orders'] = 'Esperando órdenes del móvil';
 $string['app_rm_warning'] = 'Quien tenga esta dirección puede manejar tu pizarra mientras esté abierta, aunque no ve nada de los alumnos. Si la has compartido sin querer, cámbiala.';
 $string['app_rm_which'] = 'Qué pizarra';
 $string['app_ro_again'] = 'Volver a jugar';
@@ -2909,6 +2920,11 @@ $string['privacy:metadata:uses:timecreated'] = 'Cuándo se guardó.';
 $string['privacy:metadata:uses:userid'] = 'El profesor.';
 $string['privacy:remote'] = 'Mando fijo';
 $string['privacy:uses'] = 'Usos para los cromos';
+$string['remoteoff'] = 'Mando fijo: apagarse solo';
+$string['remoteoff_desc'] = 'El mando fijo de cada profesor se apaga solo tras estas horas sin órdenes del móvil (contando desde que se encendió). El profesor lo vuelve a encender en la pizarra con un toque.';
+$string['remoteoff_hours'] = 'Tras {$a} horas';
+$string['remoteoff_never'] = 'Nunca';
+$string['remoteoff_one'] = 'Tras 1 hora';
 $string['show_games'] = 'Juegos';
 $string['show_games_desc'] = 'Los juegos de la pestaña Juegos en este sitio.';
 $string['show_materials'] = 'Materiales';

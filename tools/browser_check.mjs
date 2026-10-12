@@ -81,6 +81,7 @@ window.shot = (name) => new Promise((done) => { if (!window.checkShot) { done();
         // The phone of the fixed remote, as mandoapi.php gives it: two open boards.
         if (String(url).startsWith('fake://mando')) {
             if (a === 'command') { return json({ ok: true }); }
+            if (a === 'courses') { return json({ courses: [{ id: 1, name: 'One' }, { id: 7, name: 'Language 5' }, { id: 8, name: 'Maths 6' }] }); }
             return json({ boards: [{ course: 1, name: 'One', tool: 'quien', tools: [['quien', 'Whose turn?'], ['reloj', 'Clock']] },
                 { course: 2, name: 'Two', tool: 'reloj', tools: [['reloj', 'Clock']] }] });
         }
@@ -822,12 +823,24 @@ const CHECKS = {
         if (!sent || sent.course !== '2' || sent.cmd !== 'pick' || sent.k !== 'key1') { return `sent ${JSON.stringify(sent)}`; }
         q('[data-course="1"]').click();
         await sleep(100);
-        q('.jn-herramientas').open = true;
+        q('.jn-herramientas:not(#jn-clases)').open = true;
         q('[data-cmd="tool_reloj"]').click();
         await sleep(200);
         sent = FAKE.calls.filter((c) => c.action === 'command').pop();
         if (sent.cmd !== 'tool_reloj' || sent.course !== '1') { return `tool sent ${JSON.stringify(sent)}`; }
         if (!/sent/.test(q('#jn-hecho').textContent)) { return 'no word that it was sent'; }
+        // New orders on the phone.
+        for (const cmd of ['live', 'relay', 'curtain', 'reveal']) { if (!q(`[data-cmd="${cmd}"]`)) { return `no button for ${cmd}`; } }
+        // Changing the class: the teacher's other courses, and the board goes to the one chosen.
+        q('#jn-clases').open = true;
+        for (let i = 0; i < 30 && !q('[data-goto]'); i++) { await sleep(100); }
+        const others = [...document.querySelectorAll('[data-goto]')].map((b) => b.textContent);
+        if (others.join(',') !== 'Language 5,Maths 6') { return `courses: ${others}`; }
+        q('[data-goto="8"]').click();
+        await sleep(200);
+        sent = FAKE.calls.filter((c) => c.action === 'command').pop();
+        if (sent.cmd !== 'course_8' || sent.course !== '1') { return `course sent ${JSON.stringify(sent)}`; }
+        if (!/Maths 6/.test(q('#jn-hecho').textContent)) { return 'no word of the new class'; }
         await window.shot('remote-phone');
         return '';
     },
@@ -1425,6 +1438,49 @@ const CHECKS = {
         scene(cases[1], true);
         await window.shot('card-scanner');
         canvas.remove();
+        return '';
+    },
+    // The new orders of the phone on the board: the curtain and uncovering, the relay of «Whose turn?», opening and
+    // closing what is on in «Live», and the panel saying what came last.
+    'remote-orders': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const q = (x) => document.querySelector(x);
+        const R = window.ClasstoolsRemote, I = () => window.ClasstoolsInstruments;
+        R.run('curtain');
+        await sleep(300);
+        if (window.ClasstoolsCore.current() !== 'pizarra' || !I().curtainShown()) { return 'the curtain did not come out'; }
+        R.run('reveal'); R.run('reveal');
+        if (Math.abs(I().curtain().t - 0.25) > 1e-9) { return `uncovered to ${I().curtain().t}`; }
+        R.run('curtain');
+        if (I().curtainShown()) { return 'the curtain did not go'; }
+        // The relay: on as last chosen (or every minute), and off.
+        q('#t-material').click();
+        await sleep(300);
+        q('#mt-turn').click();
+        await sleep(200);
+        // (Another check may have left a relay on: the order turns it off, and on again as it was.)
+        const every = q('#h-material .ct-turno-cada');
+        if (every.value !== '0') { R.run('relay'); }
+        if (every.value !== '0') { return `relay off: ${every.value}`; }
+        R.run('relay');
+        if (every.value === '0') { return 'the relay did not come on'; }
+        // Open and close a show of hands has nothing to open; a vote of the live session is not open here either:
+        // the order does nothing without its button, and nothing breaks.
+        R.run('live');
+        // The panel of the fixed remote says the last order.
+        q('#t-envivo').click();
+        await sleep(200);
+        q('#lv-kind [data-v="remote"]').click();
+        await sleep(200);
+        q('#lv-rm [data-rm="on"]').click();
+        await sleep(300);
+        R.run('tab_next');
+        await sleep(100);
+        q('#t-envivo').click();
+        await sleep(200);
+        if (!/Next|next/.test(q('#lv-rm .ct-rm-ultima').textContent)) { return `last order: ${q('#lv-rm .ct-rm-ultima').textContent}`; }
+        await window.shot('remote-orders');
+        q('#lv-rm [data-rm="off"]').click();
         return '';
     },
     // Reading the cards on the board with its camera (the picture of four cards that Chrome plays as a camera), and

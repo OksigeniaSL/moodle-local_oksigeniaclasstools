@@ -16,7 +16,7 @@
 
 /**
  * What the fixed remote on the phone does, with the key of its address (no login, no cookies): ask which of the
- * teacher's boards are open, and send an order to one of them.
+ * teacher's boards are open, send an order to one of them, and list the teacher's courses to change the class.
  *
  * @package    local_oksigeniaclasstools
  * @copyright  2026 Oksigenia <dev@oksigenia.cc>
@@ -38,6 +38,8 @@ if (!$row || get_config('local_oksigeniaclasstools', 'live') === '0') {
 }
 if ($action === 'state') {
     echo json_encode(remote::phone($row));
+} else if ($action === 'courses') {
+    echo json_encode(['courses' => remote::courses((int) $row->userid)]);
 } else if ($action === 'command') {
     echo json_encode(remote::command($row, required_param('cmd', PARAM_ALPHANUMEXT), required_param('course', PARAM_INT)));
 } else {

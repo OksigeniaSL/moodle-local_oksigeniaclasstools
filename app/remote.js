@@ -28,13 +28,44 @@
         tab_next: () => step(1),
         tab_prev: () => step(-1),
         present: () => click(document.documentElement.classList.contains('presentando') ? '#b-salir-presentar' : '#b-presentar'),
+        // The curtain of the board, on or off, and uncovering a little more.
+        curtain: () => { core.show('pizarra'); if (window.ClasstoolsInstruments) { window.ClasstoolsInstruments.remoteCurtain('toggle'); } },
+        reveal: () => { core.show('pizarra'); if (window.ClasstoolsInstruments) { window.ClasstoolsInstruments.remoteCurtain('reveal'); } },
+        // The relay of «Whose turn?» on screen: on (as last chosen, or every minute) or off.
+        relay: () => {
+            const sel = [...document.querySelectorAll('.ct-turno-cada')].find(visible);
+            if (!sel) { return; }
+            sel.value = sel.value !== '0' ? '0' : String(core.load('turno-relevo-ultimo', 60) || 60);
+            sel.dispatchEvent(new Event('change', { bubbles: true }));
+        },
+        // Open or close what is on in «Live»: the vote, the brainstorm question or the exit ticket.
+        live: () => { const b = ['#lv-open', '#id-open', '#ex-close', '#ex-open'].map((s) => document.querySelector(s)).find(visible); if (b) { b.click(); } },
     };
+    // What the phone asked for, in words, for the board to show it.
+    const NAMES = { tm_toggle: 'lv_cmd_timer', tm_reset: 'lv_cmd_reset', tm_plus: 'lv_cmd_plus', pick: 'lv_cmd_pick', turn: 'rm_cmd_turn',
+        next: 'rm_cmd_next', present: 'lv_cmd_present', tab_prev: 'lv_cmd_prev', tab_next: 'lv_cmd_next', curtain: 'rm_cmd_curtain',
+        reveal: 'rm_cmd_reveal', relay: 'rm_cmd_relay', live: 'rm_cmd_live' };
+    const said = (cmd) => {
+        if (cmd.startsWith('cards_')) { return t('rm_scan'); }
+        if (cmd.startsWith('course_')) { return t('rm_course'); }
+        if (cmd.startsWith('tool_')) { const b = document.querySelector(`[data-h="${cmd.slice(5)}"]`); return b ? (b.getAttribute('aria-label') || b.textContent || '').trim() : ''; }
+        return NAMES[cmd] ? t(NAMES[cmd]) : '';
+    };
+    let lastOrder = '';
     // Five orders from the phone in a page: a real use of the remote, for the teacher's sticker.
     let orders = 0;
     const run = (cmd) => {
         orders++;
         if (orders >= 5 && core.logro) { core.logro('mandamas'); }
+        lastOrder = said(cmd);
+        document.dispatchEvent(new CustomEvent('classtools:order', { detail: { cmd, said: lastOrder } }));
         try {
+            // Another course: the board goes to that course's board (the phone only lists the teacher's own).
+            if (cmd.startsWith('course_')) {
+                const id = Number(cmd.slice(7));
+                if (id > 0) { location.href = `${location.pathname}?id=${id}`; }
+                return;
+            }
             if (cmd.startsWith('tool_')) { const id = cmd.slice(5); if (core.tabs().includes(id)) { core.show(id); } return; }
             // Cards read by the phone: card numbers and answers (cards.js).
             if (cmd.startsWith('cards_')) { if (window.ClasstoolsCards) { window.ClasstoolsCards.fromPhone(cmd); } return; }
@@ -78,6 +109,9 @@
         panel.innerHTML = `<div class="ct-rm">
             <div class="lv-qr">${window.ClasstoolsQr ? window.ClasstoolsQr.build(status.url, null) : ''}</div>
             <div class="ct-rm-texto">
+                <div class="ct-rm-anim" aria-hidden="true"><span class="ct-rm-movil">${core.icon('mando')}</span>
+                    <span class="ct-rm-ondas"><i></i><i></i><i></i></span><span class="ct-rm-pizarra">${core.icon('marca')}</span></div>
+                <p class="ct-rm-ultima" aria-live="polite">${escape(lastOrder ? t('rm_last', lastOrder) : t('rm_waiting_orders'))}</p>
                 <p><strong>${escape(t('rm_title'))}</strong> · <span class="${phone ? 'ct-rm-ok' : ''}">${escape(t(phone ? 'rm_phone_in' : 'rm_phone_waiting'))}</span></p>
                 <p class="nota">${escape(t('rm_how'))}</p>
                 <p class="ct-rm-url"><code>${escape(status.url)}</code></p>
@@ -109,6 +143,13 @@
      *
      * @param {HTMLElement} el
      */
+    // Each order that arrives: the waves go from the phone to the board, and it says what it was.
+    document.addEventListener('classtools:order', () => {
+        if (!panel || !panel.isConnected) { return; }
+        const anim = panel.querySelector('.ct-rm-anim'), last = panel.querySelector('.ct-rm-ultima');
+        if (last) { last.textContent = lastOrder ? t('rm_last', lastOrder) : t('rm_waiting_orders'); }
+        if (anim) { anim.classList.remove('pulso'); void anim.offsetWidth; anim.classList.add('pulso'); }
+    });
     const show = (el) => {
         panel = el;
         paint();

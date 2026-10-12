@@ -1,0 +1,12 @@
+{
+  "rm_cmd_curtain": { "en": "Curtain", "es": "Cortina" },
+  "rm_cmd_reveal": { "en": "Uncover a little", "es": "Destapar un poco" },
+  "rm_cmd_relay": { "en": "Relays on/off", "es": "Relevos sí o no" },
+  "rm_cmd_live": { "en": "Open or close (Live)", "es": "Abrir o cerrar (En vivo)" },
+  "rm_course": { "en": "Change the class", "es": "Cambiar de clase" },
+  "rm_course_hint": { "en": "The open board goes to the class you choose.", "es": "La pizarra abierta pasa a la clase que elijas." },
+  "rm_course_none": { "en": "You have no other class with the board.", "es": "No tienes otra clase con la pizarra." },
+  "rm_course_going": { "en": "The board goes to {$a}", "es": "La pizarra pasa a {$a}" },
+  "rm_last": { "en": "Last order: {$a}", "es": "Última orden: {$a}" },
+  "rm_waiting_orders": { "en": "Waiting for orders from the phone", "es": "Esperando órdenes del móvil" }
+}

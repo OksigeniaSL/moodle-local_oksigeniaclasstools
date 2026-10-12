@@ -113,6 +113,20 @@ if ($hassiteconfig) {
             get_string('livenotice_desc', 'local_oksigeniaclasstools'),
             1
         ));
+        // The fixed remote turns itself off after these hours without orders from the phone (0: never).
+        $settings->add(new admin_setting_configselect(
+            'local_oksigeniaclasstools/remoteoff',
+            get_string('remoteoff', 'local_oksigeniaclasstools'),
+            get_string('remoteoff_desc', 'local_oksigeniaclasstools'),
+            2,
+            [
+                0 => get_string('remoteoff_never', 'local_oksigeniaclasstools'),
+                1 => get_string('remoteoff_one', 'local_oksigeniaclasstools'),
+                2 => get_string('remoteoff_hours', 'local_oksigeniaclasstools', 2),
+                4 => get_string('remoteoff_hours', 'local_oksigeniaclasstools', 4),
+                8 => get_string('remoteoff_hours', 'local_oksigeniaclasstools', 8),
+            ]
+        ));
         // The teacher's stickers: on or off, and what makes a use real.
         $settings->add(new admin_setting_configcheckbox(
             'local_oksigeniaclasstools/logros',
