@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.55.3 (2026-10-12)
+
+- The last «roscos» go too: the privacy notice and the tour say «alphabet wheels» («ruedas de letras» in Spanish),
+  like the READMEs.
+
 ## 0.55.2 (2026-10-12)
 
 - In Spanish, the letter game is «Rueda de letras» and its button to pass, «Paso», everywhere (the game, its teacher's

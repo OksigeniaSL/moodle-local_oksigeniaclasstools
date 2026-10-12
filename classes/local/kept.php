@@ -17,7 +17,7 @@
 namespace local_oksigeniaclasstools\local;
 
 /**
- * What each teacher keeps of each tool in each course (scoreboard, roscos, locks…), to go on from any computer.
+ * What each teacher keeps of each tool in each course (scoreboard, letter wheels, locks…), to go on from any computer.
  *
  * @package    local_oksigeniaclasstools
  * @copyright  2026 Oksigenia <dev@oksigenia.cc>

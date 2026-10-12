@@ -1970,7 +1970,7 @@
         document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !menu.hidden) { e.stopPropagation(); cierra(); b.focus(); } }, true);
         pinta();
     })();
-    // Lo que el profesor guarda en el aula de cada herramienta (marcador, roscos…), para seguir desde otro ordenador.
+    // Lo que el profesor guarda en el aula de cada herramienta (marcador, ruedas de letras…), para seguir desde otro ordenador.
     // Se envía con un poco de espera para no mandar cada toque, y lo pendiente sale al cerrar la página.
     const pendientes = {}, esperas = {};
     const envia = (tool, keepalive) => {

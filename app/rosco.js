@@ -32,7 +32,7 @@
     const EXAMPLE = { id: 'ejemplo', name: STR.example, items: window.CLASSTOOLS_CONTENT.rosco.map(([l, k, c, a]) => ({ l, k, c, a })) };
     const TIMES = [0, 120, 150, 180, 240, 300];
 
-    // Own roscos: in the browser and, inside Moodle, for the teacher in the course (the newest one wins).
+    // Own wheels: in the browser and, inside Moodle, for the teacher in the course (the newest one wins).
     // Per course, like Moodle keeps them (the old global key only seeds a course that has nothing yet).
     const storeKey = 'roscos' + (core.moodle ? ':' + core.moodle.courseid : '');
     let store = load(storeKey, null) || (core.moodle && !core.kept('roscos') ? load('roscos', null) : null);

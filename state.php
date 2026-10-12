@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * Keeps what the teacher has of a tool in a course (scoreboard, roscos…) to go on from any computer.
+ * Keeps what the teacher has of a tool in a course (scoreboard, letter wheels…) to go on from any computer.
  *
  * @package    local_oksigeniaclasstools
  * @copyright  2026 Oksigenia <dev@oksigenia.cc>

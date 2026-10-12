@@ -33,7 +33,7 @@ function xmldb_local_oksigeniaclasstools_upgrade($oldversion) {
     $dbman = $DB->get_manager();
 
     if ($oldversion < 2026100703) {
-        // What each teacher keeps of each tool in each course (scoreboard, roscos…).
+        // What each teacher keeps of each tool in each course (scoreboard, letter wheels…).
         $table = new xmldb_table('local_oksigeniaclasstools_state');
         $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->add_field('courseid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);

@@ -414,7 +414,7 @@
                 after: 2200,
             },
         },
-        // Rosco: Friday revision, two teams with their clocks.
+        // Letter wheel: Friday revision, two teams with their clocks.
         rosco: {
             steps: [
                 async (h) => { await h.wait(1600); await h.press('#t-juegos'); await h.press('[data-game="rosco"]'); },

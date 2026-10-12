@@ -18,7 +18,7 @@ namespace local_oksigeniaclasstools\local;
 
 /**
  * Content written by the AI of the site: exercises for the games of the shared format (Order, Sort, Spot the mistakes,
- * Who am I?), quiz questions, a rosco, words, pairs, a song for the score or the dates of a timeline. Only from
+ * Who am I?), quiz questions, a letter wheel, words, pairs, a song for the score or the dates of a timeline. Only from
  * Moodle 4.5, when the administrator has a provider that generates text and has not turned this off, and the course
  * has not turned its AI tools off (Moodle 5.1). The prompt is built here from what is asked for, the topic, the level
  * and how many, so the board is not an open door to the AI. Moodle shows its AI policy before the first use and keeps
@@ -118,7 +118,7 @@ class ai {
      * @param string $topic What it is about (may be empty: then the AI chooses).
      * @param string $level early, primary, secondary or advanced.
      * @param int $count How many.
-     * @param string $letters The letters of a rosco («A, B, C…»).
+     * @param string $letters The letters of a letter wheel («A, B, C…»).
      * @return string
      */
     public static function prompt(string $type, string $topic, string $level, int $count, string $letters = ''): string {
@@ -158,7 +158,7 @@ class ai {
      * @param string $topic
      * @param string $level early, primary, secondary or advanced.
      * @param int $count
-     * @param string $letters The letters of a rosco.
+     * @param string $letters The letters of a letter wheel.
      * @return array ok and text, or ok false and error.
      */
     public static function generate(
