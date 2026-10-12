@@ -1165,6 +1165,7 @@ $string['app_gd_codigo_why'] = 'Una revisión de 39 experiencias de escape room 
 $string['app_gd_codigo_works'] = 'Resolver problemas en cadena: cada pista da una cifra.
 Trabajar en equipo y comunicarse.
 Repasar cualquier materia en forma de reto.';
+$string['app_gd_collapse'] = 'Volver al lateral';
 $string['app_gd_cuerpos_how'] = 'Elige un cuerpo; arrastra para girarlo, y la rueda o dos dedos lo acercan.
 «Desplegar» lo abre despacio en su desarrollo y lo enseña desde arriba; «Plegar» lo cierra. «Abrirlo poco a poco» lo para a medias, para preguntar qué cara irá dónde.
 «Otro desarrollo»: en los cuerpos pequeños, todos sus desarrollos uno a uno (el cubo tiene 11); en los grandes, uno nuevo cada vez.
@@ -1241,6 +1242,7 @@ $string['app_gd_errores_works'] = 'Leer con atención y con espíritu crítico.
 Ortografía y gramática en contexto.
 Datos de cualquier materia: fechas, cifras, conceptos.
 Corregir explicando el porqué.';
+$string['app_gd_expand'] = 'Ampliar: leerla en grande';
 $string['app_gd_fractions_how'] = 'Que coloreen piezas de una fila y busquen lo mismo en otra: el muro dice qué partes son iguales («1/2 = 2/4 = 3/6»).
 La regla para comparar recorre el muro y alinea las filas.
 En las piezas: fracciones, decimales, porcentajes o nada, para que razonen solo con el tamaño.

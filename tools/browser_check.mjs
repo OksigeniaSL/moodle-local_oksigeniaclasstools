@@ -1946,6 +1946,39 @@ const CHECKS = {
         pick('bote'); set(0);
         return '';
     },
+    // The teacher's guide expanded: in the middle and inside the screen, with bigger letters; a tap outside closes it,
+    // it opens again as it was left, and it goes back to the side.
+    'guide-wide': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const q = (x) => document.querySelector(x);
+        q('#t-quien').click();
+        await sleep(150);
+        q('#b-guia').click();
+        await sleep(200);
+        const sheet = q('.ct-guia');
+        const size = () => parseFloat(getComputedStyle(sheet.querySelector('.ct-guia-parte li')).fontSize);
+        const narrow = size();
+        sheet.querySelector('[data-a="wide"]').click();
+        await sleep(350);
+        const r = sheet.getBoundingClientRect();
+        if (!sheet.classList.contains('ancha') || q('.ct-guia-fondo').hidden) { return 'not expanded'; }
+        if (r.left < 0 || r.top < 0 || r.right > innerWidth || r.bottom > innerHeight) { return `outside the screen: ${JSON.stringify(r)}`; }
+        if (Math.abs((r.left + r.right) / 2 - innerWidth / 2) > 2) { return 'not in the middle'; }
+        if (!(size() > narrow)) { return `letters not bigger: ${narrow} → ${size()}`; }
+        await window.shot('guide-wide');
+        // A tap on the dimmed board closes it; it opens again expanded.
+        q('.ct-guia-fondo').dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }));
+        await sleep(100);
+        if (!sheet.hidden || !q('.ct-guia-fondo').hidden) { return 'a tap outside did not close it'; }
+        q('#b-guia').click();
+        await sleep(200);
+        if (!sheet.classList.contains('ancha')) { return 'not kept expanded'; }
+        sheet.querySelector('[data-a="wide"]').click();
+        await sleep(200);
+        if (sheet.classList.contains('ancha') || !q('.ct-guia-fondo').hidden) { return 'not back to the side'; }
+        sheet.querySelector('[data-a="close"]').click();
+        return '';
+    },
     // Music questions for the quiz: sets that make themselves (which song, rhythm and melody dictations), four
     // different answers with the right one among them, and what each one plays.
     'music-quiz': async () => {

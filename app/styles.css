@@ -2031,10 +2031,10 @@ dialog.ct-sc-dialogo { width: min(40rem, 94vw); }
 }
 
 /* The teacher's guide: a sheet at the side, in short parts that are easy to read on a board or a laptop. */
-.ct-guia { position: fixed; top: 0; right: 0; bottom: 0; z-index: 80; width: min(34rem, 94vw); overflow-y: auto; padding: 0 1.4rem 2rem; border-left: 1px solid var(--borde); background: var(--superficie); box-shadow: -18px 0 50px rgba(15, 47, 94, .22); animation: ct-guia-entra .25s ease-out; }
+.ct-guia { --guia-pad: 1.4rem; position: fixed; top: 0; right: 0; bottom: 0; z-index: 80; width: min(34rem, 94vw); overflow-y: auto; padding: 0 var(--guia-pad) 2rem; border-left: 1px solid var(--borde); background: var(--superficie); box-shadow: -18px 0 50px rgba(15, 47, 94, .22); animation: ct-guia-entra .25s ease-out; }
 
 @keyframes ct-guia-entra { from { opacity: 0; transform: translateX(30px); } }
-.ct-guia-cabeza { position: sticky; top: 0; z-index: 1; display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin: 0 -1.4rem; padding: 1.2rem 1.4rem .8rem; border-bottom: 1px solid var(--borde); background: var(--superficie); }
+.ct-guia-cabeza { position: sticky; top: 0; z-index: 1; display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin: 0 calc(-1 * var(--guia-pad)); padding: 1.2rem var(--guia-pad) .8rem; border-bottom: 1px solid var(--borde); background: var(--superficie); }
 .ct-guia-cabeza .ante { margin: 0; }
 .ct-guia-cabeza h2 { margin: .1rem 0 0; color: var(--azul-osc); font-size: 1.7rem; font-weight: 1000; line-height: 1.15; }
 .ct-guia-lead { margin: 1.1rem 0 .4rem; color: var(--tinta); font-size: 1.15rem; font-weight: 700; line-height: 1.45; }
@@ -2418,3 +2418,17 @@ dialog.ct-sala { width: min(60rem, 94vw); max-width: none; overflow-y: auto; }
 .ct-gl-pieza { fill: #164281; stroke: #0f2f5e; stroke-width: .6; }
 .ct-gl-pieza:nth-child(3n) { fill: #1d4f95; }
 .ct-gl-marco { fill: none; stroke: var(--azul-osc); stroke-width: 3; }
+/* The guide expanded: a window in the middle, never bigger than the screen, with bigger letters on small screens. */
+.ct-guia-botones { display: flex; flex: none; gap: .4rem; }
+.ct-guia-fondo { position: fixed; inset: 0; z-index: 79; background: rgba(15, 47, 94, .45); }
+.ct-guia-fondo[hidden] { display: none; }
+.ct-guia.ancha { --guia-pad: clamp(1.4rem, 3vw, 2.6rem); top: 50%; right: auto; bottom: auto; left: 50%; width: min(64rem, calc(100vw - 2rem)); max-height: calc(100vh - 2rem); max-height: calc(100dvh - 2rem); border: 0; border-radius: 26px; box-shadow: 0 30px 80px rgba(15, 47, 94, .35); transform: translate(-50%, -50%); animation: ct-guia-crece .2s ease-out; }
+.ct-guia.ancha .ct-guia-cabeza h2 { font-size: clamp(1.8rem, 1.3rem + 1vw, 2.6rem); }
+.ct-guia.ancha .ct-guia-lead { font-size: clamp(1.2rem, .95rem + .65vw, 1.7rem); }
+.ct-guia.ancha .ct-guia-parte { padding: 1.1rem 1.3rem 1.3rem; }
+.ct-guia.ancha .ct-guia-parte h3 { font-size: clamp(.9rem, .75rem + .35vw, 1.15rem); }
+.ct-guia.ancha .ct-guia-parte p, .ct-guia.ancha .ct-guia-parte li, .ct-guia.ancha .ct-guia-parte dd, .ct-guia.ancha .ct-guia-etapa dt { font-size: clamp(1.08rem, .85rem + .55vw, 1.5rem); }
+.ct-guia.ancha .ct-guia-etapa { grid-template-columns: clamp(6.5rem, 9vw, 10rem) minmax(0, 1fr); }
+.ct-guia.ancha .ct-guia-fuentes li { font-size: clamp(.9rem, .75rem + .35vw, 1.15rem); }
+@keyframes ct-guia-crece { from { opacity: 0; transform: translate(-50%, -48%) scale(.97); } }
+@media (prefers-reduced-motion: reduce) { .ct-guia.ancha { animation: none; } }

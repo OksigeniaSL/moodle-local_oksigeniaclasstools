@@ -1163,6 +1163,7 @@ $string['app_gd_codigo_why'] = 'A review of 39 escape rooms in education found t
 $string['app_gd_codigo_works'] = 'Solving problems in a chain: each clue gives a digit.
 Working as a team and talking to each other.
 Reviewing any subject as a challenge.';
+$string['app_gd_collapse'] = 'Back to the side';
 $string['app_gd_cuerpos_how'] = 'Choose a shape; drag to turn it, and the wheel or two fingers bring it closer.
 «Unfold» opens it slowly into its net and shows it from above; «Fold» closes it. «Open it little by little» stops it halfway, to ask which face will go where.
 «Another net»: for the small shapes, all their nets one by one (the cube has 11); for the big ones, a new one each time.
@@ -1239,6 +1240,7 @@ $string['app_gd_errores_works'] = 'Reading carefully and critically.
 Spelling and grammar in context.
 Facts of any subject: dates, figures, concepts.
 Correcting, and explaining why.';
+$string['app_gd_expand'] = 'Expand: read it big';
 $string['app_gd_fractions_how'] = 'They colour pieces in one row and look for the same amount in another: the wall says which parts are equal («1/2 = 2/4 = 3/6»).
 The ruler for comparing slides across the wall and lines the rows up.
 On the pieces: fractions, decimals, percentages, or nothing, so that they reason with the size alone.

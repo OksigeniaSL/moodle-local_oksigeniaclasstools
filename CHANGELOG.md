@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.53.2 (2026-10-12)
+
+- The teacher's guide can be expanded: a button beside the close one puts it in the middle of the screen, over the
+  dimmed board, with bigger letters on small screens and never bigger than the screen; another one takes it back to
+  the side, and a tap outside closes it. It opens again the way it was left.
+
 ## 0.53.1 (2026-10-12)
 
 - The eleven guided helps of the 0.52 with their voice in English too.

@@ -1006,5 +1006,13 @@
  "gd_eco_sources": {
   "en": "TeacherVision. Teaching rhythms through echo (resource for teachers).|https://teachervision.com/music/teaching-rhythms-through-echo",
   "es": "TeacherVision. Teaching rhythms through echo (recurso para docentes).|https://teachervision.com/music/teaching-rhythms-through-echo"
+ },
+ "gd_expand": {
+  "en": "Expand: read it big",
+  "es": "Ampliar: leerla en grande"
+ },
+ "gd_collapse": {
+  "en": "Back to the side",
+  "es": "Volver al lateral"
  }
 }

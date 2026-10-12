@@ -1,6 +1,7 @@
 // The teacher's guide: what a tool, game or material is for, what it works on, why (with its sources), how to take it
 // to class, what it gives at each school level and a scene from a class. A sheet at the side, for whatever is on
-// screen. The texts are language strings (gd_<id>_…), so they are translated with the rest of the plugin; lists are
+// screen; or, expanded, a window in the middle with bigger letters to read it at ease (a tap outside closes it; the
+// way it was left is kept). The texts are language strings (gd_<id>_…), so they are translated with the rest of the plugin; lists are
 // one item per line, the levels «mode|text» and the sources «reference|address».
 //
 // @copyright 2026 Oksigenia <dev@oksigenia.cc>
@@ -52,14 +53,27 @@
     sheet.setAttribute('role', 'dialog');
     sheet.setAttribute('aria-labelledby', 'gd-title');
     document.body.append(sheet);
-    let opener = null;
+    let opener = null, shown = 'index';
+    // Expanded: in the middle, over a dimmed board.
+    let wide = !!core.load('guia-ancha', false);
+    const shade = document.createElement('div');
+    shade.className = 'ct-guia-fondo';
+    shade.hidden = true;
+    document.body.append(shade);
+    const applyWide = () => {
+        sheet.classList.toggle('ancha', wide);
+        shade.hidden = sheet.hidden || !wide;
+    };
 
     const section = (cls, ico, title, body) => `<section class="ct-guia-parte ${cls}"><h3><span class="ct-guia-ico" aria-hidden="true">${icon(ico)}</span>${escape(title)}</h3>${body}</section>`;
     // A tool without a guide of its own (or «All the guides») shows the index: every guide, by group, a tap away.
     const paint = (id = which()) => {
+        shown = id;
         const title = GUIDES[id] ? t(GUIDES[id]) : t('gd_all');
+        const size = t(wide ? 'gd_collapse' : 'gd_expand');
         const head = `<header class="ct-guia-cabeza"><div><p class="ante">${escape(t('gd_button'))}</p><h2 id="gd-title">${escape(title)}</h2></div>
-            <button type="button" class="redondo" data-a="close" aria-label="${escape(t('gd_close'))}" title="${escape(t('gd_close'))}">${icon('cerrar')}</button></header>`;
+            <div class="ct-guia-botones"><button type="button" class="redondo" data-a="wide" aria-pressed="${wide}" aria-label="${escape(size)}" title="${escape(size)}">${icon(wide ? 'salir' : 'pantalla')}</button>
+            <button type="button" class="redondo" data-a="close" aria-label="${escape(t('gd_close'))}" title="${escape(t('gd_close'))}">${icon('cerrar')}</button></div></header>`;
         if (!GUIDES[id]) {
             sheet.innerHTML = head + `<p class="ct-guia-lead">${escape(t(id === 'index' ? 'gd_index_lead' : 'gd_none'))}</p>`
                 + Object.entries(GROUPS).map(([group, guides]) => `<section class="ct-guia-parte ct-guia-indice"><h3>${escape(t(group))}</h3>
@@ -92,12 +106,14 @@
     };
     const close = () => {
         sheet.hidden = true;
+        shade.hidden = true;
         button.setAttribute('aria-expanded', 'false');
         if (opener && opener.focus) { opener.focus(); }
     };
     const open = () => {
         paint();
         sheet.hidden = false;
+        applyWide();
         sheet.scrollTop = 0;
         button.setAttribute('aria-expanded', 'true');
         opener = document.activeElement;
@@ -107,6 +123,16 @@
     button.addEventListener('click', () => (sheet.hidden ? open() : close()));
     sheet.addEventListener('click', (e) => {
         if (e.target.closest('[data-a="close"]')) { close(); return; }
+        if (e.target.closest('[data-a="wide"]')) {
+            const at = sheet.scrollTop / Math.max(1, sheet.scrollHeight);
+            wide = !wide;
+            core.save('guia-ancha', wide);
+            paint(shown); applyWide();
+            sheet.scrollTop = at * sheet.scrollHeight;
+            const b = sheet.querySelector('[data-a="wide"]');
+            if (b) { b.focus(); }
+            return;
+        }
         const help = e.target.closest('[data-help]');
         if (help && core.help) { close(); core.help.open(help.dataset.help); return; }
         const other = e.target.closest('[data-guide], [data-a="index"]');
@@ -119,5 +145,5 @@
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !sheet.hidden) { e.stopPropagation(); close(); } }, true);
     // A touch outside closes it (the board is the teacher's again).
     document.addEventListener('pointerdown', (e) => { if (!sheet.hidden && !sheet.contains(e.target) && !button.contains(e.target)) { close(); } });
-    window.ClasstoolsGuide = { open, close, which, ids: () => Object.keys(GUIDES) };   // for automated tests
+    window.ClasstoolsGuide = { open, close, which, ids: () => Object.keys(GUIDES), wide: () => wide };   // for automated tests
 })();
