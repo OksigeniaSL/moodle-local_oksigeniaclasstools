@@ -1950,6 +1950,66 @@ const CHECKS = {
         pick('bote'); set(0);
         return '';
     },
+    // The presentation of Canva: any link of a design, or its HTML embed code, gives the embed address; other links
+    // say why not; it opens in a frame, stays in the recent ones of the course, and leaves them when removed. A policy
+    // of the page keeps the frame from loading anything from Canva.
+    'presentation': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const q = (x) => document.querySelector(x);
+        const csp = document.createElement('meta');
+        csp.httpEquiv = 'Content-Security-Policy'; csp.content = "frame-src 'none'";
+        document.head.append(csp);
+        const P = window.ClasstoolsPresentation;
+        if (!P || !q('#t-presentacion')) { return 'no presentation tab'; }
+        const D = 'https://www.canva.com/design/DAGhbGUMnnI/gZyl0pFu9hrdUYmKXUictg/';
+        const cases = [
+            [D + 'view?utm_content=DAGhbGUMnnI&utm_campaign=designshare&utm_medium=embeds&utm_source=link', D + 'view?embed'],
+            ['https://www.canva.com/design/DAGhbGUMnnI/abcdefghijklmnopqrstuv/edit?utm_source=sharebutton',
+                'https://www.canva.com/design/DAGhbGUMnnI/abcdefghijklmnopqrstuv/view?embed'],
+            [`<div style="position: relative"><iframe loading="lazy" src="${D}view?embed" allowfullscreen="allowfullscreen" allow="fullscreen"></iframe></div>`
+                + `<a href="${D}view?utm_content=DAGhbGUMnnI" target="_blank" rel="noopener">Volcanoes</a>`, D + 'view?embed'],
+            ['canva.com/design/DAGhbGUMnnI/view', 'https://www.canva.com/design/DAGhbGUMnnI/view?embed'],
+        ];
+        for (const [text, want] of cases) {
+            const d = P.parse(text), got = d && P.embedUrl(d);
+            if (got !== want) { return `embed of ${text.slice(0, 60)}: ${got}`; }
+        }
+        if (P.parse('https://example.org/design/DAGhbGUMnnI') || P.parse('https://canva.link/abc123xyz')) { return 'a link that is not of a design passed'; }
+        q('#t-presentacion').click();
+        await sleep(150);
+        const type = (link, name = '') => { q('#pr-enlace').value = link; q('#pr-nombre').value = name; q('#pr-abrir').click(); };
+        type('https://canva.link/abc123xyz');
+        if (q('#pr-error').hidden || !/canva\.link/.test(q('#pr-error').textContent)) { return `short link: ${q('#pr-error').textContent}`; }
+        type('https://example.org/slides');
+        if (q('#pr-error').hidden || !/Canva/.test(q('#pr-error').textContent) || !q('#pr-vista').hidden) { return 'a link of another site opened'; }
+        type(cases[0][0], 'Volcanoes');
+        await sleep(150);
+        const frame = q('#pr-marco iframe');
+        if (q('#pr-vista').hidden || !frame || frame.src !== D + 'view?embed') { return `frame: ${frame && frame.src}`; }
+        if (frame.title !== 'Volcanoes' || q('#pr-titulo').textContent !== 'Volcanoes') { return `name: ${frame.title}`; }
+        if (q('#pr-canva').href !== D + 'view') { return `open in Canva: ${q('#pr-canva').href}`; }
+        if (!q('#pr-error').hidden) { return 'the error stayed after a good link'; }
+        await window.shot('presentation-open');
+        q('#pr-otra').click();
+        await sleep(100);
+        if (q('#pr-marco iframe') || q('#pr-elige').hidden || q('#pr-recientes').hidden) { return 'back to the list of presentations'; }
+        if (P.state().items.length !== 1 || P.state().last !== null) { return `kept: ${JSON.stringify(P.state())}`; }
+        // The same design again, without a name: it keeps its name and stays once.
+        type(cases[1][0]);
+        await sleep(100);
+        if (P.state().items.length !== 1 || q('#pr-titulo').textContent !== 'Volcanoes') { return `again: ${JSON.stringify(P.state().items)}`; }
+        q('#pr-otra').click();
+        await sleep(100);
+        await window.shot('presentation-list');
+        q('#pr-lista [data-id]').click();
+        await sleep(100);
+        if (q('#pr-vista').hidden) { return 'a recent one did not open'; }
+        q('#pr-otra').click();
+        q('#pr-lista [data-quitar]').click();
+        if (P.state().items.length || !q('#pr-recientes').hidden) { return 'removed, but still there'; }
+        csp.remove();
+        return '';
+    },
     // The teacher's guide expanded: in the middle and inside the screen, with bigger letters; a tap outside closes it,
     // it opens again as it was left, and it goes back to the side.
     'guide-wide': async () => {
@@ -1986,6 +2046,9 @@ const CHECKS = {
     // The round buttons of the top bar with only their icon (as on a narrow screen): each icon in the middle of its
     // circle.
     'bar-icons-centred': async () => {
+        // On one row, as on a wide screen (with two, the buttons carry their texts on purpose).
+        const barra = document.getElementById('barra'), was = barra.className;
+        barra.classList.remove('dos-filas');
         document.head.insertAdjacentHTML('beforeend', '<style id="solo-iconos">.acciones .redondo-texto { display: none !important; }</style>');
         await new Promise((r) => setTimeout(r, 100));
         const off = [...document.querySelectorAll('.acciones .redondo')].filter((b) => !b.hidden && b.offsetParent !== null).map((b) => {
@@ -1996,6 +2059,7 @@ const CHECKS = {
             return Math.abs(dx) > 1.5 || Math.abs(dy) > 1.5 ? `${b.id || b.className}: ${dx.toFixed(1)}, ${dy.toFixed(1)}` : '';
         }).filter(Boolean);
         document.getElementById('solo-iconos').remove();
+        barra.className = was;
         return off.join(' | ');
     },
     // Music questions for the quiz: sets that make themselves (which song, rhythm and melody dictations), four

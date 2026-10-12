@@ -73,7 +73,8 @@ if ($hassiteconfig) {
             array_fill_keys(array_keys($levels), 1),
             $levels
         ));
-        // What the site shows: tools, games and materials (all of them unless the administrator leaves some out).
+        // What the site shows: tools, games and materials (all of them unless the administrator leaves some out; the
+        // presentation, which loads from canva.com, only if the administrator turns it on).
         $shown = [
             'tools' => LOCAL_OKSIGENIACLASSTOOLS_TOOLS,
             'games' => LOCAL_OKSIGENIACLASSTOOLS_GAMES,
@@ -85,7 +86,7 @@ if ($hassiteconfig) {
                 'local_oksigeniaclasstools/' . $name,
                 get_string('show_' . $name, 'local_oksigeniaclasstools'),
                 get_string('show_' . $name . '_desc', 'local_oksigeniaclasstools'),
-                array_fill_keys(array_keys($all), 1),
+                array_fill_keys(array_diff(array_keys($all), $name === 'tools' ? LOCAL_OKSIGENIACLASSTOOLS_TOOLS_OFF : []), 1),
                 $choices
             ));
         }

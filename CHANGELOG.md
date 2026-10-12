@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.56.0 (2026-10-12)
+
+- A new tab, «Presentation», off until the administrator turns it on (in the plugin's settings, «Tools»): a Canva
+  presentation inside the board, from its embed link (or any other link of the design, or its HTML embed code), with
+  the other tools at hand: beside «Whose turn?» on the split screen, or with the small timer. The last twelve of each
+  course stay for the teacher in Moodle. Nothing comes from Canva until a teacher opens one.
+- The browser check of the bar icons measures them on one row, as they are on a wide screen.
+
 ## 0.55.3 (2026-10-12)
 
 - The last «roscos» go too: the privacy notice and the tour say «alphabet wheels» («ruedas de letras» in Spanish),

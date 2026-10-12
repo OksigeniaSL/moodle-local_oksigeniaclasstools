@@ -32,9 +32,13 @@ const LOCAL_OKSIGENIACLASSTOOLS_LEVELS = ['early', 'primary', 'secondary', 'uppe
 const LOCAL_OKSIGENIACLASSTOOLS_TOOLS = [
     'temporizador' => 'app_tab_timer', 'cronometro' => 'app_tab_stopwatch', 'quien' => 'app_tab_picker',
     'grupos' => 'app_tab_groups', 'semaforo' => 'app_tab_noise', 'azar' => 'app_tab_chance', 'juegos' => 'app_tab_games',
-    'material' => 'app_tab_materials', 'pizarra' => 'app_tab_board', 'marcador' => 'app_tab_scoreboard',
-    'asi' => 'app_tab_rules', 'reloj' => 'app_tab_clock', 'qr' => 'app_tab_qr', 'envivo' => 'app_tab_live',
+    'material' => 'app_tab_materials', 'pizarra' => 'app_tab_board', 'presentacion' => 'app_tab_slides',
+    'marcador' => 'app_tab_scoreboard', 'asi' => 'app_tab_rules', 'reloj' => 'app_tab_clock', 'qr' => 'app_tab_qr',
+    'envivo' => 'app_tab_live',
 ];
+
+/** Tabs that start off until the administrator turns them on: the presentation loads its content from canva.com. */
+const LOCAL_OKSIGENIACLASSTOOLS_TOOLS_OFF = ['presentacion'];
 
 /** The games, with the string of their name. */
 const LOCAL_OKSIGENIACLASSTOOLS_GAMES = [
@@ -381,10 +385,13 @@ function local_oksigeniaclasstools_site(): array {
     // The screen mode a course starts in, until the teacher chooses another (the course's own, by its category, is
     // set when the board opens in a course).
     $mode = local_oksigeniaclasstools_default_mode();
-    // The tools, games and materials the site shows (all until the administrator chooses).
+    // The tools, games and materials the site shows (all but the ones that start off, until the administrator chooses).
     $chosen = function (string $name, array $all): array {
         $value = get_config('local_oksigeniaclasstools', $name);
-        return $value === false ? array_keys($all) : array_values(array_intersect(array_keys($all), explode(',', $value)));
+        if ($value === false) {
+            return array_values(array_diff(array_keys($all), $name === 'tools' ? LOCAL_OKSIGENIACLASSTOOLS_TOOLS_OFF : []));
+        }
+        return array_values(array_intersect(array_keys($all), explode(',', $value)));
     };
     // The board's texts («app_» strings), in the user's language with English for anything missing.
     $str = [];
