@@ -1325,22 +1325,26 @@ Fracciones y decimales como números con su sitio en la recta.
 Estimar dónde cae un número antes de comprobarlo.
 Intervalos, desigualdades y valor absoluto: la misma parte de la recta escrita de tres maneras.';
 $string['app_gd_marcador_how'] = 'Por equipos: un toque suma, el otro resta; la corona señala al que va primero.
-El bote: canicas hacia una meta de la clase (un premio, una actividad que elijan).
+La meta de la clase: elige su aspecto (cada etapa empieza con uno), la meta y el premio; cada punto la acerca. En Primaria la cuenta dice cuánto falta; en Secundaria, la fracción y el porcentaje.
+El cohete da un dato de cada planeta al pasarlo; la canción suena entera al llegar; el mosaico puede destapar una imagen tuya (se queda en ese navegador).
 Se guarda en el curso: sigue al día siguiente desde cualquier ordenador.
 Con el concurso en vivo o con los juegos, para llevar los puntos de varias rondas.';
 $string['app_gd_marcador_scene'] = 'En tercero de Primaria, el bote de la clase tiene una meta: una sesión de juegos el viernes. Cada vez que la clase se queda en silencio en menos de diez segundos, cae una canica. El jueves faltan tres, y son los propios alumnos los que se piden silencio.';
-$string['app_gd_marcador_sources'] = 'Barrish, H. H., Saunders, M. y Wolf, M. M. (1969). Good behavior game: effects of individual contingencies for group consequences on disruptive behavior in a classroom. Journal of Applied Behavior Analysis, 2(2), 119–124.|https://doi.org/10.1901/jaba.1969.2-119';
-$string['app_gd_marcador_stages'] = 'early|El bote con canicas, para una meta de toda la clase.
-primary|Equipos en los juegos y una meta semanal.
-secondary|Concursos por equipos y retos largos.
-advanced|Debates y competiciones por equipos.';
-$string['app_gd_marcador_what'] = 'Un marcador de 2 a 8 equipos con botones grandes, o un bote que se llena hacia una meta de toda la clase.';
+$string['app_gd_marcador_sources'] = 'Barrish, H. H., Saunders, M. y Wolf, M. M. (1969). Good behavior game: effects of individual contingencies for group consequences on disruptive behavior in a classroom. Journal of Applied Behavior Analysis, 2(2), 119–124.|https://doi.org/10.1901/jaba.1969.2-119
+Little, S. G., Akin-Little, A. y O\'Neill, K. (2015). Group contingency interventions with children—1980-2010: A meta-analysis. Behavior Modification, 39(2), 322–341.|https://doi.org/10.1177/0145445514554393';
+$string['app_gd_marcador_stages'] = 'early|El camino del bichito: contar casillas hasta la meta; o el bote de canicas.
+primary|El cohete o la planta, con lo que falta; equipos en los juegos y una meta semanal.
+secondary|El mosaico, con la fracción y el porcentaje; concursos por equipos y retos largos.
+advanced|Debates y competiciones por equipos; el mosaico con el porcentaje.';
+$string['app_gd_marcador_what'] = 'Un marcador de 2 a 8 equipos con botones grandes, o una meta de toda la clase: un bote de canicas, o un aspecto que enseña algo mientras se llena (el camino del bichito, una planta que crece, un cohete por el sistema solar, una canción nota a nota o un mosaico que destapa una imagen).';
 $string['app_gd_marcador_why'] = 'Dividir la clase en equipos con un marcador a la vista se ha usado también para el comportamiento: en el Good Behavior Game (Barrish, Saunders y Wolf, 1969), una clase de cuarto se dividió en dos equipos y cada interrupción sumaba una marca a su equipo; las conductas disruptivas bajaron mucho mientras duró el juego.
-El bote de la clase es una meta común: todos suman para lo mismo, y nadie queda señalado.';
+La meta de la clase es una contingencia de grupo interdependiente: el premio es para todos cuando la clase entera llega a la meta, y nadie queda señalado. En un metaanálisis de 50 estudios con escolares, Little, Akin-Little y O\'Neill (2015) encontraron que las contingencias de grupo, también de este tipo (35 de los estudios), funcionan con conductas muy distintas.';
 $string['app_gd_marcador_works'] = 'Jugar en equipo y llevar la cuenta a la vista.
 Sumar puntos y comparar: cuánto le falta a cada equipo.
 Una meta común: toda la clase empuja hacia lo mismo.
-Normas de clase con una consecuencia de grupo.';
+Normas de clase con una consecuencia de grupo.
+Contar, la serie numérica y contar de 2 en 2 o de 5 en 5 (el camino); el ciclo de vida de una planta, el orden de los planetas y leer música.
+Fracciones y porcentajes (el mosaico, y la cuenta en Secundaria).';
 $string['app_gd_none'] = 'Esta herramienta no tiene guía propia. Estas son las guías que hay:';
 $string['app_gd_ordenar_how'] = 'Elige un ejemplo de la etapa o escribe los tuyos en «Mis ejercicios»: un elemento por línea, en su orden.
 Una línea «? elemento: porqué» explica por qué va ahí; sale cuando alguien lo pone mal.
@@ -1690,17 +1694,59 @@ $string['app_gen_save'] = 'Guardar';
 $string['app_gen_start'] = 'Empezar';
 $string['app_gl_add'] = 'Sumar {$a}';
 $string['app_gl_count'] = '{$a->n} de {$a->of}';
+$string['app_gl_count_frac'] = '{$a->frac} · {$a->pct} %';
+$string['app_gl_count_left'] = '{$a->n} de {$a->of} · faltan {$a->left}';
 $string['app_gl_done'] = '¡Lo conseguimos!';
+$string['app_gl_fact_jupiter'] = 'el planeta más grande del sistema solar';
+$string['app_gl_fact_mars'] = 'el planeta rojo';
+$string['app_gl_fact_neptune'] = 'el más lejano del Sol';
+$string['app_gl_fact_saturn'] = 'el de los anillos más vistosos';
+$string['app_gl_fact_uranus'] = 'gira tumbado de lado';
 $string['app_gl_for'] = 'Para: {$a}';
 $string['app_gl_goal'] = 'Meta de la clase';
 $string['app_gl_help'] = 'Toda la clase gana canicas a la vez; cuando el bote se llena, llega el premio.';
+$string['app_gl_look'] = 'Aspecto';
+$string['app_gl_look_bote'] = 'Bote de canicas';
+$string['app_gl_look_camino'] = 'Camino del bichito';
+$string['app_gl_look_cancion'] = 'Canción nota a nota';
+$string['app_gl_look_cohete'] = 'Cohete por el sistema solar';
+$string['app_gl_look_mosaico'] = 'Mosaico que se destapa';
+$string['app_gl_look_planta'] = 'Planta que crece';
+$string['app_gl_no_song'] = 'No hay canciones en la Partitura';
+$string['app_gl_notes'] = '{$a->n} de {$a->of} notas';
+$string['app_gl_pic_choose'] = 'Elegir la imagen';
+$string['app_gl_pic_mar'] = 'Fondo del mar';
+$string['app_gl_pic_mia'] = 'Una imagen mía';
+$string['app_gl_pic_note'] = 'Tu imagen se queda solo en este navegador.';
+$string['app_gl_pic_paisaje'] = 'Atardecer en la montaña';
+$string['app_gl_picture'] = 'Imagen';
+$string['app_gl_pl_done'] = '¡Hemos llegado a Neptuno, el planeta más lejano del Sol!';
+$string['app_gl_pl_earth'] = 'Tierra';
+$string['app_gl_pl_jupiter'] = 'Júpiter';
+$string['app_gl_pl_mars'] = 'Marte';
+$string['app_gl_pl_mercury'] = 'Mercurio';
+$string['app_gl_pl_neptune'] = 'Neptuno';
+$string['app_gl_pl_saturn'] = 'Saturno';
+$string['app_gl_pl_scale'] = 'Sin escala';
+$string['app_gl_pl_start'] = 'Despegamos de la Tierra';
+$string['app_gl_pl_uranus'] = 'Urano';
+$string['app_gl_pl_venus'] = 'Venus';
+$string['app_gl_plant_flower'] = 'Florece';
+$string['app_gl_plant_fruit'] = 'Da fruto';
+$string['app_gl_plant_germ'] = 'Germina';
+$string['app_gl_plant_grows'] = 'Crece';
+$string['app_gl_plant_seed'] = 'Semilla';
+$string['app_gl_plant_seedling'] = 'Plántula';
 $string['app_gl_prize'] = 'Premio';
 $string['app_gl_prize_ph'] = 'Una tarde de juegos';
 $string['app_gl_reset'] = 'Empezar de nuevo';
 $string['app_gl_reset_sure'] = '¿Seguro? Pulsa otra vez';
+$string['app_gl_skip'] = 'Contamos de {$a} en {$a}';
+$string['app_gl_song'] = 'Canción';
 $string['app_gl_take'] = 'Quitar {$a}';
 $string['app_gl_target'] = 'Meta';
 $string['app_gl_teams'] = 'Equipos';
+$string['app_gl_tiles'] = 'Se ven {$a->n} de {$a->of} piezas';
 $string['app_gl_what'] = 'Qué contamos';
 $string['app_hp_again'] = 'Otra vez';
 $string['app_hp_ahorcado_1'] = 'Para abrir el tema nuevo, una palabra misteriosa: si la adivinan, ya saben de qué va la clase.';

@@ -174,5 +174,173 @@
  "mt_numbers_b": {
   "en": "Numbers on table B",
   "es": "Números en la mesa B"
+ },
+ "gl_look": {
+  "en": "Look",
+  "es": "Aspecto"
+ },
+ "gl_look_bote": {
+  "en": "Jar of marbles",
+  "es": "Bote de canicas"
+ },
+ "gl_look_camino": {
+  "en": "The critter's path",
+  "es": "Camino del bichito"
+ },
+ "gl_look_planta": {
+  "en": "A plant that grows",
+  "es": "Planta que crece"
+ },
+ "gl_look_cohete": {
+  "en": "A rocket through the solar system",
+  "es": "Cohete por el sistema solar"
+ },
+ "gl_look_cancion": {
+  "en": "A song, note by note",
+  "es": "Canción nota a nota"
+ },
+ "gl_look_mosaico": {
+  "en": "A mosaic that uncovers a picture",
+  "es": "Mosaico que se destapa"
+ },
+ "gl_song": {
+  "en": "Song",
+  "es": "Canción"
+ },
+ "gl_picture": {
+  "en": "Picture",
+  "es": "Imagen"
+ },
+ "gl_pic_paisaje": {
+  "en": "Sunset in the mountains",
+  "es": "Atardecer en la montaña"
+ },
+ "gl_pic_mar": {
+  "en": "Under the sea",
+  "es": "Fondo del mar"
+ },
+ "gl_pic_mia": {
+  "en": "A picture of mine",
+  "es": "Una imagen mía"
+ },
+ "gl_pic_choose": {
+  "en": "Choose a picture",
+  "es": "Elegir la imagen"
+ },
+ "gl_pic_note": {
+  "en": "Your picture stays only in this browser.",
+  "es": "Tu imagen se queda solo en este navegador."
+ },
+ "gl_count_left": {
+  "en": "{$a->n} of {$a->of} · {$a->left} to go",
+  "es": "{$a->n} de {$a->of} · faltan {$a->left}"
+ },
+ "gl_count_frac": {
+  "en": "{$a->frac} · {$a->pct}%",
+  "es": "{$a->frac} · {$a->pct} %"
+ },
+ "gl_skip": {
+  "en": "Counting in {$a}s",
+  "es": "Contamos de {$a} en {$a}"
+ },
+ "gl_plant_seed": {
+  "en": "Seed",
+  "es": "Semilla"
+ },
+ "gl_plant_germ": {
+  "en": "It germinates",
+  "es": "Germina"
+ },
+ "gl_plant_seedling": {
+  "en": "Seedling",
+  "es": "Plántula"
+ },
+ "gl_plant_grows": {
+  "en": "It grows",
+  "es": "Crece"
+ },
+ "gl_plant_flower": {
+  "en": "It flowers",
+  "es": "Florece"
+ },
+ "gl_plant_fruit": {
+  "en": "It bears fruit",
+  "es": "Da fruto"
+ },
+ "gl_pl_mercury": {
+  "en": "Mercury",
+  "es": "Mercurio"
+ },
+ "gl_pl_venus": {
+  "en": "Venus",
+  "es": "Venus"
+ },
+ "gl_pl_earth": {
+  "en": "Earth",
+  "es": "Tierra"
+ },
+ "gl_pl_mars": {
+  "en": "Mars",
+  "es": "Marte"
+ },
+ "gl_pl_jupiter": {
+  "en": "Jupiter",
+  "es": "Júpiter"
+ },
+ "gl_pl_saturn": {
+  "en": "Saturn",
+  "es": "Saturno"
+ },
+ "gl_pl_uranus": {
+  "en": "Uranus",
+  "es": "Urano"
+ },
+ "gl_pl_neptune": {
+  "en": "Neptune",
+  "es": "Neptuno"
+ },
+ "gl_fact_mars": {
+  "en": "the red planet",
+  "es": "el planeta rojo"
+ },
+ "gl_fact_jupiter": {
+  "en": "the biggest planet of the solar system",
+  "es": "el planeta más grande del sistema solar"
+ },
+ "gl_fact_saturn": {
+  "en": "the one with the most striking rings",
+  "es": "el de los anillos más vistosos"
+ },
+ "gl_fact_uranus": {
+  "en": "it spins lying on its side",
+  "es": "gira tumbado de lado"
+ },
+ "gl_fact_neptune": {
+  "en": "the farthest from the Sun",
+  "es": "el más lejano del Sol"
+ },
+ "gl_pl_start": {
+  "en": "Lift-off from the Earth",
+  "es": "Despegamos de la Tierra"
+ },
+ "gl_pl_done": {
+  "en": "We've reached Neptune, the farthest planet from the Sun!",
+  "es": "¡Hemos llegado a Neptuno, el planeta más lejano del Sol!"
+ },
+ "gl_pl_scale": {
+  "en": "Not to scale",
+  "es": "Sin escala"
+ },
+ "gl_notes": {
+  "en": "{$a->n} of {$a->of} notes",
+  "es": "{$a->n} de {$a->of} notas"
+ },
+ "gl_no_song": {
+  "en": "There are no songs in the score",
+  "es": "No hay canciones en la Partitura"
+ },
+ "gl_tiles": {
+  "en": "{$a->n} of {$a->of} tiles uncovered",
+  "es": "Se ven {$a->n} de {$a->of} piezas"
  }
 }

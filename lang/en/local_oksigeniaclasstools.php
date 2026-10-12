@@ -1322,23 +1322,27 @@ Negative numbers, to the left of zero.
 Fractions and decimals as numbers with their own place on the line.
 Estimating where a number falls before checking it.
 Intervals, inequalities and absolute value: the same part of the line written three ways.';
-$string['app_gd_marcador_how'] = 'In teams: a tap adds, the other takes away; the crown marks the one in front.
-The jar: marbles towards a goal of the class (a reward, an activity they choose).
+$string['app_gd_marcador_how'] = 'In teams: one tap adds, the other takes away; the crown marks the leader.
+The class goal: choose its look (each level starts with one), the goal and the prize; each point brings it closer. In Primary the count says what is left; in Secondary, the fraction and the percentage.
+The rocket gives a fact about each planet as it passes it; the song plays whole at the goal; the mosaic can uncover a picture of yours (it stays in that browser).
 It is kept in the course: it goes on the next day from any computer.
-With the live quiz or the games, to keep the points of several rounds.';
+With the live quiz or with the games, to keep the points of several rounds.';
 $string['app_gd_marcador_scene'] = 'In Year 4, the jar of the class has a goal: a games session on Friday. Each time the class goes quiet in less than ten seconds, a marble drops in. On Thursday three are missing, and it is the students themselves who ask each other for silence.';
-$string['app_gd_marcador_sources'] = 'Barrish, H. H., Saunders, M. and Wolf, M. M. (1969). Good behavior game: effects of individual contingencies for group consequences on disruptive behavior in a classroom. Journal of Applied Behavior Analysis, 2(2), 119–124.|https://doi.org/10.1901/jaba.1969.2-119';
-$string['app_gd_marcador_stages'] = 'early|The jar with marbles, for a goal of the whole class.
-primary|Teams in the games, and a goal for the week.
-secondary|Quizzes by teams and long challenges.
-advanced|Debates and team competitions.';
-$string['app_gd_marcador_what'] = 'A scoreboard for 2 to 8 teams with big buttons, or a jar that fills up towards a goal of the whole class.';
-$string['app_gd_marcador_why'] = 'Splitting the class into teams with a scoreboard in sight has also been used for behaviour: in the Good Behavior Game (Barrish, Saunders and Wolf, 1969), a Year 5 class was split into two teams and each interruption added a mark to the team; disruptive behaviour went down a lot while the game was played.
-The jar of the class is a common goal: everyone adds to the same thing, and nobody is singled out.';
+$string['app_gd_marcador_sources'] = 'Barrish, H. H., Saunders, M. and Wolf, M. M. (1969). Good behavior game: effects of individual contingencies for group consequences on disruptive behavior in a classroom. Journal of Applied Behavior Analysis, 2(2), 119–124.|https://doi.org/10.1901/jaba.1969.2-119
+Little, S. G., Akin-Little, A. and O\'Neill, K. (2015). Group contingency interventions with children—1980-2010: A meta-analysis. Behavior Modification, 39(2), 322–341.|https://doi.org/10.1177/0145445514554393';
+$string['app_gd_marcador_stages'] = 'early|The critter\'s path: counting squares up to the goal; or the jar of marbles.
+primary|The rocket or the plant, with what is left; teams in the games and a weekly goal.
+secondary|The mosaic, with the fraction and the percentage; quizzes in teams and long challenges.
+advanced|Debates and competitions in teams; the mosaic with the percentage.';
+$string['app_gd_marcador_what'] = 'A scoreboard for 2 to 8 teams with big buttons, or a goal of the whole class: a jar of marbles, or a look that teaches something while it fills (the critter\'s path, a plant that grows, a rocket through the solar system, a song note by note or a mosaic that uncovers a picture).';
+$string['app_gd_marcador_why'] = 'Dividing the class into teams with a scoreboard in sight has also been used for behaviour: in the Good Behavior Game (Barrish, Saunders and Wolf, 1969), a fourth-grade class was split into two teams and each disruption added a mark to its team; disruptive behaviour fell sharply while the game lasted.
+The class goal is an interdependent group contingency: the reward is for everyone when the whole class reaches the goal, and nobody is singled out. In a meta-analysis of 50 studies with school-age children, Little, Akin-Little and O\'Neill (2015) found that group contingencies, this kind among them (35 of the studies), work for a wide range of behaviours.';
 $string['app_gd_marcador_works'] = 'Playing in teams and keeping the count in sight.
-Adding points and comparing: how far each team is from the others.
-A common goal: the whole class pushing towards the same thing.
-Class rules with a group consequence.';
+Adding points and comparing: how far each team has to go.
+A common goal: the whole class pulls the same way.
+Class rules with a group consequence.
+Counting, the number sequence and counting in twos or fives (the path); the life cycle of a plant, the order of the planets and reading music.
+Fractions and percentages (the mosaic, and the count in Secondary).';
 $string['app_gd_none'] = 'This tool has no guide of its own. These are the guides there are:';
 $string['app_gd_ordenar_how'] = 'Choose an example of the level, or write your own in «My exercises»: one item per line, in its order.
 A line «? item: why» explains why it goes there; it comes up when someone puts it in the wrong place.
@@ -1688,17 +1692,59 @@ $string['app_gen_save'] = 'Save';
 $string['app_gen_start'] = 'Start';
 $string['app_gl_add'] = 'Add {$a}';
 $string['app_gl_count'] = '{$a->n} of {$a->of}';
+$string['app_gl_count_frac'] = '{$a->frac} · {$a->pct}%';
+$string['app_gl_count_left'] = '{$a->n} of {$a->of} · {$a->left} to go';
 $string['app_gl_done'] = 'We did it!';
+$string['app_gl_fact_jupiter'] = 'the biggest planet of the solar system';
+$string['app_gl_fact_mars'] = 'the red planet';
+$string['app_gl_fact_neptune'] = 'the farthest from the Sun';
+$string['app_gl_fact_saturn'] = 'the one with the most striking rings';
+$string['app_gl_fact_uranus'] = 'it spins lying on its side';
 $string['app_gl_for'] = 'For: {$a}';
 $string['app_gl_goal'] = 'Class goal';
 $string['app_gl_help'] = 'The whole class earns marbles together; when the jar is full, the prize.';
+$string['app_gl_look'] = 'Look';
+$string['app_gl_look_bote'] = 'Jar of marbles';
+$string['app_gl_look_camino'] = 'The critter\'s path';
+$string['app_gl_look_cancion'] = 'A song, note by note';
+$string['app_gl_look_cohete'] = 'A rocket through the solar system';
+$string['app_gl_look_mosaico'] = 'A mosaic that uncovers a picture';
+$string['app_gl_look_planta'] = 'A plant that grows';
+$string['app_gl_no_song'] = 'There are no songs in the score';
+$string['app_gl_notes'] = '{$a->n} of {$a->of} notes';
+$string['app_gl_pic_choose'] = 'Choose a picture';
+$string['app_gl_pic_mar'] = 'Under the sea';
+$string['app_gl_pic_mia'] = 'A picture of mine';
+$string['app_gl_pic_note'] = 'Your picture stays only in this browser.';
+$string['app_gl_pic_paisaje'] = 'Sunset in the mountains';
+$string['app_gl_picture'] = 'Picture';
+$string['app_gl_pl_done'] = 'We\'ve reached Neptune, the farthest planet from the Sun!';
+$string['app_gl_pl_earth'] = 'Earth';
+$string['app_gl_pl_jupiter'] = 'Jupiter';
+$string['app_gl_pl_mars'] = 'Mars';
+$string['app_gl_pl_mercury'] = 'Mercury';
+$string['app_gl_pl_neptune'] = 'Neptune';
+$string['app_gl_pl_saturn'] = 'Saturn';
+$string['app_gl_pl_scale'] = 'Not to scale';
+$string['app_gl_pl_start'] = 'Lift-off from the Earth';
+$string['app_gl_pl_uranus'] = 'Uranus';
+$string['app_gl_pl_venus'] = 'Venus';
+$string['app_gl_plant_flower'] = 'It flowers';
+$string['app_gl_plant_fruit'] = 'It bears fruit';
+$string['app_gl_plant_germ'] = 'It germinates';
+$string['app_gl_plant_grows'] = 'It grows';
+$string['app_gl_plant_seed'] = 'Seed';
+$string['app_gl_plant_seedling'] = 'Seedling';
 $string['app_gl_prize'] = 'Prize';
 $string['app_gl_prize_ph'] = 'An afternoon of games';
 $string['app_gl_reset'] = 'Start again';
 $string['app_gl_reset_sure'] = 'Sure? Press again';
+$string['app_gl_skip'] = 'Counting in {$a}s';
+$string['app_gl_song'] = 'Song';
 $string['app_gl_take'] = 'Take away {$a}';
 $string['app_gl_target'] = 'Goal';
 $string['app_gl_teams'] = 'Teams';
+$string['app_gl_tiles'] = '{$a->n} of {$a->of} tiles uncovered';
 $string['app_gl_what'] = 'What to count';
 $string['app_hp_again'] = 'Again';
 $string['app_hp_ahorcado_1'] = 'To open a new topic, a mystery word: if they guess it, they know what today\'s lesson is about.';

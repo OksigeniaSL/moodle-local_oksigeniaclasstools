@@ -1900,6 +1900,52 @@ const CHECKS = {
         await window.shot('student-early-hangman');
         return '';
     },
+    // The class goal in its looks: each one drawn half way and at the goal, the count as each level learns it, the
+    // mosaic with as many tiles uncovered as the fraction of the goal, and the song that plays at the goal.
+    'goal-looks': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const q = (x) => document.querySelector(x);
+        q('#b-modo').click(); q('#menu-modo [data-modo="primary"]').click();
+        q('#t-marcador').click();
+        await sleep(200);
+        q('.ct-goal-mode [data-v="goal"]').click();
+        await sleep(200);
+        const G = window.ClasstoolsGoal, st = G.state();
+        const set = (n) => { st.points = n; G.paint(); };
+        const pick = (look) => { q('#gl-look').value = look; q('#gl-look').dispatchEvent(new Event('change')); };
+        st.target = 30;
+        for (const look of ['bote', 'camino', 'planta', 'cohete', 'cancion', 'mosaico']) {
+            pick(look);
+            set(18);
+            await sleep(150);
+            if (!q('#gl-jar').innerHTML) { return `${look}: nothing drawn`; }
+            await window.shot('goal-' + look);
+        }
+        // The mosaic: 18 of 30 tiles uncovered, so 12 covered.
+        if (document.querySelectorAll('#gl-jar .ct-gl-pieza').length !== 12) { return `mosaic tiles: ${document.querySelectorAll('#gl-jar .ct-gl-pieza').length}`; }
+        // The count in Primary, and the fraction in Secondary.
+        if (!/18 of 30 · 12 to go/.test(q('#gl-count').textContent)) { return `count in Primary: ${q('#gl-count').textContent}`; }
+        q('#b-modo').click(); q('#menu-modo [data-modo="secondary"]').click();
+        await sleep(150);
+        if (!/18\/30 = 3\/5 · 60%/.test(q('#gl-count').textContent)) { return `count in Secondary: ${q('#gl-count').textContent}`; }
+        // The rocket and the plant at the goal, and the song that plays.
+        pick('cohete'); set(30);
+        if (!/Neptune/.test(q('#gl-caption').textContent)) { return `rocket at the goal: ${q('#gl-caption').textContent}`; }
+        pick('planta');
+        if (!/fruit/.test(q('#gl-caption').textContent)) { return `plant at the goal: ${q('#gl-caption').textContent}`; }
+        await window.shot('goal-planta-fruto');
+        pick('cancion'); set(29);
+        let played = 0;
+        const S = window.ClasstoolsScore, real = S.playNotes;
+        S.playNotes = (...a) => { played++; return 0; };
+        q('#gl-steps [data-s="1"]').click();
+        await sleep(1300);
+        S.playNotes = real;
+        if (!played) { return 'the song did not play at the goal'; }
+        q('#b-modo').click(); q('#menu-modo [data-modo="primary"]').click();
+        pick('bote'); set(0);
+        return '';
+    },
     // Music questions for the quiz: sets that make themselves (which song, rhythm and melody dictations), four
     // different answers with the right one among them, and what each one plays.
     'music-quiz': async () => {

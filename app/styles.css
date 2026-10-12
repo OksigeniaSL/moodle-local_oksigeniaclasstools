@@ -2371,3 +2371,50 @@ dialog.ct-sala { width: min(60rem, 94vw); max-width: none; overflow-y: auto; }
 .ct-sala-pie { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem 1rem; padding: 1rem 1.4rem 1.4rem; }
 .ct-sala-pie .nota { flex: 1 1 18rem; margin: 0; }
 @media (max-width: 40rem) { .ct-sala-profe { grid-template-columns: auto 1fr; } .ct-sala-cromos { grid-column: 1 / -1; } }
+/* The looks of the class goal (goallooks.js). */
+.ct-goal-jar.ct-goal-camino, .ct-goal-jar.ct-goal-cohete, .ct-goal-jar.ct-goal-mosaico, .ct-goal-jar.ct-goal-cancion { max-width: 64rem; }
+.ct-goal-caption { min-height: 1.3em; margin: 0; color: var(--azul-osc); font-size: clamp(1rem, 2.2vh, 1.4rem); font-weight: 800; text-align: center; }
+.ct-gl-senda { fill: none; stroke: #cbd6e6; stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 2 9; }
+.ct-gl-salida { fill: #fff; stroke: var(--azul); stroke-width: 2.5; }
+.ct-gl-casilla { fill: #fff; stroke: #9fb3cc; stroke-width: 2; }
+.ct-gl-casilla.hecha { stroke: var(--azul); }
+.ct-gl-casilla.meta { fill: #fff4d6; stroke: var(--amarillo); stroke-width: 3; }
+.ct-gl-num { fill: var(--azul-osc); font-size: 11px; font-weight: 900; text-anchor: middle; dominant-baseline: central; }
+.ct-gl-num.meta { fill: #e0a400; font-size: 16px; }
+.ct-gl-maceta { fill: #c8693c; stroke: #8a4523; stroke-width: 2; }
+.ct-gl-borde { fill: #d97b49; stroke: #8a4523; stroke-width: 2; }
+.ct-gl-tierra { fill: #6b4226; }
+.ct-gl-semilla { fill: #a0672f; stroke: #5b3a1d; stroke-width: 1.5; }
+.ct-gl-raiz { fill: none; stroke: #c9a27a; stroke-width: 2; stroke-linecap: round; }
+.ct-gl-tallo { fill: none; stroke: #2f8a3b; stroke-width: 5; stroke-linecap: round; }
+.ct-gl-hoja { fill: #4caf50; stroke: #2f7a34; stroke-width: 1.5; }
+.ct-gl-petalo { fill: #ff8fb3; stroke: #d6336c; stroke-width: 1.2; }
+.ct-gl-centro { fill: #fbbe17; stroke: #c98a00; stroke-width: 1.5; }
+.ct-gl-fruto { fill: #e5383b; stroke: #a4161a; stroke-width: 2; }
+.ct-gl-rabito { fill: none; stroke: #2f8a3b; stroke-width: 3; stroke-linecap: round; }
+.ct-gl-brillo { fill: none; stroke: #fff; stroke-width: 2.5; stroke-linecap: round; opacity: .7; }
+.ct-gl-espacio { fill: #0f1a3a; }
+.ct-gl-estrella { fill: #fff; opacity: .8; }
+.ct-gl-sol { fill: #ffd23f; filter: drop-shadow(0 0 10px rgba(255, 210, 63, .7)); }
+.ct-gl-orbita { stroke: rgba(255, 255, 255, .25); stroke-width: 1; stroke-dasharray: 3 4; }
+.ct-gl-asteroide { fill: #9c8f80; }
+.ct-gl-anillo { fill: none; stroke: #cbb46a; stroke-width: 2.5; }
+.ct-gl-planeta { fill: #dbe7ff; font-size: 8.5px; font-weight: 800; text-anchor: middle; }
+.ct-gl-escala { fill: rgba(219, 231, 255, .7); font-size: 8px; font-weight: 800; text-anchor: end; }
+.ct-gl-estela { fill: none; stroke: rgba(255, 210, 63, .6); stroke-width: 2; stroke-dasharray: 2 4; }
+.ct-gl-cohete { fill: #f4f7fb; stroke: #ce1423; stroke-width: 1.5; }
+.ct-gl-ventana { fill: #3b82c4; stroke: #164281; stroke-width: 1; }
+.ct-gl-aleta { fill: #ce1423; }
+.ct-gl-fuego { fill: #ffb703; }
+.ct-gl-titulo { fill: var(--azul-osc); font-size: 13px; font-weight: 900; text-anchor: middle; }
+.ct-gl-linea { stroke: #55514d; stroke-width: 1; }
+.ct-gl-clave { fill: #1c1a19; font-size: 38px; }
+.ct-gl-nota { fill: #1c1a19; }
+.ct-gl-nota.blanca { fill: #fff; stroke: #1c1a19; stroke-width: 1.6; }
+.ct-gl-plica { stroke: #1c1a19; stroke-width: 1.3; }
+.ct-gl-alter { fill: #1c1a19; font-size: 11px; text-anchor: middle; }
+.ct-gl-nombre { fill: var(--azul); font-size: 8px; font-weight: 900; text-anchor: middle; }
+.ct-gl-falta { fill: #d6deea; }
+.ct-gl-pieza { fill: #164281; stroke: #0f2f5e; stroke-width: .6; }
+.ct-gl-pieza:nth-child(3n) { fill: #1d4f95; }
+.ct-gl-marco { fill: none; stroke: var(--azul-osc); stroke-width: 3; }

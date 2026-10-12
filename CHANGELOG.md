@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.53.0 (2026-10-12)
+
+- **The class goal, in more looks** that teach something while they fill, besides the jar of marbles: the critter's
+  path (numbered squares, in twos or fives with a big goal), a plant that grows (seed, germination, seedling, flower and
+  fruit), a rocket through the solar system (the planets in their order, not to scale, with a fact as it passes each),
+  a song of the score note by note (with the names of the notes; at the goal it plays) and a mosaic that uncovers a
+  picture (two drawn ones, or one of the teacher's, kept only in that browser). Each level starts with its own look
+  (the path in Early years, the rocket in Primary, the mosaic from Secondary on); a goal already begun stays a jar.
+- The count of the goal as each level learns it: «18 of 30», what is left in Primary, and the fraction (simplified) and
+  the percentage from Secondary on.
+- The teacher's guide of the scoreboard tells of the looks and why a common goal works, with its source.
+
 ## 0.52.1 (2026-10-12)
 
 - The teachers' room can only be seen by teachers: a student's account could ask for it (with the names and stickers of
