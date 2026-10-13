@@ -1,6 +1,7 @@
 // The teacher's fixed remote, on the phone: the address with its key, without logging in. It shows the teacher's
-// boards that are open (the course of each, nothing about the students); with more than one, it asks which one. The
-// buttons send orders to that board: the timer, a pick, whose turn, the next question, presenting, the tools. It asks
+// boards that are open (the course of each, nothing about the students); with more than one, it asks which one. On top,
+// the buttons of the tool on the board (the groups: how many, «Make groups»; a game: «Right», «Wrong», «Pass»), as the
+// board sends them; under «More orders», the ones for any tool: the timer, a pick, whose turn, presenting… It asks
 // the site every two seconds which boards are open. «Read the cards» turns the phone into the reader of the printed
 // cards: the camera, each card outlined in the colour of its answer, and the readings sent to the board (only the
 // numbers of the cards and their answers: the names are on the board).
@@ -35,20 +36,46 @@
         const b = board();
         if (!b) { shown = ''; screen(t('rm_no_board_title'), t('rm_no_board_text'), '<div class="jn-espera" aria-hidden="true"><i></i><i></i><i></i></div>'); return; }
         course = b.course;
-        // Painted again only when the boards, the one chosen or its tool change: a tap is not lost under the finger.
-        const key = JSON.stringify([boards.map((x) => [x.course, x.name]), b.course, b.tool, b.tools]);
-        if (key === shown) { return; }
+        // Painted again only when the boards, the one chosen or its tool change: a tap is not lost under the finger. The
+        // buttons of the tool, only when they change.
+        const mine = Array.isArray(b.here) ? b.here : [];
+        const key = JSON.stringify([boards.map((x) => [x.course, x.name]), b.course, b.tool, b.tools, mine.length > 0]);
+        if (key === shown) { paintHere(mine); return; }
         shown = key;
         const tools = b.tools || [], now = tools.find((x) => x[0] === b.tool);
+        // Under «More orders», not what the tool already has on top (the timer's own, the curtain on the board).
+        const dup = new Set(mine.flat().map((x) => x[0]).concat(b.tool === 'temporizador' ? ['tm_toggle', 'tm_reset', 'tm_plus'] : []));
+        const general = `<div class="jn-mando">${COMMANDS.filter(([c]) => !dup.has(c)).map(([c, k, cls]) => `<button type="button" class="${mine.length ? '' : cls || ''}" data-cmd="${c}">${escape(t(k))}</button>`).join('')}</div>`;
         root.innerHTML = `${head()}
             ${boards.length > 1 ? `<div class="jn-tablas" role="radiogroup" aria-label="${escape(t('rm_which'))}">${boards.map((x) => `<button type="button" role="radio" aria-checked="${x.course === b.course}" data-course="${x.course}">${escape(x.name)}</button>`).join('')}</div>` : `<p class="jn-texto">${escape(b.name)}</p>`}
             ${now ? `<p class="jn-texto">${escape(t('rm_on_board', now[1]))}</p>` : ''}
-            <div class="jn-mando">${COMMANDS.map(([c, k, cls]) => `<button type="button" class="${cls || ''}" data-cmd="${c}">${escape(t(k))}</button>`).join('')}</div>
+            ${mine.length ? '<div class="jn-aqui" id="jn-aqui"></div>' : general}
             <p class="jn-texto" id="jn-hecho" aria-live="polite">${escape(last) || '&nbsp;'}</p>
+            ${mine.length ? `<details class="jn-herramientas" id="jn-mas"><summary>${escape(t('rm_more'))}</summary>${general}</details>` : ''}
             ${window.ClasstoolsScanner ? `<button type="button" class="jn-boton jn-leer-boton" id="jn-leer">${escape(t('rm_scan'))}</button>` : ''}
             <details class="jn-herramientas" id="jn-clases"><summary>${escape(t('rm_course'))}</summary><p class="jn-texto">${escape(t('rm_course_hint'))}</p><div class="jn-mando" id="jn-clases-lista"></div></details>
             ${tools.length ? `<details class="jn-herramientas"><summary>${escape(t('rm_tools'))}</summary><div class="jn-mando">${tools.map(([id, name]) => `<button type="button" data-cmd="tool_${escape(id)}"${id === b.tool ? ' aria-current="true"' : ''}>${escape(name)}</button>`).join('')}</div></details>` : ''}`;
+        paintHere(mine);
     };
+    // The buttons of the tool on the board, in its rows: the main one wide, the one that is on marked, right and wrong in
+    // their colours, a value between its two steps (then «−» and «+»), a line of text.
+    function paintHere(rows) {
+        const box = document.getElementById('jn-aqui'), key = JSON.stringify(rows);
+        if (!box || box.dataset.key === key) { return; }
+        box.dataset.key = key;
+        box.innerHTML = rows.map((row) => {
+            const steps = row.some((x) => x[2] === 'val');
+            // As many in a line as fit: short names (1 min, +5), up to five; three of a game («Right», «Wrong», «Pass»).
+            const n = steps ? row.length : row.every((x) => x[1].length <= 6) ? Math.min(row.length, 5)
+                : row.length === 3 && row.every((x) => x[1].length <= 12) ? 3 : Math.min(row.length, 2);
+            return `<div class="jn-mando jn-fila${steps ? ' jn-pasos' : ''}${n > 3 ? ' jn-cortos' : ''}" style="--n:${n}">${row.map(([cmd, name, how]) => {
+                if (how === 'txt') { return `<p class="jn-linea">${escape(name)}</p>`; }
+                if (how === 'val') { return `<output class="jn-valor">${escape(name)}</output>`; }
+                const glyph = steps && (how === 'less' || how === 'more');
+                return `<button type="button" class="${{ big: 'grande', yes: 'jn-si', no: 'jn-no' }[how] || ''}" data-cmd="${escape(cmd)}" data-name="${escape(name)}"${how === 'on' ? ' aria-pressed="true"' : ''}${glyph ? ` aria-label="${escape(name)}">${how === 'less' ? '−' : '+'}` : `>${escape(name)}`}</button>`;
+            }).join('')}</div>`;
+        }).join('');
+    }
     // --- Reading the printed cards ----------------------------------------------------------------------------------
     let scanning = false, stream = null, loop = 0, sendTimer = 0;
     const seen = new Map(), pending = new Map();
@@ -158,13 +185,14 @@
         const b = e.target.closest('[data-cmd]');
         if (!b) { return; }
         buzz();
-        const cmd = b.dataset.cmd, label = cmd.startsWith('tool_') ? b.textContent : t((COMMANDS.find((x) => x[0] === cmd) || [])[1] || '');
+        const cmd = b.dataset.cmd, label = b.dataset.name || (cmd.startsWith('tool_') ? b.textContent : t((COMMANDS.find((x) => x[0] === cmd) || [])[1] || ''));
         post('command', { cmd, course }).then((v) => {
             if (v && v.off) { stop(); screen(t('rm_off_title'), t('rm_off_text')); return; }
             last = v && v.ok ? `${label} · ${t('lv_sent')}` : (v && v.why === 'closed' ? t('rm_closed') : '');
             const done = document.getElementById('jn-hecho');
             if (done) { done.textContent = last || ' '; }
-            if (v && v.why === 'closed') { poll(); }
+            // Closed, or that button is no longer on the board: what there is now. Sent: soon, to see how it was left.
+            if (v && (v.why === 'closed' || v.why === 'gone')) { poll(); } else if (v && v.ok && timer !== -1) { clearTimeout(timer); timer = setTimeout(poll, 1200); }
         }).catch(() => { const done = document.getElementById('jn-hecho'); if (done) { done.textContent = t('lv_offline'); } });
     });
 

@@ -989,20 +989,27 @@
                     await h.moveTo('movil:.jn-mando');
                 },
                 async (h) => {
-                    await h.press('movil:details.jn-herramientas:not(#jn-clases) > summary');
+                    await h.press('movil:details.jn-herramientas:not(#jn-clases):not(#jn-mas) > summary');
                     await h.press('movil:[data-cmd="tool_temporizador"]');
-                    await h.wait(1000);
-                    await h.press('movil:[data-cmd="tm_toggle"]');
+                    // The phone shows the timer's own buttons once it hears the board is on it.
+                    await h.until('movil:[data-cmd="x_go"]');
+                    await h.wait(800);
+                    await h.press('movil:[data-cmd="x_go"]');
                     await h.wait(1600);
-                    await h.press('movil:[data-cmd="tm_plus"]');
+                    await h.press('movil:[data-cmd="x_pl"]');
                     await h.wait(1500);
                     await h.moveTo('#tm-cifras');
                 },
                 async (h) => {
-                    await h.press('movil:[data-cmd="pick"]');
+                    // The orders for any tool, under «More orders».
+                    await h.press('movil:#jn-mas > summary');
+                    await h.press('movil:#jn-mas [data-cmd="pick"]');
                     await h.wait(2600);
                     await h.moveTo('#q-nombre');
-                    await h.press('movil:[data-cmd="curtain"]');
+                    // The phone draws itself again for «Whose turn?»: «More orders» is opened once it has.
+                    await h.pause(1800);
+                    await h.press('movil:#jn-mas > summary');
+                    await h.press('movil:#jn-mas [data-cmd="curtain"]');
                     await h.wait(2000);
                 },
                 async (h) => {
@@ -1022,9 +1029,9 @@
                     await h.until('.ct-rm .lv-qr');
                     await h.press('#t-temporizador', true);
                     await h.phone(true, true);
-                    await h.until('movil:.jn-mando');
+                    await h.until('movil:[data-cmd="x_go"]');
                 },
-                targets: [{ sel: 'movil:[data-cmd="tm_toggle"]' }, { sel: 'movil:[data-cmd="pick"]' }],
+                targets: [{ sel: 'movil:[data-cmd="x_go"]' }, { sel: 'movil:#jn-mas > summary' }, { sel: 'movil:#jn-mas [data-cmd="pick"]' }],
                 after: 3400,
             },
         },

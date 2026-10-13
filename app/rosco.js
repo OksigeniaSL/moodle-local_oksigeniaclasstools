@@ -267,7 +267,7 @@
         paint(); startClock();
         announce(`${team().name}. ${$('#ro-kind').textContent}. ${$('#ro-clue').textContent}`);
     };
-    // After a wrong answer or «pasapalabra» (or when a team ends), the other team plays if it can.
+    // After a wrong answer or «Pass» (or when a team ends), the other team plays if it can.
     const afterTurn = (switchTeam) => {
         const t = team();
         if (!pending(t).length) { t.done = true; }
@@ -370,7 +370,7 @@
             store.sets = store.sets.filter((s) => s.id !== editing);
             persist(); fillSets(); closeEditor();
         });
-        // Enter: right; Backspace: wrong (the space bar, «pasapalabra», comes from the board).
+        // Enter: right; Backspace: wrong (the space bar, «Pass», comes from the board).
         document.addEventListener('keydown', (e) => {
             if (!visible || !g.running || e.repeat || e.ctrlKey || e.altKey || e.metaKey) { return; }
             if (document.querySelector('dialog[open]') || (e.target.closest && e.target.closest('input, textarea, select'))) { return; }

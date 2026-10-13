@@ -131,6 +131,37 @@ final class remote_test extends \advanced_testcase {
         $this->assertSame(['ok' => false, 'why' => 'unknown'], $send('course_' . $here->id));
     }
 
+    public function test_the_phone_gets_the_buttons_of_the_tool_on_screen(): void {
+        $this->resetAfterTest();
+        $gen = $this->getDataGenerator();
+        $teacher = $gen->create_user();
+        $course = $gen->create_course();
+        remote::set_enabled((int) $teacher->id, true);
+        // What the board sends, and only what fits is kept: known ways to show, orders of the board, names as text.
+        $json = json_encode([
+            [['x_go', 'Make <b>groups</b>', 'big'], ['x_bad-one', 'No', ''], ['x_le', 'One fewer', 'odd']],
+            [['', '4 groups', 'val'], ['x_mr', '', 'more'], ['pick', 'Pick', ''], ['drop', 'Drop', ''],
+                ['x_ok', 'Right', 'yes']],
+            [['x_no', 'A value with an order', 'val']],
+            'not a row',
+        ]);
+        $here = remote::here($json);
+        $this->assertSame([
+            [['x_go', 'Make groups', 'big']],
+            [['', '4 groups', 'val'], ['pick', 'Pick', ''], ['x_ok', 'Right', 'yes']],
+        ], $here);
+        $this->assertSame([], remote::here('nonsense'));
+        remote::board((int) $teacher->id, $course, 0, 'grupos', [['grupos', 'Groups']], $here);
+        $this->assertSame($here, remote::phone(remote::get((int) $teacher->id))['boards'][0]['here']);
+        // A button the board has; one it no longer has (the phone was behind).
+        $send = fn(string $cmd) => remote::command(remote::get((int) $teacher->id), $cmd, (int) $course->id);
+        $this->assertSame(['ok' => true], $send('x_go'));
+        $this->assertSame(['ok' => false, 'why' => 'gone'], $send('x_mr'));
+        $this->assertSame(['ok' => false, 'why' => 'unknown'], $send('x_Go'));
+        $got = remote::board((int) $teacher->id, $course, 0, 'grupos', [['grupos', 'Groups']], $here);
+        $this->assertSame(['x_go'], array_column($got['cmds'], 'cmd'));
+    }
+
     public function test_it_turns_itself_off_after_hours_without_orders(): void {
         global $DB;
         $this->resetAfterTest();

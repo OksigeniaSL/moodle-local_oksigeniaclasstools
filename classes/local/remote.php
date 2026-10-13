@@ -33,6 +33,16 @@ class remote {
     const COMMANDS = ['tm_toggle', 'tm_reset', 'tm_plus', 'pick', 'tab_next', 'tab_prev', 'present', 'turn', 'next',
         'curtain', 'reveal', 'relay', 'live'];
 
+    /** How each thing of the tool on screen shows on the phone: a button, the main one, one that is on, a step down or
+     * up, a yes or a no (right or wrong in a game), a value (not a button) or a line of text. */
+    const HOWS = ['', 'big', 'on', 'less', 'more', 'yes', 'no', 'val', 'txt'];
+
+    /** Most rows of the tool on screen on the phone. */
+    const HERE_ROWS = 24;
+
+    /** Most things in a row of the tool on screen. */
+    const HERE_ITEMS = 6;
+
     /** Most courses the phone lists to change the class. */
     const MAX_COURSES = 60;
 
@@ -222,9 +232,11 @@ class remote {
      * @param int $since The last order the board ran.
      * @param string $tool The tool on screen.
      * @param array[] $tools The tools the board has, each [id, name], for the phone.
+     * @param array[] $here The buttons of the tool on screen, for the phone (as {@see self::here()} leaves them).
      * @return array on; when on, seq, cmds and whether the phone is there.
      */
-    public static function board(int $userid, \stdClass $course, int $since, string $tool, array $tools): array {
+    public static function board(int $userid, \stdClass $course, int $since, string $tool, array $tools,
+            array $here = []): array {
         $row = self::get($userid);
         if (!$row || !self::alive($row)) {
             return ['on' => false];
@@ -233,9 +245,10 @@ class remote {
         $now = time();
         $was = $state['boards'][$course->id] ?? null;
         $board = ['name' => format_string($course->shortname, true, ['context' => \context_course::instance($course->id)]),
-            'tool' => $tool, 'tools' => array_values($tools), 'seen' => $now];
+            'tool' => $tool, 'tools' => array_values($tools), 'here' => $here, 'seen' => $now];
         // Written only when something changed or every few seconds, not on each call.
-        if (!$was || $now - $was['seen'] >= self::HEARTBEAT || $was['tool'] !== $tool || $was['tools'] !== $board['tools']) {
+        if (!$was || $now - $was['seen'] >= self::HEARTBEAT || $was['tool'] !== $tool || $was['tools'] !== $board['tools']
+                || ($was['here'] ?? []) !== $here) {
             $state['boards'][$course->id] = $board;
             self::keep($row, $state);
         }
@@ -250,14 +263,14 @@ class remote {
      * The open boards, for the phone, from the last one used.
      *
      * @param \stdClass $row
-     * @return array[] course, name, tool and tools of each.
+     * @return array[] course, name, tool, tools and here (the buttons of the tool on screen) of each.
      */
     private static function open_boards(\stdClass $row): array {
         $boards = [];
         foreach (self::state($row)['boards'] as $courseid => $b) {
             if (time() - $b['seen'] < self::BOARD_IDLE) {
                 $boards[] = ['course' => (int) $courseid, 'name' => $b['name'], 'tool' => $b['tool'], 'tools' => $b['tools'],
-                    'seen' => $b['seen']];
+                    'here' => $b['here'] ?? [], 'seen' => $b['seen']];
             }
         }
         usort($boards, fn($a, $b) => $b['seen'] <=> $a['seen']);
@@ -303,13 +316,51 @@ class remote {
     }
 
     /**
+     * The buttons of the tool on screen as the board sends them, for the phone: rows of [order, name, how]. Only what
+     * fits: known ways to show, orders of the board («x_» and a key, or a known one), names as plain text, so many rows.
+     *
+     * @param string $json
+     * @return array[]
+     */
+    public static function here(string $json): array {
+        $rows = json_decode($json, true);
+        $here = [];
+        foreach (is_array($rows) ? array_slice($rows, 0, self::HERE_ROWS) : [] as $row) {
+            $items = [];
+            foreach (is_array($row) ? array_slice($row, 0, self::HERE_ITEMS) : [] as $item) {
+                if (!is_array($item) || count($item) !== 3) {
+                    continue;
+                }
+                [$cmd, $label, $how] = array_values($item);
+                if (!is_string($cmd) || !is_string($label) || !in_array($how, self::HOWS, true)) {
+                    continue;
+                }
+                // A value or a line of text is only shown; a button carries an order.
+                $shown = $how === 'val' || $how === 'txt';
+                if ($shown ? $cmd !== '' : !preg_match('/^x_[a-z0-9]{1,20}$/', $cmd) && !in_array($cmd, self::COMMANDS, true)) {
+                    continue;
+                }
+                $label = trim(preg_replace('/\s+/u', ' ', clean_param($label, PARAM_TEXT)));
+                if ($label !== '') {
+                    $items[] = [$cmd, \core_text::substr($label, 0, $how === 'txt' ? 200 : 60), $how];
+                }
+            }
+            if ($items) {
+                $here[] = $items;
+            }
+        }
+        return $here;
+    }
+
+    /**
      * An order from the phone for the board of a course: only known orders (or the printed cards it read, as
-     * «cards_7a12c», or another course of the teacher to go to, as «course_12»), for an open board, and not too fast.
+     * «cards_7a12c», another course of the teacher to go to, as «course_12», or a button of the tool on screen, as
+     * «x_go»), for an open board, and not too fast.
      *
      * @param \stdClass $row
      * @param string $cmd
      * @param int $courseid
-     * @return array ok, or ok false and why (unknown, closed, toofast).
+     * @return array ok, or ok false and why (unknown, closed, gone: that button is no longer on the board, toofast).
      */
     public static function command(\stdClass $row, string $cmd, int $courseid): array {
         // Printed cards read by the phone: card numbers (1 to 60) and their answers, up to 20 at once.
@@ -319,13 +370,18 @@ class remote {
         if ($goto && ($goto === $courseid || !in_array($goto, array_column(self::courses((int) $row->userid), 'id'), true))) {
             return ['ok' => false, 'why' => 'unknown'];
         }
-        if (!$cards && !$goto && !in_array($cmd, self::COMMANDS, true) && !preg_match('/^tool_[a-z]{2,20}$/', $cmd)) {
+        // A button of the tool on screen.
+        $button = (bool) preg_match('/^x_[a-z0-9]{1,20}$/', $cmd);
+        if (!$cards && !$goto && !$button && !in_array($cmd, self::COMMANDS, true) && !preg_match('/^tool_[a-z]{2,20}$/', $cmd)) {
             return ['ok' => false, 'why' => 'unknown'];
         }
-        $open = array_column(self::open_boards($row), 'tools', 'course');
-        $tools = isset($open[$courseid]) ? array_column($open[$courseid], 0) : [];
+        $open = array_column(self::open_boards($row), null, 'course');
+        $tools = isset($open[$courseid]) ? array_column($open[$courseid]['tools'], 0) : [];
         if (!isset($open[$courseid]) || (strpos($cmd, 'tool_') === 0 && !in_array(substr($cmd, 5), $tools, true))) {
             return ['ok' => false, 'why' => 'closed'];
+        }
+        if ($button && !in_array($cmd, array_column(array_merge([], ...$open[$courseid]['here']), 0), true)) {
+            return ['ok' => false, 'why' => 'gone'];
         }
         $state = self::state($row);
         $ms = (int) round(microtime(true) * 1000);

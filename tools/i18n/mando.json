@@ -8,5 +8,7 @@
   "rm_course_none": { "en": "You have no other class with the board.", "es": "No tienes otra clase con la pizarra." },
   "rm_course_going": { "en": "The board goes to {$a}", "es": "La pizarra pasa a {$a}" },
   "rm_last": { "en": "Last order: {$a}", "es": "Última orden: {$a}" },
-  "rm_waiting_orders": { "en": "Waiting for orders from the phone", "es": "Esperando órdenes del móvil" }
+  "rm_waiting_orders": { "en": "Waiting for orders from the phone", "es": "Esperando órdenes del móvil" },
+  "rm_more": { "en": "More orders", "es": "Más órdenes" },
+  "rm_answer": { "en": "Answer: {$a}", "es": "Respuesta: {$a}" }
 }

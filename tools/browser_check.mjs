@@ -91,10 +91,14 @@ window.shot = (name) => new Promise((done) => { if (!window.checkShot) { done();
         }
         // The phone of the fixed remote, as mandoapi.php gives it: two open boards.
         if (String(url).startsWith('fake://mando')) {
-            if (a === 'command') { return json({ ok: true }); }
+            if (a === 'command') { return json(p.get('cmd') === 'x_old' ? { ok: false, why: 'gone' } : { ok: true }); }
             if (a === 'courses') { return json({ courses: [{ id: 1, name: 'One' }, { id: 7, name: 'Language 5' }, { id: 8, name: 'Maths 6' }] }); }
-            return json({ boards: [{ course: 1, name: 'One', tool: 'quien', tools: [['quien', 'Whose turn?'], ['reloj', 'Clock']] },
-                { course: 2, name: 'Two', tool: 'reloj', tools: [['reloj', 'Clock']] }] });
+            // The first board is on «Groups», with its buttons; the second, on the clock, has none.
+            const here = [[['x_md0', 'No. of groups', 'on'], ['x_md1', 'Students per group', '']],
+                [['x_le', 'One fewer', 'less'], ['', '4 groups', 'val'], ['x_mr', 'One more', 'more']], [['x_go', 'Make groups', 'big']],
+                [['', 'Starts with A: a fruit', 'txt']], [['x_old', 'Gone', '']]];
+            return json({ boards: [{ course: 1, name: 'One', tool: 'grupos', tools: [['grupos', 'Groups'], ['reloj', 'Clock']], here },
+                { course: 2, name: 'Two', tool: 'reloj', tools: [['reloj', 'Clock']], here: [] }] });
         }
         // A Canva short link, as presentation.php follows it.
         if (String(url).startsWith('fake://presentation')) {
@@ -868,7 +872,22 @@ const CHECKS = {
         if (!sent || sent.course !== '2' || sent.cmd !== 'pick' || sent.k !== 'key1') { return `sent ${JSON.stringify(sent)}`; }
         q('[data-course="1"]').click();
         await sleep(100);
-        q('.jn-herramientas:not(#jn-clases)').open = true;
+        // The buttons of the tool on that board first: the main one wide, the one that is on, the steps around their
+        // value, a line of text; the orders for any tool, under «More orders».
+        const rows = [...document.querySelectorAll('#jn-aqui .jn-fila')].map((r) => [...r.children].map((x) => x.textContent).join('/'));
+        if (rows.join(' | ') !== 'No. of groups/Students per group | −/4 groups/+ | Make groups | Starts with A: a fruit | Gone') { return `tool rows: ${rows.join(' | ')}`; }
+        if (!q('[data-cmd="x_go"].grande') || q('[data-cmd="x_md0"]').getAttribute('aria-pressed') !== 'true' || q('[data-cmd="x_mr"]').getAttribute('aria-label') !== 'One more') { return 'the tool buttons do not look as they should'; }
+        if (!q('#jn-mas [data-cmd="pick"]') || q('#jn-mas').open) { return 'the orders for any tool are not under «More orders»'; }
+        q('[data-cmd="x_mr"]').click();
+        await sleep(200);
+        sent = FAKE.calls.filter((c) => c.action === 'command').pop();
+        if (sent.cmd !== 'x_mr' || sent.course !== '1' || !/One more/.test(q('#jn-hecho').textContent)) { return `tool button sent ${JSON.stringify(sent)}`; }
+        // A button the board no longer has: the phone asks again what there is.
+        const asked = FAKE.calls.filter((c) => c.action === 'state').length;
+        q('[data-cmd="x_old"]').click();
+        await sleep(300);
+        if (FAKE.calls.filter((c) => c.action === 'state').length <= asked) { return 'it did not ask again after a button that is gone'; }
+        q('.jn-herramientas:not(#jn-clases):not(#jn-mas)').open = true;
         q('[data-cmd="tool_reloj"]').click();
         await sleep(200);
         sent = FAKE.calls.filter((c) => c.action === 'command').pop();
@@ -1529,6 +1548,73 @@ const CHECKS = {
         await sleep(200);
         if (!/Next|next/.test(q('#lv-rm .ct-rm-ultima').textContent)) { return `last order: ${q('#lv-rm .ct-rm-ultima').textContent}`; }
         await window.shot('remote-orders');
+        q('#lv-rm [data-rm="off"]').click();
+        return '';
+    },
+    // The board tells the phone the buttons of the tool on screen, as they are now, and runs them: the groups (how
+    // many, «Make groups», then «Again»), and the alphabet wheel with its letter and the answer for the teacher.
+    'remote-here': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const q = (x) => document.querySelector(x);
+        const core = window.ClasstoolsCore;
+        // What the board said in its last poll on a tool, once it says it.
+        const said = async (tool, test) => {
+            for (let i = 0; i < 60; i++) {
+                const p = FAKE.calls.filter((c) => c.action === 'poll' && c.tool === tool).pop();
+                const rows = p ? JSON.parse(p.here || '[]') : [];
+                if (p && test(rows)) { return rows; }
+                await sleep(100);
+            }
+            const p = FAKE.calls.filter((c) => c.action === 'poll').pop();
+            return p ? `${p.tool}: ${p.here}` : 'no poll';
+        };
+        const order = (cmd) => {
+            const n = Math.max(FAKE.remote ? FAKE.remote.seq : 0, ...(FAKE.remoteCmds || []).map((c) => c.seq)) + 1;
+            FAKE.remoteCmds = [...(FAKE.remoteCmds || []), { seq: n, cmd }];
+        };
+        q('#t-envivo').click();
+        await sleep(200);
+        q('#lv-kind [data-v="remote"]').click();
+        await sleep(200);
+        if (q('#lv-rm [data-rm="on"]')) { q('#lv-rm [data-rm="on"]').click(); }
+        await sleep(300);
+        FAKE.remoteCmds = [];
+        core.show('grupos');
+        const flat = (rows) => (Array.isArray(rows) ? rows.flat() : []);
+        let rows = await said('grupos', (r) => flat(r).some((x) => x[0] === 'x_go'));
+        if (!Array.isArray(rows)) { return `groups: ${rows}`; }
+        const go = flat(rows).find((x) => x[0] === 'x_go'), n = flat(rows).find((x) => x[2] === 'val');
+        if (go[2] !== 'big' || !/Make groups/.test(go[1]) || !n || !flat(rows).some((x) => x[0] === 'x_mr' && x[2] === 'more')) { return `groups: ${JSON.stringify(rows)}`; }
+        if (!flat(rows).some((x) => x[0].startsWith('x_md') && x[2] === 'on')) { return `no mode on: ${JSON.stringify(rows)}`; }
+        const before = q('#g-n').textContent;
+        order('x_mr');
+        for (let i = 0; i < 40 && q('#g-n').textContent === before; i++) { await sleep(100); }
+        if (q('#g-n').textContent === before) { return 'the step from the phone did not change the groups'; }
+        order('x_go');
+        rows = await said('grupos', (r) => flat(r).some((x) => x[0] === 'x_go' && /Again/.test(x[1])));
+        if (!Array.isArray(rows)) { return `after making the groups: ${rows}`; }
+        // The wheel: the letter and its clue, and the answer, only for the teacher; «Right» from the phone.
+        core.show('juegos');
+        q('#ga-mode [data-game="rosco"]').click();
+        await sleep(300);
+        rows = await said('juegos', (r) => flat(r).some((x) => x[0].startsWith('x_go') && /Start/.test(x[1])));
+        if (!Array.isArray(rows)) { return `wheel: ${rows}`; }
+        order(flat(rows).find((x) => x[0].startsWith('x_go'))[0]);
+        rows = await said('juegos', (r) => flat(r).some((x) => x[0] === 'x_ok'));
+        if (!Array.isArray(rows)) { return `wheel started: ${rows}`; }
+        const it = window.ClasstoolsRosco.state().teams[0].items[window.ClasstoolsRosco.state().teams[0].pos];
+        const lines = flat(rows).filter((x) => x[2] === 'txt').map((x) => x[1]);
+        if (lines.length !== 2 || lines[1] !== `Answer: ${it.a}`) { return `wheel lines: ${JSON.stringify(lines)}`; }
+        order('x_ok');
+        for (let i = 0; i < 40 && !window.ClasstoolsRosco.state().teams[0].ok; i++) { await sleep(100); }
+        if (window.ClasstoolsRosco.state().teams[0].ok !== 1) { return '«Right» from the phone did not count'; }
+        window.ClasstoolsRosco.finish();
+        // A tool without buttons for the phone: nothing.
+        core.show('qr');
+        rows = await said('qr', (r) => r.length === 0);
+        if (!Array.isArray(rows)) { return `qr: ${rows}`; }
+        q('#t-envivo').click();
+        await sleep(200);
         q('#lv-rm [data-rm="off"]').click();
         return '';
     },

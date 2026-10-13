@@ -59,6 +59,19 @@ button { touch-action: manipulation; -webkit-user-select: none; user-select: non
 .jn-mando button { min-height: 5.5rem; padding: .6rem; border: 0; border-radius: 20px; background: var(--superficie); color: var(--azul-osc); font-size: 1.1rem; font-weight: 900; box-shadow: 0 2px 0 var(--borde), 0 6px 18px rgba(15, 47, 94, .08); }
 .jn-mando button.grande { grid-column: 1 / -1; min-height: 6.5rem; background: var(--verde); color: #fff; font-size: 1.4rem; }
 .jn-mando button:active { transform: scale(.98); }
+/* The buttons of the tool on the board, in its rows: the one that is on, a value between its steps, a line of text. */
+.jn-aqui { display: grid; gap: .8rem; width: 100%; }
+.jn-fila { grid-template-columns: repeat(var(--n, 2), minmax(0, 1fr)); }
+.jn-fila button { min-height: 4.5rem; }
+.jn-fila button.grande { min-height: 6.5rem; }
+.jn-fila button[aria-pressed="true"] { background: var(--azul); color: #fff; }
+.jn-fila button.jn-si { background: var(--verde); color: #fff; }
+.jn-fila button.jn-no { background: var(--rojo); color: #fff; }
+.jn-cortos button { padding: .2rem; font-size: .95rem; white-space: nowrap; }
+.jn-pasos button { font-size: 2.4rem; line-height: 1; }
+.jn-valor { display: flex; align-items: center; justify-content: center; color: var(--azul-osc); font-size: 1.3rem; font-weight: 900; text-align: center; font-variant-numeric: tabular-nums; }
+.jn-fila .jn-valor:only-child { grid-column: 1 / -1; justify-content: flex-start; font-size: 1.1rem; }
+.jn-linea { grid-column: 1 / -1; margin: 0; color: var(--azul-osc); font-size: 1.1rem; font-weight: 700; text-align: center; }
 .jn-aviso { margin: 0; padding: .4rem .8rem; border-radius: 12px; background: #fff4d6; color: #6b4a00; font-size: .9rem; text-align: center; }
 @media (prefers-reduced-motion: reduce) { .jn-op, .jn-ya { transition: none; } }
 /* The time left of a vote that closes by itself. */

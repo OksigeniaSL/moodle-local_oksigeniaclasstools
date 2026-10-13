@@ -50,7 +50,9 @@ if ($action === 'poll') {
         }
     }
     $since = optional_param('since', 0, PARAM_INT);
-    echo json_encode(remote::board((int) $USER->id, $course, $since, optional_param('tool', '', PARAM_ALPHA), $tools));
+    // The buttons of the tool on screen, for the phone.
+    $here = remote::here(optional_param('here', '', PARAM_RAW));
+    echo json_encode(remote::board((int) $USER->id, $course, $since, optional_param('tool', '', PARAM_ALPHA), $tools, $here));
 } else if ($action === 'status') {
     echo json_encode(remote::status((int) $USER->id));
 } else if ($action === 'on' || $action === 'off') {

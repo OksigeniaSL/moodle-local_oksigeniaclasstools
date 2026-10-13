@@ -224,6 +224,7 @@
         if (action === 'poll') {
             rm.tool = body.get('tool') || '';
             rm.tools = (body.get('tools') || '').split(';').filter(Boolean).map((x) => x.split('|'));
+            try { rm.here = JSON.parse(body.get('here') || '[]'); } catch (e) { rm.here = []; }
             return { on: rm.on, seq: rm.seq, cmds: rm.cmds.slice(-10), phone: rm.phone };
         }
         return rm.on ? { on: true, url: rmUrl() } : { on: false };
@@ -289,7 +290,7 @@
             state: () => {
                 if (!rm.on) { return { off: true }; }
                 rm.phone = true;
-                return { boards: [{ course: 1, name: CLASSES()[0].name, tool: rm.tool, tools: rm.tools }] };
+                return { boards: [{ course: 1, name: CLASSES()[0].name, tool: rm.tool, tools: rm.tools, here: rm.here || [] }] };
             },
             command: (cmd) => {
                 if (!rm.on) { return { off: true }; }

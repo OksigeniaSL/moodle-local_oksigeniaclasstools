@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.60.0 (2026-10-13)
+
+- The fixed remote shows on top the buttons of the tool on the board, with the names they have there and the main one
+  first: the timer (start or pause, a minute less or more, quick times), the stopwatch, «Whose turn?», the groups (by
+  number or size, how many, «Make groups» and then «Again»), the noise meter, chance (wheel, dice, coin or cards, and
+  what each does), the games («Right», «Wrong», «Pass» and the answer of the alphabet wheel, which only the teacher
+  sees; starting each game, clues and «Show the word»), the scoreboard (each team's points and its steps, or the class
+  goal), «This is how we work», the board (curtain, pages, whose turn), the slides (whose turn, writing on top) and what
+  is open in «Live». The orders for any tool go under «More orders». After an order the board says soon how it was
+  left, so the phone shows «Pause» or «Again» without waiting; a button the board no longer has is not sent.
+- The guided help of the fixed remote presses the timer's own buttons and opens «More orders».
+- The Letter Catcher sticker says «From A to Z, letter by letter».
+
 ## 0.59.1 (2026-10-12)
 
 - The teachers' room says what it counts: the stickers won using the tools with a class in that time, not the ones

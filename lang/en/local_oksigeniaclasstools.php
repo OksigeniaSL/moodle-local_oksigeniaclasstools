@@ -339,7 +339,7 @@ $string['app_cr_atrapanubes_name'] = 'Cloud Catcher';
 $string['app_cr_atrapanubes_text'] = 'Catches ideas before the wind takes them.';
 $string['app_cr_cazaletras_how'] = 'Finish a letter wheel.';
 $string['app_cr_cazaletras_name'] = 'Letter Catcher';
-$string['app_cr_cazaletras_text'] = 'From A to Z, without passing.';
+$string['app_cr_cazaletras_text'] = 'From A to Z, letter by letter.';
 $string['app_cr_close'] = 'Close';
 $string['app_cr_creajuegos_how'] = 'Play one of your own exercises in Order, Sort, Spot the mistakes or Who am I?';
 $string['app_cr_creajuegos_name'] = 'Game Maker';
@@ -1237,7 +1237,7 @@ Vote: ask the question, open it, wait, close it and the bars appear; «Another q
 For Peer Instruction: they vote, discuss in pairs for a couple of minutes and vote again.
 Brainstorm: a word or two each; check them before showing them if needed.
 Without tablets: «Hands up», and you count with + and −.
-Fixed remote, on your phone and without logging in: the timer, picking someone, going to a tool, opening or closing the vote or the ticket, the curtain («Uncover a little» pulls it down), the relays, reading the cards and «Change the class», which takes the open board to another of your courses. It turns itself off after the hours without use that the school sets.
+Fixed remote, on your phone and without logging in: on top, the buttons of the tool on the board (in «Groups», how many and «Make groups»; in the alphabet wheel, «Right», «Wrong», «Pass» and the answer, which only you see); under «More orders», the timer, picking someone, opening or closing the vote or the ticket, the curtain («Uncover a little» pulls it down) and the relays; and also going to a tool, reading the cards and «Change the class», which takes the open board to another of your courses. It turns itself off after the hours without use that the school sets.
 Music quiz: «Music» makes the questions by itself (which song is it?, rhythm dictation with ta and ti-ti, or melody dictation from do) and the board plays each one as it opens; «Again» plays it once more.';
 $string['app_gd_envivo_scene'] = 'Before the experiment, Year 5 vote whether an egg floats in salty water: nearly everyone says no. They do the experiment and repeat the question with «Another question»; the bars change, and the best part begins: explaining why.';
 $string['app_gd_envivo_sources'] = 'Crouch, C. H. and Mazur, E. (2001). Peer Instruction: Ten years of experience and results. American Journal of Physics, 69(9), 970–977.|https://doi.org/10.1119/1.1374249
@@ -1917,8 +1917,9 @@ $string['app_hp_mando_5'] = 'Save the address on your phone: it works all year a
 $string['app_hp_mando_6'] = 'Your turn: from your phone, start the timer and then press «Whose turn?».';
 $string['app_hp_mando_7'] = 'You\'ve got it! This critter is yours: the Remote Master.';
 $string['app_hp_mando_again'] = 'Well done! The Remote Master is already yours.';
-$string['app_hp_mando_h1'] = 'On the phone: «Timer: start or pause»';
-$string['app_hp_mando_h2'] = 'And now «Whose turn?»';
+$string['app_hp_mando_h1'] = 'On the phone, the timer: «Start»';
+$string['app_hp_mando_h2'] = 'Now open «More orders»';
+$string['app_hp_mando_h3'] = 'And «Whose turn?»';
 $string['app_hp_mando_title'] = 'The fixed remote: the board in your pocket';
 $string['app_hp_manos_1'] = 'At circle time, the class chooses a name for its pet. No screens: they raise their hands and you count.';
 $string['app_hp_manos_2'] = 'Choose «Hands up or cards» and, under «Answers», «My own answers»: type the names, one per line.';
@@ -2795,6 +2796,7 @@ $string['app_rl_spokesperson'] = 'Spokesperson';
 $string['app_rl_summarise'] = 'Summarise';
 $string['app_rl_tambourine'] = 'Tambourine';
 $string['app_rl_time'] = 'Timekeeper';
+$string['app_rm_answer'] = 'Answer: {$a}';
 $string['app_rm_closed'] = 'That board is not open any more.';
 $string['app_rm_cmd_curtain'] = 'Curtain';
 $string['app_rm_cmd_live'] = 'Open or close (Live)';
@@ -2811,6 +2813,7 @@ $string['app_rm_course_none'] = 'You have no other class with the board.';
 $string['app_rm_how'] = 'Scan the code with your phone and keep it on its home screen: the address is always the same.';
 $string['app_rm_intro'] = 'An address for your phone that does not change and does not ask you to log in: open it, for instance, from the home screen of the phone, and it drives the board you have open.';
 $string['app_rm_last'] = 'Last order: {$a}';
+$string['app_rm_more'] = 'More orders';
 $string['app_rm_no_board_text'] = 'Open the board on the computer, in a course: it shows up here by itself.';
 $string['app_rm_no_board_title'] = 'No board is open';
 $string['app_rm_off_text'] = 'It has been turned off, or its address has changed. On the board, in «Live» and «Remote», there is the address of now.';
