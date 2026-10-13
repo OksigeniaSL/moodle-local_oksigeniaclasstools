@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.61.1 (2026-10-13)
+
+- On the fixed remote, a switch that is on is the whole button in green, with white letters, and one that is off is
+  white: whether «Scratch to reveal» or «The teacher plays too» is on is seen at a glance, without looking at the board.
+
 ## 0.61.0 (2026-10-13)
 
 - In «Whose turn?» and «Groups», the fixed remote first asks which class: the lists of the course (its groups, such as

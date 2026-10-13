@@ -888,6 +888,12 @@ const CHECKS = {
         await sleep(200);
         sent = FAKE.calls.filter((c) => c.action === 'command').pop();
         if (sent.cmd !== 'x_o1' || q('[data-cmd="x_o1"]').getAttribute('aria-checked') !== 'true') { return 'the switch did not go, or did not show it at once'; }
+        // On and off look different at a glance: the whole button changes colour.
+        const colour = (sel) => getComputedStyle(q(sel)).backgroundColor;
+        if (colour('[data-cmd="x_o1"]') !== colour('[data-cmd="x_go"]') || colour('[data-cmd="x_o1"]') === colour('[data-cmd="x_mr"]')) { return `a switch on is not green: ${colour('[data-cmd="x_o1"]')}`; }
+        q('[data-cmd="x_o2"]').click();
+        await sleep(200);
+        if (colour('[data-cmd="x_o2"]') !== colour('[data-cmd="x_mr"]')) { return `a switch off does not look like a plain button: ${colour('[data-cmd="x_o2"]')}`; }
         q('[data-cmd="x_o4x1"]').click();
         await sleep(200);
         if (q('[data-cmd="x_o4x1"]').getAttribute('aria-pressed') !== 'true' || q('[data-cmd="x_o4x0"]').getAttribute('aria-pressed') !== 'false') { return 'the option chosen does not show at once'; }
@@ -1602,9 +1608,21 @@ const CHECKS = {
         if (q('#lv-rm [data-rm="on"]')) { q('#lv-rm [data-rm="on"]').click(); }
         await sleep(300);
         FAKE.remoteCmds = [];
-        core.show('grupos');
         const flat = (rows) => (Array.isArray(rows) ? rows.flat() : []);
-        let rows = await said('grupos', (r) => flat(r).some((x) => x[0] === 'x_go'));
+        // «Whose turn?»: «Scratch to reveal» turned on and off from the phone, and the phone told each time.
+        core.show('quien');
+        let rows = await said('quien', (r) => flat(r).some((x) => /Scratch/.test(x[1]) && x[2] === 'chk'));
+        if (!Array.isArray(rows)) { return `whose turn, scratch: ${rows}`; }
+        const scratch = flat(rows).find((x) => /Scratch/.test(x[1]))[0];
+        for (const want of [true, false]) {
+            order(scratch);
+            for (let i = 0; i < 40 && q('#q-rasca').checked !== want; i++) { await sleep(100); }
+            if (q('#q-rasca').checked !== want) { return `scratch from the phone: ${q('#q-rasca').checked}`; }
+            rows = await said('quien', (r) => flat(r).some((x) => x[0] === scratch && x[2] === (want ? 'chkon' : 'chk')));
+            if (!Array.isArray(rows)) { return `the phone was not told scratch is ${want ? 'on' : 'off'}: ${rows}`; }
+        }
+        core.show('grupos');
+        rows = await said('grupos', (r) => flat(r).some((x) => x[0] === 'x_go'));
         if (!Array.isArray(rows)) { return `groups: ${rows}`; }
         // Which class first, before the buttons; and changed from the phone.
         if (rows[0].map((x) => x[1]).join('/') !== 'Students/Class 1 (8)/Split A (4)' || rows[0][1][2] !== 'opton') { return `groups, which class: ${JSON.stringify(rows[0])}`; }
