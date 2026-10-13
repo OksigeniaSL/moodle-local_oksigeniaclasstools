@@ -48,7 +48,8 @@
     // selector finds is the order «x_<key>» (and its place, when it finds several); how is big (the main one), less or
     // more (a step), yes or no (right or wrong), val (a value, not a button) or txt (a line of text); name, when there
     // is one, is a text of the board or a function of the element, instead of the button's own. Without a selector,
-    // the key is a known order.
+    // the key is a known order. The options (below) go as chk or chkon (a switch, off or on), opt or opton (one of a
+    // choice) and cap (the name of a choice).
     const GAME_GO = ['#ro-start', '#ro-again', '#si-start', '#ec-listen', '#ah-start', '#wo-start', '#me-start', '#sc2-start',
         '#ordenar-start', '#clasificar-start', '#errores-start', '#quiensoy-start'].join(', ');
     const GAME_MORE = ['#ro-pause', '#ro-end', '#ro-change', '#ec-again', '#ec-new', '#ah-uncover', '#ah-reveal', '#errores-show',
@@ -93,9 +94,67 @@
         envivo: [[['go', '#lv-open, #id-open, #ex-open, #ex-close, #qz-go, #qz-next', 'big']], [['rv', '#qz-reveal, #ex-reopen']]],
     };
     const named = (el) => (el.getAttribute('aria-label') || (el.tagName === 'INPUT' ? el.value : el.textContent) || '').trim();
-    // The rows for the phone, and the button of each order.
+
+    // The options of the tool, after its buttons, as the board has them: each choice (its radio buttons or its list) in
+    // a row with its name, the switches together («Deal with suspense», «Scratch to reveal»…) and each slider with its
+    // two steps. What opens something to type («Numbers…», «Paste names now…») stays on the board.
+    const OPTIONS = { temporizador: '#h-temporizador', quien: '#h-quien', grupos: '#h-grupos', semaforo: '#h-semaforo',
+        azar: '#h-azar', juegos: '#h-juegos', material: '#h-material', marcador: '#h-marcador', reloj: '#h-reloj',
+        envivo: '#h-envivo' };
+    // The name of a control: its own, the one that labels it, or the text of its label without the control.
+    const caption = (el) => {
+        const by = el.getAttribute('aria-labelledby'), lab = el.closest('label') || (el.id && document.querySelector(`label[for="${el.id}"]`));
+        const text = el.getAttribute('aria-label') || (by ? by.split(' ').map((id) => (document.getElementById(id) || {}).textContent || '').join(' ')
+            : lab ? [...lab.childNodes].filter((n) => !n.contains(el)).map((n) => n.textContent).join(' ') : '');
+        return (text || '').replace(/\s+/g, ' ').trim().slice(0, 60);
+    };
+    const fire = (el, events) => events.forEach((e) => el.dispatchEvent(new Event(e, { bubbles: true })));
+    const options = (box, used, acts) => {
+        const rows = [];
+        let switches = null;
+        box.querySelectorAll('[role="radiogroup"], select, input[type="checkbox"], input[type="range"]').forEach((el, n) => {
+            const key = `x_o${n}`;
+            if (el.matches('input[type="checkbox"]')) {
+                const text = caption(el);
+                if (el.disabled || !(visible(el) || visible(el.closest('label'))) || !text) { return; }
+                if (!switches) { switches = []; rows.push(switches); }
+                switches.push([key, text, el.checked ? 'chkon' : 'chk']);
+                acts.set(key, () => el.click());
+                return;
+            }
+            switches = null;
+            if (el.matches('input[type="range"]')) {
+                if (!visible(el)) { return; }
+                const step = Number(el.step) || 1, min = Number(el.min || 0), max = Number(el.max || 100);
+                const go = (d) => () => { el.value = String(Math.min(max, Math.max(min, Number(el.value) + d * step))); fire(el, ['input', 'change']); };
+                rows.push([['', caption(el), 'cap'], [`${key}l`, t('g_less'), 'less'], ['', el.value, 'val'], [`${key}m`, t('g_more'), 'more']]);
+                acts.set(`${key}l`, go(-1)); acts.set(`${key}m`, go(1));
+                return;
+            }
+            // A choice: the options of its list, or its radio buttons.
+            const list = el.matches('select');
+            const opts = list
+                ? (visible(el) ? [...el.options].map((o, i) => [o, i]).filter(([o]) => !o.disabled && !o.hidden && !/(…|\.\.\.)\s*$/.test(o.textContent)) : [])
+                : [...el.querySelectorAll('[role="radio"]')].map((o, i) => [o, i]).filter(([o]) => visible(o));
+            if (opts.length < 2 || opts.some(([o]) => used.has(o))) { return; }
+            const row = [['', caption(el), 'cap']];
+            opts.slice(0, 11).forEach(([o, i]) => {
+                // A choice with a name and a line under it («Vote», «They answer A–D…»): its name.
+                const strong = !list && o.querySelector('strong, b');
+                const text = (o.getAttribute('aria-label') || (strong || o).textContent || '').replace(/\s+/g, ' ').trim().slice(0, 60);
+                const on = list ? o.selected : ['aria-checked', 'aria-pressed'].some((a) => o.getAttribute(a) === 'true');
+                if (!text) { return; }
+                row.push([`${key}x${i}`, text, on ? 'opton' : 'opt']);
+                acts.set(`${key}x${i}`, list ? () => { el.value = o.value; fire(el, ['change']); } : () => o.click());
+            });
+            rows.push(row);
+        });
+        return rows;
+    };
+
+    // The rows for the phone, and what each order does.
     const here = () => {
-        const spec = HERE[core.current()], rows = [], els = new Map();
+        const spec = HERE[core.current()], rows = [], acts = new Map(), used = new Set();
         (typeof spec === 'function' ? spec() : spec || []).forEach((row) => {
             const items = [];
             row.forEach(([key, sel, how = '', name]) => {
@@ -112,12 +171,16 @@
                     const on = ['aria-checked', 'aria-pressed'].some((a) => el.getAttribute(a) === 'true') || el.classList.contains('activo');
                     if (!text) { return; }
                     items.push([cmd, text, how || (on ? 'on' : '')]);
-                    if (cmd) { els.set(cmd, el); }
+                    used.add(el);
+                    if (cmd) { acts.set(cmd, () => el.click()); }
                 });
             });
-            if (items.length) { rows.push(items.slice(0, 6)); }
+            if (items.length) { rows.push(items.slice(0, 12)); }
         });
-        return { rows: rows.slice(0, 24), els };
+        const box = OPTIONS[core.current()] && document.querySelector(OPTIONS[core.current()]);
+        const more = box ? options(box, used, acts) : [];
+        if (more.length) { rows.push([['', t('rm_options'), 'cap']], ...more); }
+        return { rows: rows.slice(0, 40), acts };
     };
 
     // What the phone asked for, in words, for the board to show it.
@@ -149,8 +212,8 @@
             if (cmd.startsWith('tool_')) { const id = cmd.slice(5); if (core.tabs().includes(id)) { core.show(id); } return; }
             // Cards read by the phone: card numbers and answers (cards.js).
             if (cmd.startsWith('cards_')) { if (window.ClasstoolsCards) { window.ClasstoolsCards.fromPhone(cmd); } return; }
-            // A button of the tool on screen, if it is still there.
-            if (cmd.startsWith('x_')) { const b = here().els.get(cmd); if (b) { b.click(); } return; }
+            // A button or an option of the tool on screen, if it is still there.
+            if (cmd.startsWith('x_')) { const act = here().acts.get(cmd); if (act) { act(); } return; }
             if (RUN[cmd]) { RUN[cmd](); }
         } catch (e) { /* a tool that is not there */ }
     };
@@ -180,8 +243,9 @@
             seq = Math.max(seq, v.seq || 0);
             if (v.phone !== phone) { phone = v.phone; paint(); }
         }).catch(() => { /* offline for a moment: it tries again */ })
-            // After an order, soon again: the phone sees how the board was left.
-            .finally(() => { if (status.on) { timer = setTimeout(poll, ran ? 400 : 1500); } });
+            // After an order, soon again: the phone sees how the board was left. With the phone there, more often, so
+            // that its orders come sooner.
+            .finally(() => { if (status.on) { timer = setTimeout(poll, ran ? 400 : phone ? 700 : 1500); } });
     };
 
     // The panel: off, a button to turn it on; on, the QR, the address, and the buttons to change it or turn it off.

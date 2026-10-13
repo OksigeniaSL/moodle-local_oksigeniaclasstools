@@ -29,6 +29,9 @@
     const post = (action, extra = {}) => fetch(R.api, { method: 'POST', body: new URLSearchParams({ k: R.k, action, ...extra }) })
         .then((r) => r.json());
     let boards = [], course = Number(localStorage.getItem('mando-curso')) || 0, shown = '', timer = 0, failures = 0, last = '';
+    // Until when the buttons of the tool are not painted again: an option just touched shows at once, and the board
+    // takes a moment to say so (meanwhile it would go back).
+    let hold = 0;
     const board = () => boards.find((b) => b.course === course) || boards[0] || null;
 
     const render = () => {
@@ -61,18 +64,33 @@
     // their colours, a value between its two steps (then «−» and «+»), a line of text.
     function paintHere(rows) {
         const box = document.getElementById('jn-aqui'), key = JSON.stringify(rows);
-        if (!box || box.dataset.key === key) { return; }
+        if (!box || box.dataset.key === key || Date.now() < hold) { return; }
         box.dataset.key = key;
+        const button = ([cmd, name, how], glyph) => {
+            const attrs = `data-cmd="${escape(cmd)}" data-name="${escape(name)}"`;
+            if (how === 'chk' || how === 'chkon') { return `<button type="button" role="switch" aria-checked="${how === 'chkon'}" class="jn-chk" ${attrs}>${escape(name)}</button>`; }
+            if (how === 'opt' || how === 'opton') { return `<button type="button" class="jn-opt" aria-pressed="${how === 'opton'}" ${attrs}>${escape(name)}</button>`; }
+            return `<button type="button" class="${{ big: 'grande', yes: 'jn-si', no: 'jn-no' }[how] || ''}" ${attrs}${how === 'on' ? ' aria-pressed="true"' : ''}${glyph ? ` aria-label="${escape(name)}">${how === 'less' ? '−' : '+'}` : `>${escape(name)}`}</button>`;
+        };
         box.innerHTML = rows.map((row) => {
-            const steps = row.some((x) => x[2] === 'val');
-            // As many in a line as fit: short names (1 min, +5), up to five; three of a game («Right», «Wrong», «Pass»).
-            const n = steps ? row.length : row.every((x) => x[1].length <= 6) ? Math.min(row.length, 5)
-                : row.length === 3 && row.every((x) => x[1].length <= 12) ? 3 : Math.min(row.length, 2);
-            return `<div class="jn-mando jn-fila${steps ? ' jn-pasos' : ''}${n > 3 ? ' jn-cortos' : ''}" style="--n:${n}">${row.map(([cmd, name, how]) => {
-                if (how === 'txt') { return `<p class="jn-linea">${escape(name)}</p>`; }
-                if (how === 'val') { return `<output class="jn-valor">${escape(name)}</output>`; }
-                const glyph = steps && (how === 'less' || how === 'more');
-                return `<button type="button" class="${{ big: 'grande', yes: 'jn-si', no: 'jn-no' }[how] || ''}" data-cmd="${escape(cmd)}" data-name="${escape(name)}"${how === 'on' ? ' aria-pressed="true"' : ''}${glyph ? ` aria-label="${escape(name)}">${how === 'less' ? '−' : '+'}` : `>${escape(name)}`}</button>`;
+            const cap = row.find((x) => x[2] === 'cap'), items = row.filter((x) => x[2] !== 'cap');
+            const head = cap ? `<span class="jn-cap">${escape(cap[1])}</span>` : '';
+            if (!items.length) { return `<p class="jn-cap jn-seccion">${escape(cap[1])}</p>`; }
+            // A long choice (many options, or long ones): a list.
+            if (items.every((x) => x[2] === 'opt' || x[2] === 'opton') && (items.length > 4 || items.some((x) => x[1].length > 14))) {
+                const none = items.some((x) => x[2] === 'opton') ? '' : '<option value="" selected disabled>—</option>';
+                return `<label class="jn-eleccion">${head}<select data-sel>${none}${items.map(([cmd, name, how]) => `<option value="${escape(cmd)}"${how === 'opton' ? ' selected' : ''}>${escape(name)}</option>`).join('')}</select></label>`;
+            }
+            const steps = items.some((x) => x[2] === 'val'), switches = items.every((x) => x[2] === 'chk' || x[2] === 'chkon');
+            // As many in a line as fit: short names (1 min, +5), up to five; three of a game («Right», «Wrong», «Pass»);
+            // switches with long names, one under another.
+            const n = steps ? items.length : switches ? (items.every((x) => x[1].length <= 14) ? 2 : 1)
+                : items.every((x) => x[1].length <= 6) ? Math.min(items.length, 5)
+                    : items.length === 3 && items.every((x) => x[1].length <= 12) ? 3 : Math.min(items.length, 2);
+            return `<div class="jn-mando jn-fila${steps ? ' jn-pasos' : ''}${n > 3 ? ' jn-cortos' : ''}" style="--n:${n}">${head}${items.map((x) => {
+                if (x[2] === 'txt') { return `<p class="jn-linea">${escape(x[1])}</p>`; }
+                if (x[2] === 'val') { return `<output class="jn-valor">${escape(x[1])}</output>`; }
+                return button(x, steps && (x[2] === 'less' || x[2] === 'more'));
             }).join('')}</div>`;
         }).join('');
     }
@@ -185,16 +203,29 @@
         const b = e.target.closest('[data-cmd]');
         if (!b) { return; }
         buzz();
-        const cmd = b.dataset.cmd, label = b.dataset.name || (cmd.startsWith('tool_') ? b.textContent : t((COMMANDS.find((x) => x[0] === cmd) || [])[1] || ''));
+        // A switch or an option shows at once how it was left.
+        if (b.matches('.jn-chk')) { b.setAttribute('aria-checked', String(b.getAttribute('aria-checked') !== 'true')); hold = Date.now() + 2500; }
+        if (b.matches('.jn-opt')) { b.parentNode.querySelectorAll('.jn-opt').forEach((o) => o.setAttribute('aria-pressed', String(o === b))); hold = Date.now() + 2500; }
+        order(b.dataset.cmd, b.dataset.name || (b.dataset.cmd.startsWith('tool_') ? b.textContent : t((COMMANDS.find((x) => x[0] === b.dataset.cmd) || [])[1] || '')));
+    });
+    // An option of a list.
+    root.addEventListener('change', (e) => {
+        const sel = e.target.closest('select[data-sel]');
+        if (!sel || !sel.value) { return; }
+        buzz();
+        hold = Date.now() + 2500;
+        order(sel.value, sel.selectedOptions[0] ? sel.selectedOptions[0].textContent : '');
+    });
+    function order(cmd, label) {
         post('command', { cmd, course }).then((v) => {
             if (v && v.off) { stop(); screen(t('rm_off_title'), t('rm_off_text')); return; }
             last = v && v.ok ? `${label} · ${t('lv_sent')}` : (v && v.why === 'closed' ? t('rm_closed') : '');
             const done = document.getElementById('jn-hecho');
             if (done) { done.textContent = last || ' '; }
             // Closed, or that button is no longer on the board: what there is now. Sent: soon, to see how it was left.
-            if (v && (v.why === 'closed' || v.why === 'gone')) { poll(); } else if (v && v.ok && timer !== -1) { clearTimeout(timer); timer = setTimeout(poll, 1200); }
+            if (v && (v.why === 'closed' || v.why === 'gone')) { hold = 0; poll(); } else if (v && v.ok && timer !== -1) { clearTimeout(timer); timer = setTimeout(poll, 1000); }
         }).catch(() => { const done = document.getElementById('jn-hecho'); if (done) { done.textContent = t('lv_offline'); } });
-    });
+    }
 
     const poll = () => {
         clearTimeout(timer);

@@ -1237,7 +1237,7 @@ Vote: ask the question, open it, wait, close it and the bars appear; «Another q
 For Peer Instruction: they vote, discuss in pairs for a couple of minutes and vote again.
 Brainstorm: a word or two each; check them before showing them if needed.
 Without tablets: «Hands up», and you count with + and −.
-Fixed remote, on your phone and without logging in: on top, the buttons of the tool on the board (in «Groups», how many and «Make groups»; in the alphabet wheel, «Right», «Wrong», «Pass» and the answer, which only you see); under «More orders», the timer, picking someone, opening or closing the vote or the ticket, the curtain («Uncover a little» pulls it down) and the relays; and also going to a tool, reading the cards and «Change the class», which takes the open board to another of your courses. It turns itself off after the hours without use that the school sets.
+Fixed remote, on your phone and without logging in: on top, the buttons of the tool on the board (in «Groups», how many and «Make groups»; in the alphabet wheel, «Right», «Wrong», «Pass» and the answer, which only you see) and, below, its options («Deal them out with suspense», «Scratch to reveal», the game, the look of the timer…); under «More orders», the timer, picking someone, opening or closing the vote or the ticket, the curtain («Uncover a little» pulls it down) and the relays; and also going to a tool, reading the cards and «Change the class», which takes the open board to another of your courses. It turns itself off after the hours without use that the school sets.
 Music quiz: «Music» makes the questions by itself (which song is it?, rhythm dictation with ta and ti-ti, or melody dictation from do) and the board plays each one as it opens; «Again» plays it once more.';
 $string['app_gd_envivo_scene'] = 'Before the experiment, Year 5 vote whether an egg floats in salty water: nearly everyone says no. They do the experiment and repeat the question with «Another question»; the bars change, and the best part begins: explaining why.';
 $string['app_gd_envivo_sources'] = 'Crouch, C. H. and Mazur, E. (2001). Peer Instruction: Ten years of experience and results. American Journal of Physics, 69(9), 970–977.|https://doi.org/10.1119/1.1374249
@@ -2819,6 +2819,7 @@ $string['app_rm_no_board_title'] = 'No board is open';
 $string['app_rm_off_text'] = 'It has been turned off, or its address has changed. On the board, in «Live» and «Remote», there is the address of now.';
 $string['app_rm_off_title'] = 'This remote is not on';
 $string['app_rm_on_board'] = 'On the board: {$a}';
+$string['app_rm_options'] = 'Options';
 $string['app_rm_or_session'] = 'There is also the remote with a code («Open the session»), which asks you to log in on the phone.';
 $string['app_rm_phone_in'] = 'phone connected';
 $string['app_rm_phone_waiting'] = 'waiting for the phone';

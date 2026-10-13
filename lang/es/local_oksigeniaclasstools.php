@@ -1239,7 +1239,7 @@ Votación: haz la pregunta, abre, espera, cierra y salen las barras; «Otra preg
 Para la instrucción entre iguales: votan, lo discuten en parejas un par de minutos y vuelven a votar.
 Lluvia de ideas: una o dos palabras cada uno; revísalas antes de mostrarlas si hace falta.
 Sin tabletas: «A mano alzada», y cuentas tú con + y −.
-Mando fijo, en tu móvil y sin entrar en el Aula virtual: arriba, los botones de la herramienta que está en la pizarra (en «Grupos», cuántos y «Hacer grupos»; en la rueda de letras, «Acierto», «Fallo», «Paso» y la respuesta, que solo ves tú); en «Más órdenes», el temporizador, elegir a alguien, abrir o cerrar la votación o el billete, la cortina («Destapar un poco» va bajándola) y los relevos; y además ir a una herramienta, leer las tarjetas y «Cambiar de clase», que lleva la pizarra abierta a otro de tus cursos. Se apaga solo tras las horas sin usarlo que fije el centro.
+Mando fijo, en tu móvil y sin entrar en el Aula virtual: arriba, los botones de la herramienta que está en la pizarra (en «Grupos», cuántos y «Hacer grupos»; en la rueda de letras, «Acierto», «Fallo», «Paso» y la respuesta, que solo ves tú) y, debajo, sus opciones («Repartir con emoción», «Rasca y gana», el juego, el aspecto del temporizador…); en «Más órdenes», el temporizador, elegir a alguien, abrir o cerrar la votación o el billete, la cortina («Destapar un poco» va bajándola) y los relevos; y además ir a una herramienta, leer las tarjetas y «Cambiar de clase», que lleva la pizarra abierta a otro de tus cursos. Se apaga solo tras las horas sin usarlo que fije el centro.
 Concurso de música: «Música» hace las preguntas solas (¿qué canción es?, dictado rítmico con ta y ti-ti, o dictado melódico desde do) y la pizarra toca cada una al abrirla; «Otra vez» la repite.';
 $string['app_gd_envivo_scene'] = 'Antes del experimento, la clase de cuarto vota si el huevo flota en agua con sal: casi todos dicen que no. Hacen el experimento y repiten la pregunta con «Otra pregunta»; las barras cambian, y empieza la mejor parte: explicar por qué.';
 $string['app_gd_envivo_sources'] = 'Crouch, C. H. y Mazur, E. (2001). Peer Instruction: Ten years of experience and results. American Journal of Physics, 69(9), 970–977.|https://doi.org/10.1119/1.1374249
@@ -2821,6 +2821,7 @@ $string['app_rm_no_board_title'] = 'No hay ninguna pizarra abierta';
 $string['app_rm_off_text'] = 'Se ha apagado o su dirección ha cambiado. En la pizarra, en «En vivo» y «Mando», está la dirección de ahora.';
 $string['app_rm_off_title'] = 'Este mando no está encendido';
 $string['app_rm_on_board'] = 'En la pizarra: {$a}';
+$string['app_rm_options'] = 'Opciones';
 $string['app_rm_or_session'] = 'También está el mando con código («Abrir la sesión»), que pide entrar con tu usuario en el móvil.';
 $string['app_rm_phone_in'] = 'móvil conectado';
 $string['app_rm_phone_waiting'] = 'esperando al móvil';

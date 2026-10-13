@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.61.0 (2026-10-13)
+
+- The fixed remote also has the options of the tool on the board, under «Options», as the board has them: the switches
+  («Deal them out with suspense», «Scratch to reveal», «A role for each one», «No repeats», the noise meter's waves…),
+  each choice with its name (as buttons when it is short, as a list when it is long: the game, the material, the look
+  of the timer, the dice, the answers of a vote, the time of the alphabet wheel…) and the sensitivity of the noise
+  meter with its two steps. What opens something to type («Numbers…», «Paste names now…») stays on the board.
+- A switch or an option touched on the phone shows at once, without waiting for the board to say so.
+- With the phone there, the board asks for its orders twice as often, so they arrive sooner.
+
 ## 0.60.0 (2026-10-13)
 
 - The fixed remote shows on top the buttons of the tool on the board, with the names they have there and the main one

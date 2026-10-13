@@ -60,7 +60,7 @@ button { touch-action: manipulation; -webkit-user-select: none; user-select: non
 .jn-mando button.grande { grid-column: 1 / -1; min-height: 6.5rem; background: var(--verde); color: #fff; font-size: 1.4rem; }
 .jn-mando button:active { transform: scale(.98); }
 /* The buttons of the tool on the board, in its rows: the one that is on, a value between its steps, a line of text. */
-.jn-aqui { display: grid; gap: .8rem; width: 100%; }
+.jn-aqui { display: grid; gap: .8rem; width: 100%; min-width: 0; }
 .jn-fila { grid-template-columns: repeat(var(--n, 2), minmax(0, 1fr)); }
 .jn-fila button { min-height: 4.5rem; }
 .jn-fila button.grande { min-height: 6.5rem; }
@@ -68,6 +68,17 @@ button { touch-action: manipulation; -webkit-user-select: none; user-select: non
 .jn-fila button.jn-si { background: var(--verde); color: #fff; }
 .jn-fila button.jn-no { background: var(--rojo); color: #fff; }
 .jn-cortos button { padding: .2rem; font-size: .95rem; white-space: nowrap; }
+/* The options: the name of each, the switches, the choices (as buttons, or a list when they are many). */
+.jn-cap { grid-column: 1 / -1; margin-bottom: -.4rem; color: var(--tinta-3); font-size: .8rem; font-weight: 900; letter-spacing: .06em; text-transform: uppercase; }
+.jn-seccion { margin: .6rem 0 -.2rem; padding-top: .8rem; border-top: 2px solid var(--borde); color: var(--azul); }
+.jn-fila button.jn-chk, .jn-fila button.jn-opt { min-height: 3.6rem; font-size: 1rem; }
+.jn-fila button.jn-chk { display: flex; align-items: center; gap: .7rem; padding: .5rem .9rem; text-align: left; }
+.jn-fila button.jn-chk::before { content: ""; flex: none; width: 2.6rem; height: 1.5rem; border-radius: 50rem; background: radial-gradient(circle at .75rem 50%, #fff .5rem, transparent .55rem) #aab6c8; transition: background .15s; }
+.jn-fila button.jn-chk[aria-checked="true"]::before { background: radial-gradient(circle at 1.85rem 50%, #fff .5rem, transparent .55rem) var(--verde); }
+.jn-eleccion { display: grid; gap: .5rem; width: 100%; min-width: 0; }
+.jn-eleccion .jn-cap { margin: 0; }
+.jn-eleccion select { width: 100%; min-width: 0; min-height: 3.4rem; padding: 0 .9rem; border: 2px solid var(--borde); border-radius: 16px; background: var(--superficie); color: var(--azul-osc); font: inherit; font-size: 1.05rem; font-weight: 800; }
+@media (prefers-reduced-motion: reduce) { .jn-fila button.jn-chk::before { transition: none; } }
 .jn-pasos button { font-size: 2.4rem; line-height: 1; }
 .jn-valor { display: flex; align-items: center; justify-content: center; color: var(--azul-osc); font-size: 1.3rem; font-weight: 900; text-align: center; font-variant-numeric: tabular-nums; }
 .jn-fila .jn-valor:only-child { grid-column: 1 / -1; justify-content: flex-start; font-size: 1.1rem; }

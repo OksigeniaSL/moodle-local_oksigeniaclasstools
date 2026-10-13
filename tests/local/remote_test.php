@@ -143,12 +143,17 @@ final class remote_test extends \advanced_testcase {
             [['', '4 groups', 'val'], ['x_mr', '', 'more'], ['pick', 'Pick', ''], ['drop', 'Drop', ''],
                 ['x_ok', 'Right', 'yes']],
             [['x_no', 'A value with an order', 'val']],
+            [
+                ['', 'Look', 'cap'], ['x_o3x0', 'Ring', 'opton'], ['x_o3x1', 'Sand', 'opt'], ['x_o4', 'Suspense', 'chk'],
+                ['x_o5', 'No', 'cap'],
+            ],
             'not a row',
         ]);
         $here = remote::here($json);
         $this->assertSame([
             [['x_go', 'Make groups', 'big']],
             [['', '4 groups', 'val'], ['pick', 'Pick', ''], ['x_ok', 'Right', 'yes']],
+            [['', 'Look', 'cap'], ['x_o3x0', 'Ring', 'opton'], ['x_o3x1', 'Sand', 'opt'], ['x_o4', 'Suspense', 'chk']],
         ], $here);
         $this->assertSame([], remote::here('nonsense'));
         remote::board((int) $teacher->id, $course, 0, 'grupos', [['grupos', 'Groups']], $here);
@@ -157,6 +162,7 @@ final class remote_test extends \advanced_testcase {
         $send = fn(string $cmd) => remote::command(remote::get((int) $teacher->id), $cmd, (int) $course->id);
         $this->assertSame(['ok' => true], $send('x_go'));
         $this->assertSame(['ok' => false, 'why' => 'gone'], $send('x_mr'));
+        $this->assertSame(['ok' => false, 'why' => 'gone'], $send('x_o5'));
         $this->assertSame(['ok' => false, 'why' => 'unknown'], $send('x_Go'));
         $got = remote::board((int) $teacher->id, $course, 0, 'grupos', [['grupos', 'Groups']], $here);
         $this->assertSame(['x_go'], array_column($got['cmds'], 'cmd'));

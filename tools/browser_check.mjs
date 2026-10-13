@@ -96,7 +96,10 @@ window.shot = (name) => new Promise((done) => { if (!window.checkShot) { done();
             // The first board is on «Groups», with its buttons; the second, on the clock, has none.
             const here = [[['x_md0', 'No. of groups', 'on'], ['x_md1', 'Students per group', '']],
                 [['x_le', 'One fewer', 'less'], ['', '4 groups', 'val'], ['x_mr', 'One more', 'more']], [['x_go', 'Make groups', 'big']],
-                [['', 'Starts with A: a fruit', 'txt']], [['x_old', 'Gone', '']]];
+                [['', 'Starts with A: a fruit', 'txt']], [['x_old', 'Gone', '']],
+                [['', 'Options', 'cap']], [['x_o1', 'Deal them out with suspense', 'chk'], ['x_o2', 'Scratch to reveal', 'chkon']],
+                [['', 'Look', 'cap'], ['x_o3x0', 'Ring', 'opton'], ['x_o3x1', 'Disc', 'opt'], ['x_o3x2', 'Bar', 'opt'], ['x_o3x3', 'Sand', 'opt'], ['x_o3x4', 'Pulsar', 'opt']],
+                [['', 'Who is playing?', 'cap'], ['x_o4x0', 'Whole class', 'opton'], ['x_o4x1', 'Two teams', 'opt']]];
             return json({ boards: [{ course: 1, name: 'One', tool: 'grupos', tools: [['grupos', 'Groups'], ['reloj', 'Clock']], here },
                 { course: 2, name: 'Two', tool: 'reloj', tools: [['reloj', 'Clock']], here: [] }] });
         }
@@ -875,7 +878,26 @@ const CHECKS = {
         // The buttons of the tool on that board first: the main one wide, the one that is on, the steps around their
         // value, a line of text; the orders for any tool, under «More orders».
         const rows = [...document.querySelectorAll('#jn-aqui .jn-fila')].map((r) => [...r.children].map((x) => x.textContent).join('/'));
-        if (rows.join(' | ') !== 'No. of groups/Students per group | −/4 groups/+ | Make groups | Starts with A: a fruit | Gone') { return `tool rows: ${rows.join(' | ')}`; }
+        if (rows.join(' | ') !== 'No. of groups/Students per group | −/4 groups/+ | Make groups | Starts with A: a fruit | Gone | Deal them out with suspense/Scratch to reveal | Who is playing?/Whole class/Two teams') { return `tool rows: ${rows.join(' | ')}`; }
+        // The options: the switches, a long choice as a list, a short one as buttons, each with its name.
+        if (q('[data-cmd="x_o1"]').getAttribute('aria-checked') !== 'false' || q('[data-cmd="x_o2"]').getAttribute('aria-checked') !== 'true') { return 'the switches are not as on the board'; }
+        const look = q('#jn-aqui select[data-sel]');
+        if (!look || look.value !== 'x_o3x0' || look.options.length !== 5 || !/Look/.test(look.closest('label').textContent)) { return 'the long choice is not a list'; }
+        q('[data-cmd="x_o1"]').click();
+        await sleep(200);
+        sent = FAKE.calls.filter((c) => c.action === 'command').pop();
+        if (sent.cmd !== 'x_o1' || q('[data-cmd="x_o1"]').getAttribute('aria-checked') !== 'true') { return 'the switch did not go, or did not show it at once'; }
+        q('[data-cmd="x_o4x1"]').click();
+        await sleep(200);
+        if (q('[data-cmd="x_o4x1"]').getAttribute('aria-pressed') !== 'true' || q('[data-cmd="x_o4x0"]').getAttribute('aria-pressed') !== 'false') { return 'the option chosen does not show at once'; }
+        look.value = 'x_o3x3';
+        look.dispatchEvent(new Event('change', { bubbles: true }));
+        await sleep(200);
+        sent = FAKE.calls.filter((c) => c.action === 'command').pop();
+        if (sent.cmd !== 'x_o3x3') { return `the list sent ${JSON.stringify(sent)}`; }
+        // Until the board says so, the phone keeps what was touched (the pretend board never changes).
+        await sleep(2200);
+        if (q('[data-cmd="x_o1"]').getAttribute('aria-checked') !== 'true') { return 'the switch went back before the board could say'; }
         if (!q('[data-cmd="x_go"].grande') || q('[data-cmd="x_md0"]').getAttribute('aria-pressed') !== 'true' || q('[data-cmd="x_mr"]').getAttribute('aria-label') !== 'One more') { return 'the tool buttons do not look as they should'; }
         if (!q('#jn-mas [data-cmd="pick"]') || q('#jn-mas').open) { return 'the orders for any tool are not under «More orders»'; }
         q('[data-cmd="x_mr"]').click();
@@ -1593,6 +1615,33 @@ const CHECKS = {
         order('x_go');
         rows = await said('grupos', (r) => flat(r).some((x) => x[0] === 'x_go' && /Again/.test(x[1])));
         if (!Array.isArray(rows)) { return `after making the groups: ${rows}`; }
+        // Its options: «Deal them out with suspense», a switch, turned on from the phone.
+        const suspense = flat(rows).find((x) => /suspense/.test(x[1]));
+        if (!suspense || suspense[2] !== 'chk' || !flat(rows).some((x) => x[2] === 'cap' && x[1] === 'Options')) { return `groups options: ${JSON.stringify(rows)}`; }
+        order(suspense[0]);
+        for (let i = 0; i < 40 && !q('#g-emocion').checked; i++) { await sleep(100); }
+        if (!q('#g-emocion').checked) { return 'the switch from the phone did not change the board'; }
+        rows = await said('grupos', (r) => flat(r).some((x) => x[0] === suspense[0] && x[2] === 'chkon'));
+        if (!Array.isArray(rows)) { return `the switch on the phone: ${rows}`; }
+        q('#g-emocion').click();
+        // A choice of a list: the look of the timer.
+        core.show('temporizador');
+        rows = await said('temporizador', (r) => flat(r).some((x) => x[2] === 'opt' && /Sand/.test(x[1])));
+        if (!Array.isArray(rows)) { return `timer options: ${rows}`; }
+        const lookBefore = q('#tm-aspectos [aria-checked="true"]');
+        order(flat(rows).find((x) => /Sand/.test(x[1]))[0]);
+        for (let i = 0; i < 40 && !/Sand|Arena/.test((q('#tm-aspectos [aria-checked="true"]') || {}).textContent || ''); i++) { await sleep(100); }
+        if (!/Sand|Arena/.test((q('#tm-aspectos [aria-checked="true"]') || {}).textContent || '')) { return 'the look chosen on the phone did not change the timer'; }
+        if (lookBefore) { lookBefore.click(); }
+        // A slider with its steps: the sensitivity of the noise meter.
+        core.show('semaforo');
+        rows = await said('semaforo', (r) => flat(r).some((x) => x[2] === 'val'));
+        if (!Array.isArray(rows)) { return `noise meter options: ${rows}`; }
+        const sens = q('#s-sensibilidad').value;
+        order(flat(rows).find((x) => x[2] === 'more' && x[0].startsWith('x_o'))[0]);
+        for (let i = 0; i < 40 && q('#s-sensibilidad').value === sens; i++) { await sleep(100); }
+        if (Number(q('#s-sensibilidad').value) !== Number(sens) + 1) { return `sensitivity ${sens} → ${q('#s-sensibilidad').value}`; }
+        order(flat(rows).find((x) => x[2] === 'less' && x[0].startsWith('x_o'))[0]);
         // The wheel: the letter and its clue, and the answer, only for the teacher; «Right» from the phone.
         core.show('juegos');
         q('#ga-mode [data-game="rosco"]').click();

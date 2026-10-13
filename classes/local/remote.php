@@ -34,14 +34,15 @@ class remote {
         'curtain', 'reveal', 'relay', 'live'];
 
     /** How each thing of the tool on screen shows on the phone: a button, the main one, one that is on, a step down or
-     * up, a yes or a no (right or wrong in a game), a value (not a button) or a line of text. */
-    const HOWS = ['', 'big', 'on', 'less', 'more', 'yes', 'no', 'val', 'txt'];
+     * up, a yes or a no (right or wrong in a game), a switch off or on, one of a choice (or the one chosen), a value (not
+     * a button), a line of text or the name of a choice. */
+    const HOWS = ['', 'big', 'on', 'less', 'more', 'yes', 'no', 'chk', 'chkon', 'opt', 'opton', 'val', 'txt', 'cap'];
 
     /** Most rows of the tool on screen on the phone. */
-    const HERE_ROWS = 24;
+    const HERE_ROWS = 40;
 
     /** Most things in a row of the tool on screen. */
-    const HERE_ITEMS = 6;
+    const HERE_ITEMS = 12;
 
     /** Most courses the phone lists to change the class. */
     const MAX_COURSES = 60;
@@ -341,8 +342,8 @@ class remote {
                 if (!is_string($cmd) || !is_string($label) || !in_array($how, self::HOWS, true)) {
                     continue;
                 }
-                // A value or a line of text is only shown; a button carries an order.
-                $shown = $how === 'val' || $how === 'txt';
+                // A value, a line of text or a name is only shown; a button carries an order.
+                $shown = in_array($how, ['val', 'txt', 'cap'], true);
                 if ($shown ? $cmd !== '' : !preg_match('/^x_[a-z0-9]{1,20}$/', $cmd) && !in_array($cmd, self::COMMANDS, true)) {
                     continue;
                 }
