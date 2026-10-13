@@ -109,6 +109,27 @@
         return (text || '').replace(/\s+/g, ' ').trim().slice(0, 60);
     };
     const fire = (el, events) => events.forEach((e) => el.dispatchEvent(new Event(e, { bubbles: true })));
+    // A choice: the options of its list, or its radio buttons, in a row with its name (none if there is nothing to
+    // choose).
+    const choice = (el, key, used, acts) => {
+        const list = el.matches('select');
+        const opts = list
+            ? (visible(el) ? [...el.options].map((o, i) => [o, i]).filter(([o]) => !o.disabled && !o.hidden && !/(…|\.\.\.)\s*$/.test(o.textContent)) : [])
+            : [...el.querySelectorAll('[role="radio"]')].map((o, i) => [o, i]).filter(([o]) => visible(o));
+        if (opts.length < 2 || used.has(el) || opts.some(([o]) => used.has(o))) { return null; }
+        used.add(el);
+        const row = [['', caption(el), 'cap']];
+        opts.slice(0, 11).forEach(([o, i]) => {
+            // A choice with a name and a line under it («Vote», «They answer A–D…»): its name.
+            const strong = !list && o.querySelector('strong, b');
+            const text = (o.getAttribute('aria-label') || (strong || o).textContent || '').replace(/\s+/g, ' ').trim().slice(0, 60);
+            const on = list ? o.selected : ['aria-checked', 'aria-pressed'].some((a) => o.getAttribute(a) === 'true');
+            if (!text) { return; }
+            row.push([`${key}x${i}`, text, on ? 'opton' : 'opt']);
+            acts.set(`${key}x${i}`, list ? () => { el.value = o.value; fire(el, ['change']); } : () => o.click());
+        });
+        return row;
+    };
     const options = (box, used, acts) => {
         const rows = [];
         let switches = null;
@@ -131,30 +152,20 @@
                 acts.set(`${key}l`, go(-1)); acts.set(`${key}m`, go(1));
                 return;
             }
-            // A choice: the options of its list, or its radio buttons.
-            const list = el.matches('select');
-            const opts = list
-                ? (visible(el) ? [...el.options].map((o, i) => [o, i]).filter(([o]) => !o.disabled && !o.hidden && !/(…|\.\.\.)\s*$/.test(o.textContent)) : [])
-                : [...el.querySelectorAll('[role="radio"]')].map((o, i) => [o, i]).filter(([o]) => visible(o));
-            if (opts.length < 2 || opts.some(([o]) => used.has(o))) { return; }
-            const row = [['', caption(el), 'cap']];
-            opts.slice(0, 11).forEach(([o, i]) => {
-                // A choice with a name and a line under it («Vote», «They answer A–D…»): its name.
-                const strong = !list && o.querySelector('strong, b');
-                const text = (o.getAttribute('aria-label') || (strong || o).textContent || '').replace(/\s+/g, ' ').trim().slice(0, 60);
-                const on = list ? o.selected : ['aria-checked', 'aria-pressed'].some((a) => o.getAttribute(a) === 'true');
-                if (!text) { return; }
-                row.push([`${key}x${i}`, text, on ? 'opton' : 'opt']);
-                acts.set(`${key}x${i}`, list ? () => { el.value = o.value; fire(el, ['change']); } : () => o.click());
-            });
-            rows.push(row);
+            const row = choice(el, key, used, acts);
+            if (row) { rows.push(row); }
         });
         return rows;
     };
 
+    // Which class first, before the buttons: the list of «Whose turn?» and the students of «Groups».
+    const FIRST = { quien: '#q-lista', grupos: '#g-lista' };
     // The rows for the phone, and what each order does.
     const here = () => {
         const spec = HERE[core.current()], rows = [], acts = new Map(), used = new Set();
+        const first = FIRST[core.current()] && document.querySelector(FIRST[core.current()]);
+        const which = first ? choice(first, 'x_l', used, acts) : null;
+        if (which) { rows.push(which); }
         (typeof spec === 'function' ? spec() : spec || []).forEach((row) => {
             const items = [];
             row.forEach(([key, sel, how = '', name]) => {

@@ -17,7 +17,8 @@ const APP = join(dirname(fileURLToPath(import.meta.url)), '..', 'app');
 // What the page gets before the board: a course with a class, and a live server that answers like livehost.php
 // (start, state, open, close, end) for a vote, keeping what the board sent.
 const FAKE = `
-window.CLASSTOOLS = { lists: [{ id: 1, name: 'Class 1', key: 'c1', students: Array.from({ length: 8 }, (_, i) => ({ id: i + 1, n: 'Student ' + (i + 1) })) }],
+window.CLASSTOOLS = { lists: [{ id: 1, name: 'Class 1', key: 'c1', students: Array.from({ length: 8 }, (_, i) => ({ id: i + 1, n: 'Student ' + (i + 1) })) },
+    { id: 2, name: 'Split A', key: 'c2', students: Array.from({ length: 4 }, (_, i) => ({ id: i + 1, n: 'Student ' + (i + 1) })) }],
     courseid: 1, mode: 'teacher', sesskey: 'x', days: {}, state: {}, liveurl: 'fake://live', glossaryurl: 'fake://glossary', bankurl: 'fake://bank',
     aiurl: 'fake://ai', remoteurl: 'fake://remote', remote: { on: false },
     logrosurl: 'fake://logros', logros: { thr: { devices: 5, picks: 5, students: 8 }, levels: {} }, salaurl: 'fake://sala',
@@ -1605,6 +1606,14 @@ const CHECKS = {
         const flat = (rows) => (Array.isArray(rows) ? rows.flat() : []);
         let rows = await said('grupos', (r) => flat(r).some((x) => x[0] === 'x_go'));
         if (!Array.isArray(rows)) { return `groups: ${rows}`; }
+        // Which class first, before the buttons; and changed from the phone.
+        if (rows[0].map((x) => x[1]).join('/') !== 'Students/Class 1 (8)/Split A (4)' || rows[0][1][2] !== 'opton') { return `groups, which class: ${JSON.stringify(rows[0])}`; }
+        order(rows[0][2][0]);
+        for (let i = 0; i < 40 && !/Split A/.test(q('#g-lista').selectedOptions[0].textContent); i++) { await sleep(100); }
+        if (!/Split A/.test(q('#g-lista').selectedOptions[0].textContent)) { return 'the class chosen on the phone did not change the groups'; }
+        q('#g-lista').value = q('#g-lista').options[0].value;
+        q('#g-lista').dispatchEvent(new Event('change', { bubbles: true }));
+        rows = await said('grupos', (r) => r[0] && r[0][1] && r[0][1][2] === 'opton');
         const go = flat(rows).find((x) => x[0] === 'x_go'), n = flat(rows).find((x) => x[2] === 'val');
         if (go[2] !== 'big' || !/Make groups/.test(go[1]) || !n || !flat(rows).some((x) => x[0] === 'x_mr' && x[2] === 'more')) { return `groups: ${JSON.stringify(rows)}`; }
         if (!flat(rows).some((x) => x[0].startsWith('x_md') && x[2] === 'on')) { return `no mode on: ${JSON.stringify(rows)}`; }

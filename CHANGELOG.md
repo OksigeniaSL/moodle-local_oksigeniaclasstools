@@ -2,6 +2,8 @@
 
 ## 0.61.0 (2026-10-13)
 
+- In «Whose turn?» and «Groups», the fixed remote first asks which class: the lists of the course (its groups, such as
+  a split class) and the teacher's own, as on the board.
 - The fixed remote also has the options of the tool on the board, under «Options», as the board has them: the switches
   («Deal them out with suspense», «Scratch to reveal», «A role for each one», «No repeats», the noise meter's waves…),
   each choice with its name (as buttons when it is short, as a list when it is long: the game, the material, the look
