@@ -235,8 +235,14 @@ class remote {
      * @param array[] $here The buttons of the tool on screen, for the phone (as {@see self::here()} leaves them).
      * @return array on; when on, seq, cmds and whether the phone is there.
      */
-    public static function board(int $userid, \stdClass $course, int $since, string $tool, array $tools,
-            array $here = []): array {
+    public static function board(
+        int $userid,
+        \stdClass $course,
+        int $since,
+        string $tool,
+        array $tools,
+        array $here = []
+    ): array {
         $row = self::get($userid);
         if (!$row || !self::alive($row)) {
             return ['on' => false];
@@ -247,8 +253,8 @@ class remote {
         $board = ['name' => format_string($course->shortname, true, ['context' => \context_course::instance($course->id)]),
             'tool' => $tool, 'tools' => array_values($tools), 'here' => $here, 'seen' => $now];
         // Written only when something changed or every few seconds, not on each call.
-        if (!$was || $now - $was['seen'] >= self::HEARTBEAT || $was['tool'] !== $tool || $was['tools'] !== $board['tools']
-                || ($was['here'] ?? []) !== $here) {
+        $changed = !$was || $was['tool'] !== $tool || $was['tools'] !== $board['tools'] || ($was['here'] ?? []) !== $here;
+        if ($changed || $now - $was['seen'] >= self::HEARTBEAT) {
             $state['boards'][$course->id] = $board;
             self::keep($row, $state);
         }
