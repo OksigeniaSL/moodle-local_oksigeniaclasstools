@@ -106,7 +106,7 @@ window.shot = (name) => new Promise((done) => { if (!window.checkShot) { done();
         }
         // A Canva short link, as presentation.php follows it.
         if (String(url).startsWith('fake://presentation')) {
-            return json(String(p.get('url')).includes('canva.link/abc123xyz') ? { ok: true, id: 'DAHXQxCQhek', token: '1UbXOZJcfKeW6ikUy4ezMA' } : { ok: false });
+            return json(String(p.get('url')).includes('canva.link/abc123xyz') ? { ok: true, id: 'DAexample01', token: 'faketoken-faketoken' } : { ok: false });
         }
         if (String(url).startsWith('fake://glossary')) {
             return json(a === 'list' ? { ok: true, glossaries: [{ id: 5, name: 'Science words', count: 3 }] }
@@ -2367,7 +2367,7 @@ const CHECKS = {
         type(' canva.link/abc123xyz ', 'Robots');
         await sleep(150);
         const asked = FAKE.calls.find((c) => c.url === 'canva.link/abc123xyz');
-        if (!asked || q('#pr-vista').hidden || q('#pr-marco iframe').src !== 'https://www.canva.com/design/DAHXQxCQhek/1UbXOZJcfKeW6ikUy4ezMA/view?embed') {
+        if (!asked || q('#pr-vista').hidden || q('#pr-marco iframe').src !== 'https://www.canva.com/design/DAexample01/faketoken-faketoken/view?embed') {
             return `short link through Moodle: ${JSON.stringify(asked)} ${q('#pr-marco iframe') && q('#pr-marco iframe').src}`;
         }
         q('#pr-otra').click();
