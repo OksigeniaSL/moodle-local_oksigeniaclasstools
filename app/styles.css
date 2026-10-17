@@ -75,6 +75,9 @@ a.marca-curso:hover, a.marca-curso:focus-visible { text-decoration: underline; t
 .barra.dos-filas .acciones { margin-left: auto; }
 .barra.dos-filas .acciones .redondo { display: inline-flex; gap: .45rem; width: auto; padding: 0 1rem 0 .85rem; border-radius: 50rem; font-weight: 800; }
 .barra.dos-filas .redondo-texto { display: inline; }
+/* Si con su nombre no caben a lo ancho, solo con su icono (app.js). */
+.barra.dos-filas.sin-nombres .redondo-texto { display: none; }
+.barra.dos-filas.sin-nombres .acciones .redondo { width: 48px; padding: 0; justify-content: center; border-radius: 50%; }
 
 /* ---------- Piezas comunes ---------- */
 /* A los lados, algo más de aire: un proyector desajustado o torcido se come el borde de la imagen. */
@@ -1386,6 +1389,7 @@ html.duelo .ct-panel > .ct-side { max-height: 22vh; overflow-y: auto; }
 .modo-disco[data-m="advanced"] { --mc: var(--rojo); }
 .redondo .modo-disco .ico { font-size: 1.05rem; }
 .barra.dos-filas .acciones #b-modo { padding-left: .4rem; }
+.barra.dos-filas.sin-nombres .acciones #b-modo { padding-left: 0; }
 .menu-modo .modo-disco { width: 2.4rem; height: 2.4rem; font-size: 1.2rem; }
 .menu-modo button[aria-checked="true"] .modo-disco { box-shadow: 0 0 0 2px #fff; }
 

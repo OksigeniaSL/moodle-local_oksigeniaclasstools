@@ -244,6 +244,23 @@ const CHECKS = {
         W.setFull(false, false);
         return '';
     },
+    // The bar never wider than the screen: with a long course name (and the size of the board), the buttons on top
+    // lose their names before going out of sight.
+    'bar-fits': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const bar = document.querySelector('#barra'), marca = document.querySelector('.marca');
+        const before = marca.innerHTML;
+        marca.insertAdjacentHTML('beforeend', '<span data-prueba style="display:inline-block;width:34rem">A very long name of a course for the test</span>');
+        // And buttons with longer names, as in other languages.
+        document.querySelector('.acciones').insertAdjacentHTML('beforeend', '<button type="button" class="redondo" data-prueba><span data-icono="info"></span><span class="redondo-texto">A button with a very long name for the test</span></button><button type="button" class="redondo" data-prueba><span data-icono="info"></span><span class="redondo-texto">And another button with a long name</span></button>');
+        await sleep(400);
+        const wide = bar.scrollWidth, room = bar.clientWidth, cls = bar.className;
+        marca.innerHTML = before;
+        document.querySelectorAll('.acciones [data-prueba]').forEach((x) => x.remove());
+        await sleep(300);
+        if (wide > room + 1) { return `the bar is ${wide} px wide in ${room} (${cls})`; }
+        return bar.scrollWidth > bar.clientWidth + 1 ? 'the bar is too wide again' : '';
+    },
     'turn-relay': async () => {
         const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
         document.querySelector('#t-material').click();
@@ -2395,21 +2412,25 @@ const CHECKS = {
     // The round buttons of the top bar with only their icon (as on a narrow screen): each icon in the middle of its
     // circle.
     'bar-icons-centred': async () => {
-        // On one row, as on a wide screen (with two, the buttons carry their texts on purpose).
+        // On one row, as on a wide screen, and on two with the buttons left with only their icon because their names
+        // do not fit (with two and room, the buttons carry their texts on purpose). Measured at once, before the bar
+        // fits itself again.
         const barra = document.getElementById('barra'), was = barra.className;
-        barra.classList.remove('dos-filas');
-        document.head.insertAdjacentHTML('beforeend', '<style id="solo-iconos">.acciones .redondo-texto { display: none !important; }</style>');
-        await new Promise((r) => setTimeout(r, 100));
-        const off = [...document.querySelectorAll('.acciones .redondo')].filter((b) => !b.hidden && b.offsetParent !== null).map((b) => {
+        const measure = (mode) => [...document.querySelectorAll('.acciones .redondo')].filter((b) => !b.hidden && b.offsetParent !== null).map((b) => {
             const r = b.getBoundingClientRect(), i = b.querySelector('svg');
             if (!i) { return ''; }
             const k = i.getBoundingClientRect();
             const dx = (k.left + k.right) / 2 - (r.left + r.right) / 2, dy = (k.top + k.bottom) / 2 - (r.top + r.bottom) / 2;
-            return Math.abs(dx) > 1.5 || Math.abs(dy) > 1.5 ? `${b.id || b.className}: ${dx.toFixed(1)}, ${dy.toFixed(1)}` : '';
+            return Math.abs(dx) > 1.5 || Math.abs(dy) > 1.5 ? `${mode} ${b.id || b.className}: ${dx.toFixed(1)}, ${dy.toFixed(1)}` : '';
         }).filter(Boolean);
+        barra.classList.remove('dos-filas', 'sin-nombres');
+        document.head.insertAdjacentHTML('beforeend', '<style id="solo-iconos">.acciones .redondo-texto { display: none !important; }</style>');
+        const one = measure('one row');
         document.getElementById('solo-iconos').remove();
+        barra.classList.add('dos-filas', 'sin-nombres');
+        const two = measure('two rows');
         barra.className = was;
-        return off.join(' | ');
+        return [...one, ...two].join(' | ');
     },
     // Music questions for the quiz: sets that make themselves (which song, rhythm and melody dictations), four
     // different answers with the right one among them, and what each one plays.

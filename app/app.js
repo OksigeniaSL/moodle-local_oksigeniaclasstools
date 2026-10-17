@@ -262,16 +262,22 @@
     pestanas.forEach((b) => { b.title = b.textContent.trim(); });
     const ajustaBarra = () => {
         const sobra = () => tira.scrollWidth > tira.clientWidth + 1;
-        barra.classList.remove('dos-filas', 'compacta');
-        if (!sobra()) { return; }
-        barra.classList.add('dos-filas');
-        if (!sobra()) { return; }
-        barra.classList.replace('dos-filas', 'compacta');
-        if (!sobra()) { return; }
-        barra.classList.add('dos-filas');
+        barra.classList.remove('dos-filas', 'compacta', 'sin-nombres');
+        if (sobra()) {
+            barra.classList.add('dos-filas');
+            if (sobra()) {
+                barra.classList.replace('dos-filas', 'compacta');
+                if (sobra()) { barra.classList.add('dos-filas'); }
+            }
+        }
+        // Con su nombre, los botones de arriba pueden no caber a lo ancho: entonces, solo con su icono.
+        if (barra.classList.contains('dos-filas') && barra.scrollWidth > barra.clientWidth + 1) { barra.classList.add('sin-nombres'); }
     };
     addEventListener('resize', ajustaBarra);
     if (document.fonts && document.fonts.ready) { document.fonts.ready.then(ajustaBarra); }
+    // Y otra vez cuando cambian de tamaño el nombre o los botones de arriba (llega la letra, se añade el tamaño de la
+    // pizarra, cambia el curso…).
+    if (window.ResizeObserver) { const ro = new ResizeObserver(() => ajustaBarra()); [$('.marca'), $('.acciones')].filter(Boolean).forEach((x) => ro.observe(x)); }
 
     // --- Botones de la barra: sonido, otra ventana, pantalla completa ---
     const bSonido = $('#b-sonido');

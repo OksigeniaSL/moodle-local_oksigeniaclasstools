@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.63.1 (2026-10-17)
+
+- The bar of the board never goes wider than the screen: when the buttons on top do not fit with their names (a long
+  course name, the size of the board, longer words in Spanish), they keep only their icon, with the name when hovered.
+  It fits again whenever they change size (the font arriving, the size buttons, another course). On campus at
+  1280×760, «Full screen» was cut and the page moved sideways. With only icons, the stage button's is centred too.
+
 ## 0.63.0 (2026-10-17)
 
 - The fixed remote, redone for the phone. On top, the tool on the board with its icon and colour; a tap opens all the
