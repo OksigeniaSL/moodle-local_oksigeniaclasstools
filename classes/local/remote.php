@@ -323,8 +323,9 @@ class remote {
     }
 
     /**
-     * The buttons of the tool on screen as the board sends them, for the phone: rows of [order, name, how]. Only what
-     * fits: known ways to show, orders of the board («x_» and a key, or a known one), names as plain text, so many rows.
+     * The buttons of the tool on screen as the board sends them, for the phone: rows of [order, name, how], and the name
+     * of its icon on the board when it has one. Only what fits: known ways to show, orders of the board («x_» and a key,
+     * or a known one), names as plain text, icons by their name, so many rows.
      *
      * @param string $json
      * @return array[]
@@ -335,10 +336,11 @@ class remote {
         foreach (is_array($rows) ? array_slice($rows, 0, self::HERE_ROWS) : [] as $row) {
             $items = [];
             foreach (is_array($row) ? array_slice($row, 0, self::HERE_ITEMS) : [] as $item) {
-                if (!is_array($item) || count($item) !== 3) {
+                if (!is_array($item) || count($item) < 3 || count($item) > 4) {
                     continue;
                 }
                 [$cmd, $label, $how] = array_values($item);
+                $icon = array_values($item)[3] ?? '';
                 if (!is_string($cmd) || !is_string($label) || !in_array($how, self::HOWS, true)) {
                     continue;
                 }
@@ -349,7 +351,11 @@ class remote {
                 }
                 $label = trim(preg_replace('/\s+/u', ' ', clean_param($label, PARAM_TEXT)));
                 if ($label !== '') {
-                    $items[] = [$cmd, \core_text::substr($label, 0, $how === 'txt' ? 200 : 60), $how];
+                    $kept = [$cmd, \core_text::substr($label, 0, $how === 'txt' ? 200 : 60), $how];
+                    if (!$shown && is_string($icon) && preg_match('/^[a-z0-9-]{1,30}$/', $icon)) {
+                        $kept[] = $icon;
+                    }
+                    $items[] = $kept;
                 }
             }
             if ($items) {

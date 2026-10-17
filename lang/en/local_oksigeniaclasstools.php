@@ -1241,7 +1241,7 @@ Vote: ask the question, open it, wait, close it and the bars appear; «Another q
 For Peer Instruction: they vote, discuss in pairs for a couple of minutes and vote again.
 Brainstorm: a word or two each; check them before showing them if needed.
 Without tablets: «Hands up», and you count with + and −.
-Fixed remote, on your phone and without logging in: on top, the buttons of the tool on the board (in «Groups», how many and «Make groups»; in the alphabet wheel, «Right», «Wrong», «Pass» and the answer, which only you see) and, below, its options («Deal them out with suspense», «Scratch to reveal», the game, the look of the timer…); under «More orders», the timer, picking someone, opening or closing the vote or the ticket, the curtain («Uncover a little» pulls it down) and the relays; and also going to a tool, reading the cards and «Change the class», which takes the open board to another of your courses. It turns itself off after the hours without use that the school sets.
+Fixed remote, on your phone and without logging in: on top, the buttons of the tool on the board (in «Groups», how many and «Make groups»; in the alphabet wheel, «Right», «Wrong», «Pass» and the answer, which only you see) and, below, its options («Deal them out with suspense», «Scratch to reveal», the game, the look of the timer…); with «Let a student press it», the phone keeps only the main button, big and round, for a child to press (leaving is holding); under «More orders», the timer, picking someone, opening or closing the vote or the ticket, the curtain («Uncover a little» pulls it down) and the relays; and also going to a tool, reading the cards and «Change the class», which takes the open board to another of your courses. It turns itself off after the hours without use that the school sets.
 Music quiz: «Music» makes the questions by itself (which song is it?, rhythm dictation with ta and ti-ti, or melody dictation from do) and the board plays each one as it opens; «Again» plays it once more.';
 $string['app_gd_envivo_scene'] = 'Before the experiment, Year 5 vote whether an egg floats in salty water: nearly everyone says no. They do the experiment and repeat the question with «Another question»; the bars change, and the best part begins: explaining why.';
 $string['app_gd_envivo_sources'] = 'Crouch, C. H. and Mazur, E. (2001). Peer Instruction: Ten years of experience and results. American Journal of Physics, 69(9), 970–977.|https://doi.org/10.1119/1.1374249
@@ -2801,6 +2801,10 @@ $string['app_rl_summarise'] = 'Summarise';
 $string['app_rl_tambourine'] = 'Tambourine';
 $string['app_rl_time'] = 'Timekeeper';
 $string['app_rm_answer'] = 'Answer: {$a}';
+$string['app_rm_bar_cards'] = 'Cards';
+$string['app_rm_bar_class'] = 'Class';
+$string['app_rm_change'] = 'Change';
+$string['app_rm_close'] = 'Close';
 $string['app_rm_closed'] = 'That board is not open any more.';
 $string['app_rm_cmd_curtain'] = 'Curtain';
 $string['app_rm_cmd_live'] = 'Open or close (Live)';
@@ -2816,6 +2820,10 @@ $string['app_rm_course_hint'] = 'The open board goes to the class you choose.';
 $string['app_rm_course_none'] = 'You have no other class with the board.';
 $string['app_rm_how'] = 'Scan the code with your phone and keep it on its home screen: the address is always the same.';
 $string['app_rm_intro'] = 'An address for your phone that does not change and does not ask you to log in: open it, for instance, from the home screen of the phone, and it drives the board you have open.';
+$string['app_rm_kid'] = 'Let a student press it';
+$string['app_rm_kid_hold'] = 'Hold to leave';
+$string['app_rm_kid_look'] = 'Look at the board!';
+$string['app_rm_kid_none'] = 'Nothing to press right now';
 $string['app_rm_last'] = 'Last order: {$a}';
 $string['app_rm_more'] = 'More orders';
 $string['app_rm_no_board_text'] = 'Open the board on the computer, in a course: it shows up here by itself.';
@@ -2823,6 +2831,7 @@ $string['app_rm_no_board_title'] = 'No board is open';
 $string['app_rm_off_text'] = 'It has been turned off, or its address has changed. On the board, in «Live» and «Remote», there is the address of now.';
 $string['app_rm_off_title'] = 'This remote is not on';
 $string['app_rm_on_board'] = 'On the board: {$a}';
+$string['app_rm_on_board_short'] = 'On the board';
 $string['app_rm_options'] = 'Options';
 $string['app_rm_or_session'] = 'There is also the remote with a code («Open the session»), which asks you to log in on the phone.';
 $string['app_rm_phone_in'] = 'phone connected';

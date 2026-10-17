@@ -11,5 +11,14 @@
   "rm_waiting_orders": { "en": "Waiting for orders from the phone", "es": "Esperando órdenes del móvil" },
   "rm_more": { "en": "More orders", "es": "Más órdenes" },
   "rm_answer": { "en": "Answer: {$a}", "es": "Respuesta: {$a}" },
-  "rm_options": { "en": "Options", "es": "Opciones" }
+  "rm_options": { "en": "Options", "es": "Opciones" },
+  "rm_on_board_short": { "en": "On the board", "es": "En la pizarra" },
+  "rm_change": { "en": "Change", "es": "Cambiar" },
+  "rm_close": { "en": "Close", "es": "Cerrar" },
+  "rm_kid": { "en": "Let a student press it", "es": "Que lo pulse un alumno" },
+  "rm_kid_hold": { "en": "Hold to leave", "es": "Mantén pulsado para salir" },
+  "rm_kid_look": { "en": "Look at the board!", "es": "¡Mira la pizarra!" },
+  "rm_kid_none": { "en": "Nothing to press right now", "es": "Ahora no hay nada que pulsar" },
+  "rm_bar_cards": { "en": "Cards", "es": "Tarjetas" },
+  "rm_bar_class": { "en": "Class", "es": "Clase" }
 }

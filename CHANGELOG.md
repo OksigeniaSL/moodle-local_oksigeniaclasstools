@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.63.0 (2026-10-17)
+
+- The fixed remote, redone for the phone. On top, the tool on the board with its icon and colour; a tap opens all the
+  tools as tiles. The main button is big, in the colour of the tool, with the icon it has on the board, and goes down
+  when pressed; the other buttons carry their icons too, and the options go in a card of their own. «More orders»,
+  the printed cards and changing the class are in a bar at the bottom, and open as sheets from below. What was sent
+  shows for a moment over the bar.
+- «Let a student press it»: the phone keeps only the main button of the tool on the board («Pick», «Make groups»,
+  «Spin»…), huge and round, for a child to press. After each press it rests for a moment, with confetti and «Look at
+  the board!», so that ten presses are not ten picks; the phone stays awake and on the whole screen; leaving is holding
+  «Hold to leave», which a child does not do by chance.
+
 ## 0.62.0 (2026-10-17)
 
 - The size of the board: «−» and «+» in its bar make everything smaller or bigger on that screen (from 70 % to 140 %,

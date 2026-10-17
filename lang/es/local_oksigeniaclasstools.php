@@ -1243,7 +1243,7 @@ Votación: haz la pregunta, abre, espera, cierra y salen las barras; «Otra preg
 Para la instrucción entre iguales: votan, lo discuten en parejas un par de minutos y vuelven a votar.
 Lluvia de ideas: una o dos palabras cada uno; revísalas antes de mostrarlas si hace falta.
 Sin tabletas: «A mano alzada», y cuentas tú con + y −.
-Mando fijo, en tu móvil y sin entrar en el Aula virtual: arriba, los botones de la herramienta que está en la pizarra (en «Grupos», cuántos y «Hacer grupos»; en la rueda de letras, «Acierto», «Fallo», «Paso» y la respuesta, que solo ves tú) y, debajo, sus opciones («Repartir con emoción», «Rasca y gana», el juego, el aspecto del temporizador…); en «Más órdenes», el temporizador, elegir a alguien, abrir o cerrar la votación o el billete, la cortina («Destapar un poco» va bajándola) y los relevos; y además ir a una herramienta, leer las tarjetas y «Cambiar de clase», que lleva la pizarra abierta a otro de tus cursos. Se apaga solo tras las horas sin usarlo que fije el centro.
+Mando fijo, en tu móvil y sin entrar en el Aula virtual: arriba, los botones de la herramienta que está en la pizarra (en «Grupos», cuántos y «Hacer grupos»; en la rueda de letras, «Acierto», «Fallo», «Paso» y la respuesta, que solo ves tú) y, debajo, sus opciones («Repartir con emoción», «Rasca y gana», el juego, el aspecto del temporizador…); con «Que lo pulse un alumno», el móvil se queda solo con el botón principal, grande y redondo, para que lo pulse un niño (para salir, hay que mantener pulsado); en «Más órdenes», el temporizador, elegir a alguien, abrir o cerrar la votación o el billete, la cortina («Destapar un poco» va bajándola) y los relevos; y además ir a una herramienta, leer las tarjetas y «Cambiar de clase», que lleva la pizarra abierta a otro de tus cursos. Se apaga solo tras las horas sin usarlo que fije el centro.
 Concurso de música: «Música» hace las preguntas solas (¿qué canción es?, dictado rítmico con ta y ti-ti, o dictado melódico desde do) y la pizarra toca cada una al abrirla; «Otra vez» la repite.';
 $string['app_gd_envivo_scene'] = 'Antes del experimento, la clase de cuarto vota si el huevo flota en agua con sal: casi todos dicen que no. Hacen el experimento y repiten la pregunta con «Otra pregunta»; las barras cambian, y empieza la mejor parte: explicar por qué.';
 $string['app_gd_envivo_sources'] = 'Crouch, C. H. y Mazur, E. (2001). Peer Instruction: Ten years of experience and results. American Journal of Physics, 69(9), 970–977.|https://doi.org/10.1119/1.1374249
@@ -2803,6 +2803,10 @@ $string['app_rl_summarise'] = 'Resumir';
 $string['app_rl_tambourine'] = 'Pandero';
 $string['app_rl_time'] = 'Tiempo';
 $string['app_rm_answer'] = 'Respuesta: {$a}';
+$string['app_rm_bar_cards'] = 'Tarjetas';
+$string['app_rm_bar_class'] = 'Clase';
+$string['app_rm_change'] = 'Cambiar';
+$string['app_rm_close'] = 'Cerrar';
 $string['app_rm_closed'] = 'Esa pizarra ya no está abierta.';
 $string['app_rm_cmd_curtain'] = 'Cortina';
 $string['app_rm_cmd_live'] = 'Abrir o cerrar (En vivo)';
@@ -2818,6 +2822,10 @@ $string['app_rm_course_hint'] = 'La pizarra abierta pasa a la clase que elijas.'
 $string['app_rm_course_none'] = 'No tienes otra clase con la pizarra.';
 $string['app_rm_how'] = 'Escanea el código con el móvil y guárdalo en su pantalla de inicio: la dirección es siempre la misma.';
 $string['app_rm_intro'] = 'Una dirección para tu móvil que no cambia y no pide entrar en el aula virtual: ábrela, por ejemplo, desde la pantalla de inicio del móvil, y maneja la pizarra que tengas abierta.';
+$string['app_rm_kid'] = 'Que lo pulse un alumno';
+$string['app_rm_kid_hold'] = 'Mantén pulsado para salir';
+$string['app_rm_kid_look'] = '¡Mira la pizarra!';
+$string['app_rm_kid_none'] = 'Ahora no hay nada que pulsar';
 $string['app_rm_last'] = 'Última orden: {$a}';
 $string['app_rm_more'] = 'Más órdenes';
 $string['app_rm_no_board_text'] = 'Abre la pizarra en el ordenador, en un curso: aparece aquí sola.';
@@ -2825,6 +2833,7 @@ $string['app_rm_no_board_title'] = 'No hay ninguna pizarra abierta';
 $string['app_rm_off_text'] = 'Se ha apagado o su dirección ha cambiado. En la pizarra, en «En vivo» y «Mando», está la dirección de ahora.';
 $string['app_rm_off_title'] = 'Este mando no está encendido';
 $string['app_rm_on_board'] = 'En la pizarra: {$a}';
+$string['app_rm_on_board_short'] = 'En la pizarra';
 $string['app_rm_options'] = 'Opciones';
 $string['app_rm_or_session'] = 'También está el mando con código («Abrir la sesión»), que pide entrar con tu usuario en el móvil.';
 $string['app_rm_phone_in'] = 'móvil conectado';

@@ -139,7 +139,8 @@ final class remote_test extends \advanced_testcase {
         remote::set_enabled((int) $teacher->id, true);
         // What the board sends, and only what fits is kept: known ways to show, orders of the board, names as text.
         $json = json_encode([
-            [['x_go', 'Make <b>groups</b>', 'big'], ['x_bad-one', 'No', ''], ['x_le', 'One fewer', 'odd']],
+            [['x_go', 'Make <b>groups</b>', 'big', 'mezclar'], ['x_bad-one', 'No', ''], ['x_le', 'One fewer', 'odd']],
+            [['x_re', 'Start again', '', 'Bad icon!'], ['', 'A value', 'val', 'mezclar'], ['x_no', 'Too many', '', 'a', 'b']],
             [['', '4 groups', 'val'], ['x_mr', '', 'more'], ['pick', 'Pick', ''], ['drop', 'Drop', ''],
                 ['x_ok', 'Right', 'yes']],
             [['x_no', 'A value with an order', 'val']],
@@ -151,7 +152,8 @@ final class remote_test extends \advanced_testcase {
         ]);
         $here = remote::here($json);
         $this->assertSame([
-            [['x_go', 'Make groups', 'big']],
+            [['x_go', 'Make groups', 'big', 'mezclar']],
+            [['x_re', 'Start again', ''], ['', 'A value', 'val']],
             [['', '4 groups', 'val'], ['pick', 'Pick', ''], ['x_ok', 'Right', 'yes']],
             [['', 'Look', 'cap'], ['x_o3x0', 'Ring', 'opton'], ['x_o3x1', 'Sand', 'opt'], ['x_o4', 'Suspense', 'chk']],
         ], $here);

@@ -49,7 +49,7 @@
     // more (a step), yes or no (right or wrong), val (a value, not a button) or txt (a line of text); name, when there
     // is one, is a text of the board or a function of the element, instead of the button's own. Without a selector,
     // the key is a known order. The options (below) go as chk or chkon (a switch, off or on), opt or opton (one of a
-    // choice) and cap (the name of a choice).
+    // choice) and cap (the name of a choice). A button with an icon on the board takes it to the phone, fourth.
     const GAME_GO = ['#ro-start', '#ro-again', '#si-start', '#ec-listen', '#ah-start', '#wo-start', '#me-start', '#sc2-start',
         '#ordenar-start', '#clasificar-start', '#errores-start', '#quiensoy-start'].join(', ');
     const GAME_MORE = ['#ro-pause', '#ro-end', '#ro-change', '#ec-again', '#ec-new', '#ah-uncover', '#ah-reveal', '#errores-show',
@@ -181,7 +181,9 @@
                     const text = (typeof name === 'function' ? name(el) : name ? t(name) : named(el)).replace(/\s+/g, ' ').slice(0, 60);
                     const on = ['aria-checked', 'aria-pressed'].some((a) => el.getAttribute(a) === 'true') || el.classList.contains('activo');
                     if (!text) { return; }
-                    items.push([cmd, text, how || (on ? 'on' : '')]);
+                    // With the icon it has on the board, if it has one.
+                    const ic = el.querySelector && el.querySelector('[data-icono]');
+                    items.push(ic && cmd ? [cmd, text, how || (on ? 'on' : ''), ic.dataset.icono] : [cmd, text, how || (on ? 'on' : '')]);
                     used.add(el);
                     if (cmd) { acts.set(cmd, () => el.click()); }
                 });

@@ -963,7 +963,14 @@ const CHECKS = {
         await sleep(2200);
         if (q('[data-cmd="x_o1"]').getAttribute('aria-checked') !== 'true') { return 'the switch went back before the board could say'; }
         if (!q('[data-cmd="x_go"].grande') || q('[data-cmd="x_md0"]').getAttribute('aria-pressed') !== 'true' || q('[data-cmd="x_mr"]').getAttribute('aria-label') !== 'One more') { return 'the tool buttons do not look as they should'; }
-        if (!q('#jn-mas [data-cmd="pick"]') || q('#jn-mas').open) { return 'the orders for any tool are not under «More orders»'; }
+        // The orders for any tool, in the sheet of «More orders».
+        if (q('#jn-aqui [data-cmd="pick"]')) { return 'the orders for any tool are among the tool\'s own'; }
+        q('#jn-b-mas').click();
+        if (q('#jn-hoja').hidden || !q('#jn-hoja [data-cmd="pick"]')) { return 'no sheet of «More orders»'; }
+        q('#jn-hoja [data-cerrar]').click();
+        if (!q('#jn-hoja').hidden) { return 'the sheet did not close'; }
+        // The tool on the board, with its icon; the main button with the board's icon; the student's button.
+        if (!/Groups/.test(q('#jn-herr').textContent) || !q('#jn-herr svg') || q('#jn-b-alumno').hidden) { return 'no tool on top, or no button for a student'; }
         q('[data-cmd="x_mr"]').click();
         await sleep(200);
         sent = FAKE.calls.filter((c) => c.action === 'command').pop();
@@ -973,16 +980,41 @@ const CHECKS = {
         q('[data-cmd="x_old"]').click();
         await sleep(300);
         if (FAKE.calls.filter((c) => c.action === 'state').length <= asked) { return 'it did not ask again after a button that is gone'; }
-        q('.jn-herramientas:not(#jn-clases):not(#jn-mas)').open = true;
-        q('[data-cmd="tool_reloj"]').click();
+        q('#jn-herr').click();
+        if (q('#jn-hoja [aria-current="true"]').dataset.cmd !== 'tool_grupos') { return 'the tool on the board is not marked'; }
+        q('#jn-hoja [data-cmd="tool_reloj"]').click();
+        if (!q('#jn-hoja').hidden) { return 'the sheet of tools stayed open'; }
         await sleep(200);
         sent = FAKE.calls.filter((c) => c.action === 'command').pop();
         if (sent.cmd !== 'tool_reloj' || sent.course !== '1') { return `tool sent ${JSON.stringify(sent)}`; }
         if (!/sent/.test(q('#jn-hecho').textContent)) { return 'no word that it was sent'; }
         // New orders on the phone.
-        for (const cmd of ['live', 'relay', 'curtain', 'reveal']) { if (!q(`[data-cmd="${cmd}"]`)) { return `no button for ${cmd}`; } }
+        q('#jn-b-mas').click();
+        for (const cmd of ['live', 'relay', 'curtain', 'reveal']) { if (!q(`#jn-hoja [data-cmd="${cmd}"]`)) { return `no button for ${cmd}`; } }
+        q('#jn-hoja [data-cerrar]').click();
+        // A student presses: only the main button, which rests after a press; leaving is holding.
+        q('#jn-b-alumno').click();
+        await sleep(100);
+        const kidButton = q('#jn-nino #jn-nino-boton');
+        if (!kidButton || kidButton.dataset.cmd !== 'x_go' || !/Make groups/.test(kidButton.textContent)) { return 'no main button for a student'; }
+        kidButton.click();
+        await sleep(200);
+        sent = FAKE.calls.filter((c) => c.action === 'command').pop();
+        if (sent.cmd !== 'x_go') { return `the student's press sent ${JSON.stringify(sent)}`; }
+        if (!q('#jn-nino-boton').disabled || !q('#jn-nino .jn-confeti i')) { return 'the button does not rest after a press'; }
+        await window.shot('remote-kid');
+        q('#jn-nino-salir').dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }));
+        await sleep(300);
+        document.dispatchEvent(new PointerEvent('pointerup', { bubbles: true }));
+        await sleep(1100);
+        if (!q('#jn-nino')) { return 'a short press left the student\'s screen'; }
+        q('#jn-nino-salir').dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }));
+        await sleep(1400);
+        if (q('#jn-nino')) { return 'holding did not leave the student\'s screen'; }
         // Changing the class: the teacher's other courses, and the board goes to the one chosen.
-        q('#jn-clases').open = true;
+        q('[data-course="1"]').click();
+        await sleep(100);
+        q('#jn-b-clase').click();
         for (let i = 0; i < 30 && !q('[data-goto]'); i++) { await sleep(100); }
         const others = [...document.querySelectorAll('[data-goto]')].map((b) => b.textContent);
         if (others.join(',') !== 'Language 5,Maths 6') { return `courses: ${others}`; }

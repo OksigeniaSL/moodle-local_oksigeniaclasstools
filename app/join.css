@@ -128,9 +128,6 @@ button { touch-action: manipulation; -webkit-user-select: none; user-select: non
 .jn-tablas { display: flex; flex-wrap: wrap; gap: .4rem; justify-content: center; }
 .jn-tablas button { padding: .5rem .9rem; border: 2px solid var(--azul); border-radius: 50rem; background: var(--superficie); color: var(--azul); font-weight: 900; }
 .jn-tablas button[aria-checked="true"] { background: var(--azul); color: #fff; }
-.jn-herramientas { width: 100%; }
-.jn-herramientas summary { margin: .4rem 0 .8rem; color: var(--azul); font-weight: 900; cursor: pointer; }
-.jn-herramientas button[aria-current="true"] { outline: 3px solid var(--azul); }
 .jn-espera { display: flex; gap: .6rem; }
 .jn-espera i { width: 1rem; height: 1rem; border-radius: 50%; background: var(--azul); animation: jn-latido 1.2s ease-in-out infinite; }
 .jn-espera i:nth-child(2) { animation-delay: .2s; }
@@ -166,3 +163,73 @@ body.jn-verde .jn-boton.suave { background: rgba(255, 255, 255, .9); }
 .jn-ultimas { display: flex; flex-wrap: wrap; justify-content: center; gap: .4rem; margin: 0; padding: 0; list-style: none; }
 .jn-ultimas li { display: inline-flex; align-items: center; gap: .3rem; padding: .2rem .7rem .2rem .25rem; border-radius: 50rem; background: var(--superficie); font-weight: 800; }
 .jn-ultimas b { display: grid; place-items: center; width: 1.8rem; height: 1.8rem; border-radius: 50%; background: var(--c); color: #fff; }
+/* --- The fixed remote, redone (mando.js) ------------------------------------------------------------------------- */
+.jn-ico { flex: none; width: 1.15em; height: 1.15em; }
+.jn-curso { margin: 0; color: var(--azul-osc); font-size: 1.35rem; font-weight: 900; line-height: 1.2; }
+/* The tool on the board: its icon in its colour; a tap opens the others. */
+.jn-herr { display: flex; align-items: center; gap: .8rem; width: 100%; padding: .65rem .8rem; border: 0; border-radius: 20px; background: var(--superficie); color: var(--azul-osc); text-align: left; box-shadow: 0 2px 0 var(--borde), 0 6px 18px rgba(15, 47, 94, .08); }
+.jn-herr-ico { display: grid; place-items: center; flex: none; width: 3.1rem; height: 3.1rem; border-radius: 15px; background: var(--c, var(--azul)); color: #fff; }
+.jn-herr-ico .jn-ico { width: 1.6rem; height: 1.6rem; }
+.jn-herr-txt { display: grid; min-width: 0; line-height: 1.15; }
+.jn-herr-txt small { color: var(--tinta-3); font-size: .8rem; font-weight: 800; }
+.jn-herr-txt strong { overflow: hidden; font-size: 1.25rem; font-weight: 900; text-overflow: ellipsis; white-space: nowrap; }
+.jn-herr-cambiar { display: inline-flex; align-items: center; gap: .25rem; margin-left: auto; color: var(--azul); font-size: .9rem; font-weight: 900; }
+/* The main button: big, in the colour of the tool, with depth; it goes down when pressed and sends a wave. */
+.jn-mando button.grande { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .35rem; min-height: 7.5rem; border-radius: 26px; background: var(--c, var(--verde)); color: #fff; font-size: 1.5rem; box-shadow: 0 7px 0 rgba(0, 0, 0, .28), 0 14px 26px rgba(15, 47, 94, .2); transition: transform .06s, box-shadow .06s; }
+.jn-mando button.grande:active { transform: translateY(5px); box-shadow: 0 2px 0 rgba(0, 0, 0, .28), 0 6px 12px rgba(15, 47, 94, .2); }
+.jn-ico-grande { width: 2.3rem; height: 2.3rem; }
+.jn-mando button.grande.enviado::after { content: ""; position: absolute; inset: 0; border-radius: inherit; box-shadow: 0 0 0 0 var(--c, var(--verde)); animation: jn-onda .7s ease-out; pointer-events: none; }
+@keyframes jn-onda { from { box-shadow: 0 0 0 0 var(--c, var(--verde)); opacity: .7; } to { box-shadow: 0 0 0 22px var(--c, var(--verde)); opacity: 0; } }
+.jn-fila button:not(.grande):not(.jn-chk) { display: inline-flex; align-items: center; justify-content: center; gap: .45rem; }
+/* The options, in a card of their own. */
+.jn-opciones { display: grid; gap: .8rem; padding: .2rem .9rem 1rem; border-radius: 22px; background: rgba(255, 255, 255, .55); box-shadow: inset 0 0 0 1px var(--borde); }
+.jn-opciones .jn-seccion { margin: .6rem 0 -.3rem; padding-top: 0; border-top: 0; }
+/* «Let a student press it». */
+.jn-alumno { display: flex; align-items: center; justify-content: center; gap: .6rem; min-height: 3.6rem; padding: .5rem 1rem; border: 0; border-radius: 50rem; background: var(--amarillo); color: #3d2b00; font-size: 1.1rem; font-weight: 900; box-shadow: 0 4px 0 #c99200; }
+.jn-alumno:active { transform: translateY(3px); box-shadow: 0 1px 0 #c99200; }
+/* The bar at the bottom: more orders, the cards, the class. */
+.jn-pie { position: sticky; bottom: 0; z-index: 3; display: grid; grid-auto-columns: minmax(0, 1fr); grid-auto-flow: column; gap: .4rem; margin: auto -1rem calc(-1 * max(1rem, env(safe-area-inset-bottom))); padding: .5rem .8rem max(.6rem, env(safe-area-inset-bottom)); border-top: 1px solid var(--borde); background: rgba(244, 247, 251, .94); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+.jn-pie button { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .2rem; min-height: 3.6rem; padding: .3rem; border: 0; border-radius: 16px; background: transparent; color: var(--azul); font-size: .82rem; font-weight: 900; }
+.jn-pie button .jn-ico { width: 1.45rem; height: 1.45rem; }
+.jn-pie button:active { background: var(--azul-suave); }
+/* What was sent, for a moment. */
+.jn-toast { position: fixed; left: 50%; bottom: calc(5.4rem + env(safe-area-inset-bottom)); z-index: 4; max-width: 90vw; margin: 0; padding: .5rem 1.1rem; border-radius: 50rem; background: var(--azul-osc); color: #fff; font-size: .95rem; text-align: center; opacity: 0; transform: translate(-50%, .8rem); transition: opacity .2s, transform .2s; pointer-events: none; }
+.jn-toast.visto { opacity: 1; transform: translate(-50%, 0); }
+/* The sheets from the bottom. */
+.jn-hoja { position: fixed; inset: 0; z-index: 10; display: flex; align-items: flex-end; background: rgba(15, 31, 56, .45); }
+.jn-hoja-panel { display: grid; gap: .9rem; width: min(40rem, 100%); max-height: 86dvh; margin: 0 auto; padding: .9rem 1rem max(1.2rem, env(safe-area-inset-bottom)); overflow-y: auto; border-radius: 26px 26px 0 0; background: var(--fondo); animation: jn-sube .2s ease-out; }
+@keyframes jn-sube { from { transform: translateY(30%); opacity: .4; } }
+.jn-hoja-cabeza { display: flex; align-items: center; justify-content: space-between; gap: 1rem; font-size: 1.2rem; }
+.jn-hoja-cerrar { display: grid; place-items: center; width: 2.8rem; height: 2.8rem; border: 0; border-radius: 50%; background: var(--azul-suave); color: var(--azul); }
+.jn-tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .6rem; }
+.jn-tile { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .4rem; min-height: 5.8rem; padding: .6rem .3rem; border: 0; border-radius: 18px; background: var(--superficie); color: var(--azul-osc); font-size: .85rem; font-weight: 900; line-height: 1.15; text-align: center; box-shadow: 0 2px 0 var(--borde); }
+.jn-tile .jn-ico { width: 1.9rem; height: 1.9rem; color: var(--c); }
+.jn-tile[aria-current="true"] { background: var(--c); color: #fff; }
+.jn-tile[aria-current="true"] .jn-ico { color: #fff; }
+/* A student presses: only the main button, round and huge. */
+.jn-nino { position: fixed; inset: 0; z-index: 30; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.2rem; padding: max(1rem, env(safe-area-inset-top)) 1rem max(1rem, env(safe-area-inset-bottom)); overflow: hidden; background: radial-gradient(circle at 50% 40%, #fff, var(--fondo) 70%); -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+.jn-nino-herr { display: flex; align-items: center; gap: .6rem; margin: 0; color: var(--c); font-size: 1.5rem; font-weight: 1000; }
+.jn-nino-herr .jn-ico { width: 1.8rem; height: 1.8rem; }
+.jn-nino-boton { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .6rem; width: min(80vw, 56vh); aspect-ratio: 1; padding: 1.5rem; border: 0; border-radius: 50%; background: var(--c); background: radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--c) 55%, #fff), var(--c) 58%, color-mix(in srgb, var(--c) 72%, #000)); color: #fff; font-size: clamp(1.7rem, 8vw, 2.8rem); font-weight: 1000; line-height: 1.1; text-align: center; box-shadow: 0 16px 0 rgba(0, 0, 0, .3), 0 26px 44px rgba(15, 31, 56, .3); transition: transform .07s, box-shadow .07s, filter .3s; }
+.jn-nino-boton .jn-ico { width: 30%; height: auto; aspect-ratio: 1; }
+.jn-nino-boton:active { transform: translateY(12px); box-shadow: 0 4px 0 rgba(0, 0, 0, .3), 0 10px 20px rgba(15, 31, 56, .3); }
+.jn-nino-boton.espera { filter: saturate(.55) brightness(1.08); transform: translateY(8px); box-shadow: 0 8px 0 rgba(0, 0, 0, .25), 0 14px 26px rgba(15, 31, 56, .2); }
+.jn-nino-nota { min-height: 2.4rem; margin: 0; color: var(--azul-osc); font-size: 1.6rem; font-weight: 1000; }
+.jn-nino-nada { margin: 0; color: var(--tinta-3); font-size: 1.3rem; text-align: center; }
+.jn-nino-salir { position: absolute; top: max(.8rem, env(safe-area-inset-top)); right: .8rem; display: flex; align-items: center; gap: .5rem; padding: .45rem .9rem .45rem .5rem; border: 0; border-radius: 50rem; background: rgba(15, 31, 56, .08); color: var(--tinta-3); font-size: .85rem; font-weight: 800; }
+.jn-nino-salir i { position: relative; width: 1.6rem; height: 1.6rem; border-radius: 50%; background: conic-gradient(var(--azul) calc(var(--p, 0) * 1%), rgba(15, 31, 56, .15) 0); }
+.jn-nino-salir.llenando i { animation: jn-llena 1.2s linear forwards; }
+@property --p { syntax: "<number>"; inherits: false; initial-value: 0; }
+@keyframes jn-llena { to { --p: 100; } }
+.jn-confeti { position: absolute; inset: 0; pointer-events: none; }
+.jn-confeti { z-index: 2; }
+.jn-confeti i { position: absolute; left: 50%; top: 48%; width: 18px; height: 18px; margin: -9px 0 0 -9px; border-radius: 4px; background: hsl(calc(var(--i) * 47) 85% 52%); animation: jn-confeti 1.4s cubic-bezier(.2, .7, .3, 1) forwards; }
+@keyframes jn-confeti {
+    from { transform: rotate(calc(var(--i) * 20deg)) translateY(0) scale(1); opacity: 1; }
+    75% { opacity: 1; }
+    to { transform: rotate(calc(var(--i) * 20deg)) translateY(-46vmin) rotate(220deg) scale(.7); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .jn-confeti i, .jn-hoja-panel, .jn-mando button.grande.enviado::after { animation: none; }
+    .jn-confeti { display: none; }
+}
