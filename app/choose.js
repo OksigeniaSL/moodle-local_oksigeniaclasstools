@@ -117,7 +117,7 @@
         $('#ct-ch-sala-lista').innerHTML = R.teachers.length ? R.teachers.map((x) => `<li class="ct-ch-sala-profe${x.me ? ' yo' : ''}">${face(x.id)}
             <span class="ct-ch-sala-nombre">${L.esc(x.name)}${x.me ? ` <small>(${L.esc(S.you)})</small>` : ''}</span>
             <span class="ct-ch-sala-cromos">${x.stickers.length ? x.stickers.map((c) => `<span class="ct-ch-mini">${L.draw(c.cromo, c.level, t)}</span>`).join('')
-                : `<span class="ct-ch-nota">${L.esc(S.none)}</span>`}</span></li>`).join('')
+                : `<span class="ct-ch-nota">${L.esc(S.none)}</span>`}${x.note ? `<span class="ct-ch-nota ct-ch-sala-mas">${L.esc(x.note)}</span>` : ''}</span></li>`).join('')
             : `<li class="ct-ch-sala-vacia">${L.esc(S.empty)}</li>`;
     };
     $('#ct-ch-sala-abrir').addEventListener('click', () => { paintRoom(); roomDialog.showModal(); });

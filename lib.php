@@ -630,7 +630,8 @@ function local_oksigeniaclasstools_sala(int $userid): ?array {
  * The teachers' room as a teacher sees it, with its texts: for «Which class?» and for the board.
  *
  * @param int $userid
- * @return array joined, count, span, others (texts), teachers (id, name, me, stickers) and str (the texts of the room)
+ * @return array joined, count, span, others (texts), teachers (id, name, me, stickers, note: on the row of who looks,
+ *     what their «My stickers» has and the room leaves out) and str (the texts of the room)
  */
 function local_oksigeniaclasstools_sala_view(int $userid): array {
     $component = 'local_oksigeniaclasstools';
@@ -646,7 +647,15 @@ function local_oksigeniaclasstools_sala_view(int $userid): array {
     }
     $others = $room['others'] === 1 ? get_string('sala_others_one', $component)
         : ($room['others'] > 1 ? get_string('sala_others', $component, $room['others']) : '');
-    $n = count($room['teachers']);
+    $note = [];
+    foreach (['learned', 'before'] as $kind) {
+        $k = $room['mine'][$kind];
+        if ($k) {
+            $note[] = $k === 1 ? get_string("sala_mine_{$kind}_one", $component) : get_string("sala_mine_{$kind}", $component, $k);
+        }
+    }
+    $teachers = array_map(fn($x) => $x + ['note' => $x['me'] ? implode(' ', $note) : ''], $room['teachers']);
+    $n = count($teachers);
     $str = [];
     foreach (['you', 'none', 'empty', 'intro', 'join', 'join_note', 'close'] as $key) {
         $str[$key] = get_string('sala_' . $key, $component);
@@ -657,7 +666,7 @@ function local_oksigeniaclasstools_sala_view(int $userid): array {
         'count' => $n ? get_string('sala_count', $component, $n) : get_string('sala_count_none', $component),
         'span' => $when,
         'others' => $others,
-        'teachers' => $room['teachers'],
+        'teachers' => $teachers,
         'str' => $str,
     ];
 }
@@ -668,7 +677,8 @@ function local_oksigeniaclasstools_sala_view(int $userid): array {
  * texts of the stickers).
  *
  * @param int $userid
- * @return array|null got, json; null when the stickers are off.
+ * @return array|null got, split (with the classes and in the helps, when some are only learned), json; null when the
+ *     stickers are off.
  */
 function local_oksigeniaclasstools_album(int $userid): ?array {
     if (!\local_oksigeniaclasstools\local\logros::on()) {
@@ -702,8 +712,12 @@ function local_oksigeniaclasstools_album(int $userid): ?array {
     $weeks = $data['weeks'] >= $data['weeksneeded']
         ? get_string('app_cr_weeks_done', $component, $data['weeks'])
         : get_string('app_cr_weeks', $component, (object) ['n' => $data['weeks'], 'of' => $data['weeksneeded']]);
+    // The ones only learned in the guided helps, apart: the teachers' room shows only the ones got with a class.
+    $learned = count(array_filter($data['cromos'], fn($c) => !$c['level'] && $c['learned']));
     return [
         'got' => get_string('app_cr_got', $component, (object) ['got' => $data['got'], 'all' => count($data['cromos'])]),
+        'split' => $learned
+            ? get_string('app_cr_got_split', $component, (object) ['real' => $data['got'] - $learned, 'learned' => $learned]) : '',
         'json' => json_encode(['items' => $items, 'weeks' => $weeks, 'str' => $str], JSON_UNESCAPED_UNICODE),
     ];
 }

@@ -118,6 +118,7 @@
 /* «My stickers»: the strip in the panel, and the album. */
 .ct-ch-logros { padding: .8rem; border-radius: 20px; background: linear-gradient(160deg, #fff7e0, #fdeef1); }
 .ct-ch-logros-n { display: block; margin: .1rem 0 .4rem; color: var(--azul-osc); font-size: 1rem; }
+.ct-ch-logros-reparto { display: block; margin: -.3rem 0 .5rem; }
 .ct-ch-tira { display: flex; gap: .3rem; margin-bottom: .6rem; }
 .ct-ch-mini { flex: 1; max-width: 3.6rem; }
 .ct-ch-mini svg { display: block; width: 100%; height: auto; filter: drop-shadow(0 3px 6px rgba(15, 47, 94, .2)); }
@@ -182,6 +183,7 @@
 .ct-ch-sala-nombre small { color: var(--tinta-3); font-weight: 700; }
 .ct-ch-sala-cromos { display: flex; flex-wrap: wrap; gap: .3rem; }
 .ct-ch-sala-cromos .ct-ch-mini { flex: none; width: 2.8rem; }
+.ct-ch-sala-mas { flex-basis: 100%; }
 .ct-ch-sala-vacia { color: var(--tinta-3); font-weight: 700; }
 .ct-ch-sala-otros { margin: 0; padding: 0 1.4rem 1.4rem; color: var(--azul-osc); font-weight: 800; }
 @media (max-width: 40rem) { .ct-ch-sala-profe { grid-template-columns: auto 1fr; } .ct-ch-sala-cromos { grid-column: 1 / -1; } }

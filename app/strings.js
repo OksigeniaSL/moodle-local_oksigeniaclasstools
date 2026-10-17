@@ -346,6 +346,7 @@ window.CLASSTOOLS_STR = {
 "cr_fam_solids": "3D shapes",
 "cr_fam_timer": "Timer",
 "cr_got": "{$a->got} of {$a->all} stickers",
+"cr_got_split": "{$a->real} with your classes and {$a->learned} in the guided helps",
 "cr_guardatiempos_how": "Let a timer of a minute or more reach zero.",
 "cr_guardatiempos_name": "Time Keeper",
 "cr_guardatiempos_text": "Time never gets away from them.",

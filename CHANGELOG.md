@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.63.2 (2026-10-18)
+
+- «My stickers» and the teachers' room no longer seem to disagree. Under «4 of 25 stickers», «My stickers» says how
+  many were got with the classes and how many learned in the guided helps (when there are any of the second kind).
+  In the room, the teacher's own row says what their album has and the room leaves out: the stickers learned in a
+  help, and the ones won before the time the room counts. Only the teacher sees it. A teacher saw 4 stickers in one
+  place and 3 in the other.
+
 ## 0.63.1 (2026-10-17)
 
 - The bar of the board never goes wider than the screen: when the buttons on top do not fit with their names (a long

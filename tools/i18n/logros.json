@@ -291,6 +291,10 @@
   "en": "{$a->got} of {$a->all} stickers",
   "es": "{$a->got} de {$a->all} cromos"
  },
+ "cr_got_split": {
+  "en": "{$a->real} with your classes and {$a->learned} in the guided helps",
+  "es": "{$a->real} con tus clases y {$a->learned} en las ayudas guiadas"
+ },
  "cr_open": {
   "en": "Open the album",
   "es": "Ver el álbum"

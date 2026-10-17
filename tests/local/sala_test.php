@@ -86,6 +86,36 @@ final class sala_test extends \advanced_testcase {
         $this->assertTrue(sala::room((int) $zoe->id, $now)['teachers'][1]['me']);
     }
 
+    public function test_who_looks_is_told_what_their_album_has_and_the_room_leaves_out(): void {
+        $this->resetAfterTest();
+        $gen = $this->getDataGenerator();
+        $course = $gen->create_course();
+        $me = $gen->create_user();
+        $other = $gen->create_user();
+        $now = time();
+        // Used with a class now, used only long ago, learned in a help, and learned and used: two are left out.
+        logros::record((int) $me->id, (int) $course->id, 'tiradados', $now - DAYSECS);
+        logros::record((int) $me->id, (int) $course->id, 'sacanombres', $now - 200 * DAYSECS);
+        logros::learn((int) $me->id, (int) $course->id, 'domamoviles');
+        logros::learn((int) $me->id, (int) $course->id, 'tiradados');
+        logros::record((int) $other->id, (int) $course->id, 'tiradados', $now - DAYSECS);
+        sala::join((int) $me->id, true);
+        sala::join((int) $other->id, true);
+        $this->assertSame(['learned' => 1, 'before' => 1], sala::room((int) $me->id, $now)['mine']);
+        // Said on the row of who looks, and on no other.
+        $notes = array_column(\local_oksigeniaclasstools_sala_view((int) $me->id)['teachers'], 'note', 'id');
+        $component = 'local_oksigeniaclasstools';
+        $this->assertSame(
+            get_string('sala_mine_learned_one', $component) . ' ' . get_string('sala_mine_before_one', $component),
+            $notes[(int) $me->id]
+        );
+        $this->assertSame('', $notes[(int) $other->id]);
+        // The album says it too, in «My stickers»: 3 of 25, 2 with the classes and 1 in the helps.
+        $split = get_string('app_cr_got_split', $component, (object) ['real' => 2, 'learned' => 1]);
+        $this->assertSame($split, \local_oksigeniaclasstools_album((int) $me->id)['split']);
+        $this->assertSame('', \local_oksigeniaclasstools_album((int) $other->id)['split']);
+    }
+
     public function test_only_teachers_can_come_in(): void {
         $this->resetAfterTest();
         $gen = $this->getDataGenerator();

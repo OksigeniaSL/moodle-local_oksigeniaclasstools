@@ -122,7 +122,9 @@ class sala {
      * @param int $userid Who looks.
      * @param int|null $now For tests.
      * @return array teachers (id, name, me, stickers: cromo and level), in the order of their names; others (how many more
-     *     colleagues play with their classes); span; joined (whether who looks is in)
+     *     colleagues play with their classes); span; joined (whether who looks is in); mine (what «My stickers» of who
+     *     looks has and the room leaves out: learned, the ones only learned in the guided helps; before, the ones got
+     *     with a class only before the span)
      */
     public static function room(int $userid, ?int $now = null): array {
         global $DB;
@@ -167,6 +169,12 @@ class sala {
             usort($teachers, fn($a, $b) => strnatcasecmp($a['name'], $b['name']));
         }
         $others = count(array_diff(array_keys($levels), array_column($teachers, 'id'), [$userid]));
-        return ['teachers' => $teachers, 'others' => $others, 'span' => $span, 'joined' => self::joined($userid)];
+        $ever = logros::days($userid);
+        $mine = [
+            'learned' => count(array_diff(logros::learned($userid), array_keys($ever))),
+            'before' => count(array_diff_key($ever, $levels[$userid] ?? [])),
+        ];
+        return ['teachers' => $teachers, 'others' => $others, 'span' => $span, 'joined' => self::joined($userid),
+            'mine' => $mine];
     }
 }

@@ -79,7 +79,7 @@ window.shot = (name) => new Promise((done) => { if (!window.checkShot) { done();
         // The teachers' room, as sala.php gives it: the teacher comes in or leaves, and the room as they see it.
         if (String(url).startsWith('fake://sala')) {
             if (a === 'join') { FAKE.salaIn = p.get('join') === '1'; }
-            const me = { id: 99, name: 'Teacher', me: true, stickers: [] };
+            const me = { id: 99, name: 'Teacher', me: true, stickers: [], note: 'And 1 learned in a guided help, only in «My stickers».' };
             return json({ joined: !!FAKE.salaIn, count: '', span: 'It counts the last 12 weeks.', others: 'And 9 more colleagues play with their classes.',
                 teachers: [{ id: 7, name: 'Ana Ruiz', me: false, stickers: [{ cromo: 'tiradados', level: 2 }] }].concat(FAKE.salaIn ? [me] : []),
                 str: { title: "Teachers' room", intro: 'Who else plays with their class.', you: 'you', none: 'No stickers in this time', empty: 'Nobody yet',
@@ -2187,6 +2187,9 @@ const CHECKS = {
         d.querySelector('#sl-yo').click();
         await sleep(300);
         if (d.querySelectorAll('.ct-sala-profe').length !== 2 || !d.querySelector('.ct-sala-profe.yo') || !d.querySelector('#sl-yo').checked) { return 'coming in did not show the teacher'; }
+        // What their album has and the room leaves out, said on their row only.
+        const mas = d.querySelectorAll('.ct-sala-mas');
+        if (mas.length !== 1 || !mas[0].closest('.yo') || !/guided help/.test(mas[0].textContent)) { return `the note of the own row: ${mas.length}`; }
         await window.shot('sala-board');
         d.close();
         return '';

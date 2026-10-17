@@ -28,7 +28,7 @@
             <ul class="ct-sala-lista">${R.teachers.length ? R.teachers.map((x) => `<li class="ct-sala-profe${x.me ? ' yo' : ''}">${face(x.id)}
                 <span class="ct-sala-nombre">${escape(x.name)}${x.me ? ` <small>(${escape(S.you)})</small>` : ''}</span>
                 <span class="ct-sala-cromos">${x.stickers.length && L ? x.stickers.map((c) => `<span class="ct-sala-cromo">${L.draw(c.cromo, c.level, core.t)}</span>`).join('')
-                    : `<span class="nota">${escape(S.none)}</span>`}</span></li>`).join('')
+                    : `<span class="nota">${escape(S.none)}</span>`}${x.note ? `<span class="nota ct-sala-mas">${escape(x.note)}</span>` : ''}</span></li>`).join('')
                 : `<li class="nota">${escape(S.empty)}</li>`}</ul>
             ${R.others ? `<p class="ct-sala-otros">${escape(R.others)}</p>` : ''}
             <div class="ct-sala-pie"><label class="interruptor"><input type="checkbox" id="sl-yo"${R.joined ? ' checked' : ''}><span>${escape(S.join)}</span></label>

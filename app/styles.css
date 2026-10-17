@@ -2413,6 +2413,7 @@ dialog.ct-sala { width: min(60rem, 94vw); max-width: none; overflow-y: auto; }
 .ct-sala-nombre { color: var(--azul-osc); font-weight: 900; }
 .ct-sala-nombre small { color: var(--tinta-3); font-weight: 700; }
 .ct-sala-cromos { display: flex; flex-wrap: wrap; gap: .3rem; }
+.ct-sala-mas { flex-basis: 100%; }
 .ct-sala-cromo { width: 2.8rem; }
 .ct-sala-cromo svg { display: block; width: 100%; height: auto; filter: drop-shadow(0 3px 6px rgba(15, 47, 94, .2)); }
 .ct-sala-otros { margin: 0; padding: 0 1.4rem; color: var(--azul-osc); font-weight: 800; }
