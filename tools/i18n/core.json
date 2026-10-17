@@ -189,5 +189,13 @@
   "ed_saved": { "en": "List “{$a->name}” saved with {$a->n} students", "es": "Lista «{$a->name}» guardada con {$a->n} alumnos" },
   "ed_delete": { "en": "Delete the list", "es": "Borrar la lista" },
   "ed_confirm_delete": { "en": "Sure? Press again", "es": "¿Seguro? Pulsa otra vez" },
-  "ed_deleted": { "en": "List deleted", "es": "Lista borrada" }
+  "ed_deleted": { "en": "List deleted", "es": "Lista borrada" },
+  "tq_title": { "en": "Touch test", "es": "Prueba de toques" },
+  "tq_count": { "en": "Touches the screen thinks are on it: {$a}", "es": "Toques que la pantalla cree que hay: {$a}" },
+  "tq_hint": { "en": "A circle left with no finger on it is a touch the screen has not let go; in red after four seconds.", "es": "Un círculo que se queda sin dedo encima es un toque que la pantalla no ha soltado; a los cuatro segundos se pone rojo." },
+  "tq_given": { "en": "tap given by the board", "es": "pulsación dada por la pizarra" },
+  "bar_zoom": { "en": "Size of the board on this screen", "es": "Tamaño de la pizarra en esta pantalla" },
+  "bar_zoom_out": { "en": "Smaller", "es": "Más pequeña" },
+  "bar_zoom_in": { "en": "Bigger", "es": "Más grande" },
+  "bar_zoom_reset": { "en": "Normal size", "es": "Tamaño normal" }
 }

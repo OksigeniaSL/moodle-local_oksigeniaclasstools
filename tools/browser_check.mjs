@@ -187,6 +187,63 @@ const CHECKS = {
         return other.length ? `roles outside the music set: ${other.join(', ')}` : '';
     },
     // Materials: «Whose turn?» chooses someone and, with a relay, steps into a corner with its bar running.
+    // Touch screens that keep a touch that has gone: a tap that comes as a second finger still presses the button (once),
+    // a tap with the first finger is not pressed twice, and «Clear all» takes the instruments away too.
+    'touch-second-finger': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const q = (x) => document.querySelector(x);
+        const tap = async (el, primary, id) => {
+            const r = el.getBoundingClientRect(), o = { bubbles: true, cancelable: true, composed: true, pointerId: id, pointerType: 'touch', isPrimary: primary, clientX: r.left + r.width / 2, clientY: r.top + r.height / 2 };
+            el.dispatchEvent(new PointerEvent('pointerdown', o));
+            await sleep(40);
+            el.dispatchEvent(new PointerEvent('pointerup', o));
+        };
+        q('#t-cronometro').click();
+        await sleep(200);
+        let clicks = 0;
+        const count = () => { clicks++; };
+        q('#cr-marcha').addEventListener('click', count);
+        // A second finger: no click from the browser, the board gives it.
+        await tap(q('#cr-marcha'), false, 7);
+        await sleep(250);
+        if (clicks !== 1) { return `second finger: ${clicks} clicks`; }
+        // A second finger whose click the browser does send: not twice.
+        await tap(q('#cr-marcha'), false, 8);
+        q('#cr-marcha').click();
+        await sleep(250);
+        if (clicks !== 2) { return `second finger with its own click: ${clicks} clicks`; }
+        // The first finger: the browser's click only (none here, as these taps are not real).
+        await tap(q('#cr-marcha'), true, 9);
+        await sleep(250);
+        q('#cr-marcha').removeEventListener('click', count);
+        if (clicks !== 2) { return `first finger: ${clicks} clicks`; }
+        if (getComputedStyle(document.body).touchAction !== 'pan-x pan-y') { return `the page can be zoomed with a pinch: ${getComputedStyle(document.body).touchAction}`; }
+        // The size of the board on this screen: smaller, kept, and back to normal.
+        const size = () => parseFloat(getComputedStyle(document.documentElement).fontSize);
+        const normal = size();
+        q('#ct-zoom [data-z="-1"]').click();
+        if (Math.abs(size() / normal - 0.9) > 0.01 || localStorage.getItem('classtools-zoom') !== '0.9') { return `smaller: ${size()} of ${normal}, kept ${localStorage.getItem('classtools-zoom')}`; }
+        if (q('#ct-zoom [data-z="0"]').textContent.trim() !== '90 %') { return `the size shown: ${q('#ct-zoom [data-z="0"]').textContent}`; }
+        q('#ct-zoom [data-z="0"]').click();
+        if (size() !== normal || localStorage.getItem('classtools-zoom') !== '1') { return 'the normal size did not come back'; }
+        q('#cr-reiniciar').click();
+        // «Clear all» with only instruments on the board, and with a stroke and instruments.
+        q('#t-pizarra').click();
+        await sleep(200);
+        const W = window.ClasstoolsWhiteboard, I = window.ClasstoolsInstruments;
+        if (!W.full()) { W.setFull(true, false); await sleep(200); }
+        I.create('ruler'); I.create('compass');
+        q('#wb-clear').click();
+        if (I.items().length) { return 'clear all left the instruments (an empty page)'; }
+        I.create('protractor');
+        W.strokes().push({ c: '#000', w: 0.004, e: false, p: [[0.1, 0.1], [0.2, 0.2]] });
+        q('#wb-clear').click();
+        if (!I.items().length) { return 'the instruments went before «Sure?»'; }
+        q('#wb-clear').click();
+        if (I.items().length || W.strokes().length) { return 'clear all left the instruments or the stroke'; }
+        W.setFull(false, false);
+        return '';
+    },
     'turn-relay': async () => {
         const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
         document.querySelector('#t-material').click();

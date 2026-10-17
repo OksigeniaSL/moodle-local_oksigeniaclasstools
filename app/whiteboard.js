@@ -251,7 +251,7 @@
     const place = (ctx, v = view()) => ctx.setTransform(dpr * v.z, 0, 0, dpr * v.z, -v.x * W * v.z * dpr, -v.y * W * v.z * dpr);
     const point = (e) => { const r = ink.getBoundingClientRect(), v = view(); return [(e.clientX - r.left) / (W * v.z) + v.x, (e.clientY - r.top) / (W * v.z) + v.y]; };
     const toScreen = ([x, y], v = view()) => [(x - v.x) * W * v.z, (y - v.y) * W * v.z];
-    const watchers = { view: [], full: [] };
+    const watchers = { view: [], full: [], clear: [] };
     const tell = (k) => watchers[k].forEach((f) => { try { f(); } catch (err) { /* a helper that fails does not stop the board */ } });
 
     // --- Pictures (and PDF pages), kept in this browser ------------------------------------------------------
@@ -642,6 +642,8 @@
 
     ink.addEventListener('pointerup', end);
     ink.addEventListener('pointercancel', end);
+    // A capture lost without the finger going up (some touch screens): that stroke or that move ends there.
+    ink.addEventListener('lostpointercapture', (e) => { if (live.has(e.pointerId)) { end(e); } });
     ink.addEventListener('pointerleave', (e) => { if (opt.tool === 'laser') { laser.release(e, true); } });
 
     // Moving around the page: one finger drags it, two pinch to zoom; the wheel scrolls and, with Ctrl (or pinching a
@@ -1252,13 +1254,17 @@
     // Clearing the page (it can be undone).
     $('#wb-clear').addEventListener('click', () => {
         const b = $('#wb-clear'), pg = page();
-        if (!b.classList.contains('confirma') && pg.s.length) {
+        // Only instruments on it: they go at once.
+        if (!pg.s.length) { watchers.clear.forEach((f) => f()); return; }
+        if (!b.classList.contains('confirma')) {
             b.classList.add('confirma'); core.relabel(b, STR.clearSure);
             clearTimeout(clearTimer); clearTimer = setTimeout(() => { b.classList.remove('confirma'); core.relabel(b, STR.clear); }, 4000);
             return;
         }
         clearTimeout(clearTimer); b.classList.remove('confirma'); core.relabel(b, STR.clear);
         finishText(); unselect();
+        // The instruments go too (they are not part of the page: «Undo» brings back what was drawn).
+        watchers.clear.forEach((f) => f());
         const was = pg.s.slice();
         if (!was.length) { return; }
         pg.s.length = 0;
@@ -1378,7 +1384,7 @@
         toScreen: (p) => toScreen(p),
         toBoard: (sx, sy) => { const v = view(); return [sx / (W * v.z) + v.x, sy / (W * v.z) + v.y]; },
         middle: () => { const v = view(); return [v.x + 0.5 / v.z, v.y + H / (2 * W * v.z)]; },
-        onView: (f) => watchers.view.push(f), onFull: (f) => watchers.full.push(f),
+        onView: (f) => watchers.view.push(f), onFull: (f) => watchers.full.push(f), onClear: (f) => watchers.clear.push(f),
         snapper: (f) => snappers.push(f),
         begin: (p) => { unselect(); const s = { c: opt.colour, w: SIZES[opt.size], e: false, p: [p] }; add(s); drawSegment(ictx(), s, 1); return s; },
         extend: (s, pts) => { const before = s.p.length; s.p.push(...pts); const ctx = ictx(); drawSegment(ctx, s, before); ctx.globalCompositeOperation = 'source-over'; },

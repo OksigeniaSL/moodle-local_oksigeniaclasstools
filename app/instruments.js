@@ -287,6 +287,11 @@
         if (drag && drag.act === 'pencil' && e.pointerId === drag.id) { kit.end(drag.s); drag.s = null; }
         release(e);
     });
+    // A capture lost without the finger going up (some touch screens): let go too, so the next touch takes it.
+    svg.addEventListener('lostpointercapture', (e) => {
+        if (drag && drag.act === 'pencil' && e.pointerId === drag.id) { kit.end(drag.s); drag.s = null; }
+        release(e);
+    });
 
     // The pen along an edge: the nearest edge just outside where the stroke starts. The protractor's base line and
     // arm meet at its centre: a stroke that starts there begins exactly on it and follows the one it heads along.
@@ -425,6 +430,8 @@
         paintButtons();
     });
     kit.onView(() => { items.forEach(place); paintSpot(); });
+    // «Clear all» takes the ruler, the set squares, the protractor and the compass away too.
+    kit.onClear(() => { items.slice().forEach(remove); paintButtons(); });
     kit.onFull(() => {
         if (kit.full()) { return; }
         items.slice().forEach(remove);

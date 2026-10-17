@@ -16,8 +16,17 @@
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
 /* La letra crece con la pantalla: 15 px en un portátil, casi 18 en la pizarra de 1920. */
-html { font-size: clamp(14px, calc(.45vw + 9px), 19px); }
+/* As wide as the screen allows, and as high (a wide but low screen left the bottom out), times the size chosen on
+   that screen with «−» and «+» (screen.js). */
+html { font-size: calc(clamp(13px, min(calc(.45vw + 9px), calc(1.15vh + 6.5px)), 19px) * var(--zoom, 1)); }
 html, body { height: 100%; margin: 0; }
+/* With a finger, the page is not zoomed nor its text selected: the board has its own zoom, and a long press on a
+   panel would only open the browser's menus (screen.js). What is written can still be selected. */
+body { touch-action: pan-x pan-y; }
+@media (pointer: coarse) {
+    body { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+    input, textarea, [contenteditable="true"], [contenteditable=""] { -webkit-user-select: text; user-select: text; }
+}
 body { display: flex; flex-direction: column; overflow: hidden; background: var(--fondo); color: var(--tinta); font: 600 1rem/1.45 "Nunito", system-ui, sans-serif; -webkit-tap-highlight-color: transparent; }
 button, input, select, textarea { font: inherit; color: inherit; }
 button { touch-action: manipulation; -webkit-user-select: none; user-select: none; }
@@ -1129,7 +1138,7 @@ html.duelo .ct-panel > .ct-side { max-height: 22vh; overflow-y: auto; }
 .ct-wb-drawer-acts { display: flex; flex: none; flex-direction: column; align-items: stretch; gap: .4rem; max-width: 14rem; }
 .ct-wb-drawer-acts .nota { margin: 0; font-size: .85rem; }
 /* The instruments: see-through plastic, the marks in dark blue, round handles that turn, close or turn over. */
-.ct-wb-inst { position: absolute; inset: 0; z-index: 2; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.ct-wb-inst { position: absolute; inset: 0; z-index: 2; width: 100%; height: 100%; overflow: visible; pointer-events: none; touch-action: none; }
 .ct-in-body { fill: rgba(214, 232, 250, .74); stroke: #2d5a8c; stroke-width: 1.5px; vector-effect: non-scaling-stroke; pointer-events: visiblePainted; cursor: move; touch-action: none; }
 .ct-in-ticks { fill: none; stroke: #1d3554; stroke-width: 1px; vector-effect: non-scaling-stroke; pointer-events: none; }
 .ct-in-num { fill: #1d3554; font-family: "Nunito", system-ui, sans-serif; font-weight: 800; pointer-events: none; user-select: none; }
@@ -2519,3 +2528,16 @@ dialog.ct-sala { width: min(60rem, 94vw); max-width: none; overflow-y: auto; }
 .hp-botones #hp-close.fin .hp-cerrar-texto { display: inline; font-size: 1.05rem; }
 @keyframes hp-cerrar { 50% { box-shadow: 0 0 0 8px rgba(6, 126, 54, .25); transform: scale(1.06); } }
 @media (prefers-reduced-motion: reduce) { .hp-botones #hp-close.fin { animation: none; } }
+/* The test of the screen (#toques in the address, screen.js): each touch the screen thinks is down, and the last ones. */
+.ct-toques { position: fixed; inset: 0; z-index: 2147483000; pointer-events: none; }
+.ct-toques-panel { position: absolute; bottom: .6rem; left: 50%; display: grid; gap: .2rem; width: min(26rem, 90vw); padding: .7rem 1rem; border-radius: 16px; background: rgba(15, 31, 56, .88); color: #fff; font-size: .95rem; transform: translateX(-50%); }
+.ct-toques-panel small { opacity: .85; }
+.ct-toques-panel ol { display: flex; flex-wrap: wrap; gap: .2rem .8rem; margin: .2rem 0 0; padding: 0; list-style: none; font-variant-numeric: tabular-nums; }
+.ct-toques i { position: absolute; display: grid; place-items: center; width: 64px; height: 64px; margin: -32px 0 0 -32px; border: 4px solid #1d6fd8; border-radius: 50%; background: rgba(29, 111, 216, .18); color: #0f2f5e; font: 900 1.1rem/1 system-ui, sans-serif; font-style: normal; }
+.ct-toques i.viejo { border-color: #ce1423; background: rgba(206, 20, 35, .22); color: #8f0d18; }
+/* The size of the board on this screen: «−», how much, «+». */
+.ct-zoom { display: inline-flex; align-items: center; flex: none; height: 48px; padding: 0 2px; border: 1px solid var(--borde); border-radius: 50rem; background: var(--superficie); }
+.ct-zoom button { display: inline-grid; place-items: center; min-width: 42px; height: 42px; padding: 0 .3rem; border: 0; border-radius: 50rem; background: transparent; color: var(--azul-osc); font: inherit; font-size: .8rem; font-weight: 900; font-variant-numeric: tabular-nums; cursor: pointer; }
+.ct-zoom button:hover:not(:disabled) { background: var(--azul-suave); color: var(--azul); }
+.ct-zoom button:disabled { opacity: .35; cursor: default; }
+.ct-zoom .ico, .ct-zoom svg { width: 1.05rem; height: 1.05rem; }

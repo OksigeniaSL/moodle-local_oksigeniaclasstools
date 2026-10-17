@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.62.0 (2026-10-17)
+
+- The size of the board: «−» and «+» in its bar make everything smaller or bigger on that screen (from 70 % to 140 %,
+  kept by each screen; the percentage goes back to 100 %), with no Ctrl and no browser zoom. And the board now fits
+  the height of the screen too: on a wide but low screen the bottom no longer goes out of sight.
+- Touch screens: some interactive panels keep a touch that has already gone, and then every tap counts as a second
+  finger, which the browser does not turn into a press, so the board seemed to stop answering. The board now presses
+  those taps itself (once, never twice). With a finger, the page is no longer zoomed by a pinch (the board has its own
+  zoom), nor its text selected, nor the browser's menu opened by a long press.
+- The instruments of the full board (ruler, set squares, protractor and compass) no longer leave the browser a drag to
+  take for a pinch, and let go when the screen loses the finger, so the next touch moves them again.
+- «Clear all» on the board takes the instruments away too (with nothing drawn, at once).
+- A test of the screen for touch panels: with #toques at the end of the board's address, each touch the screen thinks
+  is down is a circle (red if it stays four seconds), with how many there are and the last ones. A circle left with no
+  finger on it is a touch the screen has not let go.
+
 ## 0.61.1 (2026-10-13)
 
 - On the fixed remote, a switch that is on is the whole button in green, with white letters, and one that is off is
