@@ -1,5 +1,5 @@
 # A real Canva share link used as test data on 2026-10-12, replaced by made-up values on 2026-10-17.
-# Its token stays in the history; only its owner can close the link, in Canva.
+# Its token stays in the history; the design was deleted in Canva on 2026-10-17, so the link leads nowhere.
 5221665cb0c8d96a20b783fa714b830fd40a4691:tests/local/presentation_test.php:generic-api-key:32
 e368300376300e6b3091b2117614c71407b58806:tests/local/presentation_test.php:generic-api-key:31
 e368300376300e6b3091b2117614c71407b58806:tools/browser_check.mjs:generic-api-key:101
