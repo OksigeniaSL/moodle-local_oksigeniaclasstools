@@ -1,0 +1,20 @@
+Provenance seal (OpenTimestamps)
+================================
+
+Repository:   OksigeniaSL/moodle-local_oksigeniaclasstools
+Holder:       Oksigenia S.L.
+Commit:       fad6d4c49b55406d5b395e5f0ff569f7656e2847
+Tree:         c81a321ae4a94647f435cc509d9c8308b2314776
+Commit date:  2026-10-18T00:20:45+01:00
+Sealed (UTC): 2026-10-18T00:01:03Z
+Signed tag:   provenance-2026-10-18
+
+This file pins the state of the repository. Its .ots proof anchors it in the
+Bitcoin blockchain through OpenTimestamps: the content existed no later than
+the time of that block. The tree hash identifies the content alone, so a later
+copy with the same files has the same tree. The signed tag adds who sealed it.
+
+Verify:
+  git rev-parse fad6d4c49b55406d5b395e5f0ff569f7656e2847^{tree}
+  ots verify moodle-local_oksigeniaclasstools-2026-10-18.manifest.txt.ots
+  git -c gpg.ssh.allowedSignersFile=provenance/allowed_signers verify-tag provenance-2026-10-18
