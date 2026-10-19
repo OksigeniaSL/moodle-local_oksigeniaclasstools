@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.64.0 (2026-10-19)
+
+- What the boards are used for. Each board counts, per course and day, how many times each tool, game and material
+  is chosen and how long it is on screen while in use (while someone has touched the board in the last 15 minutes),
+  on teachers' boards and on students' ones apart, and sends it every couple of minutes and when it is closed. The
+  administrator sees it in *Site administration → Reports → Use of the boards* (also linked at the top of the
+  settings): in a course or in all of them, today, in the last 7 or 30 days or since the start, the most used by
+  students first, and downloads it as a spreadsheet. A sixth-grade class explored the site freely for an hour and
+  almost all of them ended up on the board, but nothing could say which tools they liked most.
+
 ## 0.63.2 (2026-10-18)
 
 - «My stickers» and the teachers' room no longer seem to disagree. Under «4 of 25 stickers», «My stickers» says how

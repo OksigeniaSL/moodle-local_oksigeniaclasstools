@@ -94,6 +94,9 @@ function local_oksigeniaclasstools_student_data(stdClass $course, context_course
         'courseid' => (int) $course->id,
         'mode' => 'student',
         'tools' => LOCAL_OKSIGENIACLASSTOOLS_STUDENT_TOOLS,
+        // Where the board sends what it has been used for, as on a teacher's board.
+        'sesskey' => sesskey(),
+        'tallyurl' => (new moodle_url('/local/oksigeniaclasstools/tally.php'))->out(false),
     ];
 }
 
@@ -366,6 +369,8 @@ function local_oksigeniaclasstools_data(stdClass $course, context_course $contex
         // Where a Canva short link leads, for the presentation tab (only while the site shows it).
         'presentationurl' => \local_oksigeniaclasstools\local\presentation::on()
             ? (new moodle_url('/local/oksigeniaclasstools/presentation.php'))->out(false) : null,
+        // Where the board sends what it has been used for (tools, games and materials, and for how long).
+        'tallyurl' => (new moodle_url('/local/oksigeniaclasstools/tally.php'))->out(false),
     ];
 }
 

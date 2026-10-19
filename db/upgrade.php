@@ -199,5 +199,24 @@ function xmldb_local_oksigeniaclasstools_upgrade($oldversion) {
         }
         upgrade_plugin_savepoint(true, 2026112900, 'local', 'oksigeniaclasstools');
     }
+    if ($oldversion < 2026114300) {
+        // How much each tool, game and material is used, for the administrator's report.
+        $table = new xmldb_table('local_oksigeniaclasstools_tally');
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('courseid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('day', XMLDB_TYPE_INTEGER, '8', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('who', XMLDB_TYPE_CHAR, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('tool', XMLDB_TYPE_CHAR, '40', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('opens', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+        $table->add_field('seconds', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+        $table->add_key('courseid', XMLDB_KEY_FOREIGN, ['courseid'], 'course', ['id']);
+        $table->add_index('courseid-day-who-tool', XMLDB_INDEX_UNIQUE, ['courseid', 'day', 'who', 'tool']);
+        $table->add_index('day', XMLDB_INDEX_NOTUNIQUE, ['day']);
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+        upgrade_plugin_savepoint(true, 2026114300, 'local', 'oksigeniaclasstools');
+    }
     return true;
 }

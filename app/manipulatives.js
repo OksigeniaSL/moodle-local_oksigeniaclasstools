@@ -544,6 +544,7 @@
         levels();
         $$('.ct-panel', root).forEach((p) => { p.hidden = p.dataset.panel !== m; });
         requestAnimationFrame(LAYOUT[m]);
+        document.dispatchEvent(new CustomEvent('classtools:part', { detail: { tool: 'material', part: m } }));
     };
     const first = () => { if (!LAYOUT[mode]) { const k = Object.keys(LAYOUT)[0]; if (k) { showMode(k); } } };
     $('#mt-mode').addEventListener('click', (e) => { const b = e.target.closest('[data-mode]'); if (b) { showMode(b.dataset.mode); } });

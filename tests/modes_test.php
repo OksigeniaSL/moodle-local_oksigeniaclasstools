@@ -67,9 +67,11 @@ final class modes_test extends \advanced_testcase {
         $data = local_oksigeniaclasstools_student_data($course, \context_course::instance($course->id));
         $this->assertSame('student', $data['mode']);
         $this->assertSame([], $data['lists']);
-        foreach (['sesskey', 'pickurl', 'stateurl', 'groupsurl', 'state'] as $key) {
+        foreach (['pickurl', 'stateurl', 'groupsurl', 'state'] as $key) {
             $this->assertArrayNotHasKey($key, $data);
         }
+        // It only sends what it has been used for.
+        $this->assertStringEndsWith('/local/oksigeniaclasstools/tally.php', $data['tallyurl']);
         $this->assertNotContains('quien', $data['tools']);
         $this->assertNotContains('grupos', $data['tools']);
     }

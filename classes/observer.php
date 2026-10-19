@@ -25,7 +25,7 @@
 namespace local_oksigeniaclasstools;
 
 /**
- * Removes picks and kept tools when a course or a user is deleted.
+ * Removes picks and kept tools when a course or a user is deleted, and what was counted of a deleted course.
  */
 class observer {
     /**
@@ -37,6 +37,7 @@ class observer {
         global $DB;
         $DB->delete_records('local_oksigeniaclasstools_picks', ['courseid' => $event->objectid]);
         $DB->delete_records('local_oksigeniaclasstools_state', ['courseid' => $event->objectid]);
+        \local_oksigeniaclasstools\local\tally::delete_course((int) $event->objectid);
     }
 
     /**

@@ -27,7 +27,21 @@ defined('MOODLE_INTERNAL') || die();
 if ($hassiteconfig) {
     $settings = new admin_settingpage('local_oksigeniaclasstools', get_string('pluginname', 'local_oksigeniaclasstools'));
     $ADMIN->add('localplugins', $settings);
+    // What the boards are used for, among the reports of the site, and a link to it at the top of the settings.
+    $ADMIN->add('reports', new admin_externalpage(
+        'local_oksigeniaclasstools_usage',
+        get_string('usage', 'local_oksigeniaclasstools'),
+        new moodle_url('/local/oksigeniaclasstools/usage.php')
+    ));
     if ($ADMIN->fulltree) {
+        $settings->add(new admin_setting_heading(
+            'local_oksigeniaclasstools/usage',
+            '',
+            html_writer::link(
+                new moodle_url('/local/oksigeniaclasstools/usage.php'),
+                get_string('usage_see', 'local_oksigeniaclasstools')
+            )
+        ));
         $settings->add(new admin_setting_configselect(
             'local_oksigeniaclasstools/namestyle',
             get_string('namestyle', 'local_oksigeniaclasstools'),

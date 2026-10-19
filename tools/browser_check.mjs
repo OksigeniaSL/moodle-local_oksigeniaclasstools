@@ -22,8 +22,10 @@ window.CLASSTOOLS = { lists: [{ id: 1, name: 'Class 1', key: 'c1', students: Arr
     courseid: 1, mode: 'teacher', sesskey: 'x', days: {}, state: {}, liveurl: 'fake://live', glossaryurl: 'fake://glossary', bankurl: 'fake://bank',
     aiurl: 'fake://ai', remoteurl: 'fake://remote', remote: { on: false },
     logrosurl: 'fake://logros', logros: { thr: { devices: 5, picks: 5, students: 8 }, levels: {} }, salaurl: 'fake://sala',
-    me: { id: 99, name: 'Teacher' } };
-window.FAKE = { calls: [], polls: 0 };
+    tallyurl: 'fake://tally', me: { id: 99, name: 'Teacher' } };
+window.FAKE = { calls: [], polls: 0, beacons: [] };
+// What the board sends with sendBeacon (what it has been used for), kept instead of sent.
+navigator.sendBeacon = (url, body) => { window.FAKE.beacons.push({ url, ...Object.fromEntries(body) }); return true; };
 const BANK_PAIRS = [['frog', 'amphibian'], ['cat', 'mammal'], ['bee', 'insect']];
 const GLOSSARY = [{ w: 'Photosynthesis', c: 'How plants make their food with light.' }, { w: 'Cell', c: 'The smallest unit of life.' },
     { w: 'Atom', c: 'The smallest part of an element.' }];
@@ -2193,6 +2195,38 @@ const CHECKS = {
         await window.shot('sala-board');
         d.close();
         return '';
+    },
+    // What the board has been used for: each tab, game and material chosen counts once, and it is sent with the course.
+    'tally': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const q = (x) => document.querySelector(x);
+        const T = window.ClasstoolsTally;
+        if (!T) { return 'no tally'; }
+        T.send();
+        window.FAKE.beacons.length = 0;
+        q('#t-pizarra').click();
+        await sleep(100);
+        q('#t-juegos').click();
+        await sleep(200);
+        const first = q('#ga-mode [aria-checked="true"]').dataset.game;
+        if (T.item() !== `juegos/${first}`) { return `the games tab counted as «${T.item()}»`; }
+        const other = [...document.querySelectorAll('#ga-mode button[data-game]')].find((b) => !b.hidden && b.dataset.game !== first).dataset.game;
+        q(`#ga-mode [data-game="${other}"]`).click();
+        await sleep(200);
+        q('#t-material').click();
+        await sleep(200);
+        const material = q('#mt-mode [aria-checked="true"]').dataset.mode;
+        q('#t-pizarra').click();
+        await sleep(100);
+        T.send();
+        const sent = window.FAKE.beacons.pop();
+        if (!sent || sent.url !== 'fake://tally' || sent.courseid !== '1' || sent.sesskey !== 'x') { return `sent: ${JSON.stringify(sent)}`; }
+        const data = JSON.parse(sent.data), opens = Object.fromEntries(Object.entries(data).map(([k, v]) => [k, v[0]]));
+        const want = { pizarra: 2, [`juegos/${first}`]: 1, [`juegos/${other}`]: 1, [`material/${material}`]: 1 };
+        if (JSON.stringify(Object.entries(opens).sort()) !== JSON.stringify(Object.entries(want).sort())) { return `counted ${JSON.stringify(opens)}`; }
+        // Nothing new: nothing sent.
+        T.send();
+        return window.FAKE.beacons.length ? 'it sent nothing new' : '';
     },
     // The board of a student, when the site opens it to them: only the tools without data of the class, and nothing of
     // the class anywhere (no lists, no «Whose turn?», no faces), going through every tool, game and material, in Primary

@@ -78,6 +78,7 @@ The students in these screenshots do not exist: their names are made up and thei
 | Noise meter | Microphone level only (nothing is recorded or sent). A light that breathes with the noise, a calm streak, a patience reserve that only sustained noise uses up, and «adjust to this class». |
 | Also | Work symbols and a QR code with styles, the site logo in the middle and PNG/SVG download. |
 | My stickers | Each tool has a sticker for the teacher, earned by using it for real with a class and raised a level with the days of use; the album is on «Which class?». Only each teacher sees theirs, with no rankings, and the administrator can turn it off. On the same page, the **teachers' room**: the colleagues who want to be seen, each with their critter and their stickers of the last weeks (or of the season on now), and how many more play with their classes; each teacher decides whether to appear, never with counts or hours. |
+| Use of the boards | For the administrator, in *Reports*: each tool, game and material, how many times students and teachers chose it and for how long, in a course or in all of them, today, in the last 7 or 30 days or since the start. What classes like most, and what they leave aside. |
 | Teacher's guide | A button in the top bar opens the guide of what is on screen: what it is for, what it works on, why (with its sources), how to take it to class and what it gives at each school level, at the side or expanded in the middle of the screen to read it at ease. Only teachers see it. Some tools also have **guided helps**: the board shows how it is done on a practice board with an invented class, with voice and captions, and then the teacher does it («Now you») and gets its sticker, «Learned». |
 | Screen modes | Early years, Primary, Secondary or Advanced: one at a time, per course. They change the look and the defaults (bigger notes and colours for the youngest, the full board for the older ones…) and put first what suits the level; the rest stays one tap away, in «Other levels». «Names in capitals», in the same menu, shows the students' names in capitals (on by default in Early years). |
 | Two at once | **Two tools at once**, each in one half of the screen (the timer beside the quiz, the stopwatch beside a material); and the **duel** in six materials: the same material twice, one for each of two students with the same challenge, at once (on a multi-touch screen), in turns or to compare. |
@@ -157,6 +158,9 @@ course or user:
   token from which the user cannot be known, and no user id is kept; by name, the user id. Deleted after a day.
 - The pictures of quiz questions, in the course for the teacher who put them; those that no quiz uses are deleted
   a day later.
+- `local_oksigeniaclasstools_tally`: how many times each tool, game and material was chosen and for how long, per
+  course and day, on teachers' boards and on students' ones, with no user. The administrator sees it in *Site
+  administration → Reports → Use of the boards*. Deleted with its course.
 
 No external services, no CDN and no tracking: everything the board needs comes with the plugin. The only exception
 is the «Presentation» tab, off until the administrator turns it on: it shows the Canva presentation a teacher opens,

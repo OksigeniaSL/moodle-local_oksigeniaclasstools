@@ -135,5 +135,24 @@
         <INDEX NAME="userid-cromo" UNIQUE="true" FIELDS="userid, cromo"/>
       </INDEXES>
     </TABLE>
+    <TABLE NAME="local_oksigeniaclasstools_tally" COMMENT="How much each tool, game and material of the board is used, per course and day, by teachers and by students">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="day" TYPE="int" LENGTH="8" NOTNULL="true" SEQUENCE="false" COMMENT="YYYYMMDD in the time zone of the one who used it"/>
+        <FIELD NAME="who" TYPE="char" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="teacher or student, as the board opened"/>
+        <FIELD NAME="tool" TYPE="char" LENGTH="40" NOTNULL="true" SEQUENCE="false" COMMENT="The tab, or a game or material inside it: juegos/rosco"/>
+        <FIELD NAME="opens" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Times it was chosen"/>
+        <FIELD NAME="seconds" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Seconds on screen while in use"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="courseid" TYPE="foreign" FIELDS="courseid" REFTABLE="course" REFFIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="courseid-day-who-tool" UNIQUE="true" FIELDS="courseid, day, who, tool"/>
+        <INDEX NAME="day" UNIQUE="false" FIELDS="day"/>
+      </INDEXES>
+    </TABLE>
   </TABLES>
 </XMLDB>

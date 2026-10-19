@@ -81,6 +81,7 @@ Las capturas están en inglés. Los alumnos que aparecen no existen: los nombres
 | Semáforo | Solo el nivel del micrófono (no se graba ni se envía nada). Una luz que respira con el ruido, una racha de calma, una reserva de paciencia que solo gasta el ruido sostenido y «Ajustar a esta clase». |
 | Además | Símbolos de trabajo («Así trabajamos») y un código QR con estilos, el logo del sitio en el centro y descarga en PNG o SVG. |
 | Mis logros | Cada herramienta tiene un cromo para el profesor, que se consigue usándola de verdad con una clase y sube de nivel con los días de uso; el álbum está en «¿Con qué clase?». Cada profesor ve solo el suyo, sin clasificaciones, y el administrador lo puede apagar. En la misma página, la **sala de profes**: los compañeros que quieren aparecer, cada uno con su bichito y sus cromos de las últimas semanas (o de la temporada en curso), y cuántos más juegan con sus clases; cada profesor decide si aparece, nunca con recuentos ni horas. |
+| Uso de las pizarras | Para el administrador, en *Informes*: cada herramienta, juego y material, cuántas veces lo eligieron alumnos y profesores y cuánto tiempo, en un curso o en todos, hoy, en los últimos 7 o 30 días o desde el principio. Lo que más gusta a las clases y lo que dejan de lado. |
 | Guía docente | Un botón en la barra de arriba abre la guía de lo que hay en pantalla: para qué sirve, qué trabaja, por qué (con sus fuentes), cómo llevarlo a clase y qué da en cada etapa, en el lateral o ampliada en el centro de la pantalla para leerla cómodamente. Solo la ven los profesores. Algunas herramientas tienen además **ayudas guiadas**: la pizarra enseña cómo se hace en una pizarra de práctica con una clase inventada, con voz y subtítulos, y luego lo hace el profesor («Ahora tú») y se lleva su cromo, «Aprendido». |
 | Modos de la pantalla | Infantil, Primaria, Secundaria o Superior: uno cada vez, por curso. Cambian el aspecto y los valores de partida (notas y colores más grandes para los pequeños, la pizarra completa para los mayores…) y ponen primero lo que va con la etapa; lo demás queda a un toque, en «Otros niveles». «Nombres en mayúsculas», en el mismo menú, pone en mayúsculas los nombres de los alumnos (encendido de serie en Infantil). |
 | Dos a la vez | **Dos herramientas a la vez**, una en cada mitad de la pantalla (el temporizador junto al concurso, el cronómetro junto a un material); y el **duelo** en seis materiales: el mismo material dos veces, uno para cada alumno con el mismo reto, a la vez (en una pantalla multitáctil), por turnos o para comparar. |
@@ -165,6 +166,9 @@ borran con su curso o su usuario:
   nombre, el id del usuario. Se borran al cabo de un día.
 - Las imágenes de las preguntas del concurso, en el curso y para el profesor que las puso; las que no usa ningún
   concurso se borran al día siguiente.
+- `local_oksigeniaclasstools_tally`: cuántas veces se eligió cada herramienta, juego y material y cuánto tiempo, por
+  curso y día, en las pizarras de los profesores y en las de los alumnos, sin usuario. El administrador lo ve en
+  *Administración del sitio → Informes → Uso de las pizarras*. Se borra con su curso.
 
 Sin servicios externos, sin CDN y sin seguimiento: todo lo que necesita la pantalla viene con el plugin. La única
 excepción es la pestaña «Presentación», apagada hasta que la enciende el administrador: muestra la presentación de Canva

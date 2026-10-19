@@ -34,6 +34,7 @@
         $$('.ct-game', root).forEach((p) => { p.hidden = p.dataset.game !== current; });
         paintModes(); paintSetup();
         if (visible && game.enter) { game.enter(); }
+        document.dispatchEvent(new CustomEvent('classtools:part', { detail: { tool: 'juegos', part: current } }));
     };
     $('#ga-mode').addEventListener('click', (e) => { const b = e.target.closest('button[data-game]'); if (b) { show(b.dataset.game); } });
     // While a game is being played its settings step aside, so the class sees the game; «Ajustes» brings them back,
