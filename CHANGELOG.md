@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.65.1 (2026-10-20)
+
+- The same as 0.65.0, with a version number that is a real date (YYYYMMDDXX), as the Moodle plugins directory asks.
+  The numbers before had gone past the days of the month; from now on they stay valid dates, always going up.
+
 ## 0.65.0 (2026-10-20)
 
 - Course backups now carry what the board keeps of the course. Always, the use of the boards; with users, what each
