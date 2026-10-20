@@ -174,7 +174,7 @@ loaded from canva.com (for a short link, Moodle asks canva.link where it leads).
 
 ## Status and roadmap
 
-Beta, developed with a school in Tenerife as its test classroom. Before the first stable release:
+Release candidate, developed with a school in Tenerife as its test classroom, in daily use there. Before the first stable release:
 
 - **Languages**: the board's texts come from the language packs (English and Spanish, others through AMOS), and the
   built-in content (alphabet, keyboard, words, pair sets, the time in words, examples) from a content pack per
