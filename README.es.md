@@ -183,7 +183,7 @@ que abre un profesor, cargada desde canva.com (con un enlace corto, Moodle le pr
 
 ## Estado y hoja de ruta
 
-Candidata a estable, desarrollado con un colegio de Tenerife como aula de pruebas, donde se usa a diario. Antes de la primera versión estable:
+Versión candidata a estable. Se desarrolla con un colegio de Tenerife como aula de pruebas, donde se usa a diario. Antes de la primera versión estable:
 
 - **Idiomas**: los textos de la pantalla salen de los paquetes de idioma (inglés y español; los demás, a través de
   AMOS), y el contenido de serie (abecedario, teclado, palabras, conjuntos de parejas, la hora en palabras,
