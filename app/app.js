@@ -25,349 +25,349 @@
 (() => {
     const $ = (s) => document.querySelector(s);
     const $$ = (s, el = document) => [...el.querySelectorAll(s)];
-    const reducido = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const reducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
     const pad = (n) => String(n).padStart(2, '0');
-    const azar = (n) => { const a = new Uint32Array(1); crypto.getRandomValues(a); return a[0] % n; };
-    const baraja = (v) => { for (let i = v.length - 1; i > 0; i--) { const j = azar(i + 1); [v[i], v[j]] = [v[j], v[i]]; } return v; };
-    const escapa = (t) => String(t).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-    const enMarco = (() => { try { return window.self !== window.top; } catch (e) { return true; } })();
+    const randomInt = (n) => { const a = new Uint32Array(1); crypto.getRandomValues(a); return a[0] % n; };
+    const shuffle = (v) => { for (let i = v.length - 1; i > 0; i--) { const j = randomInt(i + 1); [v[i], v[j]] = [v[j], v[i]]; } return v; };
+    const escapeHtml = (t) => String(t).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    const inFrame = (() => { try { return window.self !== window.top; } catch (e) { return true; } })();
 
-    // --- Textos: los de los paquetes de idioma (dentro de Moodle, en el idioma de cada usuario; fuera, strings.js).
-    // Marcadores al estilo de Moodle: {$a} y {$a->nombre}. Una clave que falte se ve tal cual, para encontrarla.
-    const TEXTOS = Object.assign({}, window.CLASSTOOLS_STR || {}, (window.CLASSTOOLS_SITE && window.CLASSTOOLS_SITE.str) || {});
-    const t = (clave, a) => {
-        const s = TEXTOS[clave];
-        if (s === undefined) { return clave; }
+    // --- Texts: those of the language packs (inside Moodle, in each user's language; outside, strings.js).
+    // Placeholders as in Moodle: {$a} and {$a->name}. A missing key shows as it is, so that it can be found.
+    const STRINGS = Object.assign({}, window.CLASSTOOLS_STR || {}, (window.CLASSTOOLS_SITE && window.CLASSTOOLS_SITE.str) || {});
+    const t = (key, a) => {
+        const s = STRINGS[key];
+        if (s === undefined) { return key; }
         if (a === undefined) { return s; }
         return s.replace(/\{\$a(?:->(\w+))?\}/g, (m, k) => (k ? (a && a[k] !== undefined ? String(a[k]) : m) : String(a)));
     };
-    // Lo fijo de la página: data-t (texto), data-t-title, data-t-aria (aria-label) y data-t-placeholder.
-    const traduce = (raiz = document) => {
-        $$('[data-t]', raiz).forEach((el) => { el.textContent = t(el.dataset.t); });
+    // The fixed texts of the page: data-t (text), data-t-title, data-t-aria (aria-label) and data-t-placeholder.
+    const translatePage = (root = document) => {
+        $$('[data-t]', root).forEach((el) => { el.textContent = t(el.dataset.t); });
         [['tTitle', 'title'], ['tAria', 'aria-label'], ['tPlaceholder', 'placeholder']].forEach(([d, attr]) => {
-            $$(`[data-${d.replace(/[A-Z]/g, (c) => '-' + c.toLowerCase())}]`, raiz).forEach((el) => el.setAttribute(attr, t(el.dataset[d])));
+            $$(`[data-${d.replace(/[A-Z]/g, (c) => '-' + c.toLowerCase())}]`, root).forEach((el) => el.setAttribute(attr, t(el.dataset[d])));
         });
     };
-    // El idioma: el del usuario dentro de Moodle; fuera, el del fichero de textos.
-    const IDIOMA = ((window.CLASSTOOLS_SITE && window.CLASSTOOLS_SITE.lang) || window.CLASSTOOLS_LANG || document.documentElement.lang || 'en').replace('_', '-');
-    document.documentElement.lang = IDIOMA;
-    traduce();
+    // The language: the user's inside Moodle; outside, that of the texts file.
+    const LANGUAGE = ((window.CLASSTOOLS_SITE && window.CLASSTOOLS_SITE.lang) || window.CLASSTOOLS_LANG || document.documentElement.lang || 'en').replace('_', '-');
+    document.documentElement.lang = LANGUAGE;
+    translatePage();
 
-    // --- Almacén del navegador: solo comodidades; si no deja guardar, todo sigue funcionando en memoria ---
-    let almacen = true;
-    try { localStorage.setItem('pizarra:prueba', '1'); localStorage.removeItem('pizarra:prueba'); } catch (e) { almacen = false; }
-    // En un duelo (duel.js) cada mitad es una copia de la pizarra en un marco, solo con un material: empieza con lo que
-    // hay guardado, pero no guarda nada, ni en el navegador ni en el aula, para no tocar lo del profesor.
-    const DUELO = (location.hash.match(/(?:^#|&)duelo=([a-z0-9]+)/) || [])[1] || '';
-    if (DUELO) { document.documentElement.classList.add('duelo'); }
-    // La pizarra de práctica de una ayuda guiada (help.js, practice.js): empieza de cero y no lee ni guarda nada del
-    // profesor.
-    const PRACTICA = /(?:^#|&)practica(?:&|$)/.test(location.hash);
-    const memoria = {};
-    const guarda = (k, v) => {
-        if (DUELO || PRACTICA) { memoria[k] = v; return; }
-        try { localStorage.setItem('pizarra:' + k, JSON.stringify(v)); } catch (e) { almacen = false; }
+    // --- Browser storage: only conveniences; if it cannot save, everything still works in memory ---
+    let storageWorks = true;
+    try { localStorage.setItem('pizarra:prueba', '1'); localStorage.removeItem('pizarra:prueba'); } catch (e) { storageWorks = false; }
+    // In a duel (duel.js) each half is a copy of the board in a frame, with a material only: it starts with what is
+    // saved, but saves nothing, neither in the browser nor in Moodle, so as not to touch the teacher's things.
+    const DUEL = (location.hash.match(/(?:^#|&)duelo=([a-z0-9]+)/) || [])[1] || '';
+    if (DUEL) { document.documentElement.classList.add('duelo'); }
+    // The practice board of a guided help (help.js, practice.js): it starts from scratch and reads or saves nothing of
+    // the teacher.
+    const PRACTICE = /(?:^#|&)practica(?:&|$)/.test(location.hash);
+    const inMemory = {};
+    const save = (k, v) => {
+        if (DUEL || PRACTICE) { inMemory[k] = v; return; }
+        try { localStorage.setItem('pizarra:' + k, JSON.stringify(v)); } catch (e) { storageWorks = false; }
     };
-    const lee = (k, d) => {
-        if (PRACTICA) { return k in memoria ? memoria[k] : d; }
-        if (DUELO && k in memoria) { return memoria[k]; }
+    const load = (k, d) => {
+        if (PRACTICE) { return k in inMemory ? inMemory[k] : d; }
+        if (DUEL && k in inMemory) { return inMemory[k]; }
         try { const v = localStorage.getItem('pizarra:' + k); return v === null ? d : JSON.parse(v); } catch (e) { return d; }
     };
 
-    // --- Modo de la pantalla: uno cada vez (Infantil, Primaria, Secundaria o Superior) y recordado por curso. Cambia
-    // el aspecto y los valores con los que empiezan los juegos; no quita ninguna herramienta. ---
-    const PANTALLAS = ['early', 'primary', 'secondary', 'advanced'];
-    const CLASE = window.CLASSTOOLS || null;
-    const claveModo = 'modo-' + ((CLASE && CLASE.courseid) || 0);
-    let modo = (() => {
-        const enCurso = CLASE && CLASE.state && CLASE.state.settings && CLASE.state.settings.mode;
-        const local = lee(claveModo, null);
-        const sitio = window.CLASSTOOLS_SITE && window.CLASSTOOLS_SITE.mode;
-        return [local, enCurso, sitio, 'primary'].find((m) => PANTALLAS.includes(m));
+    // --- Screen mode: one at a time (Early years, Primary, Secondary or Advanced), remembered per course. It changes
+    // the look and the values the games start with; it takes no tool away. ---
+    const SCREEN_MODES = ['early', 'primary', 'secondary', 'advanced'];
+    const CLASS_DATA = window.CLASSTOOLS || null;
+    const modeKey = 'modo-' + ((CLASS_DATA && CLASS_DATA.courseid) || 0);
+    let mode = (() => {
+        const inCourse = CLASS_DATA && CLASS_DATA.state && CLASS_DATA.state.settings && CLASS_DATA.state.settings.mode;
+        const local = load(modeKey, null);
+        const siteMode = window.CLASSTOOLS_SITE && window.CLASSTOOLS_SITE.mode;
+        return [local, inCourse, siteMode, 'primary'].find((m) => SCREEN_MODES.includes(m));
     })();
-    document.documentElement.dataset.modo = modo;
-    // Valores que empiezan distinto en cada modo: cada modo parte de los suyos y recuerda lo que el profesor cambie
-    // estando en él. Lo guardado antes de haber modos (las claves antiguas) pasa una sola vez al modo de entonces.
-    const porModo = (clave, valores, antiguas = {}) => {
-        const k = () => `${clave}-${modo}`;
-        const hay = Object.entries(antiguas).filter(([, a]) => lee(a, null) !== null);
-        if (hay.length && lee(k(), null) === null) { guarda(k(), Object.fromEntries(hay.map(([c, a]) => [c, lee(a, null)]))); }
-        hay.forEach(([, a]) => { try { localStorage.removeItem('pizarra:' + a); } catch (e) { /* sin almacén */ } });
+    document.documentElement.dataset.modo = mode;
+    // Values that start differently in each mode: each mode starts from its own and remembers what the teacher changes
+    // while in it. What was saved before there were modes (the old keys) moves once to the mode of that moment.
+    const byMode = (baseKey, values, oldKeys = {}) => {
+        const k = () => `${baseKey}-${mode}`;
+        const oldPresent = Object.entries(oldKeys).filter(([, a]) => load(a, null) !== null);
+        if (oldPresent.length && load(k(), null) === null) { save(k(), Object.fromEntries(oldPresent.map(([c, a]) => [c, load(a, null)]))); }
+        oldPresent.forEach(([, a]) => { try { localStorage.removeItem('pizarra:' + a); } catch (e) { /* no storage */ } });
         return {
-            get: () => Object.assign({}, valores.primary, valores[modo], lee(k(), {})),
-            set: (cambios) => guarda(k(), Object.assign(lee(k(), {}), cambios)),
+            get: () => Object.assign({}, values.primary, values[mode], load(k(), {})),
+            set: (changes) => save(k(), Object.assign(load(k(), {}), changes)),
         };
     };
 
-    // Nombres en mayúsculas (para quien aprende a leer): de partida, encendido en Infantil y apagado en los demás modos;
-    // lo que cambie el profesor se queda en ese curso. Solo cambia cómo se ven: los nombres guardados no se tocan.
-    const mayus = porModo('nombres-mayus:' + ((window.CLASSTOOLS && window.CLASSTOOLS.courseid) || 0),
+    // Names in capitals (for those learning to read): at first, on in Early years and off in the other modes; what
+    // the teacher changes stays in that course. It only changes how they look: the saved names are not touched.
+    const upperNames = byMode('nombres-mayus:' + ((window.CLASSTOOLS && window.CLASSTOOLS.courseid) || 0),
         { early: { on: true }, primary: { on: false }, secondary: { on: false }, advanced: { on: false } });
-    const aplicaMayus = () => {
-        document.documentElement.classList.toggle('nombres-mayus', !!mayus.get().on);
+    const applyUpperNames = () => {
+        document.documentElement.classList.toggle('nombres-mayus', !!upperNames.get().on);
         document.dispatchEvent(new CustomEvent('classtools:names'));
     };
-    aplicaMayus();
-    const enMayus = (s) => (document.documentElement.classList.contains('nombres-mayus')
+    applyUpperNames();
+    const toNameCase = (s) => (document.documentElement.classList.contains('nombres-mayus')
         ? String(s).toLocaleUpperCase(document.documentElement.lang || undefined) : s);
 
-    // --- Iconos y avisos para lectores de pantalla ---
-    const ponIcono = (el, n) => { el.dataset.icono = n; el.innerHTML = icono(n); };
-    $$('[data-icono]').forEach((el) => ponIcono(el, el.dataset.icono));
-    const anuncia = (t) => { const a = $('#anuncio'); a.textContent = ''; setTimeout(() => { a.textContent = t; }, 40); };
-    // Cambia el texto de un botón con icono (el último <span>) sin tocar el icono.
-    const rotula = (boton, texto, ico) => {
-        const spans = boton.querySelectorAll(':scope > span');
-        if (ico) { ponIcono(spans[0], ico); }
-        spans[spans.length - 1].textContent = texto;
+    // --- Icons, and notices for screen readers ---
+    const setIcon = (el, n) => { el.dataset.icono = n; el.innerHTML = icono(n); };
+    $$('[data-icono]').forEach((el) => setIcon(el, el.dataset.icono));
+    const announce = (t) => { const a = $('#anuncio'); a.textContent = ''; setTimeout(() => { a.textContent = t; }, 40); };
+    // Changes the text of a button with an icon (its last <span>) without touching the icon.
+    const relabel = (button, text, iconName) => {
+        const spans = button.querySelectorAll(':scope > span');
+        if (iconName) { setIcon(spans[0], iconName); }
+        spans[spans.length - 1].textContent = text;
     };
 
-    // --- Sonido: todo sintetizado en el navegador, sin ficheros ---
-    let sonido = lee('sonido', true) !== false;
-    let ctx = null, maestro = null;
+    // --- Sound: all synthesised in the browser, no files ---
+    let soundOn = load('sonido', true) !== false;
+    let ctx = null, masterGain = null;
     const audio = () => {
         const AC = window.AudioContext || window.webkitAudioContext;
         if (!AC) { return null; }
         if (!ctx) {
             ctx = new AC();
-            maestro = ctx.createGain(); maestro.gain.value = 0.5;
-            const comp = ctx.createDynamicsCompressor(); maestro.connect(comp); comp.connect(ctx.destination);
+            masterGain = ctx.createGain(); masterGain.gain.value = 0.5;
+            const comp = ctx.createDynamicsCompressor(); masterGain.connect(comp); comp.connect(ctx.destination);
         }
         if (ctx.state === 'suspended') { ctx.resume(); }
         return ctx;
     };
-    // El navegador solo deja sonar después de un gesto: despertamos el audio con el primer toque.
-    addEventListener('pointerdown', () => { if (sonido) { audio(); } }, { capture: true });
-    // Una campana suave: fundamental y tres parciales que se apagan antes.
-    const campana = (a, f, cuando, vol, dur) => {
-        const t = a.currentTime + cuando;
+    // The browser only plays sound after a gesture: the audio wakes up with the first touch.
+    addEventListener('pointerdown', () => { if (soundOn) { audio(); } }, { capture: true });
+    // A soft bell: a fundamental and three partials that fade sooner.
+    const bell = (a, f, when, vol, dur) => {
+        const t = a.currentTime + when;
         [[1, 1, dur], [2, 0.32, dur * 0.6], [3.01, 0.12, dur * 0.35], [4.2, 0.05, dur * 0.2]].forEach(([m, v, d]) => {
             const o = a.createOscillator(), g = a.createGain();
             o.type = 'sine'; o.frequency.value = f * m;
             g.gain.setValueAtTime(0.0001, t);
             g.gain.exponentialRampToValueAtTime(vol * v, t + 0.01);
             g.gain.exponentialRampToValueAtTime(0.0001, t + d);
-            o.connect(g); g.connect(maestro); o.start(t); o.stop(t + d + 0.05);
+            o.connect(g); g.connect(masterGain); o.start(t); o.stop(t + d + 0.05);
         });
     };
-    const clic = (a, f, cuando = 0, vol = 0.12) => {
-        const t = a.currentTime + cuando, o = a.createOscillator(), g = a.createGain();
+    const clickSound = (a, f, when = 0, vol = 0.12) => {
+        const t = a.currentTime + when, o = a.createOscillator(), g = a.createGain();
         o.type = 'triangle'; o.frequency.value = f;
         g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.05);
-        o.connect(g); g.connect(maestro); o.start(t); o.stop(t + 0.06);
+        o.connect(g); g.connect(masterGain); o.start(t); o.stop(t + 0.06);
     };
-    const SONIDOS = {
-        fin: (a) => [0, 1.5].forEach((r) => [[783.99, 0], [1046.5, 0.22], [1318.51, 0.44]].forEach(([f, d]) => campana(a, f, r + d, 0.45, 2.2))),
-        tic: (a) => clic(a, 1500),
-        elegido: (a) => { campana(a, 880, 0, 0.35, 1.2); campana(a, 1318.51, 0.12, 0.35, 1.6); },
-        dado: (a) => [0, 0.07, 0.15, 0.24, 0.36].forEach((d, i) => clic(a, 500 + i * 90, d, 0.18)),
-        moneda: (a) => { campana(a, 2093, 0, 0.12, 0.5); campana(a, 2349.3, 1.25, 0.18, 0.9); },
-        aviso: (a) => { campana(a, 659.25, 0, 0.3, 1.2); campana(a, 659.25, 0.4, 0.3, 1.5); },
-        cuenta: (a) => clic(a, 1250, 0, 0.16),
-        cuentaFinal: (a) => campana(a, 987.77, 0, 0.3, 0.35),
-        agotada: (a) => { campana(a, 523.25, 0, 0.4, 1.4); campana(a, 392, 0.28, 0.4, 1.6); campana(a, 261.63, 0.56, 0.45, 2.4); },
+    const SOUNDS = {
+        fin: (a) => [0, 1.5].forEach((r) => [[783.99, 0], [1046.5, 0.22], [1318.51, 0.44]].forEach(([f, d]) => bell(a, f, r + d, 0.45, 2.2))),
+        tic: (a) => clickSound(a, 1500),
+        elegido: (a) => { bell(a, 880, 0, 0.35, 1.2); bell(a, 1318.51, 0.12, 0.35, 1.6); },
+        dado: (a) => [0, 0.07, 0.15, 0.24, 0.36].forEach((d, i) => clickSound(a, 500 + i * 90, d, 0.18)),
+        moneda: (a) => { bell(a, 2093, 0, 0.12, 0.5); bell(a, 2349.3, 1.25, 0.18, 0.9); },
+        aviso: (a) => { bell(a, 659.25, 0, 0.3, 1.2); bell(a, 659.25, 0.4, 0.3, 1.5); },
+        cuenta: (a) => clickSound(a, 1250, 0, 0.16),
+        cuentaFinal: (a) => bell(a, 987.77, 0, 0.3, 0.35),
+        agotada: (a) => { bell(a, 523.25, 0, 0.4, 1.4); bell(a, 392, 0.28, 0.4, 1.6); bell(a, 261.63, 0.56, 0.45, 2.4); },
     };
-    const suena = (n) => { if (!sonido) { return; } const a = audio(); if (!a) { return; } try { SONIDOS[n](a); } catch (e) { /* sin audio */ } };
+    const playSound = (n) => { if (!soundOn) { return; } const a = audio(); if (!a) { return; } try { SOUNDS[n](a); } catch (e) { /* no audio */ } };
 
-    // --- Pantalla de alumnos (si el sitio la abre): solo las herramientas sin datos de la clase; las demás pestañas
-    // ni siquiera aparecen. ---
-    const PERMITIDAS = window.CLASSTOOLS && window.CLASSTOOLS.mode === 'student' && Array.isArray(window.CLASSTOOLS.tools) ? window.CLASSTOOLS.tools : null;
-    if (PERMITIDAS) {
+    // --- Students' board (if the site opens it): only the tools without data of the class; the other tabs do not
+    // even show. ---
+    const ALLOWED_TOOLS = window.CLASSTOOLS && window.CLASSTOOLS.mode === 'student' && Array.isArray(window.CLASSTOOLS.tools) ? window.CLASSTOOLS.tools : null;
+    if (ALLOWED_TOOLS) {
         document.documentElement.classList.add('modo-alumno');
-        $$('.pestana').forEach((b) => { if (!PERMITIDAS.includes(b.dataset.h)) { b.remove(); } });
+        $$('.pestana').forEach((b) => { if (!ALLOWED_TOOLS.includes(b.dataset.h)) { b.remove(); } });
     }
-    // --- Las herramientas que el centro quiere (lo elige el administrador); sin ninguna, todas. ---
-    const DEL_CENTRO = window.CLASSTOOLS_SITE && Array.isArray(window.CLASSTOOLS_SITE.tools) && window.CLASSTOOLS_SITE.tools.length ? window.CLASSTOOLS_SITE.tools : null;
-    if (DEL_CENTRO && $$('.pestana').some((b) => DEL_CENTRO.includes(b.dataset.h))) {
-        $$('.pestana').forEach((b) => { if (!DEL_CENTRO.includes(b.dataset.h)) { b.remove(); $('#' + b.getAttribute('aria-controls')).hidden = true; } });
+    // --- The tools the school wants (the administrator chooses them); with none chosen, all of them. ---
+    const SITE_TOOLS = window.CLASSTOOLS_SITE && Array.isArray(window.CLASSTOOLS_SITE.tools) && window.CLASSTOOLS_SITE.tools.length ? window.CLASSTOOLS_SITE.tools : null;
+    if (SITE_TOOLS && $$('.pestana').some((b) => SITE_TOOLS.includes(b.dataset.h))) {
+        $$('.pestana').forEach((b) => { if (!SITE_TOOLS.includes(b.dataset.h)) { b.remove(); $('#' + b.getAttribute('aria-controls')).hidden = true; } });
     }
 
-    // --- Pestañas ---
-    const HERR = {};   // cada herramienta puede tener entra() y sale()
-    const pestanas = $$('.pestana'), barra = $('#barra'), tira = $('#pestanas');
-    let actual = 'temporizador';
-    // Pantalla dividida: dos herramientas a la vez, una en cada mitad. La mitad se elige tocándola (queda marcada) y su
-    // herramienta, con las pestañas; «actual» es la de la mitad elegida.
-    const mitades = { on: false, izq: 'temporizador', der: 'quien', foco: 'izq' };
-    const visibles = () => (mitades.on ? [mitades.izq, mitades.der] : [actual]);
-    const muestra = (h, foco = false) => {
-        const antes = visibles();
-        if (mitades.on) {
-            // La pestaña de la otra mitad: pasa a ser la elegida, sin cambiar nada.
-            const otra = mitades.foco === 'izq' ? 'der' : 'izq';
-            if (mitades[otra] === h) { mitades.foco = otra; } else { mitades[mitades.foco] = h; }
-            guarda('dividida', { izq: mitades.izq, der: mitades.der });
+    // --- Tabs ---
+    const TOOLS = {};   // each tool may have entra() (enter) and sale() (leave)
+    const tabs = $$('.pestana'), topBar = $('#barra'), tabStrip = $('#pestanas');
+    let current = 'temporizador';
+    // Split screen: two tools at once, one in each half. A half is chosen by touching it (it gets marked), and its
+    // tool with the tabs; «current» is the one of the chosen half.
+    const halves = { on: false, izq: 'temporizador', der: 'quien', foco: 'izq' };
+    const visibleTools = () => (halves.on ? [halves.izq, halves.der] : [current]);
+    const showTool = (h, withFocus = false) => {
+        const shownBefore = visibleTools();
+        if (halves.on) {
+            // The tab of the other half: that half becomes the chosen one, changing nothing.
+            const otherHalf = halves.foco === 'izq' ? 'der' : 'izq';
+            if (halves[otherHalf] === h) { halves.foco = otherHalf; } else { halves[halves.foco] = h; }
+            save('dividida', { izq: halves.izq, der: halves.der });
         }
-        actual = h;
-        const ahora = visibles();
-        antes.filter((x) => !ahora.includes(x)).forEach((x) => { if (HERR[x] && HERR[x].sale) { HERR[x].sale(); } });
-        pintaPestanas(foco);
+        current = h;
+        const shownNow = visibleTools();
+        shownBefore.filter((x) => !shownNow.includes(x)).forEach((x) => { if (TOOLS[x] && TOOLS[x].sale) { TOOLS[x].sale(); } });
+        paintTabs(withFocus);
         $$('.herramienta').forEach((s) => {
             const id = s.id.slice(2);
-            s.hidden = !ahora.includes(id);
-            s.classList.toggle('mitad-izq', mitades.on && id === mitades.izq);
-            s.classList.toggle('mitad-der', mitades.on && id === mitades.der);
-            s.classList.toggle('con-foco', mitades.on && id === actual);
+            s.hidden = !shownNow.includes(id);
+            s.classList.toggle('mitad-izq', halves.on && id === halves.izq);
+            s.classList.toggle('mitad-der', halves.on && id === halves.der);
+            s.classList.toggle('con-foco', halves.on && id === current);
         });
-        ahora.filter((x) => !antes.includes(x) || x === h).forEach((x) => { if (HERR[x] && HERR[x].entra) { HERR[x].entra(); } });
-        insignias();
-        if (barra.classList.contains('compacta')) { ajustaBarra(); }
+        shownNow.filter((x) => !shownBefore.includes(x) || x === h).forEach((x) => { if (TOOLS[x] && TOOLS[x].entra) { TOOLS[x].entra(); } });
+        badges();
+        if (topBar.classList.contains('compacta')) { fitBar(); }
         document.dispatchEvent(new CustomEvent('classtools:tab', { detail: h }));
     };
-    function pintaPestanas(foco) {
-        const otra = mitades.on ? mitades[mitades.foco === 'izq' ? 'der' : 'izq'] : '';
-        pestanas.forEach((b) => {
-            const si = b.dataset.h === actual;
-            b.setAttribute('aria-selected', String(si));
-            b.classList.toggle('en-la-otra', b.dataset.h === otra);
-            b.tabIndex = si ? 0 : -1;
-            if (si && foco) { b.focus(); }
-            // En pantallas estrechas la tira de pestañas se desplaza: la elegida, siempre a la vista.
-            if (si && tira.scrollWidth > tira.clientWidth) {
-                tira.scrollTo({ left: b.offsetLeft - (tira.clientWidth - b.offsetWidth) / 2, behavior: reducido() ? 'auto' : 'smooth' });
+    function paintTabs(withFocus) {
+        const otherTool = halves.on ? halves[halves.foco === 'izq' ? 'der' : 'izq'] : '';
+        tabs.forEach((b) => {
+            const selected = b.dataset.h === current;
+            b.setAttribute('aria-selected', String(selected));
+            b.classList.toggle('en-la-otra', b.dataset.h === otherTool);
+            b.tabIndex = selected ? 0 : -1;
+            if (selected && withFocus) { b.focus(); }
+            // On narrow screens the strip of tabs scrolls: the chosen one, always in sight.
+            if (selected && tabStrip.scrollWidth > tabStrip.clientWidth) {
+                tabStrip.scrollTo({ left: b.offsetLeft - (tabStrip.clientWidth - b.offsetWidth) / 2, behavior: reducedMotion() ? 'auto' : 'smooth' });
             }
         });
     }
-    // Dividir y juntar. Al dividir, la herramienta de ahora queda a la izquierda y a la derecha la última que hubo
-    // (o el temporizador); al juntar, se queda la de la mitad elegida.
-    const mesa = $('#mesa'), bDividir = $('#b-dividir');
-    const disponibles = () => pestanas.filter((b) => b.isConnected).map((b) => b.dataset.h);
-    const divide = (on) => {
-        if (on === mitades.on) { return; }
-        const antes = visibles();
+    // Split and join. On splitting, the current tool goes to the left and the last one there was to the right
+    // (or the timer); on joining, the one of the chosen half stays.
+    const desk = $('#mesa'), bSplit = $('#b-dividir');
+    const availableTools = () => tabs.filter((b) => b.isConnected).map((b) => b.dataset.h);
+    const setSplit = (on) => {
+        if (on === halves.on) { return; }
+        const shownBefore = visibleTools();
         if (on) {
-            const ultima = lee('dividida', {}) || {};
-            const otra = [ultima.der, ultima.izq, 'temporizador', 'quien'].find((x) => x && x !== actual && disponibles().includes(x));
-            Object.assign(mitades, { on: true, izq: actual, der: otra || disponibles().find((x) => x !== actual), foco: 'izq' });
-        } else { mitades.on = false; }
-        mesa.classList.toggle('dividida', mitades.on);
-        $('#mesa-division').hidden = !mitades.on;
-        bDividir.setAttribute('aria-pressed', String(mitades.on));
-        guarda('dividida-on', mitades.on);
-        if (mitades.on) { guarda('dividida', { izq: mitades.izq, der: mitades.der }); }
-        // Las que salen, salen; las que entran, entran (y se redibujan a su nuevo tamaño).
-        const ahora = visibles();
-        antes.filter((x) => !ahora.includes(x)).forEach((x) => { if (HERR[x] && HERR[x].sale) { HERR[x].sale(); } });
-        muestra(actual);
-        ahora.filter((x) => !antes.includes(x) && x !== actual).forEach((x) => { if (HERR[x] && HERR[x].entra) { HERR[x].entra(); } });
+            const lastSplit = load('dividida', {}) || {};
+            const otherTool = [lastSplit.der, lastSplit.izq, 'temporizador', 'quien'].find((x) => x && x !== current && availableTools().includes(x));
+            Object.assign(halves, { on: true, izq: current, der: otherTool || availableTools().find((x) => x !== current), foco: 'izq' });
+        } else { halves.on = false; }
+        desk.classList.toggle('dividida', halves.on);
+        $('#mesa-division').hidden = !halves.on;
+        bSplit.setAttribute('aria-pressed', String(halves.on));
+        save('dividida-on', halves.on);
+        if (halves.on) { save('dividida', { izq: halves.izq, der: halves.der }); }
+        // The ones that leave, leave; the ones that come in, enter (and are drawn again at their new size).
+        const shownNow = visibleTools();
+        shownBefore.filter((x) => !shownNow.includes(x)).forEach((x) => { if (TOOLS[x] && TOOLS[x].sale) { TOOLS[x].sale(); } });
+        showTool(current);
+        shownNow.filter((x) => !shownBefore.includes(x) && x !== current).forEach((x) => { if (TOOLS[x] && TOOLS[x].entra) { TOOLS[x].entra(); } });
         dispatchEvent(new Event('resize'));
     };
-    bDividir.addEventListener('click', () => divide(!mitades.on));
-    $('#b-juntar').addEventListener('click', () => divide(false));
+    bSplit.addEventListener('click', () => setSplit(!halves.on));
+    $('#b-juntar').addEventListener('click', () => setSplit(false));
     $('#b-intercambiar').addEventListener('click', () => {
-        [mitades.izq, mitades.der] = [mitades.der, mitades.izq];
-        mitades.foco = mitades.foco === 'izq' ? 'der' : 'izq';
-        muestra(actual);
+        [halves.izq, halves.der] = [halves.der, halves.izq];
+        halves.foco = halves.foco === 'izq' ? 'der' : 'izq';
+        showTool(current);
         dispatchEvent(new Event('resize'));
     });
-    // Tocar una mitad la elige (su pestaña se marca y el mando y el teclado van a ella).
-    mesa.addEventListener('pointerdown', (e) => {
-        const s = mitades.on && e.target.closest('.herramienta');
-        if (!s || s.id.slice(2) === actual) { return; }
-        mitades.foco = s.id.slice(2) === mitades.izq ? 'izq' : 'der';
-        actual = s.id.slice(2);
-        pintaPestanas(false);
-        $$('.herramienta').forEach((x) => x.classList.toggle('con-foco', x.id === 'h-' + actual));
-        document.dispatchEvent(new CustomEvent('classtools:tab', { detail: actual }));
+    // Touching a half chooses it (its tab gets marked, and the remote and the keyboard go to it).
+    desk.addEventListener('pointerdown', (e) => {
+        const s = halves.on && e.target.closest('.herramienta');
+        if (!s || s.id.slice(2) === current) { return; }
+        halves.foco = s.id.slice(2) === halves.izq ? 'izq' : 'der';
+        current = s.id.slice(2);
+        paintTabs(false);
+        $$('.herramienta').forEach((x) => x.classList.toggle('con-foco', x.id === 'h-' + current));
+        document.dispatchEvent(new CustomEvent('classtools:tab', { detail: current }));
     }, true);
-    pestanas.forEach((b) => b.addEventListener('click', () => muestra(b.dataset.h)));
+    tabs.forEach((b) => b.addEventListener('click', () => showTool(b.dataset.h)));
     $('#pestanas').addEventListener('keydown', (e) => {
-        const i = pestanas.findIndex((b) => b.dataset.h === actual), n = pestanas.length;
+        const i = tabs.findIndex((b) => b.dataset.h === current), n = tabs.length;
         const j = { ArrowRight: (i + 1) % n, ArrowLeft: (i - 1 + n) % n, Home: 0, End: n - 1 }[e.key];
-        if (j !== undefined) { e.preventDefault(); muestra(pestanas[j].dataset.h, true); }
+        if (j !== undefined) { e.preventDefault(); showTool(tabs[j].dataset.h, true); }
     });
-    // Si las pestañas no caben junto al nombre, la barra pasa a dos filas.
-    // Y si tampoco caben en dos filas, las pestañas que no están elegidas se quedan solo con su icono (con el nombre
-    // al pasar por encima), primero en una fila y, si hace falta, en dos.
-    pestanas.forEach((b) => { b.title = b.textContent.trim(); });
-    const ajustaBarra = () => {
-        const sobra = () => tira.scrollWidth > tira.clientWidth + 1;
-        barra.classList.remove('dos-filas', 'compacta', 'sin-nombres');
-        if (sobra()) {
-            barra.classList.add('dos-filas');
-            if (sobra()) {
-                barra.classList.replace('dos-filas', 'compacta');
-                if (sobra()) { barra.classList.add('dos-filas'); }
+    // If the tabs do not fit beside the name, the bar goes to two rows.
+    // And if they do not fit in two rows either, the tabs that are not chosen keep only their icon (with the name
+    // on hover), first in one row and, if needed, in two.
+    tabs.forEach((b) => { b.title = b.textContent.trim(); });
+    const fitBar = () => {
+        const overflows = () => tabStrip.scrollWidth > tabStrip.clientWidth + 1;
+        topBar.classList.remove('dos-filas', 'compacta', 'sin-nombres');
+        if (overflows()) {
+            topBar.classList.add('dos-filas');
+            if (overflows()) {
+                topBar.classList.replace('dos-filas', 'compacta');
+                if (overflows()) { topBar.classList.add('dos-filas'); }
             }
         }
-        // Con su nombre, los botones de arriba pueden no caber a lo ancho: entonces, solo con su icono.
-        if (barra.classList.contains('dos-filas') && barra.scrollWidth > barra.clientWidth + 1) { barra.classList.add('sin-nombres'); }
+        // With their names, the buttons on top may not fit across: then, only with their icon.
+        if (topBar.classList.contains('dos-filas') && topBar.scrollWidth > topBar.clientWidth + 1) { topBar.classList.add('sin-nombres'); }
     };
-    addEventListener('resize', ajustaBarra);
-    if (document.fonts && document.fonts.ready) { document.fonts.ready.then(ajustaBarra); }
-    // Y otra vez cuando cambian de tamaño el nombre o los botones de arriba (llega la letra, se añade el tamaño de la
-    // pizarra, cambia el curso…).
-    if (window.ResizeObserver) { const ro = new ResizeObserver(() => ajustaBarra()); [$('.marca'), $('.acciones')].filter(Boolean).forEach((x) => ro.observe(x)); }
+    addEventListener('resize', fitBar);
+    if (document.fonts && document.fonts.ready) { document.fonts.ready.then(fitBar); }
+    // And again when the name or the buttons on top change size (the font arrives, the size of the board is added,
+    // the course changes…).
+    if (window.ResizeObserver) { const ro = new ResizeObserver(() => fitBar()); [$('.marca'), $('.acciones')].filter(Boolean).forEach((x) => ro.observe(x)); }
 
-    // --- Botones de la barra: sonido, otra ventana, pantalla completa ---
-    const bSonido = $('#b-sonido');
-    const pintaSonido = () => {
-        bSonido.setAttribute('aria-pressed', String(sonido));
-        ponIcono(bSonido.querySelector('[data-icono]'), sonido ? 'sonido' : 'mudo');
-        bSonido.title = sonido ? t('bar_sound_on') : t('bar_sound_off');
+    // --- Buttons of the bar: sound, another window, full screen ---
+    const bSound = $('#b-sonido');
+    const paintSound = () => {
+        bSound.setAttribute('aria-pressed', String(soundOn));
+        setIcon(bSound.querySelector('[data-icono]'), soundOn ? 'sonido' : 'mudo');
+        bSound.title = soundOn ? t('bar_sound_on') : t('bar_sound_off');
     };
-    bSonido.addEventListener('click', () => { sonido = !sonido; guarda('sonido', sonido); pintaSonido(); suena('tic'); });
-    // Dentro del aula virtual el SCORM va en un marco que puede bloquear el micrófono y la pantalla completa.
-    const abreVentana = () => window.open(location.href, '_blank', 'noopener');
-    $('#b-ventana').hidden = !enMarco;
-    $('#b-ventana').addEventListener('click', abreVentana);
-    const bPantalla = $('#b-pantalla');
-    bPantalla.hidden = !document.fullscreenEnabled;
-    bPantalla.addEventListener('click', () => {
+    bSound.addEventListener('click', () => { soundOn = !soundOn; save('sonido', soundOn); paintSound(); playSound('tic'); });
+    // Inside Moodle the SCORM package runs in a frame that may block the microphone and full screen.
+    const openWindow = () => window.open(location.href, '_blank', 'noopener');
+    $('#b-ventana').hidden = !inFrame;
+    $('#b-ventana').addEventListener('click', openWindow);
+    const bFullscreen = $('#b-pantalla');
+    bFullscreen.hidden = !document.fullscreenEnabled;
+    bFullscreen.addEventListener('click', () => {
         if (document.fullscreenElement) { document.exitFullscreen().catch(() => {}); }
         else { document.documentElement.requestFullscreen().catch(() => {}); }
     });
     document.addEventListener('fullscreenchange', () => {
-        const dentro = !!document.fullscreenElement;
-        ponIcono(bPantalla.querySelector('[data-icono]'), dentro ? 'salir' : 'pantalla');
-        bPantalla.title = dentro ? t('bar_fullscreen_exit') : t('bar_fullscreen');
-        bPantalla.querySelector('.redondo-texto').textContent = bPantalla.title;
-        setTimeout(ajustaBarra, 50);
+        const isFull = !!document.fullscreenElement;
+        setIcon(bFullscreen.querySelector('[data-icono]'), isFull ? 'salir' : 'pantalla');
+        bFullscreen.title = isFull ? t('bar_fullscreen_exit') : t('bar_fullscreen');
+        bFullscreen.querySelector('.redondo-texto').textContent = bFullscreen.title;
+        setTimeout(fitBar, 50);
     });
 
-    // Botón que repite mientras se mantiene pulsado (los + y − de los minutos).
-    const repite = (boton, accion) => {
+    // A button that repeats while held down (the + and − of the minutes).
+    const repeatWhileHeld = (button, action) => {
         let t1 = 0, t2 = 0;
-        const para = () => { clearTimeout(t1); clearInterval(t2); };
-        boton.addEventListener('pointerdown', (e) => {
+        const stopRepeat = () => { clearTimeout(t1); clearInterval(t2); };
+        button.addEventListener('pointerdown', (e) => {
             if (e.button > 0) { return; }
-            accion(); para();
-            t1 = setTimeout(() => { t2 = setInterval(accion, 90); }, 450);
+            action(); stopRepeat();
+            t1 = setTimeout(() => { t2 = setInterval(action, 90); }, 450);
         });
-        ['pointerup', 'pointerleave', 'pointercancel', 'blur'].forEach((ev) => boton.addEventListener(ev, para));
-        boton.addEventListener('click', (e) => { if (e.detail === 0) { accion(); } });   // teclado
+        ['pointerup', 'pointerleave', 'pointercancel', 'blur'].forEach((ev) => button.addEventListener(ev, stopRepeat));
+        button.addEventListener('click', (e) => { if (e.detail === 0) { action(); } });   // keyboard
     };
 
     // ===================================================================================================
-    // 1. Temporizador
+    // 1. Timer
     // ===================================================================================================
     const tm = { total: 300000, resta: 300000, fin: 0, marcha: false, acabado: false, reloj: 0 };
-    // Por bloques (pomodoro): en qué parte va (trabajo o descanso) y qué bloque es (desde 0).
-    const bq = { on: false, fase: 'trabajo', i: 0 };
-    let bqEstado = () => '';
-    const tmCifras = $('#tm-cifras'), tmAnillo = $('#tm-anillo'), tmProgreso = $('#tm-progreso');
-    const fmtSeg = (s) => { const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), x = s % 60; return h ? `${h}:${pad(m)}:${pad(x)}` : `${m}:${pad(x)}`; };
+    // In blocks (pomodoro): which part it is in (trabajo, work, or descanso, rest) and which block it is (from 0).
+    const blocks = { on: false, fase: 'trabajo', i: 0 };
+    let blockStatus = () => '';
+    const tmDigits = $('#tm-cifras'), tmRing = $('#tm-anillo'), tmProgress = $('#tm-progreso');
+    const formatSeconds = (s) => { const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), x = s % 60; return h ? `${h}:${pad(m)}:${pad(x)}` : `${m}:${pad(x)}`; };
     const MAX_TM = (99 * 60 + 59) * 1000;
-    const tmPinta = () => {
-        const txt = fmtSeg(Math.ceil(tm.resta / 1000));
-        tmCifras.textContent = txt;
-        tmCifras.classList.toggle('larga', txt.length > 5);
+    const tmPaint = () => {
+        const txt = formatSeconds(Math.ceil(tm.resta / 1000));
+        tmDigits.textContent = txt;
+        tmDigits.classList.toggle('larga', txt.length > 5);
         const frac = tm.total ? Math.min(1, tm.resta / tm.total) : 0;
-        tmProgreso.style.strokeDashoffset = String(1000 * (1 - frac));
-        tmProgreso.style.opacity = frac > 0.002 ? '1' : '0';
-        const tocado = tm.marcha || tm.acabado || tm.resta < tm.total;
-        tmAnillo.classList.toggle('ultimo', tocado && tm.resta <= 10000);
-        tmAnillo.classList.toggle('aviso', tocado && tm.resta > 10000 && frac <= 0.25);
-        tmAnillo.classList.toggle('en-marcha', tm.marcha);
-        pintaAspecto(frac);
-        $('#tm-estado').textContent = tm.acabado ? t('fin_time') : (bq.on ? bqEstado()
+        tmProgress.style.strokeDashoffset = String(1000 * (1 - frac));
+        tmProgress.style.opacity = frac > 0.002 ? '1' : '0';
+        const touched = tm.marcha || tm.acabado || tm.resta < tm.total;
+        tmRing.classList.toggle('ultimo', touched && tm.resta <= 10000);
+        tmRing.classList.toggle('aviso', touched && tm.resta > 10000 && frac <= 0.25);
+        tmRing.classList.toggle('en-marcha', tm.marcha);
+        paintLook(frac);
+        $('#tm-estado').textContent = tm.acabado ? t('fin_time') : (blocks.on ? blockStatus()
             : (tm.marcha ? t('tm_running') : tm.resta < tm.total ? t('tm_paused') : t('tm_ready')));
-        tmAnillo.classList.toggle('descanso', bq.on && bq.fase === 'descanso' && !tm.acabado);
-        insignias();
+        tmRing.classList.toggle('descanso', blocks.on && blocks.fase === 'descanso' && !tm.acabado);
+        badges();
         tmMini();
     };
-    // Con el temporizador en marcha (o en pausa) y otra pestaña delante: un reloj pequeño en una esquina, para verlo,
-    // pausarlo o pararlo sin volver; tocándolo, se vuelve al temporizador.
+    // With the timer running (or paused) and another tab in front: a small clock in a corner, to see it,
+    // pause it or stop it without going back; touching it goes back to the timer.
     const mini = document.createElement('div');
     mini.className = 'tm-mini'; mini.hidden = true;
     mini.innerHTML = `<button type="button" class="tm-mini-ir" id="tm-mini-ir"><svg viewBox="0 0 36 36" aria-hidden="true"><circle class="tm-mini-pista" cx="18" cy="18" r="15"/>`
@@ -379,80 +379,80 @@
     mini.querySelector('#tm-mini-parar').setAttribute('title', t('gen_reset'));
     mini.querySelector('#tm-mini-parar').setAttribute('aria-label', t('gen_reset'));
     function tmMini() {
-        const activo = !tm.acabado && (tm.marcha || (tm.resta > 0 && tm.resta < tm.total));
-        mini.hidden = !activo || visibles().includes('temporizador');
+        const active = !tm.acabado && (tm.marcha || (tm.resta > 0 && tm.resta < tm.total));
+        mini.hidden = !active || visibleTools().includes('temporizador');
         if (mini.hidden) { return; }
-        mini.querySelector('#tm-mini-cifras').textContent = fmtSeg(Math.ceil(tm.resta / 1000));
+        mini.querySelector('#tm-mini-cifras').textContent = formatSeconds(Math.ceil(tm.resta / 1000));
         mini.querySelector('#tm-mini-arco').style.strokeDashoffset = String(100 * (1 - (tm.total ? tm.resta / tm.total : 0)));
         mini.classList.toggle('ultimo', tm.resta <= 10000);
         mini.classList.toggle('pausa', !tm.marcha);
-        const b = mini.querySelector('#tm-mini-marcha'), etiqueta = tm.marcha ? t('gen_pause') : t('gen_resume');
+        const b = mini.querySelector('#tm-mini-marcha'), label = tm.marcha ? t('gen_pause') : t('gen_resume');
         if (b.dataset.estado !== String(tm.marcha)) { b.innerHTML = icono(tm.marcha ? 'pausa' : 'empezar'); b.dataset.estado = String(tm.marcha); }
-        b.title = etiqueta; b.setAttribute('aria-label', etiqueta);
+        b.title = label; b.setAttribute('aria-label', label);
     }
-    mini.querySelector('#tm-mini-ir').addEventListener('click', () => muestra('temporizador'));
+    mini.querySelector('#tm-mini-ir').addEventListener('click', () => showTool('temporizador'));
     mini.querySelector('#tm-mini-marcha').addEventListener('click', () => $('#tm-marcha').click());
     mini.querySelector('#tm-mini-parar').addEventListener('click', () => $('#tm-reiniciar').click());
     document.addEventListener('classtools:tab', () => tmMini());
-    const tmBotones = () => {
+    const tmButtons = () => {
         const b = $('#tm-marcha');
-        if (tm.marcha) { rotula(b, t('gen_pause'), 'pausa'); b.className = 'boton grande amarillo ancho'; }
-        else { rotula(b, tm.resta < tm.total && tm.resta > 0 ? t('gen_resume') : t('gen_start'), 'empezar'); b.className = 'boton grande verde ancho'; }
+        if (tm.marcha) { relabel(b, t('gen_pause'), 'pausa'); b.className = 'boton grande amarillo ancho'; }
+        else { relabel(b, tm.resta < tm.total && tm.resta > 0 ? t('gen_resume') : t('gen_start'), 'empezar'); b.className = 'boton grande verde ancho'; }
         b.disabled = !tm.marcha && tm.total <= 0;
     };
     const tmChips = () => $$('.chip[data-min], .chip[data-ms]').forEach((c) => c.classList.toggle('activo', (c.dataset.min ? Number(c.dataset.min) * 60000 : Number(c.dataset.ms)) === tm.total));
 
-    // Aspecto: el anillo de siempre, el disco rojo que se va comiendo, una barra o un reloj de arena (para cada
-    // ordenador). El texto se coloca según el dibujo.
-    const ASPECTOS = ['anillo', 'disco', 'barra', 'arena', 'pulsar'];
-    // Cada modo empieza con lo suyo: Infantil con el disco rojo que se va comiendo, Superior con la barra sobria; los
-    // tiempos rápidos, de más cortos a más largos; la cuenta de los últimos 10 segundos, solo con los pequeños.
-    const tmModo = porModo('tm', {
+    // Look: the usual ring, the red disc that shrinks, a bar or an hourglass (for each
+    // computer). The text is placed according to the drawing.
+    const LOOKS = ['anillo', 'disco', 'barra', 'arena', 'pulsar'];
+    // Each mode starts with its own: Early years with the shrinking red disc, Advanced with the sober bar; the
+    // quick times, from shorter to longer; the count of the last 10 seconds, only for the young ones.
+    const tmByMode = byMode('tm', {
         early: { aspecto: 'disco', rapidos: [1, 2, 3, 5, 10], final: true, viajero: 'cohete' },
         primary: { aspecto: 'anillo', rapidos: [1, 3, 5, 10, 15], final: true, viajero: 'cohete' },
         secondary: { aspecto: 'anillo', rapidos: [2, 5, 10, 15, 20], final: false, viajero: 'bateria' },
         advanced: { aspecto: 'barra', rapidos: [5, 10, 15, 20, 30], final: false, viajero: 'ninguno' },
     }, { aspecto: 'tm-aspecto', final: 'tm-final' });
-    let aspecto = ASPECTOS.includes(tmModo.get().aspecto) ? tmModo.get().aspecto : 'anillo';
-    let viajero = tmModo.get().viajero;
-    const POSICION = { anillo: [100, 104, 100, 148], disco: [100, 104, 100, 152], barra: [100, 78, 100, 178], arena: [145, 98, 145, 132], pulsar: [100, 164, 100, 30] };
-    // El color de la barra según lo que queda: verde, amarillo y, al final, rojo.
-    // (En HSL, para que entre medias salgan lima y naranja vivos y no colores sucios.)
-    const mezcla = (a, b, k) => a.map((v, i) => v + (b[i] - v) * k);
-    const VERDE = [142, 91, 26], AMARILLO = [44, 96, 54], ROJO = [-5, 82, 44];
-    const colorBarra = (f) => {
-        const [h, s, l] = f > 0.5 ? mezcla(AMARILLO, VERDE, (f - 0.5) * 2) : mezcla(ROJO, AMARILLO, f * 2);
+    let look = LOOKS.includes(tmByMode.get().aspecto) ? tmByMode.get().aspecto : 'anillo';
+    let traveller = tmByMode.get().viajero;
+    const TEXT_POSITION = { anillo: [100, 104, 100, 148], disco: [100, 104, 100, 152], barra: [100, 78, 100, 178], arena: [145, 98, 145, 132], pulsar: [100, 164, 100, 30] };
+    // The colour of the bar by what is left: green, yellow and, at the end, red.
+    // (In HSL, so that bright lime and orange come in between, not muddy colours.)
+    const mix = (a, b, k) => a.map((v, i) => v + (b[i] - v) * k);
+    const GREEN = [142, 91, 26], YELLOW = [44, 96, 54], RED = [-5, 82, 44];
+    const barColour = (f) => {
+        const [h, s, l] = f > 0.5 ? mix(YELLOW, GREEN, (f - 0.5) * 2) : mix(RED, YELLOW, f * 2);
         return `hsl(${Math.round((h + 360) % 360)}, ${Math.round(s)}%, ${Math.round(l)}%)`;
     };
-    // La barra según su viajero (o sin él).
-    const VIAJEROS = ['cohete', 'coche', 'caracol', 'barco', 'bateria', 'pixel', 'ninguno'];
-    const dibujaBarra = (v, by, bh, br) => {
-        let rayas = '';
-        for (let i = -3; i < 14; i++) { rayas += `<path d="M${12 + i * 14} 150L${24 + i * 14} 118h7L${19 + i * 14} 150Z"/>`; }
-        let cuadros = '';
-        for (let i = 0; i < 9; i++) { cuadros += `<rect x="${186 + (i % 3) * 4}" y="${100 + Math.floor(i / 3) * 4}" width="4" height="4" fill="${((i % 3) + Math.floor(i / 3)) % 2 ? '#fff' : '#1c1a19'}"/>`; }
-        const meta = `<g class="tm-meta"><line x1="186" y1="99" x2="186" y2="152"/>${cuadros}<rect class="tm-meta-borde" x="186" y="100" width="12" height="12"/></g>`;
-        const estela = `<defs><clipPath id="tmEstela"><rect class="tm-estela" x="12" y="${by}" width="0" height="${bh}" rx="${br}"/></clipPath></defs>`;
-        const dato = '<text class="tm-dato" x="100" y="197" text-anchor="middle"></text>';
+    // The bar according to its traveller (or without one).
+    const TRAVELLERS = ['cohete', 'coche', 'caracol', 'barco', 'bateria', 'pixel', 'ninguno'];
+    const drawBar = (v, by, bh, br) => {
+        let stripes = '';
+        for (let i = -3; i < 14; i++) { stripes += `<path d="M${12 + i * 14} 150L${24 + i * 14} 118h7L${19 + i * 14} 150Z"/>`; }
+        let squares = '';
+        for (let i = 0; i < 9; i++) { squares += `<rect x="${186 + (i % 3) * 4}" y="${100 + Math.floor(i / 3) * 4}" width="4" height="4" fill="${((i % 3) + Math.floor(i / 3)) % 2 ? '#fff' : '#1c1a19'}"/>`; }
+        const finishLine = `<g class="tm-meta"><line x1="186" y1="99" x2="186" y2="152"/>${squares}<rect class="tm-meta-borde" x="186" y="100" width="12" height="12"/></g>`;
+        const trail = `<defs><clipPath id="tmEstela"><rect class="tm-estela" x="12" y="${by}" width="0" height="${bh}" rx="${br}"/></clipPath></defs>`;
+        const fact = '<text class="tm-dato" x="100" y="197" text-anchor="middle"></text>';
         if (v === 'cohete' || v === 'ninguno') {
-            return estela + `<rect class="tm-pista-barra" x="12" y="${by}" width="170" height="${bh}" rx="${br}"/>`
-                + `<g clip-path="url(#tmEstela)"><rect class="tm-barra" x="12" y="${by}" width="170" height="${bh}"/><g class="tm-rayas">${rayas}</g></g>`
-                + (v === 'ninguno' ? '' : meta + '<g class="tm-viajero tm-cohete"><path class="tm-llama" d="M-17 -5Q-31 0 -17 5Z"/>'
+            return trail + `<rect class="tm-pista-barra" x="12" y="${by}" width="170" height="${bh}" rx="${br}"/>`
+                + `<g clip-path="url(#tmEstela)"><rect class="tm-barra" x="12" y="${by}" width="170" height="${bh}"/><g class="tm-rayas">${stripes}</g></g>`
+                + (v === 'ninguno' ? '' : finishLine + '<g class="tm-viajero tm-cohete"><path class="tm-llama" d="M-17 -5Q-31 0 -17 5Z"/>'
                     + '<path class="tm-aleta" d="M-14 -6L-20 -14H-11L-5 -6ZM-14 6L-20 14H-11L-5 6Z"/>'
-                    + '<path class="tm-casco" d="M-17 -7H5Q17 -7 22 0Q17 7 5 7H-17Z"/><circle class="tm-ventana" cx="4" cy="0" r="3.6"/></g>' + dato);
+                    + '<path class="tm-casco" d="M-17 -7H5Q17 -7 22 0Q17 7 5 7H-17Z"/><circle class="tm-ventana" cx="4" cy="0" r="3.6"/></g>' + fact);
         }
         if (v === 'coche') {
-            return '<rect class="tm-carretera" x="12" y="118" width="170" height="32" rx="6"/><line class="tm-raya" x1="16" y1="134" x2="180" y2="134"/>' + meta
+            return '<rect class="tm-carretera" x="12" y="118" width="170" height="32" rx="6"/><line class="tm-raya" x1="16" y1="134" x2="180" y2="134"/>' + finishLine
                 + '<g class="tm-viajero tm-coche"><g class="tm-velocidad"><line x1="-34" y1="-4" x2="-26" y2="-4"/><line x1="-37" y1="1" x2="-26" y2="1"/></g>'
-                + '<image class="tm-f1" href="img/coche-f1.webp" x="-28" y="-14.5" width="56" height="23.7"/></g>' + dato;
+                + '<image class="tm-f1" href="img/coche-f1.webp" x="-28" y="-14.5" width="56" height="23.7"/></g>' + fact;
         }
         if (v === 'caracol') {
-            return estela + '<rect class="tm-suelo" x="10" y="141" width="180" height="9" rx="4.5"/>'
+            return trail + '<rect class="tm-suelo" x="10" y="141" width="180" height="9" rx="4.5"/>'
                 + '<g clip-path="url(#tmEstela)"><rect class="tm-baba" x="12" y="137" width="170" height="5" rx="2.5"/></g>'
                 + '<path class="tm-hoja" d="M190 141 Q177 128 188 112 Q202 124 190 141 Z"/><path class="tm-hoja-nervio" d="M190 140 Q188 127 188 114"/>'
                 + '<g class="tm-viajero tm-caracol"><path class="tm-caracol-cuerpo" d="M-17 8 Q-19 3 -13 3 L8 3 Q13 3 14 -4 L15 -10 Q16 -12 17.5 -10 L17 -3 Q16.5 7 9 8 Z"/>'
                 + '<path class="tm-antena" d="M14 -8 L12 -15 M16.5 -7 L19 -14"/><circle class="tm-ojito" cx="12" cy="-15.5" r="1.7"/><circle class="tm-ojito" cx="19" cy="-14.5" r="1.7"/>'
-                + '<circle class="tm-concha" cx="-3" cy="-4" r="9"/><path class="tm-espiral" d="M-3 -4 a2 2 0 1 1 2 2 a4 4 0 1 1 -4 -4 a6.5 6.5 0 1 1 6.5 6.5"/></g>' + dato;
+                + '<circle class="tm-concha" cx="-3" cy="-4" r="9"/><path class="tm-espiral" d="M-3 -4 a2 2 0 1 1 2 2 a4 4 0 1 1 -4 -4 a6.5 6.5 0 1 1 6.5 6.5"/></g>' + fact;
         }
         if (v === 'barco') {
             return '<rect class="tm-mar" x="10" y="129" width="180" height="21" rx="8"/>'
@@ -460,90 +460,90 @@
                 + '<ellipse class="tm-arena" cx="191" cy="130" rx="10" ry="4.5"/><path class="tm-palmera" d="M192 129 Q191 119 194 111"/>'
                 + '<path class="tm-palma" d="M194 111 q-8 -2 -12 4 M194 111 q8 -3 11 3 M194 111 q-2 -7 -8 -9 M194 111 q4 -6 10 -6"/>'
                 + '<g class="tm-viajero tm-barco"><g class="tm-mece"><path class="tm-casco-barco" d="M-15 2 L15 2 L10 9 L-10 9 Z"/><path class="tm-mastil" d="M0 2 V-18"/>'
-                + '<path class="tm-vela" d="M1.5 -17 L13 0 L1.5 0 Z"/><path class="tm-foque" d="M-1.5 -14 L-11 0 L-1.5 0 Z"/></g></g>' + dato;
+                + '<path class="tm-vela" d="M1.5 -17 L13 0 L1.5 0 Z"/><path class="tm-foque" d="M-1.5 -14 L-11 0 L-1.5 0 Z"/></g></g>' + fact;
         }
         if (v === 'bateria') {
-            let celdas = '';
-            for (let k = 1; k < 4; k++) { celdas += `<line class="tm-celda" x1="${16 + 39 * k}" y1="118" x2="${16 + 39 * k}" y2="150"/>`; }
+            let cells = '';
+            for (let k = 1; k < 4; k++) { cells += `<line class="tm-celda" x1="${16 + 39 * k}" y1="118" x2="${16 + 39 * k}" y2="150"/>`; }
             return '<g class="tm-bateria-dibujo"><rect class="tm-bateria" x="12" y="114" width="164" height="40" rx="8"/><rect class="tm-borne" x="177" y="126" width="7" height="16" rx="2"/>'
-                + `<rect class="tm-carga" x="16" y="118" width="156" height="32" rx="5"/>${celdas}</g>`;
+                + `<rect class="tm-carga" x="16" y="118" width="156" height="32" rx="5"/>${cells}</g>`;
         }
-        // Píxel: una barra de carga de las de antes, a bloques.
-        let bloques = '';
-        for (let i = 0; i < 16; i++) { bloques += `<rect class="tm-bloque" x="${(13 + i * 10.625).toFixed(2)}" y="121" width="8.6" height="26"/>`; }
-        return `<rect class="tm-pixel-marco" x="10" y="118" width="174" height="32"/>${bloques}`;
+        // Pixel: an old-style loading bar, in blocks.
+        let pixelBlocks = '';
+        for (let i = 0; i < 16; i++) { pixelBlocks += `<rect class="tm-bloque" x="${(13 + i * 10.625).toFixed(2)}" y="121" width="8.6" height="26"/>`; }
+        return `<rect class="tm-pixel-marco" x="10" y="118" width="174" height="32"/>${pixelBlocks}`;
     };
-    const pintaAspecto = (frac) => {
-        tmAnillo.dataset.aspecto = aspecto;
-        const [cx, cy, ex, ey] = POSICION[aspecto];
-        tmCifras.setAttribute('x', cx); tmCifras.setAttribute('y', cy);
+    const paintLook = (frac) => {
+        tmRing.dataset.aspecto = look;
+        const [cx, cy, ex, ey] = TEXT_POSITION[look];
+        tmDigits.setAttribute('x', cx); tmDigits.setAttribute('y', cy);
         $('#tm-estado').setAttribute('x', ex); $('#tm-estado').setAttribute('y', ey);
         const g = $('#tm-aspecto'), f = Math.max(0, Math.min(1, frac));
-        if (aspecto !== 'pulsar' && aspecto !== 'barra') { g.dataset.hecho = ''; }
-        if (aspecto === 'disco') {
-            // Como los temporizadores visuales: el disco rojo es el tiempo que queda y mengua hacia las doce.
+        if (look !== 'pulsar' && look !== 'barra') { g.dataset.hecho = ''; }
+        if (look === 'disco') {
+            // Like visual timers: the red disc is the time left and it shrinks towards twelve.
             const a = f * 2 * Math.PI, x = (100 - 82 * Math.sin(a)).toFixed(2), y = (100 - 82 * Math.cos(a)).toFixed(2);
             const sector = f >= 0.9999 ? '<circle class="tm-disco" cx="100" cy="100" r="82"/>'
                 : (f > 0.0005 ? `<path class="tm-disco" d="M100 100L100 18A82 82 0 ${f > 0.5 ? 1 : 0} 0 ${x} ${y}Z"/>` : '');
-            let marcas = '';
-            for (let i = 0; i < 60; i += 5) { const r = i * 6 * Math.PI / 180; marcas += `<line x1="${(100 + 86 * Math.sin(r)).toFixed(1)}" y1="${(100 - 86 * Math.cos(r)).toFixed(1)}" x2="${(100 + (i % 15 ? 91 : 94) * Math.sin(r)).toFixed(1)}" y2="${(100 - (i % 15 ? 91 : 94) * Math.cos(r)).toFixed(1)}"/>`; }
-            g.innerHTML = `<circle class="tm-cara" cx="100" cy="100" r="95"/>${sector}<g class="tm-marcas">${marcas}</g>`;
-        } else if (aspecto === 'barra') {
-            // Algo recorre la barra mientras pasa el tiempo, de la salida a la meta (el cohete de siempre, un coche de
-            // carreras, un caracol, un velero), o la barra es lo que queda (la batería de un móvil, una barra de carga de
-            // videojuego antiguo, o solo la barra). Se dibuja una vez; luego solo se mueve lo que se mueve.
-            const v = VIAJEROS.includes(viajero) ? viajero : 'cohete';
-            const [by, bh, br] = v === 'ninguno' ? (modo === 'advanced' ? [128, 12, 2] : (modo === 'secondary' ? [124, 20, 10] : [118, 32, 16]))
+            let ticks = '';
+            for (let i = 0; i < 60; i += 5) { const r = i * 6 * Math.PI / 180; ticks += `<line x1="${(100 + 86 * Math.sin(r)).toFixed(1)}" y1="${(100 - 86 * Math.cos(r)).toFixed(1)}" x2="${(100 + (i % 15 ? 91 : 94) * Math.sin(r)).toFixed(1)}" y2="${(100 - (i % 15 ? 91 : 94) * Math.cos(r)).toFixed(1)}"/>`; }
+            g.innerHTML = `<circle class="tm-cara" cx="100" cy="100" r="95"/>${sector}<g class="tm-marcas">${ticks}</g>`;
+        } else if (look === 'barra') {
+            // Something travels along the bar as time goes by, from the start to the finish (the usual rocket, a
+            // racing car, a snail, a sailing boat), or the bar is what is left (a phone battery, an old video game
+            // loading bar, or just the bar). It is drawn once; then only what moves is moved.
+            const v = TRAVELLERS.includes(traveller) ? traveller : 'cohete';
+            const [by, bh, br] = v === 'ninguno' ? (mode === 'advanced' ? [128, 12, 2] : (mode === 'secondary' ? [124, 20, 10] : [118, 32, 16]))
                 : (v === 'bateria' ? [114, 40, 8] : [118, 32, v === 'pixel' ? 0 : 16]);
-            const clave = `barra-${v}-${bh}`;
-            if (g.dataset.hecho !== clave) { g.innerHTML = dibujaBarra(v, by, bh, br); g.dataset.hecho = clave; }
+            const drawnKey = `barra-${v}-${bh}`;
+            if (g.dataset.hecho !== drawnKey) { g.innerHTML = drawBar(v, by, bh, br); g.dataset.hecho = drawnKey; }
             const x = 29 + 135 * (1 - f);
-            const pon = (sel, attr, val) => { const e = g.querySelector(sel); if (e) { e.setAttribute(attr, val); } };
-            if (v === 'cohete') { pon('.tm-estela', 'width', (x - 8).toFixed(2)); g.querySelector('.tm-barra').style.fill = colorBarra(f); }
-            if (v === 'caracol') { pon('.tm-estela', 'width', Math.max(0, x - 24).toFixed(2)); }
-            if (v === 'ninguno') { pon('.tm-estela', 'width', (170 * f).toFixed(2)); g.querySelector('.tm-barra').style.fill = colorBarra(f); }
+            const setAttr = (sel, attr, val) => { const e = g.querySelector(sel); if (e) { e.setAttribute(attr, val); } };
+            if (v === 'cohete') { setAttr('.tm-estela', 'width', (x - 8).toFixed(2)); g.querySelector('.tm-barra').style.fill = barColour(f); }
+            if (v === 'caracol') { setAttr('.tm-estela', 'width', Math.max(0, x - 24).toFixed(2)); }
+            if (v === 'ninguno') { setAttr('.tm-estela', 'width', (170 * f).toFixed(2)); g.querySelector('.tm-barra').style.fill = barColour(f); }
             if (v === 'bateria') {
-                pon('.tm-carga', 'width', Math.max(0, 156 * f).toFixed(2));
-                g.querySelector('.tm-carga').style.fill = colorBarra(f);
+                setAttr('.tm-carga', 'width', Math.max(0, 156 * f).toFixed(2));
+                g.querySelector('.tm-carga').style.fill = barColour(f);
                 g.querySelector('.tm-bateria-dibujo').classList.toggle('baja', f > 0 && f < 0.15);
             }
             if (v === 'pixel') {
                 const n = Math.ceil(f * 16 - 1e-9), c = f > 0.5 ? '#35b24a' : (f > 0.2 ? '#f2b705' : '#e8432e');
                 g.querySelectorAll('.tm-bloque').forEach((q, i) => { q.style.fill = i < n ? c : ''; q.classList.toggle('ultimo', i === n - 1 && f < 0.2); });
             }
-            if (['cohete', 'coche', 'caracol', 'barco'].includes(v)) { pon('.tm-viajero', 'transform', `translate(${x.toFixed(2)} ${v === 'barco' ? 125 : 134})`); }
-            // Antes de empezar, un dato del viajero: el tiempo también se mide en velocidades.
-            const dato = g.querySelector('.tm-dato');
-            if (dato) { dato.textContent = !tm.marcha && tm.total > 0 && tm.resta === tm.total && dato.dataset.hay !== '0' ? t('tm_fact_' + v) : ''; }
-        } else if (aspecto === 'arena') {
-            // Un reloj de arena de verdad: marco de madera, ampollas de cristal y arena que baja y se amontona. La
-            // cantidad es la del tiempo (no la altura): el cristal se estrecha hacia el cuello.
+            if (['cohete', 'coche', 'caracol', 'barco'].includes(v)) { setAttr('.tm-viajero', 'transform', `translate(${x.toFixed(2)} ${v === 'barco' ? 125 : 134})`); }
+            // Before starting, a fact about the traveller: time is also measured in speeds.
+            const factText = g.querySelector('.tm-dato');
+            if (factText) { factText.textContent = !tm.marcha && tm.total > 0 && tm.resta === tm.total && factText.dataset.hay !== '0' ? t('tm_fact_' + v) : ''; }
+        } else if (look === 'arena') {
+            // A real hourglass: a wooden frame, glass bulbs and sand that falls and piles up. The
+            // amount is that of the time (not the height): the glass narrows towards the neck.
             const hTop = 72 * Math.sqrt(f), yTop = 99 - hTop, k = 66 * (1 - Math.sqrt(f)), yb = 175 - k;
-            const arriba = f > 0.0005 ? `<rect x="30" y="${yTop.toFixed(2)}" width="64" height="${(100 - yTop).toFixed(2)}" fill="url(#tmArena)" clip-path="url(#tmArriba)"/>` : '';
-            const abajo = f < 0.9995 ? `<path d="M28 176V${(yb + k * 0.45).toFixed(2)}Q62 ${(yb - 6).toFixed(2)} 96 ${(yb + k * 0.45).toFixed(2)}V176Z" fill="url(#tmArena)" clip-path="url(#tmAbajo)"/>` : '';
-            const chorro = tm.marcha && f > 0.0005 ? `<line class="tm-chorro" x1="62" y1="99" x2="62" y2="${(yb + 2).toFixed(2)}"/>` : '';
-            const vidrioArriba = 'M36 24C36 60 58 86 59.5 99.5H64.5C66 86 88 60 88 24Z', vidrioAbajo = 'M59.5 100.5C58 114 36 140 36 176H88C88 140 66 114 64.5 100.5Z';
+            const topSand = f > 0.0005 ? `<rect x="30" y="${yTop.toFixed(2)}" width="64" height="${(100 - yTop).toFixed(2)}" fill="url(#tmArena)" clip-path="url(#tmArriba)"/>` : '';
+            const bottomSand = f < 0.9995 ? `<path d="M28 176V${(yb + k * 0.45).toFixed(2)}Q62 ${(yb - 6).toFixed(2)} 96 ${(yb + k * 0.45).toFixed(2)}V176Z" fill="url(#tmArena)" clip-path="url(#tmAbajo)"/>` : '';
+            const stream = tm.marcha && f > 0.0005 ? `<line class="tm-chorro" x1="62" y1="99" x2="62" y2="${(yb + 2).toFixed(2)}"/>` : '';
+            const topGlass = 'M36 24C36 60 58 86 59.5 99.5H64.5C66 86 88 60 88 24Z', bottomGlass = 'M59.5 100.5C58 114 36 140 36 176H88C88 140 66 114 64.5 100.5Z';
             g.innerHTML = '<defs><linearGradient id="tmArena" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f2cd78"/><stop offset="1" stop-color="#d79a31"/></linearGradient>'
-                + `<clipPath id="tmArriba"><path d="${vidrioArriba}"/></clipPath><clipPath id="tmAbajo"><path d="${vidrioAbajo}"/></clipPath></defs>`
-                + `<path class="tm-cristal" d="${vidrioArriba}"/><path class="tm-cristal" d="${vidrioAbajo}"/>${arriba}${abajo}${chorro}`
+                + `<clipPath id="tmArriba"><path d="${topGlass}"/></clipPath><clipPath id="tmAbajo"><path d="${bottomGlass}"/></clipPath></defs>`
+                + `<path class="tm-cristal" d="${topGlass}"/><path class="tm-cristal" d="${bottomGlass}"/>${topSand}${bottomSand}${stream}`
                 + '<path class="tm-brillo" d="M42 30C42 54 52 76 57 92M42 170C42 150 50 126 56 112"/>'
                 + '<rect class="tm-madera" x="26" y="174" width="72" height="11" rx="4"/><rect class="tm-madera" x="26" y="15" width="72" height="11" rx="4"/>'
                 + '<rect class="tm-madera" x="29" y="24" width="5" height="152" rx="2"/><rect class="tm-madera" x="90" y="24" width="5" height="152" rx="2"/>';
-        } else if (aspecto === 'pulsar') {
-            // Un púlsar: estrella de neutrones con dos haces que giran (una vuelta cada 5 s),
-            // anillos que se expanden y un campo de estrellas; el arco fino del borde es el tiempo que queda. Se dibuja
-            // una vez y luego solo giran los haces y avanza el arco (así las ondas no vuelven a empezar).
+        } else if (look === 'pulsar') {
+            // A pulsar: a neutron star with two rotating beams (one turn every 5 s),
+            // expanding rings and a field of stars; the thin arc on the edge is the time left. It is drawn
+            // once, and then only the beams turn and the arc moves on (so the waves do not start again).
             if (g.dataset.hecho !== 'pulsar') {
-                let estrellas = '';
+                let stars = '';
                 for (let i = 0; i < 60; i++) {
                     const x = 4 + (Math.sin(i * 137.508) * 0.5 + 0.5) * 192, y = 4 + (Math.cos(i * 137.508) * 0.5 + 0.5) * 192;
-                    if (Math.hypot(x - 100, y - 100) < 92) { estrellas += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(0.5 + (i % 3) * 0.5).toFixed(1)}" fill="#fff" opacity="${(0.15 + (i % 7) * 0.1).toFixed(2)}"/>`; }
+                    if (Math.hypot(x - 100, y - 100) < 92) { stars += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(0.5 + (i % 3) * 0.5).toFixed(1)}" fill="#fff" opacity="${(0.15 + (i % 7) * 0.1).toFixed(2)}"/>`; }
                 }
                 g.innerHTML = '<defs><radialGradient id="tmEspacio"><stop offset="0" stop-color="#0a1a33"/><stop offset="1" stop-color="#000510"/></radialGradient>'
                     + '<radialGradient id="tmNeutron"><stop offset="0" stop-color="#fff"/><stop offset=".35" stop-color="#a5f3fc"/><stop offset=".75" stop-color="#0891b2"/><stop offset="1" stop-color="#0891b2" stop-opacity="0"/></radialGradient>'
                     + '<linearGradient id="tmHaz"><stop offset="0" stop-color="#22d3ee" stop-opacity="0"/><stop offset=".3" stop-color="#22d3ee" stop-opacity=".5"/><stop offset=".5" stop-color="#c8ffff"/><stop offset=".7" stop-color="#22d3ee" stop-opacity=".5"/><stop offset="1" stop-color="#22d3ee" stop-opacity="0"/></linearGradient>'
                     + '<filter id="tmBrilla" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>'
-                    + `<circle cx="100" cy="100" r="96" fill="url(#tmEspacio)"/>${estrellas}`
+                    + `<circle cx="100" cy="100" r="96" fill="url(#tmEspacio)"/>${stars}`
                     + [0, 1, 2].map((i) => `<circle class="tm-pulsar-onda" cx="100" cy="100" r="90" style="animation-delay:${(i * 1.17).toFixed(2)}s"/>`).join('')
                     + '<g class="tm-haces"><rect x="6" y="98.5" width="188" height="3" fill="url(#tmHaz)" filter="url(#tmBrilla)"/>'
                     + '</g>'
@@ -552,338 +552,339 @@
                     + '<rect class="tm-pulsar-capsula" x="52" y="148" width="96" height="30" rx="15"/>';
                 g.dataset.hecho = 'pulsar';
             }
-            const pasado = Math.max(0, (tm.total - tm.resta) / 1000);
-            g.querySelector('.tm-haces').setAttribute('transform', `rotate(${((pasado * 72) % 360).toFixed(1)} 100 100)`);
+            const elapsed = Math.max(0, (tm.total - tm.resta) / 1000);
+            g.querySelector('.tm-haces').setAttribute('transform', `rotate(${((elapsed * 72) % 360).toFixed(1)} 100 100)`);
             g.querySelector('.tm-pulsar-arco').style.strokeDashoffset = String(1000 * (1 - f));
         } else {
             g.innerHTML = '';
         }
     };
-    // Qué recorre la barra: solo se ve con el aspecto «Barra».
-    $('#tm-viajeros').innerHTML = VIAJEROS.map((k) => `<option value="${k}">${escapa(t('tm_v_' + k))}</option>`).join('');
-    const tmPintaViajeros = () => {
-        $('#tm-viajeros-caja').hidden = aspecto !== 'barra';
-        $('#tm-viajeros').value = VIAJEROS.includes(viajero) ? viajero : 'cohete';
+    // What travels along the bar: it only shows with the «Bar» look.
+    $('#tm-viajeros').innerHTML = TRAVELLERS.map((k) => `<option value="${k}">${escapeHtml(t('tm_v_' + k))}</option>`).join('');
+    const tmPaintTravellers = () => {
+        $('#tm-viajeros-caja').hidden = look !== 'barra';
+        $('#tm-viajeros').value = TRAVELLERS.includes(traveller) ? traveller : 'cohete';
     };
-    $('#tm-viajeros').addEventListener('change', () => { viajero = $('#tm-viajeros').value; tmModo.set({ viajero }); tmPinta(); });
+    $('#tm-viajeros').addEventListener('change', () => { traveller = $('#tm-viajeros').value; tmByMode.set({ viajero: traveller }); tmPaint(); });
     $$('#tm-aspectos button').forEach((b) => {
-        b.setAttribute('aria-checked', String(b.dataset.v === aspecto));
+        b.setAttribute('aria-checked', String(b.dataset.v === look));
         b.addEventListener('click', () => {
-            aspecto = b.dataset.v; tmModo.set({ aspecto });
+            look = b.dataset.v; tmByMode.set({ aspecto: look });
             $$('#tm-aspectos button').forEach((x) => x.setAttribute('aria-checked', String(x === b)));
-            tmPintaViajeros(); tmPinta();
+            tmPaintTravellers(); tmPaint();
         });
     });
-    tmPintaViajeros();
+    tmPaintTravellers();
 
-    // Aviso cuando queda 1 minuto (solo en tiempos de más de 2 minutos: en los cortos no tiene sentido).
-    let avisar = lee('tm-avisar', true) !== false;
-    $('#tm-avisar').checked = avisar;
-    $('#tm-avisar').addEventListener('change', (e) => { avisar = e.target.checked; guarda('tm-avisar', avisar); });
-    let pocoTimer = 0;
-    // Los últimos 10 segundos, para cantarlos: cada segundo, un latido de las cifras, un destello y un «tic» (más agudo
-    // en los tres últimos). Se puede apagar; viene encendido.
-    let finalAnimado = tmModo.get().final !== false;
-    $('#tm-final').checked = finalAnimado;
-    $('#tm-final').addEventListener('change', (e) => { finalAnimado = e.target.checked; tmModo.set({ final: finalAnimado }); });
-    const tmCuentaFinal = () => {
+    // A notice when 1 minute is left (only for times over 2 minutes: for short ones it makes no sense).
+    let warnMinute = load('tm-avisar', true) !== false;
+    $('#tm-avisar').checked = warnMinute;
+    $('#tm-avisar').addEventListener('change', (e) => { warnMinute = e.target.checked; save('tm-avisar', warnMinute); });
+    let noticeTimer = 0;
+    // The last 10 seconds, to count them aloud: each second, a beat of the digits, a flash and a «tick» (higher
+    // in the last three). It can be turned off; it comes on.
+    let countdownOn = tmByMode.get().final !== false;
+    $('#tm-final').checked = countdownOn;
+    $('#tm-final').addEventListener('change', (e) => { countdownOn = e.target.checked; tmByMode.set({ final: countdownOn }); });
+    const tmLastSeconds = () => {
         const s = Math.ceil(tm.resta / 1000);
-        if (!finalAnimado || s > 10 || s < 1 || s === tm.ultimoSegundo) { tm.ultimoSegundo = s; return; }
+        if (!countdownOn || s > 10 || s < 1 || s === tm.ultimoSegundo) { tm.ultimoSegundo = s; return; }
         tm.ultimoSegundo = s;
-        tmAnillo.classList.remove('latido'); void tmAnillo.getBoundingClientRect(); tmAnillo.classList.add('latido');
-        suena(s <= 3 ? 'cuentaFinal' : 'cuenta');
+        tmRing.classList.remove('latido'); void tmRing.getBoundingClientRect(); tmRing.classList.add('latido');
+        playSound(s <= 3 ? 'cuentaFinal' : 'cuenta');
     };
-    const tmAvisaPoco = () => {
-        if (!avisar || tm.avisado || tm.total <= 120000 || tm.resta > 60000 || tm.resta <= 1500) { return; }
+    const tmWarnMinute = () => {
+        if (!warnMinute || tm.avisado || tm.total <= 120000 || tm.resta > 60000 || tm.resta <= 1500) { return; }
         tm.avisado = true;
-        suena('aviso');
+        playSound('aviso');
         const p = $('#tm-poco');
         p.textContent = t('tm_one_left'); p.hidden = false;
-        clearTimeout(pocoTimer); pocoTimer = setTimeout(() => { p.hidden = true; }, 5000);
-        anuncia(t('tm_one_left'));
+        clearTimeout(noticeTimer); noticeTimer = setTimeout(() => { p.hidden = true; }, 5000);
+        announce(t('tm_one_left'));
     };
 
-    // Los tiempos del profesor: uno o dos que use mucho, además de los de siempre. Se guardan en este ordenador y,
-    // dentro de un curso, en Moodle (le siguen a cualquier ordenador).
-    const ajustesCurso = Object.assign({}, (CLASE && CLASE.state && CLASE.state.settings) || {});
-    const guardaAjustes = (cambios) => { Object.assign(ajustesCurso, cambios, { updated: Date.now() }); guardaEnAula('settings', ajustesCurso); };
-    const valido = (ms) => Number.isFinite(ms) && ms > 0 && ms <= MAX_TM;
-    let favoritos = (Array.isArray(ajustesCurso.favs) ? ajustesCurso.favs : lee('tiempos-favoritos', [])).map(Number).filter(valido).slice(0, 2);
-    const etiquetaTiempo = (ms) => (ms % 60000 === 0 ? t('tm_min_short', ms / 60000) : fmtSeg(Math.round(ms / 1000)));
-    const pintaFavoritos = () => {
-        $('#tm-favoritos').innerHTML = favoritos.map((ms) => `<span class="chip-fav"><button type="button" class="chip" data-ms="${ms}" title="${escapa(t('tm_fav', etiquetaTiempo(ms)))}">${escapa(etiquetaTiempo(ms))}</button>`
-            + `<button type="button" class="chip-quita" data-quita="${ms}" aria-label="${escapa(t('tm_fav_remove', etiquetaTiempo(ms)))}">${icono('cerrar')}</button></span>`).join('');
+    // The teacher's times: one or two they use a lot, besides the usual ones. They are kept on this computer and,
+    // inside a course, in Moodle (they follow the teacher to any computer).
+    const courseSettings = Object.assign({}, (CLASS_DATA && CLASS_DATA.state && CLASS_DATA.state.settings) || {});
+    const saveSettings = (changes) => { Object.assign(courseSettings, changes, { updated: Date.now() }); keepInMoodle('settings', courseSettings); };
+    const validTime = (ms) => Number.isFinite(ms) && ms > 0 && ms <= MAX_TM;
+    let favourites = (Array.isArray(courseSettings.favs) ? courseSettings.favs : load('tiempos-favoritos', [])).map(Number).filter(validTime).slice(0, 2);
+    const timeLabel = (ms) => (ms % 60000 === 0 ? t('tm_min_short', ms / 60000) : formatSeconds(Math.round(ms / 1000)));
+    const paintFavourites = () => {
+        $('#tm-favoritos').innerHTML = favourites.map((ms) => `<span class="chip-fav"><button type="button" class="chip" data-ms="${ms}" title="${escapeHtml(t('tm_fav', timeLabel(ms)))}">${escapeHtml(timeLabel(ms))}</button>`
+            + `<button type="button" class="chip-quita" data-quita="${ms}" aria-label="${escapeHtml(t('tm_fav_remove', timeLabel(ms)))}">${icono('cerrar')}</button></span>`).join('');
         const add = $('#tm-fav-add');
-        const yaEsta = favoritos.includes(tm.total) || $$('.chip[data-min]').some((c) => Number(c.dataset.min) * 60000 === tm.total);
-        add.hidden = tm.total <= 0 || yaEsta;
-        add.innerHTML = `${icono('mas')}<span>${escapa(t('tm_fav_add', etiquetaTiempo(tm.total)))}</span>`;
+        const alreadyThere = favourites.includes(tm.total) || $$('.chip[data-min]').some((c) => Number(c.dataset.min) * 60000 === tm.total);
+        add.hidden = tm.total <= 0 || alreadyThere;
+        add.innerHTML = `${icono('mas')}<span>${escapeHtml(t('tm_fav_add', timeLabel(tm.total)))}</span>`;
         add.title = t('tm_fav_add_title');
-        $('#tm-avisar-caja').hidden = tm.total <= 120000;   // en tiempos cortos el aviso no tiene sentido
+        $('#tm-avisar-caja').hidden = tm.total <= 120000;   // for short times the notice makes no sense
         tmChips();
     };
-    const guardaFavoritos = () => { guarda('tiempos-favoritos', favoritos); guardaAjustes({ favs: favoritos }); pintaFavoritos(); };
+    const saveFavourites = () => { save('tiempos-favoritos', favourites); saveSettings({ favs: favourites }); paintFavourites(); };
     $('#tm-fav-add').addEventListener('click', () => {
-        if (!valido(tm.total) || favoritos.includes(tm.total)) { return; }
-        favoritos = favoritos.concat(tm.total).slice(-2);
-        guardaFavoritos(); suena('tic');
+        if (!validTime(tm.total) || favourites.includes(tm.total)) { return; }
+        favourites = favourites.concat(tm.total).slice(-2);
+        saveFavourites(); playSound('tic');
     });
     $('#tm-favoritos').addEventListener('click', (e) => {
-        const quita = e.target.closest('[data-quita]');
-        if (quita) { favoritos = favoritos.filter((ms) => ms !== Number(quita.dataset.quita)); guardaFavoritos(); return; }
+        const removeButton = e.target.closest('[data-quita]');
+        if (removeButton) { favourites = favourites.filter((ms) => ms !== Number(removeButton.dataset.quita)); saveFavourites(); return; }
         const c = e.target.closest('[data-ms]');
-        if (c) { tmPon(Number(c.dataset.ms)); }
+        if (c) { tmSet(Number(c.dataset.ms)); }
     });
-    // Pone un tiempo nuevo (para el temporizador y lo deja listo).
-    const tmPon = (ms) => {
+    // Sets a new time (stops the timer and leaves it ready).
+    const tmSet = (ms) => {
         ms = Math.max(0, Math.min(MAX_TM, Math.round(ms / 1000) * 1000));
         clearInterval(tm.reloj);
         Object.assign(tm, { total: ms, resta: ms, marcha: false, acabado: false });
         $('#tm-min').value = Math.floor(ms / 60000);
         $('#tm-seg').value = Math.floor(ms / 1000) % 60;
         tm.avisado = false;
-        pintaFavoritos(); tmBotones(); tmPinta();
+        paintFavourites(); tmButtons(); tmPaint();
     };
-    const tmTic = () => {
+    const tmTick = () => {
         tm.resta = Math.max(0, tm.fin - Date.now());
-        if (tm.resta <= 0) { tmTermina(); } else { tmAvisaPoco(); tmPinta(); tmCuentaFinal(); }
+        if (tm.resta <= 0) { tmFinish(); } else { tmWarnMinute(); tmPaint(); tmLastSeconds(); }
     };
-    const tmEmpieza = () => {
+    const tmStart = () => {
         if (tm.total <= 0) { return; }
         if (tm.resta <= 0) { tm.resta = tm.total; }
-        if (sonido) { audio(); }   // así la campana del final podrá sonar
+        if (soundOn) { audio(); }   // so that the bell at the end can sound
         Object.assign(tm, { acabado: false, marcha: true, fin: Date.now() + tm.resta });
-        clearInterval(tm.reloj); tm.reloj = setInterval(tmTic, 100);
-        tmBotones(); tmPinta();
-        anuncia(t('tm_running_sr'));
+        clearInterval(tm.reloj); tm.reloj = setInterval(tmTick, 100);
+        tmButtons(); tmPaint();
+        announce(t('tm_running_sr'));
     };
-    const tmPausa = () => {
+    const tmPause = () => {
         tm.resta = Math.max(0, tm.fin - Date.now()); tm.marcha = false; clearInterval(tm.reloj);
-        tmBotones(); tmPinta();
-        anuncia(t('tm_paused_sr'));
+        tmButtons(); tmPaint();
+        announce(t('tm_paused_sr'));
     };
-    const tmReinicia = () => {
-        if (bq.on) { bqDeCero(); return; }
-        clearInterval(tm.reloj); Object.assign(tm, { marcha: false, acabado: false, avisado: false, resta: tm.total }); tmBotones(); tmPinta();
+    const tmReset = () => {
+        if (blocks.on) { blocksFromStart(); return; }
+        clearInterval(tm.reloj); Object.assign(tm, { marcha: false, acabado: false, avisado: false, resta: tm.total }); tmButtons(); tmPaint();
     };
-    const tmAlterna = () => { if (tm.marcha) { tmPausa(); } else { tmEmpieza(); } };
-    const tmTermina = () => {
-        if (bq.on && bqSigue()) { return; }
+    const tmToggle = () => { if (tm.marcha) { tmPause(); } else { tmStart(); } };
+    const tmFinish = () => {
+        if (blocks.on && blocksNext()) { return; }
         clearInterval(tm.reloj);
-        // El cromo del profe: un temporizador de un minuto o más que llega a cero.
+        // The teacher's sticker: a timer of a minute or more that reaches zero.
         if (tm.total >= 60000 && window.ClasstoolsCore.logro) { window.ClasstoolsCore.logro('guardatiempos'); }
         Object.assign(tm, { marcha: false, acabado: true, resta: 0 });
-        tmBotones(); tmPinta();
-        suena('fin');
+        tmButtons(); tmPaint();
+        playSound('fin');
         const f = $('#fin-tiempo');
         f.hidden = false;
         f.classList.remove('destella'); void f.offsetWidth; f.classList.add('destella');
         $('#fin-vale').focus();
-        anuncia(t('fin_time'));
+        announce(t('fin_time'));
     };
-    const finCierra = (otra) => { $('#fin-tiempo').hidden = true; tmReinicia(); if (otra) { tmEmpieza(); } };
-    $('#fin-vale').addEventListener('click', () => finCierra(false));
-    $('#fin-otra').addEventListener('click', () => finCierra(true));
-    $('#tm-marcha').addEventListener('click', tmAlterna);
-    $('#tm-reiniciar').addEventListener('click', tmReinicia);
+    const closeTimeUp = (again) => { $('#fin-tiempo').hidden = true; tmReset(); if (again) { tmStart(); } };
+    $('#fin-vale').addEventListener('click', () => closeTimeUp(false));
+    $('#fin-otra').addEventListener('click', () => closeTimeUp(true));
+    $('#tm-marcha').addEventListener('click', tmToggle);
+    $('#tm-reiniciar').addEventListener('click', tmReset);
     $('#tm-mas1').addEventListener('click', () => {
-        if (tm.marcha) { tm.fin = Math.min(tm.fin + 60000, Date.now() + MAX_TM); tm.total = Math.min(MAX_TM, tm.total + 60000); tm.avisado = false; tmTic(); return; }
-        if (tm.resta === tm.total) { tmPon(tm.total + 60000); return; }
-        tm.resta = Math.min(MAX_TM, tm.resta + 60000); tm.total = Math.max(tm.total, tm.resta); tmBotones(); tmPinta();
+        if (tm.marcha) { tm.fin = Math.min(tm.fin + 60000, Date.now() + MAX_TM); tm.total = Math.min(MAX_TM, tm.total + 60000); tm.avisado = false; tmTick(); return; }
+        if (tm.resta === tm.total) { tmSet(tm.total + 60000); return; }
+        tm.resta = Math.min(MAX_TM, tm.resta + 60000); tm.total = Math.max(tm.total, tm.resta); tmButtons(); tmPaint();
     });
-    // Los tiempos rápidos del modo (cinco, de los más cortos a los más largos).
-    const tmRapidos = () => {
-        const r = tmModo.get().rapidos;
+    // The quick times of the mode (five, from the shortest to the longest).
+    const tmQuickTimes = () => {
+        const r = tmByMode.get().rapidos;
         $$('.chip[data-min]').forEach((c, i) => { c.dataset.min = r[i] || c.dataset.min; c.textContent = t('tm_min_short', c.dataset.min); });
     };
-    tmRapidos();
-    // Al cambiar de modo, el temporizador toma lo de ese modo (si no está en marcha, el aspecto se ve ya).
+    tmQuickTimes();
+    // When the mode changes, the timer takes that mode's settings (if it is not running, the look shows at once).
     document.addEventListener('classtools:mode', () => {
-        const v = tmModo.get();
-        aspecto = ASPECTOS.includes(v.aspecto) ? v.aspecto : 'anillo';
-        viajero = v.viajero;
-        $$('#tm-aspectos button').forEach((x) => x.setAttribute('aria-checked', String(x.dataset.v === aspecto)));
-        tmPintaViajeros();
-        finalAnimado = v.final !== false; $('#tm-final').checked = finalAnimado;
-        tmRapidos(); tmChips(); pintaFavoritos(); tmPinta();
+        const v = tmByMode.get();
+        look = LOOKS.includes(v.aspecto) ? v.aspecto : 'anillo';
+        traveller = v.viajero;
+        $$('#tm-aspectos button').forEach((x) => x.setAttribute('aria-checked', String(x.dataset.v === look)));
+        tmPaintTravellers();
+        countdownOn = v.final !== false; $('#tm-final').checked = countdownOn;
+        tmQuickTimes(); tmChips(); paintFavourites(); tmPaint();
     });
-    $$('.chip[data-min]').forEach((c) => c.addEventListener('click', () => tmPon(Number(c.dataset.min) * 60000)));
-    $$('[data-ajusta]').forEach((b) => repite(b, () => {
-        const paso = Number(b.dataset.paso) * (b.dataset.ajusta === 'min' ? 60000 : 1000);
-        tmPon(Math.max(0, tm.total + paso));
+    $$('.chip[data-min]').forEach((c) => c.addEventListener('click', () => tmSet(Number(c.dataset.min) * 60000)));
+    $$('[data-ajusta]').forEach((b) => repeatWhileHeld(b, () => {
+        const step = Number(b.dataset.paso) * (b.dataset.ajusta === 'min' ? 60000 : 1000);
+        tmSet(Math.max(0, tm.total + step));
     }));
-    const leeCampos = () => {
+    const readFields = () => {
         const m = Math.max(0, Math.min(99, Math.floor(Number($('#tm-min').value) || 0)));
         const s = Math.max(0, Math.min(59, Math.floor(Number($('#tm-seg').value) || 0)));
-        tmPon((m * 60 + s) * 1000);
+        tmSet((m * 60 + s) * 1000);
     };
     ['#tm-min', '#tm-seg'].forEach((s) => {
-        $(s).addEventListener('change', leeCampos);
-        $(s).addEventListener('keydown', (e) => { if (e.key === 'Enter') { leeCampos(); } });
+        $(s).addEventListener('change', readFields);
+        $(s).addEventListener('keydown', (e) => { if (e.key === 'Enter') { readFields(); } });
         $(s).addEventListener('focus', (e) => e.target.select());
     });
 
-    // Por bloques de trabajo y descanso (un pomodoro para la clase): unos bloques de trabajo con un descanso entre
-    // cada dos. Al acabar cada parte suena, sale un aviso (en el descanso, un consejo: mirar lejos, estirarse, beber
-    // agua) y empieza la siguiente sola; al acabar el último bloque, el final de siempre. Cada modo empieza con los
-    // suyos (más cortos para los pequeños) y recuerda lo que ponga el profesor.
-    const bqModo = porModo('tm-bloques', {
+    // In work and rest blocks (a pomodoro for the class): a few work blocks with a rest between
+    // each two. At the end of each part it sounds, a notice shows (in the rest, a tip: look far away, stretch, drink
+    // water) and the next one starts by itself; after the last block, the usual end. Each mode starts with its
+    // own (shorter for the young ones) and remembers what the teacher sets.
+    const blocksByMode = byMode('tm-bloques', {
         early: { on: false, trabajo: 10, descanso: 3, n: 3 }, primary: { on: false, trabajo: 15, descanso: 5, n: 3 },
         secondary: { on: false, trabajo: 25, descanso: 5, n: 2 }, advanced: { on: false, trabajo: 25, descanso: 5, n: 4 },
     });
-    const BQ_LIMITES = { trabajo: [5, 60], descanso: [1, 20], n: [2, 8] };
-    const bqConf = () => {
-        const c = bqModo.get();
-        return Object.fromEntries(Object.entries(BQ_LIMITES).map(([k, [a, b]]) => [k, Math.max(a, Math.min(b, Math.round(Number(c[k]) || a)))]));
+    const BLOCK_LIMITS = { trabajo: [5, 60], descanso: [1, 20], n: [2, 8] };
+    const blockSettings = () => {
+        const c = blocksByMode.get();
+        return Object.fromEntries(Object.entries(BLOCK_LIMITS).map(([k, [a, b]]) => [k, Math.max(a, Math.min(b, Math.round(Number(c[k]) || a)))]));
     };
-    bqEstado = () => {
-        const c = bqConf();
-        return bq.fase === 'descanso' ? t('bq_rest_now') : t('bq_work_n', { n: bq.i + 1, of: c.n });
+    blockStatus = () => {
+        const c = blockSettings();
+        return blocks.fase === 'descanso' ? t('bq_rest_now') : t('bq_work_n', { n: blocks.i + 1, of: c.n });
     };
-    const bqPinta = () => {
-        const c = bqConf();
-        $$('#tm-tipo button').forEach((b) => b.setAttribute('aria-checked', String((b.dataset.v === 'bloques') === bq.on)));
-        $('#tm-bloques-caja').hidden = !bq.on;
-        $('#tm-rapidos-caja').hidden = bq.on; $('#tm-medida-caja').hidden = bq.on;
+    const paintBlocks = () => {
+        const c = blockSettings();
+        $$('#tm-tipo button').forEach((b) => b.setAttribute('aria-checked', String((b.dataset.v === 'bloques') === blocks.on)));
+        $('#tm-bloques-caja').hidden = !blocks.on;
+        $('#tm-rapidos-caja').hidden = blocks.on; $('#tm-medida-caja').hidden = blocks.on;
         $('#bq-trabajo').textContent = t('tm_min_short', c.trabajo);
         $('#bq-descanso').textContent = t('tm_min_short', c.descanso);
         $('#bq-n').textContent = c.n;
         $('#bq-resumen').textContent = t('bq_summary', { n: c.n, work: c.trabajo, rest: c.descanso, total: c.n * c.trabajo + (c.n - 1) * c.descanso });
-        $$('[data-bq]').forEach((b) => { const [a, z] = BQ_LIMITES[b.dataset.bq], v = c[b.dataset.bq]; b.disabled = Number(b.dataset.paso) < 0 ? v <= a : v >= z; });
+        $$('[data-bq]').forEach((b) => { const [a, z] = BLOCK_LIMITS[b.dataset.bq], v = c[b.dataset.bq]; b.disabled = Number(b.dataset.paso) < 0 ? v <= a : v >= z; });
     };
-    // Al primer bloque de trabajo, parado.
-    const bqDeCero = () => { Object.assign(bq, { fase: 'trabajo', i: 0 }); tmPon(bqConf().trabajo * 60000); };
-    // Acaba una parte: si queda otra, empieza sola (y devuelve true).
-    const bqSigue = () => {
-        const c = bqConf();
-        if (bq.fase === 'trabajo' && bq.i >= c.n - 1) { return false; }
-        if (bq.fase === 'trabajo') { bq.fase = 'descanso'; } else { bq.fase = 'trabajo'; bq.i++; }
-        const descanso = bq.fase === 'descanso';
-        tmPon((descanso ? c.descanso : c.trabajo) * 60000);
-        tmEmpieza();
-        suena(descanso ? 'fin' : 'aviso');
-        const aviso = descanso ? t('bq_tip_' + (1 + Math.floor(Math.random() * 6))) : t('bq_back', { n: bq.i + 1, of: c.n });
+    // To the first work block, stopped.
+    const blocksFromStart = () => { Object.assign(blocks, { fase: 'trabajo', i: 0 }); tmSet(blockSettings().trabajo * 60000); };
+    // A part ends: if another is left, it starts by itself (and returns true).
+    const blocksNext = () => {
+        const c = blockSettings();
+        if (blocks.fase === 'trabajo' && blocks.i >= c.n - 1) { return false; }
+        if (blocks.fase === 'trabajo') { blocks.fase = 'descanso'; } else { blocks.fase = 'trabajo'; blocks.i++; }
+        const isRest = blocks.fase === 'descanso';
+        tmSet((isRest ? c.descanso : c.trabajo) * 60000);
+        tmStart();
+        playSound(isRest ? 'fin' : 'aviso');
+        const notice = isRest ? t('bq_tip_' + (1 + Math.floor(Math.random() * 6))) : t('bq_back', { n: blocks.i + 1, of: c.n });
         const p = $('#tm-poco');
-        p.textContent = aviso; p.hidden = false;
-        clearTimeout(pocoTimer); pocoTimer = setTimeout(() => { p.hidden = true; }, 9000);
-        anuncia(aviso);
+        p.textContent = notice; p.hidden = false;
+        clearTimeout(noticeTimer); noticeTimer = setTimeout(() => { p.hidden = true; }, 9000);
+        announce(notice);
         return true;
     };
-    let bqAntes = tm.total;
-    const bqPon = (on) => {
-        if (on === bq.on) { return; }
-        bq.on = on; bqModo.set({ on });
-        if (on) { bqAntes = tm.total; bqDeCero(); } else { tmPon(bqAntes); }
-        bqPinta();
+    let timeBeforeBlocks = tm.total;
+    const setBlocks = (on) => {
+        if (on === blocks.on) { return; }
+        blocks.on = on; blocksByMode.set({ on });
+        if (on) { timeBeforeBlocks = tm.total; blocksFromStart(); } else { tmSet(timeBeforeBlocks); }
+        paintBlocks();
     };
-    $('#tm-tipo').addEventListener('click', (e) => { const b = e.target.closest('[data-v]'); if (b) { bqPon(b.dataset.v === 'bloques'); } });
+    $('#tm-tipo').addEventListener('click', (e) => { const b = e.target.closest('[data-v]'); if (b) { setBlocks(b.dataset.v === 'bloques'); } });
     $$('[data-bq]').forEach((b) => b.addEventListener('click', () => {
-        const k = b.dataset.bq, c = bqConf(), [a, z] = BQ_LIMITES[k];
-        bqModo.set({ [k]: Math.max(a, Math.min(z, c[k] + Number(b.dataset.paso) * (k === 'trabajo' ? 5 : 1))) });
-        // Parado y sin empezar, se ve ya; en marcha, vale para las partes que vienen.
-        if (!tm.marcha && tm.resta === tm.total) { bqDeCero(); } else { tmPinta(); }
-        bqPinta();
+        const k = b.dataset.bq, c = blockSettings(), [a, z] = BLOCK_LIMITS[k];
+        blocksByMode.set({ [k]: Math.max(a, Math.min(z, c[k] + Number(b.dataset.paso) * (k === 'trabajo' ? 5 : 1))) });
+        // Stopped and not started, it shows at once; running, it applies to the parts to come.
+        if (!tm.marcha && tm.resta === tm.total) { blocksFromStart(); } else { tmPaint(); }
+        paintBlocks();
     }));
     document.addEventListener('classtools:mode', () => {
-        const on = !!bqModo.get().on;
-        if (on !== bq.on) { bq.on = !on; bqPon(on); } else { bqPinta(); }
+        const on = !!blocksByMode.get().on;
+        if (on !== blocks.on) { blocks.on = !on; setBlocks(on); } else { paintBlocks(); }
     });
-    if (bqModo.get().on) { bqPon(true); } else { bqPinta(); }
+    if (blocksByMode.get().on) { setBlocks(true); } else { paintBlocks(); }
 
     // ===================================================================================================
-    // 2. Cronómetro
+    // 2. Stopwatch
     // ===================================================================================================
     const cr = { acum: 0, desde: 0, marcha: false, reloj: 0, vueltas: [] };
-    const crTiempo = () => cr.acum + (cr.marcha ? Date.now() - cr.desde : 0);
-    const fmtCr = (ms) => { const s = Math.floor(ms / 1000); return { p: fmtSeg(s), d: s >= 3600 ? '' : ',' + (Math.floor(ms / 100) % 10) }; };
-    const crPinta = () => {
-        const t = crTiempo(), { p, d } = fmtCr(t);
+    const crTime = () => cr.acum + (cr.marcha ? Date.now() - cr.desde : 0);
+    const formatStopwatch = (ms) => { const s = Math.floor(ms / 1000); return { p: formatSeconds(s), d: s >= 3600 ? '' : ',' + (Math.floor(ms / 100) % 10) }; };
+    const crPaint = () => {
+        const t = crTime(), { p, d } = formatStopwatch(t);
         $('#cr-principal').textContent = p; $('#cr-decima').textContent = d;
         $('#cr-cifras').classList.toggle('horas', t >= 3600000);
         $('#cr-cifras').classList.toggle('corre', cr.marcha);
-        insignias();
+        badges();
     };
-    const crBotones = () => {
+    const crButtons = () => {
         const b = $('#cr-marcha');
-        if (cr.marcha) { rotula(b, t('gen_pause'), 'pausa'); b.className = 'boton grande amarillo'; }
-        else { rotula(b, cr.acum ? t('gen_resume') : t('gen_start'), 'empezar'); b.className = 'boton grande verde'; }
+        if (cr.marcha) { relabel(b, t('gen_pause'), 'pausa'); b.className = 'boton grande amarillo'; }
+        else { relabel(b, cr.acum ? t('gen_resume') : t('gen_start'), 'empezar'); b.className = 'boton grande verde'; }
         $('#cr-vuelta').disabled = !cr.marcha;
     };
-    const crPintaVueltas = () => {
-        const hay = cr.vueltas.length > 0;
-        $('#cr-vueltas-caja').hidden = !hay;
-        $('#h-cronometro').classList.toggle('con-vueltas', hay);
+    const crPaintLaps = () => {
+        const hasLaps = cr.vueltas.length > 0;
+        $('#cr-vueltas-caja').hidden = !hasLaps;
+        $('#h-cronometro').classList.toggle('con-vueltas', hasLaps);
         $('#cr-vueltas').innerHTML = cr.vueltas.map((v, i) => ({ v, i })).reverse().map(({ v, i }) => {
-            const p = fmtCr(v.parcial), a = fmtCr(v.total);
+            const p = formatStopwatch(v.parcial), a = formatStopwatch(v.total);
             return `<li><span class="n">${t('cr_lap_n', i + 1)}</span><span class="parcial">${p.p}${p.d}</span><span class="acum">${t('cr_lap_total', a.p + a.d)}</span></li>`;
         }).join('');
     };
-    const crAlterna = () => {
+    const crToggle = () => {
         if (cr.marcha) { cr.acum += Date.now() - cr.desde; cr.marcha = false; clearInterval(cr.reloj); }
-        else { cr.desde = Date.now(); cr.marcha = true; cr.reloj = setInterval(crPinta, 100); }
-        crBotones(); crPinta();
+        else { cr.desde = Date.now(); cr.marcha = true; cr.reloj = setInterval(crPaint, 100); }
+        crButtons(); crPaint();
     };
-    $('#cr-marcha').addEventListener('click', crAlterna);
+    $('#cr-marcha').addEventListener('click', crToggle);
     $('#cr-vuelta').addEventListener('click', () => {
-        const t = crTiempo(), antes = cr.vueltas.length ? cr.vueltas[cr.vueltas.length - 1].total : 0;
-        cr.vueltas.push({ total: t, parcial: t - antes });
-        crPintaVueltas();
+        const t = crTime(), previousTotal = cr.vueltas.length ? cr.vueltas[cr.vueltas.length - 1].total : 0;
+        cr.vueltas.push({ total: t, parcial: t - previousTotal });
+        crPaintLaps();
     });
     $('#cr-reiniciar').addEventListener('click', () => {
         clearInterval(cr.reloj); Object.assign(cr, { acum: 0, marcha: false, vueltas: [] });
-        crBotones(); crPinta(); crPintaVueltas();
+        crButtons(); crPaint(); crPaintLaps();
     });
 
-    // Las pestañas del temporizador y del cronómetro avisan si siguen en marcha mientras usas otra herramienta.
-    const insignias = () => {
-        const it = $('#ins-temporizador'), ic = $('#ins-cronometro');
-        it.hidden = !(tm.marcha && !visibles().includes('temporizador'));
-        if (!it.hidden) { it.textContent = fmtSeg(Math.ceil(tm.resta / 1000)); }
-        ic.hidden = !(cr.marcha && !visibles().includes('cronometro'));
-        if (!ic.hidden) { ic.textContent = fmtSeg(Math.floor(crTiempo() / 1000)); }
+    // The tabs of the timer and the stopwatch show they are still running while another tool is in use.
+    const badges = () => {
+        const timerBadge = $('#ins-temporizador'), stopwatchBadge = $('#ins-cronometro');
+        timerBadge.hidden = !(tm.marcha && !visibleTools().includes('temporizador'));
+        if (!timerBadge.hidden) { timerBadge.textContent = formatSeconds(Math.ceil(tm.resta / 1000)); }
+        stopwatchBadge.hidden = !(cr.marcha && !visibleTools().includes('cronometro'));
+        if (!stopwatchBadge.hidden) { stopwatchBadge.textContent = formatSeconds(Math.floor(crTime() / 1000)); }
     };
 
     // ===================================================================================================
-    // Listas de clase (las usan «¿A quién le toca?» y «Hacer grupos»)
+    // Class lists (used by «Whose turn?» and «Make groups»)
     // ===================================================================================================
-    let listas = lee('listas', []);
-    if (!Array.isArray(listas)) { listas = []; }
-    listas = listas.filter((l) => l && typeof l.id === 'string' && typeof l.nombre === 'string' && Array.isArray(l.alumnos))
+    let ownLists = load('listas', []);
+    if (!Array.isArray(ownLists)) { ownLists = []; }
+    ownLists = ownLists.filter((l) => l && typeof l.id === 'string' && typeof l.nombre === 'string' && Array.isArray(l.alumnos))
         .map((l) => ({ id: l.id, nombre: l.nombre, alumnos: l.alumnos.filter((n) => typeof n === 'string' && n) }));
-    // Listas que llegan del aula (plugin «Herramientas de clase» de Moodle): los alumnos del curso y de cada
-    // grupo, con su foto. No se guardan en el navegador: se renuevan cada vez que se abre desde el curso.
-    const AULA = window.CLASSTOOLS && Array.isArray(window.CLASSTOOLS.lists) ? window.CLASSTOOLS : null;
-    const listasAula = AULA ? AULA.lists.map((l) => {
-        const vistos = {}, fotos = {}, ids = {}, veces = {};
-        const alumnos = (l.students || []).filter((a) => a && a.n).map((a) => {
-            vistos[a.n] = (vistos[a.n] || 0) + 1;
-            const n = vistos[a.n] > 1 ? `${a.n} (${vistos[a.n]})` : a.n;
-            if (a.f) { fotos[n] = a.f; }
-            if (a.i) { ids[n] = a.i; veces[n] = a.v || 0; }
+    // Lists that come from Moodle (the Class tools plugin): the students of the course and of each group, with their
+    // photo. They are not kept in the browser: they are renewed each time the board opens from the course.
+    const MOODLE = window.CLASSTOOLS && Array.isArray(window.CLASSTOOLS.lists) ? window.CLASSTOOLS : null;
+    const courseLists = MOODLE ? MOODLE.lists.map((l) => {
+        const seen = {}, photos = {}, ids = {}, timesPicked = {};
+        const students = (l.students || []).filter((a) => a && a.n).map((a) => {
+            seen[a.n] = (seen[a.n] || 0) + 1;
+            const n = seen[a.n] > 1 ? `${a.n} (${seen[a.n]})` : a.n;
+            if (a.f) { photos[n] = a.f; }
+            if (a.i) { ids[n] = a.i; timesPicked[n] = a.v || 0; }
             return n;
         });
-        return { id: 'aula-' + l.id, nombre: l.name, alumnos, fotos, ids, veces, aula: true };
+        return { id: 'aula-' + l.id, nombre: l.name, alumnos: students, fotos: photos, ids, veces: timesPicked, aula: true };
     }) : [];
-    // El profe también juega (si lo enciende): quien tiene la pantalla abierta entra en las listas del curso, con su
-    // foto. Sus turnos no se guardan en Moodle, y en el sorteo justo cuenta como uno más, sin colarse el primero.
-    const YO = AULA && AULA.me && AULA.me.n ? AULA.me : null;
-    const claveYo = 'conmigo-' + (AULA ? AULA.courseid : 0);
-    let conmigo = !!YO && lee(claveYo, false) === true;
-    const ponYo = () => {
-        listasAula.forEach((l) => {
+    // The teacher plays too (if they turn it on): whoever has the board open joins the lists of the course, with
+    // their photo. Their turns are not saved in Moodle, and in fair picking they count as one more, without jumping
+    // the queue.
+    const ME = MOODLE && MOODLE.me && MOODLE.me.n ? MOODLE.me : null;
+    const meKey = 'conmigo-' + (MOODLE ? MOODLE.courseid : 0);
+    let withMe = !!ME && load(meKey, false) === true;
+    const putMe = () => {
+        courseLists.forEach((l) => {
             if (l.yo) { l.alumnos = l.alumnos.filter((n) => n !== l.yo); delete l.fotos[l.yo]; delete l.veces[l.yo]; l.yo = null; }
-            if (!conmigo || !YO) { return; }
-            const n = l.alumnos.includes(YO.n) ? t('q_me_name', YO.n) : YO.n;
+            if (!withMe || !ME) { return; }
+            const n = l.alumnos.includes(ME.n) ? t('q_me_name', ME.n) : ME.n;
             const vs = Object.values(l.veces);
             l.yo = n; l.alumnos = l.alumnos.concat(n); l.veces[n] = vs.length ? Math.min(...vs) : 0;
-            if (YO.f) { l.fotos[n] = YO.f; }
+            if (ME.f) { l.fotos[n] = ME.f; }
         });
     };
-    ponYo();
-    // Si la sesión del aula virtual caduca (una pantalla encendida toda la mañana), lo que se envía no llega: se avisa
-    // en vez de perderlo en silencio, y lo pendiente sigue en este ordenador.
-    const SIN_SESION = ['requireloginerror', 'invalidsesskey', 'servicerequireslogin', 'sitemaintenance'];
-    const sinSesion = (j) => !!(j && j.errorcode && SIN_SESION.includes(j.errorcode));
-    const avisaSesion = () => {
+    putMe();
+    // If the Moodle session expires (a board on all morning), what is sent does not arrive: the board says so
+    // instead of losing it silently, and what is pending stays on this computer.
+    const NO_SESSION_ERRORS = ['requireloginerror', 'invalidsesskey', 'servicerequireslogin', 'sitemaintenance'];
+    const isNoSession = (j) => !!(j && j.errorcode && NO_SESSION_ERRORS.includes(j.errorcode));
+    const warnSession = () => {
         if (document.getElementById('aviso-sesion')) { return; }
         const a = document.createElement('div');
         a.className = 'aviso-sesion'; a.id = 'aviso-sesion'; a.setAttribute('role', 'alert');
@@ -892,828 +893,830 @@
         a.querySelector('button').addEventListener('click', () => location.reload());
         document.body.append(a);
     };
-    // Envíos al aula: el turno de cada sorteo y los equipos que se quieran guardar como grupos del curso.
-    const alAula = (url, datos) => fetch(url, {
+    // What goes to Moodle: the turn of each pick, and the teams the teacher wants to save as course groups.
+    const toMoodle = (url, fields) => fetch(url, {
         method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams(Object.assign({ sesskey: AULA.sesskey, courseid: AULA.courseid }, datos)),
+        body: new URLSearchParams(Object.assign({ sesskey: MOODLE.sesskey, courseid: MOODLE.courseid }, fields)),
     }).then((r) => r.json()).then((j) => {
-        if (sinSesion(j)) { avisaSesion(); }
+        if (isNoSession(j)) { warnSession(); }
         if (!j || !j.ok) { throw new Error((j && (j.error || j.message)) || 'error'); }
         return j;
     });
-    // Un turno más para ese alumno en todas las listas en las que está (el curso entero y su clase).
-    const sumaTurno = (id) => listasAula.forEach((x) => { Object.keys(x.ids).forEach((n) => { if (x.ids[n] === id) { x.veces[n] = (x.veces[n] || 0) + 1; } }); });
-    const todas = () => listasAula.concat(listas);
-    let listaActiva = lee('lista-activa', null);
-    if (!todas().some((l) => l.id === listaActiva)) { listaActiva = todas().length ? todas()[0].id : null; }
-    // Abierta desde un curso, empieza por la lista de ese curso.
-    if (listasAula.length && !listasAula.some((l) => l.id === listaActiva)) { listaActiva = listasAula[0].id; }
-    let salidos = lee('salidos', {});
-    if (!salidos || typeof salidos !== 'object') { salidos = {}; }
-    const guardaListas = () => {
-        guarda('listas', listas); guarda('lista-activa', listaActiva); guarda('salidos', salidos);
-        document.dispatchEvent(new CustomEvent('classtools:lists'));   // las demás herramientas (Azar…) refrescan sus listas
+    // One more turn for that student in every list they are in (the whole course and their class).
+    const addPick = (id) => courseLists.forEach((x) => { Object.keys(x.ids).forEach((n) => { if (x.ids[n] === id) { x.veces[n] = (x.veces[n] || 0) + 1; } }); });
+    const allLists = () => courseLists.concat(ownLists);
+    let activeListId = load('lista-activa', null);
+    if (!allLists().some((l) => l.id === activeListId)) { activeListId = allLists().length ? allLists()[0].id : null; }
+    // Opened from a course, it starts with the list of that course.
+    if (courseLists.length && !courseLists.some((l) => l.id === activeListId)) { activeListId = courseLists[0].id; }
+    let pickedOut = load('salidos', {});
+    if (!pickedOut || typeof pickedOut !== 'object') { pickedOut = {}; }
+    const saveLists = () => {
+        save('listas', ownLists); save('lista-activa', activeListId); save('salidos', pickedOut);
+        document.dispatchEvent(new CustomEvent('classtools:lists'));   // the other tools (Chance…) refresh their lists
     };
-    // Quién falta hoy: se apunta por lista y solo vale para hoy (mañana vuelven todos).
-    const hoy = () => { const d = new Date(); return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`; };
-    let faltan = lee('faltan', null);
-    if (!faltan || faltan.dia !== hoy() || !faltan.listas || typeof faltan.listas !== 'object') { faltan = { dia: hoy(), listas: {} }; }
-    const faltanDe = (l) => {
-        if (faltan.dia !== hoy()) { faltan = { dia: hoy(), listas: {} }; }
-        return (faltan.listas[l.id] || []).filter((n) => l.alumnos.includes(n));
+    // Who is missing today: noted per list and only for today (tomorrow everyone is back).
+    const today = () => { const d = new Date(); return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`; };
+    let absent = load('faltan', null);
+    if (!absent || absent.dia !== today() || !absent.listas || typeof absent.listas !== 'object') { absent = { dia: today(), listas: {} }; }
+    const absentFrom = (l) => {
+        if (absent.dia !== today()) { absent = { dia: today(), listas: {} }; }
+        return (absent.listas[l.id] || []).filter((n) => l.alumnos.includes(n));
     };
-    const presentes = (l) => { const f = faltanDe(l); return l.alumnos.filter((n) => !f.includes(n)); };
-    // Caras: la foto del aula o, si no tiene, sus iniciales. Las listas pegadas a mano no llevan cara.
-    const iniciales = (n) => n.replace(/\s*\(\d+\)$/, '').split(/\s+/).filter(Boolean).slice(0, 2).map((p) => p[0]).join('').toUpperCase();
-    const cara = (l, n, clase) => {
+    const presentIn = (l) => { const f = absentFrom(l); return l.alumnos.filter((n) => !f.includes(n)); };
+    // Faces: the photo from Moodle or, without one, the initials. Lists pasted by hand have no faces.
+    const initialsOf = (n) => n.replace(/\s*\(\d+\)$/, '').split(/\s+/).filter(Boolean).slice(0, 2).map((p) => p[0]).join('').toUpperCase();
+    const faceHtml = (l, n, cssClass) => {
         if (!l || !l.fotos) { return ''; }
         const f = l.fotos[n];
-        return f ? `<img class="${clase}" src="${escapa(f)}" alt="">`
-            : `<span class="${clase} iniciales" aria-hidden="true">${escapa(iniciales(n))}</span>`;
+        return f ? `<img class="${cssClass}" src="${escapeHtml(f)}" alt="">`
+            : `<span class="${cssClass} iniciales" aria-hidden="true">${escapeHtml(initialsOf(n))}</span>`;
     };
-    const precarga = (l) => {
+    const preloadPhotos = (l) => {
         if (!l || !l.fotos || l.precargada) { return; }
         l.precargada = true;
         Object.values(l.fotos).forEach((f) => { const i = new Image(); i.src = f; });
     };
-    // Limpia lo pegado: una persona por línea, sin números delante, sin tabuladores ni repetidos.
-    const limpiaNombres = (texto) => {
-        const vistos = {};
-        return String(texto || '').split(/\r?\n/)
+    // Cleans what was pasted: one person per line, no numbers in front, no tabs and no repeats.
+    const cleanNames = (text) => {
+        const seen = {};
+        return String(text || '').split(/\r?\n/)
             .map((l) => l.replace(/\t+/g, ' ').replace(/^\s*\d+\s*[.)\-:]\s*|^\s*\d+\s+/, '').replace(/\s+/g, ' ').trim())
             .filter(Boolean)
-            .map((n) => { vistos[n] = (vistos[n] || 0) + 1; return vistos[n] > 1 ? `${n} (${vistos[n]})` : n; });
+            .map((n) => { seen[n] = (seen[n] || 0) + 1; return seen[n] > 1 ? `${n} (${seen[n]})` : n; });
     };
-    const pintaSelects = () => {
-        const op = (l) => `<option value="${escapa(l.id)}">${escapa(l.nombre)} (${l.alumnos.length})</option>`;
-        const opciones = !listasAula.length ? listas.map(op).join('')
-            : `<optgroup label="${escapa(AULA.course || t('q_this_course'))}">${listasAula.map(op).join('')}</optgroup>`
-              + (listas.length ? `<optgroup label="${escapa(t('q_your_lists'))}">${listas.map(op).join('')}</optgroup>` : '');
+    const paintSelects = () => {
+        const option = (l) => `<option value="${escapeHtml(l.id)}">${escapeHtml(l.nombre)} (${l.alumnos.length})</option>`;
+        const listOptions = !courseLists.length ? ownLists.map(option).join('')
+            : `<optgroup label="${escapeHtml(MOODLE.course || t('q_this_course'))}">${courseLists.map(option).join('')}</optgroup>`
+              + (ownLists.length ? `<optgroup label="${escapeHtml(t('q_your_lists'))}">${ownLists.map(option).join('')}</optgroup>` : '');
         const q = $('#q-lista');
-        q.innerHTML = opciones || `<option value="">${t('q_no_lists')}</option>`;
-        q.disabled = !todas().length;
-        q.value = listaActiva || '';
-        const g = $('#g-lista'), antes = g.value;
-        g.innerHTML = opciones + `<option value="__pegar">${t('g_paste_now')}</option>`;
-        g.value = todas().some((l) => l.id === antes) || antes === '__pegar' ? antes : (listaActiva || '__pegar');
-        gCambiaLista();
+        q.innerHTML = listOptions || `<option value="">${t('q_no_lists')}</option>`;
+        q.disabled = !allLists().length;
+        q.value = activeListId || '';
+        const g = $('#g-lista'), previousValue = g.value;
+        g.innerHTML = listOptions + `<option value="__pegar">${t('g_paste_now')}</option>`;
+        g.value = allLists().some((l) => l.id === previousValue) || previousValue === '__pegar' ? previousValue : (activeListId || '__pegar');
+        gListChanged();
     };
 
-    // Editor (ventana) para crear, cambiar o borrar una lista.
+    // Editor (a dialog) to create, change or delete a list.
     const editor = $('#editor');
-    let editando = null, borrarTimer = 0;
-    const edCuenta = () => {
-        const n = limpiaNombres($('#ed-alumnos').value).length;
+    let editingId = null, deleteTimer = 0;
+    const editorCount = () => {
+        const n = cleanNames($('#ed-alumnos').value).length;
         $('#ed-cuenta').textContent = n ? `(${n})` : '';
     };
-    const abreEditor = (id, texto) => {
-        const l = listas.find((x) => x.id === id);
-        editando = l ? l.id : null;
+    const openEditor = (id, text) => {
+        const l = ownLists.find((x) => x.id === id);
+        editingId = l ? l.id : null;
         $('#ed-titulo').textContent = l ? t('ed_edit_list') : t('ed_new_list');
         $('#ed-nombre').value = l ? l.nombre : '';
-        $('#ed-alumnos').value = l ? l.alumnos.join('\n') : (texto || '');
+        $('#ed-alumnos').value = l ? l.alumnos.join('\n') : (text || '');
         $('#ed-borrar').hidden = !l;
-        $('#ed-borrar').classList.remove('confirma'); rotula($('#ed-borrar'), t('ed_delete'));
-        const nota = $('#ed-nota');
-        nota.classList.remove('error');
-        nota.textContent = almacen ? t('ed_note_local') : t('ed_note_nostore');
-        edCuenta();
+        $('#ed-borrar').classList.remove('confirma'); relabel($('#ed-borrar'), t('ed_delete'));
+        const note = $('#ed-nota');
+        note.classList.remove('error');
+        note.textContent = storageWorks ? t('ed_note_local') : t('ed_note_nostore');
+        editorCount();
         if (editor.showModal) { editor.showModal(); } else { editor.setAttribute('open', ''); }
         $('#ed-nombre').focus();
     };
-    const cierraEditor = () => { if (editor.close) { editor.close(); } else { editor.removeAttribute('open'); } };
-    $('#ed-alumnos').addEventListener('input', edCuenta);
-    $('#ed-cancelar').addEventListener('click', cierraEditor);
+    const closeEditor = () => { if (editor.close) { editor.close(); } else { editor.removeAttribute('open'); } };
+    $('#ed-alumnos').addEventListener('input', editorCount);
+    $('#ed-cancelar').addEventListener('click', closeEditor);
     $('#ed-form').addEventListener('submit', (e) => {
         e.preventDefault();
-        const alumnos = limpiaNombres($('#ed-alumnos').value);
-        if (!alumnos.length) {
-            const nota = $('#ed-nota'); nota.textContent = t('ed_need_one'); nota.classList.add('error');
+        const students = cleanNames($('#ed-alumnos').value);
+        if (!students.length) {
+            const note = $('#ed-nota'); note.textContent = t('ed_need_one'); note.classList.add('error');
             $('#ed-alumnos').focus(); return;
         }
-        const nombre = $('#ed-nombre').value.trim() || t('ed_default_name', listas.length + 1);
-        let l = listas.find((x) => x.id === editando);
+        const listName = $('#ed-nombre').value.trim() || t('ed_default_name', ownLists.length + 1);
+        let l = ownLists.find((x) => x.id === editingId);
         if (l) {
-            Object.assign(l, { nombre, alumnos });
-            if (salidos[l.id]) { salidos[l.id] = salidos[l.id].filter((n) => alumnos.includes(n)); }
+            Object.assign(l, { nombre: listName, alumnos: students });
+            if (pickedOut[l.id]) { pickedOut[l.id] = pickedOut[l.id].filter((n) => students.includes(n)); }
         } else {
-            l = { id: 'l' + Date.now().toString(36) + azar(1000), nombre, alumnos };
-            listas.push(l);
+            l = { id: 'l' + Date.now().toString(36) + randomInt(1000), nombre: listName, alumnos: students };
+            ownLists.push(l);
         }
-        listaActiva = l.id;
-        guardaListas();
-        qUltimo = null;
-        pintaSelects(); quienPinta();
-        if (actual === 'grupos') { $('#g-lista').value = l.id; gCambiaLista(); }
-        cierraEditor();
-        anuncia(t('ed_saved', { name: nombre, n: alumnos.length }));
+        activeListId = l.id;
+        saveLists();
+        qLast = null;
+        paintSelects(); pickerPaint();
+        if (current === 'grupos') { $('#g-lista').value = l.id; gListChanged(); }
+        closeEditor();
+        announce(t('ed_saved', { name: listName, n: students.length }));
     });
     $('#ed-borrar').addEventListener('click', () => {
         const b = $('#ed-borrar');
         if (!b.classList.contains('confirma')) {
-            b.classList.add('confirma'); rotula(b, t('ed_confirm_delete'));
-            clearTimeout(borrarTimer);
-            borrarTimer = setTimeout(() => { b.classList.remove('confirma'); rotula(b, t('ed_delete')); }, 4000);
+            b.classList.add('confirma'); relabel(b, t('ed_confirm_delete'));
+            clearTimeout(deleteTimer);
+            deleteTimer = setTimeout(() => { b.classList.remove('confirma'); relabel(b, t('ed_delete')); }, 4000);
             return;
         }
-        listas = listas.filter((x) => x.id !== editando);
-        delete salidos[editando];
-        listaActiva = todas().length ? todas()[0].id : null;
-        qUltimo = null;
-        guardaListas(); pintaSelects(); quienPinta(); cierraEditor();
-        anuncia(t('ed_deleted'));
+        ownLists = ownLists.filter((x) => x.id !== editingId);
+        delete pickedOut[editingId];
+        activeListId = allLists().length ? allLists()[0].id : null;
+        qLast = null;
+        saveLists(); paintSelects(); pickerPaint(); closeEditor();
+        announce(t('ed_deleted'));
     });
 
     // ===================================================================================================
-    // 3. ¿A quién le toca?
+    // 3. Whose turn?
     // ===================================================================================================
-    const qNombre = $('#q-nombre'), qCaja = $('#q-caja'), qFoto = $('#q-foto');
-    $('#q-salidos').dataset.vacio = t('q_none_yet');   // lo que dice la lista mientras no ha salido nadie
-    let qSinRepetir = lee('sin-repetir', true) !== false, qBarajando = false, qUltimo = null, qTimer = 0;
-    // Rasca y gana: el nombre elegido sale tapado (y en la columna de los que ya salieron, borroso hasta destaparlo).
-    let qRasca = lee('quien-rasca', false) === true, qTapado = null;
-    $('#q-sinrepetir').checked = qSinRepetir;
-    let qJusto = lee('justo', true) !== false;
-    $('#q-justo').checked = qJusto;
-    const conTurnos = (l) => !!(l && l.aula && AULA.pickurl);
-    const listaQ = () => todas().find((l) => l.id === listaActiva) || null;
-    // La cara encima del nombre (solo en las listas del aula).
-    const pintaCara = (l, n) => {
-        const con = !!(l && l.fotos && n);
-        qCaja.classList.toggle('con-foto', con);
-        qFoto.hidden = !con;
-        qFoto.innerHTML = con ? cara(l, n, 'cara-grande') : '';
+    const qName = $('#q-nombre'), qBox = $('#q-caja'), qPhoto = $('#q-foto');
+    $('#q-salidos').dataset.vacio = t('q_none_yet');   // what the list says while nobody has been picked
+    let qNoRepeat = load('sin-repetir', true) !== false, qShuffling = false, qLast = null, qTimer = 0;
+    // Scratch to reveal: the chosen name comes out covered (and blurred in the column of those already picked, until
+    // uncovered).
+    let qScratch = load('quien-rasca', false) === true, qCovered = null;
+    $('#q-sinrepetir').checked = qNoRepeat;
+    let qFair = load('justo', true) !== false;
+    $('#q-justo').checked = qFair;
+    const withPicks = (l) => !!(l && l.aula && MOODLE.pickurl);
+    const pickerList = () => allLists().find((l) => l.id === activeListId) || null;
+    // The face above the name (only in the lists from Moodle).
+    const paintFace = (l, n) => {
+        const hasFace = !!(l && l.fotos && n);
+        qBox.classList.toggle('con-foto', hasFace);
+        qPhoto.hidden = !hasFace;
+        qPhoto.innerHTML = hasFace ? faceHtml(l, n, 'cara-grande') : '';
     };
-    // Con cara, el nombre solo tiene el hueco que queda debajo.
-    const altoNombre = () => (qCaja.classList.contains('con-foto') ? Math.max(40, qCaja.clientHeight - qFoto.offsetHeight - 12) : undefined);
-    // Busca el tamaño de letra más grande con el que el texto cabe en su caja.
-    const encaja = (el, caja, texto, alto) => {
-        const w = caja.clientWidth, h = (alto === undefined ? caja.clientHeight : alto) * 0.94;
+    // With a face, the name only has the space left below it.
+    const nameHeight = () => (qBox.classList.contains('con-foto') ? Math.max(40, qBox.clientHeight - qPhoto.offsetHeight - 12) : undefined);
+    // Finds the largest font size at which the text fits in its box.
+    const fitText = (el, box, text, height) => {
+        const w = box.clientWidth, h = (height === undefined ? box.clientHeight : height) * 0.94;
         if (!w || !h) { return; }
-        const guardado = el.textContent;
-        if (texto !== undefined) { el.textContent = texto; }
+        const savedText = el.textContent;
+        if (text !== undefined) { el.textContent = text; }
         let lo = 14, hi = Math.max(16, Math.min(h * 0.82, w * 0.34));
         for (let i = 0; i < 9; i++) {
             const mid = (lo + hi) / 2;
             el.style.fontSize = mid + 'px';
-            // Cabe si ninguna palabra se sale por los lados y el total no pasa del alto.
+            // It fits if no word sticks out at the sides and the whole is not taller than the height.
             if (el.scrollWidth <= el.clientWidth + 1 && el.offsetHeight <= h) { lo = mid; } else { hi = mid; }
         }
         el.style.fontSize = Math.floor(lo) + 'px';
-        if (texto !== undefined) { el.textContent = guardado; }
+        if (text !== undefined) { el.textContent = savedText; }
     };
-    const qEncaja = () => {
-        if (qNombre.classList.contains('aviso-vacio')) { qNombre.style.fontSize = ''; return; }
-        if (!qBarajando) { encaja(qNombre, qCaja, undefined, altoNombre()); }
+    const qFit = () => {
+        if (qName.classList.contains('aviso-vacio')) { qName.style.fontSize = ''; return; }
+        if (!qShuffling) { fitText(qName, qBox, undefined, nameHeight()); }
     };
-    const quienPinta = () => {
-        const l = listaQ();
+    const pickerPaint = () => {
+        const l = pickerList();
         $('#q-editar').disabled = !l;
-        $('#q-editar').hidden = !!(l && l.aula);   // las del aula se renuevan solas: no se editan aquí
+        $('#q-editar').hidden = !!(l && l.aula);   // the lists from Moodle renew themselves: they are not edited here
         $('#q-faltan').hidden = !l;
-        $('#q-justo-caja').hidden = !conTurnos(l);
-        $('#q-participa').hidden = !conTurnos(l);
+        $('#q-justo-caja').hidden = !withPicks(l);
+        $('#q-participa').hidden = !withPicks(l);
         $('#q-elegir').hidden = !l;
         $('#q-crear').hidden = !!l;
-        const conColumna = !!l && qSinRepetir;
-        $('#q-salidos-caja').hidden = !conColumna;
-        $('.quien-cuerpo').classList.toggle('sin-columna', !conColumna);
+        const withColumn = !!l && qNoRepeat;
+        $('#q-salidos-caja').hidden = !withColumn;
+        $('.quien-cuerpo').classList.toggle('sin-columna', !withColumn);
         if (!l) {
-            pintaCara(null);
-            qNombre.className = 'nombre-grande aviso-vacio';
-            qNombre.textContent = t('q_empty');
+            paintFace(null);
+            qName.className = 'nombre-grande aviso-vacio';
+            qName.textContent = t('q_empty');
             $('#q-pie').textContent = t('q_empty_note');
-            qEncaja(); return;
+            qFit(); return;
         }
-        precarga(l);
-        const pres = presentes(l), nf = l.alumnos.length - pres.length;
-        rotula($('#q-faltan'), nf ? t('q_absent_n', nf) : t('q_absent'));
-        const s = (salidos[l.id] || []).filter((n) => pres.includes(n));
-        $('#q-cuenta').textContent = t('q_count', { a: s.length, b: pres.length });
-        $('#q-salidos').innerHTML = s.slice().reverse().map((n) => `<li${n === qTapado ? ' class="ct-tapado"' : ''}>${cara(l, n, 'cara-mini')}<span>${escapa(n)}</span></li>`).join('');
-        $('#q-reset').disabled = !s.length || qBarajando;
-        $('#q-lista').disabled = qBarajando;
-        const quedan = qSinRepetir ? pres.length - s.length : pres.length;
-        if (!qBarajando) {
-            if (qUltimo) { qNombre.className = 'nombre-grande'; qNombre.textContent = qUltimo; }
-            else { qNombre.className = 'nombre-grande espera'; qNombre.textContent = '?'; }
-            pintaCara(l, qUltimo);
-            const hay = nf ? t('q_students_absent', { n: pres.length, m: nf }) : t('q_students', pres.length);
+        preloadPhotos(l);
+        const presentNow = presentIn(l), absentCount = l.alumnos.length - presentNow.length;
+        relabel($('#q-faltan'), absentCount ? t('q_absent_n', absentCount) : t('q_absent'));
+        const s = (pickedOut[l.id] || []).filter((n) => presentNow.includes(n));
+        $('#q-cuenta').textContent = t('q_count', { a: s.length, b: presentNow.length });
+        $('#q-salidos').innerHTML = s.slice().reverse().map((n) => `<li${n === qCovered ? ' class="ct-tapado"' : ''}>${faceHtml(l, n, 'cara-mini')}<span>${escapeHtml(n)}</span></li>`).join('');
+        $('#q-reset').disabled = !s.length || qShuffling;
+        $('#q-lista').disabled = qShuffling;
+        const remaining = qNoRepeat ? presentNow.length - s.length : presentNow.length;
+        if (!qShuffling) {
+            if (qLast) { qName.className = 'nombre-grande'; qName.textContent = qLast; }
+            else { qName.className = 'nombre-grande espera'; qName.textContent = '?'; }
+            paintFace(l, qLast);
+            const countText = absentCount ? t('q_students_absent', { n: presentNow.length, m: absentCount }) : t('q_students', presentNow.length);
             $('#q-pie').textContent = !l.alumnos.length ? t('q_no_students')
-                : !pres.length ? t('q_all_absent')
-                : !quedan ? t('q_all_out')
-                : qUltimo ? (qSinRepetir ? t('q_left', quedan) : hay)
-                : t('q_ready', { count: hay, list: l.nombre });
+                : !presentNow.length ? t('q_all_absent')
+                : !remaining ? t('q_all_out')
+                : qLast ? (qNoRepeat ? t('q_left', remaining) : countText)
+                : t('q_ready', { count: countText, list: l.nombre });
         }
-        $('#q-elegir').disabled = qBarajando || !quedan;
-        qEncaja();
+        $('#q-elegir').disabled = qShuffling || !remaining;
+        qFit();
     };
-    const elegir = () => {
-        const l = listaQ();
-        if (!l || qBarajando) { return; }
-        const tapa = qCaja.querySelector('.ct-rasca');
-        if (tapa) { tapa.remove(); qTapado = null; }
-        const s = salidos[l.id] || [], pres = presentes(l);
-        const bolsa = qSinRepetir ? pres.filter((n) => !s.includes(n)) : pres.slice();
-        if (!bolsa.length) { quienPinta(); return; }
-        // Sorteo justo (listas del aula): sale alguien de entre los que menos veces han salido estas semanas.
-        const justo = conTurnos(l) && qJusto;
-        const minimo = justo ? Math.min(...bolsa.map((n) => l.veces[n] || 0)) : 0;
-        const candidatos = justo ? bolsa.filter((n) => (l.veces[n] || 0) === minimo) : bolsa;
-        const elegido = candidatos[azar(candidatos.length)];
-        const acaba = () => {
-            qBarajando = false; qUltimo = elegido;
-            if (qSinRepetir) { const ya = salidos[l.id] || []; salidos[l.id] = ya.includes(elegido) ? ya : ya.concat(elegido); guarda('salidos', salidos); }
-            if (conTurnos(l) && l.ids[elegido]) {
-                sumaTurno(l.ids[elegido]);
-                // El cromo del profe: unos cuantos turnos en la misma clase y el mismo día son un uso de verdad.
-                const C = window.ClasstoolsCore, clave = 'turnos-' + l.id + '-' + new Date().toDateString();
-                const turnos = (Number(lee(clave, 0)) || 0) + 1;
-                guarda(clave, turnos);
-                if (C.logro && C.logros && turnos >= C.logros.thr.picks) { C.logro('sacanombres'); }
-                alAula(AULA.pickurl, { userid: l.ids[elegido] }).catch(() => { /* sin conexión: ese turno no cuenta, el sorteo sigue */ });
-            } else if (l.yo === elegido) { l.veces[elegido] = (l.veces[elegido] || 0) + 1; }   // el profe: solo aquí
-            const destapa = () => {
-                qTapado = null;
+    const pickStudent = () => {
+        const l = pickerList();
+        if (!l || qShuffling) { return; }
+        const cover = qBox.querySelector('.ct-rasca');
+        if (cover) { cover.remove(); qCovered = null; }
+        const s = pickedOut[l.id] || [], presentNow = presentIn(l);
+        const pool = qNoRepeat ? presentNow.filter((n) => !s.includes(n)) : presentNow.slice();
+        if (!pool.length) { pickerPaint(); return; }
+        // Fair picking (lists from Moodle): someone comes out among those picked fewest times these weeks.
+        const fair = withPicks(l) && qFair;
+        const fewest = fair ? Math.min(...pool.map((n) => l.veces[n] || 0)) : 0;
+        const candidates = fair ? pool.filter((n) => (l.veces[n] || 0) === fewest) : pool;
+        const chosen = candidates[randomInt(candidates.length)];
+        const finishPick = () => {
+            qShuffling = false; qLast = chosen;
+            if (qNoRepeat) { const already = pickedOut[l.id] || []; pickedOut[l.id] = already.includes(chosen) ? already : already.concat(chosen); save('salidos', pickedOut); }
+            if (withPicks(l) && l.ids[chosen]) {
+                addPick(l.ids[chosen]);
+                // The teacher's sticker: a few turns in the same class on the same day are a real use.
+                const C = window.ClasstoolsCore, dayKey = 'turnos-' + l.id + '-' + new Date().toDateString();
+                const picksToday = (Number(load(dayKey, 0)) || 0) + 1;
+                save(dayKey, picksToday);
+                if (C.logro && C.logros && picksToday >= C.logros.thr.picks) { C.logro('sacanombres'); }
+                toMoodle(MOODLE.pickurl, { userid: l.ids[chosen] }).catch(() => { /* offline: that turn does not count, the pick goes on */ });
+            } else if (l.yo === chosen) { l.veces[chosen] = (l.veces[chosen] || 0) + 1; }   // the teacher: only here
+            const reveal = () => {
+                qCovered = null;
                 $$('#q-salidos .ct-tapado').forEach((li) => li.classList.remove('ct-tapado'));
-                qNombre.className = 'nombre-grande elegido';
-                suena('elegido');
-                anuncia(t('q_turn', elegido));
+                qName.className = 'nombre-grande elegido';
+                playSound('elegido');
+                announce(t('q_turn', chosen));
             };
-            if (qRasca && window.ClasstoolsScratch) {
-                qTapado = elegido;
-                quienPinta();
-                window.ClasstoolsScratch.cover(qCaja, { onReveal: destapa });
-                suena('tic');
+            if (qScratch && window.ClasstoolsScratch) {
+                qCovered = chosen;
+                pickerPaint();
+                window.ClasstoolsScratch.cover(qBox, { onReveal: reveal });
+                playSound('tic');
                 return;
             }
-            quienPinta();
-            destapa();
+            pickerPaint();
+            reveal();
         };
-        if (reducido() || bolsa.length < 2) { acaba(); return; }
-        // Barajado: los nombres pasan cada vez más despacio (unos dos segundos) hasta pararse en el elegido.
-        qBarajando = true; $('#q-elegir').disabled = true;
-        qNombre.className = 'nombre-grande barajando';
-        pintaCara(l, bolsa[0]);
-        const largo = bolsa.reduce((a, b) => (b.length > a.length ? b : a), '');
-        encaja(qNombre, qCaja, largo, altoNombre());
+        if (reducedMotion() || pool.length < 2) { finishPick(); return; }
+        // Shuffle: the names go by slower and slower (about two seconds) until they stop at the chosen one.
+        qShuffling = true; $('#q-elegir').disabled = true;
+        qName.className = 'nombre-grande barajando';
+        paintFace(l, pool[0]);
+        const longest = pool.reduce((a, b) => (b.length > a.length ? b : a), '');
+        fitText(qName, qBox, longest, nameHeight());
         $('#q-pie').textContent = t('q_shuffling');
-        let paso = 45, previo = null;
-        const gira = () => {
+        let delay = 45, previousName = null;
+        const spin = () => {
             let n;
-            do { n = bolsa[azar(bolsa.length)]; } while (n === previo);
-            previo = n; qNombre.textContent = n; pintaCara(l, n); suena('tic');
-            paso *= 1.13;
-            qTimer = setTimeout(paso > 300 ? acaba : gira, paso > 300 ? 280 : paso);
+            do { n = pool[randomInt(pool.length)]; } while (n === previousName);
+            previousName = n; qName.textContent = n; paintFace(l, n); playSound('tic');
+            delay *= 1.13;
+            qTimer = setTimeout(delay > 300 ? finishPick : spin, delay > 300 ? 280 : delay);
         };
-        gira();
+        spin();
     };
-    $('#q-elegir').addEventListener('click', elegir);
-    $('#q-crear').addEventListener('click', () => abreEditor(null));
-    $('#q-nueva').addEventListener('click', () => abreEditor(null));
-    $('#q-editar').addEventListener('click', () => abreEditor(listaActiva));
-    $('#q-lista').addEventListener('change', (e) => { listaActiva = e.target.value || null; qUltimo = null; guarda('lista-activa', listaActiva); quienPinta(); });
-    $('#q-sinrepetir').addEventListener('change', (e) => { qSinRepetir = e.target.checked; guarda('sin-repetir', qSinRepetir); quienPinta(); });
-    $('#q-rasca').checked = qRasca;
-    $('#q-rasca').addEventListener('change', (e) => { qRasca = e.target.checked; guarda('quien-rasca', qRasca); });
-    $('#q-justo').addEventListener('change', (e) => { qJusto = e.target.checked; guarda('justo', qJusto); });
-    // «El profe también juega», en «¿A quién le toca?» y en «Grupos» (es el mismo interruptor).
+    $('#q-elegir').addEventListener('click', pickStudent);
+    $('#q-crear').addEventListener('click', () => openEditor(null));
+    $('#q-nueva').addEventListener('click', () => openEditor(null));
+    $('#q-editar').addEventListener('click', () => openEditor(activeListId));
+    $('#q-lista').addEventListener('change', (e) => { activeListId = e.target.value || null; qLast = null; save('lista-activa', activeListId); pickerPaint(); });
+    $('#q-sinrepetir').addEventListener('change', (e) => { qNoRepeat = e.target.checked; save('sin-repetir', qNoRepeat); pickerPaint(); });
+    $('#q-rasca').checked = qScratch;
+    $('#q-rasca').addEventListener('change', (e) => { qScratch = e.target.checked; save('quien-rasca', qScratch); });
+    $('#q-justo').addEventListener('change', (e) => { qFair = e.target.checked; save('justo', qFair); });
+    // «The teacher plays too», in «Whose turn?» and in «Groups» (it is the same switch).
     ['#q-yo', '#g-yo'].forEach((sel) => {
-        $(sel + '-caja').hidden = !YO;
-        $(sel).checked = conmigo;
+        $(sel + '-caja').hidden = !ME;
+        $(sel).checked = withMe;
         $(sel).addEventListener('change', (e) => {
-            conmigo = e.target.checked; guarda(claveYo, conmigo);
-            $('#q-yo').checked = conmigo; $('#g-yo').checked = conmigo;
-            ponYo(); pintaSelects(); quienPinta();
+            withMe = e.target.checked; save(meKey, withMe);
+            $('#q-yo').checked = withMe; $('#g-yo').checked = withMe;
+            putMe(); paintSelects(); pickerPaint();
             document.dispatchEvent(new CustomEvent('classtools:lists'));
         });
     });
-    // Participación: cuántas veces le ha tocado a cada uno en el curso (con cualquier profesor), quien menos arriba.
-    const dParticipa = $('#participa');
+    // Participation: how many times each one has been picked in the course (with any teacher), fewest first.
+    const dParticipation = $('#participa');
     $('#q-participa').addEventListener('click', () => {
-        const l = listaQ();
-        if (!conTurnos(l)) { return; }
-        const filas = l.alumnos.slice().sort((a, b) => (l.veces[a] || 0) - (l.veces[b] || 0) || a.localeCompare(b, 'es'));
-        const max = Math.max(1, ...filas.map((n) => l.veces[n] || 0));
+        const l = pickerList();
+        if (!withPicks(l)) { return; }
+        const rows = l.alumnos.slice().sort((a, b) => (l.veces[a] || 0) - (l.veces[b] || 0) || a.localeCompare(b, 'es'));
+        const max = Math.max(1, ...rows.map((n) => l.veces[n] || 0));
         $('#p-titulo').textContent = `${t('q_participation')} · ${l.nombre}`;
-        $('#p-nota').textContent = t('q_participation_note', AULA.days);
-        $('#p-lista').innerHTML = filas.map((n) => {
+        $('#p-nota').textContent = t('q_participation_note', MOODLE.days);
+        $('#p-lista').innerHTML = rows.map((n) => {
             const v = l.veces[n] || 0;
-            return `<li>${cara(l, n, 'cara-mini')}<span class="p-nombre">${escapa(n)}</span>`
+            return `<li>${faceHtml(l, n, 'cara-mini')}<span class="p-nombre">${escapeHtml(n)}</span>`
                 + `<span class="p-barra" aria-hidden="true"><span style="width:${Math.round(v / max * 100)}%"></span></span><span class="p-veces">${v}</span></li>`;
         }).join('');
-        if (dParticipa.showModal) { dParticipa.showModal(); } else { dParticipa.setAttribute('open', ''); }
+        if (dParticipation.showModal) { dParticipation.showModal(); } else { dParticipation.setAttribute('open', ''); }
     });
-    $('#q-reset').addEventListener('click', () => { const l = listaQ(); if (l) { salidos[l.id] = []; guarda('salidos', salidos); } qUltimo = null; quienPinta(); });
-    let qMarco = 0;
-    if (window.ResizeObserver) { new ResizeObserver(() => { cancelAnimationFrame(qMarco); qMarco = requestAnimationFrame(qEncaja); }).observe(qCaja); }
-    HERR.quien = { entra: () => requestAnimationFrame(qEncaja), sale: () => { if (qBarajando) { clearTimeout(qTimer); qBarajando = false; quienPinta(); } } };
+    $('#q-reset').addEventListener('click', () => { const l = pickerList(); if (l) { pickedOut[l.id] = []; save('salidos', pickedOut); } qLast = null; pickerPaint(); });
+    let qFrame = 0;
+    if (window.ResizeObserver) { new ResizeObserver(() => { cancelAnimationFrame(qFrame); qFrame = requestAnimationFrame(qFit); }).observe(qBox); }
+    TOOLS.quien = { entra: () => requestAnimationFrame(qFit), sale: () => { if (qShuffling) { clearTimeout(qTimer); qShuffling = false; pickerPaint(); } } };
 
-    // ¿Quién falta hoy? (ventana): se toca a quien no ha venido y ya no sale ni entra en los grupos.
-    const dFaltan = $('#faltan');
-    let fLista = null;
-    const fTitulo = () => { const n = faltanDe(fLista).length; $('#f-titulo').textContent = n ? t('q_absent_n', n) : t('q_absent'); };
-    const abreFaltan = (l) => {
+    // Who is missing today? (a dialog): tap whoever has not come, and they are left out of picks and groups.
+    const dAbsent = $('#faltan');
+    let absentList = null;
+    const absentTitle = () => { const n = absentFrom(absentList).length; $('#f-titulo').textContent = n ? t('q_absent_n', n) : t('q_absent'); };
+    const openAbsent = (l) => {
         if (!l) { return; }
-        fLista = l;
-        const f = faltanDe(l);
-        $('#f-rejilla').innerHTML = l.alumnos.map((n) => `<button type="button" class="alumno-f${l.fotos ? '' : ' sin-cara'}" aria-pressed="${f.includes(n)}" data-n="${escapa(n)}">`
-            + `${cara(l, n, 'cara-media')}<span>${escapa(n)}</span></button>`).join('');
-        fTitulo();
-        if (dFaltan.showModal) { dFaltan.showModal(); } else { dFaltan.setAttribute('open', ''); }
+        absentList = l;
+        const f = absentFrom(l);
+        $('#f-rejilla').innerHTML = l.alumnos.map((n) => `<button type="button" class="alumno-f${l.fotos ? '' : ' sin-cara'}" aria-pressed="${f.includes(n)}" data-n="${escapeHtml(n)}">`
+            + `${faceHtml(l, n, 'cara-media')}<span>${escapeHtml(n)}</span></button>`).join('');
+        absentTitle();
+        if (dAbsent.showModal) { dAbsent.showModal(); } else { dAbsent.setAttribute('open', ''); }
     };
     $('#f-rejilla').addEventListener('click', (e) => {
         const b = e.target.closest('.alumno-f');
-        if (!b || !fLista) { return; }
-        const n = b.dataset.n, f = faltanDe(fLista), falta = !f.includes(n);
-        faltan.listas[fLista.id] = falta ? f.concat(n) : f.filter((x) => x !== n);
-        guarda('faltan', faltan);
-        b.setAttribute('aria-pressed', String(falta));
-        fTitulo();
+        if (!b || !absentList) { return; }
+        const n = b.dataset.n, f = absentFrom(absentList), isAbsent = !f.includes(n);
+        absent.listas[absentList.id] = isAbsent ? f.concat(n) : f.filter((x) => x !== n);
+        save('faltan', absent);
+        b.setAttribute('aria-pressed', String(isAbsent));
+        absentTitle();
     });
     $('#f-todos').addEventListener('click', () => {
-        if (!fLista) { return; }
-        faltan.listas[fLista.id] = [];
-        guarda('faltan', faltan);
+        if (!absentList) { return; }
+        absent.listas[absentList.id] = [];
+        save('faltan', absent);
         $$('#f-rejilla .alumno-f').forEach((b) => b.setAttribute('aria-pressed', 'false'));
-        fTitulo();
+        absentTitle();
     });
-    dFaltan.addEventListener('close', () => {
-        const n = faltanDe(fLista).length;
-        quienPinta(); gCambiaLista();
-        anuncia(n ? t('q_absent_n_sr', n) : t('q_all_here'));
+    dAbsent.addEventListener('close', () => {
+        const n = absentFrom(absentList).length;
+        pickerPaint(); gListChanged();
+        announce(n ? t('q_absent_n_sr', n) : t('q_all_here'));
     });
-    $('#q-faltan').addEventListener('click', () => abreFaltan(listaQ()));
+    $('#q-faltan').addEventListener('click', () => openAbsent(pickerList()));
 
     // ===================================================================================================
-    // 4. Hacer grupos
+    // 4. Make groups
     // ===================================================================================================
-    const COLORES = [['#164281'], ['#ce1423'], ['#067e36'], ['#5b2fb8'], ['#fbbe17', true], ['#0e7c86'], ['#c2410c'], ['#0f2f5e']];
-    let gModo = lee('grupos-modo', 'num') === 'tam' ? 'tam' : 'num';
-    let gN = Math.max(2, Math.min(15, Number(lee('grupos-n', 4)) || 4));
-    const gRejilla = $('#g-rejilla');
-    const gLista = () => todas().find((x) => x.id === $('#g-lista').value) || null;
-    const gNombres = () => {
-        if ($('#g-lista').value === '__pegar') { return limpiaNombres($('#g-pegados').value); }
-        const l = gLista();
-        return l ? presentes(l) : [];
+    const GROUP_COLOURS = [['#164281'], ['#ce1423'], ['#067e36'], ['#5b2fb8'], ['#fbbe17', true], ['#0e7c86'], ['#c2410c'], ['#0f2f5e']];
+    let gMode = load('grupos-modo', 'num') === 'tam' ? 'tam' : 'num';
+    let gN = Math.max(2, Math.min(15, Number(load('grupos-n', 4)) || 4));
+    const gGrid = $('#g-rejilla');
+    const gList = () => allLists().find((x) => x.id === $('#g-lista').value) || null;
+    const gNames = () => {
+        if ($('#g-lista').value === '__pegar') { return cleanNames($('#g-pegados').value); }
+        const l = gList();
+        return l ? presentIn(l) : [];
     };
-    const gVacio = (texto) => { gRejilla.classList.add('vacia'); gRejilla.innerHTML = `<div class="vacio">${icono('grupos')}<p>${texto}</p></div>`; };
-    const gPintaModo = () => {
-        $$('#g-modo button').forEach((b) => b.setAttribute('aria-checked', String(b.dataset.modo === gModo)));
+    const gEmpty = (text) => { gGrid.classList.add('vacia'); gGrid.innerHTML = `<div class="vacio">${icono('grupos')}<p>${text}</p></div>`; };
+    const gPaintMode = () => {
+        $$('#g-modo button').forEach((b) => b.setAttribute('aria-checked', String(b.dataset.modo === gMode)));
         $('#g-n').textContent = gN;
-        $('#g-n').setAttribute('aria-label', gModo === 'num' ? t('g_n_groups', gN) : t('g_n_size', gN));
+        $('#g-n').setAttribute('aria-label', gMode === 'num' ? t('g_n_groups', gN) : t('g_n_size', gN));
     };
-    const gListo = () => rotula($('#g-hacer'), t('g_make'), 'mezclar');
-    let gUltimos = null, gHechos = null;   // gHechos: los últimos grupos hechos, con su lista (los usa el Marcador)
-    // Repartir con emoción: en vez de salir todos de golpe, una tarjeta baraja los nombres, se para en uno, dice su
-    // grupo y el nombre vuela a su sitio, aquí y allá, hasta el último (los primeros y los últimos, más despacio).
-    let gEmocion = lee('grupos-emocion', false) === true;
-    let gRasca = lee('grupos-rasca', false) === true;   // rasca y gana: cada grupo, tapado hasta que lo rascan
-    let gReparto = null;   // el reparto en marcha: { acaba } los coloca a todos ya
-    // Un rol para cada uno dentro de su grupo, de un juego de roles listo (tareas del grupo, por materia, los de la
-    // enseñanza recíproca para leer) o de los del profesor. Los roles nombran la tarea, no a la persona. El reparto es
-    // justo: a cada uno le toca antes el rol que menos ha tenido con esa lista (y, a igualdad, quien menos roles ha
-    // tenido); el recuento se guarda en el navegador.
-    let gRoles = lee('grupos-roles', false) === true;
-    const JUEGOS_ROLES = {
+    const gReady = () => relabel($('#g-hacer'), t('g_make'), 'mezclar');
+    let gToSave = null, gMade = null;   // gMade: the last groups made, with their list (the Scoreboard uses them)
+    // Deal with suspense: instead of all coming out at once, a card shuffles the names, stops at one, says its
+    // group and the name flies to its place, here and there, until the last one (the first and the last ones, slower).
+    let gSuspense = load('grupos-emocion', false) === true;
+    let gScratch = load('grupos-rasca', false) === true;   // scratch to reveal: each group, covered until scratched
+    let gDealing = null;   // the deal in progress: { acaba } (finish) places everyone at once
+    // A role for each one in their group, from a ready set of roles (group tasks, by subject, those of
+    // reciprocal teaching for reading) or the teacher's own. Roles name the task, not the person. The share-out is
+    // fair: each one first gets the role they have had least with that list (and, if even, whoever has had fewest
+    // roles); the count is kept in the browser.
+    let gWithRoles = load('grupos-roles', false) === true;
+    const ROLE_SETS = {
         tasks: ['rl_spokesperson', 'rl_notes', 'rl_materials', 'rl_time'],
         music: ['rl_flute', 'rl_glockenspiel', 'rl_tambourine', 'rl_dance'],
         science: ['rl_measure', 'rl_record', 'rl_build', 'rl_photo'],
         reading: ['rl_predict', 'rl_question', 'rl_clarify', 'rl_summarise'],
     };
-    const gPropios = () => { const r = lee('roles-nombres', null); return Array.isArray(r) && r.length ? r : null; };
-    // Quien ya había escrito sus roles los sigue teniendo.
-    let gJuegoRoles = lee('roles-juego', gPropios() ? 'own' : 'tasks');
-    if (gJuegoRoles !== 'own' && !JUEGOS_ROLES[gJuegoRoles]) { gJuegoRoles = 'tasks'; }
-    const ROLES_BASE = () => JUEGOS_ROLES.tasks.map((k) => t(k));
-    const ROL_COLORES = ['#164281', '#ce1423', '#067e36', '#5b2fb8', '#c2410c', '#0e7c86'];
-    const gListaRoles = () => (gJuegoRoles === 'own' ? gPropios() || ROLES_BASE() : JUEGOS_ROLES[gJuegoRoles].map((k) => t(k)));
-    const gNombreLi = (li) => { const x = li.querySelector(':scope > span:not(.rol):not(.iniciales)'); return x ? x.textContent : ''; };
-    const gPonRoles = () => {
-        $$('.grupo li .rol', gRejilla).forEach((x) => x.remove());
-        $('#g-rotar').hidden = !(gRoles && gHechos);
-        if (!gRoles || !gHechos) { gEncaja(); return; }
-        const roles = gListaRoles(), clave = gHechos.lista ? gHechos.lista.id : '__pegar';
-        const hist = lee('roles-historial', {}), h = hist[clave] || {};
-        const veces = (n, r) => ((h[n] || {})[r] || 0);
+    const gOwnRoles = () => { const r = load('roles-nombres', null); return Array.isArray(r) && r.length ? r : null; };
+    // Whoever had already written their roles keeps them.
+    let gRoleSet = load('roles-juego', gOwnRoles() ? 'own' : 'tasks');
+    if (gRoleSet !== 'own' && !ROLE_SETS[gRoleSet]) { gRoleSet = 'tasks'; }
+    const BASE_ROLES = () => ROLE_SETS.tasks.map((k) => t(k));
+    const ROLE_COLOURS = ['#164281', '#ce1423', '#067e36', '#5b2fb8', '#c2410c', '#0e7c86'];
+    const gRoleNames = () => (gRoleSet === 'own' ? gOwnRoles() || BASE_ROLES() : ROLE_SETS[gRoleSet].map((k) => t(k)));
+    const gNameOf = (li) => { const x = li.querySelector(':scope > span:not(.rol):not(.iniciales)'); return x ? x.textContent : ''; };
+    const gGiveRoles = () => {
+        $$('.grupo li .rol', gGrid).forEach((x) => x.remove());
+        $('#g-rotar').hidden = !(gWithRoles && gMade);
+        if (!gWithRoles || !gMade) { gFit(); return; }
+        const roles = gRoleNames(), listKey = gMade.lista ? gMade.lista.id : '__pegar';
+        const hist = load('roles-historial', {}), h = hist[listKey] || {};
+        const timesHad = (n, r) => ((h[n] || {})[r] || 0);
         const total = (n) => Object.values(h[n] || {}).reduce((a, b) => a + b, 0);
-        // Lo que cuesta dar el rol r a n: las veces que ya lo tuvo (al cuadrado, para repartirlos) y un poco por los
-        // roles que ya tuvo en total. Se empieza al azar y se mejora cambiando parejas hasta que no se puede más.
-        const coste = (n, r) => 10 * veces(n, r) * veces(n, r) + total(n);
-        $$('.grupo', gRejilla).forEach((art, gi) => {
-            const lis = $$('li', art), gente = baraja((gHechos.grupos[gi] || []).slice());
-            const rs = baraja(roles.slice()).slice(0, gente.length);
-            const quien = rs.map((_, i) => gente[i]), fuera = gente.slice(rs.length);
-            for (let mejora = true, vueltas = 0; mejora && vueltas < 50; vueltas++) {
-                mejora = false;
+        // What giving role r to n costs: the times they already had it (squared, to spread them) and a little for the
+        // roles they have had in all. It starts at random and improves by swapping pairs until it cannot any more.
+        const cost = (n, r) => 10 * timesHad(n, r) * timesHad(n, r) + total(n);
+        $$('.grupo', gGrid).forEach((art, gi) => {
+            const items = $$('li', art), people = shuffle((gMade.grupos[gi] || []).slice());
+            const rs = shuffle(roles.slice()).slice(0, people.length);
+            const holder = rs.map((_, i) => people[i]), leftOver = people.slice(rs.length);
+            for (let improved = true, rounds = 0; improved && rounds < 50; rounds++) {
+                improved = false;
                 for (let i = 0; i < rs.length; i++) {
                     for (let j = i + 1; j < rs.length; j++) {
-                        if (coste(quien[j], rs[i]) + coste(quien[i], rs[j]) < coste(quien[i], rs[i]) + coste(quien[j], rs[j])) {
-                            [quien[i], quien[j]] = [quien[j], quien[i]]; mejora = true;
+                        if (cost(holder[j], rs[i]) + cost(holder[i], rs[j]) < cost(holder[i], rs[i]) + cost(holder[j], rs[j])) {
+                            [holder[i], holder[j]] = [holder[j], holder[i]]; improved = true;
                         }
                     }
-                    for (let k = 0; k < fuera.length; k++) {
-                        if (coste(fuera[k], rs[i]) < coste(quien[i], rs[i])) { [quien[i], fuera[k]] = [fuera[k], quien[i]]; mejora = true; }
+                    for (let k = 0; k < leftOver.length; k++) {
+                        if (cost(leftOver[k], rs[i]) < cost(holder[i], rs[i])) { [holder[i], leftOver[k]] = [leftOver[k], holder[i]]; improved = true; }
                     }
                 }
             }
             rs.forEach((r, i) => {
-                const n = quien[i];
-                h[n] = h[n] || {}; h[n][r] = veces(n, r) + 1;
-                const li = lis.find((x) => gNombreLi(x) === n);
+                const n = holder[i];
+                h[n] = h[n] || {}; h[n][r] = timesHad(n, r) + 1;
+                const li = items.find((x) => gNameOf(x) === n);
                 if (li) {
                     const b = document.createElement('span');
-                    b.className = 'rol'; b.textContent = r; b.style.setProperty('--rc', ROL_COLORES[roles.indexOf(r) % ROL_COLORES.length]);
+                    b.className = 'rol'; b.textContent = r; b.style.setProperty('--rc', ROLE_COLOURS[roles.indexOf(r) % ROLE_COLOURS.length]);
                     li.append(b);
                 }
             });
         });
-        hist[clave] = h; guarda('roles-historial', hist);
-        gEncaja();
+        hist[listKey] = h; save('roles-historial', hist);
+        gFit();
     };
-    function gCambiaLista() {
-        const pegar = $('#g-lista').value === '__pegar', l = gLista();
-        $('#g-moodle').hidden = true; gUltimos = null;
-        $('#g-pegados').hidden = !pegar;
-        $('#g-guardar').hidden = !pegar;
+    function gListChanged() {
+        const pasting = $('#g-lista').value === '__pegar', l = gList();
+        $('#g-moodle').hidden = true; gToSave = null;
+        $('#g-pegados').hidden = !pasting;
+        $('#g-guardar').hidden = !pasting;
         $('#g-faltan').hidden = !l;
-        if (l) { precarga(l); const nf = l.alumnos.length - presentes(l).length; rotula($('#g-faltan'), nf ? t('q_absent_n', nf) : t('q_absent')); }
-        $('#g-guardar').disabled = !limpiaNombres($('#g-pegados').value).length;
-        gListo();
+        if (l) { preloadPhotos(l); const absentCount = l.alumnos.length - presentIn(l).length; relabel($('#g-faltan'), absentCount ? t('q_absent_n', absentCount) : t('q_absent')); }
+        $('#g-guardar').disabled = !cleanNames($('#g-pegados').value).length;
+        gReady();
     }
-    const gHacer = () => {
-        if (gReparto) { gReparto.acaba(); return; }
-        const nombres = gNombres();
-        if (nombres.length < 2) {
+    const gMake = () => {
+        if (gDealing) { gDealing.acaba(); return; }
+        const namesToSplit = gNames();
+        if (namesToSplit.length < 2) {
             $('#g-resumen').textContent = t('g_need_two');
-            gVacio($('#g-lista').value === '__pegar' ? t('g_paste_hint') : t('g_list_empty'));
+            gEmpty($('#g-lista').value === '__pegar' ? t('g_paste_hint') : t('g_list_empty'));
             return;
         }
-        const b = baraja(nombres.slice()), lg = $('#g-lista').value === '__pegar' ? null : gLista();
-        const k = gModo === 'num' ? Math.min(gN, b.length) : Math.max(1, Math.round(b.length / gN));
-        const grupos = Array.from({ length: k }, () => []);
-        b.forEach((n, i) => grupos[i % k].push(n));
-        const rasca = gRasca && b.length > 1 && !!window.ClasstoolsScratch;
-        const emocion = gEmocion && !rasca && b.length > 1;
-        gRejilla.classList.remove('vacia');
-        // Con emoción, cada nombre ocupa ya su sitio pero sin verse: así la letra no cambia mientras van saliendo.
-        gRejilla.innerHTML = grupos.map((g, i) => {
-            const [c, claro] = COLORES[i % COLORES.length];
-            const retraso = reducido() ? 0 : i * 60;
-            return `<article class="grupo${claro ? ' claro' : ''}" style="--c:${c}; animation-delay:${retraso}ms" data-gi="${i}">
-                <h3 title="${escapa(t('g_drag_hint'))}"><span class="g-titulo">${t('g_group_n', i + 1)}</span> <small>${emocion ? 0 : g.length}</small></h3>
-                <ul>${g.map((n, ni) => `<li${emocion ? ` class="por-salir" data-n="${ni}"` : ''}>${cara(lg, n, 'cara-mini')}<span>${escapa(n)}</span></li>`).join('')}</ul></article>`;
+        const b = shuffle(namesToSplit.slice()), lg = $('#g-lista').value === '__pegar' ? null : gList();
+        const k = gMode === 'num' ? Math.min(gN, b.length) : Math.max(1, Math.round(b.length / gN));
+        const groups = Array.from({ length: k }, () => []);
+        b.forEach((n, i) => groups[i % k].push(n));
+        const withScratch = gScratch && b.length > 1 && !!window.ClasstoolsScratch;
+        const withSuspense = gSuspense && !withScratch && b.length > 1;
+        gGrid.classList.remove('vacia');
+        // With suspense, each name already takes its place, unseen: so the font size does not change as they come out.
+        gGrid.innerHTML = groups.map((g, i) => {
+            const [c, light] = GROUP_COLOURS[i % GROUP_COLOURS.length];
+            const delayMs = reducedMotion() ? 0 : i * 60;
+            return `<article class="grupo${light ? ' claro' : ''}" style="--c:${c}; animation-delay:${delayMs}ms" data-gi="${i}">
+                <h3 title="${escapeHtml(t('g_drag_hint'))}"><span class="g-titulo">${t('g_group_n', i + 1)}</span> <small>${withSuspense ? 0 : g.length}</small></h3>
+                <ul>${g.map((n, ni) => `<li${withSuspense ? ` class="por-salir" data-n="${ni}"` : ''}>${faceHtml(lg, n, 'cara-mini')}<span>${escapeHtml(n)}</span></li>`).join('')}</ul></article>`;
         }).join('');
         $('#g-resumen').textContent = '';
         $('#g-moodle').hidden = true; $('#g-rotar').hidden = true;
-        gEncaja();
-        const listo = () => {
-            const tams = grupos.map((g) => g.length), mn = Math.min(...tams), mx = Math.max(...tams);
+        gFit();
+        const whenDone = () => {
+            const sizes = groups.map((g) => g.length), mn = Math.min(...sizes), mx = Math.max(...sizes);
             $('#g-resumen').textContent = t(k === 1 ? 'g_summary_one' : 'g_summary_many', { n: b.length, k, size: mn === mx ? mn : t('g_sizes', { a: mn, b: mx }) });
-            rotula($('#g-hacer'), t('gen_again'), 'otra');
-            gHechos = { lista: lg, grupos };
-            // El cromo del profe: grupos de una lista del curso que se quedan dos minutos en pantalla (o se guardan).
-            const C = window.ClasstoolsCore, hechos = gHechos;
+            relabel($('#g-hacer'), t('gen_again'), 'otra');
+            gMade = { lista: lg, grupos: groups };
+            // The teacher's sticker: groups of a list of the course that stay two minutes on screen (or are saved).
+            const C = window.ClasstoolsCore, madeNow = gMade;
             if (C.logro && C.logros && lg && lg.aula && b.length >= C.logros.thr.students) {
-                setTimeout(() => { if (gHechos === hechos) { C.logro('repartequipos'); } }, 120000);
+                setTimeout(() => { if (gMade === madeNow) { C.logro('repartequipos'); } }, 120000);
             }
-            // Guardarlos como grupos del curso: solo si se pulsa (por defecto no se crea nada).
-            gUltimos = lg && lg.aula && AULA.groupsurl ? { lista: lg, grupos } : null;
-            $('#g-moodle').hidden = !gUltimos; $('#g-moodle').disabled = false;
+            // Saving them as course groups: only when asked (by default nothing is created).
+            gToSave = lg && lg.aula && MOODLE.groupsurl ? { lista: lg, grupos: groups } : null;
+            $('#g-moodle').hidden = !gToSave; $('#g-moodle').disabled = false;
             $('#g-borrar').hidden = false;
-            rotula($('#g-moodle'), t('g_save_course'), 'guardar');
-            gPonRoles();
-            suena(emocion ? 'elegido' : 'dado');
-            anuncia(t('g_made', k));
+            relabel($('#g-moodle'), t('g_save_course'), 'guardar');
+            gGiveRoles();
+            playSound(withSuspense ? 'elegido' : 'dado');
+            announce(t('g_made', k));
         };
-        if (emocion) { gReparte(grupos, lg, listo); } else { listo(); }
-        if (rasca) { $$('.grupo ul', gRejilla).forEach((ul) => window.ClasstoolsScratch.cover(ul, { onReveal: () => suena('card') })); }
+        if (withSuspense) { gDeal(groups, lg, whenDone); } else { whenDone(); }
+        if (withScratch) { $$('.grupo ul', gGrid).forEach((ul) => window.ClasstoolsScratch.cover(ul, { onReveal: () => playSound('card') })); }
     };
-    const gReparte = (grupos, lg, listo) => {
-        // Otra vez barajados, para que salgan aquí y allá y no grupo por grupo.
-        const turnos = baraja(grupos.flatMap((g, gi) => g.map((n, ni) => ({ n, gi, ni }))));
-        const arts = $$('.grupo', gRejilla), cuenta = grupos.map(() => 0);
-        // Cada grupo se llena de arriba abajo: el que sale ocupa el primer hueco libre (su nombre ya estaba en el grupo,
-        // escondido en otro hueco, y se cambian).
-        const suyo = (x) => arts[x.gi].querySelector(`li[data-n="${x.ni}"]`);
-        const hueco = (x) => $$('li', arts[x.gi])[cuenta[x.gi]];
-        // La tarjeta ocupa el panel de la izquierda mientras tanto (los grupos quedan a la vista), con el botón debajo.
-        const carta = document.createElement('div');
-        carta.className = 'g-bombo-carta'; carta.setAttribute('aria-hidden', 'true');
-        carta.innerHTML = `<p class="g-bombo-ante">${escapa(t('g_and_now'))}</p>
+    const gDeal = (groups, lg, whenDone) => {
+        // Shuffled again, so they come out here and there and not group by group.
+        const order = shuffle(groups.flatMap((g, gi) => g.map((n, ni) => ({ n, gi, ni }))));
+        const arts = $$('.grupo', gGrid), filled = groups.map(() => 0);
+        // Each group fills from top to bottom: the one who comes out takes the first free slot (their name was already
+        // in the group, hidden in another slot, and they swap).
+        const ownSlot = (x) => arts[x.gi].querySelector(`li[data-n="${x.ni}"]`);
+        const nextSlot = (x) => $$('li', arts[x.gi])[filled[x.gi]];
+        // Meanwhile the card takes the left panel (the groups stay in sight), with the button below.
+        const card = document.createElement('div');
+        card.className = 'g-bombo-carta'; card.setAttribute('aria-hidden', 'true');
+        card.innerHTML = `<p class="g-bombo-ante">${escapeHtml(t('g_and_now'))}</p>
             <div class="g-bombo-cara"></div><p class="g-bombo-nombre"></p><p class="g-bombo-grupo"></p>`;
-        $('#g-hacer').before(carta);
+        $('#g-hacer').before(card);
         $('#h-grupos').classList.add('repartiendo');
-        const nombre = carta.querySelector('.g-bombo-nombre'), grupo = carta.querySelector('.g-bombo-grupo'), foto = carta.querySelector('.g-bombo-cara');
-        const muestra = (n) => { foto.innerHTML = n ? cara(lg, n, 'cara-bombo') : ''; nombre.textContent = n || '…'; };
-        let vivo = true;
-        const coloca = (x) => {
-            const li = hueco(x), suyoLi = suyo(x);
-            if (!li || !suyoLi || !suyoLi.classList.contains('por-salir')) { return; }
-            if (li !== suyoLi) { [li.innerHTML, suyoLi.innerHTML] = [suyoLi.innerHTML, li.innerHTML]; [li.dataset.n, suyoLi.dataset.n] = [suyoLi.dataset.n, li.dataset.n]; }
+        const cardName = card.querySelector('.g-bombo-nombre'), cardGroup = card.querySelector('.g-bombo-grupo'), cardFace = card.querySelector('.g-bombo-cara');
+        const showName = (n) => { cardFace.innerHTML = n ? faceHtml(lg, n, 'cara-bombo') : ''; cardName.textContent = n || '…'; };
+        let running = true;
+        const place = (x) => {
+            const li = nextSlot(x), ownLi = ownSlot(x);
+            if (!li || !ownLi || !ownLi.classList.contains('por-salir')) { return; }
+            if (li !== ownLi) { [li.innerHTML, ownLi.innerHTML] = [ownLi.innerHTML, li.innerHTML]; [li.dataset.n, ownLi.dataset.n] = [ownLi.dataset.n, li.dataset.n]; }
             li.classList.remove('por-salir');
-            if (vivo && !reducido()) { li.classList.add('sale'); arts[x.gi].classList.remove('recibe'); void arts[x.gi].offsetWidth; arts[x.gi].classList.add('recibe'); }
-            arts[x.gi].querySelector('h3 small').textContent = ++cuenta[x.gi];
+            if (running && !reducedMotion()) { li.classList.add('sale'); arts[x.gi].classList.remove('recibe'); void arts[x.gi].offsetWidth; arts[x.gi].classList.add('recibe'); }
+            arts[x.gi].querySelector('h3 small').textContent = ++filled[x.gi];
         };
-        const acaba = () => {
-            if (!vivo) { return; }
-            vivo = false; gReparto = null;
-            turnos.forEach(coloca);
-            carta.remove();
+        const finishDeal = () => {
+            if (!running) { return; }
+            running = false; gDealing = null;
+            order.forEach(place);
+            card.remove();
             $('#h-grupos').classList.remove('repartiendo');
-            listo();
+            whenDone();
         };
-        gReparto = { acaba };
-        rotula($('#g-hacer'), t('g_place_all'), 'pasar');
-        const pausa = (ms) => new Promise((r) => { setTimeout(r, ms); });
-        // El nombre sale de la tarjeta y aterriza en su hueco.
-        const vuela = (x, ms) => new Promise((r) => {
-            const li = hueco(x), suyoLi = suyo(x);
-            if (reducido() || !li || !suyoLi || !li.animate) { r(); return; }
-            const de = nombre.getBoundingClientRect(), a = li.getBoundingClientRect();
-            const fantasma = document.createElement('div');
-            fantasma.className = 'g-vuela'; fantasma.setAttribute('aria-hidden', 'true'); fantasma.innerHTML = suyoLi.innerHTML;
-            Object.assign(fantasma.style, { left: a.left + 'px', top: a.top + 'px', width: a.width + 'px', height: a.height + 'px', fontSize: getComputedStyle(li).fontSize });
-            document.body.append(fantasma);
-            const dx = de.left + de.width / 2 - (a.left + a.width / 2), dy = de.top + de.height / 2 - (a.top + a.height / 2);
-            fantasma.animate([{ transform: `translate(${dx}px, ${dy}px) scale(1.4)`, opacity: 0.3 }, { transform: 'none', opacity: 1 }],
-                { duration: ms, easing: 'cubic-bezier(.3, .7, .3, 1)' }).onfinish = () => { fantasma.remove(); r(); };
+        gDealing = { acaba: finishDeal };
+        relabel($('#g-hacer'), t('g_place_all'), 'pasar');
+        const wait = (ms) => new Promise((r) => { setTimeout(r, ms); });
+        // The name leaves the card and lands in its slot.
+        const fly = (x, ms) => new Promise((r) => {
+            const li = nextSlot(x), ownLi = ownSlot(x);
+            if (reducedMotion() || !li || !ownLi || !li.animate) { r(); return; }
+            const fromRect = cardName.getBoundingClientRect(), a = li.getBoundingClientRect();
+            const ghost = document.createElement('div');
+            ghost.className = 'g-vuela'; ghost.setAttribute('aria-hidden', 'true'); ghost.innerHTML = ownLi.innerHTML;
+            Object.assign(ghost.style, { left: a.left + 'px', top: a.top + 'px', width: a.width + 'px', height: a.height + 'px', fontSize: getComputedStyle(li).fontSize });
+            document.body.append(ghost);
+            const dx = fromRect.left + fromRect.width / 2 - (a.left + a.width / 2), dy = fromRect.top + fromRect.height / 2 - (a.top + a.height / 2);
+            ghost.animate([{ transform: `translate(${dx}px, ${dy}px) scale(1.4)`, opacity: 0.3 }, { transform: 'none', opacity: 1 }],
+                { duration: ms, easing: 'cubic-bezier(.3, .7, .3, 1)' }).onfinish = () => { ghost.remove(); r(); };
         });
-        const base = Math.max(750, Math.min(1700, 22000 / turnos.length));
+        const base = Math.max(750, Math.min(1700, 22000 / order.length));
         (async () => {
-            for (let i = 0; i < turnos.length; i++) {
-                const x = turnos[i], quedan = turnos.slice(i);
-                const ritmo = base * (i < 2 ? 1.3 : (turnos.length - i <= 3 ? 1.7 : 1));
-                carta.classList.remove('elegida', 'con-grupo', 'claro');
-                grupo.textContent = '';
-                if (reducido()) {
-                    muestra('');
-                    await pausa(ritmo * 0.4);
+            for (let i = 0; i < order.length; i++) {
+                const x = order[i], remaining = order.slice(i);
+                const pace = base * (i < 2 ? 1.3 : (order.length - i <= 3 ? 1.7 : 1));
+                card.classList.remove('elegida', 'con-grupo', 'claro');
+                cardGroup.textContent = '';
+                if (reducedMotion()) {
+                    showName('');
+                    await wait(pace * 0.4);
                 } else {
-                    // Barajar: los nombres que quedan, cada vez más despacio.
-                    const fin = performance.now() + ritmo * 0.4;
-                    for (let espera = 45; vivo && performance.now() < fin; espera *= 1.18) {
-                        muestra(quedan[azar(quedan.length)].n); suena('tic');
-                        await pausa(espera);
+                    // Shuffle: the names left, slower and slower.
+                    const until = performance.now() + pace * 0.4;
+                    for (let delayMs = 45; running && performance.now() < until; delayMs *= 1.18) {
+                        showName(remaining[randomInt(remaining.length)].n); playSound('tic');
+                        await wait(delayMs);
                     }
                 }
-                if (!vivo) { return; }
-                muestra(x.n); carta.classList.add('elegida'); suena('cuenta');
-                await pausa(ritmo * 0.2);
-                if (!vivo) { return; }
-                const [c, claro] = COLORES[x.gi % COLORES.length];
-                carta.style.setProperty('--c', c); carta.classList.toggle('claro', !!claro); carta.classList.add('con-grupo');
-                grupo.textContent = t('g_group_n', x.gi + 1);
-                anuncia(t('g_goes_to', { name: x.n, n: x.gi + 1 }));
-                await pausa(ritmo * 0.2);
-                if (!vivo) { return; }
-                await vuela(x, Math.max(280, ritmo * 0.2));
-                if (!vivo) { return; }
-                coloca(x);
+                if (!running) { return; }
+                showName(x.n); card.classList.add('elegida'); playSound('cuenta');
+                await wait(pace * 0.2);
+                if (!running) { return; }
+                const [c, light] = GROUP_COLOURS[x.gi % GROUP_COLOURS.length];
+                card.style.setProperty('--c', c); card.classList.toggle('claro', !!light); card.classList.add('con-grupo');
+                cardGroup.textContent = t('g_group_n', x.gi + 1);
+                announce(t('g_goes_to', { name: x.n, n: x.gi + 1 }));
+                await wait(pace * 0.2);
+                if (!running) { return; }
+                await fly(x, Math.max(280, pace * 0.2));
+                if (!running) { return; }
+                place(x);
             }
-            acaba();
+            finishDeal();
         })();
     };
-    // Letra de los grupos tan grande como quepa sin desplazar (en la pizarra se lee desde el fondo).
-    const gEncaja = () => {
-        if (gRejilla.classList.contains('vacia') || getComputedStyle(gRejilla).overflowY === 'visible' || !gRejilla.clientHeight) { gRejilla.style.fontSize = ''; return; }
-        // De grande a pequeña: al cambiar la letra cambia el número de columnas, así que no vale una búsqueda binaria.
+    // The font of the groups as big as fits without scrolling (on the board it is read from the back).
+    const gFit = () => {
+        if (gGrid.classList.contains('vacia') || getComputedStyle(gGrid).overflowY === 'visible' || !gGrid.clientHeight) { gGrid.style.fontSize = ''; return; }
+        // From big to small: changing the font changes the number of columns, so a binary search will not do.
         let fs = 44;
         for (; fs > 12; fs -= 1) {
-            gRejilla.style.fontSize = fs + 'px';
-            if (gRejilla.scrollHeight <= gRejilla.clientHeight + 1) { break; }
+            gGrid.style.fontSize = fs + 'px';
+            if (gGrid.scrollHeight <= gGrid.clientHeight + 1) { break; }
         }
-        gRejilla.style.fontSize = fs + 'px';
+        gGrid.style.fontSize = fs + 'px';
     };
-    let gMarco = 0;
-    if (window.ResizeObserver) { new ResizeObserver(() => { cancelAnimationFrame(gMarco); gMarco = requestAnimationFrame(gEncaja); }).observe(gRejilla); }
-    HERR.grupos = { entra: () => requestAnimationFrame(gEncaja) };
-    $('#g-hacer').addEventListener('click', gHacer);
-    $('#g-roles').checked = gRoles;
-    $('#g-roles-caja').hidden = !gRoles;
-    $('#g-roles-texto').placeholder = ROLES_BASE().join('\n');
-    $('#g-roles-texto').value = (lee('roles-nombres', null) || []).join('\n');
-    $('#g-roles-juego').value = gJuegoRoles;
-    $('#g-roles-propios').hidden = gJuegoRoles !== 'own';
+    let gFrame = 0;
+    if (window.ResizeObserver) { new ResizeObserver(() => { cancelAnimationFrame(gFrame); gFrame = requestAnimationFrame(gFit); }).observe(gGrid); }
+    TOOLS.grupos = { entra: () => requestAnimationFrame(gFit) };
+    $('#g-hacer').addEventListener('click', gMake);
+    $('#g-roles').checked = gWithRoles;
+    $('#g-roles-caja').hidden = !gWithRoles;
+    $('#g-roles-texto').placeholder = BASE_ROLES().join('\n');
+    $('#g-roles-texto').value = (load('roles-nombres', null) || []).join('\n');
+    $('#g-roles-juego').value = gRoleSet;
+    $('#g-roles-propios').hidden = gRoleSet !== 'own';
     $('#g-roles-juego').addEventListener('change', (e) => {
-        gJuegoRoles = e.target.value; guarda('roles-juego', gJuegoRoles);
-        $('#g-roles-propios').hidden = gJuegoRoles !== 'own';
-        gPonRoles();
+        gRoleSet = e.target.value; save('roles-juego', gRoleSet);
+        $('#g-roles-propios').hidden = gRoleSet !== 'own';
+        gGiveRoles();
     });
-    $('#g-roles').addEventListener('change', (e) => { gRoles = e.target.checked; guarda('grupos-roles', gRoles); $('#g-roles-caja').hidden = !gRoles; gPonRoles(); });
+    $('#g-roles').addEventListener('change', (e) => { gWithRoles = e.target.checked; save('grupos-roles', gWithRoles); $('#g-roles-caja').hidden = !gWithRoles; gGiveRoles(); });
     $('#g-roles-texto').addEventListener('input', () => {
         const r = [...new Set($('#g-roles-texto').value.split(/\r?\n/).map((x) => x.trim().slice(0, 30)).filter(Boolean))].slice(0, 6);
-        guarda('roles-nombres', r.length ? r : null);
+        save('roles-nombres', r.length ? r : null);
     });
-    $('#g-roles-texto').addEventListener('change', gPonRoles);
-    $('#g-rotar').addEventListener('click', () => { gPonRoles(); suena('dado'); anuncia(t('g_roles_done')); });
-    // Borrar el resultado: la pantalla vuelve a estar en blanco.
+    $('#g-roles-texto').addEventListener('change', gGiveRoles);
+    $('#g-rotar').addEventListener('click', () => { gGiveRoles(); playSound('dado'); announce(t('g_roles_done')); });
+    // Clearing the result: the screen is blank again.
     $('#g-borrar').addEventListener('click', () => {
-        gHechos = null; gUltimos = null;
-        gVacio(t('g_empty_start'));
+        gMade = null; gToSave = null;
+        gEmpty(t('g_empty_start'));
         $('#g-resumen').textContent = '';
         ['#g-moodle', '#g-rotar', '#g-borrar'].forEach((s) => { $(s).hidden = true; });
-        gListo();
+        gReady();
     });
-    // Cambiar el orden de los grupos arrastrando su cabecera: los demás se apartan y los números se ponen por orden.
-    let gArrastre = null;
-    gRejilla.addEventListener('pointerdown', (e) => {
+    // Reordering the groups by dragging their header: the others move aside and the numbers follow the order.
+    let gDrag = null;
+    gGrid.addEventListener('pointerdown', (e) => {
         const h = e.target.closest('.grupo h3');
-        if (!h || !gHechos || e.button > 0) { return; }
-        gArrastre = { art: h.closest('.grupo'), x: e.clientX, y: e.clientY, id: e.pointerId, moviendo: false };
+        if (!h || !gMade || e.button > 0) { return; }
+        gDrag = { art: h.closest('.grupo'), x: e.clientX, y: e.clientY, id: e.pointerId, moviendo: false };
     });
-    gRejilla.addEventListener('pointermove', (e) => {
-        const a = gArrastre;
+    gGrid.addEventListener('pointermove', (e) => {
+        const a = gDrag;
         if (!a || e.pointerId !== a.id) { return; }
         if (!a.moviendo) {
             if (Math.hypot(e.clientX - a.x, e.clientY - a.y) < 8) { return; }
             a.moviendo = true; a.art.classList.add('moviendo');
-            try { gRejilla.setPointerCapture(e.pointerId); } catch (err) { /* sigue sin captura */ }
+            try { gGrid.setPointerCapture(e.pointerId); } catch (err) { /* goes on without capture */ }
         }
         e.preventDefault();
-        const bajo = document.elementFromPoint(e.clientX, e.clientY);
-        const otro = bajo && bajo.closest('.grupo');
-        if (!otro || otro === a.art || !gRejilla.contains(otro)) { return; }
-        const arts = $$('.grupo', gRejilla);
-        gRejilla.insertBefore(a.art, arts.indexOf(otro) > arts.indexOf(a.art) ? otro.nextSibling : otro);
+        const under = document.elementFromPoint(e.clientX, e.clientY);
+        const target = under && under.closest('.grupo');
+        if (!target || target === a.art || !gGrid.contains(target)) { return; }
+        const arts = $$('.grupo', gGrid);
+        gGrid.insertBefore(a.art, arts.indexOf(target) > arts.indexOf(a.art) ? target.nextSibling : target);
     });
-    const gSuelta = (e) => {
-        const a = gArrastre;
+    const gDrop = (e) => {
+        const a = gDrag;
         if (!a || e.pointerId !== a.id) { return; }
-        gArrastre = null;
+        gDrag = null;
         if (!a.moviendo) { return; }
         a.art.classList.remove('moviendo');
-        // Los grupos, en el orden nuevo (el mismo array: lo usan el Marcador y «Guardar como grupos del curso»).
-        const arts = $$('.grupo', gRejilla), antes = gHechos.grupos.slice();
-        gHechos.grupos.length = 0;
+        // The groups, in the new order (the same array: the Scoreboard and «Save as course groups» use it).
+        const arts = $$('.grupo', gGrid), previousOrder = gMade.grupos.slice();
+        gMade.grupos.length = 0;
         arts.forEach((art, i) => {
-            gHechos.grupos.push(antes[Number(art.dataset.gi)]);
+            gMade.grupos.push(previousOrder[Number(art.dataset.gi)]);
             art.dataset.gi = i;
             art.querySelector('.g-titulo').textContent = t('g_group_n', i + 1);
         });
-        suena('tic');
+        playSound('tic');
     };
-    gRejilla.addEventListener('pointerup', gSuelta);
-    gRejilla.addEventListener('pointercancel', gSuelta);
-    $('#g-rasca').checked = gRasca;
-    $('#g-rasca').addEventListener('change', (e) => { gRasca = e.target.checked; guarda('grupos-rasca', gRasca); });
-    $('#g-emocion').checked = gEmocion;
-    $('#g-emocion').addEventListener('change', (e) => { gEmocion = e.target.checked; guarda('grupos-emocion', gEmocion); });
-    $('#g-lista').addEventListener('change', gCambiaLista);
-    $('#g-pegados').addEventListener('input', () => { gListo(); $('#g-guardar').disabled = !limpiaNombres($('#g-pegados').value).length; });
-    $('#g-guardar').addEventListener('click', () => abreEditor(null, $('#g-pegados').value));
-    $('#g-faltan').addEventListener('click', () => abreFaltan(gLista()));
+    gGrid.addEventListener('pointerup', gDrop);
+    gGrid.addEventListener('pointercancel', gDrop);
+    $('#g-rasca').checked = gScratch;
+    $('#g-rasca').addEventListener('change', (e) => { gScratch = e.target.checked; save('grupos-rasca', gScratch); });
+    $('#g-emocion').checked = gSuspense;
+    $('#g-emocion').addEventListener('change', (e) => { gSuspense = e.target.checked; save('grupos-emocion', gSuspense); });
+    $('#g-lista').addEventListener('change', gListChanged);
+    $('#g-pegados').addEventListener('input', () => { gReady(); $('#g-guardar').disabled = !cleanNames($('#g-pegados').value).length; });
+    $('#g-guardar').addEventListener('click', () => openEditor(null, $('#g-pegados').value));
+    $('#g-faltan').addEventListener('click', () => openAbsent(gList()));
     $('#g-moodle').addEventListener('click', () => {
-        if (!gUltimos) { return; }
-        const { lista, grupos } = gUltimos, b = $('#g-moodle');
-        b.disabled = true; rotula(b, t('g_saving'));
-        alAula(AULA.groupsurl, { listname: lista.nombre, teams: JSON.stringify(grupos.map((g) => g.map((n) => lista.ids[n]).filter(Boolean))) })
+        if (!gToSave) { return; }
+        const { list, groups } = gToSave, b = $('#g-moodle');
+        b.disabled = true; relabel(b, t('g_saving'));
+        toMoodle(MOODLE.groupsurl, { listname: list.nombre, teams: JSON.stringify(groups.map((g) => g.map((n) => list.ids[n]).filter(Boolean))) })
             .then((j) => {
-                rotula(b, t('g_saved'), 'hecho');
+                relabel(b, t('g_saved'), 'hecho');
                 if (window.ClasstoolsCore.logro) { window.ClasstoolsCore.logro('repartequipos'); }
                 $('#g-resumen').textContent += ' ' + t('g_saved_as', j.grouping);
-                anuncia(t('g_saved_announce', j.grouping));
+                announce(t('g_saved_announce', j.grouping));
             })
-            .catch(() => { b.disabled = false; rotula(b, t('g_save_failed'), 'guardar'); });
+            .catch(() => { b.disabled = false; relabel(b, t('g_save_failed'), 'guardar'); });
     });
-    $$('#g-modo button').forEach((b) => b.addEventListener('click', () => { gModo = b.dataset.modo; guarda('grupos-modo', gModo); gPintaModo(); gListo(); }));
-    const gCambiaN = (d) => { gN = Math.max(2, Math.min(15, gN + d)); guarda('grupos-n', gN); gPintaModo(); gListo(); };
-    repite($('#g-menos'), () => gCambiaN(-1));
-    repite($('#g-mas'), () => gCambiaN(1));
-    gVacio(t('g_empty_start'));
+    $$('#g-modo button').forEach((b) => b.addEventListener('click', () => { gMode = b.dataset.modo; save('grupos-modo', gMode); gPaintMode(); gReady(); }));
+    const gChangeN = (d) => { gN = Math.max(2, Math.min(15, gN + d)); save('grupos-n', gN); gPaintMode(); gReady(); };
+    repeatWhileHeld($('#g-menos'), () => gChangeN(-1));
+    repeatWhileHeld($('#g-mas'), () => gChangeN(1));
+    gEmpty(t('g_empty_start'));
 
     // ===================================================================================================
-    // 5. Semáforo de ruido: solo mide el volumen del micrófono; no graba ni envía nada
+    // 5. Noise meter: it only measures the microphone level; it records and sends nothing
     // ===================================================================================================
     const sm = { flujo: null, fuente: null, analizador: null, buf: null, rf: 0, suave: 0, zona: null, bajaDesde: 0, ultimoAria: -1,
         ultimo: 0, racha: 0, mejor: 0, paciencia: 100, agotada: false, pintado: '' };
-    const MENSAJES = { verde: t('sm_green'), amarillo: t('sm_amber'), rojo: t('sm_red') };
-    const EN_ZONA = { verde: t('sm_light_green'), amarillo: t('sm_light_amber'), rojo: t('sm_light_red') };   // «Semáforo en …»
-    const ORDEN = { verde: 0, amarillo: 1, rojo: 2 };
-    const microPermitido = () => {
+    const MESSAGES = { verde: t('sm_green'), amarillo: t('sm_amber'), rojo: t('sm_red') };
+    const LIGHT_LABELS = { verde: t('sm_light_green'), amarillo: t('sm_light_amber'), rojo: t('sm_light_red') };   // «Noise meter on …»
+    const LEVEL_ORDER = { verde: 0, amarillo: 1, rojo: 2 };
+    const micAllowed = () => {
         if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !window.isSecureContext) { return false; }
-        const pol = document.permissionsPolicy || document.featurePolicy;
-        try { if (pol && pol.allowsFeature && !pol.allowsFeature('microphone')) { return false; } } catch (e) { /* sin política */ }
+        const policy = document.permissionsPolicy || document.featurePolicy;
+        try { if (policy && policy.allowsFeature && !policy.allowsFeature('microphone')) { return false; } } catch (e) { /* no policy */ }
         return true;
     };
-    const smSinMicro = (causa) => {
-        const ventana = t('sm_mic_window');
-        const textos = {
-            marco: `<strong>${t('sm_mic_frame')}</strong> ${ventana}`,
-            permiso: enMarco ? `<strong>${t('sm_mic_denied_frame')}</strong> ${ventana}`
+    const smNoMic = (reason) => {
+        const windowHint = t('sm_mic_window');
+        const reasonTexts = {
+            marco: `<strong>${t('sm_mic_frame')}</strong> ${windowHint}`,
+            permiso: inFrame ? `<strong>${t('sm_mic_denied_frame')}</strong> ${windowHint}`
                 : `<strong>${t('sm_mic_denied')}</strong> ${t('sm_mic_denied_help')}`,
             ninguno: `<strong>${t('sm_mic_none')}</strong> ${t('sm_mic_none_help')}`,
-            otro: `<strong>${t('sm_mic_unavailable')}</strong> ${enMarco ? ventana : t('sm_mic_unavailable_help')}`,
-            pendiente: enMarco ? `<strong>${t('sm_mic_pending_frame')}</strong> ${ventana}`
+            otro: `<strong>${t('sm_mic_unavailable')}</strong> ${inFrame ? windowHint : t('sm_mic_unavailable_help')}`,
+            pendiente: inFrame ? `<strong>${t('sm_mic_pending_frame')}</strong> ${windowHint}`
                 : `<strong>${t('sm_mic_pending')}</strong> ${t('sm_mic_pending_help')}`,
         };
-        $('#s-sinmicro-texto').innerHTML = textos[causa] || textos.otro;
-        $('#s-ventana').hidden = !enMarco;
+        $('#s-sinmicro-texto').innerHTML = reasonTexts[reason] || reasonTexts.otro;
+        $('#s-ventana').hidden = !inFrame;
         $('#s-sinmicro').hidden = false;
     };
-    const smZona = (z) => {
+    const smSetZone = (z) => {
         sm.zona = z;
         $$('#s-caja .luz').forEach((l) => l.classList.toggle('encendida', l.dataset.zona === z));
         $('#s-caja').classList.toggle('apagado', !z);
-        $('#s-caja').setAttribute('aria-label', z ? EN_ZONA[z] : t('sm_off'));
+        $('#s-caja').setAttribute('aria-label', z ? LIGHT_LABELS[z] : t('sm_off'));
         const m = $('#s-mensaje');
         m.className = 'mensaje-ruido' + (z ? ' ' + z : '');
-        m.textContent = z ? MENSAJES[z] : t('sm_off');
+        m.textContent = z ? MESSAGES[z] : t('sm_off');
     };
-    const smBucle = () => {
+    const smLoop = () => {
         sm.analizador.getFloatTimeDomainData(sm.buf);
-        let suma = 0;
-        for (let i = 0; i < sm.buf.length; i++) { suma += sm.buf[i] * sm.buf[i]; }
-        const db = 20 * Math.log10(Math.sqrt(suma / sm.buf.length) + 1e-9);
-        // Midiendo el ruido normal de la clase (Ajustar): se guardan unos segundos de niveles.
+        let sumSquares = 0;
+        for (let i = 0; i < sm.buf.length; i++) { sumSquares += sm.buf[i] * sm.buf[i]; }
+        const db = 20 * Math.log10(Math.sqrt(sumSquares / sm.buf.length) + 1e-9);
+        // Measuring the usual noise of the class (Adjust): a few seconds of levels are kept.
         if (sm.midiendo) { sm.midiendo.push(db); }
-        // La escala: ajustada a la clase (lo normal queda en un tercio, en verde), o de unos −62 dB (silencio) a −14 dB
-        // (mucho jaleo). La sensibilidad la corre ±20 dB. Cada micrófono capta distinto: por eso ajustar es lo mejor.
+        // The scale: adjusted to the class (the usual noise sits at a third, in green), or from about −62 dB (silence)
+        // to −14 dB (a lot of noise). The sensitivity shifts it ±20 dB. Each microphone picks up differently: that is
+        // why adjusting is best.
         const sens = Number($('#s-sensibilidad').value);
-        const cero = sm.base !== null ? sm.base - 16 : -62;
-        const nivel = Math.max(0, Math.min(100, ((db - cero + (sens - 5) * 4) / 48) * 100));
-        // Sube despacio (un golpe o una silla no lo ponen en rojo) y baja más despacio aún.
-        sm.suave += (nivel - sm.suave) * (nivel > sm.suave ? 0.06 : 0.04);
+        const zeroDb = sm.base !== null ? sm.base - 16 : -62;
+        const level = Math.max(0, Math.min(100, ((db - zeroDb + (sens - 5) * 4) / 48) * 100));
+        // It rises slowly (a bang or a chair does not turn it red) and falls even more slowly.
+        sm.suave += (level - sm.suave) * (level > sm.suave ? 0.06 : 0.04);
         const z = sm.suave >= 75 ? 'rojo' : sm.suave >= 50 ? 'amarillo' : 'verde';
-        const ahora = performance.now();
-        // Sube de color al momento; para bajar tiene que estar 1,5 s por debajo (así no parpadea).
-        if (!sm.zona || ORDEN[z] > ORDEN[sm.zona]) { smZona(z); sm.bajaDesde = 0; }
-        else if (ORDEN[z] < ORDEN[sm.zona]) {
-            if (!sm.bajaDesde) { sm.bajaDesde = ahora; } else if (ahora - sm.bajaDesde > 1500) { smZona(z); sm.bajaDesde = 0; }
+        const now = performance.now();
+        // It goes up a colour at once; to go down it has to stay 1.5 s below (so it does not flicker).
+        if (!sm.zona || LEVEL_ORDER[z] > LEVEL_ORDER[sm.zona]) { smSetZone(z); sm.bajaDesde = 0; }
+        else if (LEVEL_ORDER[z] < LEVEL_ORDER[sm.zona]) {
+            if (!sm.bajaDesde) { sm.bajaDesde = now; } else if (now - sm.bajaDesde > 1500) { smSetZone(z); sm.bajaDesde = 0; }
         } else { sm.bajaDesde = 0; }
         $('#s-relleno').style.setProperty('--nivel', sm.suave.toFixed(1) + '%');
-        // La luz encendida respira con el ruido: crece y brilla más cuanto más alto hablan.
+        // The light that is on breathes with the noise: it grows and glows more the louder they speak.
         $('#s-caja').style.setProperty('--vol', (sm.suave / 100).toFixed(3));
-        const dt = sm.ultimo ? Math.min(0.25, (ahora - sm.ultimo) / 1000) : 0;
-        sm.ultimo = ahora;
-        // Racha en calma: solo cuenta en verde; el amarillo la para y el rojo la pone a cero.
+        const dt = sm.ultimo ? Math.min(0.25, (now - sm.ultimo) / 1000) : 0;
+        sm.ultimo = now;
+        // Calm streak: it only counts in green; yellow stops it and red sets it to zero.
         if (sm.zona === 'verde') { sm.racha += dt; } else if (sm.zona === 'rojo') { sm.racha = 0; }
         sm.mejor = Math.max(sm.mejor, sm.racha);
-        // Paciencia: el rojo la gasta en 12 s y el amarillo en un minuto; en verde vuelve entera en 45 s. Un grito
-        // suelto apenas la toca; el jaleo seguido, sí.
-        const gasto = sm.zona === 'rojo' ? 100 / 12 : sm.zona === 'amarillo' ? 100 / 60 : -100 / 45;
-        sm.paciencia = Math.max(0, Math.min(100, sm.paciencia - gasto * dt));
+        // Patience: red uses it up in 12 s and yellow in a minute; in green it comes back whole in 45 s. A single
+        // shout barely touches it; sustained noise does.
+        const drain = sm.zona === 'rojo' ? 100 / 12 : sm.zona === 'amarillo' ? 100 / 60 : -100 / 45;
+        sm.paciencia = Math.max(0, Math.min(100, sm.paciencia - drain * dt));
         if (sm.paciencia <= 0 && !sm.agotada) {
             sm.agotada = true;
-            suena('agotada');
-            const caja = $('#s-caja');
-            caja.classList.remove('tiembla'); void caja.offsetWidth; caja.classList.add('tiembla');
-            anuncia(t('sm_patience_gone'));
+            playSound('agotada');
+            const box = $('#s-caja');
+            box.classList.remove('tiembla'); void box.offsetWidth; box.classList.add('tiembla');
+            announce(t('sm_patience_gone'));
         } else if (sm.agotada && sm.paciencia >= 50) { sm.agotada = false; }
-        smPintaExtra();
-        smOndas(ahora); smRastro(ahora);
-        const redondo = Math.round(sm.suave / 5) * 5;
-        if (redondo !== sm.ultimoAria) { sm.ultimoAria = redondo; $('#s-medidor').setAttribute('aria-valuenow', String(redondo)); }
-        sm.rf = requestAnimationFrame(smBucle);
+        smPaintExtras();
+        smWaves(now); smTrace(now);
+        const rounded = Math.round(sm.suave / 5) * 5;
+        if (rounded !== sm.ultimoAria) { sm.ultimoAria = rounded; $('#s-medidor').setAttribute('aria-valuenow', String(rounded)); }
+        sm.rf = requestAnimationFrame(smLoop);
     };
-    const reloj = (t) => `${Math.floor(t / 60)}:${String(Math.floor(t % 60)).padStart(2, '0')}`;
-    const smPintaExtra = () => {
-        const p = Math.round(sm.paciencia), clave = `${Math.floor(sm.racha)}|${Math.floor(sm.mejor)}|${p}|${sm.agotada}`;
-        if (clave === sm.pintado) { return; }
-        sm.pintado = clave;
-        $('#s-racha').textContent = reloj(sm.racha);
-        $('#s-mejor').textContent = sm.mejor >= 60 && sm.mejor > sm.racha + 1 ? t('sm_best', reloj(sm.mejor)) : '';
+    const mmss = (t) => `${Math.floor(t / 60)}:${String(Math.floor(t % 60)).padStart(2, '0')}`;
+    const smPaintExtras = () => {
+        const p = Math.round(sm.paciencia), stamp = `${Math.floor(sm.racha)}|${Math.floor(sm.mejor)}|${p}|${sm.agotada}`;
+        if (stamp === sm.pintado) { return; }
+        sm.pintado = stamp;
+        $('#s-racha').textContent = mmss(sm.racha);
+        $('#s-mejor').textContent = sm.mejor >= 60 && sm.mejor > sm.racha + 1 ? t('sm_best', mmss(sm.mejor)) : '';
         $('#s-paciencia-relleno').style.setProperty('--p', p + '%');
         $('#s-paciencia').classList.toggle('baja', p < 30);
         $('#s-paciencia').setAttribute('aria-valuenow', String(p));
         $('#s-paciencia-titulo').textContent = sm.agotada ? t('sm_patience_out') : t('sm_patience');
         $('#s-extra').classList.toggle('agotada', sm.agotada);
     };
-    // Extras que el profesor elige (todos apagados al principio): ondas que salen de la luz cuando sube el ruido, el
-    // rastro del último minuto y una cara en la luz encendida para los pequeños.
-    const smOp = Object.assign({ ondas: false, rastro: false, cara: false }, lee('semaforo-extras', {}));
-    const smPintaOp = () => {
-        $('#s-caja').classList.toggle('con-cara', smOp.cara);
-        $('#s-rastro-caja').hidden = !smOp.rastro;
-        ['ondas', 'rastro', 'cara'].forEach((k) => { $('#s-op-' + k).checked = smOp[k]; });
+    // Extras the teacher chooses (all off at first): waves that come out of the light when the noise rises, the
+    // trace of the last minute and a face on the light that is on, for the young ones.
+    const smOptions = Object.assign({ ondas: false, rastro: false, cara: false }, load('semaforo-extras', {}));
+    const smPaintOptions = () => {
+        $('#s-caja').classList.toggle('con-cara', smOptions.cara);
+        $('#s-rastro-caja').hidden = !smOptions.rastro;
+        ['ondas', 'rastro', 'cara'].forEach((k) => { $('#s-op-' + k).checked = smOptions[k]; });
     };
     ['ondas', 'rastro', 'cara'].forEach((k) => $('#s-op-' + k).addEventListener('change', (e) => {
-        smOp[k] = e.target.checked; guarda('semaforo-extras', smOp); smPintaOp(); if (k === 'rastro') { smRastro(0, true); }
+        smOptions[k] = e.target.checked; save('semaforo-extras', smOptions); smPaintOptions(); if (k === 'rastro') { smTrace(0, true); }
     }));
-    let smUltimaOnda = 0;
-    const smOndas = (ahora) => {
-        if (!smOp.ondas || reducido() || !sm.zona) { return; }
+    let smLastWave = 0;
+    const smWaves = (now) => {
+        if (!smOptions.ondas || reducedMotion() || !sm.zona) { return; }
         const vol = sm.suave / 100;
-        // Más ruido, más ondas: ninguna en calma, una cada 0,3 s con mucho jaleo.
-        if (vol < 0.35 || ahora - smUltimaOnda < 1000 - vol * 700) { return; }
-        smUltimaOnda = ahora;
-        const luz = $(`#s-caja .luz[data-zona="${sm.zona}"]`), caja = $('#s-ondas');
-        const r = luz.getBoundingClientRect(), b = caja.getBoundingClientRect();
+        // More noise, more waves: none when calm, one every 0.3 s with a lot of noise.
+        if (vol < 0.35 || now - smLastWave < 1000 - vol * 700) { return; }
+        smLastWave = now;
+        const light = $(`#s-caja .luz[data-zona="${sm.zona}"]`), box = $('#s-ondas');
+        const r = light.getBoundingClientRect(), b = box.getBoundingClientRect();
         const o = document.createElement('span');
         o.className = 'onda ' + sm.zona;
         Object.assign(o.style, { left: `${r.left - b.left + r.width / 2}px`, top: `${r.top - b.top + r.height / 2}px`, width: `${r.width}px`, height: `${r.width}px` });
-        caja.append(o);
+        box.append(o);
         setTimeout(() => o.remove(), 1600);
     };
-    // El último minuto: el nivel cada cuarto de segundo, con las franjas de los tres colores detrás.
-    const smHist = [];
-    let smUltimoPunto = 0;
-    const smRastro = (ahora, forzar) => {
-        if (!smOp.rastro) { return; }
-        if (!forzar) {
-            if (ahora - smUltimoPunto < 250) { return; }
-            smUltimoPunto = ahora; smHist.push(sm.suave); if (smHist.length > 240) { smHist.shift(); }
+    // The last minute: the level every quarter of a second, with the bands of the three colours behind.
+    const smHistory = [];
+    let smLastPoint = 0;
+    const smTrace = (now, force) => {
+        if (!smOptions.rastro) { return; }
+        if (!force) {
+            if (now - smLastPoint < 250) { return; }
+            smLastPoint = now; smHistory.push(sm.suave); if (smHistory.length > 240) { smHistory.shift(); }
         }
         const c = $('#s-rastro'), w = c.clientWidth, h = c.clientHeight, dpr = window.devicePixelRatio || 1;
         if (!w || !h) { return; }
@@ -1723,126 +1726,126 @@
         [[0, 50, 'rgba(18, 166, 80, .14)'], [50, 75, 'rgba(251, 190, 23, .2)'], [75, 100, 'rgba(236, 34, 51, .16)']].forEach(([a, b2, col]) => {
             x.fillStyle = col; x.fillRect(0, h - (b2 / 100) * h, w, ((b2 - a) / 100) * h);
         });
-        if (smHist.length < 2) { return; }
+        if (smHistory.length < 2) { return; }
         x.beginPath();
-        smHist.forEach((v, i) => { const px = w - (smHist.length - 1 - i) * (w / 239), py = h - (v / 100) * h; if (i) { x.lineTo(px, py); } else { x.moveTo(px, py); } });
+        smHistory.forEach((v, i) => { const px = w - (smHistory.length - 1 - i) * (w / 239), py = h - (v / 100) * h; if (i) { x.lineTo(px, py); } else { x.moveTo(px, py); } });
         x.strokeStyle = '#164281'; x.lineWidth = 2.5; x.lineJoin = 'round'; x.stroke();
     };
-    // Ajustar a esta clase: unos segundos de su ruido normal de trabajo pasan a ser el verde de la escala.
-    sm.base = typeof lee('ruido-base', null) === 'number' ? lee('ruido-base', null) : null;
+    // Adjust to this class: a few seconds of its usual working noise become the green of the scale.
+    sm.base = typeof load('ruido-base', null) === 'number' ? load('ruido-base', null) : null;
     sm.midiendo = null;
-    const smAjusta = async () => {
-        const b = $('#s-ajustar'), nota = $('#s-ajuste-nota');
-        if (!sm.flujo) { await smEmpieza(); }
+    const smCalibrate = async () => {
+        const b = $('#s-ajustar'), note = $('#s-ajuste-nota');
+        if (!sm.flujo) { await smStart(); }
         if (!sm.flujo) { return; }
         b.disabled = true;
         sm.midiendo = [];
-        let quedan = 4;
-        nota.textContent = t('sm_adjusting', quedan);
-        const cuenta = setInterval(() => {
-            quedan--;
-            if (quedan > 0) { nota.textContent = t('sm_adjusting', quedan); return; }
-            clearInterval(cuenta);
+        let secondsLeft = 4;
+        note.textContent = t('sm_adjusting', secondsLeft);
+        const countdown = setInterval(() => {
+            secondsLeft--;
+            if (secondsLeft > 0) { note.textContent = t('sm_adjusting', secondsLeft); return; }
+            clearInterval(countdown);
             const v = (sm.midiendo || []).filter((x) => x > -120).sort((x, y) => x - y);
             sm.midiendo = null;
             b.disabled = false;
-            if (v.length < 10) { nota.textContent = t('sm_adjust_hint'); return; }
-            sm.base = v[Math.floor(v.length * 0.6)];   // algo por encima de la mediana: lo normal, sin los silencios
-            guarda('ruido-base', sm.base);
-            $('#s-sensibilidad').value = 5; guarda('sensibilidad', 5); pintaSens();
+            if (v.length < 10) { note.textContent = t('sm_adjust_hint'); return; }
+            sm.base = v[Math.floor(v.length * 0.6)];   // a little above the median: the usual level, without the silences
+            save('ruido-base', sm.base);
+            $('#s-sensibilidad').value = 5; save('sensibilidad', 5); paintSensitivity();
             sm.suave = 33;
-            nota.textContent = t('sm_adjusted');
-            suena('elegido');
+            note.textContent = t('sm_adjusted');
+            playSound('elegido');
         }, 1000);
     };
-    $('#s-ajustar').addEventListener('click', smAjusta);
-    const smApaga = () => {
+    $('#s-ajustar').addEventListener('click', smCalibrate);
+    const smStop = () => {
         cancelAnimationFrame(sm.rf);
-        if (sm.fuente) { try { sm.fuente.disconnect(); } catch (e) { /* ya estaba */ } }
+        if (sm.fuente) { try { sm.fuente.disconnect(); } catch (e) { /* it already was */ } }
         if (sm.flujo) { sm.flujo.getTracks().forEach((t) => t.stop()); }
         Object.assign(sm, { flujo: null, fuente: null, analizador: null, suave: 0, zona: null, bajaDesde: 0, ultimo: 0, racha: 0, paciencia: 100, agotada: false });
-        smZona(null);
+        smSetZone(null);
         $('#s-caja').style.setProperty('--vol', '0');
-        smPintaExtra();
+        smPaintExtras();
         $('#s-relleno').style.setProperty('--nivel', '0%');
         $('#s-medidor').setAttribute('aria-valuenow', '0');
-        rotula($('#s-marcha'), t('sm_listen'), 'micro');
+        relabel($('#s-marcha'), t('sm_listen'), 'micro');
         $('#s-marcha').className = 'boton grande ancho';
     };
-    const smEmpieza = async () => {
+    const smStart = async () => {
         $('#s-sinmicro').hidden = true;
-        if (!microPermitido()) { smSinMicro(enMarco ? 'marco' : 'otro'); return; }
+        if (!micAllowed()) { smNoMic(inFrame ? 'marco' : 'otro'); return; }
         const b = $('#s-marcha');
         b.disabled = true;
         $('#s-mensaje').textContent = t('sm_asking');
-        // Si la pregunta del navegador no aparece o nadie la contesta, a los 5 s explicamos qué hacer.
-        const espera = setTimeout(() => smSinMicro('pendiente'), 5000);
+        // If the browser's question does not show or nobody answers it, after 5 s the board explains what to do.
+        const pendingTimer = setTimeout(() => smNoMic('pendiente'), 5000);
         try {
-            const flujo = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
-            clearTimeout(espera);
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
+            clearTimeout(pendingTimer);
             $('#s-sinmicro').hidden = true;
-            if (!visibles().includes('semaforo')) { flujo.getTracks().forEach((t) => t.stop()); smZona(null); return; }
+            if (!visibleTools().includes('semaforo')) { stream.getTracks().forEach((t) => t.stop()); smSetZone(null); return; }
             const a = audio();
             if (!a) { throw new Error('sin audio'); }
-            sm.flujo = flujo;
-            sm.fuente = a.createMediaStreamSource(flujo);
+            sm.flujo = stream;
+            sm.fuente = a.createMediaStreamSource(stream);
             sm.analizador = a.createAnalyser();
             sm.analizador.fftSize = 2048;
             sm.buf = new Float32Array(sm.analizador.fftSize);
-            sm.fuente.connect(sm.analizador);   // al analizador y a ningún sitio más: no se oye ni se guarda
-            rotula(b, t('sm_stop'), 'micro-no');
+            sm.fuente.connect(sm.analizador);   // to the analyser and nowhere else: it is not heard and not saved
+            relabel(b, t('sm_stop'), 'micro-no');
             b.className = 'boton grande suave ancho';
-            smBucle();
+            smLoop();
         } catch (e) {
-            clearTimeout(espera);
-            smApaga();
+            clearTimeout(pendingTimer);
+            smStop();
             const n = e && e.name;
-            smSinMicro(n === 'NotAllowedError' || n === 'SecurityError' ? 'permiso' : n === 'NotFoundError' || n === 'OverconstrainedError' ? 'ninguno' : 'otro');
+            smNoMic(n === 'NotAllowedError' || n === 'SecurityError' ? 'permiso' : n === 'NotFoundError' || n === 'OverconstrainedError' ? 'ninguno' : 'otro');
         } finally {
             b.disabled = false;
         }
     };
-    $('#s-marcha').addEventListener('click', () => { if (sm.flujo) { smApaga(); } else { smEmpieza(); } });
-    $('#s-ventana').addEventListener('click', abreVentana);
-    const pintaSens = () => {
+    $('#s-marcha').addEventListener('click', () => { if (sm.flujo) { smStop(); } else { smStart(); } });
+    $('#s-ventana').addEventListener('click', openWindow);
+    const paintSensitivity = () => {
         const v = Number($('#s-sensibilidad').value);
         $('#s-sens-valor').textContent = v <= 3 ? t('sm_sens_low') : v <= 7 ? t('sm_sens_medium') : t('sm_sens_high');
     };
-    $('#s-sensibilidad').value = Math.max(1, Math.min(10, Number(lee('sensibilidad', 5)) || 5));
-    $('#s-sensibilidad').addEventListener('input', () => { pintaSens(); guarda('sensibilidad', Number($('#s-sensibilidad').value)); });
-    smPintaOp();
-    pintaSens();
-    HERR.semaforo = {
-        // Dentro de un marco sin permiso lo decimos antes de que lo intenten.
-        entra: () => { if (!sm.flujo && !microPermitido()) { smSinMicro(enMarco ? 'marco' : 'otro'); } },
-        sale: smApaga,
+    $('#s-sensibilidad').value = Math.max(1, Math.min(10, Number(load('sensibilidad', 5)) || 5));
+    $('#s-sensibilidad').addEventListener('input', () => { paintSensitivity(); save('sensibilidad', Number($('#s-sensibilidad').value)); });
+    smPaintOptions();
+    paintSensitivity();
+    TOOLS.semaforo = {
+        // Inside a frame without permission, the board says so before they try.
+        entra: () => { if (!sm.flujo && !micAllowed()) { smNoMic(inFrame ? 'marco' : 'otro'); } },
+        sale: smStop,
     };
 
 
     // ===================================================================================================
-    // Cartel a toda pantalla (Así trabajamos y el QR ampliado)
+    // Full-screen sign (Work symbols and the enlarged QR code)
     // ===================================================================================================
-    const gigante = $('#gigante');
-    let giganteVuelta = null;
-    const abreGigante = ({ color, clase, html, etiqueta }) => {
-        gigante.style.setProperty('--c', color || 'var(--azul)');
-        gigante.className = 'gigante' + (clase ? ' ' + clase : '');
-        gigante.setAttribute('aria-label', etiqueta || t('gen_big_view'));
+    const bigView = $('#gigante');
+    let bigViewReturn = null;
+    const openBigView = ({ color, cssClass, html, label }) => {
+        bigView.style.setProperty('--c', color || 'var(--azul)');
+        bigView.className = 'gigante' + (cssClass ? ' ' + cssClass : '');
+        bigView.setAttribute('aria-label', label || t('gen_big_view'));
         $('#gigante-contenido').innerHTML = html;
-        giganteVuelta = document.activeElement;
-        gigante.hidden = false;
+        bigViewReturn = document.activeElement;
+        bigView.hidden = false;
         $('#gigante-cerrar').focus();
     };
-    const cierraGigante = () => {
-        gigante.hidden = true;
-        if (giganteVuelta && giganteVuelta.focus) { giganteVuelta.focus(); }
+    const closeBigView = () => {
+        bigView.hidden = true;
+        if (bigViewReturn && bigViewReturn.focus) { bigViewReturn.focus(); }
     };
-    gigante.addEventListener('click', cierraGigante);
+    bigView.addEventListener('click', closeBigView);
 
     // ===================================================================================================
-    // 7. Así trabajamos
+    // 7. Work symbols
     // ===================================================================================================
-    const MODOS = [
+    const WORK_SYMBOLS = [
         { nombre: t('asi_silence'), icono: 'silencio', color: '#ce1423' },
         { nombre: t('asi_quiet'), icono: 'bajo', color: '#fbbe17', claro: true },
         { nombre: t('asi_pairs'), icono: 'parejas', color: '#067e36' },
@@ -1850,131 +1853,131 @@
         { nombre: t('asi_hand'), icono: 'mano', color: '#164281' },
         { nombre: t('asi_listen'), icono: 'escucha', color: '#0e7c86' },
     ];
-    $('#a-rejilla').innerHTML = MODOS.map((m, i) =>
+    $('#a-rejilla').innerHTML = WORK_SYMBOLS.map((m, i) =>
         `<button type="button" class="modo-trabajo${m.claro ? ' claro' : ''}" style="--c:${m.color}" data-i="${i}">${icono(m.icono)}<span class="palabra">${m.nombre}</span></button>`).join('');
     $$('.modo-trabajo').forEach((b) => b.addEventListener('click', () => {
-        const m = MODOS[Number(b.dataset.i)];
-        abreGigante({ color: m.color, clase: m.claro ? 'claro' : '', etiqueta: m.nombre, html: `${icono(m.icono)}<p class="palabra">${m.nombre}</p>` });
+        const m = WORK_SYMBOLS[Number(b.dataset.i)];
+        openBigView({ color: m.color, clase: m.claro ? 'claro' : '', etiqueta: m.nombre, html: `${icono(m.icono)}<p class="palabra">${m.nombre}</p>` });
     }));
 
     // ===================================================================================================
-    // 8. Reloj (la zona horaria y el idioma del sitio, dentro de Moodle; los del ordenador, fuera)
+    // 8. Clock (the time zone and language of the site inside Moodle; those of the computer outside)
     // ===================================================================================================
     (() => {
-        let marcas = '';
+        let ticks = '';
         for (let i = 0; i < 60; i++) {
-            const hora = i % 5 === 0, r1 = hora ? 80 : 85, a = (i * 6 * Math.PI) / 180;
-            marcas += `<line class="${hora ? 'marca-h' : 'marca-m'}" x1="${(100 + r1 * Math.sin(a)).toFixed(2)}" y1="${(100 - r1 * Math.cos(a)).toFixed(2)}" x2="${(100 + 89 * Math.sin(a)).toFixed(2)}" y2="${(100 - 89 * Math.cos(a)).toFixed(2)}"/>`;
+            const isHour = i % 5 === 0, r1 = isHour ? 80 : 85, a = (i * 6 * Math.PI) / 180;
+            ticks += `<line class="${isHour ? 'marca-h' : 'marca-m'}" x1="${(100 + r1 * Math.sin(a)).toFixed(2)}" y1="${(100 - r1 * Math.cos(a)).toFixed(2)}" x2="${(100 + 89 * Math.sin(a)).toFixed(2)}" y2="${(100 - 89 * Math.cos(a)).toFixed(2)}"/>`;
         }
         for (let h = 1; h <= 12; h++) {
             const a = (h * 30 * Math.PI) / 180;
-            marcas += `<text class="num-h" x="${(100 + 66 * Math.sin(a)).toFixed(2)}" y="${(100 - 66 * Math.cos(a)).toFixed(2)}" text-anchor="middle" dominant-baseline="central">${h}</text>`;
+            ticks += `<text class="num-h" x="${(100 + 66 * Math.sin(a)).toFixed(2)}" y="${(100 - 66 * Math.cos(a)).toFixed(2)}" text-anchor="middle" dominant-baseline="central">${h}</text>`;
         }
-        $('#r-marcas').innerHTML = marcas;
+        $('#r-marcas').innerHTML = ticks;
     })();
-    const opciones = { hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23', weekday: 'long', day: 'numeric', month: 'long' };
-    const SITIO = window.CLASSTOOLS_SITE || {};
-    const idioma = IDIOMA;
-    let fmtReloj;
-    try { fmtReloj = new Intl.DateTimeFormat(idioma, Object.assign(SITIO.tz ? { timeZone: SITIO.tz } : {}, opciones)); }
-    catch (e) { fmtReloj = new Intl.DateTimeFormat(undefined, opciones); }
+    const clockFormat = { hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23', weekday: 'long', day: 'numeric', month: 'long' };
+    const SITE = window.CLASSTOOLS_SITE || {};
+    const clockLanguage = LANGUAGE;
+    let clockFormatter;
+    try { clockFormatter = new Intl.DateTimeFormat(clockLanguage, Object.assign(SITE.tz ? { timeZone: SITE.tz } : {}, clockFormat)); }
+    catch (e) { clockFormatter = new Intl.DateTimeFormat(undefined, clockFormat); }
     let rTimer = 0;
-    const rPinta = () => {
+    const rPaint = () => {
         const p = {};
-        fmtReloj.formatToParts(new Date()).forEach((x) => { p[x.type] = x.value; });
+        clockFormatter.formatToParts(new Date()).forEach((x) => { p[x.type] = x.value; });
         const h = Number(p.hour) % 24, m = Number(p.minute), s = Number(p.second);
         $('#r-hm').textContent = `${pad(h)}:${pad(m)}`;
         $('#r-s').textContent = `:${pad(s)}`;
-        const fecha = /^es\b/.test(idioma) ? `${p.weekday}, ${p.day} de ${p.month}` : `${p.weekday}, ${p.day} ${p.month}`;
-        $('#r-fecha').textContent = fecha.charAt(0).toUpperCase() + fecha.slice(1);
+        const dateText = /^es\b/.test(clockLanguage) ? `${p.weekday}, ${p.day} de ${p.month}` : `${p.weekday}, ${p.day} ${p.month}`;
+        $('#r-fecha').textContent = dateText.charAt(0).toUpperCase() + dateText.slice(1);
         $('#r-ah').setAttribute('transform', `rotate(${((h % 12) + m / 60) * 30} 100 100)`);
         $('#r-am').setAttribute('transform', `rotate(${(m + s / 60) * 6} 100 100)`);
         $('#r-as').setAttribute('transform', `rotate(${s * 6} 100 100)`);
     };
-    const rTic = () => { rPinta(); rTimer = setTimeout(rTic, 1000 - (Date.now() % 1000) + 20); };
-    HERR.reloj = { entra: rTic, sale: () => clearTimeout(rTimer) };
+    const rTick = () => { rPaint(); rTimer = setTimeout(rTick, 1000 - (Date.now() % 1000) + 20); };
+    TOOLS.reloj = { entra: rTick, sale: () => clearTimeout(rTimer) };
 
     // ===================================================================================================
-    // 9. Código QR: en qr.js
+    // 9. QR code: in qr.js
     // ===================================================================================================
 
     // ===================================================================================================
-    // Teclado: Escape cierra lo que esté encima; la barra espaciadora arranca o para (si no estás escribiendo)
+    // Keyboard: Escape closes what is on top; the space bar starts or stops (when not typing)
     // ===================================================================================================
     addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
-            if (!$('#fin-tiempo').hidden) { e.preventDefault(); finCierra(false); }
-            else if (!gigante.hidden) { e.preventDefault(); cierraGigante(); }
+            if (!$('#fin-tiempo').hidden) { e.preventDefault(); closeTimeUp(false); }
+            else if (!bigView.hidden) { e.preventDefault(); closeBigView(); }
             return;
         }
         if (e.key !== ' ' || e.repeat || e.ctrlKey || e.altKey || e.metaKey) { return; }
-        if (!$('#fin-tiempo').hidden || !gigante.hidden || document.querySelector('dialog[open]')) { return; }
+        if (!$('#fin-tiempo').hidden || !bigView.hidden || document.querySelector('dialog[open]')) { return; }
         if (e.target.closest && e.target.closest('button, input, textarea, select, a, [role="tab"]')) { return; }
-        const accion = { temporizador: tmAlterna, cronometro: crAlterna, quien: elegir }[actual] || (HERR[actual] && HERR[actual].espacio);
-        if (accion) { e.preventDefault(); accion(); }
+        const action = { temporizador: tmToggle, cronometro: crToggle, quien: pickStudent }[current] || (TOOLS[current] && TOOLS[current].espacio);
+        if (action) { e.preventDefault(); action(); }
     });
 
     // ===================================================================================================
-    // Arranque: temporizador de 5 minutos listo; el SCO queda completado al abrirlo (no hay nota)
+    // Start: a 5-minute timer, ready; the SCO is marked complete on opening (there is no grade)
     // ===================================================================================================
-    pintaSonido();
-    gPintaModo();
-    // Presentar: la barra de arriba se aparta para que la herramienta ocupe la pantalla; un botón pequeño la devuelve
-    // (también Escape).
+    paintSound();
+    gPaintMode();
+    // Present: the top bar steps aside so the tool fills the screen; a small button brings it back
+    // (so does Escape).
     (() => {
         const b = document.createElement('button');
         b.type = 'button'; b.className = 'redondo'; b.id = 'b-presentar'; b.title = t('bar_present');
-        b.innerHTML = `<span class="ico-caja">${icono('ampliar')}</span><span class="redondo-texto">${escapa(t('bar_present'))}</span>`;
+        b.innerHTML = `<span class="ico-caja">${icono('ampliar')}</span><span class="redondo-texto">${escapeHtml(t('bar_present'))}</span>`;
         $('.acciones').prepend(b);
-        const sale = document.createElement('button');
-        sale.type = 'button'; sale.className = 'salir-presentar'; sale.id = 'b-salir-presentar'; sale.hidden = true;
-        sale.innerHTML = `${icono('salir')}<span>${escapa(t('bar_present_exit'))}</span>`;
-        document.body.append(sale);
-        // También pone la pantalla completa (si no lo estaba ya), y al salir la quita solo si la puso él. Si se sale de
-        // la pantalla completa con la tecla Escape del navegador, se sale también de presentar.
-        let puse = false;
-        const pon = (si) => {
-            document.documentElement.classList.toggle('presentando', si);
-            sale.hidden = !si;
-            if (si) { sale.focus({ preventScroll: true }); } else { b.focus({ preventScroll: true }); }
-            if (si && document.fullscreenEnabled && !document.fullscreenElement) {
-                document.documentElement.requestFullscreen().then(() => { puse = true; }).catch(() => {});
-            } else if (!si && puse) {
-                puse = false;
+        const exitButton = document.createElement('button');
+        exitButton.type = 'button'; exitButton.className = 'salir-presentar'; exitButton.id = 'b-salir-presentar'; exitButton.hidden = true;
+        exitButton.innerHTML = `${icono('salir')}<span>${escapeHtml(t('bar_present_exit'))}</span>`;
+        document.body.append(exitButton);
+        // It also goes full screen (if it was not already), and on leaving it exits full screen only if it entered it.
+        // If full screen is left with the browser's Escape key, presenting ends too.
+        let enteredFullscreen = false;
+        const setPresenting = (isOn) => {
+            document.documentElement.classList.toggle('presentando', isOn);
+            exitButton.hidden = !isOn;
+            if (isOn) { exitButton.focus({ preventScroll: true }); } else { b.focus({ preventScroll: true }); }
+            if (isOn && document.fullscreenEnabled && !document.fullscreenElement) {
+                document.documentElement.requestFullscreen().then(() => { enteredFullscreen = true; }).catch(() => {});
+            } else if (!isOn && enteredFullscreen) {
+                enteredFullscreen = false;
                 if (document.fullscreenElement) { document.exitFullscreen().catch(() => {}); }
             }
             dispatchEvent(new Event('resize'));
         };
         document.addEventListener('fullscreenchange', () => {
-            if (!document.fullscreenElement && puse) { puse = false; if (document.documentElement.classList.contains('presentando')) { pon(false); } }
+            if (!document.fullscreenElement && enteredFullscreen) { enteredFullscreen = false; if (document.documentElement.classList.contains('presentando')) { setPresenting(false); } }
         });
-        b.addEventListener('click', () => pon(true));
-        sale.addEventListener('click', () => pon(false));
+        b.addEventListener('click', () => setPresenting(true));
+        exitButton.addEventListener('click', () => setPresenting(false));
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && document.documentElement.classList.contains('presentando') && !document.querySelector('dialog[open]')) { pon(false); }
+            if (e.key === 'Escape' && document.documentElement.classList.contains('presentando') && !document.querySelector('dialog[open]')) { setPresenting(false); }
         });
     })();
-    // El botón del modo, en la barra de arriba, con su menú de cuatro.
+    // The mode button, in the top bar, with its menu of four.
     (() => {
         const b = document.createElement('button');
         b.type = 'button'; b.className = 'redondo'; b.id = 'b-modo'; b.setAttribute('aria-haspopup', 'true'); b.setAttribute('aria-expanded', 'false');
         $('.acciones').prepend(b);
-        const pinta = () => {
-            b.title = `${t('bar_mode')}: ${t('mode_' + modo)}`;
-            b.innerHTML = `<span class="modo-disco" data-m="${modo}">${icono('modo-' + modo)}</span><span class="redondo-texto">${escapa(t('mode_' + modo))}</span>`;
+        const paintModeButton = () => {
+            b.title = `${t('bar_mode')}: ${t('mode_' + mode)}`;
+            b.innerHTML = `<span class="modo-disco" data-m="${mode}">${icono('modo-' + mode)}</span><span class="redondo-texto">${escapeHtml(t('mode_' + mode))}</span>`;
         };
         const menu = document.createElement('div');
         menu.className = 'menu-modo'; menu.id = 'menu-modo'; menu.hidden = true; menu.setAttribute('role', 'menu');
-        menu.innerHTML = `<p class="ante">${escapa(t('bar_mode_title'))}</p>` + PANTALLAS.map((m) => `<button type="button" role="menuitemradio" data-modo="${m}">`
-            + `<span class="modo-disco" data-m="${m}">${icono('modo-' + m)}</span><span><strong>${escapa(t('mode_' + m))}</strong><small>${escapa(t('mode_' + m + '_hint'))}</small></span></button>`).join('')
-            + `<label class="interruptor menu-modo-mayus"><input type="checkbox" id="mm-mayus"><span><strong>${escapa(t('bar_names_upper'))}</strong>`
-            + `<small>${escapa(t('bar_names_upper_hint'))}</small></span></label>`;
+        menu.innerHTML = `<p class="ante">${escapeHtml(t('bar_mode_title'))}</p>` + SCREEN_MODES.map((m) => `<button type="button" role="menuitemradio" data-modo="${m}">`
+            + `<span class="modo-disco" data-m="${m}">${icono('modo-' + m)}</span><span><strong>${escapeHtml(t('mode_' + m))}</strong><small>${escapeHtml(t('mode_' + m + '_hint'))}</small></span></button>`).join('')
+            + `<label class="interruptor menu-modo-mayus"><input type="checkbox" id="mm-mayus"><span><strong>${escapeHtml(t('bar_names_upper'))}</strong>`
+            + `<small>${escapeHtml(t('bar_names_upper_hint'))}</small></span></label>`;
         document.body.append(menu);
-        const cierra = () => { menu.hidden = true; b.setAttribute('aria-expanded', 'false'); };
+        const closeMenu = () => { menu.hidden = true; b.setAttribute('aria-expanded', 'false'); };
         b.addEventListener('click', () => {
-            if (!menu.hidden) { cierra(); return; }
-            $$('button', menu).forEach((x) => x.setAttribute('aria-checked', String(x.dataset.modo === modo)));
-            $('#mm-mayus').checked = !!mayus.get().on;
+            if (!menu.hidden) { closeMenu(); return; }
+            $$('button', menu).forEach((x) => x.setAttribute('aria-checked', String(x.dataset.modo === mode)));
+            $('#mm-mayus').checked = !!upperNames.get().on;
             const r = b.getBoundingClientRect();
             menu.style.top = `${r.bottom + 8}px`;
             menu.style.right = `${Math.max(8, innerWidth - r.right)}px`;
@@ -1983,60 +1986,60 @@
         });
         menu.addEventListener('click', (e) => {
             const x = e.target.closest('[data-modo]'); if (!x) { return; }
-            modo = x.dataset.modo;
-            document.documentElement.dataset.modo = modo;
-            guarda(claveModo, modo);
-            guardaAjustes({ mode: modo });
-            pinta(); cierra(); ajustaBarra(); aplicaMayus();
-            anuncia(`${t('bar_mode')}: ${t('mode_' + modo)}`);
-            document.dispatchEvent(new CustomEvent('classtools:mode', { detail: modo }));
+            mode = x.dataset.modo;
+            document.documentElement.dataset.modo = mode;
+            save(modeKey, mode);
+            saveSettings({ mode: mode });
+            paintModeButton(); closeMenu(); fitBar(); applyUpperNames();
+            announce(`${t('bar_mode')}: ${t('mode_' + mode)}`);
+            document.dispatchEvent(new CustomEvent('classtools:mode', { detail: mode }));
         });
-        $('#mm-mayus').addEventListener('change', (e) => { mayus.set({ on: e.target.checked }); aplicaMayus(); });
-        document.addEventListener('pointerdown', (e) => { if (!menu.hidden && !menu.contains(e.target) && !b.contains(e.target)) { cierra(); } });
-        document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !menu.hidden) { e.stopPropagation(); cierra(); b.focus(); } }, true);
-        pinta();
+        $('#mm-mayus').addEventListener('change', (e) => { upperNames.set({ on: e.target.checked }); applyUpperNames(); });
+        document.addEventListener('pointerdown', (e) => { if (!menu.hidden && !menu.contains(e.target) && !b.contains(e.target)) { closeMenu(); } });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !menu.hidden) { e.stopPropagation(); closeMenu(); b.focus(); } }, true);
+        paintModeButton();
     })();
-    // Lo que el profesor guarda en el aula de cada herramienta (marcador, ruedas de letras…), para seguir desde otro ordenador.
-    // Se envía con un poco de espera para no mandar cada toque, y lo pendiente sale al cerrar la página.
-    const pendientes = {}, esperas = {};
-    const envia = (tool, keepalive) => {
-        if (!AULA || !AULA.stateurl || !(tool in pendientes)) { return Promise.resolve(); }
-        const datos = pendientes[tool]; delete pendientes[tool];
-        return fetch(AULA.stateurl, {
+    // What the teacher keeps in Moodle of each tool (scoreboard, letter wheels…), to go on from another computer.
+    // It is sent after a short wait so as not to send every tap, and what is pending goes out when the page closes.
+    const pending = {}, sendTimers = {};
+    const send = (tool, keepalive) => {
+        if (!MOODLE || !MOODLE.stateurl || !(tool in pending)) { return Promise.resolve(); }
+        const payload = pending[tool]; delete pending[tool];
+        return fetch(MOODLE.stateurl, {
             method: 'POST', credentials: 'same-origin', keepalive: !!keepalive, headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: new URLSearchParams({ sesskey: AULA.sesskey, courseid: AULA.courseid, tool, data: JSON.stringify(datos) }),
+            body: new URLSearchParams({ sesskey: MOODLE.sesskey, courseid: MOODLE.courseid, tool, data: JSON.stringify(payload) }),
         }).then((r) => r.json()).then((j) => {
-            // Sin sesión: se queda pendiente (sale en cuanto vuelvan a entrar) y se avisa.
-            if (sinSesion(j)) { if (!(tool in pendientes)) { pendientes[tool] = datos; } avisaSesion(); }
-        }).catch(() => { /* sin conexión: queda en el navegador */ });
+            // No session: it stays pending (it goes out as soon as they log in again) and the board says so.
+            if (isNoSession(j)) { if (!(tool in pending)) { pending[tool] = payload; } warnSession(); }
+        }).catch(() => { /* offline: it stays in the browser */ });
     };
-    const guardaEnAula = (tool, datos) => {
-        if (!AULA || !AULA.stateurl || DUELO || PRACTICA) { return; }
-        pendientes[tool] = datos;
-        clearTimeout(esperas[tool]);
-        esperas[tool] = setTimeout(() => envia(tool), 1200);
+    const keepInMoodle = (tool, payload) => {
+        if (!MOODLE || !MOODLE.stateurl || DUEL || PRACTICE) { return; }
+        pending[tool] = payload;
+        clearTimeout(sendTimers[tool]);
+        sendTimers[tool] = setTimeout(() => send(tool), 1200);
     };
-    addEventListener('pagehide', () => Object.keys(pendientes).forEach((t) => envia(t, true)));
-    // Alguien de la clase para otra herramienta (salir a la pizarra, tocar en la partitura…): de la lista elegida en
-    // «¿A quién le toca?», de los que han venido, con el sorteo justo de los turnos (cuenta como uno más) y sin repetir
-    // al último. null si no hay lista o no queda nadie.
-    let ultimoFuera = null;
-    const eligeFuera = () => {
-        const l = listaQ();
+    addEventListener('pagehide', () => Object.keys(pending).forEach((t) => send(t, true)));
+    // Someone of the class for another tool (to come to the board, to play on the score…): from the list chosen in
+    // «Whose turn?», among those who came, with the fair picking of turns (it counts as one more) and not repeating
+    // the last one. null if there is no list or nobody is left.
+    let lastPickedOutside = null;
+    const pickForTool = () => {
+        const l = pickerList();
         if (!l) { return null; }
-        let bolsa = presentes(l);
-        if (bolsa.length > 1 && ultimoFuera) { bolsa = bolsa.filter((n) => n !== ultimoFuera); }
-        if (!bolsa.length) { return null; }
-        const justo = conTurnos(l) && qJusto;
-        const minimo = justo ? Math.min(...bolsa.map((n) => l.veces[n] || 0)) : 0;
-        const candidatos = justo ? bolsa.filter((n) => (l.veces[n] || 0) === minimo) : bolsa;
-        const elegido = candidatos[azar(candidatos.length)];
-        ultimoFuera = elegido;
-        if (conTurnos(l) && l.ids[elegido]) {
-            sumaTurno(l.ids[elegido]);
-            alAula(AULA.pickurl, { userid: l.ids[elegido] }).catch(() => { /* sin conexión: ese turno no cuenta */ });
+        let pool = presentIn(l);
+        if (pool.length > 1 && lastPickedOutside) { pool = pool.filter((n) => n !== lastPickedOutside); }
+        if (!pool.length) { return null; }
+        const fair = withPicks(l) && qFair;
+        const fewest = fair ? Math.min(...pool.map((n) => l.veces[n] || 0)) : 0;
+        const candidates = fair ? pool.filter((n) => (l.veces[n] || 0) === fewest) : pool;
+        const chosen = candidates[randomInt(candidates.length)];
+        lastPickedOutside = chosen;
+        if (withPicks(l) && l.ids[chosen]) {
+            addPick(l.ids[chosen]);
+            toMoodle(MOODLE.pickurl, { userid: l.ids[chosen] }).catch(() => { /* offline: that turn does not count */ });
         }
-        return { name: elegido, list: l };
+        return { name: chosen, list: l };
     };
     // ---------------------------------------------------------------------------------------------------
     // Games and materials by school level: in each screen mode the bar shows first what suits it, and the rest waits
@@ -2056,7 +2059,7 @@
         balanza: ['early', 'primary', 'secondary'], plano: ['primary', 'secondary', 'advanced'], calc: ['primary', 'secondary', 'advanced'], score: ['early', 'primary', 'secondary', 'advanced'],
         tiempo: ['primary', 'secondary', 'advanced'], cuerpos: ['early', 'primary', 'secondary', 'advanced'],
     };
-    const ofLevel = (id) => !LEVELS_OF[id] || LEVELS_OF[id].includes(modo);
+    const ofLevel = (id) => !LEVELS_OF[id] || LEVELS_OF[id].includes(mode);
     /**
      * Hides the buttons of other levels in a bar (a radio group whose buttons carry data-<attr>) and offers them in a
      * menu right after it. Called again whenever the bar is painted or the mode changes.
@@ -2070,7 +2073,7 @@
             more = document.createElement('div');
             more.className = 'ct-otros';
             more.innerHTML = `<button type="button" class="ct-otros-boton" aria-haspopup="true" aria-expanded="false">`
-                + `<span>${escapa(t('levels_other'))}</span><span aria-hidden="true">▾</span></button>`
+                + `<span>${escapeHtml(t('levels_other'))}</span><span aria-hidden="true">▾</span></button>`
                 + '<div class="ct-otros-menu" role="menu" hidden></div>';
             bar.after(more);
             const open = more.querySelector('.ct-otros-boton'), menu = more.querySelector('.ct-otros-menu');
@@ -2096,69 +2099,69 @@
         more.hidden = !away.length;
         more.querySelector('.ct-otros-menu').innerHTML = away.map((b) => {
             const id = b.dataset[attr], levels = (LEVELS_OF[id] || []).map((m) => t('mode_' + m)).join(' · ');
-            return `<button type="button" role="menuitem" data-pick="${escapa(id)}"><strong>${escapa(b.textContent)}</strong>`
-                + `<small>${escapa(levels)}</small></button>`;
+            return `<button type="button" role="menuitem" data-pick="${escapeHtml(id)}"><strong>${escapeHtml(b.textContent)}</strong>`
+                + `<small>${escapeHtml(levels)}</small></button>`;
         }).join('');
     };
-    // API para las herramientas que van en ficheros aparte (chance.js, scoreboard.js…): lo común de la pantalla.
+    // API for the tools that live in other files (chance.js, scoreboard.js…): what the board shares.
     window.ClasstoolsCore = {
-        $, $$, t, translate: traduce, random: azar, shuffle: baraja, escape: escapa, reducedMotion: reducido, save: guarda, load: lee,
-        play: suena, sounds: SONIDOS, bell: campana, click: clic, announce: anuncia, icon: icono, setIcon: ponIcono,
-        relabel: rotula, repeatWhileHeld: repite, register: (tool, def) => { HERR[tool] = def; }, show: muestra,
-        lists: todas, present: presentes, face: cara, initials: iniciales, preload: precarga, activeList: listaQ, duelo: DUELO, practica: PRACTICA,
-        moodle: AULA, toMoodle: alAula, lastGroups: () => gHechos, openBig: abreGigante, closeBig: cierraGigante,
-        newList: () => abreEditor(null), editList: (id) => abreEditor(id),
-        kept: (tool) => (AULA && AULA.state && AULA.state[tool]) || null, keep: guardaEnAula,
-        audioContext: () => audio(), soundOn: () => sonido, output: () => maestro,
-        mode: () => modo,   // early, primary, secondary or advanced; «classtools:mode» when it changes
+        $, $$, t, translate: translatePage, random: randomInt, shuffle, escape: escapeHtml, reducedMotion, save, load,
+        play: playSound, sounds: SOUNDS, bell, click: clickSound, announce, icon: icono, setIcon,
+        relabel, repeatWhileHeld, register: (tool, def) => { TOOLS[tool] = def; }, show: showTool,
+        lists: allLists, present: presentIn, face: faceHtml, initials: initialsOf, preload: preloadPhotos, activeList: pickerList, duelo: DUEL, practica: PRACTICE,
+        moodle: MOODLE, toMoodle, lastGroups: () => gMade, openBig: openBigView, closeBig: closeBigView,
+        newList: () => openEditor(null), editList: (id) => openEditor(id),
+        kept: (tool) => (MOODLE && MOODLE.state && MOODLE.state[tool]) || null, keep: keepInMoodle,
+        audioContext: () => audio(), soundOn: () => soundOn, output: () => masterGain,
+        mode: () => mode,   // early, primary, secondary or advanced; «classtools:mode» when it changes
         otherLevels,        // otherLevels(bar, attr): the games or materials of other levels, in a menu after the bar
-        nameCase: enMayus,  // nameCase(name) → the name as the board shows it (in capitals when «Names in capitals» is on)
-        byMode: porModo,    // byMode(key, { early: {…}, primary: {…}, … }) → { get(), set(changes) }: values that start differently in each mode
-        tabs: () => pestanas.map((b) => b.dataset.h), current: () => actual,
-        pick: eligeFuera,   // pick() → { name, list } o null: alguien de la clase, como en «¿A quién le toca?»
+        nameCase: toNameCase,  // nameCase(name) → the name as the board shows it (in capitals when «Names in capitals» is on)
+        byMode,             // byMode(key, { early: {…}, primary: {…}, … }) → { get(), set(changes) }: values that start differently in each mode
+        tabs: () => tabs.map((b) => b.dataset.h), current: () => current,
+        pick: pickForTool,   // pick() → { name, list } or null: someone of the class, as in «Whose turn?»
     };
-    // Abierta desde un curso del aula: título con el curso y botón para volver a él.
-    // La vuelta: al curso si se abrió desde uno; si no (dentro de Moodle, sin curso), al inicio de cada usuario.
-    const vuelta = AULA && AULA.back ? [AULA.back, t('bar_back')]
+    // Opened from a course: the course in the title, and a button to go back to it.
+    // The way back: to the course if opened from one; if not (inside Moodle, without a course), to each user's home.
+    const backLink = MOODLE && MOODLE.back ? [MOODLE.back, t('bar_back')]
         : (window.CLASSTOOLS_SITE && window.CLASSTOOLS_SITE.home ? [window.CLASSTOOLS_SITE.home, t('bar_home')] : null);
-    if (vuelta) {
+    if (backLink) {
         const v = document.createElement('a');
-        v.className = 'redondo'; v.href = vuelta[0]; v.title = vuelta[1];
-        v.innerHTML = `<span class="ico-caja">${icono('salir')}</span><span class="redondo-texto">${escapa(vuelta[1])}</span>`;
+        v.className = 'redondo'; v.href = backLink[0]; v.title = backLink[1];
+        v.innerHTML = `<span class="ico-caja">${icono('salir')}</span><span class="redondo-texto">${escapeHtml(backLink[1])}</span>`;
         $('.acciones').prepend(v);
     }
-    if (AULA && AULA.course) {
-        document.title = `${t('bar_title')} · ${AULA.course}`;
-        // El curso, bajo el nombre de las herramientas: con varias clases al día (o un especialista que rota), que se
-        // vea en cuál está abierta.
-        const marca = $('.marca'), textos = marca.lastElementChild, app = document.createElement('span');
+    if (MOODLE && MOODLE.course) {
+        document.title = `${t('bar_title')} · ${MOODLE.course}`;
+        // The course, under the name of the tools: with several classes a day (or a specialist who moves around), it
+        // shows which one is open.
+        const brand = $('.marca'), brandTexts = brand.lastElementChild, app = document.createElement('span');
         app.className = 'marca-app';
-        app.append(...textos.childNodes);
-        // El nombre del curso lleva al curso (como «Volver al curso»), salvo en la pizarra de práctica o en un duelo.
-        const alCurso = AULA.back && AULA.back !== '#' && !PRACTICA && !DUELO;
-        const curso = document.createElement(alCurso ? 'a' : 'span');
-        curso.className = 'marca-curso'; curso.textContent = AULA.course; curso.title = AULA.course;
-        if (alCurso) { curso.href = AULA.back; curso.title = `${t('bar_back')}: ${AULA.course}`; }
-        textos.append(app, curso);
-        marca.classList.add('con-curso');
-        ajustaBarra();
+        app.append(...brandTexts.childNodes);
+        // The course name leads to the course (like «Back to the course»), except on the practice board or in a duel.
+        const linkToCourse = MOODLE.back && MOODLE.back !== '#' && !PRACTICE && !DUEL;
+        const courseLabel = document.createElement(linkToCourse ? 'a' : 'span');
+        courseLabel.className = 'marca-curso'; courseLabel.textContent = MOODLE.course; courseLabel.title = MOODLE.course;
+        if (linkToCourse) { courseLabel.href = MOODLE.back; courseLabel.title = `${t('bar_back')}: ${MOODLE.course}`; }
+        brandTexts.append(app, courseLabel);
+        brand.classList.add('con-curso');
+        fitBar();
     }
-    pintaSelects();
-    quienPinta();
-    tmPon(5 * 60000);
-    const hay = (h) => pestanas.some((b) => b.dataset.h === h);
-    muestra(listasAula.length && hay('quien') ? 'quien' : (hay('temporizador') ? 'temporizador' : pestanas[0].dataset.h));
-    // La pantalla dividida, si se dejó así (en pantallas anchas).
-    if (!DUELO && lee('dividida-on', false) && innerWidth >= 900 && disponibles().length > 1) { divide(true); }
-    // Una copia de duelo: solo su material, en cuanto estén todos cargados.
-    if (DUELO) {
+    paintSelects();
+    pickerPaint();
+    tmSet(5 * 60000);
+    const hasTab = (h) => tabs.some((b) => b.dataset.h === h);
+    showTool(courseLists.length && hasTab('quien') ? 'quien' : (hasTab('temporizador') ? 'temporizador' : tabs[0].dataset.h));
+    // The split screen, if it was left so (on wide screens).
+    if (!DUEL && load('dividida-on', false) && innerWidth >= 900 && availableTools().length > 1) { setSplit(true); }
+    // A copy for a duel: only its material, as soon as everything has loaded.
+    if (DUEL) {
         addEventListener('load', () => {
-            if (hay('material')) { muestra('material'); }
-            if (window.ClasstoolsMaterial) { window.ClasstoolsMaterial.showMode(DUELO); }
+            if (hasTab('material')) { showTool('material'); }
+            if (window.ClasstoolsMaterial) { window.ClasstoolsMaterial.showMode(DUEL); }
         });
     }
-    ajustaBarra();
-    try { SCORM.iniciar(); SCORM.guardar({}, 100, true); } catch (e) { /* sin Moodle */ }
+    fitBar();
+    try { SCORM.iniciar(); SCORM.guardar({}, 100, true); } catch (e) { /* no Moodle */ }
 
-    window.Pizarra = { tm, cr, sm, muestra, tmPon, listas: () => listas, todas, limpiaNombres, elegir, abreFaltan };   // para las pruebas automáticas
+    window.Pizarra = { tm, cr, sm, muestra: showTool, tmPon: tmSet, listas: () => ownLists, todas: allLists, limpiaNombres: cleanNames, elegir: pickStudent, abreFaltan: openAbsent };   // for the automated tests
 })();

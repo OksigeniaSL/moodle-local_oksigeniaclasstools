@@ -37,12 +37,12 @@
 </header>
 
 <main class="mesa" id="mesa">
-  <!-- Entre las dos mitades, cuando la pantalla está dividida -->
+  <!-- Between the two halves, when the screen is split -->
   <div class="mesa-division" id="mesa-division" hidden>
     <button type="button" class="redondo suave" id="b-intercambiar" title="Cambiar de lado" data-t-title="split_swap" data-t-aria="split_swap" aria-label="Cambiar de lado"><span data-icono="cambiar"></span></button>
     <button type="button" class="redondo suave" id="b-juntar" title="Una sola herramienta" data-t-title="split_close" data-t-aria="split_close" aria-label="Una sola herramienta"><span data-icono="cerrar"></span></button>
   </div>
-  <!-- Temporizador -->
+  <!-- Timer -->
   <section class="herramienta temporizador" id="h-temporizador" role="tabpanel" aria-labelledby="t-temporizador">
     <div class="anillo" id="tm-anillo">
       <svg viewBox="0 0 200 200" role="img" aria-labelledby="tm-cifras">
@@ -118,7 +118,7 @@
     </div>
   </section>
 
-  <!-- Cronómetro -->
+  <!-- Stopwatch -->
   <section class="herramienta cronometro" id="h-cronometro" role="tabpanel" aria-labelledby="t-cronometro" hidden>
     <div class="tarjeta pantalla-crono">
       <p class="cifras-crono" id="cr-cifras" aria-live="off"><span id="cr-principal">0:00</span><span class="decima" id="cr-decima">,0</span></p>
@@ -134,7 +134,7 @@
     </aside>
   </section>
 
-  <!-- ¿A quién le toca? -->
+  <!-- Whose turn? -->
   <section class="herramienta quien" id="h-quien" role="tabpanel" aria-labelledby="t-quien" hidden>
     <div class="barra-herr">
       <label class="campo"><span data-t="q_list">Lista</span><select id="q-lista"></select></label>
@@ -164,7 +164,7 @@
     </div>
   </section>
 
-  <!-- Hacer grupos -->
+  <!-- Make groups -->
   <section class="herramienta grupos" id="h-grupos" role="tabpanel" aria-labelledby="t-grupos" hidden>
     <aside class="tarjeta ajustes-grupos">
       <label class="campo apilado"><span data-t="g_students">Alumnos</span><select id="g-lista"></select></label>
@@ -206,7 +206,7 @@
     <div class="rejilla-grupos" id="g-rejilla"></div>
   </section>
 
-  <!-- Semáforo de ruido -->
+  <!-- Noise meter -->
   <section class="herramienta semaforo" id="h-semaforo" role="tabpanel" aria-labelledby="t-semaforo" hidden>
     <div class="farola">
       <div class="caja-semaforo apagado" id="s-caja" role="img" aria-label="Semáforo apagado" data-t-aria="sm_off">
@@ -249,29 +249,29 @@
     </div>
   </section>
 
-  <!-- Dado y moneda -->
-  <!-- Azar (chance.js): ruleta, dados, monedas y cartas -->
+  <!-- Dice and coin -->
+  <!-- Chance (chance.js): wheel, dice, coins and cards -->
   <section class="herramienta ct-chance" id="h-azar" role="tabpanel" aria-labelledby="t-azar" hidden></section>
 
-  <!-- Juegos (games.js con rosco, simon, hangman, wordle, memory y secretcode) -->
+  <!-- Games (games.js with rosco, simon, hangman, wordle, memory and secretcode) -->
   <section class="herramienta ct-games" id="h-juegos" role="tabpanel" aria-labelledby="t-juegos" hidden></section>
 
-  <!-- Material (manipulatives.js): regletas y tangram -->
+  <!-- Materials (manipulatives.js): rods and tangram -->
   <section class="herramienta ct-material" id="h-material" role="tabpanel" aria-labelledby="t-material" hidden></section>
 
-  <!-- Pizarra rápida (whiteboard.js) -->
+  <!-- Quick drawing board (whiteboard.js) -->
   <section class="herramienta ct-whiteboard" id="h-pizarra" role="tabpanel" aria-labelledby="t-pizarra" hidden></section>
 
-  <!-- Marcador (scoreboard.js) -->
+  <!-- Scoreboard (scoreboard.js) -->
   <section class="herramienta ct-scoreboard" id="h-marcador" role="tabpanel" aria-labelledby="t-marcador" hidden></section>
 
-  <!-- Así trabajamos -->
+  <!-- Work symbols -->
   <section class="herramienta asi" id="h-asi" role="tabpanel" aria-labelledby="t-asi" hidden>
     <div class="rejilla-asi" id="a-rejilla"></div>
     <p class="nota centro" data-t="asi_hint">Toca uno para mostrarlo en grande. Para volver, toca la pantalla otra vez.</p>
   </section>
 
-  <!-- Reloj -->
+  <!-- Clock -->
   <section class="herramienta reloj" id="h-reloj" role="tabpanel" aria-labelledby="t-reloj" hidden>
     <div class="esfera-caja">
       <svg viewBox="0 0 200 200" class="esfera" id="r-esfera" aria-hidden="true">
@@ -289,14 +289,14 @@
     </div>
   </section>
 
-  <!-- Código QR -->
+  <!-- QR code -->
   <section class="herramienta qr" id="h-qr" role="tabpanel" aria-labelledby="t-qr" hidden></section>
-  <!-- Presentación de Canva -->
+  <!-- Canva presentation -->
   <section class="herramienta pr" id="h-presentacion" role="tabpanel" aria-labelledby="t-presentacion" hidden></section>
   <section class="herramienta lv" id="h-envivo" role="tabpanel" aria-labelledby="t-envivo" hidden></section>
 </main>
 
-<!-- Pantalla del final del temporizador -->
+<!-- The end of the timer -->
 <div class="fin-tiempo" id="fin-tiempo" role="alertdialog" aria-labelledby="fin-titulo" hidden>
   <div class="fin-tarjeta">
     <span class="fin-campana" data-icono="campana"></span>
@@ -308,13 +308,13 @@
   </div>
 </div>
 
-<!-- Cartel a toda pantalla (Así trabajamos y el QR ampliado) -->
+<!-- Full-screen sign (work symbols and the enlarged QR code) -->
 <div class="gigante" id="gigante" role="dialog" aria-modal="true" aria-label="Vista en grande" data-t-aria="gen_big_view" hidden>
   <button type="button" class="cerrar-gigante" id="gigante-cerrar" aria-label="Cerrar" data-t-aria="gen_close"><span data-icono="cerrar"></span></button>
   <div class="gigante-contenido" id="gigante-contenido"></div>
 </div>
 
-<!-- Editor de listas de clase -->
+<!-- Class list editor -->
 <dialog class="editor" id="editor" aria-labelledby="ed-titulo">
   <form method="dialog" id="ed-form">
     <h2 id="ed-titulo" data-t="ed_new_list">Nueva lista</h2>
