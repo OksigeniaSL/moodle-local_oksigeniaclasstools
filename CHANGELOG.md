@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.66.0 (2026-10-21)
+
+- The code is in English throughout: the comments of the board's core script (app/app.js), of its styles and of its
+  page, and the names of the core script's variables and functions. What sites and browsers keep stays as it was, so
+  nothing saved is lost: the ids of the tools («pizarra», «temporizador»…), the keys stored in the browser, the names
+  of the saved data, the CSS classes and the ids of the page. Asked for in the Moodle plugins directory review (#4).
+
 ## 0.65.1 (2026-10-20)
 
 - The same as 0.65.0, with a version number that is a real date (YYYYMMDDXX), as the Moodle plugins directory asks.
