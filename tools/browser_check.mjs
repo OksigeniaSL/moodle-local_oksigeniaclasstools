@@ -1,9 +1,29 @@
 #!/usr/bin/env node
-// Checks the board in a headless Chrome, outside Moodle: app/ is served as it is, with a pretend Moodle course and a
-// pretend live server, and each check drives the real screen as a teacher would.
-// Usage: node tools/browser_check.mjs [check …]   (Node 22 or later, Chrome or Chromium installed; no packages)
-// CHROME=/path/to/chrome to choose the browser; SHOTS=<folder> to keep a picture of the screen where a check asks for
-// one (await shot('name') in the check), to look at what it has checked.
+// This file is part of Moodle - https://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
+/**
+ * Checks the board in a headless Chrome, outside Moodle: app/ is served as it is, with a pretend Moodle course and a
+ * pretend live server, and each check drives the real screen as a teacher would.
+ * Usage: node tools/browser_check.mjs [check …]   (Node 22 or later, Chrome or Chromium installed; no packages)
+ * CHROME=/path/to/chrome to choose the browser; SHOTS=<folder> to keep a picture of the screen where a check asks for
+ * one (await shot('name') in the check), to look at what it has checked.
+ *
+ * @copyright  2026 Oksigenia SL <dev@oksigenia.cc>
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 'use strict';
 import { spawn } from 'node:child_process';
 import { mkdtempSync, readFileSync, rmSync, existsSync, mkdirSync, writeFileSync } from 'node:fs';
@@ -231,7 +251,8 @@ const CHECKS = {
         q('#cr-reiniciar').click();
         // «Clear all» with only instruments on the board, and with a stroke and instruments.
         q('#t-pizarra').click();
-        await sleep(200);
+        // A busy machine may take a moment to set the board up.
+        for (let i = 0; i < 100 && !(window.ClasstoolsWhiteboard && window.ClasstoolsInstruments); i++) { await sleep(50); }
         const W = window.ClasstoolsWhiteboard, I = window.ClasstoolsInstruments;
         if (!W.full()) { W.setFull(true, false); await sleep(200); }
         I.create('ruler'); I.create('compass');

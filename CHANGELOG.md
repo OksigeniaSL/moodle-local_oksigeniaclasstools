@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.65.0 (2026-10-20)
+
+- Course backups now carry what the board keeps of the course. Always, the use of the boards; with users, what each
+  teacher keeps of each tool (scoreboards, letter wheels, quizzes, board pages…), the picks of fair picking, the
+  stickers' uses in the course and the pictures of quiz questions. The class the printed cards were made for points
+  at the restored group. Restored into a course that already has them, the counts add up and each tool keeps its
+  newer version. Live sessions, the fixed remote and the guided helps a teacher did belong to the teacher and stay
+  out. Asked for in the Moodle plugins directory review (#1).
+- Every source file carries the full Moodle boilerplate, also the scripts of the board, and the copyright is now
+  Oksigenia SL (#3).
+
 ## 0.64.0 (2026-10-19)
 
 - What the boards are used for. Each board counts, per course and day, how many times each tool, game and material

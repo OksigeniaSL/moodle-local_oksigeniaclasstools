@@ -162,6 +162,12 @@ course or user:
   course and day, on teachers' boards and on students' ones, with no user. The administrator sees it in *Site
   administration → Reports → Use of the boards*. Deleted with its course.
 
+**Course backups** carry what the board keeps of the course: always the use of the boards, and with users what each
+teacher keeps of each tool, the picks, the stickers' uses in the course and the pictures of quiz questions. Live
+sessions (gone after a day), the fixed remote and the guided helps a teacher did belong to the teacher, not to the
+course, and stay out. Restored into a course that already has them, the counts add up and each tool keeps its newer
+version (the course settings have to be overwritten for any data of the course to come, as Moodle does).
+
 No external services, no CDN and no tracking: everything the board needs comes with the plugin. The only exception
 is the «Presentation» tab, off until the administrator turns it on: it shows the Canva presentation a teacher opens,
 loaded from canva.com (for a short link, Moodle asks canva.link where it leads).

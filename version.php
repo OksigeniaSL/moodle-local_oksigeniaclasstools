@@ -18,15 +18,15 @@
  * Version metadata for local_oksigeniaclasstools.
  *
  * @package    local_oksigeniaclasstools
- * @copyright  2026 Oksigenia <dev@oksigenia.cc>
+ * @copyright  2026 Oksigenia SL <dev@oksigenia.cc>
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'local_oksigeniaclasstools';
-$plugin->version   = 2026114300;
-$plugin->release   = '0.64.0';
+$plugin->version   = 2026114400;
+$plugin->release   = '0.65.0';
 $plugin->maturity  = MATURITY_BETA;
 $plugin->requires  = 2023100900; // Moodle 4.3: before it, table names could not be longer than 28 characters.
 $plugin->supported = [403, 503];

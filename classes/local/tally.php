@@ -22,7 +22,7 @@ namespace local_oksigeniaclasstools\local;
  * couple of minutes). For the administrator to see what classes like most and what they leave aside.
  *
  * @package    local_oksigeniaclasstools
- * @copyright  2026 Oksigenia <dev@oksigenia.cc>
+ * @copyright  2026 Oksigenia SL <dev@oksigenia.cc>
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class tally {
@@ -65,7 +65,6 @@ class tally {
      * @return int How many items were added.
      */
     public static function add(int $courseid, string $who, array $items, ?int $now = null): int {
-        global $DB;
         if (!in_array($who, ['teacher', 'student'], true)) {
             throw new \moodle_exception('invalidparameter', 'debug');
         }
@@ -78,28 +77,47 @@ class tally {
             }
             $opens = max(0, min(self::MAXOPENS, (int) ($item[0] ?? 0)));
             $seconds = max(0, min(self::MAXSECONDS, (int) ($item[1] ?? 0)));
-            if (!$opens && !$seconds) {
-                continue;
+            if (self::add_day($courseid, $day, $who, $key, $opens, $seconds)) {
+                $added++;
             }
-            $where = ['courseid' => $courseid, 'day' => $day, 'who' => $who, 'tool' => $key];
-            if (!$DB->record_exists(self::TABLE, $where)) {
-                try {
-                    $DB->insert_record(self::TABLE, (object) ($where + ['opens' => $opens, 'seconds' => $seconds]));
-                    $added++;
-                    continue;
-                } catch (\dml_write_exception $e) {
-                    // Another sending of the same board made the row a moment ago: it is added to that one.
-                    unset($e);
-                }
-            }
-            $DB->execute(
-                'UPDATE {' . self::TABLE . '} SET opens = opens + ?, seconds = seconds + ?
-                  WHERE courseid = ? AND day = ? AND who = ? AND tool = ?',
-                [$opens, $seconds, $courseid, $day, $who, $key]
-            );
-            $added++;
         }
         return $added;
+    }
+
+    /**
+     * Adds to one item of one day of a course: what a board sends, or what a restored course brings.
+     *
+     * @param int $courseid
+     * @param int $day YYYYMMDD.
+     * @param string $who 'teacher' or 'student'.
+     * @param string $tool An item of the board.
+     * @param int $opens Times chosen.
+     * @param int $seconds Seconds in use.
+     * @return bool Whether something was added.
+     */
+    public static function add_day(int $courseid, int $day, string $who, string $tool, int $opens, int $seconds): bool {
+        global $DB;
+        $opens = max(0, $opens);
+        $seconds = max(0, $seconds);
+        if (!in_array($who, ['teacher', 'student'], true) || !self::known($tool) || (!$opens && !$seconds)) {
+            return false;
+        }
+        $where = ['courseid' => $courseid, 'day' => $day, 'who' => $who, 'tool' => $tool];
+        if (!$DB->record_exists(self::TABLE, $where)) {
+            try {
+                $DB->insert_record(self::TABLE, (object) ($where + ['opens' => $opens, 'seconds' => $seconds]));
+                return true;
+            } catch (\dml_write_exception $e) {
+                // Another sending of the same board made the row a moment ago: it is added to that one.
+                unset($e);
+            }
+        }
+        $DB->execute(
+            'UPDATE {' . self::TABLE . '} SET opens = opens + ?, seconds = seconds + ?
+              WHERE courseid = ? AND day = ? AND who = ? AND tool = ?',
+            [$opens, $seconds, $courseid, $day, $who, $tool]
+        );
+        return true;
     }
 
     /**

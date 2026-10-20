@@ -170,6 +170,13 @@ borran con su curso o su usuario:
   curso y día, en las pizarras de los profesores y en las de los alumnos, sin usuario. El administrador lo ve en
   *Administración del sitio → Informes → Uso de las pizarras*. Se borra con su curso.
 
+**Las copias de seguridad del curso** llevan lo que la pizarra guarda del curso: siempre el uso de las pizarras y,
+con usuarios, lo que guarda cada profesor de cada herramienta, los turnos, los usos de los cromos en el curso y las
+imágenes del concurso. Las sesiones en vivo (se borran al día), el mando fijo y las ayudas guiadas que ha hecho un
+profesor son del profesor, no del curso, y no van. Restaurada en un curso que ya los tiene, los recuentos se suman y
+cada herramienta se queda con su versión más nueva (para que venga cualquier dato del curso hay que sobrescribir su
+configuración, como hace Moodle).
+
 Sin servicios externos, sin CDN y sin seguimiento: todo lo que necesita la pantalla viene con el plugin. La única
 excepción es la pestaña «Presentación», apagada hasta que la enciende el administrador: muestra la presentación de Canva
 que abre un profesor, cargada desde canva.com (con un enlace corto, Moodle le pregunta a canva.link adónde lleva).
