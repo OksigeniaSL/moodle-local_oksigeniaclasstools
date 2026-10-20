@@ -2,7 +2,7 @@
 
 [![Licencia: GPLv3](https://img.shields.io/badge/licencia-GPLv3+-blue.svg)](LICENSE)
 ![Moodle](https://img.shields.io/badge/Moodle-4.3%2B-orange)
-![Estado](https://img.shields.io/badge/estado-beta-yellow)
+![Estado](https://img.shields.io/badge/estado-candidata%20a%20estable-yellowgreen)
 [![Patrocinio](https://img.shields.io/badge/patrocinio-Oksigenia-00d4ff)](https://oksigenia.com/en/open-source#sponsor)
 
 Herramientas para la pizarra de clase, **con los alumnos del curso ya cargados y sus fotos**. Se abren desde

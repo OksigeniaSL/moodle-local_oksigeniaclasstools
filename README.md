@@ -2,7 +2,7 @@
 
 [![License: GPLv3](https://img.shields.io/badge/license-GPLv3+-blue.svg)](LICENSE)
 ![Moodle](https://img.shields.io/badge/Moodle-4.3%2B-orange)
-![Status](https://img.shields.io/badge/status-beta-yellow)
+![Status](https://img.shields.io/badge/status-release%20candidate-yellowgreen)
 [![Sponsor](https://img.shields.io/badge/sponsor-Oksigenia-00d4ff)](https://oksigenia.com/en/open-source#sponsor)
 
 Board tools for the classroom, **with the course students already loaded and their photos**. Open them from any
