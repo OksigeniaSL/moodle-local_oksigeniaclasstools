@@ -27,19 +27,17 @@
 <h3>Lists from the course</h3>
 <p>One list per group and per cohort enrolled with cohort sync, and the whole course. Separate groups mode is respected.</p>
 <h3>Configuration</h3>
-<p>Under Site administration → Plugins → Local plugins → Class tools (Oksigenia Classtools): how names are shown on the board, the days counted for fair picking, the default screen mode (also by category), the school levels whose built-in sets are offered, which tools, games and materials the site shows, whether students get a limited board (only tools without data of the class), live sessions, stickers and the teachers' room, and the link in the main menu. Under Site administration → Reports → Use of the boards, the administrator sees how many times each tool, game and material was chosen and for how long, by students and by teachers. A user tour shows teachers where the tools are. Access is gated by the capability local/oksigeniaclasstools:use (teacher, non-editing teacher and manager by default); saving groups also needs moodle/course:managegroups.</p>
+<p>Under Site administration → Plugins → Local plugins → Class tools: names on the board, fair picking, the default screen mode (also by category), which tools, games and materials the site shows, a limited board for students, live sessions, stickers and the teachers' room. Under Reports → Use of the boards, what classes use most. Access is gated by the capability local/oksigeniaclasstools:use (teachers and managers by default).</p>
 <h3>Privacy</h3>
-<p>All tables with personal data are covered by the privacy provider (export and deletion) and removed with their course or user: the picks (deleted once older than the days counted for fair picking), what each teacher keeps of each tool in each course, the live sessions and their answers (deleted after a day; with the code only or anonymous, no user id is kept), the teacher's stickers, the fixed remote and the pictures of quiz questions. The use of the boards is counted per course and day, with no user. No external services, no CDN, no tracking; the optional presentation loads from canva.com only when the administrator turns it on.</p>
+<p>Covered by the Privacy API (export and deletion). Everything stays in your Moodle: no external services, no CDN, no tracking. The optional presentation loads from canva.com only when the administrator turns it on.</p>
 <h3>Languages</h3>
-<p>Interface in English and Spanish, other languages through AMOS. The built-in content (alphabet, words, pair sets, the time in words) comes in nine languages, and the guided helps have voice in English and Spanish.</p>
-<h3>Sponsorship</h3>
-<p>The plugin is FOSS and stays FOSS. If your school depends on it, sponsor its development at <a href="https://oksigenia.com/en/open-source#sponsor">oksigenia.com/en/open-source</a>. Sponsorship gets you logo placement, priority issue triage and weight in the public roadmap.</p>
-<h3>Installation and support</h3>
-<p>Optional service for schools that want it installed, configured and kept up to date on their Moodle, with training for teachers. Details at <a href="https://oksigenia.com/en/services/moodle">oksigenia.com/en/services/moodle</a>.</p>
+<p>English and Spanish, other languages through AMOS. The built-in content of the games comes in nine languages.</p>
+<h3>Support</h3>
+<p>Free and open source, and it stays so. Schools can <a href="https://oksigenia.com/en/open-source#sponsor">sponsor it</a> or ask for <a href="https://oksigenia.com/en/services/moodle">installation, configuration and training</a>.</p>
 <h3>Requirements</h3>
 <ul>
 <li>Moodle 4.3 or later (the main-menu link from 4.4).</li>
-<li>Tested on Moodle 4.3 to 5.3 and on the development branch: PHPUnit and Behat tests run on every branch in CI.</li>
+<li>Tested on Moodle 4.3 to 5.3 and on the development branch, with PHPUnit and Behat in CI.</li>
 <li>Any theme and any modern browser.</li>
 </ul>
 <h3>License</h3>
