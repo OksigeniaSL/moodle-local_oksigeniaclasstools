@@ -18,7 +18,7 @@
  * «Which class?»: a teacher hides one of their courses from the page, or shows it again.
  *
  * @package    local_oksigeniaclasstools
- * @copyright  2026 Oksigenia <dev@oksigenia.cc>
+ * @copyright  2026 Oksigenia SL <dev@oksigenia.cc>
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 

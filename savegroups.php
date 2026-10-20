@@ -18,7 +18,7 @@
  * Saves the teams made on the board as course groups, only when the teacher asks: a grouping with the date and one group per team.
  *
  * @package    local_oksigeniaclasstools
- * @copyright  2026 Oksigenia <dev@oksigenia.cc>
+ * @copyright  2026 Oksigenia SL <dev@oksigenia.cc>
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 

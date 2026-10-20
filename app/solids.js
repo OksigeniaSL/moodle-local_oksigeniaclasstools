@@ -1,13 +1,30 @@
-// 3D shapes, among the materials: prisms, pyramids, round solids and the regular polyhedra, drawn by the board itself
-// (no 3D library: a little geometry and an SVG). They turn with a finger, the mouse or the arrow keys, and come closer
-// with the wheel or two fingers. «Unfold» opens a shape into its net, slowly, and «Fold» closes it again (the slider
-// stops it halfway); «Another net» goes through all the nets of the small ones (the cube has 11) and makes new ones for
-// the big ones. The board counts the faces, the edges or the vertices one by one, with their numbers; a tap paints a
-// face, and its colour stays in the net; «See through» shows the hidden edges dashed; and the views from the front,
-// from above and from a side are drawn without perspective.
+// This file is part of Moodle - https://moodle.org/
 //
-// @copyright 2026 Oksigenia <dev@oksigenia.cc>
-// @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
+/**
+ * 3D shapes, among the materials: prisms, pyramids, round solids and the regular polyhedra, drawn by the board itself
+ * (no 3D library: a little geometry and an SVG). They turn with a finger, the mouse or the arrow keys, and come closer
+ * with the wheel or two fingers. «Unfold» opens a shape into its net, slowly, and «Fold» closes it again (the slider
+ * stops it halfway); «Another net» goes through all the nets of the small ones (the cube has 11) and makes new ones for
+ * the big ones. The board counts the faces, the edges or the vertices one by one, with their numbers; a tap paints a
+ * face, and its colour stays in the net; «See through» shows the hidden edges dashed; and the views from the front,
+ * from above and from a side are drawn without perspective.
+ *
+ * @copyright  2026 Oksigenia SL <dev@oksigenia.cc>
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 'use strict';
 (() => {
     const core = window.ClasstoolsCore;

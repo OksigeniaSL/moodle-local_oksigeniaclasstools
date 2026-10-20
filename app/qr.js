@@ -1,10 +1,27 @@
-// QR code for the board, nicer but still readable: module shape (squares, rounded, dots), eye shape (squares,
-// rounded, circles), colours that keep strong contrast on white, and a logo in the middle (the site's, or an image
-// of the teacher's). With a logo the code uses the highest error correction and keeps the middle clear. It can be
-// shown big and downloaded as PNG or SVG. Generated here, offline (qrcode-generator, MIT, in lib/).
+// This file is part of Moodle - https://moodle.org/
 //
-// @copyright 2026 Oksigenia <dev@oksigenia.cc>
-// @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
+/**
+ * QR code for the board, nicer but still readable: module shape (squares, rounded, dots), eye shape (squares,
+ * rounded, circles), colours that keep strong contrast on white, and a logo in the middle (the site's, or an image
+ * of the teacher's). With a logo the code uses the highest error correction and keeps the middle clear. It can be
+ * shown big and downloaded as PNG or SVG. Generated here, offline (qrcode-generator, MIT, in lib/).
+ *
+ * @copyright  2026 Oksigenia SL <dev@oksigenia.cc>
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 'use strict';
 (() => {
     const core = window.ClasstoolsCore;

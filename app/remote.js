@@ -1,11 +1,28 @@
-// The remote on the board: what each order of the teacher's phone does (for the remote of a live session and for the
-// fixed one, which can also send the printed cards it reads), and the fixed remote itself. While it is on, the open
-// board asks the site every second and a half for its orders and says which tool it is on, with the buttons of that
-// tool for the phone (the main one first, with the names they have now); its panel (in «Live»,
-// «Remote») turns it on and off, shows its address and QR, and changes the address when it may have been shared.
+// This file is part of Moodle - https://moodle.org/
 //
-// @copyright 2026 Oksigenia <dev@oksigenia.cc>
-// @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
+/**
+ * The remote on the board: what each order of the teacher's phone does (for the remote of a live session and for the
+ * fixed one, which can also send the printed cards it reads), and the fixed remote itself. While it is on, the open
+ * board asks the site every second and a half for its orders and says which tool it is on, with the buttons of that
+ * tool for the phone (the main one first, with the names they have now); its panel (in «Live»,
+ * «Remote») turns it on and off, shows its address and QR, and changes the address when it may have been shared.
+ *
+ * @copyright  2026 Oksigenia SL <dev@oksigenia.cc>
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 'use strict';
 (() => {
     const core = window.ClasstoolsCore;

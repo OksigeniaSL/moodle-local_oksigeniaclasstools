@@ -18,7 +18,7 @@
  * The fixed remote on the teacher's phone: the address with its key, without logging in.
  *
  * @package    local_oksigeniaclasstools
- * @copyright  2026 Oksigenia <dev@oksigenia.cc>
+ * @copyright  2026 Oksigenia SL <dev@oksigenia.cc>
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 

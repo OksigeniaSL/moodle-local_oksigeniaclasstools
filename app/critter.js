@@ -1,9 +1,26 @@
-// Critters: a little creature drawn from a seed (always the same one for the same seed), and its name made of an
-// animal and a word from the content pack («Búho valiente», «Brave owl»). Used for those who take part in a live
-// session without their name: the board and their device show the same critter and the same name.
+// This file is part of Moodle - https://moodle.org/
 //
-// @copyright 2026 Oksigenia <dev@oksigenia.cc>
-// @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
+/**
+ * Critters: a little creature drawn from a seed (always the same one for the same seed), and its name made of an
+ * animal and a word from the content pack («Búho valiente», «Brave owl»). Used for those who take part in a live
+ * session without their name: the board and their device show the same critter and the same name.
+ *
+ * @copyright  2026 Oksigenia SL <dev@oksigenia.cc>
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 'use strict';
 (() => {
     // A seeded random generator (xmur3 to spread the seed, mulberry32 to draw from it).

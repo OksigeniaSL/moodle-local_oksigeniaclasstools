@@ -1,12 +1,29 @@
-// Brainstorm on the board, for a live session of kind «ideas»: each device sends a word or two and the board turns
-// the answers into a live cloud, where the same answer written in different ways counts as one and grows. The
-// teacher taps to highlight, joins answers that mean the same, hides what should not be on screen (or checks
-// everything before it shows), sorts them in a ranking or drags them into a template — SWOT, urgent and important,
-// for and against, a scale from 1 to 5 — and saves the result as an image or sends it to the class. How the teacher
-// arranged each question stays in the browser.
+// This file is part of Moodle - https://moodle.org/
 //
-// @copyright 2026 Oksigenia <dev@oksigenia.cc>
-// @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
+/**
+ * Brainstorm on the board, for a live session of kind «ideas»: each device sends a word or two and the board turns
+ * the answers into a live cloud, where the same answer written in different ways counts as one and grows. The
+ * teacher taps to highlight, joins answers that mean the same, hides what should not be on screen (or checks
+ * everything before it shows), sorts them in a ranking or drags them into a template — SWOT, urgent and important,
+ * for and against, a scale from 1 to 5 — and saves the result as an image or sends it to the class. How the teacher
+ * arranged each question stays in the browser.
+ *
+ * @copyright  2026 Oksigenia SL <dev@oksigenia.cc>
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 'use strict';
 (() => {
     const core = window.ClasstoolsCore;

@@ -1,10 +1,27 @@
-// The teacher's stickers («My stickers»), on the board and on «Which class?». On the board, the tools call
-// core.logro(sticker) when a use is real (with the thresholds of the site): it is sent once per sticker, course and
-// day, and when its level goes up the sticker comes in and «sticks» on the screen (a sober badge in the Advanced mode).
-// On «Which class?», the album: the stickers got, with their level, and the gaps of the ones still to get, with how.
+// This file is part of Moodle - https://moodle.org/
 //
-// @copyright 2026 Oksigenia <dev@oksigenia.cc>
-// @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
+/**
+ * The teacher's stickers («My stickers»), on the board and on «Which class?». On the board, the tools call
+ * core.logro(sticker) when a use is real (with the thresholds of the site): it is sent once per sticker, course and
+ * day, and when its level goes up the sticker comes in and «sticks» on the screen (a sober badge in the Advanced mode).
+ * On «Which class?», the album: the stickers got, with their level, and the gaps of the ones still to get, with how.
+ *
+ * @copyright  2026 Oksigenia SL <dev@oksigenia.cc>
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 'use strict';
 (() => {
     // The stickers in the order of the album, each with its family (as in classes/local/logros.php).

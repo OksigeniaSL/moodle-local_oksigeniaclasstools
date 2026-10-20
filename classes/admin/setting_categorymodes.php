@@ -22,7 +22,7 @@ namespace local_oksigeniaclasstools\admin;
  * categories that have one.
  *
  * @package    local_oksigeniaclasstools
- * @copyright  2026 Oksigenia <dev@oksigenia.cc>
+ * @copyright  2026 Oksigenia SL <dev@oksigenia.cc>
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class setting_categorymodes extends \admin_setting {

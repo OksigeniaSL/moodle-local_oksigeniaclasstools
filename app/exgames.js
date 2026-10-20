@@ -1,11 +1,28 @@
-// Four whole-class games on the shared exercise format (exercises.js, docs/exercise-format.md): Order, Sort (also as
-// Odd one out and Venn), Spot the mistakes and Who am I? Everything is done with taps, for the board: a card and then
-// its place. Each game brings an example, and teachers write their own exercises as plain text («My exercises»); they
-// are kept in the browser and, inside Moodle, for the teacher in the course. A wrong answer brings its «why», if the
-// exercise has one.
+// This file is part of Moodle - https://moodle.org/
 //
-// @copyright 2026 Oksigenia <dev@oksigenia.cc>
-// @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
+/**
+ * Four whole-class games on the shared exercise format (exercises.js, docs/exercise-format.md): Order, Sort (also as
+ * Odd one out and Venn), Spot the mistakes and Who am I? Everything is done with taps, for the board: a card and then
+ * its place. Each game brings an example, and teachers write their own exercises as plain text («My exercises»); they
+ * are kept in the browser and, inside Moodle, for the teacher in the course. A wrong answer brings its «why», if the
+ * exercise has one.
+ *
+ * @copyright  2026 Oksigenia SL <dev@oksigenia.cc>
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 'use strict';
 (() => {
     const core = window.ClasstoolsCore, games = window.ClasstoolsGames, X = window.ClasstoolsExercises;

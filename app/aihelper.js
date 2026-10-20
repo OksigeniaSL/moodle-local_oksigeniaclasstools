@@ -1,10 +1,27 @@
-// «Prompt for your AI», for any editor of content (exercises, quiz questions, a rosco, words, pairs, a song): the topic, the
-// level and how many; a text to copy with the format and an example, to paste in any AI; and, when the site has an AI
-// the teacher can use (Moodle 4.5 and later), «Generate», which asks the server to send that same prompt and puts the
-// answer in the editor to check before saving. The first time, Moodle's AI policy.
+// This file is part of Moodle - https://moodle.org/
 //
-// @copyright 2026 Oksigenia <dev@oksigenia.cc>
-// @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
+/**
+ * «Prompt for your AI», for any editor of content (exercises, quiz questions, a rosco, words, pairs, a song): the topic, the
+ * level and how many; a text to copy with the format and an example, to paste in any AI; and, when the site has an AI
+ * the teacher can use (Moodle 4.5 and later), «Generate», which asks the server to send that same prompt and puts the
+ * answer in the editor to check before saving. The first time, Moodle's AI policy.
+ *
+ * @copyright  2026 Oksigenia SL <dev@oksigenia.cc>
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 'use strict';
 (() => {
     const core = window.ClasstoolsCore;

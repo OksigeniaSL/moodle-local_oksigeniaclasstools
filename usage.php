@@ -19,7 +19,7 @@
  * long, in a course or in all of them, over a period. To see what classes like most and get ideas from it.
  *
  * @package    local_oksigeniaclasstools
- * @copyright  2026 Oksigenia <dev@oksigenia.cc>
+ * @copyright  2026 Oksigenia SL <dev@oksigenia.cc>
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 

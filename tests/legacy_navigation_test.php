@@ -27,7 +27,7 @@ require_once(__DIR__ . '/generator_trait.php');
  *
  * @package    local_oksigeniaclasstools
  * @category   test
- * @copyright  2026 Oksigenia <dev@oksigenia.cc>
+ * @copyright  2026 Oksigenia SL <dev@oksigenia.cc>
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @covers     ::local_oksigeniaclasstools_extend_navigation_course
  */

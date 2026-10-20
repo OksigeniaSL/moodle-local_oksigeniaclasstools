@@ -1,14 +1,31 @@
-// Calculator, among the materials (not in the Infantil mode): a basic one with big keys and brackets, that follows the
-// order of operations (2 + 3 × 4 = 14), and a scientific one (powers, roots, π, trigonometry in degrees or radians,
-// logarithms, factorial, powers of ten, with a «2nd» key for the inverse functions); Primary starts with the basic
-// one, Secondary and up with the scientific one, and each mode remembers the teacher's choice. Two ways of using it in
-// class: «Step by step» shows how a combined operation is worked out, one level of the order of operations at a time,
-// with what is being done marked; «Estimate first» hides the result until the class has said how much it will be.
-// The whole expression stays on screen and every result goes to a strip beside it, to talk about it; a result of the
-// strip can be used again. The keyboard works too.
+// This file is part of Moodle - https://moodle.org/
 //
-// @copyright 2026 Oksigenia <dev@oksigenia.cc>
-// @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
+/**
+ * Calculator, among the materials (not in the Infantil mode): a basic one with big keys and brackets, that follows the
+ * order of operations (2 + 3 × 4 = 14), and a scientific one (powers, roots, π, trigonometry in degrees or radians,
+ * logarithms, factorial, powers of ten, with a «2nd» key for the inverse functions); Primary starts with the basic
+ * one, Secondary and up with the scientific one, and each mode remembers the teacher's choice. Two ways of using it in
+ * class: «Step by step» shows how a combined operation is worked out, one level of the order of operations at a time,
+ * with what is being done marked; «Estimate first» hides the result until the class has said how much it will be.
+ * The whole expression stays on screen and every result goes to a strip beside it, to talk about it; a result of the
+ * strip can be used again. The keyboard works too.
+ *
+ * @copyright  2026 Oksigenia SL <dev@oksigenia.cc>
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 'use strict';
 (() => {
     const core = window.ClasstoolsCore;

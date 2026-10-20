@@ -1,11 +1,28 @@
-// Live sessions on the board: a vote, team buzzers, a brainstorm (ideas.js), a quiz (quiz.js) or an exit ticket (exit.js)
-// answered from the students' devices, or
-// the teacher's phone as a remote. The board opens the session in Moodle, shows the code and its QR, and asks every second and a half how it
-// goes (only inside a Moodle course, where the session lives). And, anywhere, a vote by a show of hands, counted on the
-// board with + and −.
+// This file is part of Moodle - https://moodle.org/
 //
-// @copyright 2026 Oksigenia <dev@oksigenia.cc>
-// @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
+/**
+ * Live sessions on the board: a vote, team buzzers, a brainstorm (ideas.js), a quiz (quiz.js) or an exit ticket (exit.js)
+ * answered from the students' devices, or
+ * the teacher's phone as a remote. The board opens the session in Moodle, shows the code and its QR, and asks every second and a half how it
+ * goes (only inside a Moodle course, where the session lives). And, anywhere, a vote by a show of hands, counted on the
+ * board with + and −.
+ *
+ * @copyright  2026 Oksigenia SL <dev@oksigenia.cc>
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 'use strict';
 (() => {
     const core = window.ClasstoolsCore;

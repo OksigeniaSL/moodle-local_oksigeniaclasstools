@@ -1,11 +1,28 @@
-// Clap echo, among the games: the board counts four and claps a rhythm (one or two bars of ta, ti-ti… or harder,
-// with ta-a, a rest and ti-ri-ti-ri), and the class claps it back. Its echo can be tapped on a big drum on the board
-// (or with the space bar), and the board compares the taps with the rhythm, allowing for a slightly faster or slower
-// echo; or the teacher, listening, says «Well done!» or «Again». Then the rhythm shows written, each beat green or
-// red. A streak of echoes, and the record.
+// This file is part of Moodle - https://moodle.org/
 //
-// @copyright 2026 Oksigenia <dev@oksigenia.cc>
-// @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
+/**
+ * Clap echo, among the games: the board counts four and claps a rhythm (one or two bars of ta, ti-ti… or harder,
+ * with ta-a, a rest and ti-ri-ti-ri), and the class claps it back. Its echo can be tapped on a big drum on the board
+ * (or with the space bar), and the board compares the taps with the rhythm, allowing for a slightly faster or slower
+ * echo; or the teacher, listening, says «Well done!» or «Again». Then the rhythm shows written, each beat green or
+ * red. A streak of echoes, and the record.
+ *
+ * @copyright  2026 Oksigenia SL <dev@oksigenia.cc>
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 'use strict';
 (() => {
     const core = window.ClasstoolsCore, games = window.ClasstoolsGames;

@@ -1,9 +1,26 @@
-// Exercises for Order, Sort (with Odd one out and Venn), Spot the mistakes and Who am I?: the plain text teachers
-// write, read into the JSON shared with Oksigenia Tesapé (docs/exercise-format.md). The game is chosen by the teacher
-// and never guessed from the text: parse(text, type) reads it as that game.
+// This file is part of Moodle - https://moodle.org/
 //
-// @copyright 2026 Oksigenia <dev@oksigenia.cc>
-// @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
+/**
+ * Exercises for Order, Sort (with Odd one out and Venn), Spot the mistakes and Who am I?: the plain text teachers
+ * write, read into the JSON shared with Oksigenia Tesapé (docs/exercise-format.md). The game is chosen by the teacher
+ * and never guessed from the text: parse(text, type) reads it as that game.
+ *
+ * @copyright  2026 Oksigenia SL <dev@oksigenia.cc>
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 'use strict';
 (() => {
     const TYPES = ['order', 'classify', 'errors', 'whoami'];

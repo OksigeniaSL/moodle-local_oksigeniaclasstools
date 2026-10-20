@@ -22,7 +22,7 @@ namespace local_oksigeniaclasstools\local;
  * level comes from the different days of use: 1, 3, 8, 20 and 50. Never a ranking between teachers.
  *
  * @package    local_oksigeniaclasstools
- * @copyright  2026 Oksigenia <dev@oksigenia.cc>
+ * @copyright  2026 Oksigenia SL <dev@oksigenia.cc>
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class logros {

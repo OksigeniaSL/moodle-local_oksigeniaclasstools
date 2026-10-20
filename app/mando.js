@@ -1,15 +1,32 @@
-// The teacher's fixed remote, on the phone: the address with its key, without logging in. It shows the teacher's
-// boards that are open (the course of each, nothing about the students); with more than one, it asks which one. On top,
-// the tool on the board, with its icon (a tap changes it); then its buttons as the board sends them, the main one big
-// and pressable (the groups: how many, «Make groups»; a game: «Right», «Wrong», «Pass»), and its options. «Let a
-// student press it» leaves only that main button, big and round, for a child to press: a pause after each press, and
-// leaving only by holding. At the bottom, «More orders» (the ones for any tool: the timer, a pick, presenting…), the
-// printed cards and changing the class. It asks the site every two seconds which boards are open. «Cards» turns the
-// phone into the reader of the printed cards: the camera, each card outlined in the colour of its answer, and the
-// readings sent to the board (only the numbers of the cards and their answers: the names are on the board).
+// This file is part of Moodle - https://moodle.org/
 //
-// @copyright 2026 Oksigenia <dev@oksigenia.cc>
-// @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
+/**
+ * The teacher's fixed remote, on the phone: the address with its key, without logging in. It shows the teacher's
+ * boards that are open (the course of each, nothing about the students); with more than one, it asks which one. On top,
+ * the tool on the board, with its icon (a tap changes it); then its buttons as the board sends them, the main one big
+ * and pressable (the groups: how many, «Make groups»; a game: «Right», «Wrong», «Pass»), and its options. «Let a
+ * student press it» leaves only that main button, big and round, for a child to press: a pause after each press, and
+ * leaving only by holding. At the bottom, «More orders» (the ones for any tool: the timer, a pick, presenting…), the
+ * printed cards and changing the class. It asks the site every two seconds which boards are open. «Cards» turns the
+ * phone into the reader of the printed cards: the camera, each card outlined in the colour of its answer, and the
+ * readings sent to the board (only the numbers of the cards and their answers: the names are on the board).
+ *
+ * @copyright  2026 Oksigenia SL <dev@oksigenia.cc>
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 'use strict';
 (() => {
     const R = window.CLASSTOOLS_REMOTE || {};

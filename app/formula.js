@@ -1,17 +1,34 @@
-// Formulas for the board: written in one line, the way they are said («3/4», «x^2 + 1», «raíz(2)», «{2x + y = 5;
-// x − y = 1}»), and drawn as in a book: fractions one number over the other, powers and indices up and down, roots,
-// brackets as tall as what they hold, systems with their brace, sums, integrals and limits. A «□» is an empty box to
-// fill in («3 + □ = 5»). Laid out once at a size of reference and drawn at any size.
+// This file is part of Moodle - https://moodle.org/
 //
-// What can be written:
-//   a/b  fraction (brackets around a or b are only for grouping)     a^b  power       a_b  index
-//   raíz(x), sqrt(x), √x  square root     raíz(n, x), root(n, x)  root of index n
-//   |x|, abs(x)  absolute value     vec(v)  vector     {a; b}  system     (…) […] brackets
-//   sum(i=1, n, x), int(a, b, f), lim(x->0, f)  sum, integral, limit
-//   * × · : ÷ <= >= != +- -> => <=> ~= and the names of the Greek letters (alfa, pi, Delta…), inf, sin, cos, log…
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
 //
-// @copyright 2026 Oksigenia <dev@oksigenia.cc>
-// @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
+/**
+ * Formulas for the board: written in one line, the way they are said («3/4», «x^2 + 1», «raíz(2)», «{2x + y = 5;
+ * x − y = 1}»), and drawn as in a book: fractions one number over the other, powers and indices up and down, roots,
+ * brackets as tall as what they hold, systems with their brace, sums, integrals and limits. A «□» is an empty box to
+ * fill in («3 + □ = 5»). Laid out once at a size of reference and drawn at any size.
+ *
+ * What can be written:
+ *   a/b  fraction (brackets around a or b are only for grouping)     a^b  power       a_b  index
+ *   raíz(x), sqrt(x), √x  square root     raíz(n, x), root(n, x)  root of index n
+ *   |x|, abs(x)  absolute value     vec(v)  vector     {a; b}  system     (…) […] brackets
+ *   sum(i=1, n, x), int(a, b, f), lim(x->0, f)  sum, integral, limit
+ *   * × · : ÷ <= >= != +- -> => <=> ~= and the names of the Greek letters (alfa, pi, Delta…), inf, sin, cos, log…
+ *
+ * @copyright  2026 Oksigenia SL <dev@oksigenia.cc>
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 'use strict';
 (() => {
     const S = 100;   // the size of reference, in pixels

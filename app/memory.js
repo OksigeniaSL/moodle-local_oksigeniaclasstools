@@ -1,11 +1,28 @@
-// Find the pairs for the whole class: cards face down, turned two at a time. Built-in sets by school level (from
-// shapes and animal shadows to chemical elements and graphs of functions), a student's face and their name, or the
-// teacher's lists («dog = perro» per line). The whole class plays, or two teams take turns (finding a pair keeps
-// the turn), or the class plays against a number of tries. A glance at the start shows all the cards for a few
-// seconds. Trios: three cards that go together (a number as dots, figure and word, or lists «a = b = c»).
+// This file is part of Moodle - https://moodle.org/
 //
-// @copyright 2026 Oksigenia <dev@oksigenia.cc>
-// @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
+/**
+ * Find the pairs for the whole class: cards face down, turned two at a time. Built-in sets by school level (from
+ * shapes and animal shadows to chemical elements and graphs of functions), a student's face and their name, or the
+ * teacher's lists («dog = perro» per line). The whole class plays, or two teams take turns (finding a pair keeps
+ * the turn), or the class plays against a number of tries. A glance at the start shows all the cards for a few
+ * seconds. Trios: three cards that go together (a number as dots, figure and word, or lists «a = b = c»).
+ *
+ * @copyright  2026 Oksigenia SL <dev@oksigenia.cc>
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 'use strict';
 (() => {
     const core = window.ClasstoolsCore, games = window.ClasstoolsGames;

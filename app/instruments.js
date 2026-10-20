@@ -1,12 +1,29 @@
-// Instruments of the full board, laid over it: a ruler, the two set squares (the 45° one and the 30°-60° one), a
-// protractor and a compass. They move by dragging them and turn from their round handle (snapping every 15°); the pen
-// goes straight along their edges; the protractor has an arm that reads the angle, and the pen follows its arm and
-// its base line too; the compass opens from its leg, turns from its top and draws circles and arcs from its pencil.
-// And two things to show: the curtain, which covers the board and uncovers it from any side, and the spotlight, which
-// leaves only a circle lit. Ideas from OpenBoard (GPL 3), written anew for the web.
+// This file is part of Moodle - https://moodle.org/
 //
-// @copyright 2026 Oksigenia <dev@oksigenia.cc>
-// @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
+/**
+ * Instruments of the full board, laid over it: a ruler, the two set squares (the 45° one and the 30°-60° one), a
+ * protractor and a compass. They move by dragging them and turn from their round handle (snapping every 15°); the pen
+ * goes straight along their edges; the protractor has an arm that reads the angle, and the pen follows its arm and
+ * its base line too; the compass opens from its leg, turns from its top and draws circles and arcs from its pencil.
+ * And two things to show: the curtain, which covers the board and uncovers it from any side, and the spotlight, which
+ * leaves only a circle lit. Ideas from OpenBoard (GPL 3), written anew for the web.
+ *
+ * @copyright  2026 Oksigenia SL <dev@oksigenia.cc>
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 'use strict';
 (() => {
     const core = window.ClasstoolsCore, board = window.ClasstoolsWhiteboard;

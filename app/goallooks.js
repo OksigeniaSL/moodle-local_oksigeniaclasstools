@@ -1,11 +1,28 @@
-// The looks of the class goal (goal.js), besides the jar of marbles: each one fills with the points of the whole class
-// and teaches something on the way. The critter's path (counting, and counting in twos or fives with a big goal), the
-// plant that grows (its life cycle), the rocket through the solar system (the order of the planets), the song note by
-// note (reading music; at the goal it plays) and the mosaic that uncovers a picture (fractions and percentages). Each
-// one is drawn in an SVG from how far the class has got.
+// This file is part of Moodle - https://moodle.org/
 //
-// @copyright 2026 Oksigenia <dev@oksigenia.cc>
-// @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
+/**
+ * The looks of the class goal (goal.js), besides the jar of marbles: each one fills with the points of the whole class
+ * and teaches something on the way. The critter's path (counting, and counting in twos or fives with a big goal), the
+ * plant that grows (its life cycle), the rocket through the solar system (the order of the planets), the song note by
+ * note (reading music; at the goal it plays) and the mosaic that uncovers a picture (fractions and percentages). Each
+ * one is drawn in an SVG from how far the class has got.
+ *
+ * @copyright  2026 Oksigenia SL <dev@oksigenia.cc>
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 'use strict';
 (() => {
     const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));

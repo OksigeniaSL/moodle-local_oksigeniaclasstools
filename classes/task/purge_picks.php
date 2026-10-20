@@ -21,7 +21,7 @@ namespace local_oksigeniaclasstools\task;
  * day before.
  *
  * @package    local_oksigeniaclasstools
- * @copyright  2026 Oksigenia <dev@oksigenia.cc>
+ * @copyright  2026 Oksigenia SL <dev@oksigenia.cc>
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class purge_picks extends \core\task\scheduled_task {

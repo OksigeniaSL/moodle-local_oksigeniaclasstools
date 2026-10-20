@@ -6,7 +6,7 @@ Below are the few things to keep in mind before opening a PR.
 ## Code style
 
 - PHP follows the Moodle Coding Style: <https://moodledev.io/general/development/policies/codingstyle>.
-- License header: GPL v3 or later, copyright `Oksigenia <dev@oksigenia.cc>`.
+- License header: GPL v3 or later, copyright `Oksigenia SL <dev@oksigenia.cc>`.
 - New code, comments and commit messages in **English**. Lang files carry the localised strings. (Part of the
   board screen in `app/` is still in Spanish; it is being moved to English and to the language packs.)
 - New board tools live in their own file in `app/` and use `window.ClasstoolsCore`; games register with

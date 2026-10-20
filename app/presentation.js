@@ -1,11 +1,28 @@
-// Presentation: a Canva presentation inside the board, with the other tools at hand (the split screen, the small
-// timer). The teacher pastes the link of the design from Share → Copy link (with the access level «Anyone with the
-// link»), a short one (canva.link, followed by Moodle) or a long one, or its embed link or HTML code; the board keeps
-// the last ones of the course. Nothing comes from Canva until one is opened, and a site shows this tab only when its
-// administrator turns it on.
+// This file is part of Moodle - https://moodle.org/
 //
-// @copyright 2026 Oksigenia <dev@oksigenia.cc>
-// @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
+/**
+ * Presentation: a Canva presentation inside the board, with the other tools at hand (the split screen, the small
+ * timer). The teacher pastes the link of the design from Share → Copy link (with the access level «Anyone with the
+ * link»), a short one (canva.link, followed by Moodle) or a long one, or its embed link or HTML code; the board keeps
+ * the last ones of the course. Nothing comes from Canva until one is opened, and a site shows this tab only when its
+ * administrator turns it on.
+ *
+ * @copyright  2026 Oksigenia SL <dev@oksigenia.cc>
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 'use strict';
 (() => {
     const core = window.ClasstoolsCore;

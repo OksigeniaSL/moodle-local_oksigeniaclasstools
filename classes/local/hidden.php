@@ -21,7 +21,7 @@ namespace local_oksigeniaclasstools\local;
  * class): only from that page and only for them; the course stays theirs, and the board opens in it as before.
  *
  * @package    local_oksigeniaclasstools
- * @copyright  2026 Oksigenia <dev@oksigenia.cc>
+ * @copyright  2026 Oksigenia SL <dev@oksigenia.cc>
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class hidden {

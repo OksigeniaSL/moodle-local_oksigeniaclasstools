@@ -1,10 +1,27 @@
-// The page where a device joins a live session of the board: it asks for the code (unless it came in the address,
-// from the QR), joins, and then shows only buttons — the answers of a vote, the team buzzer, a box for a word or two
-// in a brainstorm, the exit ticket, or the remote for the teacher's own phone. It asks the site every second and a half
-// how the session goes.
+// This file is part of Moodle - https://moodle.org/
 //
-// @copyright 2026 Oksigenia <dev@oksigenia.cc>
-// @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
+/**
+ * The page where a device joins a live session of the board: it asks for the code (unless it came in the address,
+ * from the QR), joins, and then shows only buttons — the answers of a vote, the team buzzer, a box for a word or two
+ * in a brainstorm, the exit ticket, or the remote for the teacher's own phone. It asks the site every second and a half
+ * how the session goes.
+ *
+ * @copyright  2026 Oksigenia SL <dev@oksigenia.cc>
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 'use strict';
 (() => {
     const J = window.CLASSTOOLS_JOIN || {};

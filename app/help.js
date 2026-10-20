@@ -1,12 +1,29 @@
-// Guided helps: the board shows how something is done on itself. A layer over the board with the practice board
-// (practice.js) in a frame: a pointer does what the voice says, step by step, with captions; then «Now you» rings each
-// button for the teacher to press it there, and the sticker of the tool, «Learned», is theirs. They open from the
-// teacher's guide of each tool. The steps of each help are in helps.js (loaded when one opens); their captions and
-// hints are language strings; the voice, clip by clip, in voice/<help>/<language>/NN.opus where there is one (without
-// it, the captions alone). From the prototype of the art direction (kit/ayuda-guiada/ayuda.html).
+// This file is part of Moodle - https://moodle.org/
 //
-// @copyright 2026 Oksigenia <dev@oksigenia.cc>
-// @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
+/**
+ * Guided helps: the board shows how something is done on itself. A layer over the board with the practice board
+ * (practice.js) in a frame: a pointer does what the voice says, step by step, with captions; then «Now you» rings each
+ * button for the teacher to press it there, and the sticker of the tool, «Learned», is theirs. They open from the
+ * teacher's guide of each tool. The steps of each help are in helps.js (loaded when one opens); their captions and
+ * hints are language strings; the voice, clip by clip, in voice/<help>/<language>/NN.opus where there is one (without
+ * it, the captions alone). From the prototype of the art direction (kit/ayuda-guiada/ayuda.html).
+ *
+ * @copyright  2026 Oksigenia SL <dev@oksigenia.cc>
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 'use strict';
 (() => {
     const core = window.ClasstoolsCore;

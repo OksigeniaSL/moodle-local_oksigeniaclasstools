@@ -1,12 +1,29 @@
-// The class goal, in the Scoreboard tab: a jar that fills with a marble for each point the whole class earns, up to
-// the goal the teacher sets and its prize («an afternoon of games»); or, in other looks that teach something on the
-// way (goallooks.js), the critter's path, a plant that grows, a rocket through the solar system, a song note by note or
-// a mosaic that uncovers a picture. The count says it as each level learns it: «12 of 30», what is left, or the
-// fraction and the percentage. Kept for each course in the browser and, inside Moodle, for the teacher in the course,
-// like the scoreboard.
+// This file is part of Moodle - https://moodle.org/
 //
-// @copyright 2026 Oksigenia <dev@oksigenia.cc>
-// @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
+/**
+ * The class goal, in the Scoreboard tab: a jar that fills with a marble for each point the whole class earns, up to
+ * the goal the teacher sets and its prize («an afternoon of games»); or, in other looks that teach something on the
+ * way (goallooks.js), the critter's path, a plant that grows, a rocket through the solar system, a song note by note or
+ * a mosaic that uncovers a picture. The count says it as each level learns it: «12 of 30», what is left, or the
+ * fraction and the percentage. Kept for each course in the browser and, inside Moodle, for the teacher in the course,
+ * like the scoreboard.
+ *
+ * @copyright  2026 Oksigenia SL <dev@oksigenia.cc>
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 'use strict';
 (() => {
     const core = window.ClasstoolsCore;

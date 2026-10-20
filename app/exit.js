@@ -1,13 +1,30 @@
-// The exit ticket on the board, for a live session of kind «exit»: at the end of the lesson each student says how they
-// are getting on (four faces, from «not yet» to «could explain it») and answers one to three short questions from
-// their device. While it is open, the board shows only who has handed it in (the ticket to leave); once closed, how
-// the class is getting on, and the tickets in piles by how each student feels, so the teacher sees at a glance who
-// needs what in the next lesson. The answers do not show until the teacher asks for them (they are checked first, not
-// projected by surprise), names only on request, one at random without a name to talk about it, and a download to
-// read them calmly after class, since the session goes after a day.
+// This file is part of Moodle - https://moodle.org/
 //
-// @copyright 2026 Oksigenia <dev@oksigenia.cc>
-// @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
+/**
+ * The exit ticket on the board, for a live session of kind «exit»: at the end of the lesson each student says how they
+ * are getting on (four faces, from «not yet» to «could explain it») and answers one to three short questions from
+ * their device. While it is open, the board shows only who has handed it in (the ticket to leave); once closed, how
+ * the class is getting on, and the tickets in piles by how each student feels, so the teacher sees at a glance who
+ * needs what in the next lesson. The answers do not show until the teacher asks for them (they are checked first, not
+ * projected by surprise), names only on request, one at random without a name to talk about it, and a download to
+ * read them calmly after class, since the session goes after a day.
+ *
+ * @copyright  2026 Oksigenia SL <dev@oksigenia.cc>
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 'use strict';
 (() => {
     const core = window.ClasstoolsCore;

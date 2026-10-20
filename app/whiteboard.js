@@ -1,21 +1,38 @@
-// Drawing board for the classroom screen.
+// This file is part of Moodle - https://moodle.org/
 //
-// The simple board (by default up to Primary): a pen, a highlighter, straight lines, arrows, rectangles, circles and
-// text, in a few colours and thicknesses, an eraser, undo and redo, and backgrounds for different lessons (plain,
-// squared paper, handwriting lines, double lines, single lines, music staves; white, or green or black like a
-// chalkboard, where the inks turn to chalk), bigger or smaller and with a margin line if wanted. Several fingers can
-// draw at once on a touch board.
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
 //
-// The full board (by default from Secondary on, or with its button) adds pages with thumbnails; a picture or the pages
-// of a PDF as the background of a page; selecting what is drawn to move it, resize it, copy it, recolour it or delete
-// it; zooming and moving around the page; a laser pointer; and, from instruments.js, the ruler, the set squares, the
-// protractor, the compass, the curtain and the spotlight. Ideas from OpenBoard (GPL 3), written anew for the web.
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 //
-// The pages are kept for each course in the browser and, inside Moodle, for the teacher in the course (the pictures
-// stay in the browser). A page can be saved as a PNG or sent to the class.
-//
-// @copyright 2026 Oksigenia <dev@oksigenia.cc>
-// @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
+/**
+ * Drawing board for the classroom screen.
+ *
+ * The simple board (by default up to Primary): a pen, a highlighter, straight lines, arrows, rectangles, circles and
+ * text, in a few colours and thicknesses, an eraser, undo and redo, and backgrounds for different lessons (plain,
+ * squared paper, handwriting lines, double lines, single lines, music staves; white, or green or black like a
+ * chalkboard, where the inks turn to chalk), bigger or smaller and with a margin line if wanted. Several fingers can
+ * draw at once on a touch board.
+ *
+ * The full board (by default from Secondary on, or with its button) adds pages with thumbnails; a picture or the pages
+ * of a PDF as the background of a page; selecting what is drawn to move it, resize it, copy it, recolour it or delete
+ * it; zooming and moving around the page; a laser pointer; and, from instruments.js, the ruler, the set squares, the
+ * protractor, the compass, the curtain and the spotlight. Ideas from OpenBoard (GPL 3), written anew for the web.
+ *
+ * The pages are kept for each course in the browser and, inside Moodle, for the teacher in the course (the pictures
+ * stay in the browser). A page can be saved as a PNG or sent to the class.
+ *
+ * @copyright  2026 Oksigenia SL <dev@oksigenia.cc>
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 'use strict';
 (() => {
     const core = window.ClasstoolsCore;

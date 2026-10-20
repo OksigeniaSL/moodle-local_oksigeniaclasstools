@@ -1,11 +1,28 @@
-// The teacher's guide: what a tool, game or material is for, what it works on, why (with its sources), how to take it
-// to class, what it gives at each school level and a scene from a class. A sheet at the side, for whatever is on
-// screen; or, expanded, a window in the middle with bigger letters to read it at ease (a tap outside closes it; the
-// way it was left is kept). The texts are language strings (gd_<id>_…), so they are translated with the rest of the plugin; lists are
-// one item per line, the levels «mode|text» and the sources «reference|address».
+// This file is part of Moodle - https://moodle.org/
 //
-// @copyright 2026 Oksigenia <dev@oksigenia.cc>
-// @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
+/**
+ * The teacher's guide: what a tool, game or material is for, what it works on, why (with its sources), how to take it
+ * to class, what it gives at each school level and a scene from a class. A sheet at the side, for whatever is on
+ * screen; or, expanded, a window in the middle with bigger letters to read it at ease (a tap outside closes it; the
+ * way it was left is kept). The texts are language strings (gd_<id>_…), so they are translated with the rest of the plugin; lists are
+ * one item per line, the levels «mode|text» and the sources «reference|address».
+ *
+ * @copyright  2026 Oksigenia SL <dev@oksigenia.cc>
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 'use strict';
 (() => {
     const core = window.ClasstoolsCore;

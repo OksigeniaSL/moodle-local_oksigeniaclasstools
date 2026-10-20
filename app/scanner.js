@@ -1,15 +1,32 @@
-// The marks of the printed cards, and how a camera reads them: our own open design (docs/cards-markers.md). A mark is
-// a square of 6 × 6 cells: a black border one cell wide and 4 × 4 cells inside, black or white, that say which card it
-// is (1 to 60); it needs a white margin of at least one cell around it. Every card's code differs from every other, in
-// any of its four turns, in at least 4 cells, so a cell read wrong is still the right card, and its turn is never in
-// doubt. The turn of the mark in the picture is the answer: as printed, A is on top; turned a quarter clockwise, D;
-// half a turn, C; a quarter anticlockwise, B.
-// To read: grey levels, an adaptive threshold (dark against what is around), the dark patches, the outline of each
-// one reduced to four corners, the 6 × 6 cells sampled through the perspective of those corners, the border checked
-// (black, with white around), and the 16 cells inside compared with the codes in their four turns.
+// This file is part of Moodle - https://moodle.org/
 //
-// @copyright 2026 Oksigenia <dev@oksigenia.cc>
-// @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
+/**
+ * The marks of the printed cards, and how a camera reads them: our own open design (docs/cards-markers.md). A mark is
+ * a square of 6 × 6 cells: a black border one cell wide and 4 × 4 cells inside, black or white, that say which card it
+ * is (1 to 60); it needs a white margin of at least one cell around it. Every card's code differs from every other, in
+ * any of its four turns, in at least 4 cells, so a cell read wrong is still the right card, and its turn is never in
+ * doubt. The turn of the mark in the picture is the answer: as printed, A is on top; turned a quarter clockwise, D;
+ * half a turn, C; a quarter anticlockwise, B.
+ * To read: grey levels, an adaptive threshold (dark against what is around), the dark patches, the outline of each
+ * one reduced to four corners, the 6 × 6 cells sampled through the perspective of those corners, the border checked
+ * (black, with white around), and the 16 cells inside compared with the codes in their four turns.
+ *
+ * @copyright  2026 Oksigenia SL <dev@oksigenia.cc>
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 'use strict';
 (() => {
     // The codes of cards 1 to 60: bit r × 4 + c is the cell of row r and column c inside the border (from the top

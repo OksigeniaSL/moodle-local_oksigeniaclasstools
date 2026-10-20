@@ -1,13 +1,30 @@
-// Quiz on the board, a live session of kind «quiz»: sets of questions with one right answer among two to four (or
-// true/false), written here, pasted as text or brought from the Moodle question bank; one question at a time with
-// its seconds, the answers from the devices, the right one revealed with how many chose each, points (calm: being
-// right; fast: also how soon), a ranking after each question and/or at the end (only the top ones, if the teacher
-// wants), teams from the groups made on the board or chosen on the devices, a podium, and a summary for the teacher.
-// A question can have a picture, shown on the board beside its answers, or music, which the board plays when the
-// question opens (musicquiz.js makes those sets: which song it is, and rhythm and melody dictations).
+// This file is part of Moodle - https://moodle.org/
 //
-// @copyright 2026 Oksigenia <dev@oksigenia.cc>
-// @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
+/**
+ * Quiz on the board, a live session of kind «quiz»: sets of questions with one right answer among two to four (or
+ * true/false), written here, pasted as text or brought from the Moodle question bank; one question at a time with
+ * its seconds, the answers from the devices, the right one revealed with how many chose each, points (calm: being
+ * right; fast: also how soon), a ranking after each question and/or at the end (only the top ones, if the teacher
+ * wants), teams from the groups made on the board or chosen on the devices, a podium, and a summary for the teacher.
+ * A question can have a picture, shown on the board beside its answers, or music, which the board plays when the
+ * question opens (musicquiz.js makes those sets: which song it is, and rhythm and melody dictations).
+ *
+ * @copyright  2026 Oksigenia SL <dev@oksigenia.cc>
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 'use strict';
 (() => {
     const core = window.ClasstoolsCore;

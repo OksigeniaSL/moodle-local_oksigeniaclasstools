@@ -1,6 +1,26 @@
-// Herramientas de clase: nueve herramientas para la pantalla de clase (temporizador, cronómetro, ¿a quién
-// le toca?, grupos, semáforo de ruido, dado y moneda, así trabajamos, reloj y código QR). Todo funciona sin
-// conexión dentro del paquete; las listas de clase se guardan solo en el navegador de ese ordenador.
+// This file is part of Moodle - https://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
+/**
+ * The board: its tabs, the class lists and the tools that live in this file (timer, stopwatch, «Whose turn?»,
+ * groups, noise meter, chance, work symbols, clock and QR code), and window.ClasstoolsCore, what every other file
+ * of app/ uses.
+ *
+ * @copyright  2026 Oksigenia SL <dev@oksigenia.cc>
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 'use strict';
 (() => {
     const $ = (s) => document.querySelector(s);

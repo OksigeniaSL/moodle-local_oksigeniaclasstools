@@ -1,11 +1,28 @@
-// Music questions for the live quiz (quiz.js): sets that make themselves, and the board plays each question when it
-// opens (and again on request). «Which song is it?»: the beginning of a song of the score, and four titles.
-// «Rhythm dictation»: a bar of claps, and four rhythms written with the syllables used in class (ta, ti-ti, ta-a…).
-// «Melody dictation»: a few notes that start on do (C), and four ways of writing them. Each question keeps what it
-// plays, so a set can be kept, edited and played again like any other.
+// This file is part of Moodle - https://moodle.org/
 //
-// @copyright 2026 Oksigenia <dev@oksigenia.cc>
-// @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
+/**
+ * Music questions for the live quiz (quiz.js): sets that make themselves, and the board plays each question when it
+ * opens (and again on request). «Which song is it?»: the beginning of a song of the score, and four titles.
+ * «Rhythm dictation»: a bar of claps, and four rhythms written with the syllables used in class (ta, ti-ti, ta-a…).
+ * «Melody dictation»: a few notes that start on do (C), and four ways of writing them. Each question keeps what it
+ * plays, so a set can be kept, edited and played again like any other.
+ *
+ * @copyright  2026 Oksigenia SL <dev@oksigenia.cc>
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 'use strict';
 (() => {
     const core = window.ClasstoolsCore;

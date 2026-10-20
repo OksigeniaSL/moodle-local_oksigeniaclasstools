@@ -1,9 +1,26 @@
-// The faces of «How are you getting on?» in an exit ticket, the same on the board and on the devices: from 0 (not yet)
-// to 3 (could explain it to someone), each with its colour. Not yet is not a sad face: it is a lesson that is still on
-// its way.
+// This file is part of Moodle - https://moodle.org/
 //
-// @copyright 2026 Oksigenia <dev@oksigenia.cc>
-// @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
+/**
+ * The faces of «How are you getting on?» in an exit ticket, the same on the board and on the devices: from 0 (not yet)
+ * to 3 (could explain it to someone), each with its colour. Not yet is not a sad face: it is a lesson that is still on
+ * its way.
+ *
+ * @copyright  2026 Oksigenia SL <dev@oksigenia.cc>
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 'use strict';
 (() => {
     const LEVELS = ['3', '2', '1', '0'];

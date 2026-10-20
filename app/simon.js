@@ -1,15 +1,32 @@
-// Simon for the whole class: coloured pads with their own notes; the sequence grows each round. With a class
-// list, a different student repeats it each round (shown big with their face). A mistake does not send everyone back
-// to one: the same sequence is played again for the next one (or for the class), unless the teacher chooses to start
-// from the beginning, as in the classic game. The record is kept.
-// Variants: the sequence repeated backwards; 4, 6 or 9 pads; and what the pads show: colours, arrows (all alike, so the
-// direction is read and not the colour), numbers with a rule (a 3 is shown and, with «add 1», the 4 is pressed),
-// notes without colour (only heard, the pads named Do, Re, Mi…) or syllables: the pads show the syllables of a word
-// and some more, the sequence is the word (lit syllable by syllable, or written whole for them to split it), and the
-// words get longer, from two syllables to five (only in languages whose content pack has the words split).
+// This file is part of Moodle - https://moodle.org/
 //
-// @copyright 2026 Oksigenia <dev@oksigenia.cc>
-// @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
+/**
+ * Simon for the whole class: coloured pads with their own notes; the sequence grows each round. With a class
+ * list, a different student repeats it each round (shown big with their face). A mistake does not send everyone back
+ * to one: the same sequence is played again for the next one (or for the class), unless the teacher chooses to start
+ * from the beginning, as in the classic game. The record is kept.
+ * Variants: the sequence repeated backwards; 4, 6 or 9 pads; and what the pads show: colours, arrows (all alike, so the
+ * direction is read and not the colour), numbers with a rule (a 3 is shown and, with «add 1», the 4 is pressed),
+ * notes without colour (only heard, the pads named Do, Re, Mi…) or syllables: the pads show the syllables of a word
+ * and some more, the sequence is the word (lit syllable by syllable, or written whole for them to split it), and the
+ * words get longer, from two syllables to five (only in languages whose content pack has the words split).
+ *
+ * @copyright  2026 Oksigenia SL <dev@oksigenia.cc>
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 'use strict';
 (() => {
     const core = window.ClasstoolsCore, games = window.ClasstoolsGames;

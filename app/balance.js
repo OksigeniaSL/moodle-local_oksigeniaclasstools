@@ -1,11 +1,28 @@
-// A balance scale, among the materials. To compare (Early years and Primary): weights on each pan, the beam leans to
-// the heavier side and the sign between them says it (>, < or =). For equations (Secondary): boxes of an unknown
-// weight x and weights of 1, in balance, written as an equation. What is taken from one pan has to be taken from the
-// other, or the scale tips; taking the same from both pans, or sharing both out, leaves a box on its own: x worked
-// out. The model only holds whole positive numbers, so the equations it takes have a whole solution above zero.
+// This file is part of Moodle - https://moodle.org/
 //
-// @copyright 2026 Oksigenia <dev@oksigenia.cc>
-// @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
+/**
+ * A balance scale, among the materials. To compare (Early years and Primary): weights on each pan, the beam leans to
+ * the heavier side and the sign between them says it (>, < or =). For equations (Secondary): boxes of an unknown
+ * weight x and weights of 1, in balance, written as an equation. What is taken from one pan has to be taken from the
+ * other, or the scale tips; taking the same from both pans, or sharing both out, leaves a box on its own: x worked
+ * out. The model only holds whole positive numbers, so the equations it takes have a whole solution above zero.
+ *
+ * @copyright  2026 Oksigenia SL <dev@oksigenia.cc>
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 'use strict';
 (() => {
     const core = window.ClasstoolsCore;

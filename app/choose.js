@@ -1,9 +1,26 @@
-// «Which class?» (index.php without a course): the filters (a stage, a category and the search, together), hiding a
-// course from here (only for this teacher, folded away at the end), the QR of the fixed remote, «My stickers» (a strip of the best ones and the album, drawn with the art of the board) and the
-// teachers' room (the colleagues who want to be seen, with their critter and their stickers).
+// This file is part of Moodle - https://moodle.org/
 //
-// @copyright 2026 Oksigenia <dev@oksigenia.cc>
-// @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
+/**
+ * «Which class?» (index.php without a course): the filters (a stage, a category and the search, together), hiding a
+ * course from here (only for this teacher, folded away at the end), the QR of the fixed remote, «My stickers» (a strip of the best ones and the album, drawn with the art of the board) and the
+ * teachers' room (the colleagues who want to be seen, with their critter and their stickers).
+ *
+ * @copyright  2026 Oksigenia SL <dev@oksigenia.cc>
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 'use strict';
 (() => {
     const $ = (s) => document.querySelector(s);
