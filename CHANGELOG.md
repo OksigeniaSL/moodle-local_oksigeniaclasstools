@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.68.0 (2026-10-24)
+
+- The board talks to Moodle through web services of its own (db/services.php, 31 functions), over Moodle's AJAX
+  service, instead of its own AJAX scripts: each one checks the course, the capabilities and the switches of the site
+  as the scripts did. The devices that join a live session with only the code, and the phone of the fixed remote, use
+  service-nologin.php with their own code or key. Asked for in the Moodle plugins directory review (#5).
+- Songs written as text accept their headers in Portuguese and Swedish too (origem, compasso, anacruse, upptakt).
+
 ## 0.67.0 (2026-10-24)
 
 - «Whose turn?»: fair picking is a weighted draw now. Whoever has been picked fewer times in the last weeks has more

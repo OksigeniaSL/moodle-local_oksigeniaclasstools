@@ -69,10 +69,10 @@
     // the 3rd with the bass clef), the length after a colon (r b n c s, or w h q e s, or 1 2 4 8 16; a dot for a dotted
     // note; none, as the note before) and «-» for a rest. «|» and «#» comments are for whoever reads it.
     const HEAD = {
-        title: /^(t[ií]tulo|title|titre|titel|titolo|t)$/i, from: /^(origen|procedencia|pa[ií]s|origin|country|origine|herkunft|herkomst|ursprung|o)$/i,
+        title: /^(t[ií]tulo|title|titre|titel|titolo|t)$/i, from: /^(origen|procedencia|pa[ií]s|origem|origin|country|origine|herkunft|herkomst|ursprung|o)$/i,
         by: /^(autor|author|auteur|komponist|compositor|compositore|c)$/i, clef: /^(clave|clef|cl[ée]|schl[üu]ssel|chiave|sleutel|nyckel)$/i,
-        time: /^(comp[aá]s|time|metre|meter|mesure|takt|misura|maat|m)$/i, tempo: /^(tempo|velocidad|bpm|vitesse|q)$/i,
-        pickup: /^(anacrusa|pickup|anacrouse|auftakt|levare|opmaat)$/i, lyrics: /^(letra|lyrics|paroles|text|testo|tekst|w)$/i,
+        time: /^(comp[aá]s|compasso|time|metre|meter|mesure|takt|misura|maat|m)$/i, tempo: /^(tempo|velocidad|bpm|vitesse|q)$/i,
+        pickup: /^(anacrusa|anacruse|pickup|anacrouse|auftakt|levare|opmaat|upptakt)$/i, lyrics: /^(letra|lyrics|paroles|text|testo|tekst|w)$/i,
     };
     const NOTE_NAMES = { do: 0, ut: 0, re: 1, ré: 1, mi: 2, fa: 3, sol: 4, so: 4, la: 5, si: 6, ti: 6, c: 0, d: 1, e: 2, f: 3, g: 4, a: 5, b: 6, h: 6 };
     const DUR = { r: 16, b: 8, n: 4, c: 2, s: 1, w: 16, h: 8, q: 4, e: 2, 1: 16, 2: 8, 4: 4, 8: 2, 16: 1 };
