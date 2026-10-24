@@ -27,7 +27,7 @@
 <h3>Lists from the course</h3>
 <p>One list per group and per cohort enrolled with cohort sync, and the whole course. Separate groups mode is respected.</p>
 <h3>Configuration</h3>
-<p>Under Site administration → Plugins → Local plugins → Class tools: names on the board, fair picking, the default screen mode (also by category), which tools, games and materials the site shows, a limited board for students, live sessions, stickers and the teachers' room. Under Reports → Use of the boards, what classes use most. Access is gated by the capability local/oksigeniaclasstools:use (teachers and managers by default).</p>
+<p>Under Site administration → Plugins → Local plugins → Class tools: names on the board, fair picking, the default screen mode (also by category), which tools, games and materials the site shows, a limited board for students, live sessions, stickers and the teachers' room, and sharing lists, letter wheels and locks with the whole school. Under Reports → Use of the boards, what classes use most. Access is gated by the capability local/oksigeniaclasstools:use (teachers and managers by default).</p>
 <h3>Privacy</h3>
 <p>Covered by the Privacy API (export and deletion). Everything stays in your Moodle: no external services, no CDN, no tracking. The optional presentation loads from canva.com only when the administrator turns it on.</p>
 <h3>Languages</h3>
