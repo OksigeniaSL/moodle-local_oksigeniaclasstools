@@ -10,8 +10,8 @@
     max-width: calc(100vw - 2rem);
     padding: .65rem .65rem .65rem .9rem;
     border-radius: 1rem;
-    background: #fff;
-    color: #1c1a19;
+    background: var(--bs-body-bg, #fff);
+    color: var(--bs-body-color, #1c1a19);
     box-shadow: 0 12px 32px rgba(15, 47, 94, .28);
 }
 .local-oksigeniaclasstools-live .live-dot {
@@ -29,13 +29,13 @@
     line-height: 1.25;
 }
 .local-oksigeniaclasstools-live .live-text span {
-    color: #55514d;
+    color: var(--bs-secondary-color, #55514d);
     font-size: .85rem;
 }
 .local-oksigeniaclasstools-live .live-close {
     border: 0;
     background: none;
-    color: #55514d;
+    color: var(--bs-secondary-color, #55514d);
     font-size: 1.4rem;
     line-height: 1;
 }

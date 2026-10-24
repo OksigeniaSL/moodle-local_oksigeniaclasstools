@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.70.0 (2026-10-24)
+
+- Class lists pasted by hand, letter wheels and locks can be shared with the whole school: every teacher finds them in
+  the same pickers, marked «From the school» with their author, and uses them as they are or copies them to change
+  them. Their author updates or stops sharing them; managers can remove any (local/oksigeniaclasstools:manageshared).
+  The setting «Share with the school» turns it off. A wheel or lock of the school chosen before is chosen again after
+  reloading.
+- «Which class?» and the notice of a live session follow the colours of Moodle's theme, also in its dark mode (Moodle
+  5.3): no white surfaces or dark-blue headings left over a dark page.
+
 ## 0.69.0 (2026-10-24)
 
 - «Which class?» runs as an AMD module (`amd/src/choose.js`, initialised by Moodle and calling the plugin's web

@@ -193,17 +193,17 @@ que abre un profesor, cargada desde canva.com (con un enlace corto, Moodle le pr
 
 ## Estado y hoja de ruta
 
-Versión candidata a estable. Se desarrolla con un colegio de Tenerife como aula de pruebas, donde se usa a diario. Antes de la primera versión estable:
+Versión candidata a estable. Se desarrolla con un colegio de Tenerife como aula de pruebas, donde se usa a diario. Lo
+previsto antes de la primera versión estable está hecho:
 
-- **Idiomas**: los textos de la pantalla salen de los paquetes de idioma (inglés y español; los demás, a través de
-  AMOS), y el contenido de serie (abecedario, teclado, palabras, conjuntos de parejas, la hora en palabras,
-  ejemplos), de un paquete de contenido por idioma en `app/content/` (inglés, español, español de México, alemán,
-  francés, italiano, neerlandés, sueco y portugués de Brasil). Lo siguiente: las cadenas de la interfaz de esos
-  idiomas en AMOS.
-- **Configuración del sitio**: qué herramientas y juegos se enseñan, el dibujo del ahorcado por defecto, y listas,
-  ruedas de letras y candados del sitio compartidos por todos los profesores. Los ejemplos de serie pasan a ser neutros y por
-  idioma.
-- **Código**: hecho. Los scripts de las páginas propias de Moodle son módulos AMD (`amd/src`, compilados con el grunt de
+- **Idiomas**: los textos de la pantalla salen de los paquetes de idioma: inglés y español en el plugin, y alemán,
+  francés, italiano, neerlandés, portugués de Brasil, sueco y español de México camino de los paquetes de Moodle a
+  través de AMOS. El contenido de serie (abecedario, teclado, palabras, conjuntos de parejas, la hora en palabras,
+  ejemplos) sale de un paquete de contenido por idioma en `app/content/`, en esos nueve idiomas.
+- **Configuración del sitio**: qué herramientas, juegos y materiales se enseñan, el modo de pantalla por defecto
+  (también por categoría), los niveles de los conjuntos de serie, el vídeo de ayuda del recorrido de profesores, y
+  listas, ruedas de letras y candados compartidos por todos los profesores del centro.
+- **Código**: los scripts de las páginas propias de Moodle son módulos AMD (`amd/src`, compilados con el grunt de
   Moodle), y la pizarra habla con Moodle por servicios web (`db/services.php`). La pizarra (`app/`) sigue siendo una
   aplicación web propia, en JavaScript moderno sin compilar, porque los mismos ficheros funcionan también como paquete
   SCORM, en la demo pública y en la pizarra de práctica de las ayudas guiadas, fuera de Moodle. `moodle-plugin-ci`

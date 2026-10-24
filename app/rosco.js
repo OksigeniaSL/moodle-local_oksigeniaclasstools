@@ -192,7 +192,8 @@
         const opts = [EXAMPLE].concat(store.sets).map(option).join('')
             + (sharedSets.length ? `<optgroup label="${escape(t('sh_group'))}">${sharedSets.map(option).join('')}</optgroup>` : '');
         ['#ro-set', '#ro-set2'].forEach((sel, i) => {
-            const el = $(sel), before = el.value || load(i ? 'rosco-2' : 'rosco-1', 'ejemplo');
+            // The one chosen before, also when it is a shared one that arrives after the list was first painted.
+            const el = $(sel), before = el.value && el.value !== 'ejemplo' ? el.value : load(i ? 'rosco-2' : 'rosco-1', 'ejemplo');
             el.innerHTML = opts;
             el.value = sets().some((s) => s.id === before) ? before : 'ejemplo';
         });

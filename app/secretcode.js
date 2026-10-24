@@ -121,7 +121,8 @@
         });
     };
     const fillLocks = () => {
-        const sel = $('#sc2-lock'), before = sel.value || load('candado', 'ejemplo');
+        // The one chosen before, also when it is a shared one that arrives after the list was first painted.
+        const sel = $('#sc2-lock'), before = sel.value && sel.value !== 'ejemplo' ? sel.value : load('candado', 'ejemplo');
         const option = (l) => `<option value="${escape(l.id)}">${escape(l.sid ? t('sh_option', { name: l.name, author: l.author }) : l.name)}</option>`;
         sel.innerHTML = [EXAMPLE].concat(store.locks).map(option).join('')
             + (sharedLocks.length ? `<optgroup label="${escape(t('sh_group'))}">${sharedLocks.map(option).join('')}</optgroup>` : '');

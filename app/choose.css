@@ -13,12 +13,16 @@
     --tinta: #1c1a19;
     --tinta-3: #55514d;
     --borde: #e3e9f2;
+    /* The surfaces, from Moodle's theme (also in its dark mode, below), and the blue of texts and links. */
+    --sup: var(--bs-body-bg, #fff);
+    --sup-2: #f6f8fc;
+    --azul-texto: var(--azul);
     position: relative;
     margin: 0 0 2rem;
     padding: 1.6rem 1.8rem 1.8rem;
     overflow: hidden;
     border-radius: 28px;
-    background: #fff;
+    background: var(--sup);
     box-shadow: 0 2px 4px rgba(15, 47, 94, .06), 0 18px 48px rgba(15, 47, 94, .1);
     color: var(--tinta);
     font-family: "Nunito", system-ui, sans-serif;
@@ -32,14 +36,14 @@
 
 /* The greeting, the title and the search. */
 .ct-ch-cab { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }
-.ct-ch-hola { margin: 0; color: var(--azul); font-size: .95rem; font-weight: 800; }
+.ct-ch-hola { margin: 0; color: var(--azul-texto); font-size: .95rem; font-weight: 800; }
 .ct-ch-titulo { margin: .1rem 0 .2rem; color: var(--azul-osc); font-family: inherit; font-size: clamp(1.8rem, 3vw, 2.4rem); font-weight: 900; line-height: 1.05; }
 .ct-ch-fecha { margin: 0; color: var(--tinta-3); font-size: .95rem; }
 .ct-ch-herr { display: flex; flex-wrap: wrap; gap: .6rem; }
-.ct-ch-categoria select { max-width: 16rem; padding: .6rem 2.2rem .6rem 1rem; border: 2px solid var(--borde); border-radius: 50rem; background: #f6f8fc url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23164281' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right .8rem center / 1rem; color: var(--azul-osc); font-family: inherit; font-size: .95rem; font-weight: 700; appearance: none; }
+.ct-ch-categoria select { max-width: 16rem; padding: .6rem 2.2rem .6rem 1rem; border: 2px solid var(--borde); border-radius: 50rem; background: var(--sup-2) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23164281' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right .8rem center / 1rem; color: var(--azul-osc); font-family: inherit; font-size: .95rem; font-weight: 700; appearance: none; }
 .ct-ch-categoria select:focus { border-color: var(--azul); outline: none; }
-.ct-ch-buscar input { width: 17rem; max-width: 100%; padding: .6rem 1.1rem .6rem 2.4rem; border: 2px solid var(--borde); border-radius: 50rem; background: #f6f8fc url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2355514d' stroke-width='2.4' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='6.5'/%3E%3Cpath d='M16 16l4.5 4.5'/%3E%3C/svg%3E") no-repeat .85rem 50% / 1.05rem; font-family: inherit; font-size: .95rem; }
-.ct-ch-buscar input:focus { border-color: var(--azul); outline: none; background-color: #fff; }
+.ct-ch-buscar input { width: 17rem; max-width: 100%; padding: .6rem 1.1rem .6rem 2.4rem; border: 2px solid var(--borde); border-radius: 50rem; background: var(--sup-2) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2355514d' stroke-width='2.4' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='6.5'/%3E%3Cpath d='M16 16l4.5 4.5'/%3E%3C/svg%3E") no-repeat .85rem 50% / 1.05rem; font-family: inherit; font-size: .95rem; }
+.ct-ch-buscar input:focus { border-color: var(--azul); outline: none; background-color: var(--sup); }
 
 /* The filters, like the segments of the board. */
 .ct-ch-filtros { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem; margin-bottom: 1.1rem; padding: .3rem; border-radius: 50rem; background: var(--azul-suave); width: fit-content; max-width: 100%; }
@@ -53,7 +57,7 @@
 /* The courses and the panel. */
 .ct-ch-cuerpo { display: grid; grid-template-columns: minmax(0, 1fr) 17.5rem; gap: 1.4rem; align-items: start; }
 .ct-ch-rejilla { display: grid; grid-template-columns: repeat(auto-fill, minmax(12.5rem, 1fr)); gap: .9rem; }
-.ct-ch-curso { --c: var(--azul); display: flex; flex-direction: column; overflow: hidden; border: 2px solid var(--borde); border-radius: 20px; background: #fff; color: inherit; text-decoration: none; transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease; }
+.ct-ch-curso { --c: var(--azul); display: flex; flex-direction: column; overflow: hidden; border: 2px solid var(--borde); border-radius: 20px; background: var(--sup); color: inherit; text-decoration: none; transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease; }
 /* Each card can be hidden from here by its teacher: the button in its corner, and the hidden ones folded at the end. */
 .ct-ch-sitio { position: relative; display: flex; min-width: 0; }
 .ct-ch-sitio > .ct-ch-curso { flex: 1; min-width: 0; }
@@ -81,7 +85,7 @@
 .ct-ch-nombre { display: -webkit-box; overflow: hidden; color: var(--azul-osc); font-size: 1rem; font-weight: 900; line-height: 1.2; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
 .ct-ch-clase { display: flex; align-items: center; gap: .5rem; margin-top: auto; padding-top: .4rem; }
 .ct-ch-caras { display: flex; }
-.ct-ch-caras img, .ct-ch-caras span { display: grid; place-items: center; width: 1.75rem; height: 1.75rem; margin-left: -.45rem; border: 2px solid #fff; border-radius: 50%; background: var(--azul-suave); color: var(--azul-osc); font-size: .62rem; font-weight: 900; object-fit: cover; }
+.ct-ch-caras img, .ct-ch-caras span { display: grid; place-items: center; width: 1.75rem; height: 1.75rem; margin-left: -.45rem; border: 2px solid var(--sup); border-radius: 50%; background: var(--azul-suave); color: var(--azul-osc); font-size: .62rem; font-weight: 900; object-fit: cover; }
 .ct-ch-caras > :first-child { margin-left: 0; }
 .ct-ch-caras span:nth-child(5n+2) { background: #fde9b0; }
 .ct-ch-caras span:nth-child(5n+3) { background: #cfeedd; }
@@ -98,12 +102,12 @@
 .ct-ch-seguir img { flex: none; width: 3.6rem; height: 3.6rem; border-radius: 14px; object-fit: cover; }
 .ct-ch-seguir .ct-ch-ante { color: rgba(255, 255, 255, .8); }
 .ct-ch-seguir strong { display: block; font-size: 1.02rem; line-height: 1.2; }
-.ct-ch-sin { display: flex; align-items: center; gap: .75rem; padding: .7rem; border: 2px dashed #c3cedc; border-radius: 20px; color: var(--azul-osc); text-decoration: none; transition: border-color .15s, background-color .15s; }
+.ct-ch-sin { display: flex; align-items: center; gap: .75rem; padding: .7rem; border: 2px dashed var(--borde); border-radius: 20px; color: var(--azul-osc); text-decoration: none; transition: border-color .15s, background-color .15s; }
 .ct-ch-sin:hover, .ct-ch-sin:focus-visible { border-color: var(--azul); background: var(--azul-suave); color: var(--azul-osc); text-decoration: none; }
 .ct-ch-sin strong { display: block; line-height: 1.2; }
 .ct-ch-icono { display: grid; flex: none; place-items: center; width: 2.6rem; height: 2.6rem; border-radius: 14px; background: var(--azul); color: #fff; }
 .ct-ch-icono svg { width: 1.35rem; height: 1.35rem; }
-.ct-ch-mando { padding: .8rem; border-radius: 20px; background: #f6f8fc; text-align: center; }
+.ct-ch-mando { padding: .8rem; border-radius: 20px; background: var(--sup-2); text-align: center; }
 .ct-ch-qr { width: 8.5rem; height: 8.5rem; margin: .5rem auto .3rem; padding: .45rem; border-radius: 14px; background: #fff; }
 .ct-ch-qr svg { display: block; width: 100%; height: 100%; }
 .ct-ch-qr svg path, .ct-ch-qr svg rect[fill="black"] { fill: var(--azul-osc); }
@@ -124,17 +128,17 @@
 .ct-ch-mini svg { display: block; width: 100%; height: auto; filter: drop-shadow(0 3px 6px rgba(15, 47, 94, .2)); }
 .ct-ch-boton { width: 100%; padding: .5rem .8rem; border: 0; border-radius: 50rem; background: var(--azul); color: #fff; font-family: inherit; font-weight: 800; cursor: pointer; }
 .ct-ch-boton:hover, .ct-ch-boton:focus-visible { background: var(--azul-osc); }
-.ct-ch-album { width: min(68rem, 94vw); max-height: 90vh; padding: 0; border: 0; border-radius: 26px; box-shadow: 0 30px 80px rgba(15, 47, 94, .35); font-family: "Nunito", system-ui, sans-serif; }
+.ct-ch-album { width: min(68rem, 94vw); max-height: 90vh; padding: 0; border: 0; background: var(--sup); color: var(--tinta); border-radius: 26px; box-shadow: 0 30px 80px rgba(15, 47, 94, .35); font-family: "Nunito", system-ui, sans-serif; }
 .ct-ch-album::backdrop { background: rgba(15, 47, 94, .45); }
-.ct-ch-album-cab { position: sticky; top: 0; z-index: 1; display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; padding: 1.2rem 1.4rem .8rem; background: #fff; border-bottom: 2px solid #eef2f8; }
-.ct-ch-album-cab h3 { margin: 0; color: #0f2f5e; font-family: inherit; font-size: 1.6rem; font-weight: 900; }
-.ct-ch-semanas { margin: .3rem 0 0; color: #164281; font-weight: 800; }
-.ct-ch-cerrar { flex: none; width: 2.4rem; height: 2.4rem; border: 2px solid #e3e9f2; border-radius: 50%; background: #fff; color: #0f2f5e; font-size: 1.4rem; line-height: 1; cursor: pointer; }
+.ct-ch-album-cab { position: sticky; top: 0; z-index: 1; display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; padding: 1.2rem 1.4rem .8rem; background: var(--sup); border-bottom: 2px solid #eef2f8; }
+.ct-ch-album-cab h3 { margin: 0; color: var(--azul-osc); font-family: inherit; font-size: 1.6rem; font-weight: 900; }
+.ct-ch-semanas { margin: .3rem 0 0; color: var(--azul-texto); font-weight: 800; }
+.ct-ch-cerrar { flex: none; width: 2.4rem; height: 2.4rem; border: 2px solid var(--borde); border-radius: 50%; background: var(--sup); color: var(--azul-osc); font-size: 1.4rem; line-height: 1; cursor: pointer; }
 .ct-ch-album-rejilla { display: grid; grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr)); gap: 1rem; padding: 1.1rem 1.4rem 1.4rem; }
 .ct-ch-cromo { margin: 0; text-align: center; }
 .ct-ch-cromo svg { display: block; width: 100%; height: auto; filter: drop-shadow(0 6px 14px rgba(15, 47, 94, .18)); }
-.ct-ch-cromo figcaption { margin-top: .4rem; color: #55514d; font-size: .78rem; line-height: 1.3; }
-.ct-ch-cromo figcaption strong { display: block; color: #0f2f5e; font-size: .85rem; }
+.ct-ch-cromo figcaption { margin-top: .4rem; color: var(--tinta-3); font-size: .78rem; line-height: 1.3; }
+.ct-ch-cromo figcaption strong { display: block; color: var(--azul-osc); font-size: .85rem; }
 .ct-ch-hueco svg { filter: grayscale(1) brightness(1.15) opacity(.35); }
 .cr-destello { animation: cr-brillo 3.2s ease-in-out infinite; }
 @keyframes cr-brillo { 0% { transform: skewX(-18deg) translateX(0); } 60%, 100% { transform: skewX(-18deg) translateX(520px); } }
@@ -187,3 +191,23 @@
 .ct-ch-sala-vacia { color: var(--tinta-3); font-weight: 700; }
 .ct-ch-sala-otros { margin: 0; padding: 0 1.4rem 1.4rem; color: var(--azul-osc); font-weight: 800; }
 @media (max-width: 40rem) { .ct-ch-sala-profe { grid-template-columns: auto 1fr; } .ct-ch-sala-cromos { grid-column: 1 / -1; } }
+/* Moodle in dark mode (Boost from 5.3 marks <html data-bs-theme="dark">): the surfaces and inks of its theme, the dark
+   blues of headings turned light, and the tinted panels as soft tints over the dark surface. White stays only on the
+   page's own colours (buttons, the mode badges) and behind the QR, which needs it to be read. */
+[data-bs-theme="dark"] .ct-ch {
+    --azul-osc: #a9c4f0;
+    --azul-suave: rgba(110, 155, 230, .18);
+    --azul-texto: #8fb4ec;
+    --tinta: var(--bs-body-color, #dee2e6);
+    --tinta-3: var(--bs-secondary-color, #adb5bd);
+    --borde: var(--bs-border-color, #495057);
+    --sup: var(--bs-body-bg, #212529);
+    --sup-2: var(--bs-tertiary-bg, #2b3035);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .3), 0 18px 48px rgba(0, 0, 0, .35);
+}
+[data-bs-theme="dark"] .ct-ch-filtros button:hover { background: rgba(255, 255, 255, .08); }
+[data-bs-theme="dark"] .ct-ch-ocultar { background: rgba(43, 48, 53, .94); }
+[data-bs-theme="dark"] .ct-ch-boton:hover, [data-bs-theme="dark"] .ct-ch-boton:focus-visible { background: #2a5ea8; }
+[data-bs-theme="dark"] .ct-ch-logros { background: linear-gradient(160deg, rgba(251, 190, 23, .14), rgba(206, 20, 35, .1)); }
+[data-bs-theme="dark"] .ct-ch-sala { background: linear-gradient(160deg, rgba(64, 140, 230, .16), rgba(6, 126, 54, .14)); }
+[data-bs-theme="dark"] .ct-ch-sala-profe { background: var(--sup-2); }

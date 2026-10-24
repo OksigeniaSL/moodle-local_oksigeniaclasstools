@@ -184,18 +184,20 @@ loaded from canva.com (for a short link, Moodle asks canva.link where it leads).
 
 ## Status and roadmap
 
-Release candidate, developed with a school in Tenerife as its test classroom, in daily use there. Before the first stable release:
+Release candidate, developed with a school in Tenerife as its test classroom, in daily use there. What was planned
+before the first stable release is done:
 
-- **Languages**: the board's texts come from the language packs (English and Spanish, others through AMOS), and the
-  built-in content (alphabet, keyboard, words, pair sets, the time in words, examples) from a content pack per
-  language in `app/content/` (English, Spanish, Spanish of Mexico, German, French, Italian, Dutch, Swedish and
-  Portuguese of Brazil). Next: the interface strings for those languages in AMOS.
-- **Site configuration**: which tools and games are shown, the default Hangman drawing, and site-wide lists, letter wheels
-  and locks shared by all teachers. Built-in examples become neutral and per language.
-- **Code**: done. The scripts of Moodle's own pages are AMD modules (`amd/src`, built with Moodle's grunt), and the
-  board talks to Moodle through web services (`db/services.php`). The board itself (`app/`) stays a web application of
-  its own, in plain modern JavaScript, because the same files also run as a SCORM package, in the public demo and in
-  the practice board of the guided helps, outside Moodle. `moodle-plugin-ci` (PHPUnit and Behat on Moodle 4.3 to 5.3)
+- **Languages**: the board's texts come from the language packs: English and Spanish in the plugin, and German,
+  French, Italian, Dutch, Brazilian Portuguese, Swedish and Mexican Spanish on their way to Moodle's language packs
+  through AMOS. The built-in content (alphabet, keyboard, words, pair sets, the time in words, examples) comes from a
+  content pack per language in `app/content/`, in those nine languages.
+- **Site configuration**: which tools, games and materials are shown, the default screen mode (also by category), the
+  school levels of the built-in sets, the help video of the teachers' tour, and class lists, letter wheels and locks
+  shared by all the teachers of the school.
+- **Code**: the scripts of Moodle's own pages are AMD modules (`amd/src`, built with Moodle's grunt), and the board
+  talks to Moodle through web services (`db/services.php`). The board itself (`app/`) stays a web application of its
+  own, in plain modern JavaScript, because the same files also run as a SCORM package, in the public demo and in the
+  practice board of the guided helps, outside Moodle. `moodle-plugin-ci` (PHPUnit and Behat on Moodle 4.3 to 5.3)
   runs in GitHub Actions.
 
 ## Development
