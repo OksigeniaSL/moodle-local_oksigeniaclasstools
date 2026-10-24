@@ -187,8 +187,11 @@ Release candidate, developed with a school in Tenerife as its test classroom, in
   Portuguese of Brazil). Next: the interface strings for those languages in AMOS.
 - **Site configuration**: which tools and games are shown, the default Hangman drawing, and site-wide lists, letter wheels
   and locks shared by all teachers. Built-in examples become neutral and per language.
-- **Code**: the board scripts move to AMD modules. `moodle-plugin-ci` (PHPUnit and Behat on Moodle 4.3 to 5.3) runs
-  in GitHub Actions.
+- **Code**: done. The scripts of Moodle's own pages are AMD modules (`amd/src`, built with Moodle's grunt), and the
+  board talks to Moodle through web services (`db/services.php`). The board itself (`app/`) stays a web application of
+  its own, in plain modern JavaScript, because the same files also run as a SCORM package, in the public demo and in
+  the practice board of the guided helps, outside Moodle. `moodle-plugin-ci` (PHPUnit and Behat on Moodle 4.3 to 5.3)
+  runs in GitHub Actions.
 
 ## Development
 

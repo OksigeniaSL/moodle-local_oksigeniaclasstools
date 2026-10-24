@@ -61,7 +61,7 @@ if (!$id) {
                 $PAGE->requires->js(new moodle_url($app . $file));
             }
         }
-        $PAGE->requires->js(new moodle_url($app . 'choose.js'));
+        $PAGE->requires->js_call_amd('local_oksigeniaclasstools/choose', 'init');
     }
     echo $OUTPUT->header();
     if ($courses) {

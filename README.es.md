@@ -198,8 +198,11 @@ Versión candidata a estable. Se desarrolla con un colegio de Tenerife como aula
 - **Configuración del sitio**: qué herramientas y juegos se enseñan, el dibujo del ahorcado por defecto, y listas,
   ruedas de letras y candados del sitio compartidos por todos los profesores. Los ejemplos de serie pasan a ser neutros y por
   idioma.
-- **Código**: los scripts de la pantalla pasan a módulos AMD. `moodle-plugin-ci` (PHPUnit y Behat en Moodle 4.3 a
-  5.3) en GitHub Actions.
+- **Código**: hecho. Los scripts de las páginas propias de Moodle son módulos AMD (`amd/src`, compilados con el grunt de
+  Moodle), y la pizarra habla con Moodle por servicios web (`db/services.php`). La pizarra (`app/`) sigue siendo una
+  aplicación web propia, en JavaScript moderno sin compilar, porque los mismos ficheros funcionan también como paquete
+  SCORM, en la demo pública y en la pizarra de práctica de las ayudas guiadas, fuera de Moodle. `moodle-plugin-ci`
+  (PHPUnit y Behat en Moodle 4.3 a 5.3) en GitHub Actions.
 
 ## Desarrollo
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.69.0 (2026-10-24)
+
+- «Which class?» runs as an AMD module (`amd/src/choose.js`, initialised by Moodle and calling the plugin's web
+  services through `core/ajax`). The board itself stays a web application of its own in `app/`, because the same
+  files also run as a SCORM package, in the public demo and in the practice board, outside Moodle. Asked for in the
+  Moodle plugins directory review (#2).
+
 ## 0.68.0 (2026-10-24)
 
 - The board talks to Moodle through web services of its own (db/services.php, 31 functions), over Moodle's AJAX
