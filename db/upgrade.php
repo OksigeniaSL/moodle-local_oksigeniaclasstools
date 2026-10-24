@@ -218,5 +218,10 @@ function xmldb_local_oksigeniaclasstools_upgrade($oldversion) {
         }
         upgrade_plugin_savepoint(true, 2026114300, 'local', 'oksigeniaclasstools');
     }
+    if ($oldversion < 2026120102) {
+        // The last step of the teachers' tour: the video or guide of help.
+        \local_oksigeniaclasstools\local\tour::add_help_step();
+        upgrade_plugin_savepoint(true, 2026120102, 'local', 'oksigeniaclasstools');
+    }
     return true;
 }

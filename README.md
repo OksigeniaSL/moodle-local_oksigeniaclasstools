@@ -64,7 +64,7 @@ The students in these screenshots do not exist: their names are made up and thei
 | Tool | What it does |
 |---|---|
 | Timer and stopwatch | Big, readable from the back of the room, with sound and five looks. **Work and rest blocks** (a pomodoro for the class), a notice with a minute left, the last ten seconds to count aloud, and a small timer in a corner while another tool is in front. |
-| Name picker | Pick a student with their photo. No repeats until everyone has been picked, and **fair picking**: whoever has been picked least in the last weeks comes first (with any teacher of the course). «Participation» shows the counts; «scratch to reveal» if wanted. The same picker sends someone **to the board or to the glockenspiel** from those tools. |
+| Name picker | Pick a student with their photo. No repeats until everyone has been picked, and **fair picking**: whoever has been picked fewer times in the last weeks is more likely to come out (with any teacher of the course), and nobody is always left for the end. «Participation» shows the counts; «scratch to reveal» if wanted. The same picker sends someone **to the board or to the glockenspiel** from those tools. |
 | Who is missing today | Tap absent students and they are left out of picks and groups for the day. |
 | Groups | Random groups with faces, a role for each one, reordered by dragging. Optionally **saved as course groups** (only when the teacher asks). |
 | Scoreboard and class goal | 2 to 8 teams, big buttons, the leader crowned; or a goal of the whole class, as a jar that fills with marbles or in looks that teach something on the way (the critter's path, a plant that grows, a rocket through the solar system, a song note by note, a mosaic that uncovers a picture), with the count as each level learns it. Kept in Moodle, so it goes on from any computer. |
@@ -125,6 +125,7 @@ Then visit *Site administration → Notifications* to finish the install.
 | Tools, Games and Materials | All | Which tools, games and materials appear on the board. New ones are added to the choice when the plugin is upgraded. |
 | Notice for students | On | While a live session is open, its students see «Join» on the course pages. |
 | Open the board to students | Off | Students get only the tools without data of the class (games, materials, drawing board, timer, clock, QR): never names, photos, picks or groups, and nothing of theirs is saved. |
+| Video or guide of help | Official page | The address the last step of the teachers' tour opens. Empty: the official page of Classtools, with its video, in each teacher's language. |
 | Link in the main menu | On | Inside each course the link is always in the course bar. |
 | Teachers' room | On | On «Which class?», the teachers who want to appear, with their stickers. Each one decides (at first, no). Needs the stickers on. |
 | Weeks the room counts | 12 | The span of its levels, unless a season is on. |
@@ -142,8 +143,9 @@ computer. Pictures and PDFs put on the board stay in the browser where they were
 ## User tour
 
 On install (or upgrade to 0.7.0) the plugin adds a user tour for teachers. It shows once per teacher, points at the
-link in the course bar and in the main menu, and says what is inside. Its texts are language strings. It can be
-edited or switched off in *Site administration → Appearance → User tours*.
+link in the course bar and in the main menu, and says what is inside; its last step opens the video or guide of help
+(the setting «Video or guide of help»; from 0.67.0). Its texts are language strings. It can be edited or switched off
+in *Site administration → Appearance → User tours*.
 
 ## Privacy
 

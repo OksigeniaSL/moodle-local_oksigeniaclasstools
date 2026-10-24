@@ -75,7 +75,7 @@
   "q_participation_note": { "en": "Times each one has been picked in the last {$a} days, by any teacher on this course. Fewest at the top.", "es": "Veces que le ha tocado a cada uno en los últimos {$a} días, con cualquier profesor de este curso. Arriba, quien menos." },
   "q_no_repeat": { "en": "No repeats", "es": "Sin repetir" },
   "q_fair": { "en": "Fewest turns first", "es": "Primero los que menos" },
-  "q_fair_hint": { "en": "Picks someone from those who have been picked the fewest times in recent weeks", "es": "Sale alguien de entre los que menos veces han salido estas semanas" },
+  "q_fair_hint": { "en": "Whoever has been picked fewer times in recent weeks is more likely to come out, and nobody is always left for the end", "es": "Es más fácil que salga quien menos veces ha salido estas semanas, y nadie se queda siempre para el final" },
   "q_pick": { "en": "Pick", "es": "Elegir" },
   "q_create_list": { "en": "Create a list", "es": "Crear una lista" },
   "q_already": { "en": "Already picked", "es": "Ya han salido" },

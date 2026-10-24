@@ -1484,7 +1484,7 @@ $string['app_gd_quien_what'] = 'Elegir al azar a quién le toca contestar, con t
 $string['app_gd_quien_why'] = 'Preguntar a quien no ha levantado la mano es lo que Doug Lemov llama «llamada en frío» (cold call): como cualquiera puede salir, todos preparan la respuesta. En un estudio con estudiantes universitarios, en las clases donde se hacía a menudo más estudiantes contestaban por su cuenta y se sentían más a gusto participando (Dallimore, Hertenstein y Platt, 2013).
 Unos segundos de silencio después de la pregunta dan respuestas más largas y mejor razonadas: Mary Budd Rowe vio que los docentes esperan, de media, menos de un segundo (Rowe, 1986).';
 $string['app_gd_quien_works'] = 'Que piense toda la clase: cualquiera puede salir.
-Turnos repartidos: «Primero los que menos» saca antes a quien menos ha salido en el curso.
+Turnos repartidos: «Primero los que menos» da más posibilidades a quien menos ha salido en el curso, y nadie se queda siempre para el final.
 Ver qué ha entendido cada uno, no solo quien levanta la mano.
 Hablar delante de los demás poco a poco, con preguntas a su alcance.';
 $string['app_gd_quiensoy_how'] = 'Elige un ejemplo de la etapa o escribe los tuyos en «Mis ejercicios»: «= respuesta» en la primera línea y debajo las pistas.
@@ -2635,7 +2635,7 @@ $string['app_q_edit'] = 'Editar';
 $string['app_q_empty'] = 'Pega la lista de tu clase para empezar';
 $string['app_q_empty_note'] = 'Cada lista se guarda solo en este ordenador.';
 $string['app_q_fair'] = 'Primero los que menos';
-$string['app_q_fair_hint'] = 'Sale alguien de entre los que menos veces han salido estas semanas';
+$string['app_q_fair_hint'] = 'Es más fácil que salga quien menos veces ha salido estas semanas, y nadie se queda siempre para el final';
 $string['app_q_left'] = 'Quedan {$a}';
 $string['app_q_list'] = 'Lista';
 $string['app_q_me_name'] = '{$a} (profe)';
@@ -3502,6 +3502,9 @@ $string['days_desc'] = 'Al sortear salen antes los alumnos a los que menos les h
 $string['defaultmode'] = 'Modo de la pantalla por defecto';
 $string['defaultmode_desc'] = 'Cómo se ve la pantalla en un curso hasta que el profesor elige otro modo. Hay cuatro y se usa uno cada vez (no se combinan): <strong>Infantil</strong> (de 3 a 6 años: todo más grande y con más ayudas, como las líneas guía del tangram), <strong>Primaria</strong> (de 6 a 12), <strong>Secundaria</strong> (de 12 a 16, más sobrio) y <strong>Superior</strong> (Bachillerato y universidad: lo más exigente y sobrio, sin confeti). Cada profesor puede cambiar el modo en cada curso con el botón de la barra de arriba, y se le recuerda en ese curso. Ningún modo quita herramientas: el modo cambia el aspecto y cómo empiezan los juegos. El contenido de los juegos va aparte, en «Niveles del centro», y ahí sí se pueden marcar varios.';
 $string['groupingname'] = '{$a->list} · equipos del {$a->when}';
+$string['help_official_url'] = 'https://oksigenia.com/productos/classtools';
+$string['helpurl'] = 'Vídeo o guía de ayuda';
+$string['helpurl_desc'] = 'La dirección que abre el último paso del recorrido de profesores: un vídeo o una guía de tu centro. Vacío: la página oficial de Classtools, con su vídeo, en el idioma de cada profesor.';
 $string['jointitle'] = 'Entra en la clase';
 $string['kicked'] = 'El profe ha sacado este dispositivo de la sesión.';
 $string['level_early'] = 'Infantil';
@@ -3643,6 +3646,8 @@ $string['tourstep2content'] = '<p>Desde cualquier página, para abrirlas en cual
 $string['tourstep2title'] = 'También en el menú de arriba';
 $string['tourstep3content'] = '<p>Ábrelas a pantalla completa: todo funciona con el dedo. El marcador, tus ruedas de letras y tus candados te siguen a cualquier ordenador.</p>';
 $string['tourstep3title'] = 'En la pizarra digital';
+$string['tourstep4content'] = '<p><a href="../local/oksigeniaclasstools/help.php" target="_blank">Mira el vídeo</a> (o la guía de tu centro) para ver qué hace cada herramienta.</p>';
+$string['tourstep4title'] = 'Un vídeo para verlo todo';
 $string['usage'] = 'Uso de las pizarras';
 $string['usage_allcourses'] = 'Todos los cursos';
 $string['usage_course'] = 'Curso';

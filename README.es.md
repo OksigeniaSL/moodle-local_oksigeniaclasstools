@@ -67,7 +67,7 @@ Las capturas están en inglés. Los alumnos que aparecen no existen: los nombres
 | Herramienta | Qué hace |
 |---|---|
 | Temporizador y cronómetro | Grandes, legibles desde el fondo del aula, con sonido y cinco aspectos. **Bloques de trabajo y descanso** (un pomodoro para la clase), aviso cuando queda un minuto, los diez últimos segundos para contarlos en voz alta, y un temporizador pequeño en una esquina mientras otra herramienta está delante. |
-| ¿A quién le toca? | Sale un alumno con su foto. No se repite nadie hasta que han salido todos, y el **sorteo es justo**: primero sale quien menos ha salido en las últimas semanas (con cualquier profesor del curso). «Participación» enseña las cuentas; «Rasca y gana», si se quiere. El mismo sorteo manda a alguien **a la pizarra o al carillón** desde esas herramientas. |
+| ¿A quién le toca? | Sale un alumno con su foto. No se repite nadie hasta que han salido todos, y el **sorteo es justo**: es más fácil que salga quien menos ha salido en las últimas semanas (con cualquier profesor del curso), y nadie se queda siempre para el final. «Participación» enseña las cuentas; «Rasca y gana», si se quiere. El mismo sorteo manda a alguien **a la pizarra o al carillón** desde esas herramientas. |
 | ¿Quién falta hoy? | Se tocan los alumnos ausentes y quedan fuera de los sorteos y los grupos ese día. |
 | Grupos | Grupos al azar con caras, un papel para cada uno y cambios arrastrando. Si el profesor lo pide, **se guardan como grupos del curso**. |
 | Marcador y meta de la clase | De 2 a 8 equipos, botones grandes y corona para el que va primero; o una meta de toda la clase, como un bote que se llena de canicas o en aspectos que enseñan algo por el camino (el camino del bichito, una planta que crece, un cohete por el sistema solar, una canción nota a nota, un mosaico que destapa una imagen), con la cuenta como la aprende cada etapa. Se guarda en Moodle, así que sigue desde cualquier ordenador. |
@@ -131,6 +131,7 @@ Después, *Administración del sitio → Notificaciones* para terminar la instal
 | Herramientas, Juegos y Materiales | Todo | Qué herramientas, juegos y materiales aparecen en la pantalla. Los nuevos se añaden a la selección al actualizar el plugin. |
 | Aviso a los alumnos | Activado | Mientras hay una sesión en vivo abierta, sus alumnos ven «Entrar» en las páginas del curso. |
 | Abrir la pantalla a los alumnos | Desactivado | Los alumnos solo tienen las herramientas sin datos de la clase (juegos, material, pizarra, temporizador, reloj, QR): nunca nombres, fotos, sorteos ni grupos, y no se guarda nada suyo. |
+| Vídeo o guía de ayuda | Página oficial | La dirección que abre el último paso del recorrido de profesores. Vacío: la página oficial de Classtools, con su vídeo, en el idioma de cada profesor. |
 | Enlace en el menú principal | Activado | Dentro de cada curso el enlace está siempre en la barra del curso. |
 | Sala de profes | Activada | En «¿Con qué clase?», los profesores que quieran aparecer, con sus cromos. Cada uno decide (de partida, no). Necesita los cromos encendidos. |
 | Semanas que cuenta la sala | 12 | El tiempo de sus niveles, salvo que haya una temporada en curso. |
@@ -149,8 +150,9 @@ pizarra se quedan en el navegador donde se añadieron.
 ## Recorrido de usuario
 
 Al instalar (o al actualizar a la 0.7.0) el plugin añade un recorrido de usuario para profesores. Sale una vez a cada
-profesor, señala el enlace de la barra del curso y del menú principal, y cuenta qué hay dentro. Sus textos son
-cadenas de idioma. Se puede editar o desactivar en *Administración del sitio → Apariencia → Recorridos de usuario*.
+profesor, señala el enlace de la barra del curso y del menú principal, y cuenta qué hay dentro; su último paso abre el
+vídeo o la guía de ayuda (el ajuste «Vídeo o guía de ayuda»; desde la 0.67.0). Sus textos son cadenas de idioma. Se
+puede editar o desactivar en *Administración del sitio → Apariencia → Recorridos de usuario*.
 
 ## Privacidad
 

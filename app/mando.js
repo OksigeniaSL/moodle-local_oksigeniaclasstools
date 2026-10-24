@@ -136,7 +136,7 @@
             if (glyph) { return `<button type="button" ${attrs} aria-label="${escape(name)}">${how === 'less' ? '−' : '+'}</button>`; }
             return `<button type="button" class="${{ big: 'grande', yes: 'jn-si', no: 'jn-no' }[how] || ''}" ${attrs}${how === 'on' ? ' aria-pressed="true"' : ''}>${ico(icon, how === 'big' ? 'jn-ico jn-ico-grande' : 'jn-ico')}<span>${escape(name)}</span></button>`;
         };
-        let options = false;
+        let options = false, grid = false;
         const html = rows.map((row) => {
             const cap = row.find((x) => x[2] === 'cap'), items = row.filter((x) => x[2] !== 'cap');
             const head = cap ? `<span class="jn-cap">${escape(cap[1])}</span>` : '';
@@ -146,8 +146,15 @@
                 options = true;
                 return `${open}<section class="jn-opciones"><p class="jn-cap jn-seccion">${escape(cap[1])}</p>`;
             }
+            // The first long choice of the options, with icons (what to do in «Live»: vote, buzzers, quiz…): big buttons
+            // with their icons, two in a line, so that the empty screen invites to go straight to one.
+            const choiceOnly = items.every((x) => x[2] === 'opt' || x[2] === 'opton');
+            if (options && !grid && choiceOnly && items.length <= 12 && items.every((x) => x[3])) {
+                grid = true;
+                return `<div class="jn-mando jn-fila jn-rejilla" style="--n:2">${head}${items.map(([cmd, name, how, icon]) => `<button type="button" class="jn-opt jn-opt-grande" aria-pressed="${how === 'opton'}" data-cmd="${escape(cmd)}" data-name="${escape(name)}">${ico(icon, 'jn-ico')}<span>${escape(name)}</span></button>`).join('')}</div>`;
+            }
             // A long choice (many options, or long ones): a list.
-            if (items.every((x) => x[2] === 'opt' || x[2] === 'opton') && (items.length > 4 || items.some((x) => x[1].length > 14))) {
+            if (choiceOnly && (items.length > 4 || items.some((x) => x[1].length > 14))) {
                 const none = items.some((x) => x[2] === 'opton') ? '' : '<option value="" selected disabled>—</option>';
                 return `<label class="jn-eleccion">${head}<select data-sel>${none}${items.map(([cmd, name, how]) => `<option value="${escape(cmd)}"${how === 'opton' ? ' selected' : ''}>${escape(name)}</option>`).join('')}</select></label>`;
             }

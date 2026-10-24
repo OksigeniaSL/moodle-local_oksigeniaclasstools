@@ -76,8 +76,54 @@ class tour {
                 $step(1, 0, ".secondary-navigation $link"),
                 $step(2, 0, ".primary-navigation $link"),
                 $step(3, 2, '', ['orphan' => '1', 'backdrop' => '1']),
+                $step(4, 2, '', ['orphan' => '1', 'backdrop' => '1']),
             ],
         ];
         return (int) \tool_usertours\manager::import_tour_from_json(json_encode($tour))->get_id();
+    }
+
+    /**
+     * Adds the last step, the video or guide of help, to a tour installed before it existed (once).
+     *
+     * @return bool Whether it was added.
+     */
+    public static function add_help_step(): bool {
+        global $DB;
+        if (!class_exists('\tool_usertours\tour')) {
+            return false;
+        }
+        $id = $DB->get_field('tool_usertours_tours', 'id', ['name' => self::NAME], IGNORE_MULTIPLE);
+        $title = 'tourstep4title,local_oksigeniaclasstools';
+        $where = 'tourid = ? AND ' . $DB->sql_compare_text('title') . ' = ' . $DB->sql_compare_text('?');
+        if (!$id || $DB->record_exists_select('tool_usertours_steps', $where, [$id, $title])) {
+            return false;
+        }
+        $tour = \tool_usertours\tour::instance($id);
+        $step = new \tool_usertours\step();
+        $step->set_tourid($id);
+        $step->set_title($title);
+        $step->set_content('tourstep4content,local_oksigeniaclasstools', FORMAT_HTML);
+        $step->set_targettype(\tool_usertours\target::TARGET_UNATTACHED);
+        $step->set_targetvalue('');
+        $step->set_config('orphan', '1');
+        $step->set_config('backdrop', '1');
+        $step->set_sortorder($tour->count_steps());
+        $step->persist(true);
+        \tool_usertours\tour::instance($id)->reset_step_sortorder();
+        return true;
+    }
+
+    /**
+     * Where the last step of the tour leads: the video or guide the site chose, or the official page of Classtools
+     * (with its video) in the teacher's language.
+     *
+     * @return \moodle_url
+     */
+    public static function help_url(): \moodle_url {
+        $url = trim((string) get_config('local_oksigeniaclasstools', 'helpurl'));
+        if (!preg_match('~^https?://~i', $url)) {
+            $url = get_string('help_official_url', 'local_oksigeniaclasstools');
+        }
+        return new \moodle_url($url);
     }
 }

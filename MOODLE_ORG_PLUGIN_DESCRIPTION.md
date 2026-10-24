@@ -1,7 +1,7 @@
 <p>Board tools for the classroom, with the course students already loaded and their photos. Teachers open them from any course (the link sits in the course bar, and in the main menu), put them on the classroom screen, and the whole class plays along. Try it without installing anything: <a href="https://oksigenia.com/demo/classtools/">public demo</a>.</p>
 <h3>What's inside</h3>
 <ul>
-<li><strong>Name picker</strong> with each student's photo, no repeats until everyone has been picked, and fair picking: whoever has been picked least in the last weeks comes first, with any teacher of the course. «Participation» shows the counts. <strong>Who is missing today</strong> leaves absent students out of picks and groups for the day.</li>
+<li><strong>Name picker</strong> with each student's photo, no repeats until everyone has been picked, and fair picking: whoever has been picked fewer times in the last weeks is more likely to come out, with any teacher of the course, and nobody is always left for the end. «Participation» shows the counts. <strong>Who is missing today</strong> leaves absent students out of picks and groups for the day.</li>
 <li><strong>Groups</strong>: random groups with faces and a role for each one, which the teacher can save as course groups, only when they ask.</li>
 <li><strong>Timer and stopwatch</strong>, big and readable from the back of the room, with work and rest blocks and a small timer in a corner while another tool is in front.</li>
 <li><strong>Scoreboard and class goal</strong>: 2 to 8 teams, or a goal of the whole class as a jar of marbles, a path, a plant that grows, a rocket through the solar system or a mosaic. Kept in Moodle, so it goes on from any computer.</li>

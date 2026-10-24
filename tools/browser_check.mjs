@@ -117,7 +117,7 @@ window.shot = (name) => new Promise((done) => { if (!window.checkShot) { done();
             if (a === 'command') { return json(p.get('cmd') === 'x_old' ? { ok: false, why: 'gone' } : { ok: true }); }
             if (a === 'courses') { return json({ courses: [{ id: 1, name: 'One' }, { id: 7, name: 'Language 5' }, { id: 8, name: 'Maths 6' }] }); }
             // The first board is on «Groups», with its buttons; the second, on the clock, has none.
-            const here = [[['x_md0', 'No. of groups', 'on'], ['x_md1', 'Students per group', '']],
+            const here = FAKE.mandoHere || [[['x_md0', 'No. of groups', 'on'], ['x_md1', 'Students per group', '']],
                 [['x_le', 'One fewer', 'less'], ['', '4 groups', 'val'], ['x_mr', 'One more', 'more']], [['x_go', 'Make groups', 'big']],
                 [['', 'Starts with A: a fruit', 'txt']], [['x_old', 'Gone', '']],
                 [['', 'Options', 'cap']], [['x_o1', 'Deal them out with suspense', 'chk'], ['x_o2', 'Scratch to reveal', 'chkon']],
@@ -519,6 +519,30 @@ const CHECKS = {
     },
     // Pairs with the matching questions of the question bank.
     // Pairs: trios of a number (dots, figure, word), a glance at the start, and the class against the tries.
+    // Pairs with the faces of the class in Early years: the name cards in capitals, as everywhere on the board there.
+    'pairs-names-capitals': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const q = (x) => document.querySelector(x);
+        const setMode = async (m) => { q('#b-modo').click(); await sleep(200); q(`#menu-modo [data-modo="${m}"]`).click(); await sleep(300); };
+        try {
+            await setMode('early');
+            q('#t-juegos').click();
+            await sleep(200);
+            q('#ga-mode [data-game="parejas"]').click();
+            await sleep(300);
+            const src = q('#me-src');
+            src.value = [...src.options].map((o) => o.value).find((v) => v.startsWith('faces:')) || '';
+            src.dispatchEvent(new Event('change', { bubbles: true }));
+            q('#me-start').click();
+            await sleep(300);
+            const names = window.ClasstoolsMemory.state().cards.filter((c) => c.half.text).map((c) => c.half.text);
+            if (!names.length) { return 'no name cards'; }
+            const lower = names.filter((n) => n !== n.toLocaleUpperCase());
+            return lower.length ? `names not in capitals: ${lower.slice(0, 3).join(', ')}` : '';
+        } finally {
+            await setMode('primary');
+        }
+    },
     'pairs-variants': async () => {
         const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
         const q = (x) => document.querySelector(x);
@@ -1711,6 +1735,25 @@ const CHECKS = {
     },
     // The board tells the phone the buttons of the tool on screen, as they are now, and runs them: the groups (how
     // many, «Make groups», then «Again»), and the alphabet wheel with its letter and the answer for the teacher.
+    // «Live» on the board: on the phone, «Start» big and what to do as big buttons with their icons, not a list.
+    'remote-live-buttons': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        window.FAKE.mandoHere = [[['x_go', 'Start', 'big', 'empezar']], [['', 'Options', 'cap']],
+            [['', 'What shall we do?', 'cap'], ['x_o0x0', 'Remote', 'opton', 'mando'], ['x_o0x1', 'Vote', 'opt', 'encuesta'],
+                ['x_o0x2', 'Buzzers', 'opt', 'campana'], ['x_o0x3', 'Brainstorm', 'opt', 'nube'], ['x_o0x4', 'Quiz', 'opt', 'trofeo'],
+                ['x_o0x5', 'Exit ticket', 'opt', 'billete'], ['x_o0x6', 'Hands up', 'opt', 'mano']],
+            [['', 'How do they join?', 'cap'], ['x_o1x0', 'With the code', 'opton', 'qr'], ['x_o1x1', 'With their Moodle account', 'opt', 'usuario']]];
+        let grid = null;
+        for (let i = 0; i < 160 && !(grid = document.querySelector('.jn-rejilla')); i++) { await sleep(50); }
+        if (!grid) { return 'no big buttons for what to do'; }
+        const buttons = [...grid.querySelectorAll('button.jn-opt-grande')];
+        if (buttons.length !== 7 || buttons.some((b) => !b.querySelector('svg'))) { return `${buttons.length} big buttons, some without icon`; }
+        if (buttons[0].getAttribute('aria-pressed') !== 'true') { return 'the one on is not marked'; }
+        if (document.querySelectorAll('.jn-rejilla').length !== 1) { return 'more than the first choice as big buttons'; }
+        if (!document.querySelector('#jn-aqui button.grande')) { return 'no big Start'; }
+        await window.shot('remote-live-buttons');
+        return '';
+    },
     'remote-here': async () => {
         const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
         const q = (x) => document.querySelector(x);
@@ -2217,6 +2260,32 @@ const CHECKS = {
         d.close();
         return '';
     },
+    // Fair picking: whoever has gone out more often is less likely to come out, but is not always left for the end of a
+    // round (an Early years class saw the same girl last every time), and whoever has gone out less comes out more.
+    'fair-pick': async () => {
+        const P = window.Pizarra;
+        if (!P || !P.fairPick) { return 'no fair pick'; }
+        const names = Array.from({ length: 10 }, (_, i) => 'S' + i);
+        const rounds = (times) => {
+            const last = {}, first = {};
+            for (let r = 0; r < 600; r++) {
+                let pool = names.slice();
+                const order = [];
+                while (pool.length) { const c = P.fairPick(pool, times); order.push(c); pool = pool.filter((n) => n !== c); }
+                first[order[0]] = (first[order[0]] || 0) + 1;
+                last[order[9]] = (last[order[9]] || 0) + 1;
+            }
+            return { first, last };
+        };
+        const once = rounds({ S0: 1 });
+        const lastShare = (once.last.S0 || 0) / 600;
+        if (lastShare > 0.45) { return `one pick more leaves S0 last ${Math.round(lastShare * 100)}% of the rounds`; }
+        if (lastShare < 0.12) { return `one pick more barely counts: S0 last only ${Math.round(lastShare * 100)}%`; }
+        if (Object.keys(once.last).length < 6) { return `only ${Object.keys(once.last).length} different names come out last`; }
+        const behind = rounds({ S1: 0, S0: 0, S2: 3, S3: 3, S4: 3, S5: 3, S6: 3, S7: 3, S8: 3, S9: 3 });
+        const ahead = ((behind.first.S0 || 0) + (behind.first.S1 || 0)) / 600;
+        return ahead < 0.55 ? `those with fewer turns come out first only ${Math.round(ahead * 100)}% of the time` : '';
+    },
     // What the board has been used for: each tab, game and material chosen counts once, and it is sent with the course.
     'tally': async () => {
         const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -2610,7 +2679,7 @@ const CHECKS = {
 };
 
 // Checks that run on another page than the board.
-const PAGES = { 'remote-phone': '/phone.html', 'remote-cards': '/phone.html', 'exit-device': '/device.html', 'student-view': '/student.html' };
+const PAGES = { 'remote-phone': '/phone.html', 'remote-live-buttons': '/phone.html', 'remote-cards': '/phone.html', 'exit-device': '/device.html', 'student-view': '/student.html' };
 
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png',
     '.woff2': 'font/woff2', '.json': 'application/json', '.mp3': 'audio/mpeg' };

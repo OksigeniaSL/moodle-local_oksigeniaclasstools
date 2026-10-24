@@ -108,7 +108,7 @@
             }),
             [['gc', '#gl-count', 'val', (el) => el.textContent]], [['gs', '#gl-steps [data-s]']]],
         asi: [[['md', '#h-asi .modo-trabajo']], [['ce', '#gigante-cerrar']]],
-        envivo: [[['go', '#lv-open, #id-open, #ex-open, #ex-close, #qz-go, #qz-next', 'big']], [['rv', '#qz-reveal, #ex-reopen']]],
+        envivo: [[['go', '#lv-start, #lv-open, #id-open, #ex-open, #ex-close, #qz-go, #qz-next', 'big']], [['rv', '#qz-reveal, #ex-reopen']]],
     };
     const named = (el) => (el.getAttribute('aria-label') || (el.tagName === 'INPUT' ? el.value : el.textContent) || '').trim();
 
@@ -142,7 +142,9 @@
             const text = (o.getAttribute('aria-label') || (strong || o).textContent || '').replace(/\s+/g, ' ').trim().slice(0, 60);
             const on = list ? o.selected : ['aria-checked', 'aria-pressed'].some((a) => o.getAttribute(a) === 'true');
             if (!text) { return; }
-            row.push([`${key}x${i}`, text, on ? 'opton' : 'opt']);
+            // With its icon, when the board shows one, for the phone to draw the choice as big buttons.
+            const ic = !list && o.querySelector('[data-icono]');
+            row.push(ic ? [`${key}x${i}`, text, on ? 'opton' : 'opt', ic.dataset.icono] : [`${key}x${i}`, text, on ? 'opton' : 'opt']);
             acts.set(`${key}x${i}`, list ? () => { el.value = o.value; fire(el, ['change']); } : () => o.click());
         });
         return row;

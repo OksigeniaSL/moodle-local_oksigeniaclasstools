@@ -1482,7 +1482,7 @@ $string['app_gd_quien_what'] = 'Choose at random whose turn it is to answer, wit
 $string['app_gd_quien_why'] = 'Asking someone who has not put their hand up is what Doug Lemov calls «cold call»: as anyone may be chosen, everyone prepares an answer. In a study with university students, in the classes where it was done often more students answered of their own accord, and they felt more at ease taking part (Dallimore, Hertenstein and Platt, 2013).
 A few seconds of silence after the question bring longer, better reasoned answers: Mary Budd Rowe found that teachers wait, on average, less than a second (Rowe, 1986).';
 $string['app_gd_quien_works'] = 'The whole class thinks: anyone may be chosen.
-Fair turns: «Fewest turns first» chooses first whoever has had fewest turns in the course.
+Fair turns: «Fewest turns first» gives more chances to whoever has had fewer turns in the course, and nobody is always left for the end.
 Seeing what each one has understood, not only those who put their hand up.
 Speaking in front of the others little by little, with questions within their reach.';
 $string['app_gd_quiensoy_how'] = 'Choose an example of the level, or write your own in «My exercises»: «= answer» on the first line and the clues below.
@@ -2633,7 +2633,7 @@ $string['app_q_edit'] = 'Edit';
 $string['app_q_empty'] = 'Paste your class list to begin';
 $string['app_q_empty_note'] = 'Each list is only saved on this computer.';
 $string['app_q_fair'] = 'Fewest turns first';
-$string['app_q_fair_hint'] = 'Picks someone from those who have been picked the fewest times in recent weeks';
+$string['app_q_fair_hint'] = 'Whoever has been picked fewer times in recent weeks is more likely to come out, and nobody is always left for the end';
 $string['app_q_left'] = '{$a} left';
 $string['app_q_list'] = 'List';
 $string['app_q_me_name'] = '{$a} (teacher)';
@@ -3500,6 +3500,9 @@ $string['days_desc'] = 'When picking, students who have been picked least in the
 $string['defaultmode'] = 'Screen mode by default';
 $string['defaultmode_desc'] = 'How the board looks in a course until the teacher chooses another mode. There are four, and only one is used at a time (they do not combine): <strong>Early years</strong> (ages 3 to 6: everything bigger, with more help, such as the tangram guide lines), <strong>Primary</strong> (6 to 12), <strong>Secondary</strong> (12 to 16, more sober) and <strong>Advanced</strong> (upper secondary and university: the most demanding and sober, without confetti). Each teacher can change the mode in each course with the button in the top bar, and it is remembered for that course. No mode removes a tool: the mode changes the look and how the games start. The games\' content goes separately in «School levels», where several can be ticked.';
 $string['groupingname'] = '{$a->list} · teams of {$a->when}';
+$string['help_official_url'] = 'https://oksigenia.com/en/products/classtools';
+$string['helpurl'] = 'Video or guide of help';
+$string['helpurl_desc'] = 'The address the last step of the teachers\' tour opens: a video or a guide of your school. Empty: the official page of Classtools, with its video, in each teacher\'s language.';
 $string['jointitle'] = 'Join the class';
 $string['kicked'] = 'The teacher has taken this device out of the session.';
 $string['level_early'] = 'Early years';
@@ -3641,6 +3644,8 @@ $string['tourstep2content'] = '<p>From any page, to open them in any of your cou
 $string['tourstep2title'] = 'Also in the main menu';
 $string['tourstep3content'] = '<p>Open them in full screen: everything works with fingers. The scoreboard, your alphabet wheels and your locks follow you to any computer.</p>';
 $string['tourstep3title'] = 'On the interactive whiteboard';
+$string['tourstep4content'] = '<p><a href="../local/oksigeniaclasstools/help.php" target="_blank">Watch the video</a> (or the guide of your school) to see what each tool does.</p>';
+$string['tourstep4title'] = 'A video to see it all';
 $string['usage'] = 'Use of the boards';
 $string['usage_allcourses'] = 'All courses';
 $string['usage_course'] = 'Course';

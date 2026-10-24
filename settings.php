@@ -110,6 +110,13 @@ if ($hassiteconfig) {
             get_string('students_desc', 'local_oksigeniaclasstools'),
             0
         ));
+        $settings->add(new admin_setting_configtext(
+            'local_oksigeniaclasstools/helpurl',
+            get_string('helpurl', 'local_oksigeniaclasstools'),
+            get_string('helpurl_desc', 'local_oksigeniaclasstools'),
+            '',
+            PARAM_URL
+        ));
         $settings->add(new admin_setting_configcheckbox(
             'local_oksigeniaclasstools/menu',
             get_string('menu', 'local_oksigeniaclasstools'),

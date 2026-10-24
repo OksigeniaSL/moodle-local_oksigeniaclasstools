@@ -72,6 +72,9 @@ button { touch-action: manipulation; -webkit-user-select: none; user-select: non
 .jn-cap { grid-column: 1 / -1; margin-bottom: -.4rem; color: var(--tinta-3); font-size: .8rem; font-weight: 900; letter-spacing: .06em; text-transform: uppercase; }
 .jn-seccion { margin: .6rem 0 -.2rem; padding-top: .8rem; border-top: 2px solid var(--borde); color: var(--azul); }
 .jn-fila button.jn-chk, .jn-fila button.jn-opt { min-height: 3.6rem; font-size: 1rem; }
+/* The main choice of the options as big buttons, each with its icon above its name. */
+.jn-rejilla button.jn-opt-grande { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .35rem; min-height: 5.6rem; padding: .6rem .5rem; font-size: 1.05rem; line-height: 1.15; text-align: center; white-space: normal; }
+.jn-rejilla button.jn-opt-grande .jn-ico { font-size: 1.7rem; }
 .jn-fila button.jn-chk { display: flex; align-items: center; gap: .7rem; padding: .5rem .9rem; text-align: left; }
 .jn-fila button.jn-chk::before { content: ""; flex: none; width: 2.6rem; height: 1.5rem; border-radius: 50rem; background: radial-gradient(circle at .75rem 50%, #fff .5rem, transparent .55rem) #aab6c8; transition: background .15s; }
 /* A switch that is on: the whole button green, the knob to the right; off, white. */

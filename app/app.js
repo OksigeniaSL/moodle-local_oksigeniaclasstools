@@ -29,6 +29,15 @@
     const pad = (n) => String(n).padStart(2, '0');
     const randomInt = (n) => { const a = new Uint32Array(1); crypto.getRandomValues(a); return a[0] % n; };
     const shuffle = (v) => { for (let i = v.length - 1; i > 0; i--) { const j = randomInt(i + 1); [v[i], v[j]] = [v[j], v[i]]; } return v; };
+    // Fair picking: a whole ticket for whoever has been picked fewest times, half as much for each pick more, never
+    // none. Whoever has gone out more often can still come first, and nobody is always left for the end of a round.
+    const fairPick = (pool, times) => {
+        const fewest = Math.min(...pool.map((n) => times[n] || 0));
+        const weights = pool.map((n) => 2 ** -Math.min(10, (times[n] || 0) - fewest));
+        let r = (randomInt(2 ** 32) / 2 ** 32) * weights.reduce((a, b) => a + b, 0);
+        for (let i = 0; i < pool.length; i++) { r -= weights[i]; if (r < 0) { return pool[i]; } }
+        return pool[pool.length - 1];
+    };
     const escapeHtml = (t) => String(t).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
     const inFrame = (() => { try { return window.self !== window.top; } catch (e) { return true; } })();
 
@@ -1118,11 +1127,9 @@
         const s = pickedOut[l.id] || [], presentNow = presentIn(l);
         const pool = qNoRepeat ? presentNow.filter((n) => !s.includes(n)) : presentNow.slice();
         if (!pool.length) { pickerPaint(); return; }
-        // Fair picking (lists from Moodle): someone comes out among those picked fewest times these weeks.
+        // Fair picking (lists from Moodle): more likely whoever has been picked fewest times these weeks.
         const fair = withPicks(l) && qFair;
-        const fewest = fair ? Math.min(...pool.map((n) => l.veces[n] || 0)) : 0;
-        const candidates = fair ? pool.filter((n) => (l.veces[n] || 0) === fewest) : pool;
-        const chosen = candidates[randomInt(candidates.length)];
+        const chosen = fair ? fairPick(pool, l.veces) : pool[randomInt(pool.length)];
         const finishPick = () => {
             qShuffling = false; qLast = chosen;
             if (qNoRepeat) { const already = pickedOut[l.id] || []; pickedOut[l.id] = already.includes(chosen) ? already : already.concat(chosen); save('salidos', pickedOut); }
@@ -2031,9 +2038,7 @@
         if (pool.length > 1 && lastPickedOutside) { pool = pool.filter((n) => n !== lastPickedOutside); }
         if (!pool.length) { return null; }
         const fair = withPicks(l) && qFair;
-        const fewest = fair ? Math.min(...pool.map((n) => l.veces[n] || 0)) : 0;
-        const candidates = fair ? pool.filter((n) => (l.veces[n] || 0) === fewest) : pool;
-        const chosen = candidates[randomInt(candidates.length)];
+        const chosen = fair ? fairPick(pool, l.veces) : pool[randomInt(pool.length)];
         lastPickedOutside = chosen;
         if (withPicks(l) && l.ids[chosen]) {
             addPick(l.ids[chosen]);
@@ -2163,5 +2168,5 @@
     fitBar();
     try { SCORM.iniciar(); SCORM.guardar({}, 100, true); } catch (e) { /* no Moodle */ }
 
-    window.Pizarra = { tm, cr, sm, muestra: showTool, tmPon: tmSet, listas: () => ownLists, todas: allLists, limpiaNombres: cleanNames, elegir: pickStudent, abreFaltan: openAbsent };   // for the automated tests
+    window.Pizarra = { tm, cr, sm, muestra: showTool, tmPon: tmSet, listas: () => ownLists, todas: allLists, limpiaNombres: cleanNames, elegir: pickStudent, abreFaltan: openAbsent, fairPick };   // for the automated tests
 })();

@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.67.0 (2026-10-24)
+
+- «Whose turn?»: fair picking is a weighted draw now. Whoever has been picked fewer times in the last weeks has more
+  chances (half as many for each pick more, never none), so turns still even out, but nobody is always left for the
+  end of a round. Before, it only drew among those picked fewest times, and whoever had one pick more came out last
+  in every round for weeks: an Early years teacher saw the same girl last every time, and she was sad about it.
+- Pairs with the faces of the class: the name cards follow «Names in capitals», as everywhere else on the board (on
+  by default in Early years).
+- The fixed remote with «Live» on the board: «Start» as the big button, and what to do (vote, buzzers, quiz,
+  brainstorm, exit ticket, hands up, remote) as big buttons with their icons instead of a list, so the phone invites
+  to go straight to one.
+- The teachers' tour ends with a video or guide of help: the one the site sets in «Video or guide of help», or the
+  official page of Classtools with its video, in each teacher's language. Tours already installed get the step on
+  upgrade.
+
 ## 0.66.0 (2026-10-21)
 
 - The code is in English throughout: the comments of the board's core script (app/app.js), of its styles and of its

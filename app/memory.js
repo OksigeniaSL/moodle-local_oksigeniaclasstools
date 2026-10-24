@@ -284,7 +284,9 @@
         if (pr && pr.make) { return pr.make(n); }
         if (value.startsWith('faces:')) {
             const l = core.lists().find((x) => x.id === value.slice(6));
-            return l ? shuffle(core.present(l).slice()).slice(0, n).map((name) => [{ face: { list: l, name } }, { text: name }]) : [];
+            // The name as the board shows it everywhere (in capitals when «Names in capitals» is on, as in Early years).
+            const shown = (name) => (core.nameCase ? core.nameCase(name) : name);
+            return l ? shuffle(core.present(l).slice()).slice(0, n).map((name) => [{ face: { list: l, name } }, { text: shown(name) }]) : [];
         }
         if (value.startsWith('bank:')) {
             const pairs = Array.isArray(bankPairs[value.slice(5)]) ? bankPairs[value.slice(5)] : [];
