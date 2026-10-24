@@ -33,8 +33,8 @@
     * standalone - the address of the board without a course
     * remote - the fixed remote: on, url
     * album - the teacher's stickers, when they are on: got (how many, as text) and json (what the page draws)
-    * sala - the teachers' room, when it is on: joined, count, span, others (texts), json (what the page draws), url,
-      sesskey
+    * sala - the teachers' room, when it is on: joined, count, span, others (texts), json (what the page draws), ajax
+      (Moodle's AJAX service), sesskey
 
     Example context (json):
     {
@@ -63,7 +63,7 @@
         "album": {"got": "2 of 18 stickers", "json": "{}"},
         "sala": {"joined": false, "count": "3 in the room", "span": "It counts the last 12 weeks.",
             "others": "And 9 more colleagues play with their classes.", "json": "{}",
-            "url": "https://example.org/local/oksigeniaclasstools/sala.php", "sesskey": "abc"}
+            "ajax": "https://example.org/lib/ajax/service.php", "sesskey": "abc"}
     }
 }}
 <div class="ct-ch">
@@ -99,7 +99,7 @@
     </div>
     {{/stages.0}}
     <div class="ct-ch-cuerpo">
-        <div class="ct-ch-rejilla" data-hideurl="{{hideurl}}" data-sesskey="{{sesskey}}">
+        <div class="ct-ch-rejilla" data-ajax="{{ajax}}" data-sesskey="{{sesskey}}">
             {{#courses}}
             <div class="ct-ch-sitio" data-id="{{id}}" data-name="{{name}}" data-mode="{{mode}}" data-cat="{{categoryid}}" data-oculto="{{#hidden}}1{{/hidden}}{{^hidden}}0{{/hidden}}"{{#hidden}} hidden{{/hidden}}>
             <a class="ct-ch-curso ct-mode-{{mode}}" href="{{url}}">
@@ -136,7 +136,7 @@
             </div>
             {{/album}}
             {{#sala}}
-            <div class="ct-ch-sala" id="ct-ch-sala" data-sala="{{json}}" data-url="{{url}}" data-sesskey="{{sesskey}}">
+            <div class="ct-ch-sala" id="ct-ch-sala" data-sala="{{json}}" data-ajax="{{ajax}}" data-sesskey="{{sesskey}}">
                 <span class="ct-ch-ante">{{#str}} sala, local_oksigeniaclasstools {{/str}}</span>
                 <strong class="ct-ch-logros-n">{{count}}</strong>
                 <div class="ct-ch-sala-caras" id="ct-ch-sala-caras" aria-hidden="true"></div>

@@ -54,8 +54,22 @@
         ['pick', 'lv_cmd_pick'], ['turn', 'rm_cmd_turn'], ['next', 'rm_cmd_next'], ['present', 'lv_cmd_present'],
         ['tab_prev', 'lv_cmd_prev'], ['tab_next', 'lv_cmd_next'], ['live', 'rm_cmd_live'], ['relay', 'rm_cmd_relay'],
         ['curtain', 'rm_cmd_curtain'], ['reveal', 'rm_cmd_reveal']];
-    const post = (action, extra = {}) => fetch(R.api, { method: 'POST', body: new URLSearchParams({ k: R.k, action, ...extra }) })
-        .then((r) => r.json());
+    // The web services phone_state (its answer, the boards, a JSON document), phone_courses and phone_command, through
+    // Moodle's AJAX service without a session: the key of the remote is what the phone brings. Moodle's errors come
+    // back as { error, errorcode }.
+    const post = (action, extra = {}) => {
+        const methodname = 'local_oksigeniaclasstools_phone_' + action, args = { k: R.k, ...extra };
+        if ('course' in args) { args.course = Number(args.course) || 0; }
+        return fetch(`${R.ajax}?info=${methodname}`, {
+            method: 'POST', credentials: 'omit', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify([{ index: 0, methodname, args }]),
+        }).then((r) => r.json()).then((res) => {
+            const one = Array.isArray(res) ? res[0] : res;
+            if (one && one.error === false) { return action === 'state' ? JSON.parse(one.data.json) : one.data; }
+            const ex = (one && one.exception) || {};
+            return { error: true, errorcode: ex.errorcode || '' };
+        });
+    };
     let boards = [], course = Number(localStorage.getItem('mando-curso')) || 0, shown = '', timer = 0, failures = 0;
     // Until when the buttons of the tool are not painted again: an option just touched shows at once, and the board
     // takes a moment to say so (meanwhile it would go back).

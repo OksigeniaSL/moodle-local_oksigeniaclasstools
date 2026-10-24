@@ -15,7 +15,7 @@
 
 /**
  * How much each tool, game and material of the board is used: the times it is chosen and the seconds it is on screen
- * while someone works with it, sent to the course every couple of minutes and when the board is closed (tally.php).
+ * while someone works with it, sent to the course every couple of minutes and when the board is closed (tally_add).
  *
  * @copyright  2026 Oksigenia SL <dev@oksigenia.cc>
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -23,7 +23,7 @@
 'use strict';
 (() => {
     const core = window.ClasstoolsCore, AULA = window.CLASSTOOLS;
-    if (!core || !AULA || !AULA.tallyurl || !AULA.courseid || core.duelo) { return; }
+    if (!core || !AULA || !core.has('tally') || !AULA.courseid || core.duelo) { return; }
     // Time counts while the page is seen and someone has touched the board (or sent an order from the phone) in the
     // last quarter of an hour: a board left open over the weekend is not a weekend of use.
     const STEP = 15, IDLE = 15 * 60000, EVERY = 120000;
@@ -54,12 +54,13 @@
         const items = Object.entries(pending).filter(([, p]) => p[0] || p[1]);
         Object.keys(pending).forEach((k) => { delete pending[k]; });
         if (!items.length) { return; }
-        const body = new FormData();
-        body.append('sesskey', AULA.sesskey || '');
-        body.append('courseid', AULA.courseid);
-        body.append('data', JSON.stringify(Object.fromEntries(items)));
-        try { if (navigator.sendBeacon(AULA.tallyurl, body)) { return; } } catch (e) { /* below */ }
-        fetch(AULA.tallyurl, { method: 'POST', body, credentials: 'same-origin', keepalive: true }).catch(() => {});
+        // The web service tally_add, through Moodle's AJAX service, as a beacon (it also goes when the page closes).
+        const methodname = 'local_oksigeniaclasstools_tally_add';
+        const url = `${AULA.ajax}?sesskey=${encodeURIComponent(AULA.sesskey || '')}&info=${methodname}`;
+        const args = { courseid: AULA.courseid, items: items.map(([tool, [opens, seconds]]) => ({ tool, opens, seconds })) };
+        const body = JSON.stringify([{ index: 0, methodname, args }]);
+        try { if (navigator.sendBeacon(url, new Blob([body], { type: 'application/json' }))) { return; } } catch (e) { /* below */ }
+        core.call('tally_add', args, { keepalive: true }).catch(() => {});
     };
     setInterval(send, EVERY);
     addEventListener('pagehide', send);

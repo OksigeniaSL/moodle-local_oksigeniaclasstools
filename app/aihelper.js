@@ -27,9 +27,9 @@
     const core = window.ClasstoolsCore;
     if (!core) { return; }
     const { escape, t } = core;
-    const AI = core.moodle && core.moodle.aiurl ? core.moodle : null;
-    const call = (action, extra = {}) => fetch(AI.aiurl, { method: 'POST', credentials: 'same-origin',
-        body: new URLSearchParams({ courseid: AI.courseid, sesskey: AI.sesskey, action, ...extra }) }).then((r) => r.json());
+    const AI = core.has && core.has('ai') ? core.moodle : null;
+    // The web services ai_accept and ai_generate.
+    const call = (action, extra = {}) => core.call('ai_' + action, { courseid: AI.courseid, ...extra });
 
     /**
      * The prompt of the kinds that are not exercises: what, for whom, on what, the format and an example. The server

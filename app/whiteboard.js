@@ -62,7 +62,7 @@
     };
     // Inside a course, a teacher who can add content can share the board with a class (saved in the course, and its
     // students get a notification).
-    const AULA = core.moodle && core.moodle.boardurl ? core.moodle : null;
+    const AULA = core.has && core.has('board') ? core.moodle : null;
     const COLOURS = [[t('wb_black'), '#1c1a19'], [t('wb_blue'), '#164281'], [t('wb_red'), '#ce1423'], [t('wb_green'), '#067e36'],
         [t('wb_orange'), '#ea7317'], [t('wb_yellow'), '#f5b800'], [t('wb_purple'), '#5b2fb8']];
     // On a chalkboard each ink is drawn as its chalk (the drawing keeps its colours if the page turns white again).
@@ -1362,7 +1362,7 @@
             const r = $('#wb-send-result'), go = $('#wb-send-go');
             const format = ($('#wb-send-format [aria-checked="true"]') || { dataset: { v: 'png' } }).dataset.v;
             go.disabled = true; r.classList.remove('error'); r.textContent = STR.sending;
-            core.toMoodle(AULA.boardurl, { listid: $('#wb-send-list').value, name: $('#wb-send-name').value, format, image: (source ? source.compose : compose)().toDataURL('image/png') })
+            core.call('board_share', { courseid: AULA.courseid, listid: $('#wb-send-list').value, name: $('#wb-send-name').value, format, image: (source ? source.compose : compose)().toDataURL('image/png') })
                 .then((j) => {
                     r.innerHTML = `${escape(STR.sent({ folder: j.folder, n: j.notified }))} <a href="${escape(j.url)}" target="_blank" rel="noopener">${escape(STR.sentOpen)}</a>`;
                     announce(STR.sent({ folder: j.folder, n: j.notified }));

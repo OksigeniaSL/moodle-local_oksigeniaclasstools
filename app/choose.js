@@ -24,6 +24,19 @@
 'use strict';
 (() => {
     const $ = (s) => document.querySelector(s);
+    // A web service of the board (db/services.php, without its «local_oksigeniaclasstools_»), through Moodle's AJAX
+    // service: the data it answers, or an Error.
+    const callMoodle = (el, name, args) => {
+        const methodname = 'local_oksigeniaclasstools_' + name;
+        return fetch(`${el.dataset.ajax}?sesskey=${encodeURIComponent(el.dataset.sesskey)}&info=${methodname}`, {
+            method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify([{ index: 0, methodname, args }]),
+        }).then((r) => r.json()).then((res) => {
+            const one = Array.isArray(res) ? res[0] : res;
+            if (one && one.error === false) { return one.data; }
+            throw new Error((one && one.exception && one.exception.errorcode) || 'error');
+        });
+    };
 
     // --- The filters ---------------------------------------------------------------------------------------------
     const input = $('#ct-ch-buscar'), select = $('#ct-ch-categoria');
@@ -69,9 +82,8 @@
             if (!b) { return; }
             const card = b.closest('.ct-ch-sitio'), hide = card.dataset.oculto !== '1';
             b.disabled = true;
-            fetch(grid.dataset.hideurl, { method: 'POST', credentials: 'same-origin',
-                body: new URLSearchParams({ sesskey: grid.dataset.sesskey, courseid: card.dataset.id, hide: hide ? '1' : '0' }) })
-                .then((r) => r.json()).then((j) => {
+            callMoodle(grid, 'course_hide', { courseid: Number(card.dataset.id), hide })
+                .then((j) => {
                     if (!j || !j.ok) { return; }
                     card.dataset.oculto = hide ? '1' : '0';
                     paintMore();
@@ -144,8 +156,8 @@
     $('#ct-ch-sala-yo').addEventListener('change', (e) => {
         const box = e.target;
         box.disabled = true;
-        fetch(room.dataset.url, { method: 'POST', credentials: 'same-origin', body: new URLSearchParams({ sesskey: room.dataset.sesskey, join: box.checked ? '1' : '0' }) })
-            .then((r) => r.json()).then((j) => { if (j && !j.error && !j.errorcode) { location.reload(); } else { throw new Error('sala'); } })
+        callMoodle(room, 'sala_join', { join: box.checked })
+            .then(() => { location.reload(); })
             .catch(() => { box.checked = !box.checked; box.disabled = false; });
     });
 })();

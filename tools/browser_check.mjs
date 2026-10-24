@@ -34,18 +34,19 @@ import { fileURLToPath } from 'node:url';
 
 const APP = join(dirname(fileURLToPath(import.meta.url)), '..', 'app');
 
-// What the page gets before the board: a course with a class, and a live server that answers like livehost.php
-// (start, state, open, close, end) for a vote, keeping what the board sent.
+// What the page gets before the board: a course with a class, and a pretend Moodle that answers the web services of
+// the board by name, as Moodle's AJAX service does: a live server (start, state, open, close, end) for a vote, the
+// question bank, the AI, the fixed remote, the teachers' room, the stickers… Each call is kept in FAKE.calls as the
+// fields of a form, with its action (as the old endpoints had them), for the checks to look at.
 const FAKE = `
 window.CLASSTOOLS = { lists: [{ id: 1, name: 'Class 1', key: 'c1', students: Array.from({ length: 8 }, (_, i) => ({ id: i + 1, n: 'Student ' + (i + 1) })) },
     { id: 2, name: 'Split A', key: 'c2', students: Array.from({ length: 4 }, (_, i) => ({ id: i + 1, n: 'Student ' + (i + 1) })) }],
-    courseid: 1, mode: 'teacher', sesskey: 'x', days: {}, state: {}, liveurl: 'fake://live', glossaryurl: 'fake://glossary', bankurl: 'fake://bank',
-    aiurl: 'fake://ai', remoteurl: 'fake://remote', remote: { on: false },
-    logrosurl: 'fake://logros', logros: { thr: { devices: 5, picks: 5, students: 8 }, levels: {} }, salaurl: 'fake://sala',
-    tallyurl: 'fake://tally', me: { id: 99, name: 'Teacher' } };
+    courseid: 1, mode: 'teacher', sesskey: 'x', days: {}, state: {}, ajax: 'fake://service',
+    services: { live: true, glossary: true, bank: true, ai: true, remote: true, logros: true, sala: true, tally: true },
+    remote: { on: false }, logros: { thr: { devices: 5, picks: 5, students: 8 }, levels: {} }, me: { id: 99, name: 'Teacher' } };
 window.FAKE = { calls: [], polls: 0, beacons: [] };
 // What the board sends with sendBeacon (what it has been used for), kept instead of sent.
-navigator.sendBeacon = (url, body) => { window.FAKE.beacons.push({ url, ...Object.fromEntries(body) }); return true; };
+navigator.sendBeacon = (url, body) => { window.FAKE.beacons.push({ url, body }); return true; };
 const BANK_PAIRS = [['frog', 'amphibian'], ['cat', 'mammal'], ['bee', 'insect']];
 const GLOSSARY = [{ w: 'Photosynthesis', c: 'How plants make their food with light.' }, { w: 'Cell', c: 'The smallest unit of life.' },
     { w: 'Atom', c: 'The smallest part of an element.' }];
@@ -57,19 +58,37 @@ window.shot = (name) => new Promise((done) => { if (!window.checkShot) { done();
     const view = () => ({ id: 7, code: 'TEST42', kind: 'vote', identity: 'anon', ended: S.ended, round: S.round, open: S.open, show: false,
         others: 0, notice: false, seq: 0, url: 'https://example.org/local/oksigeniaclasstools/join.php?c=TEST42', devices: [],
         vote: S.vote, options: VOTES[S.vote], results: Object.fromEntries(VOTES[S.vote].map((o) => [o, 0])) });
+    // Each web service: the old endpoint it answers as, and its action (null: the action the call brings).
+    const ROUTES = { bank_categories: ['bank', 'categories'], bank_pairs: ['bank', 'pairs'], bank_questions: ['bank', 'questions'],
+        ai_accept: ['ai', 'accept'], ai_generate: ['ai', 'generate'], remote_poll: ['remote', 'poll'], remote_status: ['remote', 'status'],
+        remote_rotate: ['remote', 'rotate'], remote_enable: ['remote', null], sala_view: ['sala', 'room'], sala_join: ['sala', 'join'],
+        logros_record: ['logros', 'use'], logros_learn: ['logros', 'learn'], phone_state: ['mando', 'state'],
+        phone_courses: ['mando', 'courses'], phone_command: ['mando', 'command'], presentation_resolve: ['presentation', ''],
+        glossary_list: ['glossary', 'list'], glossary_words: ['glossary', 'words'], live_start: ['live', 'start'],
+        live_state: ['live', 'state'], live_control: ['live', null], live_device: ['join', null], live_member: ['join', null] };
+    // The web services whose answer is a JSON document.
+    const JSONS = ['bank_pairs', 'bank_questions', 'remote_poll', 'sala_view', 'sala_join', 'phone_state', 'presentation_resolve',
+        'live_start', 'live_state', 'live_control', 'live_device', 'live_member'];
+    const flat = (args) => Object.fromEntries(Object.entries(args).map(([k, v]) => [k,
+        typeof v === 'boolean' ? (v ? '1' : '0') : (v && typeof v === 'object' ? JSON.stringify(v) : String(v))]));
     const real = window.fetch;
     window.fetch = (url, opts) => {
-        if (!String(url).startsWith('fake://')) { return real(url, opts); }
-        const p = new URLSearchParams(opts && opts.body), a = p.get('action');
+        if (!String(url).startsWith('fake://service')) { return real(url, opts); }
+        const [call] = JSON.parse(String(opts && opts.body)), name = call.methodname.replace(/^local_oksigeniaclasstools_/, '');
+        const [where, fixed] = ROUTES[name] || ['ok', ''], args = call.args || {};
+        const action = fixed !== null ? fixed : (name === 'remote_enable' ? (args.on ? 'on' : 'off') : (args.action || 'state'));
+        const p = new URLSearchParams(Object.assign({ action }, flat(args))), a = action;
         FAKE.calls.push(Object.fromEntries(p));
-        const json = (x) => Promise.resolve(new Response(JSON.stringify(x), { headers: { 'Content-Type': 'application/json' } }));
-        // The question bank, as quizbank.php gives it: one category with a matching question.
+        const wrap = (x) => [{ error: false, data: JSONS.includes(name) ? { json: JSON.stringify(x) } : x }];
+        const json = (x) => Promise.resolve(new Response(JSON.stringify(wrap(x)), { headers: { 'Content-Type': 'application/json' } }));
+        url = 'fake://' + where;
+        if (where === 'ok') { return json({ ok: true }); }
+        // The question bank, as bank_categories and bank_pairs give it: one category with a matching question.
         if (String(url).startsWith('fake://bank')) {
             return json(a === 'categories' ? { categories: p.get('kind') === 'pairs' ? [{ id: 9, name: 'Course · Animals', count: 1 }] : [] }
                 : { pairs: BANK_PAIRS, skipped: 0 });
         }
-        // A glossary of the course, as glossary.php gives it.
-        // The AI of the site, as ai.php gives it: the policy until it is accepted, then two exercises in a code fence
+        // The AI of the site, as ai_accept and ai_generate give it: the policy until it is accepted, then two exercises in a code fence
         // (the server takes the fences away; here they never come).
         if (String(url).startsWith('fake://ai')) {
             if (a === 'accept') { FAKE.aiAccepted = true; return json({ ok: true }); }
@@ -84,7 +103,7 @@ window.shot = (name) => new Promise((done) => { if (!window.checkShot) { done();
             };
             return json({ ok: true, text: TEXTS[p.get('type')] || '' });
         }
-        // The fixed remote, as remote.php gives it: on and off, a new address, and the orders queued in FAKE.remoteCmds.
+        // The fixed remote, as remote_* give it: on and off, a new address, and the orders queued in FAKE.remoteCmds.
         if (String(url).startsWith('fake://remote')) {
             const R = FAKE.remote || (FAKE.remote = { on: false, n: 1, seq: 0 });
             const status = () => (R.on ? { on: true, url: 'https://example.org/local/oksigeniaclasstools/mando.php?k=key' + R.n } : { on: false });
@@ -98,7 +117,7 @@ window.shot = (name) => new Promise((done) => { if (!window.checkShot) { done();
             }
             return json(status());
         }
-        // The teachers' room, as sala.php gives it: the teacher comes in or leaves, and the room as they see it.
+        // The teachers' room, as sala_view and sala_join give it: the teacher comes in or leaves, and the room as they see it.
         if (String(url).startsWith('fake://sala')) {
             if (a === 'join') { FAKE.salaIn = p.get('join') === '1'; }
             const me = { id: 99, name: 'Teacher', me: true, stickers: [], note: 'And 1 learned in a guided help, only in «My stickers».' };
@@ -107,12 +126,12 @@ window.shot = (name) => new Promise((done) => { if (!window.checkShot) { done();
                 str: { title: "Teachers' room", intro: 'Who else plays with their class.', you: 'you', none: 'No stickers in this time', empty: 'Nobody yet',
                     join: 'Appear in the room', join_note: 'Only your critter, your name and your stickers.', close: 'Close' } });
         }
-        // The teacher's stickers, as logros.php gives it: the first use of a sticker is its level 1.
+        // The teacher's stickers, as logros_record and logros_learn give it: the first use of a sticker is its level 1.
         if (String(url).startsWith('fake://logros')) {
             if (a === 'learn') { return json({ cromo: p.get('cromo'), learned: true, before: false }); }
             return json({ cromo: p.get('cromo'), days: 1, level: 1, up: true });
         }
-        // The phone of the fixed remote, as mandoapi.php gives it: two open boards.
+        // The phone of the fixed remote, as phone_* give it: two open boards.
         if (String(url).startsWith('fake://mando')) {
             if (a === 'command') { return json(p.get('cmd') === 'x_old' ? { ok: false, why: 'gone' } : { ok: true }); }
             if (a === 'courses') { return json({ courses: [{ id: 1, name: 'One' }, { id: 7, name: 'Language 5' }, { id: 8, name: 'Maths 6' }] }); }
@@ -126,10 +145,11 @@ window.shot = (name) => new Promise((done) => { if (!window.checkShot) { done();
             return json({ boards: [{ course: 1, name: 'One', tool: 'grupos', tools: [['grupos', 'Groups'], ['reloj', 'Clock']], here },
                 { course: 2, name: 'Two', tool: 'reloj', tools: [['reloj', 'Clock']], here: [] }] });
         }
-        // A Canva short link, as presentation.php follows it.
+        // A Canva short link, as presentation_resolve follows it.
         if (String(url).startsWith('fake://presentation')) {
             return json(String(p.get('url')).includes('canva.link/abc123xyz') ? { ok: true, id: 'DAexample01', token: 'faketoken-faketoken' } : { ok: false });
         }
+        // A glossary of the course, as glossary_list and glossary_words give it.
         if (String(url).startsWith('fake://glossary')) {
             return json(a === 'list' ? { ok: true, glossaries: [{ id: 5, name: 'Science words', count: 3 }] }
                 : { ok: true, words: GLOSSARY });
@@ -141,7 +161,7 @@ window.shot = (name) => new Promise((done) => { if (!window.checkShot) { done();
         else if (a === 'open') { if (VOTES[p.get('vote')]) { S.vote = p.get('vote'); } S.open = true; S.round++; }
         else if (a === 'close') { S.open = false; }
         else if (a === 'end') { S.ended = true; }
-        return Promise.resolve(new Response(JSON.stringify(S ? view() : { ended: true, devices: [] }), { headers: { 'Content-Type': 'application/json' } }));
+        return json(S ? view() : { ended: true, devices: [] });
     };
 })();
 `;
@@ -973,7 +993,7 @@ const CHECKS = {
         for (let i = 0; i < 40 && window.ClasstoolsCore.current() !== 'reloj'; i++) { await sleep(100); }
         if (window.ClasstoolsCore.current() !== 'reloj') { return 'the order of the phone was not run'; }
         const sent = FAKE.calls.filter((c) => c.action === 'poll').pop();
-        if (!/quien\|/.test(sent.tools || '')) { return `the board does not say its tools: ${sent.tools}`; }
+        if (!JSON.parse(sent.tools || '[]').some((x) => x.id === 'quien' && x.name)) { return `the board does not say its tools: ${sent.tools}`; }
         q('#t-envivo').click();
         await sleep(300);
         if (!/connected/.test(q('#lv-rm').textContent)) { return 'the phone is not shown as connected'; }
@@ -2309,9 +2329,12 @@ const CHECKS = {
         q('#t-pizarra').click();
         await sleep(100);
         T.send();
+        // A beacon to Moodle's AJAX service, with the web service tally_add and the course.
         const sent = window.FAKE.beacons.pop();
-        if (!sent || sent.url !== 'fake://tally' || sent.courseid !== '1' || sent.sesskey !== 'x') { return `sent: ${JSON.stringify(sent)}`; }
-        const data = JSON.parse(sent.data), opens = Object.fromEntries(Object.entries(data).map(([k, v]) => [k, v[0]]));
+        if (!sent || !sent.url.startsWith('fake://service?sesskey=x&')) { return `sent to ${sent && sent.url}`; }
+        const [call] = JSON.parse(await sent.body.text());
+        if (call.methodname !== 'local_oksigeniaclasstools_tally_add' || call.args.courseid !== 1) { return `sent: ${JSON.stringify(call)}`; }
+        const opens = Object.fromEntries(call.args.items.map((x) => [x.tool, x.opens]));
         const want = { pizarra: 2, [`juegos/${first}`]: 1, [`juegos/${other}`]: 1, [`material/${material}`]: 1 };
         if (JSON.stringify(Object.entries(opens).sort()) !== JSON.stringify(Object.entries(want).sort())) { return `counted ${JSON.stringify(opens)}`; }
         // Nothing new: nothing sent.
@@ -2487,7 +2510,7 @@ const CHECKS = {
         q('#pr-lista [data-quitar]').click();
         if (P.state().items.length || !q('#pr-recientes').hidden) { return 'removed, but still there'; }
         // Inside Moodle, a short link goes through the server, which says where it leads; one that leads nowhere says so.
-        window.CLASSTOOLS.presentationurl = 'fake://presentation';
+        window.CLASSTOOLS.services.presentation = true;
         type('https://canva.link/nothing99');
         await sleep(150);
         if (q('#pr-error').hidden || !/could not be followed/.test(q('#pr-error').textContent)) { return `short link that leads nowhere: ${q('#pr-error').textContent}`; }
@@ -2499,7 +2522,7 @@ const CHECKS = {
         }
         q('#pr-otra').click();
         q('#pr-lista [data-quitar]').click();
-        delete window.CLASSTOOLS.presentationurl;
+        window.CLASSTOOLS.services.presentation = false;
         csp.remove();
         return '';
     },
@@ -2703,7 +2726,7 @@ const server = createServer((req, res) => {
     if (path === '/phone.html') {
         // The phone of the fixed remote, with its key, its texts (from the English pack) and the pretend server.
         const config = '<script src="/fake.js"></script>\n<script src="strings.js"></script>\n'
-            + '<script>window.CLASSTOOLS_REMOTE = { k: "key1", api: "fake://mando", site: "Site", str: window.CLASSTOOLS_STR };</script>\n';
+            + '<script>window.CLASSTOOLS_REMOTE = { k: "key1", ajax: "fake://service", site: "Site", str: window.CLASSTOOLS_STR };</script>\n';
         const html = readFileSync(join(APP, 'mando.html'), 'utf8').replace('<script src="mando.js">', config + '<script src="mando.js">');
         res.writeHead(200, { 'Content-Type': 'text/html' }); res.end(html); return;
     }
@@ -2715,7 +2738,7 @@ const server = createServer((req, res) => {
             + ' if (c.action === "ticket") { D.mine = { feel: c.feel, texts: JSON.parse(c.texts), t: 1 }; }'
             + ' return { kind: "exit", round: 1, open: D.open, left: 0, ended: false, kicked: false, identity: "anon", seed: "a".repeat(32),'
             + ' joined: true, team: 0, feel: true, prompts: ["What did you learn?", "A question you still have"], length: 200, mine: D.mine }; };'
-            + 'window.CLASSTOOLS_JOIN = { code: "EXIT42", found: true, kind: "exit", identity: "anon", api: "fake://join", sesskey: "",'
+            + 'window.CLASSTOOLS_JOIN = { code: "EXIT42", found: true, kind: "exit", identity: "anon", ajax: "fake://service", sesskey: "",'
             + ' page: "join.php", site: "Site", str: window.CLASSTOOLS_STR };</script>\n';
         const html = readFileSync(join(APP, 'join.html'), 'utf8').replace('<script src="faces.js">', config + '<script src="faces.js">');
         res.writeHead(200, { 'Content-Type': 'text/html' }); res.end(html); return;

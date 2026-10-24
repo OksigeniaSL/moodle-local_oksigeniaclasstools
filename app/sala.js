@@ -16,7 +16,7 @@
 /**
  * The teachers' room on the board, a discreet button of the top bar: the colleagues who want to be seen, with their
  * critter and their stickers in the span the site counts, how many more play, and whether one is in (the same room as
- * on «Which class?», asked to sala.php when it opens).
+ * on «Which class?», asked to Moodle when it opens).
  *
  * @copyright  2026 Oksigenia SL <dev@oksigenia.cc>
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -28,14 +28,14 @@
     if (!core || !button) { return; }
     const AULA = core.moodle;
     // Only for the teacher, in a course, with the room on; not in the practice board of a help or a copy of a duel.
-    if (!AULA || AULA.mode !== 'teacher' || !AULA.salaurl || core.practica || core.duelo) { return; }
+    if (!AULA || AULA.mode !== 'teacher' || !core.has('sala') || core.practica || core.duelo) { return; }
     const { escape, setIcon } = core;
     const L = window.ClasstoolsLogros, C = window.ClasstoolsCritter;
     button.hidden = false;
 
     let dialog = null, R = null;
-    const ask = (extra = {}) => fetch(AULA.salaurl, { method: 'POST', credentials: 'same-origin',
-        body: new URLSearchParams(Object.assign({ sesskey: AULA.sesskey, action: 'room' }, extra)) }).then((r) => r.json());
+    // The web services sala_view and sala_join: their answer, the room as the teacher sees it, is a JSON document.
+    const ask = (join) => (join === undefined ? core.callJson('sala_view', {}) : core.callJson('sala_join', { join }));
     const face = (id) => `<span class="ct-sala-cara" aria-hidden="true">${C ? C.svg('sala:' + id) : ''}</span>`;
     const paint = () => {
         const S = R.str || {};
@@ -55,15 +55,15 @@
         dialog.querySelector('#sl-yo').addEventListener('change', (e) => {
             const box = e.target;
             box.disabled = true;
-            ask({ action: 'join', join: box.checked ? '1' : '0' }).then((j) => {
-                if (!j || j.error || j.errorcode || j.off) { throw new Error('sala'); }
+            ask(box.checked).then((j) => {
+                if (!j || j.off) { throw new Error('sala'); }
                 R = j; paint();
             }).catch(() => { box.checked = !box.checked; box.disabled = false; });
         });
     };
     button.addEventListener('click', () => {
         ask().then((j) => {
-            if (!j || j.error || j.errorcode || j.off) { button.hidden = true; return; }
+            if (!j || j.off) { button.hidden = true; return; }
             R = j;
             if (!dialog) {
                 dialog = document.createElement('dialog');

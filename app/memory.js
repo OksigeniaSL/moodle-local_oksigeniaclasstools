@@ -243,13 +243,13 @@
     };
     // The matching questions of the course's question bank (inside Moodle): each subquestion and its answer, a pair.
     const AULA = core.moodle;
-    const bankCall = (action, extra = {}) => fetch(AULA.bankurl, { method: 'POST', credentials: 'same-origin',
-        body: new URLSearchParams({ courseid: AULA.courseid, sesskey: AULA.sesskey, action, ...extra }) })
-        .then((r) => r.json()).then((j) => { if (!j || j.error || j.errorcode) { throw new Error((j && (j.errorcode || j.error)) || 'error'); } return j; });
+    // The web services bank_categories and bank_pairs (whose answer is a JSON document).
+    const bankCall = (action, extra = {}) => (action === 'categories' ? core.call : core.callJson)('bank_' + action,
+        { courseid: AULA.courseid, ...extra });
     let bankCats = null;
     const bankPairs = {};
     const askBank = () => {
-        if (bankCats || !AULA || !AULA.bankurl) { return; }
+        if (bankCats || !AULA || !core.has('bank')) { return; }
         bankCats = [];
         bankCall('categories', { kind: 'pairs' }).then((j) => { bankCats = j.categories || []; if (bankCats.length) { fill(); } })
             .catch(() => { /* No bank: the other sets stay. */ });

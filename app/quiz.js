@@ -83,7 +83,7 @@
     });
     const putImage = async (file) => {
         if (!file || !/^image\//.test(file.type)) { throw new Error('type'); }
-        if (AULA && AULA.quizimgurl) { return (await core.toMoodle(AULA.quizimgurl, { image: await shrink(file, 1280, 0.85) })).name; }
+        if (AULA && core.has('quizimage')) { return (await core.call('quizimage_save', { courseid: AULA.courseid, image: await shrink(file, 1280, 0.85) })).name; }
         return shrink(file, 900, 0.8);
     };
 
@@ -112,7 +112,7 @@
             <div class="qz-fila"><label class="campo apilado qz-crece"><span>${escape(t('qz_set'))}</span><select id="qz-set">${data.sets.map((x) => `<option value="${escape(x.id)}">${escape(x.name)} (${x.questions.length})</option>`).join('')}</select></label>
                 <button type="button" class="boton suave" id="qz-edit"><span data-icono="editar"></span><span>${escape(t('qz_edit'))}</span></button>
                 <button type="button" class="boton suave" id="qz-new"><span data-icono="nueva"></span><span>${escape(t('qz_new'))}</span></button>
-                ${AULA && AULA.bankurl ? `<button type="button" class="boton suave" id="qz-bank"><span data-icono="descargar"></span><span>${escape(t('qz_bank'))}</span></button>` : ''}
+                ${AULA && core.has('bank') ? `<button type="button" class="boton suave" id="qz-bank"><span data-icono="descargar"></span><span>${escape(t('qz_bank'))}</span></button>` : ''}
                 ${window.ClasstoolsMusicQuiz ? `<button type="button" class="boton suave" id="qz-music"><span data-icono="nota"></span><span>${escape(t('mq_button'))}</span></button>` : ''}</div>
             <div class="qz-opciones">
                 <div><p class="ante">${escape(t('qz_points'))}</p><div class="segmentos" id="qz-mode">${['calm', 'fast'].map((m) => `<button type="button" role="radio" data-v="${m}">${escape(t('qz_mode_' + m))}</button>`).join('')}</div>
@@ -350,9 +350,9 @@
     // ---------------------------------------------------------------------------------------------------
     // From the Moodle question bank: a category, its questions with a tick each, added to the set
     // ---------------------------------------------------------------------------------------------------
-    const bank = (action, extra = {}) => fetch(AULA.bankurl, { method: 'POST', credentials: 'same-origin',
-        body: new URLSearchParams({ courseid: AULA.courseid, sesskey: AULA.sesskey, action, ...extra }) })
-        .then((r) => r.json()).then((j) => { if (!j || j.error || j.errorcode) { throw new Error((j && (j.errorcode || j.error)) || 'error'); } return j; });
+    // The web services bank_categories and bank_questions (whose answer is a JSON document).
+    const bank = (action, extra = {}) => (action === 'categories' ? core.call : core.callJson)('bank_' + action,
+        { courseid: AULA.courseid, ...extra });
     function bankDialog() {
         openDialog(`<form method="dialog" class="qz-banco"><h2>${escape(t('qz_bank_title'))}</h2><p class="nota" id="qz-b-msg">${escape(t('qz_bank_loading'))}</p>
             <label class="campo apilado"><span>${escape(t('qz_bank_category'))}</span><select id="qz-b-cat" disabled></select></label>

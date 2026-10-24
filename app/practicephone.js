@@ -33,7 +33,7 @@
     const site = (top && top.CLASSTOOLS_SITE) || {}, all = Object.assign({}, (top && top.CLASSTOOLS_STR) || {}, site.str || {}), str = {};
     Object.keys(all).forEach((k) => { if (/^(lv|rm)_/.test(k)) { str[k] = all[k]; } });
     if (top) { document.documentElement.lang = top.document.documentElement.lang; }
-    window.CLASSTOOLS_REMOTE = { k: 'practica', api: 'mandoapi.php', site: '', str };
+    window.CLASSTOOLS_REMOTE = { k: 'practica', ajax: 'practice://nologin', site: '', str };
     // Nothing kept: the class chosen on this phone stays in memory.
     const kept = {};
     try {
@@ -43,13 +43,16 @@
     } catch (e) { /* the phone may remember its class: only on this computer */ }
     const json = (data) => Promise.resolve(new Response(JSON.stringify(data), { headers: { 'Content-Type': 'application/json' } }));
     const real = window.fetch.bind(window);
+    // The web services of the phone (mando.js), answered by the practice board by name.
     window.fetch = (url, opts) => {
-        if (!/mandoapi\.php/.test(String(url))) { return real(url, opts); }
-        const body = new URLSearchParams(opts && opts.body ? String(opts.body) : '');
-        const m = board() && board().mando;
-        if (!m) { return json({ boards: [] }); }
-        if (body.get('action') === 'command') { return json(m.command(body.get('cmd'))); }
-        if (body.get('action') === 'courses') { return json(m.courses()); }
-        return json(m.state());
+        if (!String(url).startsWith('practice://nologin')) { return real(url, opts); }
+        let call = {};
+        try { [call] = JSON.parse(String(opts && opts.body)); } catch (e) { call = {}; }
+        const name = String(call.methodname || ''), args = call.args || {}, m = board() && board().mando;
+        let data;
+        if (name.endsWith('_phone_command')) { data = m ? m.command(args.cmd) : { off: true }; }
+        else if (name.endsWith('_phone_courses')) { data = m ? m.courses() : { off: true }; }
+        else { data = { json: JSON.stringify(m ? m.state() : { boards: [] }) }; }
+        return json([{ error: false, data }]);
     };
 })();

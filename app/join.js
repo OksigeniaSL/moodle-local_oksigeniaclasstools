@@ -85,11 +85,25 @@
             try { localStorage.setItem('classtools-device', device); } catch (e) { /* only for this visit */ }
         }
     }
-    const post = (action, extra = {}) => fetch(J.api, {
-        method: 'POST',
-        credentials: J.identity === 'anon' ? 'omit' : 'same-origin',
-        body: new URLSearchParams({ action, c: J.code, device, sesskey: J.sesskey || '', ...extra }),
-    }).then((r) => r.json());
+    // The web services live_device (with the code only, without a Moodle session: service-nologin.php) and
+    // live_member (with the account): what the device does, and the session as it sees it, a JSON document. Moodle's
+    // errors come back as { error, errorcode }, the way apply() takes them.
+    const post = (action, extra = {}) => {
+        const anon = J.identity === 'anon', methodname = 'local_oksigeniaclasstools_' + (anon ? 'live_device' : 'live_member');
+        const args = { code: J.code, action, ...extra };
+        if (anon) { args.device = device; }
+        ['team', 'slot'].forEach((k) => { if (k in args) { args[k] = Number(args[k]) || 0; } });
+        const url = `${J.ajax}?${anon ? '' : `sesskey=${encodeURIComponent(J.sesskey || '')}&`}info=${methodname}`;
+        return fetch(url, {
+            method: 'POST', credentials: anon ? 'omit' : 'same-origin', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify([{ index: 0, methodname, args }]),
+        }).then((r) => r.json()).then((res) => {
+            const one = Array.isArray(res) ? res[0] : res;
+            if (one && one.error === false) { return JSON.parse(one.data.json); }
+            const ex = (one && one.exception) || {};
+            return { error: true, errorcode: ex.errorcode || '', message: ex.message || '' };
+        });
+    };
 
     let view = null, shown = '', failures = 0, timer = 0, team = 0;
     // A vote with a time limit: the seconds left, counted here between the questions to the site.
@@ -246,7 +260,7 @@
             if (draft.feel === '' && !texts.some(Boolean)) { document.getElementById('jn-ex-empty').hidden = false; return; }
             buzz();
             const b = e.currentTarget.querySelector('button[type="submit"]'); b.disabled = true;
-            post('ticket', { feel: v.feel ? draft.feel : '', texts: JSON.stringify(texts) })
+            post('ticket', { feel: v.feel ? draft.feel : '', texts })
                 .then((r) => { editing = false; shown = ''; apply(r); })
                 .catch(() => { b.disabled = false; });
         });

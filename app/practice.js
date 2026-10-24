@@ -86,9 +86,10 @@
             { id: 'g3', name: STR.hp_practice_half_b || 'B', students: half(1) },
         ],
         me: { n: 'Marta Ibáñez', i: 1 }, state: {},
-        pickurl: 'pick.php', stateurl: 'state.php', groupsurl: null, boardurl: null, liveurl: 'livehost.php',
-        remoteurl: 'remote.php', remote: { on: false }, logrosurl: null, logros: null,
-        bankurl: 'quizbank.php', glossaryurl: 'glossary.php', aiurl: null, quizimgurl: 'quizimage.php', quizimg: '',
+        // Its «Moodle» is the fake below: the web services it answers, by name.
+        ajax: 'practice://service', remote: { on: false }, logros: null, quizimg: '',
+        services: { pick: true, state: true, groups: false, board: false, live: true, remote: true, logros: false, sala: false,
+            bank: true, quizimage: false, glossary: true, ai: false, presentation: false, tally: false },
     };
 
     // --- A live session that plays itself -----------------------------------------------------------------------
@@ -240,7 +241,7 @@
         if (action === 'rotate') { rm.n++; rm.phone = false; }
         if (action === 'poll') {
             rm.tool = body.get('tool') || '';
-            rm.tools = (body.get('tools') || '').split(';').filter(Boolean).map((x) => x.split('|'));
+            rm.tools = parse(body.get('tools') || '[]', []).map((x) => [x.id, x.name]);
             try { rm.here = JSON.parse(body.get('here') || '[]'); } catch (e) { rm.here = []; }
             return { on: rm.on, seq: rm.seq, cmds: rm.cmds.slice(-10), phone: rm.phone };
         }
@@ -282,18 +283,34 @@
         }
         return view();
     };
+    // The web services the board calls (app.js, callMoodle), answered here by name: what a call brings, as the
+    // parameters of a form (booleans as 1 or 0, lists as JSON), for host() and remote().
+    const asForm = (action, args) => new URLSearchParams(Object.assign({ action }, Object.fromEntries(Object.entries(args).map(([k, v]) => [k,
+        typeof v === 'boolean' ? (v ? '1' : '0') : (v && typeof v === 'object' ? JSON.stringify(v) : String(v))]))));
+    const answer = (name, args) => {
+        if (name === 'live_start') { return { json: host(asForm('start', args)) }; }
+        if (name === 'live_state') { return { json: host(asForm('state', args)) }; }
+        if (name === 'live_control') { return { json: host(asForm(args.action, args)) }; }
+        if (name === 'remote_poll') { return { json: remote(asForm('poll', args)) }; }
+        if (name === 'remote_enable') { return remote(asForm(args.on ? 'on' : 'off', args)); }
+        if (name === 'remote_rotate') { return remote(asForm('rotate', args)); }
+        if (name === 'remote_status') { return remote(asForm('status', args)); }
+        // Words, questions and pictures of the course: none in a practice class.
+        if (name === 'bank_categories') { return { categories: [] }; }
+        if (name === 'bank_pairs') { return { json: { pairs: [], skipped: 0 } }; }
+        if (name === 'bank_questions') { return { json: { questions: [], skipped: 0 } }; }
+        if (name === 'glossary_list') { return { ok: true, glossaries: [] }; }
+        if (name === 'glossary_words') { return { ok: true, words: [] }; }
+        // Anything else that would reach Moodle (picks, kept tools…): accepted and forgotten.
+        return { ok: true };
+    };
     const real = window.fetch.bind(window);
     window.fetch = (url, opts) => {
-        const u = String(url);
-        const body = new URLSearchParams(opts && opts.body && typeof opts.body !== 'object' ? String(opts.body)
-            : (opts && opts.body instanceof URLSearchParams ? opts.body.toString() : ''));
-        if (/livehost\.php/.test(u)) { return json(host(body)); }
-        if (/remote\.php/.test(u)) { return json(remote(body)); }
-        // Words, questions and pictures of the course: none in a practice class.
-        if (/(quizbank|glossary)\.php/.test(u)) { return json({ ok: true, questions: [], words: [], items: [] }); }
-        // Anything else that would reach Moodle (picks, kept tools…): accepted and forgotten.
-        if (/\.php(\?|$)/.test(u)) { return json({ ok: true }); }
-        return real(url, opts);
+        if (!String(url).startsWith('practice://service')) { return real(url, opts); }
+        const [call] = parse(String(opts && opts.body), [{}]);
+        const name = String(call.methodname || '').replace(/^local_oksigeniaclasstools_/, ''), data = answer(name, call.args || {});
+        if ('json' in data) { data.json = JSON.stringify(data.json); }
+        return json([{ error: false, data }]);
     };
     // For a help, and for the practice phone of a help about the remote: the session as it goes, and the phone's part.
     window.CLASSTOOLS_PRACTICE = {
@@ -301,7 +318,7 @@
         remoteView: () => ({ kind: 'remote', code: 'K7Q2', identity: 'moodle', joined: st.joined, ended: !st.started || st.kind !== 'remote' }),
         remoteJoin: () => { if (st.started && st.kind === 'remote') { st.joined = true; } },
         remoteCommand: (cmd) => { if (st.joined) { st.seq++; st.cmds.push({ seq: st.seq, cmd }); } },
-        // For the fixed remote's page beside the board, as mandoapi.php would answer it. Going to another class is
+        // For the fixed remote's page beside the board, as phone_* would answer it. Going to another class is
         // not done (it would take the practice board to a real course).
         mando: {
             state: () => {

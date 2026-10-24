@@ -58,12 +58,13 @@ final class lib_test extends \advanced_testcase {
         $this->assertSame([get_string('wholeclass', 'local_oksigeniaclasstools')], $this->list_names($data));
         $this->assertCount(3, $data['lists'][0]['students']);
         $this->assertSame((int) $course->id, $data['courseid']);
-        $this->assertNotEmpty($data['pickurl']);
-        $this->assertNotEmpty($data['groupsurl']);
+        $this->assertStringEndsWith('/lib/ajax/service.php', $data['ajax']);
+        $this->assertTrue($data['services']['pick']);
+        $this->assertTrue($data['services']['groups']);
         // The teacher, to join the lists when they play too; and sharing boards, for who can add content.
         $this->assertSame((int) $teacher->id, $data['me']['i']);
         $this->assertNotEmpty($data['me']['n']);
-        $this->assertNotEmpty($data['boardurl']);
+        $this->assertTrue($data['services']['board']);
     }
 
     public function test_lists_per_group_and_cohort(): void {

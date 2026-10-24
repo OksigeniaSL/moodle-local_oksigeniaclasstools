@@ -93,6 +93,9 @@ group and a cohort with the same students appear once. Separate groups mode is r
   admins can add it as a custom menu item (`/local/oksigeniaclasstools/index.php`). Moodle 4.1 and 4.2 cannot hold
   the plugin's table names, which are longer than 28 characters.
 - PHP as required by your Moodle.
+- Moodle's AJAX service, as it comes: the board talks to Moodle through its own web services (`db/services.php`).
+  The devices that join a live session with only the code, and the phone of the fixed remote, use
+  `lib/ajax/service-nologin.php`, with no Moodle session; nothing else is needed for them.
 - Any theme. A modern browser.
 
 ## Install

@@ -97,6 +97,9 @@ entero. Un grupo y una cohorte con los mismos alumnos aparecen una sola vez. Se 
   (`/local/oksigeniaclasstools/index.php`). Moodle 4.1 y 4.2 no admiten los nombres de tabla del plugin, que pasan
   de 28 caracteres.
 - PHP, el que pida la versión de Moodle.
+- El servicio AJAX de Moodle, tal como viene: la pizarra habla con Moodle con sus propios servicios web
+  (`db/services.php`). Los dispositivos que entran en una sesión en vivo solo con el código, y el móvil del mando fijo,
+  usan `lib/ajax/service-nologin.php`, sin sesión de Moodle; no hace falta nada más para ellos.
 - Cualquier tema. Un navegador moderno.
 
 ## Instalación

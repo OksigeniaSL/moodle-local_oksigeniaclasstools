@@ -252,18 +252,23 @@
 
     // --- The fixed remote --------------------------------------------------------------------------------------
     // Not in a copy of a duel (duel.js): only the board itself takes the phone's orders.
-    if (!AULA || !AULA.remoteurl || AULA.mode !== 'teacher' || core.duelo) { window.ClasstoolsRemote = { run }; return; }
+    if (!AULA || !core.has('remote') || AULA.mode !== 'teacher' || core.duelo) { window.ClasstoolsRemote = { run }; return; }
     let status = Object.assign({ on: false }, AULA.remote || {}), seq = -1, timer = 0, phone = false, panel = null;
-    const call = (action, extra = {}) => fetch(AULA.remoteurl, { method: 'POST', credentials: 'same-origin',
-        body: new URLSearchParams({ courseid: AULA.courseid, sesskey: AULA.sesskey, action, ...extra }) })
-        .then((r) => r.json()).then((j) => { if (!j || j.error || j.errorcode) { throw new Error('remote'); } return j; });
+    // The web services of the fixed remote: remote_poll (its answer, a JSON document), remote_enable, remote_rotate
+    // and remote_status.
+    const call = (action, extra = {}) => {
+        const args = { courseid: AULA.courseid, ...extra };
+        if (action === 'poll') { return core.callJson('remote_poll', args); }
+        if (action === 'on' || action === 'off') { return core.call('remote_enable', { ...args, on: action === 'on' }); }
+        return core.call(action === 'rotate' ? 'remote_rotate' : 'remote_status', args);
+    };
     // The tools of the board, with their names, for the phone to go to them.
     const tools = () => core.tabs().map((id) => {
         // The label of the tab (the timer's tab also carries its countdown, which would change every second).
         const b = document.querySelector(`[data-h="${id}"]`), label = b && (b.querySelector('[data-t]') || b);
         const name = b ? (b.getAttribute('aria-label') || label.textContent || '').trim() : '';
-        return `${id}|${name.replace(/[|;]/g, ' ').slice(0, 40)}`;
-    }).filter((x) => !x.endsWith('|')).join(';');
+        return { id, name: name.slice(0, 40) };
+    }).filter((x) => x.name);
     const poll = () => {
         clearTimeout(timer);
         if (!status.on) { return; }

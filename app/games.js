@@ -170,13 +170,13 @@
     // The glossaries of the course (inside Moodle) as a source of words: the list is asked once, and the words of a
     // glossary when it is chosen. Each word comes with a clue from its definition.
     const AULA = core.moodle;
-    const glossaryCall = (action, extra = {}) => fetch(AULA.glossaryurl, { method: 'POST', credentials: 'same-origin',
-        body: new URLSearchParams({ courseid: AULA.courseid, sesskey: AULA.sesskey, action, ...extra }) })
-        .then((r) => r.json()).then((j) => { if (!j || !j.ok) { throw new Error((j && (j.errorcode || j.error)) || 'error'); } return j; });
+    // The web services glossary_list and glossary_words.
+    const glossaryCall = (action, extra = {}) => core.call('glossary_' + action, { courseid: AULA.courseid, ...extra })
+        .then((j) => { if (!j || !j.ok) { throw new Error('error'); } return j; });
     let glossaries = null;
     const glossaryWords = {};
     const askGlossaries = () => {
-        if (glossaries || !AULA || !AULA.glossaryurl) { return; }
+        if (glossaries || !AULA || !core.has('glossary')) { return; }
         glossaries = [];
         glossaryCall('list').then((j) => {
             glossaries = j.glossaries || [];

@@ -29,7 +29,7 @@
     const root = document.getElementById('h-envivo');
     const AULA = core && core.moodle;
     if (!core || !root) { return; }
-    const LIVE = !!(AULA && AULA.liveurl);   // sessions with devices; without them, only the show of hands
+    const LIVE = !!(AULA && core.has('live'));   // sessions with devices; without them, only the show of hands
     const { $, $$, t, escape, save, load, play, announce, setIcon, relabel, repeatWhileHeld } = core;
 
     const COLOURS = {
@@ -225,12 +225,16 @@
     // Talking to Moodle
     // ---------------------------------------------------------------------------------------------------
     let S = null, timer = 0, failures = 0, seq = 0, question = '';
+    // The web services of a session: live_start, live_state, and live_control for everything else the teacher does
+    // (open, close, end, kick…). Their answer, the session as the board sees it, is a JSON document.
+    const INTS = ['max', 'secs', 'correct', 'since', 'top'], BOOLS = ['show', 'feel', 'pick', 'devtext'];
+    const typed = (extra) => Object.fromEntries(Object.entries(extra).map(([k, v]) => [k,
+        INTS.includes(k) ? Number(v) || 0 : BOOLS.includes(k) ? v === true || Number(v) === 1 : String(v)]));
     const call = (action, extra = {}) => {
-        const body = new URLSearchParams({ courseid: AULA.courseid, sesskey: AULA.sesskey, action, ...extra });
-        if (S && action !== 'start') { body.set('id', S.id); }
-        return fetch(AULA.liveurl, { method: 'POST', body, credentials: 'same-origin' })
-            .then((r) => r.json())
-            .then((j) => { if (!j || j.error || j.errorcode) { throw new Error((j && (j.errorcode || j.error)) || 'error'); } return j; });
+        const args = { courseid: AULA.courseid, ...typed(extra) };
+        if (action === 'start') { return core.callJson('live_start', args); }
+        if (S) { args.id = S.id; }
+        return action === 'state' ? core.callJson('live_state', args) : core.callJson('live_control', { ...args, action });
     };
     const visible = () => !root.hidden;
     // One question at a time: every second and a half while it is on screen (always, for a remote); otherwise just

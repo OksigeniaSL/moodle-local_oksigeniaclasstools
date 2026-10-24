@@ -94,9 +94,10 @@ function local_oksigeniaclasstools_student_data(stdClass $course, context_course
         'courseid' => (int) $course->id,
         'mode' => 'student',
         'tools' => LOCAL_OKSIGENIACLASSTOOLS_STUDENT_TOOLS,
-        // Where the board sends what it has been used for, as on a teacher's board.
+        // Moodle's AJAX service, for the board to send what it has been used for, as on a teacher's board.
         'sesskey' => sesskey(),
-        'tallyurl' => (new moodle_url('/local/oksigeniaclasstools/tally.php'))->out(false),
+        'ajax' => (new moodle_url('/lib/ajax/service.php'))->out(false),
+        'services' => ['tally' => true],
     ];
 }
 
@@ -317,6 +318,7 @@ function local_oksigeniaclasstools_data(stdClass $course, context_course $contex
 
     // What this teacher keeps of each tool in this course.
     $state = \local_oksigeniaclasstools\local\kept::all($course->id, $USER->id);
+    $live = get_config('local_oksigeniaclasstools', 'live') !== '0';
 
     return [
         'course' => format_string($course->fullname, true, ['context' => $context, 'escape' => false]),
@@ -327,27 +329,39 @@ function local_oksigeniaclasstools_data(stdClass $course, context_course $contex
         'me' => $me,
         'sesskey' => sesskey(),
         'days' => $days,
-        'pickurl' => (new moodle_url('/local/oksigeniaclasstools/pick.php'))->out(false),
         'state' => (object) $state,
-        'stateurl' => (new moodle_url('/local/oksigeniaclasstools/state.php'))->out(false),
-        'groupsurl' => has_capability('moodle/course:managegroups', $context)
-            ? (new moodle_url('/local/oksigeniaclasstools/savegroups.php'))->out(false) : null,
-        // Sharing a board saves it in the course: only for who can add content to it.
-        'boardurl' => has_capability('moodle/course:manageactivities', $context)
-            ? (new moodle_url('/local/oksigeniaclasstools/board.php'))->out(false) : null,
-        // Live sessions (votes, buzzers, the phone as a remote), unless the site turns them off.
-        'liveurl' => get_config('local_oksigeniaclasstools', 'live') !== '0'
-            ? (new moodle_url('/local/oksigeniaclasstools/livehost.php'))->out(false) : null,
-        // The teacher's fixed remote (with live sessions): where the board asks for its orders, and whether it is on.
-        'remoteurl' => get_config('local_oksigeniaclasstools', 'live') !== '0'
-            ? (new moodle_url('/local/oksigeniaclasstools/remote.php'))->out(false) : null,
+        // Moodle's AJAX service, for the web services of the board (db/services.php), and which of them this teacher
+        // has here: what the site turns off, or what they may not do in this course, is false.
+        'ajax' => (new moodle_url('/lib/ajax/service.php'))->out(false),
+        'services' => [
+            // The turns of fair picking, and what the teacher keeps of each tool.
+            'pick' => true,
+            'state' => true,
+            // Saving teams as course groups.
+            'groups' => has_capability('moodle/course:managegroups', $context),
+            // Sharing a board saves it in the course: only for who can add content to it.
+            'board' => has_capability('moodle/course:manageactivities', $context),
+            // Live sessions (votes, buzzers, the phone as a remote) and the fixed remote, unless the site turns them off.
+            'live' => $live,
+            'remote' => $live,
+            // The teacher's stickers, and the teachers' room, a tap away from the board.
+            'logros' => \local_oksigeniaclasstools\local\logros::on(),
+            'sala' => \local_oksigeniaclasstools\local\sala::on(),
+            // Questions of the question bank, the pictures of quiz questions, and words from the glossaries of the
+            // course.
+            'bank' => true,
+            'quizimage' => true,
+            'glossary' => true,
+            // The AI of the site writing exercises, when there is one and the teacher can use it.
+            'ai' => \local_oksigeniaclasstools\local\ai::available($context),
+            // Where a Canva short link leads, for the presentation tab (only while the site shows it).
+            'presentation' => \local_oksigeniaclasstools\local\presentation::on(),
+            // What the board has been used for (tools, games and materials, and for how long).
+            'tally' => true,
+        ],
+        // Whether the teacher's fixed remote is on, and its address.
         'remote' => \local_oksigeniaclasstools\local\remote::status((int) $USER->id),
-        // The teacher's stickers: where real uses go, what makes a use real, and the level of each sticker now.
-        'logrosurl' => \local_oksigeniaclasstools\local\logros::on()
-            ? (new moodle_url('/local/oksigeniaclasstools/logros.php'))->out(false) : null,
-        // The teachers' room, a tap away from the board.
-        'salaurl' => \local_oksigeniaclasstools\local\sala::on()
-            ? (new moodle_url('/local/oksigeniaclasstools/sala.php'))->out(false) : null,
+        // What makes a use real, and the level of each sticker now.
         'logros' => \local_oksigeniaclasstools\local\logros::on() ? [
             'thr' => \local_oksigeniaclasstools\local\logros::thresholds(),
             'learned' => \local_oksigeniaclasstools\local\logros::learned((int) $USER->id),
@@ -356,21 +370,8 @@ function local_oksigeniaclasstools_data(stdClass $course, context_course $contex
                 \local_oksigeniaclasstools\local\logros::days((int) $USER->id)
             ),
         ] : null,
-        // Questions of the Moodle question bank for a quiz (multiple choice with one answer, true/false).
-        'bankurl' => (new moodle_url('/local/oksigeniaclasstools/quizbank.php'))->out(false),
-        // Words from the glossaries of the course for the word games (concept and a clue from its definition).
-        'glossaryurl' => (new moodle_url('/local/oksigeniaclasstools/glossary.php'))->out(false),
-        // The AI of the site writing exercises, when there is one and the teacher can use it.
-        'aiurl' => \local_oksigeniaclasstools\local\ai::available($context)
-            ? (new moodle_url('/local/oksigeniaclasstools/ai.php'))->out(false) : null,
-        // The pictures of the quiz questions: where they are sent, and where the teacher's are served from.
-        'quizimgurl' => (new moodle_url('/local/oksigeniaclasstools/quizimage.php'))->out(false),
+        // Where the teacher's pictures of quiz questions are served from.
         'quizimg' => \local_oksigeniaclasstools\local\quizimages::base($context, (int) $USER->id),
-        // Where a Canva short link leads, for the presentation tab (only while the site shows it).
-        'presentationurl' => \local_oksigeniaclasstools\local\presentation::on()
-            ? (new moodle_url('/local/oksigeniaclasstools/presentation.php'))->out(false) : null,
-        // Where the board sends what it has been used for (tools, games and materials, and for how long).
-        'tallyurl' => (new moodle_url('/local/oksigeniaclasstools/tally.php'))->out(false),
     ];
 }
 
@@ -597,8 +598,8 @@ function local_oksigeniaclasstools_choose(array $courses): array {
             return $card;
         }, $cards),
         'continue' => $last ? ['url' => $last['url'], 'name' => $last['name'], 'image' => $last['image']] : null,
-        // Hiding a course from here, and how many are hidden.
-        'hideurl' => (new moodle_url('/local/oksigeniaclasstools/hide.php'))->out(false),
+        // Hiding a course from here (a web service, through Moodle's AJAX service), and how many are hidden.
+        'ajax' => (new moodle_url('/lib/ajax/service.php'))->out(false),
         'sesskey' => sesskey(),
         'hiddencount' => count(array_filter(array_column($cards, 'hidden'))),
         'standalone' => (new moodle_url('/local/oksigeniaclasstools/index.php', ['standalone' => 1]))->out(false),
@@ -613,7 +614,7 @@ function local_oksigeniaclasstools_choose(array $courses): array {
  * play, and the teachers in it (name, critter seed and stickers with their level) for the page to draw.
  *
  * @param int $userid
- * @return array|null joined, count, span, others, json, url, sesskey; null when the room is off.
+ * @return array|null joined, count, span, others, json, ajax, sesskey; null when the room is off.
  */
 function local_oksigeniaclasstools_sala(int $userid): ?array {
     if (!\local_oksigeniaclasstools\local\sala::on()) {
@@ -626,7 +627,7 @@ function local_oksigeniaclasstools_sala(int $userid): ?array {
         'span' => $view['span'],
         'others' => $view['others'],
         'json' => json_encode(['teachers' => $view['teachers'], 'str' => $view['str']], JSON_UNESCAPED_UNICODE),
-        'url' => (new moodle_url('/local/oksigeniaclasstools/sala.php'))->out(false),
+        'ajax' => (new moodle_url('/lib/ajax/service.php'))->out(false),
         'sesskey' => sesskey(),
     ];
 }
@@ -830,7 +831,8 @@ function local_oksigeniaclasstools_join_output(?stdClass $live, string $code): v
         'found' => (bool) $live,
         'kind' => $live ? $live->kind : '',
         'identity' => $live ? $live->identity : '',
-        'api' => (new moodle_url('/local/oksigeniaclasstools/' . ($moodle ? 'joinapi.php' : 'joinanon.php')))->out(false),
+        // Moodle's AJAX service: with their account, with the session; with the code only, without any.
+        'ajax' => (new moodle_url('/lib/ajax/' . ($moodle ? 'service.php' : 'service-nologin.php')))->out(false),
         'sesskey' => $moodle ? sesskey() : '',
         'page' => (new moodle_url('/local/oksigeniaclasstools/join.php'))->out(false),
         'site' => format_string($SITE->shortname, true, ['context' => context_system::instance(), 'escape' => false]),
@@ -871,7 +873,8 @@ function local_oksigeniaclasstools_remote_output(string $token): void {
     }
     $config = [
         'k' => $token,
-        'api' => (new moodle_url('/local/oksigeniaclasstools/mandoapi.php'))->out(false),
+        // Moodle's AJAX service without a session: the key of the remote is what the phone brings.
+        'ajax' => (new moodle_url('/lib/ajax/service-nologin.php'))->out(false),
         'site' => format_string($SITE->shortname, true, ['context' => context_system::instance(), 'escape' => false]),
         'str' => (object) $str,
     ];

@@ -902,15 +902,29 @@
         a.querySelector('button').addEventListener('click', () => location.reload());
         document.body.append(a);
     };
-    // What goes to Moodle: the turn of each pick, and the teams the teacher wants to save as course groups.
-    const toMoodle = (url, fields) => fetch(url, {
-        method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams(Object.assign({ sesskey: MOODLE.sesskey, courseid: MOODLE.courseid }, fields)),
-    }).then((r) => r.json()).then((j) => {
-        if (isNoSession(j)) { warnSession(); }
-        if (!j || !j.ok) { throw new Error((j && (j.error || j.message)) || 'error'); }
-        return j;
-    });
+    // Which web services of the board this teacher has here (lib.php says it: what the site turns off is false).
+    const hasService = (name) => !!(MOODLE && MOODLE.ajax && MOODLE.services && MOODLE.services[name]);
+    // A web service of the board (db/services.php, without its «local_oksigeniaclasstools_»), through Moodle's AJAX
+    // service: the data it answers, or an Error with Moodle's errorcode. Without a session, the board says so.
+    const callMoodle = (name, args = {}, { keepalive = false } = {}) => {
+        if (!MOODLE || !MOODLE.ajax) { return Promise.reject(new Error('nomoodle')); }
+        const methodname = 'local_oksigeniaclasstools_' + name;
+        const url = `${MOODLE.ajax}?sesskey=${encodeURIComponent(MOODLE.sesskey || '')}&info=${methodname}`;
+        return fetch(url, {
+            method: 'POST', credentials: 'same-origin', keepalive, headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify([{ index: 0, methodname, args }]),
+        }).then((r) => r.json()).then((res) => {
+            const one = Array.isArray(res) ? res[0] : res;
+            if (one && one.error === false) { return one.data; }
+            const ex = (one && one.exception) || one || {};
+            if (isNoSession(ex)) { warnSession(); }
+            const error = new Error(ex.message || 'error');
+            error.errorcode = ex.errorcode || '';
+            throw error;
+        });
+    };
+    // A web service whose answer is a JSON document (a live session, the teachers' room…).
+    const callMoodleJson = (name, args, options) => callMoodle(name, args, options).then((d) => JSON.parse(d.json));
     // One more turn for that student in every list they are in (the whole course and their class).
     const addPick = (id) => courseLists.forEach((x) => { Object.keys(x.ids).forEach((n) => { if (x.ids[n] === id) { x.veces[n] = (x.veces[n] || 0) + 1; } }); });
     const allLists = () => courseLists.concat(ownLists);
@@ -1046,7 +1060,7 @@
     $('#q-sinrepetir').checked = qNoRepeat;
     let qFair = load('justo', true) !== false;
     $('#q-justo').checked = qFair;
-    const withPicks = (l) => !!(l && l.aula && MOODLE.pickurl);
+    const withPicks = (l) => !!(l && l.aula && hasService('pick'));
     const pickerList = () => allLists().find((l) => l.id === activeListId) || null;
     // The face above the name (only in the lists from Moodle).
     const paintFace = (l, n) => {
@@ -1140,7 +1154,7 @@
                 const picksToday = (Number(load(dayKey, 0)) || 0) + 1;
                 save(dayKey, picksToday);
                 if (C.logro && C.logros && picksToday >= C.logros.thr.picks) { C.logro('sacanombres'); }
-                toMoodle(MOODLE.pickurl, { userid: l.ids[chosen] }).catch(() => { /* offline: that turn does not count, the pick goes on */ });
+                callMoodle('pick_record', { courseid: MOODLE.courseid, userid: l.ids[chosen] }).catch(() => { /* offline: that turn does not count, the pick goes on */ });
             } else if (l.yo === chosen) { l.veces[chosen] = (l.veces[chosen] || 0) + 1; }   // the teacher: only here
             const reveal = () => {
                 qCovered = null;
@@ -1388,7 +1402,7 @@
                 setTimeout(() => { if (gMade === madeNow) { C.logro('repartequipos'); } }, 120000);
             }
             // Saving them as course groups: only when asked (by default nothing is created).
-            gToSave = lg && lg.aula && MOODLE.groupsurl ? { lista: lg, grupos: groups } : null;
+            gToSave = lg && lg.aula && hasService('groups') ? { lista: lg, grupos: groups } : null;
             $('#g-moodle').hidden = !gToSave; $('#g-moodle').disabled = false;
             $('#g-borrar').hidden = false;
             relabel($('#g-moodle'), t('g_save_course'), 'guardar');
@@ -1577,7 +1591,7 @@
         if (!gToSave) { return; }
         const { list, groups } = gToSave, b = $('#g-moodle');
         b.disabled = true; relabel(b, t('g_saving'));
-        toMoodle(MOODLE.groupsurl, { listname: list.nombre, teams: JSON.stringify(groups.map((g) => g.map((n) => list.ids[n]).filter(Boolean))) })
+        callMoodle('groups_save', { courseid: MOODLE.courseid, listname: list.nombre, teams: groups.map((g) => g.map((n) => list.ids[n]).filter(Boolean)) })
             .then((j) => {
                 relabel(b, t('g_saved'), 'hecho');
                 if (window.ClasstoolsCore.logro) { window.ClasstoolsCore.logro('repartequipos'); }
@@ -2010,18 +2024,17 @@
     // It is sent after a short wait so as not to send every tap, and what is pending goes out when the page closes.
     const pending = {}, sendTimers = {};
     const send = (tool, keepalive) => {
-        if (!MOODLE || !MOODLE.stateurl || !(tool in pending)) { return Promise.resolve(); }
+        if (!hasService('state') || !(tool in pending)) { return Promise.resolve(); }
         const payload = pending[tool]; delete pending[tool];
-        return fetch(MOODLE.stateurl, {
-            method: 'POST', credentials: 'same-origin', keepalive: !!keepalive, headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: new URLSearchParams({ sesskey: MOODLE.sesskey, courseid: MOODLE.courseid, tool, data: JSON.stringify(payload) }),
-        }).then((r) => r.json()).then((j) => {
-            // No session: it stays pending (it goes out as soon as they log in again) and the board says so.
-            if (isNoSession(j)) { if (!(tool in pending)) { pending[tool] = payload; } warnSession(); }
-        }).catch(() => { /* offline: it stays in the browser */ });
+        return callMoodle('state_save', { courseid: MOODLE.courseid, tool, data: JSON.stringify(payload) }, { keepalive: !!keepalive })
+            .catch((e) => {
+                // No session: it stays pending (it goes out as soon as they log in again) and the board has said so.
+                if (NO_SESSION_ERRORS.includes(e.errorcode) && !(tool in pending)) { pending[tool] = payload; }
+                // Offline: it stays in the browser.
+            });
     };
     const keepInMoodle = (tool, payload) => {
-        if (!MOODLE || !MOODLE.stateurl || DUEL || PRACTICE) { return; }
+        if (!hasService('state') || DUEL || PRACTICE) { return; }
         pending[tool] = payload;
         clearTimeout(sendTimers[tool]);
         sendTimers[tool] = setTimeout(() => send(tool), 1200);
@@ -2042,7 +2055,7 @@
         lastPickedOutside = chosen;
         if (withPicks(l) && l.ids[chosen]) {
             addPick(l.ids[chosen]);
-            toMoodle(MOODLE.pickurl, { userid: l.ids[chosen] }).catch(() => { /* offline: that turn does not count */ });
+            callMoodle('pick_record', { courseid: MOODLE.courseid, userid: l.ids[chosen] }).catch(() => { /* offline: that turn does not count */ });
         }
         return { name: chosen, list: l };
     };
@@ -2114,7 +2127,10 @@
         play: playSound, sounds: SOUNDS, bell, click: clickSound, announce, icon: icono, setIcon,
         relabel, repeatWhileHeld, register: (tool, def) => { TOOLS[tool] = def; }, show: showTool,
         lists: allLists, present: presentIn, face: faceHtml, initials: initialsOf, preload: preloadPhotos, activeList: pickerList, duelo: DUEL, practica: PRACTICE,
-        moodle: MOODLE, toMoodle, lastGroups: () => gMade, openBig: openBigView, closeBig: closeBigView,
+        moodle: MOODLE, lastGroups: () => gMade, openBig: openBigView, closeBig: closeBigView,
+        has: hasService,       // has(name): whether this teacher has that web service of the board here
+        call: callMoodle,      // call(name, args, {keepalive}) → the data of the web service, or an Error with errorcode
+        callJson: callMoodleJson,   // the same, for a web service whose answer is a JSON document
         newList: () => openEditor(null), editList: (id) => openEditor(id),
         kept: (tool) => (MOODLE && MOODLE.state && MOODLE.state[tool]) || null, keep: keepInMoodle,
         audioContext: () => audio(), soundOn: () => soundOn, output: () => masterGain,

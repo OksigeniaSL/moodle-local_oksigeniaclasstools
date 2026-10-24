@@ -59,7 +59,7 @@
     const OPUS = (() => { try { return !!new Audio().canPlayType('audio/ogg; codecs=opus'); } catch (e) { return false; } })();
     const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
     const AULA = core.moodle;
-    const stickers = () => !!(AULA && AULA.mode === 'teacher' && AULA.logrosurl && AULA.logros && window.ClasstoolsLogros);
+    const stickers = () => !!(AULA && AULA.mode === 'teacher' && core.has('logros') && AULA.logros && window.ClasstoolsLogros);
 
     // --- Loading the steps ---------------------------------------------------------------------------------------
     let loading = null;
@@ -360,9 +360,8 @@
     }
     const learn = (cromo) => {
         if (!stickers()) { return Promise.resolve(); }
-        return fetch(AULA.logrosurl, { method: 'POST', credentials: 'same-origin',
-            body: new URLSearchParams({ courseid: AULA.courseid, sesskey: AULA.sesskey, cromo, action: 'learn' }) })
-            .then((r) => r.json()).then((j) => {
+        return core.call('logros_learn', { courseid: AULA.courseid, cromo })
+            .then((j) => {
                 if (j && j.learned) {
                     const L = AULA.logros;
                     L.learned = (L.learned || []).concat(cromo);

@@ -214,9 +214,8 @@
     const follow = (text) => {
         const button = $('#pr-abrir');
         button.disabled = true;
-        fetch(AULA.presentationurl, { method: 'POST', credentials: 'same-origin',
-            body: new URLSearchParams({ sesskey: AULA.sesskey, courseid: AULA.courseid, url: text.trim() }) })
-            .then((r) => r.json()).then((j) => { if (j && j.ok && j.id) { add(j); } else { showError(STR.shortFail); } })
+        core.callJson('presentation_resolve', { courseid: AULA.courseid, url: text.trim() })
+            .then((j) => { if (j && j.ok && j.id) { add(j); } else { showError(STR.shortFail); } })
             .catch(() => showError(STR.shortFail))
             .finally(() => { button.disabled = false; });
     };
@@ -224,7 +223,7 @@
         const text = $('#pr-enlace').value.trim(), d = parse(text);
         if (d) { add(d); return; }
         if (!SHORT.test(text)) { showError(STR.bad); return; }
-        if (AULA && AULA.presentationurl) { follow(text); } else { showError(STR.short); }
+        if (AULA && core.has('presentation')) { follow(text); } else { showError(STR.short); }
     });
     $('#pr-enlace').addEventListener('keydown', (e) => { if (e.key === 'Enter') { $('#pr-abrir').click(); } });
     $('#pr-nombre').addEventListener('keydown', (e) => { if (e.key === 'Enter') { $('#pr-abrir').click(); } });

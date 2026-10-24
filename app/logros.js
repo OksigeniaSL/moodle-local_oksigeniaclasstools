@@ -52,7 +52,7 @@
     if (!core) { return; }
     const AULA = core.moodle;
     // Not from a copy of a duel (duel.js): the board itself counts.
-    const L = !core.duelo && AULA && AULA.mode === 'teacher' && AULA.logrosurl && AULA.logros ? AULA.logros : null;
+    const L = !core.duelo && AULA && AULA.mode === 'teacher' && core.has('logros') && AULA.logros ? AULA.logros : null;
     const thr = Object.assign({ devices: 5, picks: 5, students: 8 }, (L && L.thr) || {});
     const sent = {};
     const today = () => { const d = new Date(); return `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}`; };
@@ -86,13 +86,14 @@
         const key = `logro-${cromo}-${AULA.courseid}-${today()}`;
         sent[cromo] = true;
         if (core.load && core.load(key, false)) { return; }
-        fetch(AULA.logrosurl, { method: 'POST', credentials: 'same-origin',
-            body: new URLSearchParams({ courseid: AULA.courseid, sesskey: AULA.sesskey, cromo }) })
-            .then((r) => r.json()).then((j) => {
-                if (!j || j.off || j.error || j.errorcode) { return; }
+        core.call('logros_record', { courseid: AULA.courseid, cromo })
+            .then((j) => {
+                if (!j || j.off) { return; }
                 if (core.save) { core.save(key, true); }
                 if (j.up) { show(cromo, j.level); }
-            }).catch(() => { sent[cromo] = false; });
+            })
+            // Offline: it can go again; refused by Moodle, not today.
+            .catch((e) => { if (!e.errorcode) { sent[cromo] = false; } });
     };
     core.logro = logro;
     core.logros = { on: !!L, thr };
