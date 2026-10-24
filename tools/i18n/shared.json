@@ -1,0 +1,42 @@
+{
+ "sh_group": {
+  "en": "From the school",
+  "es": "Del centro"
+ },
+ "sh_option": {
+  "en": "{$a->name} · {$a->author}",
+  "es": "{$a->name} · {$a->author}"
+ },
+ "sh_share": {
+  "en": "Share with the school",
+  "es": "Compartir con el centro"
+ },
+ "sh_unshare": {
+  "en": "Stop sharing with the school",
+  "es": "Dejar de compartir con el centro"
+ },
+ "sh_remove": {
+  "en": "Remove from the school",
+  "es": "Quitar del centro"
+ },
+ "sh_shared": {
+  "en": "Shared with the school: every teacher can use it now.",
+  "es": "Compartido con el centro: ya lo puede usar cualquier profesor."
+ },
+ "sh_unshared": {
+  "en": "It is no longer shared with the school.",
+  "es": "Ya no se comparte con el centro."
+ },
+ "sh_removed": {
+  "en": "Removed from the school.",
+  "es": "Quitado del centro."
+ },
+ "sh_copy": {
+  "en": "From the school, shared by {$a}: what you save is a copy of your own.",
+  "es": "Del centro, lo compartió {$a}: lo que guardes será una copia tuya."
+ },
+ "sh_error": {
+  "en": "It could not be done now. Try again in a moment.",
+  "es": "Ahora no se ha podido. Prueba de nuevo en un momento."
+ }
+}

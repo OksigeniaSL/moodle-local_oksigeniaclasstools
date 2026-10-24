@@ -81,6 +81,7 @@ Las capturas están en inglés. Los alumnos que aparecen no existen: los nombres
 | Semáforo | Solo el nivel del micrófono (no se graba ni se envía nada). Una luz que respira con el ruido, una racha de calma, una reserva de paciencia que solo gasta el ruido sostenido y «Ajustar a esta clase». |
 | Además | Símbolos de trabajo («Así trabajamos») y un código QR con estilos, el logo del sitio en el centro y descarga en PNG o SVG. |
 | Mis logros | Cada herramienta tiene un cromo para el profesor, que se consigue usándola de verdad con una clase y sube de nivel con los días de uso; el álbum está en «¿Con qué clase?». Cada profesor ve solo el suyo, sin clasificaciones, y el administrador lo puede apagar. En la misma página, la **sala de profes**: los compañeros que quieren aparecer, cada uno con su bichito y sus cromos de las últimas semanas (o de la temporada en curso), y cuántos más juegan con sus clases; cada profesor decide si aparece, nunca con recuentos ni horas. |
+| Compartido con el centro | Un profesor comparte con todos los profesores del sitio una lista de clase pegada a mano, una rueda de letras o un candado («Compartir con el centro», en su editor). Los demás lo encuentran en la misma lista que lo suyo, marcado «Del centro» con su autor, y lo usan tal cual o lo copian para cambiarlo. Su autor puede dejar de compartirlo, y un gestor puede quitar cualquiera. |
 | Uso de las pizarras | Para el administrador, en *Informes*: cada herramienta, juego y material, cuántas veces lo eligieron alumnos y profesores y cuánto tiempo, en un curso o en todos, hoy, en los últimos 7 o 30 días o desde el principio. Lo que más gusta a las clases y lo que dejan de lado. |
 | Guía docente | Un botón en la barra de arriba abre la guía de lo que hay en pantalla: para qué sirve, qué trabaja, por qué (con sus fuentes), cómo llevarlo a clase y qué da en cada etapa, en el lateral o ampliada en el centro de la pantalla para leerla cómodamente. Solo la ven los profesores. Algunas herramientas tienen además **ayudas guiadas**: la pizarra enseña cómo se hace en una pizarra de práctica con una clase inventada, con voz y subtítulos, y luego lo hace el profesor («Ahora tú») y se lleva su cromo, «Aprendido». |
 | Modos de la pantalla | Infantil, Primaria, Secundaria o Superior: uno cada vez, por curso. Cambian el aspecto y los valores de partida (notas y colores más grandes para los pequeños, la pizarra completa para los mayores…) y ponen primero lo que va con la etapa; lo demás queda a un toque, en «Otros niveles». «Nombres en mayúsculas», en el mismo menú, pone en mayúsculas los nombres de los alumnos (encendido de serie en Infantil). |
@@ -134,6 +135,7 @@ Después, *Administración del sitio → Notificaciones* para terminar la instal
 | Herramientas, Juegos y Materiales | Todo | Qué herramientas, juegos y materiales aparecen en la pantalla. Los nuevos se añaden a la selección al actualizar el plugin. |
 | Aviso a los alumnos | Activado | Mientras hay una sesión en vivo abierta, sus alumnos ven «Entrar» en las páginas del curso. |
 | Abrir la pantalla a los alumnos | Desactivado | Los alumnos solo tienen las herramientas sin datos de la clase (juegos, material, pizarra, temporizador, reloj, QR): nunca nombres, fotos, sorteos ni grupos, y no se guarda nada suyo. |
+| Compartir con el centro | Activado | Los profesores pueden compartir sus listas pegadas a mano, ruedas de letras y candados con todos los profesores del sitio. Los gestores pueden quitar cualquiera (capacidad `local/oksigeniaclasstools:manageshared`). |
 | Vídeo o guía de ayuda | Página oficial | La dirección que abre el último paso del recorrido de profesores. Vacío: la página oficial de Classtools, con su vídeo, en el idioma de cada profesor. |
 | Enlace en el menú principal | Activado | Dentro de cada curso el enlace está siempre en la barra del curso. |
 | Sala de profes | Activada | En «¿Con qué clase?», los profesores que quieran aparecer, con sus cromos. Cada uno decide (de partida, no). Necesita los cromos encendidos. |
@@ -174,6 +176,9 @@ borran con su curso o su usuario:
 - `local_oksigeniaclasstools_tally`: cuántas veces se eligió cada herramienta, juego y material y cuánto tiempo, por
   curso y día, en las pizarras de los profesores y en las de los alumnos, sin usuario. El administrador lo ve en
   *Administración del sitio → Informes → Uso de las pizarras*. Se borra con su curso.
+- `local_oksigeniaclasstools_shared`: las listas de clase, ruedas de letras y candados que un profesor comparte con el
+  centro, con su autor. Se exportan y se borran con los datos del autor y se borran con el usuario; se quedan aunque se
+  borre un curso.
 
 **Las copias de seguridad del curso** llevan lo que la pizarra guarda del curso: siempre el uso de las pizarras y,
 con usuarios, lo que guarda cada profesor de cada herramienta, los turnos, los usos de los cromos en el curso y las

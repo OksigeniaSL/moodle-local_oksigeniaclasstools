@@ -118,6 +118,12 @@ if ($hassiteconfig) {
             PARAM_URL
         ));
         $settings->add(new admin_setting_configcheckbox(
+            'local_oksigeniaclasstools/shared',
+            get_string('shared', 'local_oksigeniaclasstools'),
+            get_string('shared_desc', 'local_oksigeniaclasstools'),
+            1
+        ));
+        $settings->add(new admin_setting_configcheckbox(
             'local_oksigeniaclasstools/menu',
             get_string('menu', 'local_oksigeniaclasstools'),
             get_string('menu_desc', 'local_oksigeniaclasstools'),

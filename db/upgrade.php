@@ -223,5 +223,23 @@ function xmldb_local_oksigeniaclasstools_upgrade($oldversion) {
         \local_oksigeniaclasstools\local\tour::add_help_step();
         upgrade_plugin_savepoint(true, 2026120102, 'local', 'oksigeniaclasstools');
     }
+    if ($oldversion < 2026120105) {
+        // What teachers share with the whole site: class lists, letter wheels and locks.
+        $table = new xmldb_table('local_oksigeniaclasstools_shared');
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('kind', XMLDB_TYPE_CHAR, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('name', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('data', XMLDB_TYPE_TEXT, null, null, XMLDB_NOTNULL, null, null);
+        $table->add_field('userid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+        $table->add_key('userid', XMLDB_KEY_FOREIGN, ['userid'], 'user', ['id']);
+        $table->add_index('kind-name', XMLDB_INDEX_NOTUNIQUE, ['kind', 'name']);
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+        upgrade_plugin_savepoint(true, 2026120105, 'local', 'oksigeniaclasstools');
+    }
     return true;
 }

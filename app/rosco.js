@@ -57,7 +57,11 @@
     if (kept && Array.isArray(kept.sets) && (!store || (kept.updated || 0) > (store.updated || 0))) { store = kept; }
     if (!store || !Array.isArray(store.sets)) { store = { sets: [] }; }
     const persist = () => { store.updated = Date.now(); save(storeKey, store); core.keep('roscos', store); };
-    const sets = () => [EXAMPLE].concat(store.sets);
+    // Wheels shared with the school by other teachers: played as they are, or copied to be changed. An own wheel the
+    // teacher shared keeps the id of its shared copy (shared).
+    const SH = core.shared && core.shared.on() ? core.shared : null;
+    let sharedSets = [];
+    const sets = () => [EXAMPLE].concat(store.sets, sharedSets);
     const setById = (id) => sets().find((s) => s.id === id) || EXAMPLE;
     const playable = (set) => set.items.filter((it) => it.c && it.a && LETTERS.includes(it.l)).sort((a, b) => LETTERS.indexOf(a.l) - LETTERS.indexOf(b.l));
 
@@ -134,6 +138,7 @@
                     <button type="submit" class="boton" value="save"><span data-icono="guardar"></span>${STR.save}</button>
                     <button type="button" class="boton suave" id="ro-ed-cancel">${STR.cancel}</button>
                     <button type="button" class="boton rojo-suave" id="ro-ed-remove"><span data-icono="borrar"></span><span>${STR.remove}</span></button>
+                    <button type="button" class="boton suave" id="ro-ed-share" hidden><span data-icono="compartir"></span><span>${escape(t('sh_share'))}</span></button>
                 </div>
             </form>`;
         document.body.append(dialog);
@@ -165,12 +170,27 @@
         }
         wire();
         fillSets();
+        loadShared();
     };
 
     // --- Setup -----------------------------------------------------------------------------------------
     const who = () => { const b = $('#ro-who [aria-checked="true"]'); return (b && b.dataset.who) || 'class'; };
+    const loadShared = () => {
+        if (!SH) { return; }
+        SH.items('roscos').then((items) => {
+            const mine = store.sets.map((s) => s.shared).filter(Boolean);
+            sharedSets = items.filter((it) => Array.isArray(it.data.items) && !mine.includes(it.id)).map((it) => ({
+                id: 's' + it.id, sid: it.id, name: it.name, author: it.author, candelete: it.candelete,
+                items: it.data.items.filter((x) => x && typeof x.l === 'string' && typeof x.c === 'string' && typeof x.a === 'string')
+                    .map((x) => ({ l: x.l, k: x.k === 'c' ? 'c' : 's', c: x.c, a: x.a })) }));
+            fillSets();
+        });
+    };
     const fillSets = () => {
-        const opts = sets().map((s) => `<option value="${escape(s.id)}">${escape(s.name)} (${playable(s).length})</option>`).join('');
+        const option = (s) => `<option value="${escape(s.id)}">${escape(s.sid ? t('sh_option', { name: `${s.name} (${playable(s).length})`, author: s.author })
+            : `${s.name} (${playable(s).length})`)}</option>`;
+        const opts = [EXAMPLE].concat(store.sets).map(option).join('')
+            + (sharedSets.length ? `<optgroup label="${escape(t('sh_group'))}">${sharedSets.map(option).join('')}</optgroup>` : '');
         ['#ro-set', '#ro-set2'].forEach((sel, i) => {
             const el = $(sel), before = el.value || load(i ? 'rosco-2' : 'rosco-1', 'ejemplo');
             el.innerHTML = opts;
@@ -186,12 +206,20 @@
     let editing = null, removeTimer = 0, ai = null;
     // Letters compared without accents (but the Ñ stays a letter of its own).
     const base = (x) => String(x).toUpperCase().replace(/Ñ/g, '\u0001').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\u0001/g, 'Ñ');
+    let editingShared = null;
+    const paintShare = () => {
+        const b = $('#ro-ed-share'), own = store.sets.find((s) => s.id === editing);
+        b.hidden = !SH || !(own || (editingShared && editingShared.candelete));
+        b.dataset.act = editingShared ? 'remove' : (own && own.shared ? 'unshare' : 'share');
+        core.relabel(b, t({ remove: 'sh_remove', unshare: 'sh_unshare', share: 'sh_share' }[b.dataset.act]));
+    };
     const openEditor = (set) => {
         const d = $('#ro-editor');
-        const isExample = set && set.id === 'ejemplo';
-        editing = set && !isExample ? set.id : null;
-        $('#ro-ed-title').textContent = !set ? STR.editorNew : (isExample ? STR.editorCopy : STR.editorEdit);
-        $('#ro-ed-name').value = !set ? '' : (isExample ? STR.copyOf(set.name) : set.name);
+        const isExample = set && set.id === 'ejemplo', fromSchool = set && set.sid ? set : null;
+        editing = set && !isExample && !fromSchool ? set.id : null;
+        editingShared = fromSchool;
+        $('#ro-ed-title').textContent = !set ? STR.editorNew : (isExample || fromSchool ? STR.editorCopy : STR.editorEdit);
+        $('#ro-ed-name').value = !set ? '' : (isExample || fromSchool ? STR.copyOf(set.name) : set.name);
         $$('.ct-rosco-row[data-l]', d).forEach((row) => {
             const it = set ? set.items.find((x) => x.l === row.dataset.l) : null;
             row.querySelector('select').value = it ? it.k : 's';
@@ -200,7 +228,8 @@
         });
         $('#ro-ed-remove').hidden = !editing;
         $('#ro-ed-remove').classList.remove('confirma'); core.relabel($('#ro-ed-remove'), STR.remove);
-        $('#ro-ed-note').textContent = ''; $('#ro-ed-note').classList.remove('error');
+        $('#ro-ed-note').textContent = fromSchool ? t('sh_copy', fromSchool.author) : ''; $('#ro-ed-note').classList.remove('error');
+        paintShare();
         if (ai) { ai.refresh(); }
         if (d.showModal) { d.showModal(); } else { d.setAttribute('open', ''); }
         $('#ro-ed-name').focus();
@@ -361,6 +390,17 @@
         $('#ro-pause').addEventListener('click', () => { g.paused = !g.paused; g.last = performance.now(); paintTeams(); });
         $('#ro-end').addEventListener('click', finish);
         $('#ro-ed-cancel').addEventListener('click', closeEditor);
+        // Sharing the wheel with the school, stopping, or removing one of the school's (its author or a manager).
+        $('#ro-ed-share').addEventListener('click', () => {
+            const b = $('#ro-ed-share'), own = store.sets.find((s) => s.id === editing), note = $('#ro-ed-note'), act = b.dataset.act;
+            b.disabled = true;
+            const done = (key) => { note.classList.remove('error'); note.textContent = t(key); announce(t(key)); };
+            const step = act === 'remove' ? SH.remove('roscos', editingShared.sid).then(() => { editingShared = null; closeEditor(); done('sh_removed'); })
+                : act === 'unshare' ? SH.remove('roscos', own.shared).then(() => { delete own.shared; persist(); done('sh_unshared'); })
+                    : SH.save('roscos', own.name, { items: own.items }).then((sid) => { own.shared = sid; persist(); done('sh_shared'); });
+            step.then(loadShared).catch(() => { note.textContent = t('sh_error'); note.classList.add('error'); })
+                .finally(() => { b.disabled = false; paintShare(); });
+        });
         $('#ro-ed-form').addEventListener('submit', (e) => {
             e.preventDefault();
             const items = $$('#ro-editor .ct-rosco-row[data-l]').map((row) => ({
@@ -376,6 +416,7 @@
             }
             persist(); fillSets(); $('#ro-set').value = set.id; save('rosco-1', set.id);
             closeEditor(); announce(`${name}: ${items.length}`);
+            if (set.shared && SH) { SH.save('roscos', set.name, { items: set.items }, set.shared).catch(() => {}); }
         });
         $('#ro-ed-remove').addEventListener('click', () => {
             const b = $('#ro-ed-remove');
@@ -384,6 +425,8 @@
                 clearTimeout(removeTimer); removeTimer = setTimeout(() => { b.classList.remove('confirma'); core.relabel(b, STR.remove); }, 4000);
                 return;
             }
+            const gone = store.sets.find((s) => s.id === editing);
+            if (gone && gone.shared && SH) { SH.remove('roscos', gone.shared).catch(() => {}); }
             store.sets = store.sets.filter((s) => s.id !== editing);
             persist(); fillSets(); closeEditor();
         });

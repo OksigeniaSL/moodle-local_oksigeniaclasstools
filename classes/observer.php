@@ -50,5 +50,6 @@ class observer {
         $DB->delete_records('local_oksigeniaclasstools_picks', ['userid' => $event->objectid]);
         $DB->set_field('local_oksigeniaclasstools_picks', 'teacherid', 0, ['teacherid' => $event->objectid]);
         $DB->delete_records('local_oksigeniaclasstools_state', ['userid' => $event->objectid]);
+        $DB->delete_records('local_oksigeniaclasstools_shared', ['userid' => $event->objectid]);
     }
 }

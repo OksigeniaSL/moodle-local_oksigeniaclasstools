@@ -347,6 +347,8 @@ function local_oksigeniaclasstools_data(stdClass $course, context_course $contex
             // The teacher's stickers, and the teachers' room, a tap away from the board.
             'logros' => \local_oksigeniaclasstools\local\logros::on(),
             'sala' => \local_oksigeniaclasstools\local\sala::on(),
+            // Class lists, letter wheels and locks shared with the whole school.
+            'shared' => \local_oksigeniaclasstools\local\shared::on(),
             // Questions of the question bank, the pictures of quiz questions, and words from the glossaries of the
             // course.
             'bank' => true,

@@ -47,7 +47,11 @@
     if (kept && Array.isArray(kept.locks) && (!store || (kept.updated || 0) > (store.updated || 0))) { store = kept; }
     if (!store || !Array.isArray(store.locks)) { store = { locks: [] }; }
     const persist = () => { store.updated = Date.now(); save(storeKey, store); core.keep('candados', store); };
-    const locks = () => [EXAMPLE].concat(store.locks);
+    // Locks shared with the school by other teachers: played as they are, or copied to be changed. An own lock the
+    // teacher shared keeps the id of its shared copy (shared).
+    const SH = core.shared && core.shared.on() ? core.shared : null;
+    let sharedLocks = [];
+    const locks = () => [EXAMPLE].concat(store.locks, sharedLocks);
     const lockById = (id) => locks().find((l) => l.id === id) || EXAMPLE;
     const cleanCode = (c) => norm(c).replace(/[^0-9A-ZÑ]/g, '');
 
@@ -95,6 +99,7 @@
                     <button type="submit" class="boton" value="save"><span data-icono="guardar"></span>${STR.save}</button>
                     <button type="button" class="boton suave" id="sc2-ed-cancel">${STR.cancel}</button>
                     <button type="button" class="boton rojo-suave" id="sc2-ed-remove"><span data-icono="borrar"></span><span>${STR.remove}</span></button>
+                    <button type="button" class="boton suave" id="sc2-ed-share" hidden><span data-icono="compartir"></span><span>${escape(t('sh_share'))}</span></button>
                 </div>
             </form>`;
         document.body.append(dialog);
@@ -102,10 +107,24 @@
         $$('[data-icono]', dialog).forEach((el) => setIcon(el, el.dataset.icono));
         wire();
         fillLocks();
+        loadShared();
+    };
+    const loadShared = () => {
+        if (!SH) { return; }
+        SH.items('locks').then((items) => {
+            const mine = store.locks.map((l) => l.shared).filter(Boolean);
+            sharedLocks = items.filter((it) => typeof it.data.code === 'string' && !mine.includes(it.id)).map((it) => ({
+                id: 's' + it.id, sid: it.id, name: it.name, author: it.author, candelete: it.candelete, code: cleanCode(it.data.code),
+                clues: Array.isArray(it.data.clues) ? it.data.clues.filter((x) => typeof x === 'string') : [],
+                final: typeof it.data.final === 'string' ? it.data.final : '' }));
+            fillLocks();
+        });
     };
     const fillLocks = () => {
         const sel = $('#sc2-lock'), before = sel.value || load('candado', 'ejemplo');
-        sel.innerHTML = locks().map((l) => `<option value="${escape(l.id)}">${escape(l.name)}</option>`).join('');
+        const option = (l) => `<option value="${escape(l.id)}">${escape(l.sid ? t('sh_option', { name: l.name, author: l.author }) : l.name)}</option>`;
+        sel.innerHTML = [EXAMPLE].concat(store.locks).map(option).join('')
+            + (sharedLocks.length ? `<optgroup label="${escape(t('sh_group'))}">${sharedLocks.map(option).join('')}</optgroup>` : '');
         sel.value = locks().some((l) => l.id === before) ? before : 'ejemplo';
     };
     const fmt = (t) => `${Math.floor(t / 60)}:${String(Math.floor(t % 60)).padStart(2, '0')}`;
@@ -185,17 +204,26 @@
         const m = $('#sc2-msg'); m.className = 'total ct-lose'; m.textContent = STR.wrong; announce(STR.wrong);
         setTimeout(() => { s.typed = ''; paintCode(); if (!s.over) { m.className = 'total'; m.textContent = ''; } }, 900);
     };
+    let editingShared = null;
+    const paintShare = () => {
+        const b = $('#sc2-ed-share'), own = store.locks.find((l) => l.id === editing);
+        b.hidden = !SH || !(own || (editingShared && editingShared.candelete));
+        b.dataset.act = editingShared ? 'remove' : (own && own.shared ? 'unshare' : 'share');
+        core.relabel(b, t({ remove: 'sh_remove', unshare: 'sh_unshare', share: 'sh_share' }[b.dataset.act]));
+    };
     const openEditor = (lock) => {
-        const d = $('#sc2-editor'), isExample = lock && lock.id === 'ejemplo';
-        editing = lock && !isExample ? lock.id : null;
-        $('#sc2-ed-title').textContent = !lock ? STR.editorNew : (isExample ? STR.editorCopy : STR.editorEdit);
-        $('#sc2-ed-name').value = !lock ? '' : (isExample ? STR.copyOf(lock.name) : lock.name);
+        const d = $('#sc2-editor'), isExample = lock && lock.id === 'ejemplo', fromSchool = lock && lock.sid ? lock : null;
+        editing = lock && !isExample && !fromSchool ? lock.id : null;
+        editingShared = fromSchool;
+        $('#sc2-ed-title').textContent = !lock ? STR.editorNew : (isExample || fromSchool ? STR.editorCopy : STR.editorEdit);
+        $('#sc2-ed-name').value = !lock ? '' : (isExample || fromSchool ? STR.copyOf(lock.name) : lock.name);
         $('#sc2-ed-code').value = lock ? lock.code : '';
         $('#sc2-ed-clues').value = lock ? lock.clues.join('\n') : '';
         $('#sc2-ed-final').value = lock ? (lock.final || '') : '';
         $('#sc2-ed-remove').hidden = !editing;
         $('#sc2-ed-remove').classList.remove('confirma'); core.relabel($('#sc2-ed-remove'), STR.remove);
-        $('#sc2-ed-note').textContent = ''; $('#sc2-ed-note').classList.remove('error');
+        $('#sc2-ed-note').textContent = fromSchool ? t('sh_copy', fromSchool.author) : ''; $('#sc2-ed-note').classList.remove('error');
+        paintShare();
         if (d.showModal) { d.showModal(); } else { d.setAttribute('open', ''); }
         $('#sc2-ed-name').focus();
     };
@@ -208,6 +236,19 @@
         // The number pad (the letter keyboard has its own listener).
         $('#sc2-pad').addEventListener('click', (e) => { const b = e.target.closest('.ct-numpad .ct-key'); if (b) { press(b.dataset.k); } });
         $('#sc2-ed-cancel').addEventListener('click', closeEditor);
+        // Sharing the lock with the school, stopping, or removing one of the school's (its author or a manager). core.t:
+        // in here «t» is the time of the lock.
+        $('#sc2-ed-share').addEventListener('click', () => {
+            const b = $('#sc2-ed-share'), own = store.locks.find((l) => l.id === editing), note = $('#sc2-ed-note'), act = b.dataset.act;
+            b.disabled = true;
+            const done = (key) => { note.classList.remove('error'); note.textContent = core.t(key); announce(core.t(key)); };
+            const data = own ? { code: own.code, clues: own.clues, final: own.final } : null;
+            const step = act === 'remove' ? SH.remove('locks', editingShared.sid).then(() => { editingShared = null; closeEditor(); done('sh_removed'); })
+                : act === 'unshare' ? SH.remove('locks', own.shared).then(() => { delete own.shared; persist(); done('sh_unshared'); })
+                    : SH.save('locks', own.name, data).then((sid) => { own.shared = sid; persist(); done('sh_shared'); });
+            step.then(loadShared).catch(() => { note.textContent = core.t('sh_error'); note.classList.add('error'); })
+                .finally(() => { b.disabled = false; paintShare(); });
+        });
         $('#sc2-ed-form').addEventListener('submit', (e) => {
             e.preventDefault();
             const code = cleanCode($('#sc2-ed-code').value);
@@ -217,6 +258,9 @@
             let existing = store.locks.find((l) => l.id === editing);
             if (existing) { Object.assign(existing, lock); } else { existing = { id: 'k' + Date.now().toString(36) + core.random(1000), ...lock }; store.locks.push(existing); }
             persist(); fillLocks(); $('#sc2-lock').value = existing.id; save('candado', existing.id); closeEditor();
+            if (existing.shared && SH) {
+                SH.save('locks', existing.name, { code: existing.code, clues: existing.clues, final: existing.final }, existing.shared).catch(() => {});
+            }
         });
         $('#sc2-ed-remove').addEventListener('click', () => {
             const b = $('#sc2-ed-remove');
@@ -225,6 +269,8 @@
                 clearTimeout(removeTimer); removeTimer = setTimeout(() => { b.classList.remove('confirma'); core.relabel(b, STR.remove); }, 4000);
                 return;
             }
+            const gone = store.locks.find((l) => l.id === editing);
+            if (gone && gone.shared && SH) { SH.remove('locks', gone.shared).catch(() => {}); }
             store.locks = store.locks.filter((l) => l.id !== editing); persist(); fillLocks(); closeEditor();
         });
         document.addEventListener('keydown', (e) => {

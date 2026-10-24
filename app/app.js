@@ -857,7 +857,8 @@
     let ownLists = load('listas', []);
     if (!Array.isArray(ownLists)) { ownLists = []; }
     ownLists = ownLists.filter((l) => l && typeof l.id === 'string' && typeof l.nombre === 'string' && Array.isArray(l.alumnos))
-        .map((l) => ({ id: l.id, nombre: l.nombre, alumnos: l.alumnos.filter((n) => typeof n === 'string' && n) }));
+        .map((l) => Object.assign({ id: l.id, nombre: l.nombre, alumnos: l.alumnos.filter((n) => typeof n === 'string' && n) },
+            Number(l.compartida) > 0 ? { compartida: Number(l.compartida) } : {}));
     // Lists that come from Moodle (the Class tools plugin): the students of the course and of each group, with their
     // photo. They are not kept in the browser: they are renewed each time the board opens from the course.
     const MOODLE = window.CLASSTOOLS && Array.isArray(window.CLASSTOOLS.lists) ? window.CLASSTOOLS : null;
@@ -925,9 +926,30 @@
     };
     // A web service whose answer is a JSON document (a live session, the teachers' room…).
     const callMoodleJson = (name, args, options) => callMoodle(name, args, options).then((d) => JSON.parse(d.json));
+    // What teachers share with the whole school (class lists, letter wheels, locks): asked once per kind, and asked
+    // again after this teacher shares or stops sharing. Each item: id, name, data (decoded), author, mine, candelete.
+    const sharedAsked = {};
+    const sharedOn = () => hasService('shared') && !PRACTICE && !DUEL;
+    const sharedItems = (kind) => {
+        if (!sharedOn()) { return Promise.resolve([]); }
+        if (!sharedAsked[kind]) {
+            sharedAsked[kind] = callMoodle('shared_list', { kind, courseid: MOODLE.courseid }).then((d) => (d.items || []).map((it) => {
+                let data = null;
+                try { data = JSON.parse(it.data); } catch (e) { data = null; }
+                return Object.assign({}, it, { data });
+            }).filter((it) => it.data && typeof it.data === 'object')).catch(() => []);
+        }
+        return sharedAsked[kind];
+    };
+    const sharedSave = (kind, name, data, id) => callMoodle('shared_save', { kind, courseid: MOODLE.courseid, name, data: JSON.stringify(data), id: id || 0 })
+        .then((d) => { delete sharedAsked[kind]; return d.id; });
+    const sharedRemove = (kind, id) => callMoodle('shared_delete', { id }).then(() => { delete sharedAsked[kind]; return true; });
     // One more turn for that student in every list they are in (the whole course and their class).
     const addPick = (id) => courseLists.forEach((x) => { Object.keys(x.ids).forEach((n) => { if (x.ids[n] === id) { x.veces[n] = (x.veces[n] || 0) + 1; } }); });
-    const allLists = () => courseLists.concat(ownLists);
+    // Lists shared with the school by other teachers (or by this one from another computer): used as they are, and
+    // copied to be changed.
+    let sharedLists = [];
+    const allLists = () => courseLists.concat(ownLists, sharedLists);
     let activeListId = load('lista-activa', null);
     if (!allLists().some((l) => l.id === activeListId)) { activeListId = allLists().length ? allLists()[0].id : null; }
     // Opened from a course, it starts with the list of that course.
@@ -970,9 +992,11 @@
     };
     const paintSelects = () => {
         const option = (l) => `<option value="${escapeHtml(l.id)}">${escapeHtml(l.nombre)} (${l.alumnos.length})</option>`;
-        const listOptions = !courseLists.length ? ownLists.map(option).join('')
+        const fromSchool = (l) => `<option value="${escapeHtml(l.id)}">${escapeHtml(t('sh_option', { name: `${l.nombre} (${l.alumnos.length})`, author: l.autor }))}</option>`;
+        const listOptions = (!courseLists.length ? ownLists.map(option).join('')
             : `<optgroup label="${escapeHtml(MOODLE.course || t('q_this_course'))}">${courseLists.map(option).join('')}</optgroup>`
-              + (ownLists.length ? `<optgroup label="${escapeHtml(t('q_your_lists'))}">${ownLists.map(option).join('')}</optgroup>` : '');
+              + (ownLists.length ? `<optgroup label="${escapeHtml(t('q_your_lists'))}">${ownLists.map(option).join('')}</optgroup>` : ''))
+            + (sharedLists.length ? `<optgroup label="${escapeHtml(t('sh_group'))}">${sharedLists.map(fromSchool).join('')}</optgroup>` : '');
         const q = $('#q-lista');
         q.innerHTML = listOptions || `<option value="">${t('q_no_lists')}</option>`;
         q.disabled = !allLists().length;
@@ -990,17 +1014,27 @@
         const n = cleanNames($('#ed-alumnos').value).length;
         $('#ed-cuenta').textContent = n ? `(${n})` : '';
     };
+    let editingShared = null;   // the list of the school opened to copy it
+    const paintShare = () => {
+        const b = $('#ed-compartir'), own = ownLists.find((x) => x.id === editingId);
+        b.hidden = !sharedOn() || !(own || (editingShared && editingShared.candelete));
+        b.dataset.act = editingShared ? 'remove' : (own && own.compartida ? 'unshare' : 'share');
+        relabel(b, t({ remove: 'sh_remove', unshare: 'sh_unshare', share: 'sh_share' }[b.dataset.act]));
+    };
     const openEditor = (id, text) => {
         const l = ownLists.find((x) => x.id === id);
+        const fromSchool = l ? null : sharedLists.find((x) => x.id === id);
         editingId = l ? l.id : null;
+        editingShared = fromSchool || null;
         $('#ed-titulo').textContent = l ? t('ed_edit_list') : t('ed_new_list');
-        $('#ed-nombre').value = l ? l.nombre : '';
-        $('#ed-alumnos').value = l ? l.alumnos.join('\n') : (text || '');
+        $('#ed-nombre').value = l ? l.nombre : (fromSchool ? fromSchool.nombre : '');
+        $('#ed-alumnos').value = l ? l.alumnos.join('\n') : (fromSchool ? fromSchool.alumnos.join('\n') : (text || ''));
         $('#ed-borrar').hidden = !l;
         $('#ed-borrar').classList.remove('confirma'); relabel($('#ed-borrar'), t('ed_delete'));
         const note = $('#ed-nota');
         note.classList.remove('error');
-        note.textContent = storageWorks ? t('ed_note_local') : t('ed_note_nostore');
+        note.textContent = fromSchool ? t('sh_copy', fromSchool.autor) : (storageWorks ? t('ed_note_local') : t('ed_note_nostore'));
+        paintShare();
         editorCount();
         if (editor.showModal) { editor.showModal(); } else { editor.setAttribute('open', ''); }
         $('#ed-nombre').focus();
@@ -1031,6 +1065,7 @@
         if (current === 'grupos') { $('#g-lista').value = l.id; gListChanged(); }
         closeEditor();
         announce(t('ed_saved', { name: listName, n: students.length }));
+        if (l.compartida && sharedOn()) { sharedSave('lists', l.nombre, { alumnos: l.alumnos }, l.compartida).catch(() => {}); }
     });
     $('#ed-borrar').addEventListener('click', () => {
         const b = $('#ed-borrar');
@@ -1040,12 +1075,34 @@
             deleteTimer = setTimeout(() => { b.classList.remove('confirma'); relabel(b, t('ed_delete')); }, 4000);
             return;
         }
+        const gone = ownLists.find((x) => x.id === editingId);
+        if (gone && gone.compartida && sharedOn()) { sharedRemove('lists', gone.compartida).catch(() => {}); }
         ownLists = ownLists.filter((x) => x.id !== editingId);
         delete pickedOut[editingId];
         activeListId = allLists().length ? allLists()[0].id : null;
         qLast = null;
         saveLists(); paintSelects(); pickerPaint(); closeEditor();
         announce(t('ed_deleted'));
+    });
+
+    // Sharing with the school, stopping, or (a manager, or its author from another computer) removing it.
+    const loadSharedLists = () => sharedItems('lists').then((items) => {
+        const mineHere = ownLists.map((l) => l.compartida).filter(Boolean);
+        sharedLists = items.filter((it) => Array.isArray(it.data.alumnos) && !mineHere.includes(it.id)).map((it) => ({
+            id: 's' + it.id, sid: it.id, nombre: it.name, autor: it.author, candelete: it.candelete,
+            alumnos: it.data.alumnos.filter((n) => typeof n === 'string' && n) }));
+        if (!allLists().some((l) => l.id === activeListId)) { activeListId = allLists().length ? allLists()[0].id : null; }
+        paintSelects(); pickerPaint();
+    });
+    $('#ed-compartir').addEventListener('click', () => {
+        const b = $('#ed-compartir'), own = ownLists.find((x) => x.id === editingId), note = $('#ed-nota'), act = b.dataset.act;
+        b.disabled = true;
+        const done = (key) => { note.classList.remove('error'); note.textContent = t(key); announce(t(key)); };
+        const step = act === 'remove' ? sharedRemove('lists', editingShared.sid).then(() => { editingShared = null; closeEditor(); done('sh_removed'); })
+            : act === 'unshare' ? sharedRemove('lists', own.compartida).then(() => { delete own.compartida; saveLists(); done('sh_unshared'); })
+                : sharedSave('lists', own.nombre, { alumnos: own.alumnos }).then((sid) => { own.compartida = sid; saveLists(); done('sh_shared'); });
+        step.then(() => loadSharedLists()).catch(() => { note.textContent = t('sh_error'); note.classList.add('error'); })
+            .finally(() => { b.disabled = false; paintShare(); });
     });
 
     // ===================================================================================================
@@ -2131,6 +2188,9 @@
         has: hasService,       // has(name): whether this teacher has that web service of the board here
         call: callMoodle,      // call(name, args, {keepalive}) → the data of the web service, or an Error with errorcode
         callJson: callMoodleJson,   // the same, for a web service whose answer is a JSON document
+        // What teachers share with the school: on(), items(kind) → Promise of [{id, name, data, author, mine,
+        // candelete}], save(kind, name, data, id?) → Promise of its id, remove(kind, id).
+        shared: { on: sharedOn, items: sharedItems, save: sharedSave, remove: sharedRemove },
         newList: () => openEditor(null), editList: (id) => openEditor(id),
         kept: (tool) => (MOODLE && MOODLE.state && MOODLE.state[tool]) || null, keep: keepInMoodle,
         audioContext: () => audio(), soundOn: () => soundOn, output: () => masterGain,
@@ -2169,6 +2229,7 @@
     }
     paintSelects();
     pickerPaint();
+    if (sharedOn()) { loadSharedLists(); }
     tmSet(5 * 60000);
     const hasTab = (h) => tabs.some((b) => b.dataset.h === h);
     showTool(courseLists.length && hasTab('quien') ? 'quien' : (hasTab('temporizador') ? 'temporizador' : tabs[0].dataset.h));

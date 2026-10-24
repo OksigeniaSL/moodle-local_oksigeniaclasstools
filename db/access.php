@@ -36,6 +36,15 @@ $capabilities = [
             'manager' => CAP_ALLOW,
         ],
     ],
+    // Deleting any class list, letter wheel or lock a teacher shared with the school (each author can delete theirs).
+    'local/oksigeniaclasstools:manageshared' => [
+        'riskbitmask' => RISK_DATALOSS,
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => [
+            'manager' => CAP_ALLOW,
+        ],
+    ],
     // Asking the AI of the site for exercises (Moodle 4.5 and later, when the site has a provider).
     'local/oksigeniaclasstools:generate' => [
         'captype' => 'write',

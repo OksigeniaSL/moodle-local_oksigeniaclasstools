@@ -101,6 +101,14 @@ class provider implements
             'enabled' => 'privacy:metadata:remote:enabled',
             'timecreated' => 'privacy:metadata:remote:timecreated',
         ], 'privacy:metadata:remote');
+        $collection->add_database_table('local_oksigeniaclasstools_shared', [
+            'kind' => 'privacy:metadata:shared:kind',
+            'name' => 'privacy:metadata:shared:name',
+            'data' => 'privacy:metadata:shared:data',
+            'userid' => 'privacy:metadata:shared:userid',
+            'timecreated' => 'privacy:metadata:shared:timecreated',
+            'timemodified' => 'privacy:metadata:shared:timemodified',
+        ], 'privacy:metadata:shared');
         if (class_exists('\\core_ai\\manager')) {
             $collection->add_subsystem_link('core_ai', [], 'privacy:metadata:core_ai');
         }
@@ -168,6 +176,13 @@ class provider implements
               WHERE r.userid = :userid',
             ['level' => CONTEXT_USER, 'userid' => $userid]
         );
+        $contextlist->add_from_sql(
+            'SELECT ctx.id
+               FROM {context} ctx
+               JOIN {local_oksigeniaclasstools_shared} s ON s.userid = ctx.instanceid AND ctx.contextlevel = :level
+              WHERE s.userid = :userid',
+            ['level' => CONTEXT_USER, 'userid' => $userid]
+        );
         return $contextlist;
     }
 
@@ -208,6 +223,11 @@ class provider implements
             $userlist->add_from_sql(
                 'userid',
                 'SELECT userid FROM {local_oksigeniaclasstools_remote} WHERE userid = :userid',
+                ['userid' => $context->instanceid]
+            );
+            $userlist->add_from_sql(
+                'userid',
+                'SELECT userid FROM {local_oksigeniaclasstools_shared} WHERE userid = :userid',
                 ['userid' => $context->instanceid]
             );
             return;
@@ -281,6 +301,20 @@ class provider implements
                             'enabled' => transform::yesno($row->enabled),
                             'timecreated' => transform::datetime($row->timecreated),
                         ]
+                    );
+                }
+                // What they shared with the school.
+                $items = \local_oksigeniaclasstools\local\shared::of_user((int) $userid);
+                if ($items) {
+                    writer::with_context($context)->export_data(
+                        [get_string('privacy:shared', 'local_oksigeniaclasstools')],
+                        (object) ['items' => array_map(fn($i) => (object) [
+                            'kind' => $i->kind,
+                            'name' => $i->name,
+                            'data' => json_decode($i->data),
+                            'timecreated' => transform::datetime($i->timecreated),
+                            'timemodified' => transform::datetime($i->timemodified),
+                        ], $items)]
                     );
                 }
                 continue;
@@ -414,6 +448,7 @@ class provider implements
         global $DB;
         if ($context->contextlevel == CONTEXT_USER) {
             remote::delete((int) $context->instanceid);
+            \local_oksigeniaclasstools\local\shared::delete_user((int) $context->instanceid);
         }
         if ($context->contextlevel == CONTEXT_COURSE) {
             $DB->delete_records('local_oksigeniaclasstools_picks', ['courseid' => $context->instanceid]);
@@ -436,6 +471,7 @@ class provider implements
         foreach ($contextlist->get_contexts() as $context) {
             if ($context->contextlevel == CONTEXT_USER && (int) $context->instanceid === (int) $userid) {
                 remote::delete((int) $userid);
+                \local_oksigeniaclasstools\local\shared::delete_user((int) $userid);
                 continue;
             }
             if ($context->contextlevel != CONTEXT_COURSE) {
@@ -466,6 +502,7 @@ class provider implements
         $context = $userlist->get_context();
         if ($context->contextlevel == CONTEXT_USER && in_array($context->instanceid, $userlist->get_userids())) {
             remote::delete((int) $context->instanceid);
+            \local_oksigeniaclasstools\local\shared::delete_user((int) $context->instanceid);
             return;
         }
         if ($context->contextlevel != CONTEXT_COURSE || !$userlist->get_userids()) {

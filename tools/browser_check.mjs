@@ -42,7 +42,7 @@ const FAKE = `
 window.CLASSTOOLS = { lists: [{ id: 1, name: 'Class 1', key: 'c1', students: Array.from({ length: 8 }, (_, i) => ({ id: i + 1, n: 'Student ' + (i + 1) })) },
     { id: 2, name: 'Split A', key: 'c2', students: Array.from({ length: 4 }, (_, i) => ({ id: i + 1, n: 'Student ' + (i + 1) })) }],
     courseid: 1, mode: 'teacher', sesskey: 'x', days: {}, state: {}, ajax: 'fake://service',
-    services: { live: true, glossary: true, bank: true, ai: true, remote: true, logros: true, sala: true, tally: true },
+    services: { live: true, glossary: true, bank: true, ai: true, remote: true, logros: true, sala: true, tally: true, shared: true },
     remote: { on: false }, logros: { thr: { devices: 5, picks: 5, students: 8 }, levels: {} }, me: { id: 99, name: 'Teacher' } };
 window.FAKE = { calls: [], polls: 0, beacons: [] };
 // What the board sends with sendBeacon (what it has been used for), kept instead of sent.
@@ -75,6 +75,22 @@ window.shot = (name) => new Promise((done) => { if (!window.checkShot) { done();
     window.fetch = (url, opts) => {
         if (!String(url).startsWith('fake://service')) { return real(url, opts); }
         const [call] = JSON.parse(String(opts && opts.body)), name = call.methodname.replace(/^local_oksigeniaclasstools_/, '');
+        // What the school shares (FAKE.shared, by kind; the page /shared.html brings one of each, by another teacher).
+        if (name.startsWith('shared_')) {
+            const sa = call.args || {}, S = FAKE.shared || (FAKE.shared = {});
+            FAKE.calls.push(Object.assign({ action: name }, flat(sa)));
+            const answer = (x) => Promise.resolve(new Response(JSON.stringify([{ error: false, data: x }]), { headers: { 'Content-Type': 'application/json' } }));
+            if (name === 'shared_list') { return answer({ items: (S[sa.kind] || []).map((it) => Object.assign({}, it, { data: JSON.stringify(it.data) })) }); }
+            if (name === 'shared_delete') {
+                Object.keys(S).forEach((k) => { S[k] = S[k].filter((it) => it.id !== sa.id); });
+                return answer({ ok: true });
+            }
+            const list = S[sa.kind] || (S[sa.kind] = []), old = sa.id && list.find((it) => it.id === sa.id);
+            if (old) { Object.assign(old, { name: sa.name, data: JSON.parse(sa.data) }); return answer({ id: old.id }); }
+            const id = 100 + list.length;
+            list.push({ id, name: sa.name, data: JSON.parse(sa.data), author: 'Teacher', mine: true, candelete: true });
+            return answer({ id });
+        }
         const [where, fixed] = ROUTES[name] || ['ok', ''], args = call.args || {};
         const action = fixed !== null ? fixed : (name === 'remote_enable' ? (args.on ? 'on' : 'off') : (args.action || 'state'));
         const p = new URLSearchParams(Object.assign({ action }, flat(args))), a = action;
@@ -562,6 +578,113 @@ const CHECKS = {
         } finally {
             await setMode('primary');
         }
+    },
+    // A class list shared with the school by another teacher: in the list of «Whose turn?», marked with its author,
+    // picked from, copied with «Edit» (not changed), and an own list shared with the school from its editor.
+    'shared-lists': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const q = (x) => document.querySelector(x);
+        q('#t-quien').click();
+        let opt = null;
+        for (let i = 0; i < 60 && !(opt = q('#q-lista option[value="s7"]')); i++) { await sleep(50); }
+        if (!opt) { return 'the shared list is not in «Whose turn?»'; }
+        if (opt.parentElement.tagName !== 'OPTGROUP' || !/school/i.test(opt.parentElement.label) || !/Reading club \(3\).*Ana Ruiz/.test(opt.textContent)) {
+            return `shown as «${opt.textContent}» in «${opt.parentElement.label}»`;
+        }
+        if (!q('#g-lista option[value="s7"]')) { return 'not in the lists of Groups'; }
+        const sel = q('#q-lista'); sel.value = 's7'; sel.dispatchEvent(new Event('change', { bubbles: true }));
+        await sleep(100);
+        window.Pizarra.elegir();
+        await sleep(2600);
+        if (!['Ana', 'Bruno', 'Carla'].includes(q('#q-nombre').textContent.trim())) { return `picked «${q('#q-nombre').textContent}»`; }
+        q('#q-editar').click();
+        await sleep(100);
+        if (!/Ana Ruiz/.test(q('#ed-nota').textContent) || !q('#ed-borrar').hidden || !q('#ed-compartir').hidden) { return 'the editor does not open it as a copy'; }
+        q('#ed-form').requestSubmit();
+        await sleep(200);
+        const own = window.Pizarra.listas().find((l) => l.nombre === 'Reading club');
+        if (!own || own.alumnos.length !== 3) { return 'no own copy'; }
+        if (window.FAKE.calls.some((c) => c.action === 'shared_save')) { return 'a copy was sent to the school'; }
+        q('#q-editar').click();
+        await sleep(100);
+        const share = q('#ed-compartir');
+        if (share.hidden || !/share with the school/i.test(share.textContent)) { return 'no «Share with the school» for an own list'; }
+        share.click();
+        await sleep(300);
+        const sent = window.FAKE.calls.filter((c) => c.action === 'shared_save').pop();
+        if (!sent || sent.kind !== 'lists' || JSON.parse(sent.data).alumnos.length !== 3) { return `sent: ${JSON.stringify(sent)}`; }
+        if (!/stop sharing/i.test(share.textContent) || !window.Pizarra.listas().find((l) => l.nombre === 'Reading club').compartida) { return 'not marked as shared'; }
+        // The own copy goes (and stops being shared), so that the checks after this one find the lists as they were.
+        q('#ed-borrar').click(); q('#ed-borrar').click();
+        await sleep(300);
+        const stopped = window.FAKE.calls.some((c) => c.action === 'shared_delete');
+        return window.Pizarra.listas().some((l) => l.nombre === 'Reading club') ? 'the own copy was not deleted'
+            : (stopped ? '' : 'deleting a shared list did not stop sharing it');
+    },
+    // A letter wheel shared with the school: in the wheel list, marked, played as it is, and copied with «Edit».
+    'shared-rosco': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const q = (x) => document.querySelector(x);
+        q('#t-juegos').click();
+        await sleep(200);
+        q('#ga-mode [data-game="rosco"]').click();
+        let opt = null;
+        for (let i = 0; i < 60 && !(opt = q('#ro-set option[value="s8"]')); i++) { await sleep(50); }
+        if (!opt || opt.parentElement.tagName !== 'OPTGROUP' || !/Animals \(2\).*Ana Ruiz/.test(opt.textContent)) { return `the shared wheel: ${opt && opt.textContent}`; }
+        const sel = q('#ro-set'); sel.value = 's8'; sel.dispatchEvent(new Event('change', { bubbles: true }));
+        q('#ro-start').click();
+        await sleep(300);
+        if (q('#ro-letter').textContent !== 'A' || !/flies/.test(q('#ro-clue').textContent)) { return `it plays «${q('#ro-letter').textContent}: ${q('#ro-clue').textContent}»`; }
+        q('#ro-end').click();
+        await sleep(200);
+        const back = [...document.querySelectorAll('#ro-result button, #ro-result .boton')].find((b) => b.offsetParent);
+        if (back) { back.click(); await sleep(200); }
+        sel.value = 's8';
+        q('#ro-edit').click();
+        await sleep(100);
+        if (!/Ana Ruiz/.test(q('#ro-ed-note').textContent) || !q('#ro-ed-share').hidden || !q('#ro-ed-remove').hidden) { return 'the editor does not open it as a copy'; }
+        q('#ro-ed-form').requestSubmit();
+        await sleep(200);
+        if (!q('#ro-set option[value^="r"]')) { return 'no own copy of the wheel'; }
+        q('#ro-edit').click();
+        await sleep(100);
+        const share = q('#ro-ed-share');
+        if (share.hidden) { return 'no «Share with the school» for an own wheel'; }
+        share.click();
+        await sleep(300);
+        const sent = window.FAKE.calls.filter((c) => c.action === 'shared_save').pop();
+        // The own copy goes, for the checks after this one.
+        q('#ro-ed-remove').click(); q('#ro-ed-remove').click();
+        await sleep(200);
+        return sent && sent.kind === 'roscos' && JSON.parse(sent.data).items.length === 2 ? '' : `sent: ${JSON.stringify(sent)}`;
+    },
+    // A lock shared with the school: in the lock list, marked, played as it is, and copied with «Edit».
+    'shared-locks': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const q = (x) => document.querySelector(x);
+        q('#t-juegos').click();
+        await sleep(200);
+        q('#ga-mode [data-game="codigo"]').click();
+        let opt = null;
+        for (let i = 0; i < 60 && !(opt = q('#sc2-lock option[value="s9"]')); i++) { await sleep(50); }
+        if (!opt || opt.parentElement.tagName !== 'OPTGROUP' || !/Lab door.*Ana Ruiz/.test(opt.textContent)) { return `the shared lock: ${opt && opt.textContent}`; }
+        const sel = q('#sc2-lock'); sel.value = 's9'; sel.dispatchEvent(new Event('change', { bubbles: true }));
+        q('#sc2-edit').click();
+        await sleep(100);
+        if (!/Ana Ruiz/.test(q('#sc2-ed-note').textContent) || !q('#sc2-ed-share').hidden || q('#sc2-ed-code').value !== '321') { return 'the editor does not open it as a copy'; }
+        q('#sc2-ed-form').requestSubmit();
+        await sleep(200);
+        q('#sc2-edit').click();
+        await sleep(100);
+        const share = q('#sc2-ed-share');
+        if (share.hidden) { return 'no «Share with the school» for an own lock'; }
+        share.click();
+        await sleep(300);
+        const sent = window.FAKE.calls.filter((c) => c.action === 'shared_save').pop();
+        // The own copy goes, for the checks after this one.
+        q('#sc2-ed-remove').click(); q('#sc2-ed-remove').click();
+        await sleep(200);
+        return sent && sent.kind === 'locks' && JSON.parse(sent.data).code === '321' ? '' : `sent: ${JSON.stringify(sent)}`;
     },
     'pairs-variants': async () => {
         const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -2702,7 +2825,7 @@ const CHECKS = {
 };
 
 // Checks that run on another page than the board.
-const PAGES = { 'remote-phone': '/phone.html', 'remote-live-buttons': '/phone.html', 'remote-cards': '/phone.html', 'exit-device': '/device.html', 'student-view': '/student.html' };
+const PAGES = { 'shared-lists': '/shared.html', 'shared-rosco': '/shared.html', 'shared-locks': '/shared.html', 'remote-phone': '/phone.html', 'remote-live-buttons': '/phone.html', 'remote-cards': '/phone.html', 'exit-device': '/device.html', 'student-view': '/student.html' };
 
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png',
     '.woff2': 'font/woff2', '.json': 'application/json', '.mp3': 'audio/mpeg' };
@@ -2714,6 +2837,17 @@ const server = createServer((req, res) => {
         res.writeHead(200, { 'Content-Type': 'text/html' }); res.end(html); return;
     }
     if (path === '/fake.js') { res.writeHead(200, { 'Content-Type': 'text/javascript' }); res.end(FAKE); return; }
+    if (path === '/shared.html') {
+        // The board with one class list, one letter wheel and one lock shared with the school by another teacher.
+        const seed = '<script>window.FAKE.shared = {'
+            + ' lists: [{ id: 7, name: "Reading club", data: { alumnos: ["Ana", "Bruno", "Carla"] }, author: "Ana Ruiz", mine: false, candelete: false }],'
+            + ' roscos: [{ id: 8, name: "Animals", data: { items: [{ l: "A", k: "s", c: "It flies", a: "Ave" }, { l: "B", k: "s", c: "Big", a: "Ballena" }] },'
+            + ' author: "Ana Ruiz", mine: false, candelete: false }],'
+            + ' locks: [{ id: 9, name: "Lab door", data: { code: "321", clues: ["Three", "Two", "One"], final: "Open!" }, author: "Ana Ruiz", mine: false,'
+            + ' candelete: false }] };</script>\n';
+        const html = readFileSync(join(APP, 'index.html'), 'utf8').replace('<script src="strings.js"></script>', '<script src="/fake.js"></script>\n' + seed + '<script src="strings.js"></script>');
+        res.writeHead(200, { 'Content-Type': 'text/html' }); res.end(html); return;
+    }
     if (path === '/student.html') {
         // The board as Moodle gives it to a student when the site opens it to them (local_oksigeniaclasstools_student_data):
         // no lists, no addresses of the course, only the tools without data of the class.

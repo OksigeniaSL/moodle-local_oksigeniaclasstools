@@ -78,6 +78,7 @@ The students in these screenshots do not exist: their names are made up and thei
 | Noise meter | Microphone level only (nothing is recorded or sent). A light that breathes with the noise, a calm streak, a patience reserve that only sustained noise uses up, and «adjust to this class». |
 | Also | Work symbols and a QR code with styles, the site logo in the middle and PNG/SVG download. |
 | My stickers | Each tool has a sticker for the teacher, earned by using it for real with a class and raised a level with the days of use; the album is on «Which class?». Only each teacher sees theirs, with no rankings, and the administrator can turn it off. On the same page, the **teachers' room**: the colleagues who want to be seen, each with their critter and their stickers of the last weeks (or of the season on now), and how many more play with their classes; each teacher decides whether to appear, never with counts or hours. |
+| Shared with the school | A teacher shares a class list pasted by hand, a letter wheel or a lock with every teacher of the site («Share with the school», in its editor). The others find it in the same list as their own, marked «From the school» with its author, and use it as it is or copy it to change it. Its author can stop sharing it, and a manager can remove any. |
 | Use of the boards | For the administrator, in *Reports*: each tool, game and material, how many times students and teachers chose it and for how long, in a course or in all of them, today, in the last 7 or 30 days or since the start. What classes like most, and what they leave aside. |
 | Teacher's guide | A button in the top bar opens the guide of what is on screen: what it is for, what it works on, why (with its sources), how to take it to class and what it gives at each school level, at the side or expanded in the middle of the screen to read it at ease. Only teachers see it. Some tools also have **guided helps**: the board shows how it is done on a practice board with an invented class, with voice and captions, and then the teacher does it («Now you») and gets its sticker, «Learned». |
 | Screen modes | Early years, Primary, Secondary or Advanced: one at a time, per course. They change the look and the defaults (bigger notes and colours for the youngest, the full board for the older ones…) and put first what suits the level; the rest stays one tap away, in «Other levels». «Names in capitals», in the same menu, shows the students' names in capitals (on by default in Early years). |
@@ -128,6 +129,7 @@ Then visit *Site administration → Notifications* to finish the install.
 | Tools, Games and Materials | All | Which tools, games and materials appear on the board. New ones are added to the choice when the plugin is upgraded. |
 | Notice for students | On | While a live session is open, its students see «Join» on the course pages. |
 | Open the board to students | Off | Students get only the tools without data of the class (games, materials, drawing board, timer, clock, QR): never names, photos, picks or groups, and nothing of theirs is saved. |
+| Share with the school | On | Teachers can share their lists pasted by hand, letter wheels and locks with every teacher of the site. Managers can remove any (capability `local/oksigeniaclasstools:manageshared`). |
 | Video or guide of help | Official page | The address the last step of the teachers' tour opens. Empty: the official page of Classtools, with its video, in each teacher's language. |
 | Link in the main menu | On | Inside each course the link is always in the course bar. |
 | Teachers' room | On | On «Which class?», the teachers who want to appear, with their stickers. Each one decides (at first, no). Needs the stickers on. |
@@ -166,6 +168,9 @@ course or user:
 - `local_oksigeniaclasstools_tally`: how many times each tool, game and material was chosen and for how long, per
   course and day, on teachers' boards and on students' ones, with no user. The administrator sees it in *Site
   administration → Reports → Use of the boards*. Deleted with its course.
+- `local_oksigeniaclasstools_shared`: the class lists, letter wheels and locks a teacher shares with the school, with
+  their author. Exported and deleted with the author's data and deleted with the user; they stay when a course is
+  deleted.
 
 **Course backups** carry what the board keeps of the course: always the use of the boards, and with users what each
 teacher keeps of each tool, the picks, the stickers' uses in the course and the pictures of quiz questions. Live

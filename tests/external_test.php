@@ -84,7 +84,7 @@ final class external_test extends \advanced_testcase {
         global $CFG;
         $functions = [];
         require($CFG->dirroot . '/local/oksigeniaclasstools/db/services.php');
-        $this->assertCount(31, $functions);
+        $this->assertCount(34, $functions);
         foreach ($functions as $name => $f) {
             $this->assertStringStartsWith('local_oksigeniaclasstools_', $name);
             $this->assertTrue($f['ajax']);

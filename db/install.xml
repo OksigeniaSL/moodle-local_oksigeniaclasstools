@@ -154,5 +154,23 @@
         <INDEX NAME="day" UNIQUE="false" FIELDS="day"/>
       </INDEXES>
     </TABLE>
+    <TABLE NAME="local_oksigeniaclasstools_shared" COMMENT="Class lists, letter wheels and locks a teacher shares with the whole site, for every teacher to use">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="kind" TYPE="char" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="lists, roscos or locks"/>
+        <FIELD NAME="name" TYPE="char" LENGTH="100" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="data" TYPE="text" NOTNULL="true" SEQUENCE="false" COMMENT="JSON: the item as the board keeps it"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="The teacher who shared it"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="kind-name" UNIQUE="false" FIELDS="kind, name"/>
+      </INDEXES>
+    </TABLE>
   </TABLES>
 </XMLDB>
