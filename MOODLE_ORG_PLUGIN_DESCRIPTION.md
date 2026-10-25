@@ -1,4 +1,4 @@
-<p>Board tools for the classroom, with the course students already loaded and their photos. Teachers open them from any course (the link sits in the course bar, and in the main menu), put them on the classroom screen, and the whole class plays along. Try it without installing anything: <a href="https://oksigenia.com/demo/classtools/">public demo</a>.</p>
+<p>Board tools for the classroom, with the course students already loaded and their photos. Teachers open them from any course (the link sits in the course bar, and in the main menu), put them on the classroom screen, and the whole class plays along. Try it without installing anything: <a href="https://oksigenia.com/demo/classtools/index.html?lang=en">public demo</a>.</p>
 <h3>What's inside</h3>
 <ul>
 <li><strong>Name picker</strong> with each student's photo, no repeats until everyone has been picked, and fair picking: whoever has been picked fewer times in the last weeks is more likely to come out, with any teacher of the course, and nobody is always left for the end. «Participation» shows the counts. <strong>Who is missing today</strong> leaves absent students out of picks and groups for the day.</li>
