@@ -26,7 +26,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'local_oksigeniaclasstools';
 $plugin->version   = 2026120107;
-$plugin->release   = '0.70.1';
-$plugin->maturity  = MATURITY_RC;
+$plugin->release   = '1.0.0';
+$plugin->maturity  = MATURITY_STABLE;
 $plugin->requires  = 2023100900; // Moodle 4.3: before it, table names could not be longer than 28 characters.
 $plugin->supported = [403, 503];

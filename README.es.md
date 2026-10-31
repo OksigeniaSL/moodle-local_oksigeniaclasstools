@@ -2,7 +2,7 @@
 
 [![Licencia: GPLv3](https://img.shields.io/badge/licencia-GPLv3+-blue.svg)](LICENSE)
 ![Moodle](https://img.shields.io/badge/Moodle-4.3%2B-orange)
-![Estado](https://img.shields.io/badge/estado-candidata%20a%20estable-yellowgreen)
+![Estado](https://img.shields.io/badge/estado-estable-brightgreen)
 [![Patrocinio](https://img.shields.io/badge/patrocinio-Oksigenia-00d4ff)](https://oksigenia.com/en/open-source#sponsor)
 
 Herramientas para la pizarra de clase, **con los alumnos del curso ya cargados y sus fotos**. Se abren desde
@@ -189,12 +189,12 @@ Sin servicios externos, sin CDN y sin seguimiento: todo lo que necesita la panta
 
 ## Estado y hoja de ruta
 
-Versión candidata a estable. Se desarrolla con un colegio de Tenerife como aula de pruebas, donde se usa a diario. Lo
-previsto antes de la primera versión estable está hecho:
+Estable desde la 1.0.0 (31 de octubre de 2026). Se desarrolla con un colegio de Tenerife como aula de pruebas, donde
+se usa a diario. Lo que trae la primera versión estable:
 
-- **Idiomas**: los textos de la pantalla salen de los paquetes de idioma: inglés y español en el plugin, y alemán,
-  francés, italiano, neerlandés, portugués de Brasil, sueco y español de México camino de los paquetes de Moodle a
-  través de AMOS. El contenido de serie (abecedario, teclado, palabras, conjuntos de parejas, la hora en palabras,
+- **Idiomas**: los textos de la pantalla salen de los paquetes de idioma: inglés y español en el plugin; alemán,
+  neerlandés, sueco y español de México en los paquetes de Moodle, y francés, italiano y portugués de Brasil camino de
+  ellos a través de AMOS. El contenido de serie (abecedario, teclado, palabras, conjuntos de parejas, la hora en palabras,
   ejemplos) sale de un paquete de contenido por idioma en `app/content/`, en esos nueve idiomas.
 - **Configuración del sitio**: qué herramientas, juegos y materiales se enseñan, el modo de pantalla por defecto
   (también por categoría), los niveles de los conjuntos de serie, el vídeo de ayuda del recorrido de profesores, y

@@ -2,7 +2,7 @@
 
 [![License: GPLv3](https://img.shields.io/badge/license-GPLv3+-blue.svg)](LICENSE)
 ![Moodle](https://img.shields.io/badge/Moodle-4.3%2B-orange)
-![Status](https://img.shields.io/badge/status-release%20candidate-yellowgreen)
+![Status](https://img.shields.io/badge/status-stable-brightgreen)
 [![Sponsor](https://img.shields.io/badge/sponsor-Oksigenia-00d4ff)](https://oksigenia.com/en/open-source#sponsor)
 
 Board tools for the classroom, **with the course students already loaded and their photos**. Open them from any
@@ -181,11 +181,11 @@ No external services, no CDN and no tracking: everything the board needs comes w
 
 ## Status and roadmap
 
-Release candidate, developed with a school in Tenerife as its test classroom, in daily use there. What was planned
-before the first stable release is done:
+Stable since 1.0.0 (31 October 2026). Developed with a school in Tenerife as its test classroom, where it is used
+every day. What the first stable release brings:
 
-- **Languages**: the board's texts come from the language packs: English and Spanish in the plugin, and German,
-  French, Italian, Dutch, Brazilian Portuguese, Swedish and Mexican Spanish on their way to Moodle's language packs
+- **Languages**: the board's texts come from the language packs: English and Spanish in the plugin; German, Dutch,
+  Swedish and Mexican Spanish in Moodle's language packs, and French, Italian and Brazilian Portuguese on their way
   through AMOS. The built-in content (alphabet, keyboard, words, pair sets, the time in words, examples) comes from a
   content pack per language in `app/content/`, in those nine languages.
 - **Site configuration**: which tools, games and materials are shown, the default screen mode (also by category), the

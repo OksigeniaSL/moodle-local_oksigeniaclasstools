@@ -1,7 +1,9 @@
 # Changelog
 
-## Unreleased
+## 1.0.0 (2026-10-31)
 
+- First stable release: everything planned for it is done (language packs, site configuration, AMD modules and web
+  services, the five points of the Moodle Marketplace review).
 - The «Presentation» tab is gone, and with it the only thing that loaded from outside Moodle (canva.com, and canva.link
   for short links). Upgrading removes the recent presentations kept in each course, their place among the tabs the site
   shows and their rows in «Use of the boards».
