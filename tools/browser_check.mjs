@@ -45,6 +45,7 @@ window.CLASSTOOLS = { lists: [{ id: 1, name: 'Class 1', key: 'c1', students: Arr
     services: { live: true, glossary: true, bank: true, ai: true, remote: true, logros: true, sala: true, tally: true, shared: true },
     remote: { on: false }, logros: { thr: { devices: 5, picks: 5, students: 8 }, levels: {} }, me: { id: 99, name: 'Teacher' } };
 window.FAKE = { calls: [], polls: 0, beacons: [] };
+${process.env.FITS_REPORT ? 'window.FITS_REPORT = true;' : ''}
 // What the board sends with sendBeacon (what it has been used for), kept instead of sent.
 navigator.sendBeacon = (url, body) => { window.FAKE.beacons.push({ url, body }); return true; };
 const BANK_PAIRS = [['frog', 'amphibian'], ['cat', 'mammal'], ['bee', 'insect']];
@@ -319,6 +320,72 @@ const CHECKS = {
         await sleep(300);
         if (wide > room + 1) { return `the bar is ${wide} px wide in ${room} (${cls})`; }
         return bar.scrollWidth > bar.clientWidth + 1 ? 'the bar is too wide again' : '';
+    },
+    // Nothing out of reach: in every tab, game and material, no control below the screen or cut by a box that does
+    // not scroll, at the normal size and at the smallest one («−»). VIEWPORT=<w>x<h> runs the checks on another screen
+    // and BOARD_LANG=es in Spanish. FITS_REPORT=1 also lists what can only be reached by scrolling a panel.
+    'fits-height': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const out = [], report = [];
+        // In a panel that scrolls it can be reached, but it is counted apart: on a touch panel that scroll is not easy.
+        let scrolled = 0;
+        const cut = (el) => {
+            const r = el.getBoundingClientRect();
+            if (r.width < 2 || r.height < 2 || getComputedStyle(el).visibility === 'hidden') { return false; }
+            for (let p = el.parentElement; p && p !== document.documentElement; p = p.parentElement) {
+                const s = getComputedStyle(p), q = p.getBoundingClientRect();
+                const outY = r.bottom > q.bottom + 1 || r.top < q.top - 1, outX = r.right > q.right + 1 || r.left < q.left - 1;
+                const scrollY = s.overflowY === 'auto' || s.overflowY === 'scroll', scrollX = s.overflowX === 'auto' || s.overflowX === 'scroll';
+                if ((outY && scrollY) || (outX && scrollX)) { scrolled++; return false; }
+                if ((outY && !scrollY && s.overflowY !== 'visible') || (outX && !scrollX && s.overflowX !== 'visible')) { return true; }
+            }
+            return r.bottom > innerHeight + 1 || r.right > innerWidth + 1;
+        };
+        const look = async (panel, name) => {
+            await sleep(450);
+            scrolled = 0;
+            const bad = [...panel.querySelectorAll('button, input, select, textarea, [role="button"], [role="radio"]')].filter(cut);
+            if (bad.length) {
+                await shot(`fits-${innerWidth}x${innerHeight}-${name}`);
+                out.push(`${name}: ${bad.length} (${bad.slice(0, 4).map((b) => b.id || (b.textContent || b.value || '').trim().slice(0, 18)).join(' · ')})`);
+            }
+            if (scrolled) { report.push(`${name}: ${scrolled} by scrolling`); }
+        };
+        const round = async (size) => {
+            for (const tab of document.querySelectorAll('.pestana')) {
+                if (tab.hidden || !tab.getBoundingClientRect().width) { continue; }
+                tab.click();
+                const panel = document.getElementById(tab.getAttribute('aria-controls'));
+                await look(panel, `${size}-${tab.dataset.h}`);
+                // Each game and each material, with its own controls.
+                const row = panel.querySelector('#ga-mode, #mt-mode');
+                for (const sub of row ? [...row.querySelectorAll('button[role="radio"]')].slice(1) : []) {
+                    sub.click();
+                    await look(panel, `${size}-${tab.dataset.h}-${sub.dataset.game || sub.dataset.mode || sub.textContent.trim().slice(0, 12)}`);
+                }
+                if (row) { row.querySelector('button[role="radio"]').click(); }
+            }
+        };
+        await round('100');
+        for (let i = 0; i < 3; i++) { document.querySelector('#ct-zoom [data-z="-1"]').click(); }
+        await round('70');
+        document.querySelector('#ct-zoom [data-z="0"]').click();
+        return out.concat(window.FITS_REPORT ? report : []).join('\n     ');
+    },
+    // A browser without clamp() (older panels, where «−» and «+» did nothing): the board works out the size of the
+    // page as styles.css does, and «−» makes it smaller.
+    'old-browser-zoom': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const size = () => parseFloat(document.documentElement.style.fontSize);
+        document.querySelector('#ct-zoom [data-z="0"]').click();
+        await sleep(100);
+        const expected = Math.min(19, Math.max(13, Math.min(0.0045 * innerWidth + 9, 0.0115 * innerHeight + 6.5)));
+        if (!(Math.abs(size() - expected) < 0.05)) { return `the size of the page: ${document.documentElement.style.fontSize}, not ${expected}px`; }
+        document.querySelector('#ct-zoom [data-z="-1"]').click();
+        await sleep(100);
+        if (!(Math.abs(size() - expected * 0.9) < 0.05)) { return `«−» left the size at ${size()}px`; }
+        document.querySelector('#ct-zoom [data-z="0"]').click();
+        return '';
     },
     'turn-relay': async () => {
         const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -1440,6 +1507,9 @@ const CHECKS = {
         for (const text of ['(3, 2)', '-2,4', '(−2, −3)']) { q('#pl-xy').value = text; q('#pl-add').click(); }
         await sleep(100);
         if (q('#pl-list').textContent.replace(/\s+/g, ' ') !== 'A(3, 2) B(−2, 4) C(−2, −3)') { return `points: «${q('#pl-list').textContent}»`; }
+        // And each one seen on the plane (the dice of «Chance» had a rule for the same class that hid them).
+        const dots = [...document.querySelectorAll('.ct-pl-points .punto')];
+        if (dots.length !== 3 || dots.some((d) => getComputedStyle(d).visibility !== 'visible')) { return `the points on the plane: ${dots.map((d) => getComputedStyle(d).visibility).join(', ')}`; }
         q('#pl-join').value = 'vectors';
         q('#pl-join').dispatchEvent(new Event('change'));
         await sleep(100);
@@ -2825,15 +2895,30 @@ const CHECKS = {
 };
 
 // Checks that run on another page than the board.
-const PAGES = { 'shared-lists': '/shared.html', 'shared-rosco': '/shared.html', 'shared-locks': '/shared.html', 'remote-phone': '/phone.html', 'remote-live-buttons': '/phone.html', 'remote-cards': '/phone.html', 'exit-device': '/device.html', 'student-view': '/student.html' };
+const PAGES = { 'old-browser-zoom': '/oldcss.html', 'shared-lists': '/shared.html', 'shared-rosco': '/shared.html', 'shared-locks': '/shared.html', 'remote-phone': '/phone.html', 'remote-live-buttons': '/phone.html', 'remote-cards': '/phone.html', 'exit-device': '/device.html', 'student-view': '/student.html' };
 
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png',
     '.woff2': 'font/woff2', '.json': 'application/json', '.mp3': 'audio/mpeg' };
+// The board's strings in another language of the plugin (BOARD_LANG=es), over the English ones of strings.js.
+const langStrings = () => {
+    const lang = process.env.BOARD_LANG;
+    if (!lang) { return ''; }
+    const php = readFileSync(join(APP, '..', 'lang', lang, 'local_oksigeniaclasstools.php'), 'utf8'), str = {};
+    for (const m of php.matchAll(/^\$string\['app_([^']+)'\] = '((?:[^'\\]|\\.)*)';/gms)) { str[m[1]] = m[2].replace(/\\(['\\])/g, '$1'); }
+    return `\n<script>Object.assign(window.CLASSTOOLS_STR, ${JSON.stringify(str)});</script>`;
+};
+
 const server = createServer((req, res) => {
     const path = decodeURIComponent(new URL(req.url, 'http://x').pathname);
     if (path === '/check.html') {
-        // The board's own page, with the pretend course and server before its scripts.
-        const html = readFileSync(join(APP, 'index.html'), 'utf8').replace('<script src="strings.js"></script>', '<script src="/fake.js"></script>\n<script src="strings.js"></script>');
+        // The board's own page, with the pretend course and server before its scripts (and, with BOARD_LANG, the
+        // strings of that language of the plugin, as Moodle gives them).
+        const html = readFileSync(join(APP, 'index.html'), 'utf8').replace('<script src="strings.js"></script>', '<script src="/fake.js"></script>\n<script src="strings.js"></script>' + langStrings());
+        res.writeHead(200, { 'Content-Type': 'text/html' }); res.end(html); return;
+    }
+    if (path === '/oldcss.html') {
+        // The board in a browser that does not read clamp() (older panels): the board must work out its size itself.
+        const html = readFileSync(join(APP, 'index.html'), 'utf8').replace('<script src="strings.js"></script>', '<script src="/fake.js"></script>\n<script>CSS.supports = () => false;</script>\n<script src="strings.js"></script>');
         res.writeHead(200, { 'Content-Type': 'text/html' }); res.end(html); return;
     }
     if (path === '/fake.js') { res.writeHead(200, { 'Content-Type': 'text/javascript' }); res.end(FAKE); return; }
@@ -2916,6 +3001,9 @@ const cameraVideo = (file) => {
 
 const chromePath = () => process.env.CHROME || ['/usr/bin/google-chrome', '/usr/bin/chromium', '/usr/bin/chromium-browser'].find(existsSync);
 
+// The screen of the checks: a laptop, or another with VIEWPORT=<width>x<height>.
+const VIEW = (process.env.VIEWPORT || '1280x800').split('x').map(Number);
+
 async function main() {
     const names = process.argv.slice(2).length ? process.argv.slice(2) : Object.keys(CHECKS);
     const unknown = names.filter((n) => !CHECKS[n]);
@@ -2962,7 +3050,7 @@ async function main() {
             const { sessionId } = await send('Target.attachToTarget', { targetId, flatten: true });
             await send('Runtime.enable', {}, sessionId);
             if (shots) { await send('Runtime.addBinding', { name: 'checkShot' }, sessionId); }
-            await send('Emulation.setDeviceMetricsOverride', { width: 1280, height: 800, deviceScaleFactor: 1, mobile: false }, sessionId);
+            await send('Emulation.setDeviceMetricsOverride', { width: VIEW[0], height: VIEW[1], deviceScaleFactor: 1, mobile: false }, sessionId);
             await send('Page.enable', {}, sessionId);
             events.length = 0;
             await send('Page.navigate', { url: `${base}${PAGES[name] || '/check.html'}` }, sessionId);

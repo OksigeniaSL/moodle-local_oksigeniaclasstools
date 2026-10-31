@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.70.1 (2026-10-31)
+
+- «−» and «+» make the whole board smaller or bigger: buttons, tabs and fields kept their size in pixels, so on a low
+  screen the bottom of the panels stayed out of reach. In browsers without clamp() (the built-in browser of older
+  interactive panels) they did nothing: the board now works out the size of the page itself there.
+- The rows of games and materials fit across: when the names do not fit (in Spanish, «Calculator» and «Score» were cut
+  off), the long ones go to two lines and, if needed, all get smaller.
+- The letter wheel's set-up scrolls on a low screen instead of leaving «Start» out of reach.
+- Coordinate plane: the points are seen again (a rule of the dice of «Chance» hid them).
+- Printed cards work in older browsers too (no «??» in the script).
+- The screen test (#toques) also shows the system, the browser and their versions, the size the board sees and whether
+  the browser reads the CSS of the board, for a photo of a panel that misbehaves.
+
 ## 0.70.0 (2026-10-24)
 
 - Class lists pasted by hand, letter wheels and locks can be shared with the whole school: every teacher finds them in

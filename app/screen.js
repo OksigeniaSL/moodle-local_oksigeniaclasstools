@@ -40,9 +40,18 @@
     let zoom = 1;
     try { zoom = Number(localStorage.getItem(KEY)) || 1; } catch (e) { /* no storage: the normal size */ }
     if (!STEPS.includes(zoom)) { zoom = 1; }
+    // A browser without clamp() (older panels) drops the size of styles.css, and with it «−» and «+»: the board
+    // works it out here, the same way, when the screen changes and when the size is chosen.
+    const oldCss = !(window.CSS && CSS.supports && CSS.supports('width', 'clamp(1px, 2px, 3px)'));
+    const oldSize = () => {
+        const px = Math.min(19, Math.max(13, Math.min(0.0045 * innerWidth + 9, 0.0115 * innerHeight + 6.5)));
+        document.documentElement.style.fontSize = `${(px * zoom).toFixed(2)}px`;
+    };
+    if (oldCss) { window.addEventListener('resize', oldSize); }
     const setZoom = (z, keep) => {
         zoom = z;
         document.documentElement.style.setProperty('--zoom', String(z));
+        if (oldCss) { oldSize(); }
         if (keep && !practice) { try { localStorage.setItem(KEY, String(z)); } catch (e) { /* only for now */ } }
         const box = document.getElementById('ct-zoom');
         if (box) {
@@ -121,7 +130,13 @@
     const layer = document.createElement('div');
     layer.className = 'ct-toques';
     layer.setAttribute('aria-hidden', 'true');
-    layer.innerHTML = `<div class="ct-toques-panel"><strong>${t('tq_title')}</strong><span data-n></span><small>${t('tq_hint')}</small><ol data-log></ol></div>`;
+    // And what the screen is, for a photo of it: the system and browser with their versions, the size the board sees
+    // and whether the browser reads the CSS the board's sizes use (clamp(), container units).
+    const ua = navigator.userAgent, os = (ua.match(/Android [\d.]+|Windows NT [\d.]+|Mac OS X [\d_]+|CrOS|Linux/) || [''])[0];
+    const browser = (ua.match(/(?:Edg|OPR|SamsungBrowser|Firefox|Chromium|Chrome)\/\d+/) || ['?'])[0].replace('/', ' ');
+    const has = (prop, value) => (window.CSS && CSS.supports && CSS.supports(prop, value) ? '✓' : '✗');
+    const about = `${os} · ${browser} · ${innerWidth}×${innerHeight} ×${window.devicePixelRatio} · clamp() ${has('width', 'clamp(1px, 2px, 3px)')} · cq ${has('width', '1cqw')}`;
+    layer.innerHTML = `<div class="ct-toques-panel"><strong>${t('tq_title')}</strong><span data-n></span><small>${t('tq_hint')}</small><small>${about}</small><ol data-log></ol></div>`;
     const rings = new Map(), log = [];
     const paint = () => {
         layer.querySelector('[data-n]').textContent = t('tq_count', down.size);

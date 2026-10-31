@@ -2177,7 +2177,23 @@
             return `<button type="button" role="menuitem" data-pick="${escapeHtml(id)}"><strong>${escapeHtml(b.textContent)}</strong>`
                 + `<small>${escapeHtml(levels)}</small></button>`;
         }).join('');
+        fitRow(bar);
     };
+    // The row of games or materials: if their names do not fit across (in Spanish, on a narrower screen, at a bigger
+    // size), the long ones go to two lines and, if that is not enough, all get smaller, before any goes out of sight.
+    const fitRow = (bar) => {
+        const overflows = () => bar.scrollWidth > bar.clientWidth + 1;
+        bar.classList.remove('apretada', 'muy-apretada');
+        if (!bar.clientWidth || !overflows()) { return; }
+        bar.classList.add('apretada');
+        if (overflows()) { bar.classList.add('muy-apretada'); }
+    };
+    const fitRows = () => $$('.ct-top > .segmentos').forEach(fitRow);
+    addEventListener('resize', fitRows);
+    document.addEventListener('classtools:tab', () => setTimeout(fitRows, 0));
+    if (document.fonts && document.fonts.ready) { document.fonts.ready.then(fitRows); }
+    // Also when only the table changes size (two tools at once).
+    if (window.ResizeObserver && $('#mesa')) { new ResizeObserver(() => fitRows()).observe($('#mesa')); }
     // API for the tools that live in other files (chance.js, scoreboard.js…): what the board shares.
     window.ClasstoolsCore = {
         $, $$, t, translate: translatePage, random: randomInt, shuffle, escape: escapeHtml, reducedMotion, save, load,

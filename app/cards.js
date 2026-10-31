@@ -217,7 +217,8 @@
     const people = () => {
         // The list the cards were printed for: in this browser or, printed on another computer, as Moodle keeps it.
         const kept = (core.kept && core.kept('tarjetas')) || {};
-        const id = load('tarjetas-lista', null) ?? kept.list ?? '';
+        // Without «??», which the browsers of older panels do not read (the whole file would stop).
+        const mine = load('tarjetas-lista', null), id = mine !== null && mine !== undefined ? mine : (kept.list != null ? kept.list : '');
         const list = (core.lists ? core.lists() : []).find((l) => l.id === id);
         if (list) { return list.alumnos.slice(0, window.ClasstoolsScanner ? window.ClasstoolsScanner.MAX : 60); }
         const n = Math.max(1, Math.min(60, Number(load('tarjetas-cuantas', kept.count || 25)) || 25));
