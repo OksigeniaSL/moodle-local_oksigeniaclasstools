@@ -13,7 +13,6 @@
 <li><strong>The teacher's phone as a remote</strong>, also from a fixed address, with the buttons of the tool on the board and a big button a child can press.</li>
 <li><strong>Two tools at once</strong>, each in one half of the screen.</li>
 <li><strong>Clock</strong> (learning to tell the time, and a countdown to an event), <strong>noise meter</strong> (microphone level only; nothing is recorded or sent), work symbols and a QR code with styles.</li>
-<li><strong>Presentation</strong> (optional, off by default): a Canva presentation inside the board, with «Whose turn?» and a clear sheet to write on it.</li>
 </ul>
 <h3>For teachers</h3>
 <ul>
@@ -29,7 +28,7 @@
 <h3>Configuration</h3>
 <p>Under Site administration → Plugins → Local plugins → Class tools: names on the board, fair picking, the default screen mode (also by category), which tools, games and materials the site shows, a limited board for students, live sessions, stickers and the teachers' room, and sharing lists, letter wheels and locks with the whole school. Under Reports → Use of the boards, what classes use most. Access is gated by the capability local/oksigeniaclasstools:use (teachers and managers by default).</p>
 <h3>Privacy</h3>
-<p>Covered by the Privacy API (export and deletion). Everything stays in your Moodle: no external services, no CDN, no tracking. The optional presentation loads from canva.com only when the administrator turns it on.</p>
+<p>Covered by the Privacy API (export and deletion). Everything stays in your Moodle: no external services, no CDN, no tracking.</p>
 <h3>Languages</h3>
 <p>English and Spanish, other languages through AMOS. The built-in content of the games comes in nine languages.</p>
 <h3>Support</h3>

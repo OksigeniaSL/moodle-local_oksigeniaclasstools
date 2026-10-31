@@ -241,5 +241,17 @@ function xmldb_local_oksigeniaclasstools_upgrade($oldversion) {
         }
         upgrade_plugin_savepoint(true, 2026120105, 'local', 'oksigeniaclasstools');
     }
+    if ($oldversion < 2026120107) {
+        // The presentation tab (Canva) is gone: its recent presentations, what it was used for, and its place among the
+        // tabs the site shows.
+        $DB->delete_records('local_oksigeniaclasstools_state', ['tool' => 'presentaciones']);
+        $DB->delete_records('local_oksigeniaclasstools_tally', ['tool' => 'presentacion']);
+        $tools = get_config('local_oksigeniaclasstools', 'tools');
+        if ($tools !== false) {
+            $tools = implode(',', array_diff(explode(',', $tools), ['presentacion']));
+            set_config('tools', $tools, 'local_oksigeniaclasstools');
+        }
+        upgrade_plugin_savepoint(true, 2026120107, 'local', 'oksigeniaclasstools');
+    }
     return true;
 }

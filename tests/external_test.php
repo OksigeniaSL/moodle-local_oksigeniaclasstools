@@ -235,7 +235,7 @@ final class external_test extends \advanced_testcase {
         $this->refused(fn() => $this->call('bank', 'categories', (int) $course->id, 'quiz'));
     }
 
-    public function test_the_ai_and_the_presentation_answer_when_they_are_off(): void {
+    public function test_the_ai_answers_when_it_is_off(): void {
         $this->resetAfterTest();
         [$course, $teacher, $students] = $this->make_class(1);
         $this->setUser($teacher);
@@ -244,17 +244,9 @@ final class external_test extends \advanced_testcase {
         $generated = $this->call('ai', 'generate', (int) $course->id, 'quiz', 'primary', 3, 'Planets', '');
         $this->assertFalse($generated['ok']);
         $this->assertNotEmpty($generated['error']);
-        // The presentation tab starts off.
-        $this->assertSame(['ok' => false, 'off' => true], $this->json(
-            'presentation',
-            'resolve',
-            (int) $course->id,
-            'https://canva.link/abc'
-        ));
 
         $this->setUser($students[0]);
         $this->refused(fn() => $this->call('ai', 'generate', (int) $course->id, 'quiz', 'primary', 3, '', ''));
-        $this->refused(fn() => $this->call('presentation', 'resolve', (int) $course->id, 'https://canva.link/abc'));
     }
 
     public function test_stickers_and_the_teachers_room(): void {

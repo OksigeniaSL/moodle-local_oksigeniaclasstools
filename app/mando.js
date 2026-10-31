@@ -44,7 +44,7 @@
     // The look of each tool: the icon of its tab on the board (icons.js), and one of the board's colours.
     const TOOL_ICONS = { pizarra: 'pincel', marcador: 'trofeo', envivo: 'mano' };
     const TOOL_COLOURS = { temporizador: '#164281', cronometro: '#164281', quien: '#5b2fb8', grupos: '#067e36', semaforo: '#067e36',
-        azar: '#ce1423', juegos: '#ce1423', material: '#5b2fb8', pizarra: '#164281', presentacion: '#5b2fb8', marcador: '#0e7c86',
+        azar: '#ce1423', juegos: '#ce1423', material: '#5b2fb8', pizarra: '#164281', marcador: '#0e7c86',
         asi: '#0e7c86', reloj: '#164281', qr: '#164281', envivo: '#ce1423' };
     const ico = (n, cls = 'jn-ico') => (n && typeof icono === 'function' ? icono(n, cls) : '');
     const toolIcon = (id, cls) => ico(TOOL_ICONS[id] || id, cls);

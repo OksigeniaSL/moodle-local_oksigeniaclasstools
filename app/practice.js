@@ -89,7 +89,7 @@
         // Its «Moodle» is the fake below: the web services it answers, by name.
         ajax: 'practice://service', remote: { on: false }, logros: null, quizimg: '',
         services: { pick: true, state: true, groups: false, board: false, live: true, remote: true, logros: false, sala: false,
-            bank: true, quizimage: false, glossary: true, ai: false, presentation: false, tally: false },
+            bank: true, quizimage: false, glossary: true, ai: false, tally: false },
     };
 
     // --- A live session that plays itself -----------------------------------------------------------------------

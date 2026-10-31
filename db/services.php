@@ -199,14 +199,6 @@ $functions = [
         'ajax' => true,
         'capabilities' => 'local/oksigeniaclasstools:use',
     ],
-    'local_oksigeniaclasstools_presentation_resolve' => [
-        'classname' => 'local_oksigeniaclasstools\external\presentation',
-        'methodname' => 'resolve',
-        'description' => 'The design behind a Canva link, for the presentation tab.',
-        'type' => 'read',
-        'ajax' => true,
-        'capabilities' => 'local/oksigeniaclasstools:use',
-    ],
     'local_oksigeniaclasstools_quizimage_save' => [
         'classname' => 'local_oksigeniaclasstools\external\quizimage',
         'methodname' => 'save',

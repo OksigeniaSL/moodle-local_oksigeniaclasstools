@@ -64,11 +64,11 @@ window.shot = (name) => new Promise((done) => { if (!window.checkShot) { done();
         ai_accept: ['ai', 'accept'], ai_generate: ['ai', 'generate'], remote_poll: ['remote', 'poll'], remote_status: ['remote', 'status'],
         remote_rotate: ['remote', 'rotate'], remote_enable: ['remote', null], sala_view: ['sala', 'room'], sala_join: ['sala', 'join'],
         logros_record: ['logros', 'use'], logros_learn: ['logros', 'learn'], phone_state: ['mando', 'state'],
-        phone_courses: ['mando', 'courses'], phone_command: ['mando', 'command'], presentation_resolve: ['presentation', ''],
+        phone_courses: ['mando', 'courses'], phone_command: ['mando', 'command'],
         glossary_list: ['glossary', 'list'], glossary_words: ['glossary', 'words'], live_start: ['live', 'start'],
         live_state: ['live', 'state'], live_control: ['live', null], live_device: ['join', null], live_member: ['join', null] };
     // The web services whose answer is a JSON document.
-    const JSONS = ['bank_pairs', 'bank_questions', 'remote_poll', 'sala_view', 'sala_join', 'phone_state', 'presentation_resolve',
+    const JSONS = ['bank_pairs', 'bank_questions', 'remote_poll', 'sala_view', 'sala_join', 'phone_state',
         'live_start', 'live_state', 'live_control', 'live_device', 'live_member'];
     const flat = (args) => Object.fromEntries(Object.entries(args).map(([k, v]) => [k,
         typeof v === 'boolean' ? (v ? '1' : '0') : (v && typeof v === 'object' ? JSON.stringify(v) : String(v))]));
@@ -161,10 +161,6 @@ window.shot = (name) => new Promise((done) => { if (!window.checkShot) { done();
                 [['', 'Who is playing?', 'cap'], ['x_o4x0', 'Whole class', 'opton'], ['x_o4x1', 'Two teams', 'opt']]];
             return json({ boards: [{ course: 1, name: 'One', tool: 'grupos', tools: [['grupos', 'Groups'], ['reloj', 'Clock']], here },
                 { course: 2, name: 'Two', tool: 'reloj', tools: [['reloj', 'Clock']], here: [] }] });
-        }
-        // A Canva short link, as presentation_resolve follows it.
-        if (String(url).startsWith('fake://presentation')) {
-            return json(String(p.get('url')).includes('canva.link/abc123xyz') ? { ok: true, id: 'DAexample01', token: 'faketoken-faketoken' } : { ok: false });
         }
         // A glossary of the course, as glossary_list and glossary_words give it.
         if (String(url).startsWith('fake://glossary')) {
@@ -2620,103 +2616,6 @@ const CHECKS = {
         if (!played) { return 'the song did not play at the goal'; }
         q('#b-modo').click(); q('#menu-modo [data-modo="primary"]').click();
         pick('bote'); set(0);
-        return '';
-    },
-    // The presentation of Canva: any link of a design, or its HTML embed code, gives the embed address; other links
-    // say why not; it opens in a frame, stays in the recent ones of the course, and leaves them when removed. A policy
-    // of the page keeps the frame from loading anything from Canva.
-    'presentation': async () => {
-        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-        const q = (x) => document.querySelector(x);
-        const csp = document.createElement('meta');
-        csp.httpEquiv = 'Content-Security-Policy'; csp.content = "frame-src 'none'";
-        document.head.append(csp);
-        const P = window.ClasstoolsPresentation;
-        if (!P || !q('#t-presentacion')) { return 'no presentation tab'; }
-        const D = 'https://www.canva.com/design/DAGhbGUMnnI/gZyl0pFu9hrdUYmKXUictg/';
-        const cases = [
-            [D + 'view?utm_content=DAGhbGUMnnI&utm_campaign=designshare&utm_medium=embeds&utm_source=link', D + 'view?embed'],
-            ['https://www.canva.com/design/DAGhbGUMnnI/abcdefghijklmnopqrstuv/edit?utm_source=sharebutton',
-                'https://www.canva.com/design/DAGhbGUMnnI/abcdefghijklmnopqrstuv/view?embed'],
-            [`<div style="position: relative"><iframe loading="lazy" src="${D}view?embed" allowfullscreen="allowfullscreen" allow="fullscreen"></iframe></div>`
-                + `<a href="${D}view?utm_content=DAGhbGUMnnI" target="_blank" rel="noopener">Volcanoes</a>`, D + 'view?embed'],
-            ['canva.com/design/DAGhbGUMnnI/view', 'https://www.canva.com/design/DAGhbGUMnnI/view?embed'],
-        ];
-        for (const [text, want] of cases) {
-            const d = P.parse(text), got = d && P.embedUrl(d);
-            if (got !== want) { return `embed of ${text.slice(0, 60)}: ${got}`; }
-        }
-        if (P.parse('https://example.org/design/DAGhbGUMnnI') || P.parse('https://canva.link/abc123xyz')) { return 'a link that is not of a design passed'; }
-        q('#t-presentacion').click();
-        await sleep(150);
-        const type = (link, name = '') => { q('#pr-enlace').value = link; q('#pr-nombre').value = name; q('#pr-abrir').click(); };
-        type('https://canva.link/abc123xyz');
-        if (q('#pr-error').hidden || !/short links only open inside Moodle/.test(q('#pr-error').textContent)) { return `short link: ${q('#pr-error').textContent}`; }
-        type('https://example.org/slides');
-        if (q('#pr-error').hidden || !/Canva/.test(q('#pr-error').textContent) || !q('#pr-vista').hidden) { return 'a link of another site opened'; }
-        type(cases[0][0], 'Volcanoes');
-        await sleep(150);
-        const frame = q('#pr-marco iframe');
-        if (q('#pr-vista').hidden || !frame || frame.src !== D + 'view?embed') { return `frame: ${frame && frame.src}`; }
-        if (frame.title !== 'Volcanoes' || q('#pr-titulo').textContent !== 'Volcanoes') { return `name: ${frame.title}`; }
-        if (q('#pr-canva').href !== D + 'view') { return `open in Canva: ${q('#pr-canva').href}`; }
-        if (!q('#pr-error').hidden) { return 'the error stayed after a good link'; }
-        await window.shot('presentation-open');
-        // «Whose turn?» over the slide, and writing on it: two strokes, one undone, and none when it is turned off.
-        if (q('#pr-turno').hidden) { return 'no «Whose turn?» on the presentation'; }
-        q('#pr-turno').click();
-        await sleep(2600);
-        if (!q('#pr-marco .ct-turno') || !/Student \d/.test(q('#pr-marco .ct-turno-nombre').textContent)) {
-            return `whose turn over the slide: ${q('#pr-marco .ct-turno-nombre') && q('#pr-marco .ct-turno-nombre').textContent}`;
-        }
-        await window.shot('presentation-turn');
-        q('#pr-marco .ct-turno [data-a="ok"]').click();
-        q('#pr-escribir').click();
-        const sheet = q('#pr-lamina');
-        if (sheet.hidden || q('#pr-paleta').hidden) { return 'the sheet to write on did not show'; }
-        const b = sheet.getBoundingClientRect();
-        const ev = (type, x, y) => sheet.dispatchEvent(new PointerEvent(type, { bubbles: true, pointerId: 1, clientX: b.left + x * b.width, clientY: b.top + y * b.height }));
-        ev('pointerdown', .2, .2); ev('pointermove', .4, .3); ev('pointermove', .6, .5); ev('pointerup', .6, .5);
-        q('#pr-paleta [data-c="#164281"]').click();
-        ev('pointerdown', .3, .7); ev('pointermove', .7, .72); ev('pointerup', .7, .72);
-        if (P.strokes() !== 2) { return `strokes: ${P.strokes()}`; }
-        await window.shot('presentation-write');
-        q('#pr-deshacer').click();
-        if (P.strokes() !== 1) { return `undo: ${P.strokes()}`; }
-        q('#pr-escribir').click();
-        if (!sheet.hidden || P.strokes() !== 0) { return 'turned off, but what was written stayed'; }
-        q('#pr-otra').click();
-        await sleep(100);
-        if (q('#pr-marco iframe') || q('#pr-elige').hidden || q('#pr-recientes').hidden) { return 'back to the list of presentations'; }
-        if (P.state().items.length !== 1 || P.state().last !== null) { return `kept: ${JSON.stringify(P.state())}`; }
-        // The same design again, without a name: it keeps its name and stays once.
-        type(cases[1][0]);
-        await sleep(100);
-        if (P.state().items.length !== 1 || q('#pr-titulo').textContent !== 'Volcanoes') { return `again: ${JSON.stringify(P.state().items)}`; }
-        q('#pr-otra').click();
-        await sleep(100);
-        await window.shot('presentation-list');
-        q('#pr-lista [data-id]').click();
-        await sleep(100);
-        if (q('#pr-vista').hidden) { return 'a recent one did not open'; }
-        q('#pr-otra').click();
-        q('#pr-lista [data-quitar]').click();
-        if (P.state().items.length || !q('#pr-recientes').hidden) { return 'removed, but still there'; }
-        // Inside Moodle, a short link goes through the server, which says where it leads; one that leads nowhere says so.
-        window.CLASSTOOLS.services.presentation = true;
-        type('https://canva.link/nothing99');
-        await sleep(150);
-        if (q('#pr-error').hidden || !/could not be followed/.test(q('#pr-error').textContent)) { return `short link that leads nowhere: ${q('#pr-error').textContent}`; }
-        type(' canva.link/abc123xyz ', 'Robots');
-        await sleep(150);
-        const asked = FAKE.calls.find((c) => c.url === 'canva.link/abc123xyz');
-        if (!asked || q('#pr-vista').hidden || q('#pr-marco iframe').src !== 'https://www.canva.com/design/DAexample01/faketoken-faketoken/view?embed') {
-            return `short link through Moodle: ${JSON.stringify(asked)} ${q('#pr-marco iframe') && q('#pr-marco iframe').src}`;
-        }
-        q('#pr-otra').click();
-        q('#pr-lista [data-quitar]').click();
-        window.CLASSTOOLS.services.presentation = false;
-        csp.remove();
         return '';
     },
     // The teacher's guide expanded: in the middle and inside the screen, with bigger letters; a tap outside closes it,

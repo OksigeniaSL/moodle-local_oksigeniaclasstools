@@ -98,7 +98,6 @@
         material: [[['tu', '#mt-turn']]],
         pizarra: [[['curtain', null, '', 'rm_cmd_curtain'], ['reveal', null, '', 'rm_cmd_reveal']], [['pv', '#wb-prev'], ['nx', '#wb-next']],
             [['nw', '#wb-new'], ['tu', '#wb-turn']]],
-        presentacion: [[['tu', '#pr-turno']], [['es', '#pr-escribir'], ['de', '#pr-deshacer'], ['bo', '#pr-borrar']]],
         // Each team, its points and its steps; or the class goal.
         marcador: () => [[['md', '#h-marcador [role="radio"][data-v]']],
             ...[...document.querySelectorAll('#sc-teams .ct-team')].flatMap((card) => {
