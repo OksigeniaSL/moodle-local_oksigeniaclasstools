@@ -87,6 +87,18 @@ final class hook_callbacks_test extends \advanced_testcase {
         $this->assertEmpty($primary->find('local_oksigeniaclasstools', null));
     }
 
+    public function test_the_course_link_goes_right_after_course_for_everyone(): void {
+        $this->resetAfterTest();
+        [$course, $teacher, $students] = $this->make_class(1);
+        set_config('students', 1, 'local_oksigeniaclasstools');
+        foreach ([$teacher, $students[0]] as $user) {
+            $this->setUser($user);
+            [$secondary] = $this->navigation($course);
+            // The last ones of the bar go to «More» when they do not fit: a student has to see it without opening anything.
+            $this->assertSame('local_oksigeniaclasstools', $secondary->get_children_key_list()[1]);
+        }
+    }
+
     public function test_the_main_menu_link_can_be_turned_off(): void {
         $this->resetAfterTest();
         [$course, $teacher] = $this->make_class(1);

@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Students find the board: on the course bar its link now goes right after «Course», as for teachers. It was the last one,
+  so it ended up in the «More» menu when it did not fit.
 - Timer: the tortoise, the train, the bee, the balloon, the cheetah and the plane of the bar, painted like the racing car.
 
 ## 1.1.0 (2026-11-01)

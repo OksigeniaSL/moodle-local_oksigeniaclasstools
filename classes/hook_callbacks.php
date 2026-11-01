@@ -46,8 +46,8 @@ class hook_callbacks {
     }
 
     /**
-     * In the course bar, right after «Course» (otherwise it would end up in the «More» menu). For teachers, and for
-     * students when the site opens the board to them.
+     * In the course bar, right after «Course», for teachers and for students when the site opens the board to them:
+     * the last ones of the bar go to the «More» menu when they do not fit.
      *
      * @param secondary_extend $hook
      */
@@ -70,7 +70,7 @@ class hook_callbacks {
             'local_oksigeniaclasstools',
             new pix_icon('i/group', '')
         );
-        $view->add_node($node, $view->get('editsettings') ? 'editsettings' : null);
+        $view->add_node($node, $view->get_children_key_list()[1] ?? null);
     }
 
     /**
