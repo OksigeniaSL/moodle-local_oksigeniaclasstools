@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.1.1 (2026-11-01)
 
 - Students find the board: on the course bar its link now goes right after «Course», as for teachers. It was the last one,
   so it ended up in the «More» menu when it did not fit.
