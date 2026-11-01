@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Timer: the tortoise, the train, the bee, the balloon, the cheetah and the plane of the bar, painted like the racing car.
+
 ## 1.1.0 (2026-11-01)
 
 - Coordinate plane: the points can have a colour, chosen in the panel. With another colour chosen, tapping a point changes

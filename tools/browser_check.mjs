@@ -2678,6 +2678,8 @@ const CHECKS = {
             const w = q('#tm-aspecto .tm-viajero'), fact = q('#tm-aspecto .tm-dato');
             if (!w || !/translate\(/.test(w.getAttribute('transform') || '')) { return `${v}: it does not travel`; }
             if (!fact || !fact.textContent.trim()) { return `${v}: no fact`; }
+            const img = w.querySelector('image');
+            if (img && !(await fetch(img.getAttribute('href'))).ok) { return `${v}: its picture is not there`; }
             await window.shot('timer-' + v);
         }
         set('cambia');

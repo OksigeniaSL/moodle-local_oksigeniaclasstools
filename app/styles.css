@@ -1777,52 +1777,23 @@ button.id-revisar { padding-right: .8rem; cursor: pointer; }
 .tm-arena-seca { fill: #eed9a8; }
 .tm-sabana { fill: #e3c778; }
 .tm-huellas { fill: none; stroke: #c9ab6b; stroke-width: 2; stroke-dasharray: 2 5; stroke-linecap: round; }
-.tm-tortuga-piel { fill: #a6cf6b; stroke: #4a6b22; stroke-width: 1.1; stroke-linejoin: round; }
-.tm-tortuga-concha { fill: #4f8f3a; stroke: #2c5a1f; stroke-width: 1.3; stroke-linejoin: round; }
-.tm-tortuga-placas { fill: none; stroke: #2c5a1f; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; }
 .tm-via { fill: #6b7280; }
 .tm-traviesa { fill: #8b6a43; }
 .tm-estacion-muro { fill: #f0e3cf; stroke: #6b4a2b; stroke-width: 1; }
 .tm-estacion-techo { fill: #ce1423; stroke: #7c0c15; stroke-width: 1; stroke-linejoin: round; }
 .tm-estacion-puerta { fill: #6b4a2b; }
-.tm-tren-cuerpo { fill: #f4f7fb; stroke: #164281; stroke-width: 1.2; stroke-linejoin: round; }
-.tm-tren-franja { fill: #ce1423; }
-.tm-tren-ventana { fill: #1f3a63; }
 .tm-vuelo { fill: none; stroke: var(--tinta-3); stroke-width: 1.2; stroke-dasharray: 1.5 4; stroke-linecap: round; }
 .tm-vuelo-blanco { stroke: #fff; stroke-width: 1.8; stroke-dasharray: none; opacity: .9; }
 .tm-tallo { fill: none; stroke: #2e7d32; stroke-width: 2.2; stroke-linecap: round; }
 .tm-flor circle { fill: #e96aa0; stroke: #a53a6c; stroke-width: .9; }
 .tm-flor-centro { fill: #fbbe17; stroke: #a87400; stroke-width: .9; }
-.tm-abeja-cuerpo { fill: #fbbe17; stroke: #5b3a00; stroke-width: 1.2; }
-.tm-abeja-raya { fill: none; stroke: #2a1c00; stroke-width: 2.6; stroke-linecap: round; }
-.tm-abeja-cara { fill: #2a1c00; }
-.tm-abeja .tm-ojito { fill: #fff; }
-.tm-aguijon { fill: #2a1c00; }
-.tm-ala { fill: rgba(190, 225, 245, .85); stroke: #6f9ab5; stroke-width: .9; }
 .tm-cielo { fill: #cfe8fa; }
 .tm-nube ellipse { fill: #fff; }
 .tm-colina { fill: #8cc66b; }
-.tm-globo-tela { fill: #ce1423; stroke: #7c0c15; stroke-width: 1.1; stroke-linejoin: round; }
-.tm-globo-gajo { fill: #fbbe17; }
-.tm-globo-cuerda { fill: none; stroke: #5b3a1c; stroke-width: .9; }
-.tm-globo-cesta { fill: #a8733a; stroke: #5b3a1c; stroke-width: 1; }
-.tm-guepardo-piel { fill: #edbb55; stroke: #7a5414; stroke-width: 1.1; stroke-linejoin: round; }
-.tm-guepardo-cola { fill: none; stroke: #c79232; stroke-width: 2.6; stroke-linecap: round; }
-.tm-guepardo-pata { fill: none; stroke: #c79232; stroke-width: 2.6; stroke-linecap: round; }
-.tm-guepardo-manchas circle { fill: #4a300a; }
-.tm-guepardo-lagrima { fill: none; stroke: #2a1c00; stroke-width: 1; stroke-linecap: round; }
-.tm-guepardo-nariz { fill: #2a1c00; }
 .tm-acacia { fill: #5d9c43; stroke: #38702a; stroke-width: 1; }
-.tm-avion-cuerpo { fill: #f8fafc; stroke: #164281; stroke-width: 1.2; stroke-linejoin: round; }
-.tm-avion-cola { fill: #ce1423; stroke: #7c0c15; stroke-width: 1; stroke-linejoin: round; }
-.tm-avion-ala { fill: #164281; stroke: #0f2f5e; stroke-width: .8; stroke-linejoin: round; }
-.tm-avion-ventanas circle { fill: #1f3a63; }
-.tm-avion-cabina { fill: #1f3a63; }
 .anillo.en-marcha .tm-flota { animation: tm-flota 1.8s ease-in-out infinite alternate; }
 @keyframes tm-flota { from { transform: translateY(-2px); } to { transform: translateY(2px); } }
-.anillo.en-marcha .tm-alas { transform-box: fill-box; transform-origin: center bottom; animation: tm-aletea .12s linear infinite alternate; }
-@keyframes tm-aletea { from { transform: scaleY(1); } to { transform: scaleY(.7); } }
-@media (prefers-reduced-motion: reduce) { .anillo.en-marcha .tm-velocidad line, .anillo.en-marcha .tm-mece, .anillo.en-marcha .tm-flota, .anillo.en-marcha .tm-alas, .tm-bateria-dibujo.baja .tm-carga, .tm-bloque.ultimo { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .anillo.en-marcha .tm-velocidad line, .anillo.en-marcha .tm-mece, .anillo.en-marcha .tm-flota, .tm-bateria-dibujo.baja .tm-carga, .tm-bloque.ultimo { animation: none; } }
 
 /* The class goal (goal.js), in the Scoreboard tab: the jar of marbles and the prize. */
 .ct-goal { display: none; grid-template-columns: minmax(15rem, 20rem) minmax(0, 1fr); gap: 1rem; flex: 1; min-height: 0; }

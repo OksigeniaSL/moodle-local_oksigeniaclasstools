@@ -509,11 +509,7 @@
         if (v === 'tortuga') {
             return trail + '<rect class="tm-suelo tm-arena-seca" x="10" y="141" width="172" height="9" rx="4.5"/><ellipse class="tm-mar" cx="186" cy="145" rx="13" ry="5"/>'
                 + '<g clip-path="url(#tmEstela)"><path class="tm-huellas" d="M12 145H182"/></g>'
-                + '<g class="tm-viajero tm-tortuga"><path class="tm-tortuga-piel" d="M-16 3 L-21 6 L-15 6.5 Z"/>'
-                + '<rect class="tm-tortuga-piel" x="-12" y="2" width="7" height="6.5" rx="2.5"/><rect class="tm-tortuga-piel" x="6" y="2" width="7" height="6.5" rx="2.5"/>'
-                + '<path class="tm-tortuga-piel" d="M12 -1 Q15 -8 21 -7 Q26 -6 25 -1 Q24 3 18 3 L12 3 Z"/><circle class="tm-ojito" cx="21" cy="-3.5" r="1.3"/>'
-                + '<path class="tm-tortuga-concha" d="M-16 4 Q-15 -13 0 -13 Q15 -13 16 4 Z"/>'
-                + '<path class="tm-tortuga-placas" d="M-6 -12 L-4 -5 L4 -5 L6 -12 M-4 -5 L-8 3 M4 -5 L8 3 M-15 -3 L-4 -5 M15 -3 L4 -5"/></g>' + fact;
+                + '<g class="tm-viajero tm-tortuga"><image href="img/tortuga.webp" x="-21" y="-15" width="42" height="22.2"/></g>' + fact;
         }
         if (v === 'tren') {
             let sleepers = '';
@@ -521,42 +517,28 @@
             return `${sleepers}<rect class="tm-via" x="10" y="143.5" width="180" height="2.6" rx="1"/>`
                 + '<g class="tm-estacion"><path class="tm-estacion-techo" d="M180 121 L198 121 L196 115 L182 115 Z"/><rect class="tm-estacion-muro" x="182" y="121" width="14" height="22.5"/>'
                 + '<rect class="tm-estacion-puerta" x="186.5" y="130" width="5" height="13.5"/></g>'
-                + '<g class="tm-viajero tm-tren"><g class="tm-velocidad oscura"><line x1="-36" y1="-5" x2="-28" y2="-5"/><line x1="-39" y1="0" x2="-28" y2="0"/></g>'
-                + '<path class="tm-tren-cuerpo" d="M-26 7 V-9 Q-26 -12 -23 -12 H6 Q20 -11 28 7 Z"/><path class="tm-tren-franja" d="M-26 1 H24.8 L27 5 H-26 Z"/>'
-                + '<rect class="tm-tren-ventana" x="-22" y="-8.5" width="7" height="5.5" rx="1.2"/><rect class="tm-tren-ventana" x="-12" y="-8.5" width="7" height="5.5" rx="1.2"/>'
-                + '<rect class="tm-tren-ventana" x="-2" y="-8.5" width="7" height="5.5" rx="1.2"/><path class="tm-tren-ventana" d="M9 -8.5 H12 Q16 -7.5 19 -3 H9 Z"/>'
-                + '<circle class="tm-rueda" cx="-18" cy="7.5" r="2.4"/><circle class="tm-rueda" cx="-8" cy="7.5" r="2.4"/><circle class="tm-rueda" cx="8" cy="7.5" r="2.4"/><circle class="tm-rueda" cx="18" cy="7.5" r="2.4"/></g>' + fact;
+                + '<g class="tm-viajero tm-tren"><g class="tm-velocidad oscura"><line x1="-38" y1="-5" x2="-31" y2="-5"/><line x1="-41" y1="0" x2="-31" y2="0"/></g><image href="img/tren.webp" x="-30" y="-11.2" width="60" height="20.7"/></g>' + fact;
         }
         if (v === 'abeja') {
             return trail + '<rect class="tm-suelo" x="10" y="144" width="180" height="6" rx="3"/><g clip-path="url(#tmEstela)"><path class="tm-vuelo" d="M12 134H182"/></g>'
                 + '<path class="tm-tallo" d="M189 145 V124"/><path class="tm-hoja" d="M189 138 Q181 131 178 136 Q182 142 189 138 Z"/>'
                 + '<g class="tm-flor"><circle cx="189" cy="109" r="5"/><circle cx="197" cy="115" r="5"/><circle cx="194" cy="124" r="5"/><circle cx="184" cy="124" r="5"/><circle cx="181" cy="115" r="5"/></g><circle class="tm-flor-centro" cx="189" cy="117" r="4.5"/>'
-                + '<g class="tm-viajero tm-abeja"><g class="tm-flota"><g class="tm-alas"><ellipse class="tm-ala" cx="-4" cy="-9" rx="5.5" ry="8.5" transform="rotate(-18 -4 -9)"/><ellipse class="tm-ala" cx="4" cy="-9" rx="5" ry="8" transform="rotate(16 4 -9)"/></g>'
-                + '<path class="tm-aguijon" d="M-13 0 L-18 0 L-13 2.2 Z"/><ellipse class="tm-abeja-cuerpo" cx="0" cy="0" rx="13.5" ry="8"/>'
-                + '<path class="tm-abeja-raya" d="M-7 -6.5 Q-5 0 -7 6.5 M-1 -7.8 Q1 0 -1 7.8 M5 -7 Q7 0 5 7"/>'
-                + '<circle class="tm-abeja-cara" cx="12" cy="-1" r="5.2"/><circle class="tm-ojito" cx="14" cy="-2.2" r="1.2"/><path class="tm-antena" d="M13 -5.5 Q15 -11 19 -11"/></g></g>' + fact;
+                + '<g class="tm-viajero tm-abeja"><g class="tm-flota"><image href="img/abeja.webp" x="-16.8" y="-17" width="33.6" height="28"/></g></g>' + fact;
         }
         if (v === 'globo') {
             return '<rect class="tm-cielo" x="10" y="112" width="180" height="38" rx="9"/><g class="tm-nube"><ellipse cx="44" cy="124" rx="9" ry="4"/><ellipse cx="52" cy="121" rx="7" ry="4"/></g>'
                 + '<g class="tm-nube"><ellipse cx="118" cy="140" rx="10" ry="4"/><ellipse cx="127" cy="137" rx="7" ry="4"/></g><path class="tm-colina" d="M162 150 Q178 128 190 136 V150 Z"/>'
-                + '<g class="tm-viajero tm-globo"><g class="tm-flota"><path class="tm-globo-tela" d="M0 -21 C14 -21 17 -7 10 2 L4 8 H-4 L-10 2 C-17 -7 -14 -21 0 -21 Z"/>'
-                + '<path class="tm-globo-gajo" d="M0 -21 C-7 -21 -9 -7 -5 2 L-2 8 H2 L5 2 C9 -7 7 -21 0 -21 Z"/><path class="tm-globo-cuerda" d="M-4 8 L-3 12 M4 8 L3 12"/><rect class="tm-globo-cesta" x="-4" y="12" width="8" height="5" rx="1"/></g></g>' + fact;
+                + '<g class="tm-viajero tm-globo"><g class="tm-flota"><image href="img/globo.webp" x="-15.6" y="-24" width="31.2" height="38"/></g></g>' + fact;
         }
         if (v === 'guepardo') {
             return '<rect class="tm-suelo tm-sabana" x="10" y="141" width="180" height="9" rx="4.5"/><path class="tm-palmera" d="M188 141 Q187 128 189 120 M189 124 L181 118 M189 124 L196 119"/>'
                 + '<ellipse class="tm-acacia" cx="189" cy="116" rx="13" ry="4.5"/>'
-                + '<g class="tm-viajero tm-guepardo"><g class="tm-velocidad oscura"><line x1="-40" y1="-6" x2="-34" y2="-6"/><line x1="-42" y1="-1" x2="-34" y2="-1"/></g>'
-                + '<path class="tm-guepardo-cola" d="M-17 -5 C-23 -10 -28 -10 -33 -6"/><path class="tm-guepardo-pata" d="M-13 0 L-23 6.5 M-9 1 L-15 8 M10 -1 L20 7 M6 0 L12 8"/>'
-                + '<path class="tm-guepardo-piel" d="M-18 -5 C-12 -11 4 -11 11 -9 C14 -13 22 -14 26 -10 C29 -8 31 -6 30 -4.5 C28 -3 25 -3 22 -3 C18 1 9 3.5 0 3.5 C-9 3.5 -15 3 -18 0 Z"/>'
-                + '<path class="tm-guepardo-piel" d="M17 -12 L17.5 -16.5 L21.5 -13 Z"/><g class="tm-guepardo-manchas"><circle cx="-12" cy="-5" r="1.3"/><circle cx="-7" cy="-1.5" r="1.3"/><circle cx="-5" cy="-6.5" r="1.3"/><circle cx="0" cy="-2.5" r="1.3"/><circle cx="3" cy="-7" r="1.3"/><circle cx="7" cy="-3" r="1.3"/><circle cx="12" cy="-5.5" r="1.1"/></g>'
-                + '<circle class="tm-ojito" cx="24" cy="-9" r="1.2"/><path class="tm-guepardo-lagrima" d="M24 -8 Q24 -5.5 27 -5"/><circle class="tm-guepardo-nariz" cx="29.6" cy="-6.4" r="1"/></g>' + fact;
+                + '<g class="tm-viajero tm-guepardo"><g class="tm-velocidad oscura"><line x1="-36" y1="-6" x2="-30" y2="-6"/><line x1="-38" y1="-1" x2="-30" y2="-1"/></g><image href="img/guepardo.webp" x="-28" y="-15" width="56" height="22.2"/></g>' + fact;
         }
         if (v === 'avion') {
             return trail + '<rect class="tm-cielo" x="10" y="112" width="180" height="38" rx="9"/><g class="tm-nube"><ellipse cx="70" cy="123" rx="9" ry="4"/><ellipse cx="78" cy="120" rx="7" ry="4"/></g>'
                 + '<g class="tm-nube"><ellipse cx="138" cy="141" rx="10" ry="4"/><ellipse cx="147" cy="138" rx="7" ry="4"/></g><g clip-path="url(#tmEstela)"><path class="tm-vuelo tm-vuelo-blanco" d="M12 133H182"/></g>' + finishLine
-                + '<g class="tm-viajero tm-avion"><path class="tm-avion-cola" d="M-22 -5 L-28 -16 L-21 -16 L-12 -5 Z"/>'
-                + '<path class="tm-avion-cuerpo" d="M-27 -2 Q-27 -5 -22 -5 H14 Q24 -5 29 0 Q24 4 14 4 H-22 Q-27 4 -27 -2 Z"/><path class="tm-avion-ala" d="M-7 0 L-15 11 L-8 11 L7 0 Z"/>'
-                + '<g class="tm-avion-ventanas"><circle cx="-16" cy="-1.5" r="1"/><circle cx="-11" cy="-1.5" r="1"/><circle cx="-6" cy="-1.5" r="1"/><circle cx="-1" cy="-1.5" r="1"/><circle cx="4" cy="-1.5" r="1"/><circle cx="9" cy="-1.5" r="1"/></g><path class="tm-avion-cabina" d="M16 -4.6 Q22 -4 25 -1.5 H16 Z"/></g>' + fact;
+                + '<g class="tm-viajero tm-avion"><image href="img/avion.webp" x="-28" y="-11" width="56" height="21.3"/></g>' + fact;
         }
         if (v === 'bateria') {
             let cells = '';
@@ -596,7 +578,7 @@
             const x = 29 + 135 * (1 - f);
             const setAttr = (sel, attr, val) => { const e = g.querySelector(sel); if (e) { e.setAttribute(attr, val); } };
             if (v === 'cohete') { setAttr('.tm-estela', 'width', (x - 8).toFixed(2)); g.querySelector('.tm-barra').style.fill = barColour(f); }
-            if (['caracol', 'tortuga', 'abeja', 'avion'].includes(v)) { setAttr('.tm-estela', 'width', Math.max(0, x - 24).toFixed(2)); }
+            if (['caracol', 'tortuga', 'abeja', 'avion'].includes(v)) { setAttr('.tm-estela', 'width', Math.max(0, x - (v === 'caracol' ? 24 : 29)).toFixed(2)); }
             if (v === 'ninguno') { setAttr('.tm-estela', 'width', (170 * f).toFixed(2)); g.querySelector('.tm-barra').style.fill = barColour(f); }
             if (v === 'bateria') {
                 setAttr('.tm-carga', 'width', Math.max(0, 156 * f).toFixed(2));
