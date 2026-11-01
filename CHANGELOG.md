@@ -1,5 +1,22 @@
 # Changelog
 
+## 1.1.0 (2026-11-01)
+
+- Coordinate plane: the points can have a colour, chosen in the panel. With another colour chosen, tapping a point changes
+  it; with its own, it goes away.
+- Timer: six more travellers for the bar (tortoise, high-speed train, bee, hot-air balloon, cheetah and plane), each with
+  its fact, and «A different one each time», which goes on to the next when the time runs out.
+- The speaker in the top bar opens the volume, kept on each computer, together with the button to mute. It starts a little
+  lower than the sound was, and goes louder too. The voice of the guided helps follows it.
+- Traffic light: «By hand», for boards without a microphone: the teacher turns the lights on, on the board or from the
+  remote, and nothing is listened to. When the microphone fails, the board offers it.
+- Low screens: the balance scale takes the height it has instead of letting its pans go under the buttons; the timeline
+  shares its height between events and periods, with its lanes closer, and shortens a name longer than the screen; the
+  base blocks fit in 540 pixels.
+- Three new guided helps, with voice in Spanish and English: the coordinate plane (Battleship), the timeline (the history
+  of the Earth) and 3D shapes (where a face ends up in the net). Two new stickers: Fleet Sinker and Century Hopper.
+- The practice board says «example data».
+
 ## 1.0.0 (2026-10-31)
 
 - First stable release: everything planned for it is done (language packs, site configuration, AMD modules and web

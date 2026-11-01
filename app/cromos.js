@@ -316,6 +316,29 @@
                 ${GLOVE(98, 76, -8)}`,
             icon: '<path d="M0 -32 V28 M-18 28 H18 M-32 -26 H32"/><path d="M-32 -26 L-40 -4 H-24 Z M32 -26 L24 -4 H40 Z"/>',
         },
+        hundeflotas: {
+            box: [-2, -6, 128, 98],
+            seed: 'cromo-2231', family: 'material',
+            costume: () => `
+                <g transform="rotate(8 98 40)">
+                    <rect x="72" y="8" width="52" height="52" rx="4" fill="#fff" ${S}/>
+                    <path d="M85 8 V60 M98 8 V60 M111 8 V60 M72 21 H124 M72 34 H124 M72 47 H124" stroke="#9fb4cf" stroke-width="1.6"/>
+                    <path d="M78 42 H107 L102 52 H83 Z" fill="#164281" ${S2}/><path d="M92 42 V26 L104 40 Z" fill="#fbbe17" ${S2}/>
+                    <path d="M108 13 l9 9 M117 13 l-9 9" stroke="#ce1423" stroke-width="3.5" stroke-linecap="round"/></g>
+                ${GLOVE(94, 74, -6)}`,
+            icon: '<path d="M-30 30 V-30 M-30 30 H30 M-30 10 H30 M-30 -10 H30 M-10 30 V-30 M10 30 V-30"/><circle cx="10" cy="-10" r="7"/>',
+        },
+        viajasiglos: {
+            box: [-2, -12, 130, 96],
+            seed: 'cromo-2307', family: 'material',
+            costume: () => `
+                <path d="M72 42 H128" fill="none" stroke="${INK}" stroke-width="8" stroke-linecap="round"/>
+                <path d="M72 42 H128" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/>
+                ${[[80, '#ce1423', 22], [99, '#067e36', 10], [118, '#5b2fb8', 24]].map(([x, c, y]) => `<path d="M${x} 42 V${y + 6}" stroke="${INK}" stroke-width="2.5"/>`
+                    + `<circle cx="${x}" cy="${y}" r="7" fill="${c}" ${S2}/>`).join('')}
+                ${GLOVE(96, 66, -4)}${stick('M96 62 L96 46', '#c9d3e0', 3)}`,
+            icon: '<path d="M-34 10 H34"/><path d="M-22 10 V-8 M0 10 V-22 M22 10 V-4"/><circle cx="-22" cy="-14" r="6"/><circle cx="0" cy="-28" r="6"/><circle cx="22" cy="-10" r="6"/>',
+        },
         creajuegos: {
             box: [-14, -6, 118, 96],
             seed: 'cromo-2018', family: 'games',

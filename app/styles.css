@@ -302,6 +302,16 @@ input[type="range"]:focus-visible { outline: 3px solid var(--azul-osc); outline-
 
 /* ---------- Noise meter ---------- */
 .semaforo { display: grid; grid-template-columns: minmax(0, 1fr) minmax(20rem, 30rem); gap: 1.5rem; }
+/* By hand: only the three lights to turn on. */
+.semaforo.a-mano .solo-oye { display: none !important; }
+.semaforo.a-mano .luz { cursor: pointer; }
+.ct-sm-mano { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .5rem; }
+.ct-sm-mano[hidden] { display: none; }
+.ct-sm-mano button { min-height: calc(64px * var(--zoom, 1)); padding-inline: .4rem; font-size: 1.1rem; }
+.ct-sm-mano button[data-z="verde"] { background: #067e36; color: #fff; }
+.ct-sm-mano button[data-z="amarillo"] { background: #fbbe17; color: #1c1a19; }
+.ct-sm-mano button[data-z="rojo"] { background: #ce1423; color: #fff; }
+.ct-sm-mano button[aria-checked="true"] { outline: 4px solid var(--tinta); outline-offset: 2px; }
 .farola { display: flex; justify-content: center; min-height: 0; }
 .caja-semaforo { display: flex; flex-direction: column; justify-content: space-evenly; align-items: center; height: 100%; aspect-ratio: 1 / 2.6; border-radius: 22% / 9%; background: linear-gradient(90deg, #232b38, #343f50 50%, #232b38); box-shadow: inset 0 0 0 5px #46526a, 0 12px 28px rgba(15, 47, 94, .25); }
 .luz { width: 70%; aspect-ratio: 1; border-radius: 50%; box-shadow: inset 0 6px 14px rgba(0, 0, 0, .55); transition: background-color .25s, box-shadow .25s; }
@@ -977,6 +987,12 @@ html.duelo .ct-panel > .ct-side { max-height: 22vh; overflow-y: auto; }
 .ct-b10-cambios .boton { min-height: calc(40px * var(--zoom, 1)); padding: .3rem .6rem; font-size: .85rem; }
 .ct-b10-sum { border: 0; background: none; font-variant-numeric: tabular-nums; cursor: default; }
 .ct-b10-sum.oculto { padding: .2rem 1.2rem; border: 2px dashed var(--borde); border-radius: 16px; color: var(--tinta-3); cursor: pointer; }
+@media (max-height: 620px) {
+    .ct-b10-col { gap: .2rem; padding: .3rem; }
+    .ct-b10-pie output { font-size: 1.3rem; }
+    .ct-b10-cambios { flex-direction: row; min-height: 0; }
+    .ct-b10-cambios .boton { flex: 1 1 0; min-width: 0; padding-inline: .3rem; }
+}
 @media (prefers-reduced-motion: reduce) { .ct-b10-b { transition: none; } .ct-b10-b.nuevo { animation: none; } }
 .ct-mt-svg { display: block; width: 100%; height: 100%; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
 .ct-rd, .ct-tg-piece { touch-action: none; }
@@ -1352,6 +1368,12 @@ html.duelo .ct-panel > .ct-side { max-height: 22vh; overflow-y: auto; }
     :root[data-modo="secondary"] .pestanas { background: var(--superficie); }
     :root[data-modo="secondary"] .pestana[aria-selected="true"] { box-shadow: inset 0 3px 0 var(--azul); }
 }
+
+/* How loud: under the speaker in the top bar. */
+.ct-volumen { position: fixed; z-index: 70; display: flex; flex-direction: column; gap: .6rem; width: min(17rem, calc(100vw - 1rem)); padding: .8rem; border: 1px solid var(--borde); border-radius: var(--radio); background: var(--superficie); box-shadow: 0 18px 40px rgba(15, 47, 94, .22); }
+.ct-volumen[hidden] { display: none; }
+.ct-volumen-nivel { display: flex; flex-direction: column; gap: .3rem; font-weight: 800; }
+.ct-volumen-nivel input { width: 100%; }
 
 /* The mode menu under its button in the top bar. */
 .menu-modo { position: fixed; z-index: 70; display: flex; flex-direction: column; gap: .3rem; width: min(22rem, calc(100vw - 1rem)); padding: .7rem; border: 1px solid var(--borde); border-radius: var(--radio); background: var(--superficie); box-shadow: 0 18px 40px rgba(15, 47, 94, .25); }
@@ -1751,7 +1773,56 @@ button.id-revisar { padding-right: .8rem; cursor: pointer; }
 .tm-pixel-marco { fill: #111827; stroke: #111827; stroke-width: 3; }
 .tm-bloque { fill: #2b3445; }
 .tm-bloque.ultimo { animation: tm-parpadeo .5s steps(2) infinite; }
-@media (prefers-reduced-motion: reduce) { .anillo.en-marcha .tm-velocidad line, .anillo.en-marcha .tm-mece, .tm-bateria-dibujo.baja .tm-carga, .tm-bloque.ultimo { animation: none; } }
+.tm-velocidad.oscura line { stroke: var(--tinta-3); }
+.tm-arena-seca { fill: #eed9a8; }
+.tm-sabana { fill: #e3c778; }
+.tm-huellas { fill: none; stroke: #c9ab6b; stroke-width: 2; stroke-dasharray: 2 5; stroke-linecap: round; }
+.tm-tortuga-piel { fill: #a6cf6b; stroke: #4a6b22; stroke-width: 1.1; stroke-linejoin: round; }
+.tm-tortuga-concha { fill: #4f8f3a; stroke: #2c5a1f; stroke-width: 1.3; stroke-linejoin: round; }
+.tm-tortuga-placas { fill: none; stroke: #2c5a1f; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; }
+.tm-via { fill: #6b7280; }
+.tm-traviesa { fill: #8b6a43; }
+.tm-estacion-muro { fill: #f0e3cf; stroke: #6b4a2b; stroke-width: 1; }
+.tm-estacion-techo { fill: #ce1423; stroke: #7c0c15; stroke-width: 1; stroke-linejoin: round; }
+.tm-estacion-puerta { fill: #6b4a2b; }
+.tm-tren-cuerpo { fill: #f4f7fb; stroke: #164281; stroke-width: 1.2; stroke-linejoin: round; }
+.tm-tren-franja { fill: #ce1423; }
+.tm-tren-ventana { fill: #1f3a63; }
+.tm-vuelo { fill: none; stroke: var(--tinta-3); stroke-width: 1.2; stroke-dasharray: 1.5 4; stroke-linecap: round; }
+.tm-vuelo-blanco { stroke: #fff; stroke-width: 1.8; stroke-dasharray: none; opacity: .9; }
+.tm-tallo { fill: none; stroke: #2e7d32; stroke-width: 2.2; stroke-linecap: round; }
+.tm-flor circle { fill: #e96aa0; stroke: #a53a6c; stroke-width: .9; }
+.tm-flor-centro { fill: #fbbe17; stroke: #a87400; stroke-width: .9; }
+.tm-abeja-cuerpo { fill: #fbbe17; stroke: #5b3a00; stroke-width: 1.2; }
+.tm-abeja-raya { fill: none; stroke: #2a1c00; stroke-width: 2.6; stroke-linecap: round; }
+.tm-abeja-cara { fill: #2a1c00; }
+.tm-abeja .tm-ojito { fill: #fff; }
+.tm-aguijon { fill: #2a1c00; }
+.tm-ala { fill: rgba(190, 225, 245, .85); stroke: #6f9ab5; stroke-width: .9; }
+.tm-cielo { fill: #cfe8fa; }
+.tm-nube ellipse { fill: #fff; }
+.tm-colina { fill: #8cc66b; }
+.tm-globo-tela { fill: #ce1423; stroke: #7c0c15; stroke-width: 1.1; stroke-linejoin: round; }
+.tm-globo-gajo { fill: #fbbe17; }
+.tm-globo-cuerda { fill: none; stroke: #5b3a1c; stroke-width: .9; }
+.tm-globo-cesta { fill: #a8733a; stroke: #5b3a1c; stroke-width: 1; }
+.tm-guepardo-piel { fill: #edbb55; stroke: #7a5414; stroke-width: 1.1; stroke-linejoin: round; }
+.tm-guepardo-cola { fill: none; stroke: #c79232; stroke-width: 2.6; stroke-linecap: round; }
+.tm-guepardo-pata { fill: none; stroke: #c79232; stroke-width: 2.6; stroke-linecap: round; }
+.tm-guepardo-manchas circle { fill: #4a300a; }
+.tm-guepardo-lagrima { fill: none; stroke: #2a1c00; stroke-width: 1; stroke-linecap: round; }
+.tm-guepardo-nariz { fill: #2a1c00; }
+.tm-acacia { fill: #5d9c43; stroke: #38702a; stroke-width: 1; }
+.tm-avion-cuerpo { fill: #f8fafc; stroke: #164281; stroke-width: 1.2; stroke-linejoin: round; }
+.tm-avion-cola { fill: #ce1423; stroke: #7c0c15; stroke-width: 1; stroke-linejoin: round; }
+.tm-avion-ala { fill: #164281; stroke: #0f2f5e; stroke-width: .8; stroke-linejoin: round; }
+.tm-avion-ventanas circle { fill: #1f3a63; }
+.tm-avion-cabina { fill: #1f3a63; }
+.anillo.en-marcha .tm-flota { animation: tm-flota 1.8s ease-in-out infinite alternate; }
+@keyframes tm-flota { from { transform: translateY(-2px); } to { transform: translateY(2px); } }
+.anillo.en-marcha .tm-alas { transform-box: fill-box; transform-origin: center bottom; animation: tm-aletea .12s linear infinite alternate; }
+@keyframes tm-aletea { from { transform: scaleY(1); } to { transform: scaleY(.7); } }
+@media (prefers-reduced-motion: reduce) { .anillo.en-marcha .tm-velocidad line, .anillo.en-marcha .tm-mece, .anillo.en-marcha .tm-flota, .anillo.en-marcha .tm-alas, .tm-bateria-dibujo.baja .tm-carga, .tm-bloque.ultimo { animation: none; } }
 
 /* The class goal (goal.js), in the Scoreboard tab: the jar of marbles and the prize. */
 .ct-goal { display: none; grid-template-columns: minmax(15rem, 20rem) minmax(0, 1fr); gap: 1rem; flex: 1; min-height: 0; }
@@ -2164,16 +2235,18 @@ dialog.ct-sc-dialogo { width: min(40rem, 94vw); }
 /* Balance scale: the beam turns by --a and the pans turn back by the same, so they hang level all the way. */
 .ct-ba-stage { display: flex; flex-direction: column; align-items: center; gap: .6rem; }
 .ct-ba-text { min-height: 1.4em; font-size: clamp(1.6rem, 4vw, 2.6rem); }
-.ct-ba { position: relative; width: 100%; max-width: 46rem; height: 25rem; }
-.ct-ba-beam { --a: 0deg; position: absolute; left: 18%; top: 3.5rem; width: 64%; height: 14px; border-radius: 7px; background: var(--tinta-2); transform: rotate(var(--a)); transition: transform .7s cubic-bezier(.3, 1.35, .5, 1); z-index: 1; }
+/* The scale takes what the screen leaves it, and its parts follow its height: on a low screen it is smaller, not cut
+   (a browser without container units keeps the sizes in rem). */
+.ct-ba { position: relative; flex: 1 1 25rem; width: 100%; max-width: 46rem; min-height: 11rem; max-height: 25rem; container-type: size; }
+.ct-ba-beam { --a: 0deg; position: absolute; left: 18%; top: 3.5rem; top: 14cqh; width: 64%; height: 14px; border-radius: 7px; background: var(--tinta-2); transform: rotate(var(--a)); transition: transform .7s cubic-bezier(.3, 1.35, .5, 1); z-index: 1; }
 .ct-ba-beam::after { content: ''; position: absolute; left: 50%; top: 50%; width: 22px; height: 22px; margin: -11px; border-radius: 50%; background: var(--tinta); }
-.ct-ba-pan { position: absolute; top: 7px; width: 56%; height: 14rem; transform-origin: 50% 0; transform: rotate(calc(-1 * var(--a))); transition: transform .7s cubic-bezier(.3, 1.35, .5, 1); }
+.ct-ba-pan { position: absolute; top: 7px; width: 56%; height: 14rem; height: 56cqh; transform-origin: 50% 0; transform: rotate(calc(-1 * var(--a))); transition: transform .7s cubic-bezier(.3, 1.35, .5, 1); }
 .ct-ba-pan[data-side="l"] { left: -28%; }
 .ct-ba-pan[data-side="r"] { right: -28%; }
 .ct-ba-pan::before { content: ''; position: absolute; inset: 0 4% 14px; background: linear-gradient(to bottom right, transparent calc(50% - 1.5px), var(--tinta-3) 50%, transparent calc(50% + 1.5px)) left / 50% 100% no-repeat, linear-gradient(to bottom left, transparent calc(50% - 1.5px), var(--tinta-3) 50%, transparent calc(50% + 1.5px)) right / 50% 100% no-repeat; }
 .ct-ba-plate { position: absolute; left: 0; right: 0; bottom: 0; height: 14px; border-radius: 0 0 50% 50% / 0 0 100% 100%; background: var(--tinta-2); }
 .ct-ba-items { position: absolute; left: 10%; right: 10%; bottom: 14px; max-height: 70%; display: flex; flex-wrap: wrap-reverse; justify-content: center; align-content: flex-start; align-items: flex-end; gap: 3px; }
-.ct-ba-post { position: absolute; left: 50%; top: 3.5rem; bottom: 1.2rem; width: 14px; margin-left: -7px; background: var(--tinta-2); }
+.ct-ba-post { position: absolute; left: 50%; top: 3.5rem; top: 14cqh; bottom: 1.2rem; width: 14px; margin-left: -7px; background: var(--tinta-2); }
 .ct-ba-post::after { content: ''; position: absolute; left: 50%; bottom: -1.2rem; width: 9rem; height: 1.2rem; margin-left: -4.5rem; border-radius: 1rem 1rem 0 0; background: var(--tinta-2); }
 .ct-ba-w, .ct-ba-x, .ct-ba-u { display: inline-grid; place-items: center; padding: 0; border: 0; color: #fff; font-weight: 900; cursor: pointer; }
 .ct-ba-w { width: var(--s); height: var(--s); border-radius: 30% 30% 8% 8%; background: var(--c); font-size: calc(var(--s) * .45); }
@@ -2193,6 +2266,8 @@ dialog.ct-sc-dialogo { width: min(40rem, 94vw); }
 @media (prefers-reduced-motion: reduce) { .ct-ba-beam, .ct-ba-pan { transition: none; } }
 /* Coordinate plane: drawn in units of the plane, y upwards (at −y). */
 .ct-pl-stage { display: flex; flex-direction: column; align-items: center; gap: .4rem; }
+#pl-colours { flex-wrap: nowrap; gap: .2rem; }
+#pl-colours .ct-swatch { flex: 1 1 0; width: auto; min-width: 0; max-width: 2.2rem; height: auto; aspect-ratio: 1; }
 .ct-pl { width: 100%; max-width: 40rem; max-height: 68vh; aspect-ratio: 1; }
 .ct-pl-grid line { stroke: var(--borde); stroke-width: .04; }
 .ct-pl-grid line.eje { stroke: var(--tinta); stroke-width: .08; }
@@ -2200,9 +2275,9 @@ dialog.ct-sc-dialogo { width: min(40rem, 94vw); }
 .ct-pl-labels .eje-nombre { fill: var(--tinta); font-size: .6px; font-style: italic; font-weight: 900; }
 .ct-pl-targets circle { fill: transparent; cursor: pointer; }
 .ct-pl-targets circle:hover { fill: rgba(22, 66, 129, .15); }
-.ct-pl-points .punto { fill: var(--azul); }
+.ct-pl-points .punto { fill: var(--c, var(--azul)); }
 .ct-pl-points .nombre, .ct-pl-points .componentes { paint-order: stroke; stroke: #fff; stroke-width: .12px; font-weight: 900; }
-.ct-pl-points .nombre { fill: var(--azul-osc); font-size: .5px; }
+.ct-pl-points .nombre { fill: var(--c, var(--azul-osc)); font-size: .5px; }
 .ct-pl-points .componentes { fill: var(--rojo); font-size: .42px; }
 .ct-pl-points .linea { fill: none; stroke: var(--azul); stroke-width: .08; stroke-linejoin: round; }
 .ct-pl-points .figura { fill: rgba(22, 66, 129, .12); stroke: var(--azul); stroke-width: .08; stroke-linejoin: round; }

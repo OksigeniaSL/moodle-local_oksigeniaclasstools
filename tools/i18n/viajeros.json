@@ -46,5 +46,57 @@
  "tm_fact_barco": {
   "en": "A sailing boat sails at about 15 km/h.",
   "es": "Un velero navega a unos 15 km/h."
+ },
+ "tm_v_cambia": {
+  "en": "A different one each time",
+  "es": "Uno distinto cada vez"
+ },
+ "tm_v_tortuga": {
+  "en": "Tortoise",
+  "es": "Tortuga"
+ },
+ "tm_v_tren": {
+  "en": "High-speed train",
+  "es": "Tren de alta velocidad"
+ },
+ "tm_v_abeja": {
+  "en": "Bee",
+  "es": "Abeja"
+ },
+ "tm_v_globo": {
+  "en": "Hot-air balloon",
+  "es": "Globo"
+ },
+ "tm_v_guepardo": {
+  "en": "Cheetah",
+  "es": "Guepardo"
+ },
+ "tm_v_avion": {
+  "en": "Plane",
+  "es": "Avión"
+ },
+ "tm_fact_tortuga": {
+  "en": "A giant tortoise walks at less than half a kilometre an hour.",
+  "es": "Una tortuga gigante camina a menos de medio kilómetro por hora."
+ },
+ "tm_fact_tren": {
+  "en": "A high-speed train runs at about 300 km/h.",
+  "es": "Un tren de alta velocidad corre a unos 300 km/h."
+ },
+ "tm_fact_abeja": {
+  "en": "A bee flies at about 25 km/h.",
+  "es": "Una abeja vuela a unos 25 km/h."
+ },
+ "tm_fact_globo": {
+  "en": "A hot-air balloon travels as fast as the wind that carries it.",
+  "es": "Un globo viaja tan rápido como el viento que lo lleva."
+ },
+ "tm_fact_guepardo": {
+  "en": "A cheetah can sprint at about 100 km/h.",
+  "es": "Un guepardo llega a correr a unos 100 km/h."
+ },
+ "tm_fact_avion": {
+  "en": "A passenger plane flies at about 900 km/h.",
+  "es": "Un avión de pasajeros vuela a unos 900 km/h."
  }
 }

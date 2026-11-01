@@ -142,7 +142,165 @@
         await h.until('#lv-question');
         await h.wait(900, true);
     };
+    // The fleet of the coordinate plane is hidden at random: these helps put one of their own through the board's hook
+    // for tests, so that what the voice says is what happens. The two crossings of the first ship are those of the scene.
+    async function plantFleet(h) {
+        const svg = await h.until('#pl-svg');
+        const plane = svg && svg.ownerDocument.defaultView.ClasstoolsPlane;
+        if (!plane) { return; }
+        const f = plane.state().fleet;
+        f.ships = [[[-3, 0], [-3, 1]], [[2, 3], [3, 3], [4, 3]], [[-1, -5], [-1, -4]], [[4, -2]], [[-5, 5]]];
+        f.shots = {}; f.turn = 0; f.hits = [0, 0, 0, 0]; f.sunk = [0, 0, 0, 0]; f.over = false; f.last = '';
+    }
+    const crossing = (x, y) => `#pl-svg circle[data-x="${x}"][data-y="${y}"]`;
+    // On the practice board, the faces of the cube that look up and down, whatever their order (solids.js, hook for tests).
+    async function cubeFaces(h) {
+        const svg = await h.until('#sd-svg');
+        const solids = svg && svg.ownerDocument.defaultView.ClasstoolsSolids;
+        if (!solids) { return [0, 1]; }
+        const m = solids.model(), height = (f) => f.reduce((s, k) => s + m.v[k][1], 0) / f.length;
+        const order = m.f.map((f, i) => [height(f), i]).sort((a, b) => b[0] - a[0]);
+        return [order[0][1], order[order.length - 1][1]];
+    }
+
     window.ClasstoolsHelps = {
+        // The coordinate plane: Battleship in all four quadrants, and a point with its colour.
+        plano: {
+            steps: [
+                async (h) => { await h.wait(3400); await h.press('#t-material'); await h.press('#mt-mode [data-mode="plano"]'); },
+                async (h) => {
+                    await h.wait(700);
+                    await h.press('#pl-kind [data-v="fleet"]');
+                    await h.press('#pl-quad [data-v="4"]');
+                    await h.press('#pl-teams [data-v="2"]');
+                    await plantFleet(h);
+                    await h.press('#pl-teams [data-v="2"]', true);
+                    await h.moveTo('#pl-svg');
+                },
+                async (h) => { await h.wait(2600); await h.press(crossing(-3, 2)); await h.wait(900); await h.moveTo('#pl-msg'); },
+                async (h) => {
+                    await h.wait(1200);
+                    await h.press(crossing(-3, 1));
+                    await h.wait(2000);
+                    await h.press(crossing(-3, 0));
+                    await h.wait(900);
+                    await h.moveTo('#pl-msg');
+                },
+                async (h) => {
+                    await h.wait(600);
+                    await h.press('#pl-kind [data-v="points"]');
+                    await h.press('#pl-colours [data-v="#ce1423"]');
+                    await h.press(crossing(2, 3));
+                    await h.wait(1500);
+                    await h.press('#pl-colours [data-v="#067e36"]');
+                    await h.press(crossing(2, 3));
+                    await h.wait(700);
+                },
+            ],
+            practice: {
+                prep: async (h) => {
+                    await h.press('#t-material', true);
+                    await h.press('#mt-mode [data-mode="plano"]', true);
+                    await h.press('#pl-kind [data-v="fleet"]', true);
+                    await h.press('#pl-quad [data-v="4"]', true);
+                    await h.press('#pl-new', true);
+                    await plantFleet(h);
+                    await h.press('#pl-teams [data-v="2"]', true);
+                },
+                targets: [{ sel: crossing(-3, 1) }, { sel: crossing(-3, 0) }],
+                after: 2400,
+            },
+        },
+        // The timeline: the history of the Earth with its dates hidden, and how little of it is ours.
+        tiempo: {
+            steps: [
+                async (h) => { await h.wait(3800); await h.press('#t-material'); await h.press('#mt-mode [data-mode="tiempo"]'); },
+                async (h) => {
+                    await h.wait(900);
+                    await h.choose('#tl-which', 'ex:earth');
+                    await h.wait(700);
+                    await h.press('#tl-hide');
+                    await h.wait(500);
+                    await h.moveTo('#tl-svg');
+                },
+                async (h) => { await h.wait(500); await h.press('#tl-svg .ct-tl-hecho[data-i="5"]'); await h.wait(700); await h.moveTo('#tl-info'); },
+                async (h) => {
+                    await h.wait(300);
+                    await h.press('#tl-hide');
+                    await h.press('#tl-fit');
+                    // Today in the middle of the view, for the magnifier to go towards it.
+                    const svg = await h.until('#tl-svg'), line = svg && svg.ownerDocument.defaultView.ClasstoolsTimeline;
+                    if (line) { const v = line.view(), half = (v.b - v.a) / 2, end = Math.max(v.b - half * 0.2, 0); line.setView(end - half, end + half); }
+                    await h.tap('#tl-in', 16, 240);
+                    await h.wait(500);
+                },
+                async (h) => {
+                    await h.wait(2800);
+                    await h.press('#tl-new');
+                    await h.wait(900);
+                    await h.moveTo('#tl-text');
+                    await h.wait(1200);
+                    await h.press('#tl-cancel');
+                },
+            ],
+            practice: {
+                prep: async (h) => {
+                    await h.press('#t-material', true);
+                    await h.press('#mt-mode [data-mode="tiempo"]', true);
+                    await h.choose('#tl-which', 'ex:flight', true);
+                },
+                // The timeline draws itself again when the finger lifts: the tap counts as it goes down.
+                targets: [{ sel: '#tl-hide' }, { sel: '#tl-svg .ct-tl-hecho[data-i="1"]', event: 'pointerdown' }],
+                after: 2400,
+            },
+        },
+        // 3D shapes: the two painted faces of the cube, and where they end up in its net.
+        cuerpos: {
+            steps: [
+                async (h) => {
+                    await h.wait(1800);
+                    await h.press('#t-material');
+                    await h.press('#mt-mode [data-mode="cuerpos"]');
+                    await h.choose('#sd-which', 'cubo');
+                    const [up] = await cubeFaces(h);
+                    await h.wait(900);
+                    await h.press(`#sd-svg polygon[data-f="${up}"]`);
+                    await h.wait(600);
+                },
+                async (h) => {
+                    await h.wait(400);
+                    await h.drag('#sd-svg', 0, -170, { at: [0.5, 0.45], every: 22 });
+                    const [, down] = await cubeFaces(h);
+                    await h.wait(500);
+                    await h.press(`#sd-svg polygon[data-f="${down}"]`);
+                    await h.wait(250);
+                    await h.press(`#sd-svg polygon[data-f="${down}"]`);
+                    await h.wait(400);
+                },
+                async (h) => {
+                    await h.wait(500);
+                    await h.moveTo('#sd-open');
+                    const open = await h.until('#sd-open');
+                    for (let k = 5; open && k <= 45; k += 5) {
+                        if (!h.live()) { return; }
+                        open.value = String(k); open.dispatchEvent(new open.ownerDocument.defaultView.Event('input', { bubbles: true }));
+                        await h.wait(130);
+                    }
+                    await h.wait(1200);
+                },
+                async (h) => { await h.wait(400); await h.press('#sd-fold'); await h.wait(2400); await h.moveTo('#sd-svg'); },
+                async (h) => { await h.wait(1500); await h.press('#sd-other'); await h.wait(3200); await h.press('#sd-other'); await h.wait(2000); },
+            ],
+            practice: {
+                prep: async (h) => {
+                    await h.press('#t-material', true);
+                    await h.press('#mt-mode [data-mode="cuerpos"]', true);
+                    await h.choose('#sd-which', 'cubo', true);
+                },
+                targets: [{ sel: '#sd-fold' }, { sel: '#sd-other', delay: 1500 }],
+                after: 2600,
+            },
+        },
         // «Live» · getting the class in. Scene: a parents' evening.
         entrar: {
             steps: [

@@ -34,6 +34,9 @@
     const FLEET = [4, 3, 3, 2, 2, 1, 1];
     const TEAMS = [1, 2, 3, 4];
     const TEAM_COLOURS = ['#164281', '#ce1423', '#067e36', '#5b2fb8'];
+    // The colours of the points, with the names and the inks of the whiteboard; the first is the usual blue.
+    const COLOURS = [[t('wb_blue'), '#164281'], [t('wb_red'), '#ce1423'], [t('wb_green'), '#067e36'],
+        [t('wb_orange'), '#c95f0c'], [t('wb_purple'), '#5b2fb8'], [t('wb_black'), '#1c1a19']];
 
     const panel = core.material.add('plano', t('mt_plane'), `
         <aside class="tarjeta ct-side">
@@ -53,6 +56,10 @@
                 <label class="campo apilado"><span>${escape(t('pl_type'))}</span>
                     <span class="ct-row"><input type="text" id="pl-xy" placeholder="(3, 2)" autocomplete="off" spellcheck="false">
                     <button type="button" class="boton suave" id="pl-add">${escape(t('pl_add'))}</button></span></label>
+                <p class="ante">${escape(t('pl_colour'))}</p>
+                <div class="ct-swatches" role="radiogroup" aria-label="${escape(t('pl_colour'))}" id="pl-colours">
+                    ${COLOURS.map(([n, c]) => `<button type="button" role="radio" class="ct-swatch" data-v="${c}" style="--c:${c}" aria-label="${escape(n)}" title="${escape(n)}"></button>`).join('')}
+                </div>
                 <label class="interruptor"><input type="checkbox" id="pl-hide"><span>${escape(t('pl_hide'))}</span></label>
                 <button type="button" class="boton suave" id="pl-empty"><span data-icono="limpiar"></span><span>${escape(t('pl_empty'))}</span></button>
                 <p class="nota">${escape(t('pl_help'))}</p>
@@ -85,8 +92,10 @@
     const byMode = core.byMode ? core.byMode('plano-modo', {
         early: { quad: 1 }, primary: { quad: 1 }, secondary: { quad: 4 }, advanced: { quad: 4 },
     }) : { get: () => ({}), set: () => {} };
-    const st = Object.assign({ kind: 'points', quad: 1, join: 'none', hide: false, points: [], teams: 2, fleet: null, show: false },
+    const st = Object.assign({ kind: 'points', quad: 1, join: 'none', hide: false, points: [], teams: 2, fleet: null, show: false, colour: COLOURS[0][1] },
         load('plano', {}), byMode.get());
+    const colourOf = (c) => (COLOURS.some((x) => x[1] === c) ? c : COLOURS[0][1]);
+    st.colour = colourOf(st.colour);
     const keep = () => save('plano', st);
     const range = () => (Number(st.quad) === 4 ? [-6, 6] : [0, 10]);
     const inside = (x, y) => { const [a, b] = range(); return x >= a && x <= b && y >= a && y <= b; };
@@ -140,6 +149,7 @@
         $('#pl-fleet-box').hidden = !fleet;
         $('#pl-join').value = st.join;
         $('#pl-hide').checked = !!st.hide;
+        $$('#pl-colours button').forEach((x) => x.setAttribute('aria-checked', String(x.dataset.v === st.colour)));
         $('#pl-show').checked = !!st.show;
         const [a, b] = range(), svg = $('#pl-svg'), pad = 1.2;
         svg.setAttribute('viewBox', `${a - pad} ${-b - pad} ${b - a + 2 * pad} ${b - a + 2 * pad}`);
@@ -186,9 +196,10 @@
             }
         }
         pts.forEach((p, i) => {
-            layer.appendChild(el('circle', { cx: p.x, cy: -p.y, r: 0.2, class: 'punto' }));
+            const tint = p.c ? { style: `--c:${colourOf(p.c)}` } : {};
+            layer.appendChild(el('circle', Object.assign({ cx: p.x, cy: -p.y, r: 0.2, class: 'punto' }, tint)));
             const name = LETTERS[i % 26] + (i >= 26 ? Math.floor(i / 26) : '');
-            layer.appendChild(el('text', { x: p.x + 0.25, y: -p.y - 0.25, class: 'nombre' }, st.hide ? name : name + xy(p.x, p.y)));
+            layer.appendChild(el('text', Object.assign({ x: p.x + 0.25, y: -p.y - 0.25, class: 'nombre' }, tint), st.hide ? name : name + xy(p.x, p.y)));
         });
     }
     function paintFleet(layer) {
@@ -221,13 +232,22 @@
         } else {
             $('#pl-msg').textContent = '';
             $('#pl-score').innerHTML = '';
-            $('#pl-list').textContent = st.hide ? '' : st.points.map((p, i) => LETTERS[i % 26] + xy(p.x, p.y)).join('   ');
+            $('#pl-list').innerHTML = st.hide ? '' : st.points.map((p, i) => `<span${p.c ? ` style="color:${colourOf(p.c)}"` : ''}>${escape(LETTERS[i % 26] + xy(p.x, p.y))}</span>`).join('   ');
         }
     }
 
     const togglePoint = (x, y) => {
         const i = st.points.findIndex((p) => p.x === x && p.y === y);
-        if (i >= 0) { st.points.splice(i, 1); } else if (st.points.length < 52) { st.points.push({ x, y }); }
+        // The first colour is that of the plane: the points in it keep no colour of their own.
+        const c = st.colour === COLOURS[0][1] ? undefined : st.colour;
+        if (i >= 0 && st.points[i].c !== c) {
+            // Tapped with another colour chosen, the point takes that colour; with its own, it goes away.
+            if (c) { st.points[i].c = c; } else { delete st.points[i].c; }
+        } else if (i >= 0) {
+            st.points.splice(i, 1);
+        } else if (st.points.length < 52) {
+            st.points.push(c ? { x, y, c } : { x, y });
+        }
         keep(); paint(); play('tic');
     };
     const fire = (x, y) => {
@@ -247,6 +267,7 @@
             f.last = t(sunk ? 'pl_sunk' : 'pl_hit', xy(x, y));
             f.over = f.ships.every((s, i) => isSunk(i));
             play(f.over ? 'elegido' : (sunk ? 'fin' : 'card'));
+            if (f.over && core.logro) { core.logro('hundeflotas'); }
         }
         announce(f.over ? t('pl_all_sunk') : f.last);
         keep(); paint();
@@ -270,6 +291,7 @@
     $('#pl-hide').addEventListener('change', () => { st.hide = $('#pl-hide').checked; keep(); paint(); });
     $('#pl-show').addEventListener('change', () => { st.show = $('#pl-show').checked; keep(); paint(); });
     $('#pl-empty').addEventListener('click', () => { st.points = []; keep(); paint(); });
+    seg('#pl-colours', (v) => { st.colour = colourOf(v); });
     $('#pl-new').addEventListener('click', () => { st.fleet = newFleet(); st.show = false; keep(); paint(); play('card'); });
     const typed = (input, then) => {
         const p = parseXY($(input).value);

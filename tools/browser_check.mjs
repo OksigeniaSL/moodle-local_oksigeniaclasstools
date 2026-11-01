@@ -46,6 +46,7 @@ window.CLASSTOOLS = { lists: [{ id: 1, name: 'Class 1', key: 'c1', students: Arr
     remote: { on: false }, logros: { thr: { devices: 5, picks: 5, students: 8 }, levels: {} }, me: { id: 99, name: 'Teacher' } };
 window.FAKE = { calls: [], polls: 0, beacons: [] };
 ${process.env.FITS_REPORT ? 'window.FITS_REPORT = true;' : ''}
+window.HELPS_PACED = ${JSON.stringify((process.env.HELPS || 'plano,tiempo,cuerpos').split(','))};
 // What the board sends with sendBeacon (what it has been used for), kept instead of sent.
 navigator.sendBeacon = (url, body) => { window.FAKE.beacons.push({ url, body }); return true; };
 const BANK_PAIRS = [['frog', 'amphibian'], ['cat', 'mammal'], ['bee', 'insect']];
@@ -1515,6 +1516,27 @@ const CHECKS = {
         q('#pl-svg circle[data-x="-2"][data-y="-3"]').dispatchEvent(new MouseEvent('click', { bubbles: true }));
         await sleep(100);
         if (window.ClasstoolsPlane.state().points.length !== 2) { return 'a tapped point did not go away'; }
+        // With another colour chosen: a new point has it, an old one tapped takes it, and tapped again it goes away.
+        const tap = (x, y) => q(`#pl-svg circle[data-x="${x}"][data-y="${y}"]`).dispatchEvent(new MouseEvent('click', { bubbles: true }));
+        const RED = 'rgb(206, 20, 35)';
+        q('#pl-colours [data-v="#ce1423"]').click();
+        q('#pl-xy').value = '(1, 1)'; q('#pl-add').click();
+        await sleep(100);
+        const red = [...document.querySelectorAll('.ct-pl-points .punto')].pop();
+        if (getComputedStyle(red).fill !== RED) { return `a point in red: ${getComputedStyle(red).fill}`; }
+        if (getComputedStyle([...document.querySelectorAll('.ct-pl-points .nombre')].pop()).fill !== RED) { return 'its name is not in its colour'; }
+        tap(3, 2);
+        await sleep(100);
+        const pts = () => window.ClasstoolsPlane.state().points;
+        if (pts().length !== 3 || pts()[0].c !== '#ce1423') { return `recolouring a point: ${JSON.stringify(pts())}`; }
+        tap(3, 2);
+        await sleep(100);
+        if (pts().length !== 2) { return 'a point tapped in its own colour did not go away'; }
+        await window.shot('plane-colours');
+        q('#pl-empty').click();
+        q('#pl-colours [data-v="#164281"]').click();
+        for (const text of ['(3, 2)', '-2,4']) { q('#pl-xy').value = text; q('#pl-add').click(); }
+        await sleep(100);
         await window.shot('plane-vectors');
         q('#pl-kind [data-v="fleet"]').click();
         q('#pl-teams [data-v="2"]').click();
@@ -2448,6 +2470,28 @@ const CHECKS = {
         H.close();
         return q('.hp') ? 'the help did not close' : '';
     },
+    // The helps made last, at their real pace with «Now you» done by itself, with a picture of the end of each step.
+    // Not with the others, for its time: node tools/browser_check.mjs helps-paced (HELPS=plano,tiempo for some).
+    'helps-paced': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const H = window.ClasstoolsHelp;
+        for (const id of window.HELPS_PACED) {
+            const missed = [];
+            await H.open(id, { start: true, auto: true, miss: (sel) => missed.push(sel) });
+            let last = -1;
+            for (let n = 0; n < 2400 && !H.state().done; n++) {
+                const k = H.state().step;
+                if (k !== last) { if (last >= 0) { await window.shot(`help-${id}-${last + 1}`); } last = k; }
+                await sleep(100);
+            }
+            await window.shot(`help-${id}-end`);
+            const st = H.state();
+            if (missed.length) { return `${id}: not found ${missed.join(', ')}`; }
+            if (!st.done || !st.practised) { return `${id}: ${JSON.stringify(st)}`; }
+            H.close();
+        }
+        return '';
+    },
     // The teachers' room from the board: a discreet button (only its icon), the room with its colleagues, and coming in.
     'sala-board': async () => {
         const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -2616,6 +2660,99 @@ const CHECKS = {
         if (!played) { return 'the song did not play at the goal'; }
         q('#b-modo').click(); q('#menu-modo [data-modo="primary"]').click();
         pick('bote'); set(0);
+        return '';
+    },
+    // Every traveller of the timer's bar draws and moves; each has its fact; «a different one each time» goes on to the
+    // next when the time runs out.
+    'timer-travellers': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const q = (s) => document.querySelector(s);
+        q('#t-temporizador').click();
+        await sleep(150);
+        q('#tm-aspectos [data-v="barra"]').click();
+        q('#h-temporizador .chip[data-min]').click();
+        const sel = q('#tm-viajeros'), set = (v) => { sel.value = v; sel.dispatchEvent(new Event('change', { bubbles: true })); };
+        for (const v of ['tortuga', 'tren', 'abeja', 'globo', 'guepardo', 'avion', 'cohete', 'coche', 'caracol', 'barco']) {
+            set(v);
+            await sleep(60);
+            const w = q('#tm-aspecto .tm-viajero'), fact = q('#tm-aspecto .tm-dato');
+            if (!w || !/translate\(/.test(w.getAttribute('transform') || '')) { return `${v}: it does not travel`; }
+            if (!fact || !fact.textContent.trim()) { return `${v}: no fact`; }
+            await window.shot('timer-' + v);
+        }
+        set('cambia');
+        await sleep(60);
+        const now = () => [...q('#tm-aspecto .tm-viajero').classList].find((c) => c !== 'tm-viajero');
+        const first = now();
+        q('#tm-min').value = 0; q('#tm-seg').value = 1;
+        q('#tm-min').dispatchEvent(new Event('change', { bubbles: true })); q('#tm-seg').dispatchEvent(new Event('change', { bubbles: true }));
+        await sleep(60);
+        q('#tm-marcha').click();
+        for (let i = 0; i < 40 && q('#fin-tiempo').hidden; i++) { await sleep(100); }
+        if (q('#fin-tiempo').hidden) { return 'the time did not run out'; }
+        q('#fin-vale').click();
+        await sleep(100);
+        if (now() === first) { return `«a different one each time» stayed on ${first}`; }
+        set('cohete');
+        q('#tm-aspectos [data-v="anillo"]').click();
+        return '';
+    },
+    // The volume: under the speaker, it changes what goes out and stays; silence is still a tap away. And the traffic
+    // light by hand: no microphone asked for, the lights turn on and off, here and on the light itself.
+    'volume-and-hand-light': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const q = (s) => document.querySelector(s);
+        const core = window.ClasstoolsCore, panel = q('#b-volumen'), level = q('#b-volumen-nivel');
+        if (!panel.hidden) { return 'the volume panel starts open'; }
+        q('#b-sonido').click();
+        if (panel.hidden) { return 'the speaker does not open the volume'; }
+        const r = panel.getBoundingClientRect();
+        if (r.right > innerWidth || r.left < 0 || r.bottom > innerHeight) { return `the panel is off the screen: ${JSON.stringify(r)}`; }
+        await window.shot('volume');
+        if (Number(level.value) !== Math.round(core.volume() * 100)) { return `slider ${level.value}, volume ${core.volume()}`; }
+        level.value = 70; level.dispatchEvent(new Event('input', { bubbles: true }));
+        if (core.volume() !== 0.7) { return `volume after moving it: ${core.volume()}`; }
+        const a = core.audioContext();
+        if (a && core.output() && Math.abs(core.output().gain.value - 0.7) > 0.01) { return `gain: ${core.output().gain.value}`; }
+        q('#b-silencio').click();
+        if (core.soundOn()) { return 'silence did not silence'; }
+        level.value = 40; level.dispatchEvent(new Event('input', { bubbles: true }));
+        if (!core.soundOn()) { return 'moving the slider should bring the sound back'; }
+        document.body.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }));
+        if (!panel.hidden) { return 'a tap outside does not close it'; }
+
+        q('#t-semaforo').click();
+        await sleep(150);
+        const asked = navigator.mediaDevices && navigator.mediaDevices.getUserMedia;
+        let mic = 0;
+        if (asked) { navigator.mediaDevices.getUserMedia = () => { mic++; return Promise.reject(Object.assign(new Error('no'), { name: 'NotFoundError' })); }; }
+        q('#s-marcha').click();
+        await sleep(150);
+        if (q('#s-sinmicro').hidden || q('#s-a-mano').offsetParent === null) { return 'with no microphone it does not offer the light by hand'; }
+        q('#s-a-mano').click();
+        await sleep(60);
+        if (!q('#h-semaforo').classList.contains('a-mano') || !q('#s-sinmicro').hidden || q('#s-mano').hidden) { return 'it did not go to by hand'; }
+        if (q('#s-marcha').offsetParent !== null || q('#s-medidor').offsetParent !== null) { return 'by hand still shows what listens'; }
+        const before = mic;
+        q('#s-mano [data-z="amarillo"]').click();
+        if (!q('.luz[data-zona="amarillo"]').classList.contains('encendida')) { return 'amber did not turn on'; }
+        if (q('#s-mano [data-z="amarillo"]').getAttribute('aria-checked') !== 'true') { return 'amber not marked'; }
+        await window.shot('light-by-hand');
+        q('.luz[data-zona="rojo"]').click();
+        if (!q('.luz[data-zona="rojo"]').classList.contains('encendida') || q('.luz[data-zona="amarillo"]').classList.contains('encendida')) { return 'tapping the red light'; }
+        q('.luz[data-zona="rojo"]').click();
+        if (q('#s-caja .encendida')) { return 'tapped again, the light stays on'; }
+        q('#s-mano [data-z="verde"]').click();
+        q('#t-temporizador').click();
+        await sleep(120);
+        q('#t-semaforo').click();
+        await sleep(120);
+        if (!q('.luz[data-zona="verde"]').classList.contains('encendida')) { return 'the light by hand went off when changing tab'; }
+        if (mic !== before) { return 'by hand it asked for the microphone'; }
+        q('#s-modo [data-v="oye"]').click();
+        await sleep(60);
+        if (q('#s-caja .encendida') || q('#s-marcha').offsetParent === null) { return 'back to listening'; }
+        if (asked) { navigator.mediaDevices.getUserMedia = asked; }
         return '';
     },
     // The teacher's guide expanded: in the middle and inside the screen, with bigger letters; a tap outside closes it,
@@ -2904,7 +3041,7 @@ const chromePath = () => process.env.CHROME || ['/usr/bin/google-chrome', '/usr/
 const VIEW = (process.env.VIEWPORT || '1280x800').split('x').map(Number);
 
 async function main() {
-    const names = process.argv.slice(2).length ? process.argv.slice(2) : Object.keys(CHECKS);
+    const names = process.argv.slice(2).length ? process.argv.slice(2) : Object.keys(CHECKS).filter((n) => n !== 'helps-paced');
     const unknown = names.filter((n) => !CHECKS[n]);
     if (unknown.length) { console.error(`Unknown check: ${unknown.join(', ')}. Checks: ${Object.keys(CHECKS).join(', ')}`); process.exit(2); }
     const bin = chromePath();

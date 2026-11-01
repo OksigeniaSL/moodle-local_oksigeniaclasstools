@@ -53,6 +53,9 @@
         cortina: { guide: 'pizarra', sticker: 'quitatelones', voice: ['es', 'en'] },
         instrumentos: { guide: 'pizarra', sticker: 'trazacirculos', voice: ['es', 'en'] },
         meta: { guide: 'marcador', sticker: 'cumplemetas', voice: ['es', 'en'] },
+        plano: { guide: 'plano', sticker: 'hundeflotas', voice: ['es', 'en'] },
+        tiempo: { guide: 'tiempo', sticker: 'viajasiglos', voice: ['es', 'en'] },
+        cuerpos: { guide: 'cuerpos', sticker: 'despliegacubos', voice: ['es', 'en'] },
     };
     const VERSION = ((document.currentScript && document.currentScript.src) || '').split('?')[1] || '';
     const LANG = (document.documentElement.lang || 'en').slice(0, 2).toLowerCase();
@@ -111,6 +114,8 @@
         return `voice/${ID}/${voice}/${String(k === LAST() && had ? steps() + 3 : k + 1).padStart(2, '0')}.opus`;
     };
 
+    // The volume of the computer: its 50 was the sound of before, the voice at full.
+    const voiceLevel = () => Math.min(1, (core.volume ? core.volume() : 0.5) * 2);
     let bedTimer = 0;
     const fadeBed = (to, ms) => {
         clearInterval(bedTimer);
@@ -126,7 +131,7 @@
         if (!bed.src) { bed.src = 'voice/fondo.opus'; bed.volume = 0; }
         const p = bed.play();
         if (p && p.catch) { p.catch(() => {}); }
-        fadeBed(0.22, 1200);
+        fadeBed(0.22 * voiceLevel(), 1200);
     };
 
     // --- What a help can do on the board (the h of helps.js); «quick» skips the pointer's travel -----------------------
@@ -407,7 +412,7 @@
         const src = fast ? '' : clip(k);
         let heard = Promise.resolve();
         if (src) {
-            vo.src = src; vo.currentTime = 0;
+            vo.src = src; vo.currentTime = 0; vo.volume = voiceLevel();
             const p = vo.play();
             heard = new Promise((r) => {
                 if (p && p.then) { p.then(() => voiceDone().then(r), () => reading(k).then(r)); } else { voiceDone().then(r); }

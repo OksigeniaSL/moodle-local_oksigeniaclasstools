@@ -1760,8 +1760,8 @@
   "es": "Borrar los puntos"
  },
  "pl_help": {
-  "en": "Tap a crossing to put a point (A, B, C…) and tap it again to take it away, or type its coordinates: first x, across, then y, up.",
-  "es": "Toca un cruce para poner un punto (A, B, C…) y tócalo otra vez para quitarlo, o escribe sus coordenadas: primero la x, en horizontal, y después la y, en vertical."
+  "en": "Tap a crossing to put a point (A, B, C…) and tap it again to take it away, or type its coordinates: first x, across, then y, up. With another colour chosen, tapping a point changes its colour.",
+  "es": "Toca un cruce para poner un punto (A, B, C…) y tócalo otra vez para quitarlo, o escribe sus coordenadas: primero la x, en horizontal, y después la y, en vertical. Con otro color elegido, al tocar un punto le cambias el color."
  },
  "pl_teams": {
   "en": "Teams",
@@ -1982,5 +1982,61 @@
  "ex_press_start": {
   "en": "Choose the exercise and press «Start»",
   "es": "Elige el ejercicio y pulsa «Empezar»"
+ },
+ "pl_colour": {
+  "en": "Colour of the points",
+  "es": "Color de los puntos"
+ },
+ "bar_volume": {
+  "en": "Volume",
+  "es": "Volumen"
+ },
+ "bar_mute": {
+  "en": "Mute",
+  "es": "Silenciar"
+ },
+ "bar_unmute": {
+  "en": "Turn the sound on",
+  "es": "Activar el sonido"
+ },
+ "bar_sound_muted": {
+  "en": "Sound off",
+  "es": "Sin sonido"
+ },
+ "sm_mode": {
+  "en": "How it works",
+  "es": "Cómo funciona"
+ },
+ "sm_mode_listen": {
+  "en": "Listening",
+  "es": "Escuchando"
+ },
+ "sm_mode_hand": {
+  "en": "By hand",
+  "es": "A mano"
+ },
+ "sm_hand_lights": {
+  "en": "Turn a light on",
+  "es": "Enciende una luz"
+ },
+ "sm_h_green": {
+  "en": "Green",
+  "es": "Verde"
+ },
+ "sm_h_amber": {
+  "en": "Amber",
+  "es": "Ámbar"
+ },
+ "sm_h_red": {
+  "en": "Red",
+  "es": "Rojo"
+ },
+ "sm_hand_note": {
+  "en": "Tap a light to turn it on, and tap it again to turn it off. Nothing is listened to.",
+  "es": "Toca una luz para encenderla y tócala otra vez para apagarla. No se escucha nada."
+ },
+ "sm_by_hand": {
+  "en": "Turn the light on by hand",
+  "es": "Encender la luz a mano"
  }
 }

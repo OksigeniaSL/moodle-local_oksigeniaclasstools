@@ -195,13 +195,48 @@
         parent.append(e);
         return e;
     };
-    const textWidth = (s, size) => String(s).length * size * 0.56;
+    const textWidth = (s, size) => String(s).length * size * 0.6;
     function paint() {
         const W = svg.clientWidth || 800, H = svg.clientHeight || 400;
         svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
         svg.innerHTML = '';
         const x = (tt) => ((tt - view.a) / (view.b - view.a)) * W;
-        const axis = Math.round(H * 0.52);
+        const size = Math.max(12, Math.min(18, W / 60));
+        // A name longer than the screen is shortened here: all of it shows on top when it is tapped.
+        const most = Math.floor((W - 22) / (size * 0.6));
+        const label = (it, i) => {
+            const txt = st.hide && !shown.has(i) ? it.name : `${it.name} · ${it.show}`;
+            return txt.length > most ? txt.slice(0, most - 1) + '…' : txt;
+        };
+        // How many lanes it will take, to share the height between the events above and the periods below: on a
+        // low screen the lanes get closer and the line moves, so that the names are not lost.
+        const lanes = () => {
+            const ends = [], periods = [];
+            tl.items.forEach((it, i) => {
+                const X1 = x(it.a), txt = label(it, i);
+                if (it.b === undefined) {
+                    if (X1 < -10 || X1 > W + 10) { return; }
+                    const wt = textWidth(txt, size) + 14, left = Math.min(Math.max(X1 - wt / 2, 2), W - wt - 2);
+                    let n = ends.findIndex((end) => end < left - 6);
+                    if (n < 0) { n = ends.length; ends.push(0); }
+                    ends[n] = left + wt;
+                } else {
+                    const X2 = x(it.b);
+                    if (X2 < -50 || X1 > W + 50) { return; }
+                    const lw = textWidth(txt, size), tx = Math.max(4, Math.min(Math.max(X1, 0) + 6, W - lw - 6));
+                    const s1 = Math.min(X1, tx), e1 = Math.max(X1 + Math.max(4, X2 - X1), tx + lw);
+                    let n = periods.findIndex((l) => l.every(([a, b]) => e1 < a - 6 || s1 > b + 6));
+                    if (n < 0) { n = periods.length; periods.push([]); }
+                    periods[n].push([s1, e1]);
+                }
+            });
+            return [ends.length, periods.length];
+        };
+        const [nE, nP] = lanes();
+        const below = 34 + nP * (size + 18) + 4;
+        const stepE = Math.max(size + 13, Math.min(size + 22, (H - below - 34 - size - 10) / Math.max(1, nE - 1)));
+        const above = 34 + Math.max(0, nE - 1) * stepE + size + 10;
+        const axis = Math.round(Math.max(Math.min(H * 0.52, H - below), Math.min(above, H - 40)));
         // The line and its marks.
         el('line', { x1: 0, y1: axis, x2: W, y2: axis, class: 'ct-tl-eje' });
         ticks(W).forEach((k) => {
@@ -214,8 +249,6 @@
             el('line', { x1: x(PRESENT), y1: axis - 14, x2: x(PRESENT), y2: axis + 14, class: 'ct-tl-hoy' });
             el('text', { x: x(PRESENT), y: axis - 18, class: 'ct-tl-hoy-txt', 'text-anchor': 'middle' }).textContent = t('tl_today');
         }
-        const size = Math.max(12, Math.min(18, W / 60));
-        const label = (it, i) => (st.hide && !shown.has(i) ? it.name : `${it.name} · ${it.show}`);
         // Periods, below the marks, in lanes so they do not overlap.
         // Each lane keeps the stretches it has taken (the bar and its name, which may stick out of it).
         const lanesP = [];
@@ -232,7 +265,7 @@
             if (lane < 0) { lane = lanesP.length; lanesP.push([]); }
             lanesP[lane].push([s, e]);
             const y = axis + 34 + lane * (size + 18);
-            if (y > H - 4) { return; }
+            if (y + size + 10 > H) { return; }
             const g = el('g', { class: 'ct-tl-periodo' + (picked === i ? ' elegido' : ''), 'data-i': i, tabindex: 0, role: 'button', 'aria-label': `${it.name}, ${it.show}` });
             el('rect', { x: x1, y, width: w, height: size + 10, rx: 6, fill: it.colour, 'fill-opacity': 0.22, stroke: it.colour }, g);
             el('text', { x: tx, y: y + size + 1, class: 'ct-tl-nombre' }, g).textContent = txt;
@@ -248,9 +281,9 @@
             let lane = lanesE.findIndex((end) => end < left - 6);
             if (lane < 0) { lane = lanesE.length; lanesE.push(0); }
             lanesE[lane] = left + wt;
-            const y = axis - 34 - lane * (size + 22);
+            const y = axis - 34 - lane * stepE;
             const g = el('g', { class: 'ct-tl-hecho' + (picked === i ? ' elegido' : ''), 'data-i': i, tabindex: 0, role: 'button', 'aria-label': `${it.name}, ${it.show}` });
-            el('line', { x1: X, y1: axis, x2: X, y2: y + 4, stroke: it.colour, class: 'ct-tl-palo' }, g);
+            el('line', { x1: X, y1: axis, x2: X, y2: Math.max(2, y + 4), stroke: it.colour, class: 'ct-tl-palo' }, g);
             el('circle', { cx: X, cy: axis, r: 6, fill: it.colour }, g);
             if (y - size - 8 < 0) { return; }
             el('rect', { x: left, y: y - size - 6, width: wt, height: size + 12, rx: 8, fill: '#fff', stroke: it.colour }, g);
@@ -306,7 +339,7 @@
         const it = tl.items[i];
         if (!it) { return; }
         picked = i;
-        if (st.hide) { shown.add(i); }
+        if (st.hide) { shown.add(i); if (shown.size === 3 && core.logro) { core.logro('viajasiglos'); } }
         $('#tl-info').textContent = `${it.name} · ${it.show}`;
         announce(`${it.name}, ${it.show}`);
         play('tic'); paint();

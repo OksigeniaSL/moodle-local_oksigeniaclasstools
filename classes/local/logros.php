@@ -34,7 +34,7 @@ class logros {
         'cazaletras' => 'rosco', 'tiradados' => 'dice', 'cumplemetas' => 'goal', 'pasalimpios' => 'board',
         'quitatelones' => 'board', 'trazacirculos' => 'board', 'picabilletes' => 'exit', 'despliegacubos' => 'solids',
         'despejaequis' => 'balance', 'creajuegos' => 'exercises', 'alzatarjetas' => 'cards', 'echacuentas' => 'calc',
-        'sigueluces' => 'simon',
+        'sigueluces' => 'simon', 'hundeflotas' => 'plane', 'viajasiglos' => 'timeline',
     ];
 
     /** Days of use for each level. */

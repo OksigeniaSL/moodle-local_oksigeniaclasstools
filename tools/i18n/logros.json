@@ -458,5 +458,37 @@
  "cr_fam_simon": {
   "en": "Simon",
   "es": "Simón"
+ },
+ "cr_fam_plane": {
+  "en": "Coordinate plane",
+  "es": "Plano de coordenadas"
+ },
+ "cr_fam_timeline": {
+  "en": "Timeline",
+  "es": "Línea del tiempo"
+ },
+ "cr_hundeflotas_name": {
+  "en": "Fleet Sinker",
+  "es": "Hundeflotas"
+ },
+ "cr_hundeflotas_text": {
+  "en": "Every pair of numbers, a shot.",
+  "es": "Cada pareja de números, un disparo."
+ },
+ "cr_hundeflotas_how": {
+  "en": "Sink a whole fleet on the coordinate plane.",
+  "es": "Hunde una flota entera en el plano de coordenadas."
+ },
+ "cr_viajasiglos_name": {
+  "en": "Century Hopper",
+  "es": "Viajasiglos"
+ },
+ "cr_viajasiglos_text": {
+  "en": "Crosses millennia in one hop.",
+  "es": "Cruza milenios de un salto."
+ },
+ "cr_viajasiglos_how": {
+  "en": "Hide the dates on a timeline and uncover three.",
+  "es": "Esconde las fechas de una línea del tiempo y destapa tres."
  }
 }

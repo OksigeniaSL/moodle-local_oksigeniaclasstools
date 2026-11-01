@@ -31,6 +31,7 @@
         tocanotas: 'score', salvaglobos: 'hangman', cazaletras: 'rosco', tiradados: 'dice', cumplemetas: 'goal',
         pasalimpios: 'board', quitatelones: 'board', trazacirculos: 'board', picabilletes: 'exit', despliegacubos: 'solids',
         despejaequis: 'balance', creajuegos: 'exercises', alzatarjetas: 'cards', echacuentas: 'calc', sigueluces: 'simon',
+        hundeflotas: 'plane', viajasiglos: 'timeline',
     };
     const ORDER = Object.keys(FAMILY);
     const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));

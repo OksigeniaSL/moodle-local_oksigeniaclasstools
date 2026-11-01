@@ -28,7 +28,7 @@
   <div class="acciones">
     <button type="button" class="redondo" id="b-dividir" aria-pressed="false" title="Dos herramientas a la vez" data-t-title="bar_split"><span data-icono="columnas"></span><span class="redondo-texto" data-t="bar_split">Dos herramientas a la vez</span></button>
     <button type="button" class="redondo" id="b-guia" title="Guía docente" data-t-title="gd_button" aria-haspopup="dialog"><span data-icono="pregunta"></span><span class="redondo-texto" data-t="gd_button">Guía docente</span></button>
-    <button type="button" class="redondo" id="b-sonido" aria-pressed="true" title="Sonido" data-t-title="bar_sound"><span data-icono="sonido"></span><span class="redondo-texto" data-t="bar_sound">Sonido</span></button>
+    <button type="button" class="redondo" id="b-sonido" aria-haspopup="true" aria-expanded="false" title="Sonido" data-t-title="bar_sound"><span data-icono="sonido"></span><span class="redondo-texto" data-t="bar_sound">Sonido</span></button>
     <button type="button" class="redondo discreto" id="b-sala" title="Sala de profes" data-t-title="sl_button" aria-haspopup="dialog" hidden><span data-icono="estrella"></span><span class="redondo-texto" data-t="sl_button">Sala de profes</span></button>
     <button type="button" class="redondo" id="b-ventana" title="Abrir en otra ventana" data-t-title="bar_window" hidden><span data-icono="ventana"></span><span class="redondo-texto" data-t="bar_window">Abrir en otra ventana</span></button>
     <button type="button" class="redondo" id="b-pantalla" title="Pantalla completa" data-t-title="bar_fullscreen" hidden><span data-icono="pantalla"></span><span class="redondo-texto" data-t="bar_fullscreen">Pantalla completa</span></button>
@@ -216,35 +216,46 @@
       <div class="ondas" id="s-ondas" aria-hidden="true"></div>
     </div>
     <div class="tarjeta mandos-ruido">
+      <div class="segmentos" role="radiogroup" aria-label="Cómo funciona" data-t-aria="sm_mode" id="s-modo">
+        <button type="button" role="radio" aria-checked="true" data-v="oye" data-t="sm_mode_listen">Escuchando</button>
+        <button type="button" role="radio" aria-checked="false" data-v="mano" data-t="sm_mode_hand">A mano</button>
+      </div>
       <p class="mensaje-ruido" id="s-mensaje" aria-live="polite" data-t="sm_off">Semáforo apagado</p>
-      <div class="medidor" id="s-medidor" role="meter" aria-label="Nivel de ruido" data-t-aria="sm_level" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+      <div class="ct-sm-mano" id="s-mano" role="radiogroup" aria-label="Enciende una luz" data-t-aria="sm_hand_lights" hidden>
+        <button type="button" role="radio" aria-checked="false" class="boton" data-z="verde" data-t="sm_h_green">Verde</button>
+        <button type="button" role="radio" aria-checked="false" class="boton" data-z="amarillo" data-t="sm_h_amber">Ámbar</button>
+        <button type="button" role="radio" aria-checked="false" class="boton" data-z="rojo" data-t="sm_h_red">Rojo</button>
+      </div>
+      <p class="nota" id="s-mano-nota" data-t="sm_hand_note" hidden>Toca una luz para encenderla y tócala otra vez para apagarla. No se escucha nada.</p>
+      <div class="medidor solo-oye" id="s-medidor" role="meter" aria-label="Nivel de ruido" data-t-aria="sm_level" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
         <span class="relleno" id="s-relleno"></span>
       </div>
-      <div class="escala" aria-hidden="true"><span data-t="sm_scale_ok">Bien</span><span data-t="sm_scale_lower">Más bajo</span><span data-t="sm_scale_too">Demasiado</span></div>
-      <div class="rastro" id="s-rastro-caja" hidden><span class="ante" data-t="sm_trail">El último minuto</span><canvas id="s-rastro" aria-hidden="true"></canvas></div>
-      <div class="ruido-extra" id="s-extra">
+      <div class="escala solo-oye" aria-hidden="true"><span data-t="sm_scale_ok">Bien</span><span data-t="sm_scale_lower">Más bajo</span><span data-t="sm_scale_too">Demasiado</span></div>
+      <div class="rastro solo-oye" id="s-rastro-caja" hidden><span class="ante" data-t="sm_trail">El último minuto</span><canvas id="s-rastro" aria-hidden="true"></canvas></div>
+      <div class="ruido-extra solo-oye" id="s-extra">
         <div class="ruido-dato"><span class="ante" data-t="sm_streak">Racha en calma</span><strong class="ruido-cifra" id="s-racha">0:00</strong><span class="nota" id="s-mejor"></span></div>
         <div class="ruido-dato"><span class="ante" id="s-paciencia-titulo" data-t="sm_patience">Paciencia</span>
           <div class="paciencia" id="s-paciencia" role="meter" aria-label="Paciencia de la clase" data-t-aria="sm_patience_aria" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100"><span id="s-paciencia-relleno"></span></div>
           <span class="nota" data-t="sm_patience_note">Se gasta con el ruido que dura y vuelve con la calma.</span></div>
       </div>
       <details class="ruido-opciones"><summary data-t="sm_extras">Más cosas en el semáforo</summary>
-        <label class="interruptor"><input type="checkbox" id="s-op-ondas"><span data-t="sm_waves">Ondas cuando sube</span></label>
-        <label class="interruptor"><input type="checkbox" id="s-op-rastro"><span data-t="sm_trail">El último minuto</span></label>
+        <label class="interruptor solo-oye"><input type="checkbox" id="s-op-ondas"><span data-t="sm_waves">Ondas cuando sube</span></label>
+        <label class="interruptor solo-oye"><input type="checkbox" id="s-op-rastro"><span data-t="sm_trail">El último minuto</span></label>
         <label class="interruptor"><input type="checkbox" id="s-op-cara"><span data-t="sm_face">Una cara en la luz</span></label>
       </details>
-      <label class="campo apilado deslizador"><span><span data-t="sm_sensitivity">Sensibilidad</span> <em id="s-sens-valor" data-t="sm_sens_medium">media</em></span><input type="range" id="s-sensibilidad" min="1" max="10" step="1" value="5"></label>
-      <button type="button" class="boton suave ancho" id="s-ajustar"><span data-icono="escucha"></span><span data-t="sm_adjust">Ajustar a esta clase</span></button>
-      <p class="nota" id="s-ajuste-nota" aria-live="polite" data-t="sm_adjust_hint">Con la clase trabajando a un volumen que vale, pulsa: lo de ahora quedará en verde.</p>
-      <button type="button" class="boton grande ancho" id="s-marcha"><span data-icono="micro"></span><span data-t="sm_listen">Escuchar la clase</span></button>
+      <label class="campo apilado deslizador solo-oye"><span><span data-t="sm_sensitivity">Sensibilidad</span> <em id="s-sens-valor" data-t="sm_sens_medium">media</em></span><input type="range" id="s-sensibilidad" min="1" max="10" step="1" value="5"></label>
+      <button type="button" class="boton suave ancho solo-oye" id="s-ajustar"><span data-icono="escucha"></span><span data-t="sm_adjust">Ajustar a esta clase</span></button>
+      <p class="nota solo-oye" id="s-ajuste-nota" aria-live="polite" data-t="sm_adjust_hint">Con la clase trabajando a un volumen que vale, pulsa: lo de ahora quedará en verde.</p>
+      <button type="button" class="boton grande ancho solo-oye" id="s-marcha"><span data-icono="micro"></span><span data-t="sm_listen">Escuchar la clase</span></button>
       <div class="sin-micro" id="s-sinmicro" role="alert" hidden>
         <span data-icono="micro-no"></span>
         <div>
           <p id="s-sinmicro-texto"></p>
           <button type="button" class="boton" id="s-ventana" hidden><span data-icono="ventana"></span><span data-t="bar_window">Abrir en otra ventana</span></button>
+          <button type="button" class="boton suave" id="s-a-mano"><span data-icono="mano"></span><span data-t="sm_by_hand">Encender la luz a mano</span></button>
         </div>
       </div>
-      <p class="nota"><span data-icono="info"></span> <span data-t="sm_privacy">El sonido no se graba ni se envía a ningún sitio: solo se mide el volumen, aquí, en este ordenador.</span></p>
+      <p class="nota solo-oye"><span data-icono="info"></span> <span data-t="sm_privacy">El sonido no se graba ni se envía a ningún sitio: solo se mide el volumen, aquí, en este ordenador.</span></p>
     </div>
   </section>
 

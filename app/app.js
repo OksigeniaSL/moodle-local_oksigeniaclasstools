@@ -133,13 +133,16 @@
 
     // --- Sound: all synthesised in the browser, no files ---
     let soundOn = load('sonido', true) !== false;
+    // The volume of this computer, from 0 to 100: it starts low, and all the sounds go through it.
+    let volume = Math.max(0, Math.min(100, Number(load('volumen', 40))));
+    if (!Number.isFinite(volume)) { volume = 40; }
     let ctx = null, masterGain = null;
     const audio = () => {
         const AC = window.AudioContext || window.webkitAudioContext;
         if (!AC) { return null; }
         if (!ctx) {
             ctx = new AC();
-            masterGain = ctx.createGain(); masterGain.gain.value = 0.5;
+            masterGain = ctx.createGain(); masterGain.gain.value = volume / 100;
             const comp = ctx.createDynamicsCompressor(); masterGain.connect(comp); comp.connect(ctx.destination);
         }
         if (ctx.state === 'suspended') { ctx.resume(); }
@@ -310,12 +313,40 @@
 
     // --- Buttons of the bar: sound, another window, full screen ---
     const bSound = $('#b-sonido');
+    // The speaker opens a small panel under it: how loud, and silence.
+    const volumePanel = document.createElement('div');
+    volumePanel.className = 'ct-volumen'; volumePanel.id = 'b-volumen'; volumePanel.hidden = true;
+    volumePanel.setAttribute('role', 'group'); volumePanel.setAttribute('aria-label', t('bar_volume'));
+    volumePanel.innerHTML = `<label class="ct-volumen-nivel"><span>${escapeHtml(t('bar_volume'))}</span>`
+        + '<input type="range" id="b-volumen-nivel" min="0" max="100" step="5"></label>'
+        + '<button type="button" class="boton suave" id="b-silencio"><span data-icono="mudo"></span><span id="b-silencio-texto"></span></button>';
+    document.body.append(volumePanel);
     const paintSound = () => {
-        bSound.setAttribute('aria-pressed', String(soundOn));
         setIcon(bSound.querySelector('[data-icono]'), soundOn ? 'sonido' : 'mudo');
-        bSound.title = soundOn ? t('bar_sound_on') : t('bar_sound_off');
+        bSound.title = soundOn ? t('bar_volume') : t('bar_sound_muted');
+        $('#b-volumen-nivel').value = volume;
+        const b = $('#b-silencio');
+        setIcon(b.querySelector('[data-icono]'), soundOn ? 'mudo' : 'sonido');
+        $('#b-silencio-texto').textContent = soundOn ? t('bar_mute') : t('bar_unmute');
     };
-    bSound.addEventListener('click', () => { soundOn = !soundOn; save('sonido', soundOn); paintSound(); playSound('tic'); });
+    const closeVolume = () => { volumePanel.hidden = true; bSound.setAttribute('aria-expanded', 'false'); };
+    bSound.addEventListener('click', () => {
+        if (!volumePanel.hidden) { closeVolume(); return; }
+        const r = bSound.getBoundingClientRect();
+        volumePanel.style.top = `${r.bottom + 8}px`;
+        volumePanel.style.right = `${Math.max(8, innerWidth - r.right)}px`;
+        volumePanel.hidden = false; bSound.setAttribute('aria-expanded', 'true');
+    });
+    addEventListener('pointerdown', (e) => { if (!volumePanel.hidden && !volumePanel.contains(e.target) && !bSound.contains(e.target)) { closeVolume(); } }, { capture: true });
+    addEventListener('keydown', (e) => { if (e.key === 'Escape' && !volumePanel.hidden) { closeVolume(); bSound.focus(); } });
+    $('#b-volumen-nivel').addEventListener('input', (e) => {
+        volume = Number(e.target.value); save('volumen', volume);
+        if (masterGain) { masterGain.gain.value = volume / 100; }
+        // Moving it means wanting to hear it.
+        if (!soundOn && volume > 0) { soundOn = true; save('sonido', soundOn); paintSound(); }
+    });
+    $('#b-volumen-nivel').addEventListener('change', () => playSound('tic'));
+    $('#b-silencio').addEventListener('click', () => { soundOn = !soundOn; save('sonido', soundOn); paintSound(); playSound('tic'); });
     // Inside Moodle the SCORM package runs in a frame that may block the microphone and full screen.
     const openWindow = () => window.open(location.href, '_blank', 'noopener');
     $('#b-ventana').hidden = !inFrame;
@@ -434,7 +465,11 @@
         return `hsl(${Math.round((h + 360) % 360)}, ${Math.round(s)}%, ${Math.round(l)}%)`;
     };
     // The bar according to its traveller (or without one).
-    const TRAVELLERS = ['cohete', 'coche', 'caracol', 'barco', 'bateria', 'pixel', 'ninguno'];
+    const MOVERS = ['cohete', 'coche', 'caracol', 'barco', 'tortuga', 'tren', 'abeja', 'globo', 'guepardo', 'avion'];
+    const TRAVELLERS = ['cambia', ...MOVERS, 'bateria', 'pixel', 'ninguno'];
+    // «A different one each time»: the next of the list after each time that runs out.
+    let travellerTurn = Number(load('tm-viajero-turno', 0)) || 0;
+    const travellerNow = () => (traveller === 'cambia' ? MOVERS[travellerTurn % MOVERS.length] : (TRAVELLERS.includes(traveller) ? traveller : 'cohete'));
     const drawBar = (v, by, bh, br) => {
         let stripes = '';
         for (let i = -3; i < 14; i++) { stripes += `<path d="M${12 + i * 14} 150L${24 + i * 14} 118h7L${19 + i * 14} 150Z"/>`; }
@@ -471,6 +506,58 @@
                 + '<g class="tm-viajero tm-barco"><g class="tm-mece"><path class="tm-casco-barco" d="M-15 2 L15 2 L10 9 L-10 9 Z"/><path class="tm-mastil" d="M0 2 V-18"/>'
                 + '<path class="tm-vela" d="M1.5 -17 L13 0 L1.5 0 Z"/><path class="tm-foque" d="M-1.5 -14 L-11 0 L-1.5 0 Z"/></g></g>' + fact;
         }
+        if (v === 'tortuga') {
+            return trail + '<rect class="tm-suelo tm-arena-seca" x="10" y="141" width="172" height="9" rx="4.5"/><ellipse class="tm-mar" cx="186" cy="145" rx="13" ry="5"/>'
+                + '<g clip-path="url(#tmEstela)"><path class="tm-huellas" d="M12 145H182"/></g>'
+                + '<g class="tm-viajero tm-tortuga"><path class="tm-tortuga-piel" d="M-16 3 L-21 6 L-15 6.5 Z"/>'
+                + '<rect class="tm-tortuga-piel" x="-12" y="2" width="7" height="6.5" rx="2.5"/><rect class="tm-tortuga-piel" x="6" y="2" width="7" height="6.5" rx="2.5"/>'
+                + '<path class="tm-tortuga-piel" d="M12 -1 Q15 -8 21 -7 Q26 -6 25 -1 Q24 3 18 3 L12 3 Z"/><circle class="tm-ojito" cx="21" cy="-3.5" r="1.3"/>'
+                + '<path class="tm-tortuga-concha" d="M-16 4 Q-15 -13 0 -13 Q15 -13 16 4 Z"/>'
+                + '<path class="tm-tortuga-placas" d="M-6 -12 L-4 -5 L4 -5 L6 -12 M-4 -5 L-8 3 M4 -5 L8 3 M-15 -3 L-4 -5 M15 -3 L4 -5"/></g>' + fact;
+        }
+        if (v === 'tren') {
+            let sleepers = '';
+            for (let i = 0; i < 18; i++) { sleepers += `<rect class="tm-traviesa" x="${12 + i * 10}" y="146" width="5" height="4"/>`; }
+            return `${sleepers}<rect class="tm-via" x="10" y="143.5" width="180" height="2.6" rx="1"/>`
+                + '<g class="tm-estacion"><path class="tm-estacion-techo" d="M180 121 L198 121 L196 115 L182 115 Z"/><rect class="tm-estacion-muro" x="182" y="121" width="14" height="22.5"/>'
+                + '<rect class="tm-estacion-puerta" x="186.5" y="130" width="5" height="13.5"/></g>'
+                + '<g class="tm-viajero tm-tren"><g class="tm-velocidad oscura"><line x1="-36" y1="-5" x2="-28" y2="-5"/><line x1="-39" y1="0" x2="-28" y2="0"/></g>'
+                + '<path class="tm-tren-cuerpo" d="M-26 7 V-9 Q-26 -12 -23 -12 H6 Q20 -11 28 7 Z"/><path class="tm-tren-franja" d="M-26 1 H24.8 L27 5 H-26 Z"/>'
+                + '<rect class="tm-tren-ventana" x="-22" y="-8.5" width="7" height="5.5" rx="1.2"/><rect class="tm-tren-ventana" x="-12" y="-8.5" width="7" height="5.5" rx="1.2"/>'
+                + '<rect class="tm-tren-ventana" x="-2" y="-8.5" width="7" height="5.5" rx="1.2"/><path class="tm-tren-ventana" d="M9 -8.5 H12 Q16 -7.5 19 -3 H9 Z"/>'
+                + '<circle class="tm-rueda" cx="-18" cy="7.5" r="2.4"/><circle class="tm-rueda" cx="-8" cy="7.5" r="2.4"/><circle class="tm-rueda" cx="8" cy="7.5" r="2.4"/><circle class="tm-rueda" cx="18" cy="7.5" r="2.4"/></g>' + fact;
+        }
+        if (v === 'abeja') {
+            return trail + '<rect class="tm-suelo" x="10" y="144" width="180" height="6" rx="3"/><g clip-path="url(#tmEstela)"><path class="tm-vuelo" d="M12 134H182"/></g>'
+                + '<path class="tm-tallo" d="M189 145 V124"/><path class="tm-hoja" d="M189 138 Q181 131 178 136 Q182 142 189 138 Z"/>'
+                + '<g class="tm-flor"><circle cx="189" cy="109" r="5"/><circle cx="197" cy="115" r="5"/><circle cx="194" cy="124" r="5"/><circle cx="184" cy="124" r="5"/><circle cx="181" cy="115" r="5"/></g><circle class="tm-flor-centro" cx="189" cy="117" r="4.5"/>'
+                + '<g class="tm-viajero tm-abeja"><g class="tm-flota"><g class="tm-alas"><ellipse class="tm-ala" cx="-4" cy="-9" rx="5.5" ry="8.5" transform="rotate(-18 -4 -9)"/><ellipse class="tm-ala" cx="4" cy="-9" rx="5" ry="8" transform="rotate(16 4 -9)"/></g>'
+                + '<path class="tm-aguijon" d="M-13 0 L-18 0 L-13 2.2 Z"/><ellipse class="tm-abeja-cuerpo" cx="0" cy="0" rx="13.5" ry="8"/>'
+                + '<path class="tm-abeja-raya" d="M-7 -6.5 Q-5 0 -7 6.5 M-1 -7.8 Q1 0 -1 7.8 M5 -7 Q7 0 5 7"/>'
+                + '<circle class="tm-abeja-cara" cx="12" cy="-1" r="5.2"/><circle class="tm-ojito" cx="14" cy="-2.2" r="1.2"/><path class="tm-antena" d="M13 -5.5 Q15 -11 19 -11"/></g></g>' + fact;
+        }
+        if (v === 'globo') {
+            return '<rect class="tm-cielo" x="10" y="112" width="180" height="38" rx="9"/><g class="tm-nube"><ellipse cx="44" cy="124" rx="9" ry="4"/><ellipse cx="52" cy="121" rx="7" ry="4"/></g>'
+                + '<g class="tm-nube"><ellipse cx="118" cy="140" rx="10" ry="4"/><ellipse cx="127" cy="137" rx="7" ry="4"/></g><path class="tm-colina" d="M162 150 Q178 128 190 136 V150 Z"/>'
+                + '<g class="tm-viajero tm-globo"><g class="tm-flota"><path class="tm-globo-tela" d="M0 -21 C14 -21 17 -7 10 2 L4 8 H-4 L-10 2 C-17 -7 -14 -21 0 -21 Z"/>'
+                + '<path class="tm-globo-gajo" d="M0 -21 C-7 -21 -9 -7 -5 2 L-2 8 H2 L5 2 C9 -7 7 -21 0 -21 Z"/><path class="tm-globo-cuerda" d="M-4 8 L-3 12 M4 8 L3 12"/><rect class="tm-globo-cesta" x="-4" y="12" width="8" height="5" rx="1"/></g></g>' + fact;
+        }
+        if (v === 'guepardo') {
+            return '<rect class="tm-suelo tm-sabana" x="10" y="141" width="180" height="9" rx="4.5"/><path class="tm-palmera" d="M188 141 Q187 128 189 120 M189 124 L181 118 M189 124 L196 119"/>'
+                + '<ellipse class="tm-acacia" cx="189" cy="116" rx="13" ry="4.5"/>'
+                + '<g class="tm-viajero tm-guepardo"><g class="tm-velocidad oscura"><line x1="-40" y1="-6" x2="-34" y2="-6"/><line x1="-42" y1="-1" x2="-34" y2="-1"/></g>'
+                + '<path class="tm-guepardo-cola" d="M-17 -5 C-23 -10 -28 -10 -33 -6"/><path class="tm-guepardo-pata" d="M-13 0 L-23 6.5 M-9 1 L-15 8 M10 -1 L20 7 M6 0 L12 8"/>'
+                + '<path class="tm-guepardo-piel" d="M-18 -5 C-12 -11 4 -11 11 -9 C14 -13 22 -14 26 -10 C29 -8 31 -6 30 -4.5 C28 -3 25 -3 22 -3 C18 1 9 3.5 0 3.5 C-9 3.5 -15 3 -18 0 Z"/>'
+                + '<path class="tm-guepardo-piel" d="M17 -12 L17.5 -16.5 L21.5 -13 Z"/><g class="tm-guepardo-manchas"><circle cx="-12" cy="-5" r="1.3"/><circle cx="-7" cy="-1.5" r="1.3"/><circle cx="-5" cy="-6.5" r="1.3"/><circle cx="0" cy="-2.5" r="1.3"/><circle cx="3" cy="-7" r="1.3"/><circle cx="7" cy="-3" r="1.3"/><circle cx="12" cy="-5.5" r="1.1"/></g>'
+                + '<circle class="tm-ojito" cx="24" cy="-9" r="1.2"/><path class="tm-guepardo-lagrima" d="M24 -8 Q24 -5.5 27 -5"/><circle class="tm-guepardo-nariz" cx="29.6" cy="-6.4" r="1"/></g>' + fact;
+        }
+        if (v === 'avion') {
+            return trail + '<rect class="tm-cielo" x="10" y="112" width="180" height="38" rx="9"/><g class="tm-nube"><ellipse cx="70" cy="123" rx="9" ry="4"/><ellipse cx="78" cy="120" rx="7" ry="4"/></g>'
+                + '<g class="tm-nube"><ellipse cx="138" cy="141" rx="10" ry="4"/><ellipse cx="147" cy="138" rx="7" ry="4"/></g><g clip-path="url(#tmEstela)"><path class="tm-vuelo tm-vuelo-blanco" d="M12 133H182"/></g>' + finishLine
+                + '<g class="tm-viajero tm-avion"><path class="tm-avion-cola" d="M-22 -5 L-28 -16 L-21 -16 L-12 -5 Z"/>'
+                + '<path class="tm-avion-cuerpo" d="M-27 -2 Q-27 -5 -22 -5 H14 Q24 -5 29 0 Q24 4 14 4 H-22 Q-27 4 -27 -2 Z"/><path class="tm-avion-ala" d="M-7 0 L-15 11 L-8 11 L7 0 Z"/>'
+                + '<g class="tm-avion-ventanas"><circle cx="-16" cy="-1.5" r="1"/><circle cx="-11" cy="-1.5" r="1"/><circle cx="-6" cy="-1.5" r="1"/><circle cx="-1" cy="-1.5" r="1"/><circle cx="4" cy="-1.5" r="1"/><circle cx="9" cy="-1.5" r="1"/></g><path class="tm-avion-cabina" d="M16 -4.6 Q22 -4 25 -1.5 H16 Z"/></g>' + fact;
+        }
         if (v === 'bateria') {
             let cells = '';
             for (let k = 1; k < 4; k++) { cells += `<line class="tm-celda" x1="${16 + 39 * k}" y1="118" x2="${16 + 39 * k}" y2="150"/>`; }
@@ -501,7 +588,7 @@
             // Something travels along the bar as time goes by, from the start to the finish (the usual rocket, a
             // racing car, a snail, a sailing boat), or the bar is what is left (a phone battery, an old video game
             // loading bar, or just the bar). It is drawn once; then only what moves is moved.
-            const v = TRAVELLERS.includes(traveller) ? traveller : 'cohete';
+            const v = travellerNow();
             const [by, bh, br] = v === 'ninguno' ? (mode === 'advanced' ? [128, 12, 2] : (mode === 'secondary' ? [124, 20, 10] : [118, 32, 16]))
                 : (v === 'bateria' ? [114, 40, 8] : [118, 32, v === 'pixel' ? 0 : 16]);
             const drawnKey = `barra-${v}-${bh}`;
@@ -509,7 +596,7 @@
             const x = 29 + 135 * (1 - f);
             const setAttr = (sel, attr, val) => { const e = g.querySelector(sel); if (e) { e.setAttribute(attr, val); } };
             if (v === 'cohete') { setAttr('.tm-estela', 'width', (x - 8).toFixed(2)); g.querySelector('.tm-barra').style.fill = barColour(f); }
-            if (v === 'caracol') { setAttr('.tm-estela', 'width', Math.max(0, x - 24).toFixed(2)); }
+            if (['caracol', 'tortuga', 'abeja', 'avion'].includes(v)) { setAttr('.tm-estela', 'width', Math.max(0, x - 24).toFixed(2)); }
             if (v === 'ninguno') { setAttr('.tm-estela', 'width', (170 * f).toFixed(2)); g.querySelector('.tm-barra').style.fill = barColour(f); }
             if (v === 'bateria') {
                 setAttr('.tm-carga', 'width', Math.max(0, 156 * f).toFixed(2));
@@ -520,7 +607,7 @@
                 const n = Math.ceil(f * 16 - 1e-9), c = f > 0.5 ? '#35b24a' : (f > 0.2 ? '#f2b705' : '#e8432e');
                 g.querySelectorAll('.tm-bloque').forEach((q, i) => { q.style.fill = i < n ? c : ''; q.classList.toggle('ultimo', i === n - 1 && f < 0.2); });
             }
-            if (['cohete', 'coche', 'caracol', 'barco'].includes(v)) { setAttr('.tm-viajero', 'transform', `translate(${x.toFixed(2)} ${v === 'barco' ? 125 : 134})`); }
+            if (MOVERS.includes(v)) { setAttr('.tm-viajero', 'transform', `translate(${x.toFixed(2)} ${v === 'barco' ? 125 : 134})`); }
             // Before starting, a fact about the traveller: time is also measured in speeds.
             const factText = g.querySelector('.tm-dato');
             if (factText) { factText.textContent = !tm.marcha && tm.total > 0 && tm.resta === tm.total && factText.dataset.hay !== '0' ? t('tm_fact_' + v) : ''; }
@@ -689,7 +776,12 @@
         $('#fin-vale').focus();
         announce(t('fin_time'));
     };
-    const closeTimeUp = (again) => { $('#fin-tiempo').hidden = true; tmReset(); if (again) { tmStart(); } };
+    const closeTimeUp = (again) => {
+        $('#fin-tiempo').hidden = true;
+        if (traveller === 'cambia') { travellerTurn = (travellerTurn + 1) % MOVERS.length; save('tm-viajero-turno', travellerTurn); }
+        tmReset();
+        if (again) { tmStart(); }
+    };
     $('#fin-vale').addEventListener('click', () => closeTimeUp(false));
     $('#fin-otra').addEventListener('click', () => closeTimeUp(true));
     $('#tm-marcha').addEventListener('click', tmToggle);
@@ -1692,6 +1784,21 @@
         $('#s-ventana').hidden = !inFrame;
         $('#s-sinmicro').hidden = false;
     };
+    // By hand: with no microphone (or no wish to listen), the teacher turns a light on, here or from the remote.
+    let smByHand = load('semaforo-modo', 'oye') === 'mano';
+    const smPaintMode = () => {
+        $('#h-semaforo').classList.toggle('a-mano', smByHand);
+        $$('#s-modo button').forEach((b) => b.setAttribute('aria-checked', String(b.dataset.v === (smByHand ? 'mano' : 'oye'))));
+        $('#s-mano').hidden = !smByHand;
+        $('#s-mano-nota').hidden = !smByHand;
+        $$('#s-mano button').forEach((b) => b.setAttribute('aria-checked', String(!!sm.zona && b.dataset.z === sm.zona)));
+    };
+    const smHand = (z) => {
+        smSetZone(sm.zona === z ? null : z);
+        smPaintMode();
+        if (sm.zona) { announce(MESSAGES[sm.zona]); }
+        playSound('tic');
+    };
     const smSetZone = (z) => {
         sm.zona = z;
         $$('#s-caja .luz').forEach((l) => l.classList.toggle('encendida', l.dataset.zona === z));
@@ -1848,7 +1955,7 @@
         $('#s-relleno').style.setProperty('--nivel', '0%');
         $('#s-medidor').setAttribute('aria-valuenow', '0');
         relabel($('#s-marcha'), t('sm_listen'), 'micro');
-        $('#s-marcha').className = 'boton grande ancho';
+        $('#s-marcha').className = 'boton grande ancho solo-oye';
     };
     const smStart = async () => {
         $('#s-sinmicro').hidden = true;
@@ -1872,7 +1979,7 @@
             sm.buf = new Float32Array(sm.analizador.fftSize);
             sm.fuente.connect(sm.analizador);   // to the analyser and nowhere else: it is not heard and not saved
             relabel(b, t('sm_stop'), 'micro-no');
-            b.className = 'boton grande suave ancho';
+            b.className = 'boton grande suave ancho solo-oye';
             smLoop();
         } catch (e) {
             clearTimeout(pendingTimer);
@@ -1884,6 +1991,19 @@
         }
     };
     $('#s-marcha').addEventListener('click', () => { if (sm.flujo) { smStop(); } else { smStart(); } });
+    const smSetMode = (byHand) => {
+        if (byHand === smByHand) { return; }
+        smStop();
+        smByHand = byHand; save('semaforo-modo', byHand ? 'mano' : 'oye');
+        $('#s-sinmicro').hidden = true;
+        smPaintMode();
+        playSound('tic');
+    };
+    $('#s-modo').addEventListener('click', (e) => { const b = e.target.closest('button[data-v]'); if (b) { smSetMode(b.dataset.v === 'mano'); } });
+    $('#s-a-mano').addEventListener('click', () => smSetMode(true));
+    $('#s-mano').addEventListener('click', (e) => { const b = e.target.closest('button[data-z]'); if (b) { smHand(b.dataset.z); } });
+    $('#s-caja').addEventListener('click', (e) => { const l = e.target.closest('.luz'); if (l && smByHand) { smHand(l.dataset.zona); } });
+    smPaintMode();
     $('#s-ventana').addEventListener('click', openWindow);
     const paintSensitivity = () => {
         const v = Number($('#s-sensibilidad').value);
@@ -1895,8 +2015,9 @@
     paintSensitivity();
     TOOLS.semaforo = {
         // Inside a frame without permission, the board says so before they try.
-        entra: () => { if (!sm.flujo && !micAllowed()) { smNoMic(inFrame ? 'marco' : 'otro'); } },
-        sale: smStop,
+        entra: () => { if (!smByHand && !sm.flujo && !micAllowed()) { smNoMic(inFrame ? 'marco' : 'otro'); } },
+        // A light turned on by hand stays on: it listens to nothing and nothing has to be stopped.
+        sale: () => { if (!smByHand) { smStop(); } },
     };
 
 
@@ -2210,6 +2331,7 @@
         newList: () => openEditor(null), editList: (id) => openEditor(id),
         kept: (tool) => (MOODLE && MOODLE.state && MOODLE.state[tool]) || null, keep: keepInMoodle,
         audioContext: () => audio(), soundOn: () => soundOn, output: () => masterGain,
+        volume: () => volume / 100,   // from 0 to 1, for what does not go through output(), such as the voice of the helps
         mode: () => mode,   // early, primary, secondary or advanced; «classtools:mode» when it changes
         otherLevels,        // otherLevels(bar, attr): the games or materials of other levels, in a menu after the bar
         nameCase: toNameCase,  // nameCase(name) → the name as the board shows it (in capitals when «Names in capitals» is on)
