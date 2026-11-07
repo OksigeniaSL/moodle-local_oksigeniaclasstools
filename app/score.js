@@ -116,16 +116,21 @@
             if (!v) { fail('sc_err_note', where); }
             return dot ? v * 1.5 : v;
         };
-        body.forEach(([line, n]) => line.split(/[\s|]+/).filter(Boolean).forEach((tok) => {
+        // What each bar written with | adds up to: an AI that does not really know a song often gets it wrong.
+        const sums = [];
+        let sum = 0;
+        body.forEach(([line, n]) => line.replace(/\|/g, ' | ').split(/\s+/).filter(Boolean).forEach((tok) => {
+            if (/^\|+$/.test(tok)) { if (sum) { sums.push(sum); } sum = 0; return; }
             const where = `${tok} (${n})`;
             const rest = tok.match(REST_RE);
-            if (rest) { last = lengthOf(rest[2], rest[3], where); song.notes.push({ s: 0, a: 0, t: last, r: true }); return; }
+            if (rest) { last = lengthOf(rest[2], rest[3], where); sum += last; song.notes.push({ s: 0, a: 0, t: last, r: true }); return; }
             const m = tok.match(NOTE_RE);
             if (!m) { fail('sc_err_note', where); }
             const l = NOTE_NAMES[m[1].toLowerCase()];
             let oct = octave0;
             if (m[3]) { oct = /\d/.test(m[3]) ? Number(m[3]) : octave0 + (m[3][0] === "'" ? m[3].length : -m[3].length); }
             last = lengthOf(m[4], m[5], where);
+            sum += last;
             song.notes.push({ s: oct * 7 + l, a: m[2] ? (/[#♯]/.test(m[2]) ? 1 : -1) : 0, t: last });
         }));
         if (song.pickupText) {
@@ -134,6 +139,10 @@
             delete song.pickupText;
         }
         if (!song.notes.length) { fail('sc_err_empty'); }
+        // The bars that do not fit the time: not the first one if it is shorter (the notes before the first bar,
+        // declared or not) nor the last one (often short after them). Only when the bars are written.
+        const per = (song.time[0] * 16) / song.time[1];
+        song.barsOff = (sum ? sums : sums.slice(0, -1)).filter((v, i) => Math.abs(v - per) > 0.01 && !(i === 0 && v < per)).length;
         song.notes.forEach((x) => { if (!SHAPES.has(x.t)) { x.t = split(x.t)[0]; } });
         return song;
     };
@@ -409,13 +418,14 @@
     const SYLL = { 16: 'ta-a-a-a', 12: 'ta-a-a', 8: 'ta-a', 6: 'ta-a', 4: 'ta', 3: 'ti', 2: 'ti', 1: 'ti' };
     let geo = null;   // where each note is, to find it with a tap
     const f1 = (n) => n.toFixed(1);
-    function render() {
-        const sheet = $('#sc-sheet');
-        const width = Math.max(320, sheet.clientWidth - 8);
-        const g = young() ? 15 : 12;   // the room between two lines
+    const wordsOf = (s) => (s.lyrics ? s.lyrics.split(/\s+|(?<=-)/).filter(Boolean) : []);
+    // The song as SVG markup, at any width: on the screen, with what is picked, sounding or to play; or for printing,
+    // without any of that. g is the room between two lines. Gives the markup, its size and where each note is.
+    function draw(o) {
+        const { width, g, names, colours, syll, words, picked = -1, playingAt = -1, target = -1, showAt = -1, paper = false } = o;
+        const nameColours = o.nameColours || COLOURS;
         const per = (song.time[0] * 16) / song.time[1], beat = song.time[1] === 8 && song.time[0] % 3 === 0 ? 6 : 16 / song.time[1];
-        const clef = CLEFS[song.clef], names = showNames() && mode !== 'game', colours = showColours() && mode !== 'game', syll = opt.rhythm && mode !== 'game';
-        const words = opt.lyrics && song.lyrics ? song.lyrics.split(/\s+|(?<=-)/).filter(Boolean) : [];
+        const clef = CLEFS[song.clef];
         const extra = (names ? 1.9 : 0) + (syll ? 1.9 : 0) + (words.length ? 1.9 : 0);
         const H = g * (11.2 + extra), clefW = g * 3.4, timeW = g * 2.6, left = g * 0.8, right = g * 1.2;
         const wOf = (n) => g * (2.3 + 1.15 * Math.log2(n.t)) + (n.a ? g * 1.1 : 0) + (SHAPES.get(n.t)[1] ? g * 0.7 : 0);
@@ -423,24 +433,44 @@
         const rows = [[]];
         const bars = [[]];
         let x = left + clefW + timeW, inBar = song.pickup ? per - song.pickup : 0;
+        // On paper, as engraved music: a new row only at a bar line (a bar is not split, nor are its beams).
+        const barWidth = (from, at) => {
+            let w = 0;
+            for (let k = from, b = at; k < song.notes.length; k++) { w += wOf(song.notes[k]); b += song.notes[k].t; if (b >= per - 0.01) { break; } }
+            return w;
+        };
         const items = song.notes.map((n, i) => {
             const w = wOf(n);
-            if (x + w > width - right && rows[rows.length - 1].length) { rows.push([]); bars.push([]); x = left + clefW; }
+            const need = paper && (i === 0 || inBar < 0.01) ? Math.max(w, barWidth(i, inBar)) : w;
+            if ((x + need > width - right || x + w > width - right) && rows[rows.length - 1].length) { rows.push([]); bars.push([]); x = left + clefW; }
             const item = { i, n, x: x + w * 0.42, w, row: rows.length - 1, at: inBar };
             rows[rows.length - 1].push(item);
             x += w; inBar += n.t;
             if (inBar >= per - 0.01 && i < song.notes.length - 1) { bars[bars.length - 1].push(x + g * 0.3); x += g * 1.2; inBar = 0; }
             return item;
         });
+        // And each row but the last stretched to the right margin, its last bar line on it.
+        if (paper) {
+            rows.slice(0, -1).forEach((row, r) => {
+                const start = left + clefW + (r === 0 ? timeW : 0), end = bars[r][bars[r].length - 1];
+                if (!row.length || !end || end <= start || row[row.length - 1].x > end) { return; }   // a bar too long for a row, cut
+                const k = (width - right - start) / (end - start);
+                row.forEach((it) => { it.x = start + (it.x - start) * k; it.w *= k; });
+                bars[r] = bars[r].map((b) => start + (b - start) * k);
+            });
+        }
         let wi = 0;
         items.forEach((it) => { if (!it.n.r && words[wi] !== undefined) { it.word = words[wi]; } if (!it.n.r) { wi++; } });
         const out = [];
         const yOf = (row, s) => row * H + g * 5 + 4 * g - (s - clef.bottom) * (g / 2);
         // The line of the names (and the syllables and the lyrics under it): below the lowest note of each row.
         const under = rows.map((row, r) => Math.max(r * H + g * 10.6, ...row.filter((it) => !it.n.r).map((it) => yOf(r, it.n.s) + g * 1.9)));
+        // On paper, the last staff ends at the final bar line (on the screen it goes on, to write more notes).
+        const endOf = (row) => row[row.length - 1].x + row[row.length - 1].w * 0.58 + g * 0.6;
         rows.forEach((row, r) => {
             const top = r * H + g * 5;
-            for (let k = 0; k < 5; k++) { out.push(`<line class="sc-linea" x1="${left}" x2="${width - right}" y1="${f1(top + k * g)}" y2="${f1(top + k * g)}"/>`); }
+            const x2 = paper && r === rows.length - 1 && row.length ? endOf(row) + g * 0.8 : width - right;
+            for (let k = 0; k < 5; k++) { out.push(`<line class="sc-linea" x1="${left}" x2="${f1(x2)}" y1="${f1(top + k * g)}" y2="${f1(top + k * g)}"/>`); }
             if (song.clef === 'sol') {
                 out.push(`<path class="sc-clave" d="${GCLEF}" transform="translate(${f1(left + g * 0.2)} ${f1(top - g * 1.65)}) scale(${(g * 7.3 / 40.77).toFixed(4)})"/>`);
             } else {
@@ -453,13 +483,13 @@
             }
             bars[r].forEach((bx) => out.push(`<line class="sc-barra" x1="${f1(bx)}" x2="${f1(bx)}" y1="${f1(top)}" y2="${f1(top + 4 * g)}"/>`));
             if (r === rows.length - 1 && row.length) {
-                const ex = row[row.length - 1].x + row[row.length - 1].w * 0.58 + g * 0.6;
+                const ex = endOf(row);
                 out.push(`<line class="sc-barra" x1="${f1(ex)}" x2="${f1(ex)}" y1="${f1(top)}" y2="${f1(top + 4 * g)}"/><rect class="sc-fin" x="${f1(ex + g * 0.35)}" y="${f1(top)}" width="${f1(g * 0.45)}" height="${f1(4 * g)}"/>`);
             }
         });
         // Beams: quavers and semiquavers together inside one beat.
         const groups = [];
-        let cur = [];
+        let cur = [], highest = g * 5 - g * 1.8;   // the top of the clef
         const close = () => { if (cur.length > 1) { groups.push(cur); } cur = []; };
         items.forEach((it) => {
             const beamable = !it.n.r && it.n.t <= 3;
@@ -472,14 +502,12 @@
         groups.forEach((gr) => gr.forEach((it) => inGroup.set(it, gr)));
         const middle = clef.bottom + 4;
         const stemUp = (it) => { const gr = inGroup.get(it); const ss = gr ? gr.map((x) => x.n.s) : [it.n.s]; return ss.reduce((a, b) => a + b, 0) / ss.length < middle; };
-        const playingAt = playing ? playing.index : -1;
-        const target = mode === 'play' ? next : (mode === 'game' && quiz ? -2 : -1);
         items.forEach((it) => {
             const n = it.n, top = it.row * H + g * 5, cx = it.x;
             const [f, dotted] = SHAPES.get(n.t);
             const on = it.i === playingAt || it.i === target;
-            const cls = `sc-nota${it.i === sel ? ' elegida' : ''}${on ? ' sonando' : ''}`;
-            if (it.i === sel) { out.push(`<rect class="sc-sel" x="${f1(cx - it.w * 0.42)}" y="${f1(top - g * 3)}" width="${f1(it.w)}" height="${f1(g * 10)}" rx="${f1(g * 0.5)}"/>`); }
+            const cls = `sc-nota${it.i === picked ? ' elegida' : ''}${on ? ' sonando' : ''}`;
+            if (it.i === picked) { out.push(`<rect class="sc-sel" x="${f1(cx - it.w * 0.42)}" y="${f1(top - g * 3)}" width="${f1(it.w)}" height="${f1(g * 10)}" rx="${f1(g * 0.5)}"/>`); }
             if (n.r) {
                 const y = top;
                 if (f === 'r') { out.push(`<rect class="sc-tinta" x="${f1(cx - g * 0.6)}" y="${f1(y + g)}" width="${f1(g * 1.2)}" height="${f1(g * 0.5)}"/>`); }
@@ -494,6 +522,7 @@
                 return;
             }
             const cy = yOf(it.row, n.s);
+            if (it.row === 0) { highest = Math.min(highest, cy - g * (n.a > 0 ? 1.3 : (n.a < 0 ? 1.8 : 0.6))); }
             // Ledger lines, above and below.
             for (let s = clef.bottom - 2; s >= n.s; s -= 2) { const y = yOf(it.row, s); out.push(`<line class="sc-linea" x1="${f1(cx - g * 1.05)}" x2="${f1(cx + g * 1.05)}" y1="${f1(y)}" y2="${f1(y)}"/>`); }
             for (let s = clef.bottom + 10; s <= n.s; s += 2) { const y = yOf(it.row, s); out.push(`<line class="sc-linea" x1="${f1(cx - g * 1.05)}" x2="${f1(cx + g * 1.05)}" y1="${f1(y)}" y2="${f1(y)}"/>`); }
@@ -516,6 +545,7 @@
                 let end = up ? cy - g * 3.4 : cy + g * 3.4;
                 if (gr) { const ys = gr.map((x) => yOf(x.row, x.n.s)); end = up ? Math.min(...ys) - g * 3.1 : Math.max(...ys) + g * 3.1; }
                 out.push(`<line class="sc-plica" x1="${f1(sx)}" x2="${f1(sx)}" y1="${f1(cy)}" y2="${f1(end)}" style="stroke-width:${f1(g * 0.12)}"/>`);
+                if (it.row === 0) { highest = Math.min(highest, end); }
                 if (!gr && (f === 'c' || f === 's')) {
                     [0, 1].slice(0, f === 's' ? 2 : 1).forEach((k) => {
                         const y0 = end + (up ? k : -k) * g * 0.8, dir = up ? 1 : -1;
@@ -527,7 +557,7 @@
             if (dotted) { const dy = (n.s - clef.bottom) % 2 === 0 ? cy - g * 0.5 : cy; out.push(`<circle class="sc-tinta" cx="${f1(cx + g * 1.05)}" cy="${f1(dy)}" r="${f1(g * 0.17)}"/>`); }
             out.push('</g>');
             const base = under[it.row];
-            if (names) { out.push(`<text class="sc-nombre" x="${f1(cx)}" y="${f1(base)}" style="${fill ? `fill:${fill}` : ''}">${escape(nameOf(n))}</text>`); }
+            if (names) { out.push(`<text class="sc-nombre" x="${f1(cx)}" y="${f1(base)}" style="${fill ? `fill:${nameColours[letter(n.s)]}` : ''}">${escape(nameOf(n))}</text>`); }
             if (syll) { out.push(`<text class="sc-silaba" x="${f1(cx)}" y="${f1(base + (names ? g * 1.9 : 0))}">${SYLL[n.t]}</text>`); }
             if (it.word) { out.push(`<text class="sc-letra" x="${f1(cx)}" y="${f1(base + g * ((names ? 1.9 : 0) + (syll ? 1.9 : 0)))}">${escape(it.word)}</text>`); }
         });
@@ -544,14 +574,25 @@
             });
         });
         // The little quaver, over the note that sounds (or the one to play), for the youngest.
-        const showAt = playingAt >= 0 ? playingAt : (mode === 'play' ? next : -1);
-        if (young() && showAt >= 0 && items[showAt]) {
+        if (showAt >= 0 && items[showAt]) {
             const it = items[showAt], top = it.row * H + g * 5, my = Math.min(top - g * 2.2, (it.n.r ? top : yOf(it.row, it.n.s)) - g * 4.6);
             out.push(`<g class="sc-mascota" transform="translate(${f1(it.x)} ${f1(my)}) scale(${(g / 15).toFixed(3)})"><ellipse cx="0" cy="8" rx="11" ry="8.5" fill="#164281"/><circle cx="-4" cy="6" r="2.6" fill="#fff"/><circle cx="4" cy="6" r="2.6" fill="#fff"/><circle cx="-3.6" cy="6.4" r="1.3" fill="#1c1a19"/><circle cx="4.4" cy="6.4" r="1.3" fill="#1c1a19"/><path d="M-3 11 Q0 13.5 3 11" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M9.5 6 V-22 C15 -15 22 -12 18 -2" stroke="#164281" stroke-width="3.2" fill="none" stroke-linecap="round"/></g>`);
         }
-        const height = Math.max(1, rows.length) * H + g;
-        sheet.innerHTML = `<svg class="ct-sc-svg" viewBox="0 0 ${f1(width)} ${f1(height)}" width="${f1(width)}" height="${f1(height)}" role="img" aria-label="${escape(song.title)}">${out.join('')}</svg>`;
-        geo = { items, H, g, rows: rows.length, clef, width };
+        return { markup: out.join(''), height: Math.max(1, rows.length) * H + g, highest, geo: { items, H, g, rows: rows.length, clef, width } };
+    }
+    function render() {
+        const sheet = $('#sc-sheet');
+        const width = Math.max(320, sheet.clientWidth - 8);
+        const playingAt = playing ? playing.index : -1;
+        const showAt = playingAt >= 0 ? playingAt : (mode === 'play' ? next : -1);
+        const d = draw({
+            width, g: young() ? 15 : 12, names: showNames() && mode !== 'game', colours: showColours() && mode !== 'game',
+            syll: opt.rhythm && mode !== 'game', words: opt.lyrics ? wordsOf(song) : [], picked: sel, playingAt,
+            target: mode === 'play' ? next : (mode === 'game' && quiz ? -2 : -1), showAt: young() ? showAt : -1,
+        });
+        const { items, H, g } = d.geo;
+        sheet.innerHTML = `<svg class="ct-sc-svg" viewBox="0 0 ${f1(width)} ${f1(d.height)}" width="${f1(width)}" height="${f1(d.height)}" role="img" aria-label="${escape(song.title)}">${d.markup}</svg>`;
+        geo = d.geo;
         if (showAt >= 0 && items[showAt]) {
             const top = items[showAt].row * H;
             if (top < sheet.scrollTop || top + H > sheet.scrollTop + sheet.clientHeight) { sheet.scrollTo({ top: Math.max(0, top - g), behavior: 'smooth' }); }
@@ -897,17 +938,25 @@
     // --- Bringing songs in, the prompt, and taking one out ----------------------------------------------------
     let dialog = null;
     const openDialog = (html, wire) => {
-        if (!dialog) { dialog = document.createElement('dialog'); dialog.className = 'editor ct-sc-dialogo'; document.body.append(dialog); }
+        if (!dialog) { dialog = document.createElement('dialog'); document.body.append(dialog); }
+        dialog.className = 'editor ct-sc-dialogo';
         dialog.innerHTML = html;
         wire(dialog);
         if (!dialog.open) { if (dialog.showModal) { dialog.showModal(); } else { dialog.setAttribute('open', ''); } }
     };
     const closeDialog = () => { if (dialog && dialog.open) { if (dialog.close) { dialog.close(); } else { dialog.removeAttribute('open'); } } };
+    // What the AI answers when it does not know a melody note by note (the prompt asks it for that instead of
+    // making one up). Language-free, so that no translation of the prompt changes it.
+    const UNKNOWN = /^\s*\?{3}/;
     const take = (text, name) => {
-        const s = clean(Object.assign(parseSong(text), { id: 'm' + Date.now().toString(36) }));
+        if (UNKNOWN.test(text)) { fail('sc_ai_unknown'); }
+        const parsed = parseSong(text), off = parsed.barsOff || 0;
+        const s = clean(Object.assign(parsed, { id: 'm' + Date.now().toString(36) }));
         if (!s.title) { s.title = String(name || '').replace(/\.[a-z0-9]+$/i, '').slice(0, 80) || t('sc_new_name', mine.length + 1); }
         mine.unshift(s); song = s; opt.current = s.id; keepOpt(); persist(); sel = -1; next = 0; undo.length = 0;
         paint();
+        const time = s.time.join('/');
+        $('#sc-msg').textContent = off ? (off === 1 ? t('sc_bars_off_one', time) : t('sc_bars_off_many', { n: off, time })) : '';
         return s;
     };
     $('#sc-import').addEventListener('click', () => openImport());
@@ -947,9 +996,11 @@
         if (!window.ClasstoolsAI) { return; }
         const box = window.ClasstoolsAI.box({
             kind: () => 'song', prompt: (p) => promptFor(p.topic), levels: ['primary'], noLevel: true, topicLabel: t('sc_prompt_song'),
+            // A song that came: on the score, with a word to listen to it first; if not, what happened (a string).
             add: (text) => {
-                try { take(text, ''); } catch (err) { return 0; }
+                try { take(text, ''); } catch (err) { return err.mine ? err.message : t('sc_err_empty'); }
                 closeDialog(); play('card');
+                if (!$('#sc-msg').textContent) { $('#sc-msg').textContent = t('sc_ai_done'); }
                 return 1;
             },
             done: () => t('sc_ai_done'),
@@ -957,12 +1008,148 @@
         box.el.open = true;
         d.querySelector('#sc-ai').append(box.el);
     }); }
-    $('#sc-export').addEventListener('click', () => {
-        const blob = new Blob([writeText(song)], { type: 'text/plain;charset=utf-8' }), a = document.createElement('a');
-        a.href = URL.createObjectURL(blob); a.download = `${(song.title || 'partitura').replace(/[\\/:*?"<>|]+/g, '').slice(0, 60)}.txt`;
+    // --- The score on paper, to put in a document and print worksheets ---------------------------------------
+    // Black on white at a fixed width, with the title on top, whatever the screen: a PNG at 300 dpi about 17 cm wide
+    // (an A4 page with its margins), or an SVG, sharp at any size. The board's Nunito goes inside, so the names and
+    // the lyrics look the same. The text of the song is still there, to open it again with «Open».
+    const PRINT_W = 1000, PRINT_PX = 2000, PRINT_DPI = 300;
+    const PRINT_NAMES = ['#c62828', '#d84315', '#8d6e00', '#2e7d32', '#00838f', '#283593', '#6a1b9a'];   // the bars' colours, dark enough to read on paper
+    let fontData = null;
+    const embeddedFont = () => {
+        if (!fontData) {
+            const css = document.querySelector('link[rel="stylesheet"][href*="styles.css"]');
+            fontData = fetch(new URL('fonts/nunito-latin-wght-normal.woff2', css ? css.href : location.href).href)
+                .then((r) => (r.ok ? r.blob() : null))
+                .then((b) => (b ? new Promise((ok) => {
+                    const fr = new FileReader();
+                    fr.onload = () => ok(String(fr.result || ''));
+                    fr.onerror = () => ok('');
+                    fr.readAsDataURL(b);
+                }) : ''))
+                .catch(() => '');
+        }
+        return fontData;
+    };
+    // The SVG of the song as it goes on paper: { text, w, h } in its own units (PRINT_W wide).
+    const printSvg = (o, font) => {
+        const g = o.big ? 15 : 12, W = PRINT_W;
+        const d = draw({ width: W, g, names: o.names, colours: o.colours, nameColours: PRINT_NAMES, syll: o.rhythm, words: o.lyrics ? wordsOf(song) : [], paper: true });
+        const where = [song.from && placeName(song.from), song.by].filter(Boolean).join(' · ');
+        const head = o.title ? `<text class="sc-titulo" x="${f1(g * 0.8)}" y="${f1(g * 2.4)}">${escape(song.title || t('sc_untitled'))}</text>`
+            + (where ? `<text class="sc-origen" x="${f1(g * 0.8)}" y="${f1(g * 3.9)}">${escape(where)}</text>` : '') : '';
+        // The music starts just under the title: from its highest point (a stem, a high note, the clef).
+        const top = (o.title ? g * (where ? 4.4 : 3.0) : 0) + g * 0.8 - d.highest;
+        const px = (k) => f1(g * k);
+        const css = (font ? `@font-face{font-family:"Nunito";font-weight:200 1000;src:url("${font}") format("woff2")}` : '')
+            + 'text{font-family:Nunito,"Helvetica Neue",Arial,sans-serif;text-anchor:middle}'
+            + `.sc-linea{stroke:#444;stroke-width:${px(0.09)}}.sc-barra{stroke:#000;stroke-width:${px(0.13)}}`
+            + '.sc-fin,.sc-clave,.sc-tinta,.sc-compas{fill:#000}.sc-compas{font-weight:900}'
+            + '.sc-clave-trazo,.sc-trazo{fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round}'
+            + '.sc-cabeza{fill:#000;stroke:#000}.sc-cabeza.hueca{fill:#fff;stroke:#000}.sc-plica{stroke:#000}'
+            + `.sc-nombre{fill:#222;font-weight:800;font-size:${px(o.big ? 1.2 : 1.25)}px}`
+            + `.sc-silaba{fill:#555;font-weight:800;font-size:${px(1.08)}px}.sc-letra{fill:#000;font-weight:700;font-size:${px(1.17)}px}`
+            + `.sc-titulo{fill:#000;font-weight:800;font-size:${px(1.9)}px;text-anchor:start}`
+            + `.sc-origen{fill:#555;font-weight:600;font-size:${px(1.05)}px;text-anchor:start}`;
+        const h = top + d.height, mm = 170 / W;
+        return {
+            w: W, h,
+            text: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${f1(h)}" width="170mm" height="${f1(h * mm)}mm">`
+                + `<title>${escape(song.title || t('sc_untitled'))}</title><style>${css}</style><rect width="${W}" height="${f1(h)}" fill="#fff"/>`
+                + `${head}<g transform="translate(0 ${f1(top)})">${d.markup}</g></svg>`,
+        };
+    };
+    // A PNG says its resolution in a pHYs chunk (after the header), so a word processor puts it at its printed size.
+    let crcTable = null;
+    const withDpi = (buffer, dpi) => {
+        const src = new Uint8Array(buffer);
+        for (let i = 8; i + 8 <= src.length;) {
+            const len = new DataView(src.buffer, src.byteOffset + i, 4).getUint32(0), type = String.fromCharCode(...src.subarray(i + 4, i + 8));
+            if (type === 'pHYs') { return src; }   // it says it already
+            if (type === 'IDAT') { break; }
+            i += 12 + len;
+        }
+        if (!crcTable) {
+            crcTable = Array.from({ length: 256 }, (x, n) => {
+                let c = n;
+                for (let k = 0; k < 8; k++) { c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1; }
+                return c >>> 0;
+            });
+        }
+        const ppm = Math.round(dpi / 0.0254), chunk = new Uint8Array(21), v = new DataView(chunk.buffer);
+        v.setUint32(0, 9); chunk.set([0x70, 0x48, 0x59, 0x73], 4); v.setUint32(8, ppm); v.setUint32(12, ppm); chunk[16] = 1;
+        let c = 0xffffffff;
+        for (let i = 4; i < 17; i++) { c = crcTable[(c ^ chunk[i]) & 0xff] ^ (c >>> 8); }
+        v.setUint32(17, (c ^ 0xffffffff) >>> 0);
+        const out = new Uint8Array(src.length + 21);
+        out.set(src.subarray(0, 33)); out.set(chunk, 33); out.set(src.subarray(33), 54);
+        return out;
+    };
+    const printPng = (svg) => new Promise((ok, ko) => {
+        const img = new Image(), url = URL.createObjectURL(new Blob([svg.text], { type: 'image/svg+xml' }));
+        img.onload = () => {
+            try {
+                const c = document.createElement('canvas');
+                c.width = PRINT_PX; c.height = Math.round((svg.h * PRINT_PX) / svg.w);
+                const x = c.getContext('2d');
+                x.fillStyle = '#fff'; x.fillRect(0, 0, c.width, c.height);
+                x.drawImage(img, 0, 0, c.width, c.height);
+                c.toBlob((b) => {
+                    if (!b) { ko(new Error('png')); return; }
+                    b.arrayBuffer().then((a) => ok(new Blob([withDpi(a, PRINT_DPI)], { type: 'image/png' })), ko);
+                }, 'image/png');
+            } catch (err) { ko(err); } finally { URL.revokeObjectURL(url); }
+        };
+        img.onerror = () => { URL.revokeObjectURL(url); ko(new Error('svg')); };
+        img.src = url;
+    });
+    const fileName = (ext) => `${(song.title || t('sc_untitled')).replace(/[\\/:*?"<>|]+/g, '').trim().slice(0, 60) || 'partitura'}.${ext}`;
+    const downloadBlob = (blob, ext) => {
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob); a.download = fileName(ext);
         document.body.append(a); a.click(); a.remove();
         setTimeout(() => URL.revokeObjectURL(a.href), 4000);
-    });
+    };
+    // The window to take the song out: what it will look like on paper, what goes on it, and the three files.
+    function openPaper() {
+        const o = { title: true, names: showNames(), colours: showColours(), rhythm: !!opt.rhythm, lyrics: !!opt.lyrics, big: young() };
+        const toggles = [['title', 'sc_paper_title'], ['names', 'sc_names'], ['colours', 'sc_colours'], ['rhythm', 'sc_paper_rhythm'],
+            ['lyrics', 'sc_lyrics'], ['big', 'sc_paper_big']].filter(([k]) => k !== 'lyrics' || song.lyrics);
+        openDialog(`<form method="dialog" class="ct-sc-form ct-sc-papel">
+            <div class="ct-sc-papel-cab"><h2>${escape(t('sc_paper_h'))}</h2><p class="nota">${escape(t('sc_paper_hint'))}</p></div>
+            <div class="ct-sc-vista"><img id="sc-vista" alt="${escape(t('sc_paper_preview', song.title || t('sc_untitled')))}"></div>
+            <div class="ct-sc-papel-lado">
+                <div class="ct-sc-papel-ops">${toggles.map(([k, key]) => `<label class="interruptor"><input type="checkbox" data-k="${k}"${o[k] ? ' checked' : ''}><span>${escape(t(key))}</span></label>`).join('')}</div>
+                <div class="ct-sc-papel-botones"><button type="button" class="boton" id="sc-png"><span data-icono="imagen"></span><span>${escape(t('sc_paper_png'))}</span></button>
+                <button type="button" class="boton suave" id="sc-svg"><span data-icono="descargar"></span><span>${escape(t('sc_paper_svg'))}</span></button>
+                <button type="button" class="boton suave" id="sc-txt"><span data-icono="guardar"></span><span>${escape(t('sc_paper_txt'))}</span></button>
+                <button type="button" class="boton suave" id="sc-cerrar"><span>${escape(t('qz_done'))}</span></button></div>
+                <p class="nota" id="sc-papel-msg" aria-live="polite">${escape(t('sc_paper_formats'))}</p>
+            </div></form>`, (d) => {
+            d.classList.add('papel');
+            d.querySelectorAll('[data-icono]').forEach((el) => core.setIcon(el, el.dataset.icono));
+            const view = d.querySelector('#sc-vista'), msg = d.querySelector('#sc-papel-msg');
+            let shown = '';
+            const preview = () => embeddedFont().then((font) => {
+                if (shown) { URL.revokeObjectURL(shown); }
+                shown = URL.createObjectURL(new Blob([printSvg(o, font).text], { type: 'image/svg+xml' }));
+                view.src = shown;
+            });
+            d.querySelectorAll('[data-k]').forEach((box) => box.addEventListener('change', () => { o[box.dataset.k] = box.checked; preview(); }));
+            d.querySelector('#sc-png').addEventListener('click', (e) => {
+                const b = e.currentTarget;
+                b.disabled = true;
+                embeddedFont().then((font) => printPng(printSvg(o, font))).then((blob) => { downloadBlob(blob, 'png'); msg.textContent = t('sc_paper_formats'); })
+                    .catch(() => { msg.textContent = t('sc_paper_error'); })
+                    .finally(() => { b.disabled = false; });
+            });
+            d.querySelector('#sc-svg').addEventListener('click', () => embeddedFont().then((font) => downloadBlob(new Blob([printSvg(o, font).text], { type: 'image/svg+xml' }), 'svg')));
+            d.querySelector('#sc-txt').addEventListener('click', () => downloadBlob(new Blob([writeText(song)], { type: 'text/plain;charset=utf-8' }), 'txt'));
+            d.querySelector('#sc-cerrar').addEventListener('click', closeDialog);
+            d.addEventListener('close', () => { if (shown) { URL.revokeObjectURL(shown); shown = ''; } }, { once: true });
+            preview();
+        });
+    }
+    $('#sc-export').addEventListener('click', () => openPaper());
     document.addEventListener('classtools:mode', () => { if (!panel.hidden) { paint(); } });
     if (window.ResizeObserver) { new ResizeObserver(() => { if (!panel.hidden) { if (mode === 'game') { renderGame(); } else { render(); } } }).observe($('#sc-sheet')); }
     paintSongs(); paintTools(); paintKeys(); paintPlay();
@@ -989,5 +1176,6 @@
     // The name of a note in the names the teacher uses (do re mi, or C D E).
     const noteName = (s) => names()[letter(s)];
     window.ClasstoolsScore = { readText, readAbc, writeText, song: () => song, songs: () => all(), listen, stop, take, midi, playNotes, noteName,
+        paper: (o) => embeddedFont().then((font) => { const svg = printSvg(o, font); return printPng(svg).then((png) => ({ svg, png })); }),
         state: () => ({ mode, sel, next, quiz, streak }) };   // for automated tests (and the music questions of the quiz)
 })();

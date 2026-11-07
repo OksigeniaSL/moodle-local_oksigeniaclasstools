@@ -19,7 +19,8 @@
  * pretend live server, and each check drives the real screen as a teacher would.
  * Usage: node tools/browser_check.mjs [check …]   (Node 22 or later, Chrome or Chromium installed; no packages)
  * CHROME=/path/to/chrome to choose the browser; SHOTS=<folder> to keep a picture of the screen where a check asks for
- * one (await shot('name') in the check), to look at what it has checked.
+ * one (await shot('name') in the check), to look at what it has checked, and the files a check keeps (await
+ * keep('name.ext', blob)). SONG=<file> gives score-paper a song of your own, whose paper it keeps.
  *
  * @copyright  2026 Oksigenia SL <dev@oksigenia.cc>
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -54,6 +55,13 @@ const GLOSSARY = [{ w: 'Photosynthesis', c: 'How plants make their food with lig
     { w: 'Atom', c: 'The smallest part of an element.' }];
 // A picture of the screen, when the checks run with SHOTS.
 window.shot = (name) => new Promise((done) => { if (!window.checkShot) { done(); return; } window.shotDone = done; window.checkShot(name); });
+// A file a check makes (an image, a document), kept with the pictures when the checks run with SHOTS.
+window.keep = (name, blob) => (!window.checkKeep ? Promise.resolve() : new Promise((done) => {
+    const fr = new FileReader();
+    fr.onload = () => { window.checkKeep(JSON.stringify({ name, data: String(fr.result).split(',')[1] })); done(); };
+    fr.readAsDataURL(blob);
+}));
+window.SONG = ${JSON.stringify(process.env.SONG ? readFileSync(process.env.SONG, 'utf8') : '')};
 (() => {
     const VOTES = { abcd: ['A', 'B', 'C', 'D'], yesno: ['yes', 'no'], light: ['green', 'yellow', 'red'], five: ['1', '2', '3', '4', '5'] };
     let S = null;
@@ -2191,6 +2199,72 @@ const CHECKS = {
         const read = window.ClasstoolsScore.readText('Title: X\nC: Mozart\nC:q C G G | A A G:h');
         if (read.by !== 'Mozart' || read.notes.length !== 7) { return `C lines: by «${read.by}», ${read.notes.length} notes`; }
         if (q('.ct-sc-dialogo') && q('.ct-sc-dialogo').open) { return 'the dialog stayed open'; }
+        if (!q('#sc-msg').textContent) { return 'no word to listen to the song before playing it in class'; }
+        return '';
+    },
+    // The score on paper: «Download» shows the sheet as it will print, black on white with its title; the PNG is
+    // 2000 px wide and says 300 dpi, the SVG carries the board's font; and a song with bars that do not add up, or
+    // an AI that does not know the song («???»), says so instead of keeping wrong notes quietly.
+    'score-paper': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const q = (x) => document.querySelector(x);
+        q('#t-material').click();
+        await sleep(200);
+        q('#mt-mode [data-mode="score"]').click();
+        await sleep(300);
+        q('#sc-export').click();
+        const view = q('.ct-sc-dialogo.papel #sc-vista');
+        if (!view) { return 'no paper dialog'; }
+        for (let i = 0; i < 50 && !(view.complete && view.naturalWidth); i++) { await sleep(100); }
+        if (!view.naturalWidth) { return 'the preview did not load'; }
+        const box = q('.ct-sc-dialogo').getBoundingClientRect();
+        if (box.bottom > innerHeight + 1 || box.top < -1) { return `the dialog does not fit: ${Math.round(box.top)}–${Math.round(box.bottom)} of ${innerHeight}`; }
+        const last = [...q('.ct-sc-dialogo').querySelectorAll('button')].pop().getBoundingClientRect();
+        await window.shot('score-paper');
+        if (last.bottom > innerHeight) { return `the buttons of the dialog are out of sight (${Math.round(last.bottom)} of ${innerHeight})`; }
+        const { svg, png } = await window.ClasstoolsScore.paper({ title: true, names: true, colours: true, rhythm: false, lyrics: false, big: true });
+        if (!/@font-face\{font-family:"Nunito"[^}]*url\("data:/.test(svg.text)) { return 'the SVG does not carry the font'; }
+        if (!/<text class="sc-titulo"[^>]*>[^<]+<\/text>/.test(svg.text)) { return 'no title on the paper'; }
+        const bytes = new Uint8Array(await png.arrayBuffer());
+        const head = new DataView(bytes.buffer);
+        if (head.getUint32(16) !== 2000) { return `the PNG is ${head.getUint32(16)} px wide`; }
+        const at = [...bytes.subarray(0, 200)].findIndex((b, i) => b === 0x70 && bytes[i + 1] === 0x48 && bytes[i + 2] === 0x59 && bytes[i + 3] === 0x73);
+        if (at < 0 || head.getUint32(at + 4) !== 11811) { return 'the PNG does not say 300 dpi'; }
+        // Ink on white: the staff and the notes are there, and the paper is white.
+        const bmp = await createImageBitmap(png), c = document.createElement('canvas');
+        c.width = bmp.width; c.height = bmp.height;
+        const x = c.getContext('2d');
+        x.drawImage(bmp, 0, 0);
+        const px = x.getImageData(0, 0, c.width, c.height).data;
+        let dark = 0;
+        for (let i = 0; i < px.length; i += 4 * 7) { if (px[i] + px[i + 1] + px[i + 2] < 200) { dark++; } }
+        if (dark < 2000) { return `almost no ink on the PNG (${dark})`; }
+        if (px[0] + px[1] + px[2] < 750) { return 'the paper is not white'; }
+        q('#sc-cerrar').click();
+        await sleep(200);
+        const img = document.createElement('img');
+        img.src = URL.createObjectURL(png);
+        img.style.cssText = 'position:fixed;inset:0;z-index:99999;width:100vw;height:auto;background:#fff';
+        await new Promise((r) => { img.onload = r; document.body.append(img); });
+        await window.shot('score-paper-png');
+        img.remove();
+        // An AI that does not know the song, and a song whose bars do not add up.
+        try { window.ClasstoolsScore.take('???', ''); return '«???» was taken as a song'; } catch (err) {
+            if (!err.mine) { return `«???»: ${err.message}`; }
+        }
+        window.ClasstoolsScore.take('Title: Off\nTime: 3/4\nsol:c | sol:c sol:c la:c si:n | la:c la:c re:n | sol:b.', '');
+        if (!/2/.test(q('#sc-msg').textContent)) { return `bars that do not add up, not said: «${q('#sc-msg').textContent}»`; }
+        window.ClasstoolsScore.take('Title: Fine\nTime: 3/4\nsol:n | sol:n la:n sol:n | do5:n si:b |', '');
+        if (q('#sc-msg').textContent) { return `a right song gets a warning: «${q('#sc-msg').textContent}»`; }
+        // SONG=<file>: its paper, in colour with big notes and in plain black at the usual size, to look at.
+        if (window.SONG) {
+            window.ClasstoolsScore.take(window.SONG, '');
+            const full = await window.ClasstoolsScore.paper({ title: true, names: true, colours: true, rhythm: false, lyrics: true, big: true });
+            const plain = await window.ClasstoolsScore.paper({ title: true, names: false, colours: false, rhythm: false, lyrics: true, big: false });
+            await window.keep('song-colour.png', full.png);
+            await window.keep('song-colour.svg', new Blob([full.svg.text], { type: 'image/svg+xml' }));
+            await window.keep('song-plain.png', plain.png);
+        }
         return '';
     },
     // Two tools at once: the board split in two halves, the half chosen by touching it and its tool with the tabs,
@@ -2943,7 +3017,7 @@ const langStrings = () => {
     if (!lang) { return ''; }
     const php = readFileSync(join(APP, '..', 'lang', lang, 'local_oksigeniaclasstools.php'), 'utf8'), str = {};
     for (const m of php.matchAll(/^\$string\['app_([^']+)'\] = '((?:[^'\\]|\\.)*)';/gms)) { str[m[1]] = m[2].replace(/\\(['\\])/g, '$1'); }
-    return `\n<script>Object.assign(window.CLASSTOOLS_STR, ${JSON.stringify(str)});</script>`;
+    return `\n<script>Object.assign(window.CLASSTOOLS_STR, ${JSON.stringify(str)}); window.CLASSTOOLS_LANG = ${JSON.stringify(lang)};</script>`;
 };
 
 const server = createServer((req, res) => {
@@ -3079,6 +3153,10 @@ async function main() {
             const msg = JSON.parse(m.data);
             if (msg.id && waiting.has(msg.id)) { const [ok, ko] = waiting.get(msg.id); waiting.delete(msg.id); if (msg.error) { ko(new Error(msg.error.message)); } else { ok(msg.result); } }
             else if (msg.method === 'Runtime.bindingCalled' && msg.params.name === 'checkShot') { takeShot(msg.sessionId, msg.params.payload).catch((e) => console.error(e.message)); }
+            else if (msg.method === 'Runtime.bindingCalled' && msg.params.name === 'checkKeep') {
+                const { name, data } = JSON.parse(msg.params.payload);
+                writeFileSync(join(shots, name.replace(/[^a-z0-9.-]/gi, '_')), Buffer.from(data, 'base64'));
+            }
             else if (msg.method) { events.push(msg); }
         };
         // Nothing a check downloads (the spreadsheet of the exit ticket, a PNG of the QR…) lands in the Downloads folder.
@@ -3087,7 +3165,7 @@ async function main() {
             const { targetId } = await send('Target.createTarget', { url: 'about:blank' });
             const { sessionId } = await send('Target.attachToTarget', { targetId, flatten: true });
             await send('Runtime.enable', {}, sessionId);
-            if (shots) { await send('Runtime.addBinding', { name: 'checkShot' }, sessionId); }
+            if (shots) { await send('Runtime.addBinding', { name: 'checkShot' }, sessionId); await send('Runtime.addBinding', { name: 'checkKeep' }, sessionId); }
             await send('Emulation.setDeviceMetricsOverride', { width: VIEW[0], height: VIEW[1], deviceScaleFactor: 1, mobile: false }, sessionId);
             await send('Page.enable', {}, sessionId);
             events.length = 0;

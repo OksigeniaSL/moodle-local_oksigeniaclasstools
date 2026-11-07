@@ -2051,6 +2051,25 @@ dialog.ct-fx-dialogo { width: min(44rem, 94vw); max-width: none; }
 .ct-sc-form textarea { width: 100%; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: .95rem; }
 .ct-sc-archivo { align-self: flex-start; cursor: pointer; }
 dialog.ct-sc-dialogo { width: min(40rem, 94vw); }
+/* The score on paper: the sheet as it will be printed (white, whatever the theme), and what goes on it. */
+dialog.ct-sc-dialogo.papel { width: min(64rem, 96vw); }
+.editor form.ct-sc-papel { display: grid; grid-template-columns: minmax(0, 3fr) minmax(14rem, 2fr); grid-template-areas: "cab cab" "vista lado"; gap: .7rem 1.2rem; align-items: start; }
+.ct-sc-papel-cab { grid-area: cab; }
+.ct-sc-papel-cab h2 { margin: 0 0 .2rem; }
+.ct-sc-papel-cab .nota { margin: 0; }
+.ct-sc-vista { grid-area: vista; display: flex; justify-content: center; padding: .6rem; border: 1px solid var(--borde); border-radius: 12px; background: #fff; }
+.ct-sc-vista img { display: block; max-width: 100%; max-height: calc(100vh - 13rem); width: auto; height: auto; }
+.ct-sc-papel-lado { grid-area: lado; display: flex; flex-direction: column; gap: .7rem; }
+.ct-sc-papel-ops { display: flex; flex-wrap: wrap; gap: .3rem .6rem; }
+.ct-sc-papel-ops .interruptor { font-size: .92em; }
+.ct-sc-papel-botones { display: grid; grid-template-columns: 1fr 1fr; gap: .45rem; }
+.ct-sc-papel-botones .boton { justify-content: center; }
+.ct-sc-papel-botones #sc-png { grid-column: 1 / -1; }
+.ct-sc-papel-lado .nota { margin: 0; }
+@media (max-width: 44rem) {
+    .editor form.ct-sc-papel { grid-template-columns: minmax(0, 1fr); grid-template-areas: "cab" "vista" "lado"; }
+    .ct-sc-vista img { max-height: 32vh; }
+}
 @media (prefers-reduced-motion: reduce) { .sc-mascota, .ct-sc-tecla.toca, .ct-sc-tecla.mal, .ct-sc-tecla.siguiente { animation: none; } }
 
 /* «Whose turn?» over another tool: a card with the photo and the name. */

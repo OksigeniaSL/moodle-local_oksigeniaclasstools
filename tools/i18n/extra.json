@@ -1211,6 +1211,62 @@
   "en": "Download",
   "es": "Descargar"
  },
+ "sc_paper_h": {
+  "en": "Download the score",
+  "es": "Descargar la partitura"
+ },
+ "sc_paper_hint": {
+  "en": "To put it in a document and print worksheets: on a white background and sharp in print.",
+  "es": "Para meterla en un documento e imprimir fichas: sobre fondo blanco y nítida al imprimir."
+ },
+ "sc_paper_preview": {
+  "en": "How «{$a}» looks on paper",
+  "es": "Así queda «{$a}» en papel"
+ },
+ "sc_paper_title": {
+  "en": "Title",
+  "es": "Título"
+ },
+ "sc_paper_rhythm": {
+  "en": "Rhythm syllables (ta, ti-ti)",
+  "es": "Sílabas del ritmo (ta, ti-ti)"
+ },
+ "sc_paper_big": {
+  "en": "Big notes",
+  "es": "Notas grandes"
+ },
+ "sc_paper_png": {
+  "en": "Image (PNG)",
+  "es": "Imagen (PNG)"
+ },
+ "sc_paper_svg": {
+  "en": "Vector (SVG)",
+  "es": "Vectorial (SVG)"
+ },
+ "sc_paper_txt": {
+  "en": "Text to open it again",
+  "es": "Texto para volver a abrirla"
+ },
+ "sc_paper_formats": {
+  "en": "The image goes into Word, Google Docs or LibreOffice at about 17 cm wide. The vector one stays sharp at any size in Word and LibreOffice.",
+  "es": "La imagen entra en Word, Google Docs o LibreOffice a unos 17 cm de ancho. La vectorial se ve nítida a cualquier tamaño en Word y LibreOffice."
+ },
+ "sc_paper_error": {
+  "en": "This browser could not make the image. Try the vector one (SVG).",
+  "es": "Este navegador no ha podido crear la imagen. Prueba con la vectorial (SVG)."
+ },
+ "sc_ai_unknown": {
+  "en": "The AI does not know this melody note by note. It usually knows children's and folk songs; for others, look for the score in ABC (abcnotation.com) and bring it in with «Open», or write it by tapping the staff.",
+  "es": "La IA no se sabe esta melodía nota a nota. Las canciones infantiles y populares suele saberlas; para otras, busca la partitura en ABC (abcnotation.com) y tráela con «Abrir», o escríbela tocando el pentagrama."
+ },
+ "sc_bars_off_one": {
+  "en": "Careful: one bar does not fit the {$a} of the song. Listen to it and fix the notes that are too many or missing.",
+  "es": "Ojo: hay un compás que no cuadra con el {$a} de la canción. Escúchala y corrige las notas que sobren o falten."
+ },
+ "sc_bars_off_many": {
+  "en": "Careful: {$a->n} bars do not fit the {$a->time} of the song. Listen to it and fix the notes that are too many or missing.",
+  "es": "Ojo: hay {$a->n} compases que no cuadran con el {$a->time} de la canción. Escúchala y corrige las notas que sobren o falten."
+ },
  "sc_clef": {
   "en": "Clef",
   "es": "Clave"
@@ -1484,8 +1540,8 @@
   "es": "Una canción con tu IA"
  },
  "sc_prompt_hint": {
-  "en": "Write the name of the song. With the AI of your Moodle, «Generate» brings it straight onto the score; with your own AI, copy the text, paste it there and bring back what it answers with «Open».",
-  "es": "Escribe el nombre de la canción. Con la IA de tu Moodle, «Generar» la trae directamente a la partitura; con tu propia IA, copia el texto, pégalo allí y trae lo que conteste con «Abrir»."
+  "en": "Write the name of the song. With the AI of your Moodle, «Generate» brings it straight onto the score; with your own AI, copy the text, paste it there and bring back what it answers with «Open». The AI knows children's and folk songs well; with others it can get notes wrong.",
+  "es": "Escribe el nombre de la canción. Con la IA de tu Moodle, «Generar» la trae directamente a la partitura; con tu propia IA, copia el texto, pégalo allí y trae lo que conteste con «Abrir». La IA se sabe bien las canciones infantiles y populares; con otras puede equivocarse de notas."
  },
  "sc_prompt_song": {
   "en": "Song",
@@ -1496,8 +1552,8 @@
   "es": "la canción que quieras"
  },
  "sc_prompt_text": {
-  "en": "Write the melody of \"{$a}\" in the text format of Class tools, so that it plays on the school glockenspiel.\n\nRules:\n1. Start with these lines (those that are needed):\nTitle: the name of the song\nOrigin: the country or the composer\nClef: treble (or bass, if it is low)\nTime: 2/4, 3/4, 4/4 or 6/8\nTempo: quarter notes per minute (for example, 100)\nPickup: how long the notes before the first bar last, only if there are any (q, e…)\n2. Then only the melody, one voice, with the notes separated by spaces and | between bars.\n3. Notes: C D E F G A B (or do re mi fa sol la si). Middle C is C4: C5 is an octave higher and G3 one lower; with no number, octave 4. Sharp with # (F#), flat with b (Bb).\n4. The length, after a colon, on every note: w whole, h half, q quarter, e eighth, s sixteenth; with a dot after it, dotted (G:q.). Each bar must add up to its time signature.\n5. A rest is - with its length (-:q).\n6. No chords, triplets, ties or repeats: all written out.\n\nExample:\nTitle: Twinkle, Twinkle, Little Star\nOrigin: France\nClef: treble\nTime: 4/4\nTempo: 100\nC:q C:q G:q G:q | A:q A:q G:h | F:q F:q E:q E:q | D:q D:q C:h\n\nAnswer only with the text, without explanations.",
-  "es": "Escribe la melodía de «{$a}» en el formato de texto de Class tools, para que suene en el carillón del colegio.\n\nReglas:\n1. Empieza con estas líneas (las que hagan falta):\nTítulo: el nombre de la canción\nOrigen: el país o el autor\nClave: sol (o fa, si es grave)\nCompás: 2/4, 3/4, 4/4 o 6/8\nTempo: negras por minuto (por ejemplo, 100)\nAnacrusa: lo que duran las notas antes del primer compás, solo si las hay (n, c…)\n2. Después, solo la melodía, a una voz, con las notas separadas por espacios y | entre compases.\n3. Notas: do re mi fa sol la si. El do central es do4: do5 es una octava más arriba y sol3 una más abajo; sin número, la octava 4. Sostenido con # (fa#), bemol con b (sib).\n4. La duración, después de dos puntos, en todas las notas: r redonda, b blanca, n negra, c corchea, s semicorchea; con un punto detrás, con puntillo (sol:n.). Cada compás tiene que sumar lo que dice el compás.\n5. Un silencio es - con su duración (-:n).\n6. Sin acordes, tresillos, ligaduras ni repeticiones: todo seguido.\n\nEjemplo:\nTítulo: Estrellita\nOrigen: Francia\nClave: sol\nCompás: 4/4\nTempo: 100\ndo:n do:n sol:n sol:n | la:n la:n sol:b | fa:n fa:n mi:n mi:n | re:n re:n do:b\n\nResponde solo con el texto, sin explicaciones."
+  "en": "Write the melody of \"{$a}\" in the text format of Class tools, so that it plays on the school glockenspiel.\n\nRules:\n1. Start with these lines (those that are needed):\nTitle: the name of the song\nOrigin: the country or the composer\nClef: treble (or bass, if it is low)\nTime: 2/4, 3/4, 4/4 or 6/8\nTempo: quarter notes per minute (for example, 100)\nPickup: how long the notes before the first bar last, only if there are any (q, e…)\n2. Then only the melody, one voice, with the notes separated by spaces and | between bars.\n3. Notes: C D E F G A B (or do re mi fa sol la si). Middle C is C4: C5 is an octave higher and G3 one lower; with no number, octave 4. Sharp with # (F#), flat with b (Bb).\n4. The length, after a colon, on every note: w whole, h half, q quarter, e eighth, s sixteenth; with a dot after it, dotted (G:q.). Each bar must add up to its time signature.\n5. A rest is - with its length (-:q).\n6. No chords, triplets, ties or repeats: all written out.\n7. If you do not know this melody note by note, do not make it up: answer only ???\n\nExample:\nTitle: Twinkle, Twinkle, Little Star\nOrigin: France\nClef: treble\nTime: 4/4\nTempo: 100\nC:q C:q G:q G:q | A:q A:q G:h | F:q F:q E:q E:q | D:q D:q C:h\n\nAnswer only with the text, without explanations.",
+  "es": "Escribe la melodía de «{$a}» en el formato de texto de Class tools, para que suene en el carillón del colegio.\n\nReglas:\n1. Empieza con estas líneas (las que hagan falta):\nTítulo: el nombre de la canción\nOrigen: el país o el autor\nClave: sol (o fa, si es grave)\nCompás: 2/4, 3/4, 4/4 o 6/8\nTempo: negras por minuto (por ejemplo, 100)\nAnacrusa: lo que duran las notas antes del primer compás, solo si las hay (n, c…)\n2. Después, solo la melodía, a una voz, con las notas separadas por espacios y | entre compases.\n3. Notas: do re mi fa sol la si. El do central es do4: do5 es una octava más arriba y sol3 una más abajo; sin número, la octava 4. Sostenido con # (fa#), bemol con b (sib).\n4. La duración, después de dos puntos, en todas las notas: r redonda, b blanca, n negra, c corchea, s semicorchea; con un punto detrás, con puntillo (sol:n.). Cada compás tiene que sumar lo que dice el compás.\n5. Un silencio es - con su duración (-:n).\n6. Sin acordes, tresillos, ligaduras ni repeticiones: todo seguido.\n7. Si no te sabes esta melodía nota a nota, no te la inventes: responde solo ???\n\nEjemplo:\nTítulo: Estrellita\nOrigen: Francia\nClave: sol\nCompás: 4/4\nTempo: 100\ndo:n do:n sol:n sol:n | la:n la:n sol:b | fa:n fa:n mi:n mi:n | re:n re:n do:b\n\nResponde solo con el texto, sin explicaciones."
  },
  "sc_copy": {
   "en": "Copy",
@@ -1976,8 +2032,8 @@
   "es": "Teclado"
  },
  "sc_ai_done": {
-  "en": "The song is on the score: listen to it and check it before playing it in class.",
-  "es": "La canción ya está en la partitura: escúchala y revísala antes de tocarla en clase."
+  "en": "The song is on the score. Listen to it before playing it in class: with less known songs, the AI sometimes gets notes wrong.",
+  "es": "La canción ya está en la partitura. Escúchala antes de tocarla en clase: con las canciones menos conocidas, la IA a veces se equivoca de notas."
  },
  "ex_press_start": {
   "en": "Choose the exercise and press «Start»",

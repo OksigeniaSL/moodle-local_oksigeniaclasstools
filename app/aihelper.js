@@ -115,8 +115,9 @@
                         return;
                     }
                     if (!j || !j.ok) { note(t('ex_ai_error', (j && j.error) || '')); return; }
+                    // How many it added; or, from a tool that knows better, what went wrong (a string).
                     const found = o.add(j.text, kind());
-                    note(found ? (o.done ? o.done(found) : t('ai_done', found)) : t('ex_ai_none'));
+                    note(typeof found === 'string' ? found : (found ? (o.done ? o.done(found) : t('ai_done', found)) : t('ex_ai_none')));
                 })
                 .catch(() => note(t('ex_ai_error', '')))
                 .finally(() => { go.disabled = false; });

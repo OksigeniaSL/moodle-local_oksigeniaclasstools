@@ -2932,7 +2932,10 @@ $string['app_rs_scratch'] = 'Scratch';
 $string['app_rs_toggle'] = 'Scratch to reveal';
 $string['app_sc_add_team'] = 'Add team';
 $string['app_sc_again'] = 'From the start';
-$string['app_sc_ai_done'] = 'The song is on the score: listen to it and check it before playing it in class.';
+$string['app_sc_ai_done'] = 'The song is on the score. Listen to it before playing it in class: with less known songs, the AI sometimes gets notes wrong.';
+$string['app_sc_ai_unknown'] = 'The AI does not know this melody note by note. It usually knows children\'s and folk songs; for others, look for the score in ABC (abcnotation.com) and bring it in with «Open», or write it by tapping the staff.';
+$string['app_sc_bars_off_many'] = 'Careful: {$a->n} bars do not fit the {$a->time} of the song. Listen to it and fix the notes that are too many or missing.';
+$string['app_sc_bars_off_one'] = 'Careful: one bar does not fit the {$a} of the song. Listen to it and fix the notes that are too many or missing.';
 $string['app_sc_clear'] = 'Clear';
 $string['app_sc_clear_sure'] = 'Sure? Press again';
 $string['app_sc_clef'] = 'Clef';
@@ -3003,12 +3006,23 @@ $string['app_sc_new'] = 'New';
 $string['app_sc_new_name'] = 'Song {$a}';
 $string['app_sc_no_groups'] = 'Make the teams first in the “Groups” tab.';
 $string['app_sc_origin'] = 'From: {$a}';
+$string['app_sc_paper_big'] = 'Big notes';
+$string['app_sc_paper_error'] = 'This browser could not make the image. Try the vector one (SVG).';
+$string['app_sc_paper_formats'] = 'The image goes into Word, Google Docs or LibreOffice at about 17 cm wide. The vector one stays sharp at any size in Word and LibreOffice.';
+$string['app_sc_paper_h'] = 'Download the score';
+$string['app_sc_paper_hint'] = 'To put it in a document and print worksheets: on a white background and sharp in print.';
+$string['app_sc_paper_png'] = 'Image (PNG)';
+$string['app_sc_paper_preview'] = 'How «{$a}» looks on paper';
+$string['app_sc_paper_rhythm'] = 'Rhythm syllables (ta, ti-ti)';
+$string['app_sc_paper_svg'] = 'Vector (SVG)';
+$string['app_sc_paper_title'] = 'Title';
+$string['app_sc_paper_txt'] = 'Text to open it again';
 $string['app_sc_playalong'] = 'Play with me';
 $string['app_sc_points_many'] = '{$a} points';
 $string['app_sc_points_one'] = '{$a} point';
 $string['app_sc_prompt'] = 'Prompt for your AI';
 $string['app_sc_prompt_any'] = 'the song you want';
-$string['app_sc_prompt_hint'] = 'Write the name of the song. With the AI of your Moodle, «Generate» brings it straight onto the score; with your own AI, copy the text, paste it there and bring back what it answers with «Open».';
+$string['app_sc_prompt_hint'] = 'Write the name of the song. With the AI of your Moodle, «Generate» brings it straight onto the score; with your own AI, copy the text, paste it there and bring back what it answers with «Open». The AI knows children\'s and folk songs well; with others it can get notes wrong.';
 $string['app_sc_prompt_song'] = 'Song';
 $string['app_sc_prompt_text'] = 'Write the melody of "{$a}" in the text format of Class tools, so that it plays on the school glockenspiel.
 
@@ -3025,6 +3039,7 @@ Pickup: how long the notes before the first bar last, only if there are any (q, 
 4. The length, after a colon, on every note: w whole, h half, q quarter, e eighth, s sixteenth; with a dot after it, dotted (G:q.). Each bar must add up to its time signature.
 5. A rest is - with its length (-:q).
 6. No chords, triplets, ties or repeats: all written out.
+7. If you do not know this melody note by note, do not make it up: answer only ???
 
 Example:
 Title: Twinkle, Twinkle, Little Star

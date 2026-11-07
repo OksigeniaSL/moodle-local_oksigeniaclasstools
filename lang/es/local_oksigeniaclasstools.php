@@ -2934,7 +2934,10 @@ $string['app_rs_scratch'] = 'Rasca';
 $string['app_rs_toggle'] = 'Rasca y gana';
 $string['app_sc_add_team'] = 'Añadir equipo';
 $string['app_sc_again'] = 'Desde el principio';
-$string['app_sc_ai_done'] = 'La canción ya está en la partitura: escúchala y revísala antes de tocarla en clase.';
+$string['app_sc_ai_done'] = 'La canción ya está en la partitura. Escúchala antes de tocarla en clase: con las canciones menos conocidas, la IA a veces se equivoca de notas.';
+$string['app_sc_ai_unknown'] = 'La IA no se sabe esta melodía nota a nota. Las canciones infantiles y populares suele saberlas; para otras, busca la partitura en ABC (abcnotation.com) y tráela con «Abrir», o escríbela tocando el pentagrama.';
+$string['app_sc_bars_off_many'] = 'Ojo: hay {$a->n} compases que no cuadran con el {$a->time} de la canción. Escúchala y corrige las notas que sobren o falten.';
+$string['app_sc_bars_off_one'] = 'Ojo: hay un compás que no cuadra con el {$a} de la canción. Escúchala y corrige las notas que sobren o falten.';
 $string['app_sc_clear'] = 'Borrar todo';
 $string['app_sc_clear_sure'] = '¿Seguro? Pulsa otra vez';
 $string['app_sc_clef'] = 'Clave';
@@ -3005,12 +3008,23 @@ $string['app_sc_new'] = 'Nueva';
 $string['app_sc_new_name'] = 'Canción {$a}';
 $string['app_sc_no_groups'] = 'Haz antes los equipos en la pestaña «Grupos».';
 $string['app_sc_origin'] = 'Procedencia: {$a}';
+$string['app_sc_paper_big'] = 'Notas grandes';
+$string['app_sc_paper_error'] = 'Este navegador no ha podido crear la imagen. Prueba con la vectorial (SVG).';
+$string['app_sc_paper_formats'] = 'La imagen entra en Word, Google Docs o LibreOffice a unos 17 cm de ancho. La vectorial se ve nítida a cualquier tamaño en Word y LibreOffice.';
+$string['app_sc_paper_h'] = 'Descargar la partitura';
+$string['app_sc_paper_hint'] = 'Para meterla en un documento e imprimir fichas: sobre fondo blanco y nítida al imprimir.';
+$string['app_sc_paper_png'] = 'Imagen (PNG)';
+$string['app_sc_paper_preview'] = 'Así queda «{$a}» en papel';
+$string['app_sc_paper_rhythm'] = 'Sílabas del ritmo (ta, ti-ti)';
+$string['app_sc_paper_svg'] = 'Vectorial (SVG)';
+$string['app_sc_paper_title'] = 'Título';
+$string['app_sc_paper_txt'] = 'Texto para volver a abrirla';
 $string['app_sc_playalong'] = 'Toca conmigo';
 $string['app_sc_points_many'] = '{$a} puntos';
 $string['app_sc_points_one'] = '{$a} punto';
 $string['app_sc_prompt'] = 'Prompt para tu IA';
 $string['app_sc_prompt_any'] = 'la canción que quieras';
-$string['app_sc_prompt_hint'] = 'Escribe el nombre de la canción. Con la IA de tu Moodle, «Generar» la trae directamente a la partitura; con tu propia IA, copia el texto, pégalo allí y trae lo que conteste con «Abrir».';
+$string['app_sc_prompt_hint'] = 'Escribe el nombre de la canción. Con la IA de tu Moodle, «Generar» la trae directamente a la partitura; con tu propia IA, copia el texto, pégalo allí y trae lo que conteste con «Abrir». La IA se sabe bien las canciones infantiles y populares; con otras puede equivocarse de notas.';
 $string['app_sc_prompt_song'] = 'Canción';
 $string['app_sc_prompt_text'] = 'Escribe la melodía de «{$a}» en el formato de texto de Class tools, para que suene en el carillón del colegio.
 
@@ -3027,6 +3041,7 @@ Anacrusa: lo que duran las notas antes del primer compás, solo si las hay (n, c
 4. La duración, después de dos puntos, en todas las notas: r redonda, b blanca, n negra, c corchea, s semicorchea; con un punto detrás, con puntillo (sol:n.). Cada compás tiene que sumar lo que dice el compás.
 5. Un silencio es - con su duración (-:n).
 6. Sin acordes, tresillos, ligaduras ni repeticiones: todo seguido.
+7. Si no te sabes esta melodía nota a nota, no te la inventes: responde solo ???
 
 Ejemplo:
 Título: Estrellita
