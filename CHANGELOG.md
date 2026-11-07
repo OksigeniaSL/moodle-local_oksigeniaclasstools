@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.2.0 (2026-11-07)
+
+- Score on paper: «Download» shows the sheet as it will be printed, on white with its title, and what goes on it (note
+  names, glockenspiel colours, rhythm syllables, lyrics, big notes). It gives a PNG at 300 dpi, about 17 cm wide, for Word,
+  Google Docs or LibreOffice; an SVG, sharp at any size; and the text of the song, as before. On paper the rows end at a
+  bar line, reach the margin, and the last one ends at the final bar.
+- Songs from an AI: the prompt asks it to answer «???» when it does not know a melody note by note, and the board then
+  says so and suggests abcnotation.com or writing it by hand. A song whose bars do not fit its time signature is pointed
+  out, and after the AI brings one the board asks to listen to it before playing it in class.
+
 ## 1.1.1 (2026-11-01)
 
 - Students find the board: on the course bar its link now goes right after «Course», as for teachers. It was the last one,
