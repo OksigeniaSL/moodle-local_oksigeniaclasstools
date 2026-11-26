@@ -2,10 +2,10 @@
 
 ## 1.3.0 (2026-11-26)
 
-- «Propose an improvement», when the site has Oksigenia Marandu 0.61.2 or later: at the foot of the teacher's guide (and
-  under its index) and in the panel of «Which class?». The guide closes, the teacher marks on a picture of the board what
-  they would change and says it, and it reaches whoever gathers the improvements of the site, with the tool, game or
-  material that was on screen. Students never see it. Without Marandu nothing changes.
+- «Propose an improvement», when the site has Oksigenia Marandu 0.61.2 or later: in the head of the teacher's guide and in
+  the panel of «Which class?». The guide closes, the teacher marks on a picture of the board what they would change and
+  says it, and it reaches whoever gathers the improvements of the site, with the tool, game or material that was on
+  screen. Students never see it. Without Marandu nothing changes.
 
 ## 1.2.0 (2026-11-07)
 
