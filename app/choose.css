@@ -105,6 +105,8 @@
 .ct-ch-sin { display: flex; align-items: center; gap: .75rem; padding: .7rem; border: 2px dashed var(--borde); border-radius: 20px; color: var(--azul-osc); text-decoration: none; transition: border-color .15s, background-color .15s; }
 .ct-ch-sin:hover, .ct-ch-sin:focus-visible { border-color: var(--azul); background: var(--azul-suave); color: var(--azul-osc); text-decoration: none; }
 .ct-ch-sin strong { display: block; line-height: 1.2; }
+/* «Propose an improvement» (Marandu): the same card as the board without a course, as a button. */
+.ct-ch-proponer { width: 100%; background: none; font: inherit; text-align: start; cursor: pointer; }
 .ct-ch-icono { display: grid; flex: none; place-items: center; width: 2.6rem; height: 2.6rem; border-radius: 14px; background: var(--azul); color: #fff; }
 .ct-ch-icono svg { width: 1.35rem; height: 1.35rem; }
 .ct-ch-mando { padding: .8rem; border-radius: 20px; background: var(--sup-2); text-align: center; }

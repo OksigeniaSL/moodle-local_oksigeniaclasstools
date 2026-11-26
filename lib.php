@@ -444,6 +444,25 @@ function local_oksigeniaclasstools_teaches(?array $data): bool {
 }
 
 /**
+ * «Propose an improvement» of Marandu (local_oksigeniamarandu 0.61.2 or later), when the site has it and the user may
+ * propose: the person marks on a picture of the screen what they would change, and it reaches whoever gathers the
+ * improvements of the site.
+ *
+ * @return array|null The label of its button and what the board links (js, css and the data to print), or null.
+ */
+function local_oksigeniaclasstools_proposal(): ?array {
+    $api = '\local_oksigeniamarandu\api';
+    if (!class_exists($api) || !method_exists($api, 'proposal_assets')) {
+        return null;
+    }
+    $assets = $api::proposal_assets();
+    if (!$assets) {
+        return null;
+    }
+    return ['label' => get_string('proposal:button', 'local_oksigeniamarandu')] + $assets;
+}
+
+/**
  * The content pack of the board for a language: its own (es_mx), its parent language (es), the base language, or
  * English. Portuguese of Portugal takes the Brazilian one.
  *
@@ -777,6 +796,14 @@ function local_oksigeniaclasstools_output(?array $data): void {
     }
     // Whether the one who opens it teaches: what is only for teachers (the teacher's guide) shows only to them.
     $site['teacher'] = local_oksigeniaclasstools_teaches($data);
+    // «Propose an improvement», for whoever teaches, from the teacher's guide (the screen is the tool on the board).
+    $proposal = $site['teacher'] ? local_oksigeniaclasstools_proposal() : null;
+    if ($proposal) {
+        $site['proposal'] = ['component' => 'local_oksigeniaclasstools', 'label' => $proposal['label']];
+        $html = str_replace('</head>', '<link rel="stylesheet" href="' . s($proposal['css']) . "\">\n</head>", $html);
+        $html = str_replace('</body>', '<script type="application/json" id="marandu-proposal">' . $proposal['data']
+            . "</script>\n<script src=\"" . s($proposal['js']) . "\"></script>\n</body>", $html);
+    }
     $script = '<script>window.CLASSTOOLS_SITE = ' . json_encode($site, $flags) . ";</script>\n";
     if ($data) {
         $script .= '<script>window.CLASSTOOLS = ' . json_encode($data, $flags) . ";</script>\n";

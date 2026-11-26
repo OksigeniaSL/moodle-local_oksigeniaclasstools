@@ -32,10 +32,12 @@ require_once(__DIR__ . '/generator_trait.php');
  * @covers     ::local_oksigeniaclasstools_data
  * @covers     ::local_oksigeniaclasstools_surnames
  * @covers     ::local_oksigeniaclasstools_teaches
+ * @covers     ::local_oksigeniaclasstools_proposal
  */
 #[\PHPUnit\Framework\Attributes\CoversFunction('local_oksigeniaclasstools_data')]
 #[\PHPUnit\Framework\Attributes\CoversFunction('local_oksigeniaclasstools_surnames')]
 #[\PHPUnit\Framework\Attributes\CoversFunction('local_oksigeniaclasstools_teaches')]
+#[\PHPUnit\Framework\Attributes\CoversFunction('local_oksigeniaclasstools_proposal')]
 final class lib_test extends \advanced_testcase {
     use generator_trait;
 
@@ -248,6 +250,23 @@ final class lib_test extends \advanced_testcase {
         $this->setUser($students[0]);
         $this->assertFalse(local_oksigeniaclasstools_teaches(null), 'A student, on the board without a course.');
         $this->assertFalse(local_oksigeniaclasstools_teaches(['mode' => 'student']));
+    }
+
+    public function test_proposal_only_with_marandu_and_for_whoever_may_propose(): void {
+        $this->resetAfterTest();
+        [, $teacher] = $this->make_class(1);
+        $this->setGuestUser();
+        $this->assertNull(local_oksigeniaclasstools_proposal(), 'A guest never proposes.');
+        $this->setUser($teacher);
+        $proposal = local_oksigeniaclasstools_proposal();
+        if (!method_exists('\local_oksigeniamarandu\api', 'proposal_assets')) {
+            $this->assertNull($proposal, 'Without Marandu 0.61.2 or later, no button.');
+            return;
+        }
+        $this->assertSame(get_string('proposal:button', 'local_oksigeniamarandu'), $proposal['label']);
+        $this->assertStringContainsString('/local/oksigeniamarandu/proposal/proposal.js', $proposal['js']);
+        $this->assertStringContainsString('/local/oksigeniamarandu/proposal/proposal.css', $proposal['css']);
+        $this->assertNotEmpty(json_decode($proposal['data'], true)['strings']);
     }
 
     public function test_picks_and_kept_tools_reach_the_screen(): void {

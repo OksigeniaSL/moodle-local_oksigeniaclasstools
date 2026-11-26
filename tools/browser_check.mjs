@@ -976,6 +976,45 @@ const CHECKS = {
         await window.shot('guide-index');
         return '';
     },
+    // «Propose an improvement» of Marandu (a pretend one on /proposal.html): under the title of the guide, and of its
+    // index, it closes the guide and opens the proposal with the tool on screen, game or material as its screen.
+    'guide-proposal': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const opened = window.FAKE_PROPOSALS;
+        const open = async () => { document.querySelector('#b-guia').click(); await sleep(250); return document.querySelector('.ct-guia'); };
+        document.querySelector('#t-quien').click();
+        await sleep(200);
+        let sheet = await open();
+        let button = sheet.querySelector('.ct-guia-cabeza [data-a="propose"]');
+        if (!button || !/Propose an improvement/.test(button.textContent)) { return 'no «Propose an improvement» in the guide'; }
+        await window.shot('guide-proposal');
+        button.click();
+        await sleep(150);
+        if (!sheet.hidden) { return 'the guide stays open over the board'; }
+        if (opened.length !== 1 || opened[0].component !== 'local_oksigeniaclasstools' || opened[0].screen !== 'Whose turn?') {
+            return `the proposal opened with ${JSON.stringify(opened)}`;
+        }
+        // A tool without a guide of its own: the index, and the screen is the name of its tab.
+        document.querySelector('#t-qr').click();
+        await sleep(200);
+        sheet = await open();
+        if (!sheet.querySelector('.ct-guia-indice')) { return 'no index for the QR'; }
+        button = sheet.querySelector('.ct-guia-cabeza [data-a="propose"]');
+        if (!button) { return 'no «Propose an improvement» on the index'; }
+        await window.shot('guide-proposal-index');
+        button.click();
+        await sleep(150);
+        if (opened.length !== 2 || opened[1].screen !== 'QR') { return `from the index, the proposal opened with ${JSON.stringify(opened[1])}`; }
+        return '';
+    },
+    // Without Marandu (or for a student), no button.
+    'guide-no-proposal': async () => {
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        document.querySelector('#b-guia').click();
+        await sleep(250);
+        const sheet = document.querySelector('.ct-guia');
+        return sheet && !sheet.hidden && !sheet.querySelector('[data-a="propose"]') ? '' : 'a proposal button without Marandu';
+    },
     // Every guide has all its parts, valid levels and sources, in the language of the board.
     'guides-complete': async () => {
         const { t } = window.ClasstoolsCore;
@@ -3007,7 +3046,7 @@ const CHECKS = {
 };
 
 // Checks that run on another page than the board.
-const PAGES = { 'old-browser-zoom': '/oldcss.html', 'shared-lists': '/shared.html', 'shared-rosco': '/shared.html', 'shared-locks': '/shared.html', 'remote-phone': '/phone.html', 'remote-live-buttons': '/phone.html', 'remote-cards': '/phone.html', 'exit-device': '/device.html', 'student-view': '/student.html' };
+const PAGES = { 'old-browser-zoom': '/oldcss.html', 'shared-lists': '/shared.html', 'shared-rosco': '/shared.html', 'shared-locks': '/shared.html', 'remote-phone': '/phone.html', 'remote-live-buttons': '/phone.html', 'remote-cards': '/phone.html', 'exit-device': '/device.html', 'student-view': '/student.html', 'guide-proposal': '/proposal.html' };
 
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png',
     '.woff2': 'font/woff2', '.json': 'application/json', '.mp3': 'audio/mpeg' };
@@ -3043,6 +3082,14 @@ const server = createServer((req, res) => {
             + ' locks: [{ id: 9, name: "Lab door", data: { code: "321", clues: ["Three", "Two", "One"], final: "Open!" }, author: "Ana Ruiz", mine: false,'
             + ' candelete: false }] };</script>\n';
         const html = readFileSync(join(APP, 'index.html'), 'utf8').replace('<script src="strings.js"></script>', '<script src="/fake.js"></script>\n' + seed + '<script src="strings.js"></script>');
+        res.writeHead(200, { 'Content-Type': 'text/html' }); res.end(html); return;
+    }
+    if (path === '/proposal.html') {
+        // The board with «Propose an improvement» of Marandu, as Moodle gives it to a teacher, and a pretend Marandu that
+        // keeps what it was asked to open.
+        const config = '<script>window.FAKE_PROPOSALS = []; window.MaranduProposal = { open: (o) => window.FAKE_PROPOSALS.push(o) };'
+            + 'window.CLASSTOOLS_SITE = { teacher: true, proposal: { component: "local_oksigeniaclasstools", label: "Propose an improvement" } };</script>\n';
+        const html = readFileSync(join(APP, 'index.html'), 'utf8').replace('<script src="strings.js"></script>', '<script src="/fake.js"></script>\n' + config + '<script src="strings.js"></script>');
         res.writeHead(200, { 'Content-Type': 'text/html' }); res.end(html); return;
     }
     if (path === '/student.html') {

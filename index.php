@@ -62,6 +62,16 @@ if (!$id) {
             }
         }
         $PAGE->requires->js_call_amd('local_oksigeniaclasstools/choose', 'init');
+        // «Propose an improvement» of Marandu, when the site has it: its script opens it from the button of the panel
+        // (its styles come with every page of Moodle).
+        $proposal = local_oksigeniaclasstools_proposal();
+        if ($proposal && \local_oksigeniamarandu\api::proposal_js()) {
+            $choose['proposal'] = [
+                'component' => 'local_oksigeniaclasstools',
+                'label' => $proposal['label'],
+                'screen' => get_string('choose', 'local_oksigeniaclasstools'),
+            ];
+        }
     }
     echo $OUTPUT->header();
     if ($courses) {

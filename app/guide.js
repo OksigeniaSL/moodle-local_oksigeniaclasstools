@@ -63,6 +63,18 @@
         return tool;
     };
     const lines = (key) => t(key).split('\n').map((x) => x.trim()).filter(Boolean);
+    // «Propose an improvement» (Marandu, when the site has it), under the title, in the head that stays while reading: the
+    // guide closes, so the picture is of the board, and the screen the proposal comes from is the tool, game or material
+    // on it.
+    const proposal = site && site.proposal ? site.proposal : null;
+    const screenName = () => {
+        const id = which();
+        if (GUIDES[id]) { return t(GUIDES[id]); }
+        const tab = document.querySelector(`#t-${core.current ? core.current() : ''} [data-t]`);
+        return tab ? tab.textContent.trim() : '';
+    };
+    const propose = () => (proposal ? `<button type="button" class="boton suave ct-guia-proponer" data-a="propose"><span aria-hidden="true">${icon('lapiz')}</span>`
+        + `<span>${escape(proposal.label)}</span></button>` : '');
 
     const sheet = document.createElement('aside');
     sheet.className = 'ct-guia';
@@ -88,7 +100,7 @@
         shown = id;
         const title = GUIDES[id] ? t(GUIDES[id]) : t('gd_all');
         const size = t(wide ? 'gd_collapse' : 'gd_expand');
-        const head = `<header class="ct-guia-cabeza"><div><p class="ante">${escape(t('gd_button'))}</p><h2 id="gd-title">${escape(title)}</h2></div>
+        const head = `<header class="ct-guia-cabeza"><div><p class="ante">${escape(t('gd_button'))}</p><h2 id="gd-title">${escape(title)}</h2>${propose()}</div>
             <div class="ct-guia-botones"><button type="button" class="redondo" data-a="wide" aria-pressed="${wide}" aria-label="${escape(size)}" title="${escape(size)}">${icon(wide ? 'salir' : 'pantalla')}</button>
             <button type="button" class="redondo" data-a="close" aria-label="${escape(t('gd_close'))}" title="${escape(t('gd_close'))}">${icon('cerrar')}</button></div></header>`;
         if (!GUIDES[id]) {
@@ -142,6 +154,12 @@
     button.addEventListener('click', () => (sheet.hidden ? open() : close()));
     sheet.addEventListener('click', (e) => {
         if (e.target.closest('[data-a="close"]')) { close(); return; }
+        if (e.target.closest('[data-a="propose"]')) {
+            const screen = screenName();
+            close();
+            if (window.MaranduProposal) { window.MaranduProposal.open({ component: proposal.component, screen }); }
+            return;
+        }
         if (e.target.closest('[data-a="wide"]')) {
             const at = sheet.scrollTop / Math.max(1, sheet.scrollHeight);
             wide = !wide;

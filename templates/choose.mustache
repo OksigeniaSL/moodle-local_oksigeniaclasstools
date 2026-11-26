@@ -35,6 +35,7 @@
     * album - the teacher's stickers, when they are on: got (how many, as text) and json (what the page draws)
     * sala - the teachers' room, when it is on: joined, count, span, others (texts), json (what the page draws), ajax
       (Moodle's AJAX service), sesskey
+    * proposal - «Propose an improvement» of Marandu, when the site has it: component, label, screen
 
     Example context (json):
     {
@@ -63,7 +64,8 @@
         "album": {"got": "2 of 18 stickers", "json": "{}"},
         "sala": {"joined": false, "count": "3 in the room", "span": "It counts the last 12 weeks.",
             "others": "And 9 more colleagues play with their classes.", "json": "{}",
-            "ajax": "https://example.org/lib/ajax/service.php", "sesskey": "abc"}
+            "ajax": "https://example.org/lib/ajax/service.php", "sesskey": "abc"},
+        "proposal": {"component": "local_oksigeniaclasstools", "label": "Propose an improvement", "screen": "Which class?"}
     }
 }}
 <div class="ct-ch">
@@ -158,6 +160,12 @@
                 {{^on}}<p class="ct-ch-nota">{{#str}} choose_remote_off, local_oksigeniaclasstools {{/str}}</p>{{/on}}
             </div>
             {{/remote}}
+            {{#proposal}}
+            <button type="button" class="ct-ch-sin ct-ch-proponer" data-marandu-proposal="{{component}}" data-screen="{{screen}}">
+                <span class="ct-ch-icono" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M13.5 6.5l4 4" fill="none" stroke="currentColor" stroke-width="2"/></svg></span>
+                <strong>{{label}}</strong>
+            </button>
+            {{/proposal}}
         </aside>
     </div>
     {{#album}}

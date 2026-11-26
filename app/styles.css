@@ -2128,6 +2128,7 @@ dialog.ct-sc-dialogo.papel { width: min(64rem, 96vw); }
 .ct-guia-cabeza { position: sticky; top: 0; z-index: 1; display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin: 0 calc(-1 * var(--guia-pad)); padding: 1.2rem var(--guia-pad) .8rem; border-bottom: 1px solid var(--borde); background: var(--superficie); }
 .ct-guia-cabeza .ante { margin: 0; }
 .ct-guia-cabeza h2 { margin: .1rem 0 0; color: var(--azul-osc); font-size: 1.7rem; font-weight: 1000; line-height: 1.15; }
+.ct-guia-proponer { min-height: calc(38px * var(--zoom, 1)); margin-top: .6rem; padding: .35rem .95rem; font-size: .92rem; }
 .ct-guia-lead { margin: 1.1rem 0 .4rem; color: var(--tinta); font-size: 1.15rem; font-weight: 700; line-height: 1.45; }
 .ct-guia-parte { margin-top: .9rem; padding: .9rem 1rem 1rem; border-radius: 16px; background: var(--fondo); }
 .ct-guia-parte h3 { display: flex; align-items: center; gap: .55rem; margin: 0 0 .6rem; color: var(--azul); font-size: .85rem; font-weight: 900; letter-spacing: .06em; text-transform: uppercase; }
