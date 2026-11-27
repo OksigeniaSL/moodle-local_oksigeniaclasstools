@@ -31,6 +31,12 @@ class boards {
     /** Largest image accepted, in bytes. */
     const MAX_BYTES = 8 * 1024 * 1024;
 
+    /** Widest the board goes inside a mail: twice the 520 px it is shown at there. */
+    const MAIL_WIDTH = 1040;
+
+    /** The most the board may weigh inside a mail, in bytes. */
+    const MAIL_BYTES = 200 * 1024;
+
     /**
      * Saves a board in the course and notifies the students of the class.
      *
@@ -50,7 +56,8 @@ class boards {
         }
         $class = self::resolve($course, $listid);
         $name = trim(\core_text::substr(clean_param($name, PARAM_TEXT), 0, 100));
-        if ($name === '') {
+        $titled = $name !== '';
+        if (!$titled) {
             $when = userdate(time(), get_string('strftimedatetimeshort', 'core_langconfig'));
             $name = get_string('boardname', 'local_oksigeniaclasstools', $when);
         }
@@ -72,7 +79,10 @@ class boards {
         rebuild_course_cache($course->id, true);
 
         $url = new \moodle_url('/mod/folder/view.php', ['id' => $cm->id]);
-        $notified = self::notify($course, $class['userids'], $name, $url);
+        $section = (string) $cm->get_section_info()->name ?: get_section_name($course, $cm->sectionnum);
+        $where = ['titled' => $titled, 'folder' => format_string($cm->name, true, ['context' => $context, 'escape' => false]),
+            'section' => format_string($section, true, ['context' => $context, 'escape' => false])];
+        $notified = self::notify($course, $class['userids'], $name, $url, $png, $where);
         return (object) ['folder' => $cm->name, 'url' => $url->out(false), 'filename' => $filename, 'notified' => $notified];
     }
 
@@ -210,19 +220,33 @@ class boards {
     }
 
     /**
-     * Tells each student, in their language, that there is a new board.
+     * Tells each student, in their language, that there is a new board. With Oksigenia Marandu 0.70 or later, whoever
+     * gets it by mail gets the common mail of the site, with the board inside and a button to it.
      *
      * @param \stdClass $course
      * @param int[] $userids
      * @param string $name
      * @param \moodle_url $url
+     * @param string $png The board.
+     * @param array $where titled (the board has a name of its own), folder and section (where it is kept in the course).
      * @return int How many were notified.
      */
-    private static function notify(\stdClass $course, array $userids, string $name, \moodle_url $url): int {
+    private static function notify(
+        \stdClass $course,
+        array $userids,
+        string $name,
+        \moodle_url $url,
+        string $png,
+        array $where
+    ): int {
         global $USER;
         $strings = get_string_manager();
         $coursecontext = \context_course::instance($course->id);
         $coursename = format_string($course->fullname, true, ['context' => $coursecontext, 'escape' => false]);
+        $api = '\local_oksigeniamarandu\api';
+        $mail = class_exists($api) && method_exists($api, 'mail_notice');
+        $picture = $mail ? self::mail_picture($png) : null;
+        $letters = [];
         $count = 0;
         foreach ($userids as $userid) {
             $user = \core_user::get_user($userid);
@@ -230,13 +254,14 @@ class boards {
                 continue;
             }
             $lang = $user->lang ?: current_language();
-            $a = (object) ['teacher' => fullname($USER), 'course' => $coursename, 'name' => $name];
+            $a = (object) ['teacher' => fullname($USER), 'course' => $coursename, 'name' => $name,
+                'titled' => !empty($where['titled'])];
             $message = new \core\message\message();
             $message->component = 'local_oksigeniaclasstools';
             $message->name = 'boardshared';
             $message->userfrom = $USER;
             $message->userto = $user;
-            $message->subject = $strings->get_string('boardshared_subject', 'local_oksigeniaclasstools', $coursename, $lang);
+            $message->subject = self::subject($a, $lang);
             $message->fullmessage = $strings->get_string('boardshared_body', 'local_oksigeniaclasstools', $a, $lang);
             $message->fullmessageformat = FORMAT_PLAIN;
             $message->fullmessagehtml = '<p>' . s($message->fullmessage) . '</p>';
@@ -245,10 +270,101 @@ class boards {
             $message->contexturl = $url->out(false);
             $message->contexturlname = $strings->get_string('boardshared_link', 'local_oksigeniaclasstools', null, $lang);
             $message->courseid = $course->id;
+            if ($mail) {
+                $letters[$lang] = $letters[$lang] ?? self::letter((object) ((array) $a + $where), $url, $picture, $lang);
+                $api::mail_notice($message, $letters[$lang]);
+            }
             if (message_send($message)) {
                 $count++;
             }
         }
         return $count;
+    }
+
+    /**
+     * The mail of a shared board, as the common mail of Marandu takes its pieces: what the notice says, the board, where
+     * it is kept, a button to its folder and the way to the preferences of the notices.
+     *
+     * @param \stdClass $a teacher, course and name, as the strings of the notice take them; titled, whether the board has
+     *     a name of its own (then it heads the mail); folder and section, where the board is kept (without them, the mail
+     *     does not say it).
+     * @param \moodle_url $url The folder of the class.
+     * @param string|null $picture The board, as mail_picture() leaves it; null to go without it.
+     * @param string $lang
+     * @return array The pieces.
+     */
+    public static function letter(\stdClass $a, \moodle_url $url, ?string $picture, string $lang): array {
+        $strings = get_string_manager();
+        $say = fn(string $key, $param = null) => $strings->get_string($key, 'local_oksigeniaclasstools', $param, $lang);
+        $subject = self::subject($a, $lang);
+        // A board with a name of its own is remembered by it: it heads the mail, and the first lines say who and where.
+        $titled = !empty($a->titled);
+        $body = $titled ? $say('boardshared_bodynamed', $a) : $say('boardshared_body', $a);
+        $blocks = [['paragraph' => $body]];
+        if ($picture !== null) {
+            $blocks[] = ['picture' => ['picturebytes' => $picture, 'picturealt' => $say('boardshared_alt', $a->name),
+                'picturecaption' => '', 'pictureframe' => true]];
+        }
+        if (!empty($a->folder) && !empty($a->section)) {
+            $blocks[] = ['paragraph' => $say('boardshared_where', $a)];
+        }
+        $blocks[] = ['action' => ['actionurl' => $url->out(false), 'actiontext' => $say('boardshared_link')]];
+        // It goes to the whole class at every board: the way out, to the preferences of the notices.
+        $blocks[] = ['link' => ['linkbefore' => $say('boardshared_prefsbefore'),
+            'linkurl' => (new \moodle_url('/message/notificationpreferences.php'))->out(false),
+            'linktext' => $say('boardshared_prefs')]];
+        return ['subject' => $subject, 'heading' => $titled ? $say('boardshared_heading', $a->name) : $subject,
+            'preheader' => $body, 'blocks' => $blocks, 'reason' => $say('boardshared_reason', $a->course)];
+    }
+
+    /**
+     * The subject of the notice of a shared board, and of its mail: the course and, when it has one of its own, the name
+     * of the board.
+     *
+     * @param \stdClass $a course, name and titled, as letter() takes them.
+     * @param string $lang
+     * @return string
+     */
+    public static function subject(\stdClass $a, string $lang): string {
+        $strings = get_string_manager();
+        return !empty($a->titled)
+            ? $strings->get_string('boardshared_subjectnamed', 'local_oksigeniaclasstools', $a, $lang)
+            : $strings->get_string('boardshared_subject', 'local_oksigeniaclasstools', $a->course, $lang);
+    }
+
+    /**
+     * The board as it goes inside a mail: on white (a dark mail would show through a transparent board), at most
+     * MAIL_WIDTH wide, and as PNG while it weighs no more than MAIL_BYTES, else as JPEG.
+     *
+     * @param string $png
+     * @return string|null The image; null if it cannot be made light enough (the mail then goes without it).
+     */
+    public static function mail_picture(string $png): ?string {
+        if (!function_exists('imagecreatefromstring')) {
+            return null;
+        }
+        $image = @imagecreatefromstring($png);
+        if ($image === false) {
+            return null;
+        }
+        $width = imagesx($image);
+        $height = imagesy($image);
+        $w = min($width, self::MAIL_WIDTH);
+        $h = max(1, (int) round($height * $w / $width));
+        $flat = imagecreatetruecolor($w, $h);
+        imagefill($flat, 0, 0, imagecolorallocate($flat, 255, 255, 255));
+        imagecopyresampled($flat, $image, 0, 0, 0, 0, $w, $h, $width, $height);
+        ob_start();
+        imagepng($flat, null, 9);
+        $bytes = (string) ob_get_clean();
+        foreach ([85, 75, 60] as $quality) {
+            if (strlen($bytes) <= self::MAIL_BYTES) {
+                break;
+            }
+            ob_start();
+            imagejpeg($flat, null, $quality);
+            $bytes = (string) ob_get_clean();
+        }
+        return strlen($bytes) <= self::MAIL_BYTES ? $bytes : null;
     }
 }

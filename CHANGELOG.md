@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.4.0 (2026-11-27)
+
+- The notice of a board shared with the class names the board in its subject when it has a name of its own
+  («New board in Maths 5B: Fractions»).
+- By mail, in the common look of the site when it has Oksigenia Marandu 0.70 or later, on Moodle 5.3 and later: its
+  name, colour and logo; the board's name as the heading; the board itself inside the mail (on white, at most 1040 px
+  wide and 200 KB); the folder and section of the course where it is kept; a button to it; and a link to choose which
+  notices reach you, as it goes to the whole class at every board. With a plain text version, and by the way Marandu
+  chooses for each address. Without Marandu the mail goes as before.
+
 ## 1.3.0 (2026-11-26)
 
 - «Propose an improvement», when the site has Oksigenia Marandu 0.61.2 or later: in the head of the teacher's guide and in
